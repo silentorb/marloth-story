@@ -5,14 +5,14 @@
 This project is divided into three layers:
 
 1. Books
-2. Docs
+2. Documentation
 3. Workbench
 
 ### Books
 
 The final published narratives.
 
-### Docs
+### Documentation
 
 The docs are a collection polished articles outlining:
 
@@ -47,4 +47,3 @@ The primary reasons for the workbench is
 Everything in the workbench is disposable.  Once a body of text in the workbench has served its purpose, it is either migrated to a book, migrated to the docs, or deleted.
 
 The workbench is the primary entry point for new ideas.
-
