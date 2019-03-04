@@ -114,6 +114,12 @@ While Marloth is not about [personal contests](#Personal Contests), it is about 
 
 ### Cozy
 
+Many locations in Marloth fall into one of two opposing extremes: wilderness and sanctuaries.
+
+The wilderness is dangerous and scary.  When a characters are in the wilderness they can never let their guard down.
+
+Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food, warm drinks.  And windows to see the harsh weather outside and emphasize the contrast.
+
 ### Friends
 
 ### Impending Doom
