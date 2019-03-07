@@ -120,7 +120,24 @@ The wilderness is dangerous and scary.  When a characters are in the wilderness 
 
 Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food, warm drinks.  And windows to see the harsh weather outside and emphasize the contrast.
 
+#### Rules
+
+* A Marloth narrative needs to have major characters occasionally in wilderness settings.
+* A Marloth narrative needs to have major characters occasionally in sanctuary settings.
+* In most cases, whenever a major character is in a sanctuary, he or she should be in the company of friends.
+* At least some of the sanctuary scenes need friends dining together.
+
 ### Friends
+
+As I age, past friendship becomes a stronger motivation for my art.  Most people are not good at keeping up with old friends, and of that I am the extreme.  I've had so many dear friends over the years that I will probably never see again in this lifetime.  Most of them simply from parting ways and no longer being in the same neighborhood of life, though the older I get the more death becomes the prime divider, as already some of my dearest friends are no longer in this world.
+
+It may be self-delusion, but art is my knee-jerk reaction for capturing all of the past that is dear to me—a means of honoring it, preserving it, and hopefully packaging it in such a way that others can enjoy it.
+
+#### Rules
+
+* As a Marloth narrative progresses, friendships should be a more integral part of the story.
+* A friendship can contain much conflict.  A beautiful friendship can exist with no harmony but consistent caring and self-sacrifice.
+  * I don't mean to devalue harmony here.  Harmony is very important but more in its own right, in a section of its own.
 
 ### Impending Doom
 
@@ -136,7 +153,28 @@ Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food,
 
 ### Family
 
-### Dining Together
+When I was young, family did not mean much to me.  The more I have grown, the more important family has become to me.
+
+The first Marloth book has hardly any familial relationships.  Later books should revolve more around family.
+
+Family does conflict with some of the tropes Marloth capitalizes on.  Exactly how to resolve this tension is a problem not yet fully solved.
+
+One benefit of emphasizing family within a fantasy setting such as Marloth is that most similar fantasy settings tend to de-emphasize family.  Thus, there is a considerable frontier of unique situations available by simply taking a routine fantasy situation and mixing it with family.
+
+#### Rules
+
+The first book breaks most of these rules, but it is what it is.
+
+* Every Marloth narrative should have many family relationships between its characters.
+* Family should be presented as something that is valuable.
+* Don't just show disfunctional family relationships.  Also show healthy family relationships.
+
+#### Reasons
+
+* Family is devalued in modern narratives.
+  * Modern narratives either have an unrealistic lack of family relationships or focus on disfunctional family relationships.
+* Family adds meaning and depth to narratives.
+* Family is adds additional dimensions of situations for audiences to relate to.
 
 #### Rules
 

@@ -2,7 +2,13 @@
 
 (marloth-story for short)
 
-This project is divided into three layers:
+## Introduction
+
+This document documents the process for Marloth documentation.  If the Marloth documentation is the story's meta, then this document is the meta-meta.
+
+## Project Structure
+
+The Marloth narrative project is divided into three layers:
 
 1. Books
 2. Documentation
@@ -47,3 +53,15 @@ The primary reasons for the workbench is
 Everything in the workbench is disposable.  Once a body of text in the workbench has served its purpose, it is either migrated to a book, migrated to the docs, or deleted.
 
 The workbench is the primary entry point for new ideas.
+
+## Documentation Rules
+
+### Rules
+
+* Never refer to particular narratives other than Marloth narratives
+  * Other narratives can be referred to from material in the workbench
+* Instead, the valuable insights a narrative provides should be extracted and melted down into a polished digest.  That way those insights can be included in the Marloth documentation without direct reference to the narratives they came from.
+
+### Reasons
+
+* I used to love focusing on particular inspirations to help drive Marloth development, but have gradually found that to be counter-productive.  The problem is that narratives are too raw of a material to be used directly.  
