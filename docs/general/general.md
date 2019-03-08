@@ -4,9 +4,17 @@
 
 #### Rules
 
+* A narrative should regularly keep details of the story ambiguous to allow multiple viable intrepretaions.
+* In such cases, these intrepretations should not be intended as not mutually exclusive.
+* When a Marloth narrative uses ambiguity, to some degree all possible interpretations are true at once.
+* Ambiguity in a Marloth narrative should not be used to allow the audience freedom of intrepretation.  It's not to be open-ended.  The purpose of ambiguity here is to layer one possibility on top of the other, forming a [legend](Legend).
+
 - [Confusion](#Confusion) should be avoided.
 
 #### Reasons
+
+* This form of ambiguity adds [dreaminess](Dreamlike).
+* This form of ambiguity is an efficient way of adding dense depth.
 
 #### Confusion
 
@@ -67,9 +75,26 @@ Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food,
 - In most cases, whenever a major character is in a sanctuary, he or she should be in the company of friends.
 - At least some of the sanctuary scenes need friends dining together.
 
+### Dreamlike
+
+### Euphemism
+
+#### Rules
+
+* Rely heavily on euphemisms.
+* In particular, rely heavily on thematic euphemisms.
+  * Thematic euphemisms can overlap with symbolism, such as how the candy Jillybons are both a metaphor and euphemism for drugs.
+* To some degree, a narrative should rely on euphemisms in such a way that it ironically feels like a children's story that is not a children's story.
+* Anything sexual in nature requires a euphemism.
+
+#### Reasons
+
+* Marloth narratives touch on a lot of heavy issues and euphemisms help minimize the sense of endless negativity.
+* Euphemisms add flavor, humor, and [implication](Implication).
+
 ### Family
 
-When I was young, family did not mean much to me.  The more I have grown, the more important family has become to me.
+When I was young, family did not mean much to me.  The more I have grown, the more my appreciation of family has grown.
 
 The first Marloth book has hardly any familial relationships.  Later books should revolve more around family.
 
@@ -100,11 +125,31 @@ It may be self-delusion, but art is my knee-jerk reaction for capturing all of t
 
 #### Rules
 
-- As a Marloth narrative progresses, friendships should be a more integral part of the story.
+- As a narrative progresses, friendships should be a more integral part of the story.
 - A friendship can contain much conflict.  A beautiful friendship can exist with no harmony but consistent caring and self-sacrifice.
   - I don't mean to devalue harmony here.  Harmony is very important but more in its own right, in a section of its own.
 
 ### Horror
+
+#### Rules
+
+* Each narrative must include a significant amount of moral horror.
+* Each narrative must include a significant amount of creepiness.
+* Avoid gross happenings.
+  * This includes:
+    * Gruesome violence
+    * Body horror
+    * Creepy crawlies
+* It is okay for horror to be violent as long as it is not gruesome or any gruesomeness is purely implied.
+  * Examples:
+    * It is okay for a person to get stabbed in the torso.
+    * It is not okay for a person to get stabbed in the eye.
+      * There could be exceptions to this case such as if a main character losing an eye added a lot to the rest of the story.
+    * It is okay for a person to fall to their death as long as impact is not described.
+* When horrific things are happening, rely heavily on [implication](Implication) and [euphemisms](Euphemisms).
+* Do not try to scare the audience.
+  * It is fine if the audience is scared, but don't try to force it.  Don't include elements whose purpose is to scare the audience.
+  * It is fine for characters in a narrative to be scared.
 
 ### Ideological Contests
 
@@ -116,6 +161,7 @@ While Marloth is not about [personal contests](#Personal Contests), it is about 
 - Ideological conflicts should not be resolved quickly.
 - An ideological conflict should never be resolved over the course of a single scene.
 - They should resolve over at least a part's worth of time.
+- Each narrative should have multiple scenes with public forums.  The world is the stage.
 
 #### Reasons
 
@@ -126,9 +172,9 @@ While Marloth is not about [personal contests](#Personal Contests), it is about 
 
 ### Implication
 
-#### Rules
+Marloth depends heavily on implication.
 
-Marloth relies heavily on implication.
+#### Rules
 
 * Whenever something can be deduced, provide just enough information to require that deduction.
 * Use pronouns liberally, as long as it does not cause [ambiguity](#Ambiguity).
@@ -144,6 +190,12 @@ Marloth relies heavily on implication.
 * Implication is the salt of humor.
 * It can add [ambiguity](#Ambiguity).
 
+### Legend
+
+A legend is a dense, tense, composite idea.
+
+When an audience witnesses multiple versions of a character or story, those different versions are compiled into a singular, blurry composite idea.  The different versions contained within this idea are both unified and conflicting.  That tension is legend.
+
 ### Magic
 
 ### Mystery
@@ -151,6 +203,31 @@ Marloth relies heavily on implication.
 Mystery is a critical ingredient for Marloth.  Mystery evokes [awe](#Awe).  Arguably, awe is impossible without some element of mystery.
 
 I love mystery, but I don't like mystery novels.  The term *mystery novel* is almost a misnomer.  The purpose of a mystery novel is to destroy mystery.  Or, more generously, to create a mystery and then dismantle it.  Once a reader has finished reading a mystery novel, any awe that was generated by the novel's mystery is gone.
+
+### Ordinary vs. Extraordinary
+
+#### Rules
+
+* As much as possible, balance the ordinary and extraordinary.
+* At any given time in a narrative, either ordinary or extraordinary must be dominant.
+  * This is less my rule than a natural rule.
+* A narrative can occasionally switch whether ordinary or extraordinary are dominant, but should do so sparingly.
+
+#### Reasons
+
+* Narratives should have elements of the ordinary.
+  * Ordinary is healthy.
+  * Ordinary is humble.
+  * Audiences tend to undervalue the ordinary, allowing strategic uses of ordinary to setup the audience for surprise.
+  * Ordinary is a good foil for extraordinary.
+  * Ordinary adds narrative dimensions and depth that extraordinary lacks.
+* Narratives should have elements of the extraordinary.
+  * Audiences love extraordinary.
+  * I love extraordinary.
+  * Extraordinary can adds [dreaminess](Dreamlike).
+  * Extraordinary adds narrative dimensions and depth that ordinary lacks.
+* Frequently flipping dominance can muddy the distinction and contrast between ordinary and extraordinary.
+* Frequently flipping dominance can interrupt continuity.
 
 ### Pacing
 
@@ -165,7 +242,7 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 
 * Personal contests encourage pride and insecurity.
 * Personal contests naturally boil down to viewing characters as single values.  When a 5 and a 7 fight each other, the 7 always wins.
-* A narrative can have deep, significant personal contests that don't encourage pride and insecurity, but it requires that the entire narrative is built around having deep personal contests tied to larger ideological struggles.  The Naruto series is king of this.
+* A narrative can have deep, significant personal contests that don't encourage pride and insecurity, but it requires that the entire narrative is built around having deep personal contests tied to larger ideological struggles.
   * Marloth will never be built around personal contests to adequately support meaningful, healthy personal contests.
 
 ### Society vs. Adventure
