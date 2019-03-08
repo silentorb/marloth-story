@@ -1,10 +1,30 @@
 # General Marloth Documentation
 
+### Ambiguity
+
+#### Rules
+
+- [Confusion](#Confusion) should be avoided.
+
+#### Reasons
+
+#### Confusion
+
+When this documentation uses the word ambiguity, it is generally referring to positive ambiguity. This is in contrast to negative ambiguity.
+
+Positive ambiguity is when a communication supports multiple logical interpretations and all of those interpretations are desirable by the author.
+
+Negative ambiguity is when a communication supports multiple logical interpretations and one or more of those interpretations are contrary to the author's intent.
+
+Within this documentation, negative ambiguity is referred to as confusion.  Confusion should be avoided.
+
 ### Awe
 
 One of the primary goals of a Marloth narrative is to inspire awe.  Most of the rules in this document are either directly or indirectly derived from this root goal.
 
 Wonder can be a synonym for awe, which is fitting since one of Marloth's primary influences is Lewis Carrol's "The Adventures of Alice in Wonderland".  Marloth is a type of Wonderland.
+
+### Battle of the Sexes
 
 ### Brevity
 
@@ -30,6 +50,80 @@ The writing style of Marloth is concise. Verbosity should be minimized. This inc
 
 * It's more efficient to write.  (This is offset by the work it takes to manage so many dimensions in a Marloth narrative.  Traditional story telling is more verbose but the verbosity is also more loosely coupled like a string of islands.)
 
+### Caustic Wit
+
+### Cozy
+
+Many locations in Marloth fall into one of two opposing extremes: wilderness and sanctuaries.
+
+The wilderness is dangerous and scary.  When a characters are in the wilderness they can never let their guard down.
+
+Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food, warm drinks.  And windows to see the harsh weather outside and emphasize the contrast.
+
+#### Rules
+
+- A Marloth narrative needs to have major characters occasionally in wilderness settings.
+- A Marloth narrative needs to have major characters occasionally in sanctuary settings.
+- In most cases, whenever a major character is in a sanctuary, he or she should be in the company of friends.
+- At least some of the sanctuary scenes need friends dining together.
+
+### Family
+
+When I was young, family did not mean much to me.  The more I have grown, the more important family has become to me.
+
+The first Marloth book has hardly any familial relationships.  Later books should revolve more around family.
+
+Family does conflict with some of the tropes Marloth capitalizes on.  Exactly how to resolve this tension is a problem not yet fully solved.
+
+One benefit of emphasizing family within a fantasy setting such as Marloth is that most similar fantasy settings tend to de-emphasize family.  Thus, there is a considerable frontier of unique situations available by simply taking a routine fantasy situation and mixing it with family.
+
+#### Rules
+
+The first book breaks most of these rules, but it is what it is.
+
+- Every Marloth narrative should have many family relationships between its characters.
+- Family should be presented as something that is valuable.
+- Don't just show disfunctional family relationships.  Also show healthy family relationships.
+
+#### Reasons
+
+- Family is devalued in modern narratives.
+  - Modern narratives either have an unrealistic lack of family relationships or focus on disfunctional family relationships.
+- Family adds meaning and depth to narratives.
+- Family is adds additional dimensions of situations for audiences to relate to.
+
+### Friends
+
+As I age, past friendship becomes a stronger motivation for my art.  Most people are not good at keeping up with old friends, and of that I am the extreme.  I've had so many dear friends over the years that I will probably never see again in this lifetime.  Most of them simply from parting ways and no longer being in the same neighborhood of life, though the older I get the more death becomes the prime divider, as already some of my dearest friends are no longer in this world.
+
+It may be self-delusion, but art is my knee-jerk reaction for capturing all of the past that is dear to me—a means of honoring it, preserving it, and hopefully packaging it in such a way that others can enjoy it.
+
+#### Rules
+
+- As a Marloth narrative progresses, friendships should be a more integral part of the story.
+- A friendship can contain much conflict.  A beautiful friendship can exist with no harmony but consistent caring and self-sacrifice.
+  - I don't mean to devalue harmony here.  Harmony is very important but more in its own right, in a section of its own.
+
+### Horror
+
+### Ideological Contests
+
+While Marloth is not about [personal contests](#Personal Contests), it is about contests between ideologies.
+
+#### Rules
+
+- A Marloth narrative must be filled with ideological conflicts.
+- Ideological conflicts should not be resolved quickly.
+- An ideological conflict should never be resolved over the course of a single scene.
+- They should resolve over at least a part's worth of time.
+
+#### Reasons
+
+- Ideological conflict is one of the greatest ways to add depth and significance to a storyline.
+- Ideological conflicts are not about personal demonstration, they are about trust.  It is like betting on a horse and then seeing which horse wins. The people betting may be participants in the race, but it is not their individual qualities that determine the winning horse.  Those who trust in God will always win.
+
+### Impending Doom
+
 ### Implication
 
 #### Rules
@@ -50,23 +144,7 @@ Marloth relies heavily on implication.
 * Implication is the salt of humor.
 * It can add [ambiguity](#Ambiguity).
 
-### Ambiguity
-
-#### Rules
-
-* [Confusion](#Confusion) should be avoided.
-
-#### Reasons
-
-#### Confusion
-
-When this documentation uses the word ambiguity, it is generally referring to positive ambiguity. This is in contrast to negative ambiguity.
-
-Positive ambiguity is when a communication supports multiple logical interpretations and all of those interpretations are desirable by the author.
-
-Negative ambiguity is when a communication supports multiple logical interpretations and one or more of those interpretations are contrary to the author's intent.
-
-Within this documentation, negative ambiguity is referred to as confusion.  Confusion should be avoided.
+### Magic
 
 ### Mystery
 
@@ -74,7 +152,7 @@ Mystery is a critical ingredient for Marloth.  Mystery evokes [awe](#Awe).  Argu
 
 I love mystery, but I don't like mystery novels.  The term *mystery novel* is almost a misnomer.  The purpose of a mystery novel is to destroy mystery.  Or, more generously, to create a mystery and then dismantle it.  Once a reader has finished reading a mystery novel, any awe that was generated by the novel's mystery is gone.
 
-### Horror
+### Pacing
 
 ### Personal Contests
 
@@ -90,96 +168,15 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 * A narrative can have deep, significant personal contests that don't encourage pride and insecurity, but it requires that the entire narrative is built around having deep personal contests tied to larger ideological struggles.  The Naruto series is king of this.
   * Marloth will never be built around personal contests to adequately support meaningful, healthy personal contests.
 
-### Ideological Contests
-
-While Marloth is not about [personal contests](#Personal Contests), it is about contests between ideologies.
-
-#### Rules
-
-* A Marloth narrative must be filled with ideological conflicts.
-* Ideological conflicts should not be resolved quickly.
-* An ideological conflict should never be resolved over the course of a single scene.
-* They should resolve over at least a part's worth of time.
-
-#### Reasons
-
-* Ideological conflict is one of the greatest ways to add depth and significance to a storyline.
-* Ideological conflicts are not about personal demonstration, they are about trust.  It is like betting on a horse and then seeing which horse wins. The people betting may be participants in the race, but it is not their individual qualities that determine the winning horse.  Those who trust in God will always win.
-
-### Pacing
-
 ### Society vs. Adventure
-
-### Whimsy vs. Reason
-
-### Cozy
-
-Many locations in Marloth fall into one of two opposing extremes: wilderness and sanctuaries.
-
-The wilderness is dangerous and scary.  When a characters are in the wilderness they can never let their guard down.
-
-Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food, warm drinks.  And windows to see the harsh weather outside and emphasize the contrast.
-
-#### Rules
-
-* A Marloth narrative needs to have major characters occasionally in wilderness settings.
-* A Marloth narrative needs to have major characters occasionally in sanctuary settings.
-* In most cases, whenever a major character is in a sanctuary, he or she should be in the company of friends.
-* At least some of the sanctuary scenes need friends dining together.
-
-### Friends
-
-As I age, past friendship becomes a stronger motivation for my art.  Most people are not good at keeping up with old friends, and of that I am the extreme.  I've had so many dear friends over the years that I will probably never see again in this lifetime.  Most of them simply from parting ways and no longer being in the same neighborhood of life, though the older I get the more death becomes the prime divider, as already some of my dearest friends are no longer in this world.
-
-It may be self-delusion, but art is my knee-jerk reaction for capturing all of the past that is dear to me—a means of honoring it, preserving it, and hopefully packaging it in such a way that others can enjoy it.
-
-#### Rules
-
-* As a Marloth narrative progresses, friendships should be a more integral part of the story.
-* A friendship can contain much conflict.  A beautiful friendship can exist with no harmony but consistent caring and self-sacrifice.
-  * I don't mean to devalue harmony here.  Harmony is very important but more in its own right, in a section of its own.
-
-### Impending Doom
-
-### Caustic Wit
-
-### Battle of the Sexes
-
-### Waking Up
-
-### Villains
-
-* Always plural
-
-### Family
-
-When I was young, family did not mean much to me.  The more I have grown, the more important family has become to me.
-
-The first Marloth book has hardly any familial relationships.  Later books should revolve more around family.
-
-Family does conflict with some of the tropes Marloth capitalizes on.  Exactly how to resolve this tension is a problem not yet fully solved.
-
-One benefit of emphasizing family within a fantasy setting such as Marloth is that most similar fantasy settings tend to de-emphasize family.  Thus, there is a considerable frontier of unique situations available by simply taking a routine fantasy situation and mixing it with family.
-
-#### Rules
-
-The first book breaks most of these rules, but it is what it is.
-
-* Every Marloth narrative should have many family relationships between its characters.
-* Family should be presented as something that is valuable.
-* Don't just show disfunctional family relationships.  Also show healthy family relationships.
-
-#### Reasons
-
-* Family is devalued in modern narratives.
-  * Modern narratives either have an unrealistic lack of family relationships or focus on disfunctional family relationships.
-* Family adds meaning and depth to narratives.
-* Family is adds additional dimensions of situations for audiences to relate to.
-
-#### Rules
-
-* Every Marloth narrative should have one or more scenes where friends are dining together in a cozy setting.  Such scenes must involve significant dialogue between the diners.
 
 ### Unlikely Allies
 
-### Magic
+### Villains
+
+- Always plural
+
+### Waking Up
+
+### Whimsy vs. Reason
+
