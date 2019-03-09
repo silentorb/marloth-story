@@ -14,7 +14,7 @@
 #### Reasons
 
 * This form of ambiguity adds [dreaminess](Dreamlike).
-* This form of ambiguity is an efficient way of adding dense depth.
+* This form of ambiguity is an efficient way of adding [dense](Brevity) depth.
 
 #### Confusion
 
@@ -53,7 +53,7 @@ The writing style of Marloth is concise. Verbosity should be minimized. This inc
 
 * I like efficient communication.
 * I don't like filler text.  A reader's time is important and should be used preciously.  The honor of reading is bestowed on the writer, not the reader.
-* Dense, significant communication overwhelms the audience, helping add awe.
+* Dense, significant communication overwhelms the audience, helping add [awe](Awe).
 * Minimal text lends itself to Marloth's high concentration of [implication](#Implication).
 
 * It's more efficient to write.  (This is offset by the work it takes to manage so many dimensions in a Marloth narrative.  Traditional story telling is more verbose but the verbosity is also more loosely coupled like a string of islands.)
@@ -247,11 +247,43 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 
 ### Society vs. Adventure
 
-### Unlikely Allies
-
 ### Villains
 
-- Always plural
+#### Rules
+
+- Always plural.
+  - There can be an over-arching villain that sort of represents all of the others.
+- Each major villain should represent a different ideology.
+- Villains rarely die.
+  - And in death I mean permanent death without being resurrected as some kind of zombie.
+  - This may eventually be upgraded to "Villains never die."
+    - No villains die in the first book; unless the Queen is considered a villain.
+      - The fates of some characters such as Bobby and Osmand are never specified.  It's implied that they died a second time but they may have been resurrected by Tralvorkemen.
+- The narrative should never revolve around villains.
+  - In other words, the story should always be more about the heroes than the villains.
+    - The narrative should never be fixated upon villains.
+    - The most major villain is still a supporting role.
+  - Villains can still play an integral part in the plot.
+  - Whole scenes can be devoted to villains scheming.
+    - Just not frequently.
+- Always present the over-the-top best representation of a villain's ideology.
+  - Sometimes other narratives present weak ideological opponents that are easy to deride.
+  - Don't use straw man arguments.
+  - Don't use straw man villains.
+  - If an ideology is wrong, you should be able to depict the strongest rendition of that ideology and still cleanly defeat it, because reality is opposed to that ideology.
+- Each narrative should have both villain alliances and villain wars.
+  - And villains backstabbing each other
+
+#### Reasons
+
+* For me it feels small and narrow to have a single villain.
+* Having a singular villain tends to require more of a [personal contest](Personal Contests).
+* It is unhealthy to have narratives fixate on villainy.
+* Some of the audience's connection to the story can be lost when more focus is put on the antagonist than the protagonist.
+* Straw man arguments will repulse holders of that ideology where a stronger argument could turn their heart.
+* Straw man arguments are pretentious and immature.  They are a lazy, cheap shot.
+* Richer conflict and storytelling arise when the best versions of two ideologies clash and all of the hard questions are methodically wrestled with and addressed.
+  * Straw man arguments tend to avoid the hard questions.
 
 ### Waking Up
 
