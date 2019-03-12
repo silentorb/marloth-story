@@ -60,6 +60,8 @@ The writing style of Marloth is concise. Verbosity should be minimized. This inc
 
 ### Caustic Wit
 
+### Continuity
+
 ### Cozy
 
 Many locations in Marloth fall into one of two opposing extremes: wilderness and sanctuaries.
@@ -75,7 +77,46 @@ Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food,
 - In most cases, whenever a major character is in a sanctuary, he or she should be in the company of friends.
 - At least some of the sanctuary scenes need friends dining together.
 
+### Deja Vu
+
+#### Rules
+
+* Use patterns to create inductive similarities between different characters, suggesting that they are in one sense the same character.
+* Use foreshadowing to give some characters a vague notion of future events.
+  * This can't be just any character or any event.
+    * Some characters are more connected with the big picture.
+    * Foreshadowed events should be pivotal and be ether one or both of:
+      * Events that at first look undesirable but in retrospect are a hidden blessing.
+      * Events that would not normally be expected.
+* Repeat some events where a character who is vaguely aware of the big picture identifies that similar events happened before and this time the character is trying to change the outcome.
+
+#### Reasons
+
+* Deja Vu a critical means of generating [dreaminess](Dreamlike).
+
+### Dependency
+
+#### Rules
+
+* Everyone except God is dependent on someone or something else for every ounce of power they wield.
+* Make those dependencies evident.
+* At the same time, dependency blindness can be utilized to add surprise to the narrative.  Make dependencies evident, but that doesn't have to happen right away.  Dependencies can be hidden and then
+   later revealed to much amazement.
+* Aside for a Christ character like Tralvorkemen, do not have super characters that are absurdly more powerful than the characters around them.  This applies both for heroes and villains.
+  * If an opposing force needs to feel scary and overwhelming, either reduce the power of the heroes facing that force or have force be more quantity than quality (Facing an army instead of a single
+    character as strong as an army.)
+
 ### Dreamlike
+
+#### Rules
+
+* A Marloth narrative should be as dreamlike as possible without interfering with other rules.
+
+#### Reasons
+
+* Dreaminess is one of the most powerful methods of generating [awe](Awe).
+* I love dreaminess.
+* Dreaminess is a signature feature of Marloth.
 
 ### Euphemism
 
@@ -162,6 +203,7 @@ While Marloth is not about [personal contests](#Personal Contests), it is about 
 - An ideological conflict should never be resolved over the course of a single scene.
 - They should resolve over at least a part's worth of time.
 - Each narrative should have multiple scenes with public forums.  The world is the stage.
+- Ideologies are most defined but what a person worships.
 
 #### Reasons
 
