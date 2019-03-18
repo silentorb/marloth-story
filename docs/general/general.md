@@ -62,6 +62,31 @@ The writing style of Marloth is concise. Verbosity should be minimized. This inc
 
 ### Continuity
 
+Narrative is a sequence of transitions from one state to the next.
+
+#### Rules
+
+* Marloth narratives should have a steady sense of progression and moving forward.
+* No backing up.
+  * Characters can have *set backs*, but they shouldn't be pure set backs.  Something should still have been gained in the process.
+* Marloth narratives should periodically contain transitions between radically disparate states.
+  - More so than most other narratives.
+* In most cases, major transitions should be reserved for the division between book parts.
+  * This is one of the main purposes of parts in Marloth narratives.  A six part Marloth book will roughly have six major states.
+* The transitions between books can be more extreme than the transitions between parts.
+* The transitions between books still need some continuity.
+  * 
+* Past, present, and future should overlap and occasionally blur.
+  * Don't blur these too much or any sense of progression will be lost.
+* Avoid nonlinear narrative.
+  * Some of the benefits of nonlinear narrative are still achieved through the blurring of past, present and future.
+* No prequels.
+  * This could be organized under avoiding nonlinear narrative but is worth it's own point for emphasis.
+
+#### Reasons
+
+* Drastic state changes increase [dreaminess](Dreamlike).
+
 ### Cozy
 
 Many locations in Marloth fall into one of two opposing extremes: wilderness and sanctuaries.
