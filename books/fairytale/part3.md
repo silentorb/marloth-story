@@ -1,7 +1,7 @@
 Nighttime. It was very dark. The moon and stars were shrouded in cloud,
 and the city had few streetlamps. But there were several lights moving
 about the orphanage, both inside and out. These were the lamps of men;
-men who are searching the orphanage grounds.
+men searching the orphanage grounds.
 
 "I found someone!" a voice called out from the yard at the side of the
 house. The voice was answered by other voices, and before long the
@@ -20,7 +20,7 @@ As two of the men set out to procure a stretcher, the doctor noticed
 something lying on the ground beside the boy. It was a book. Without
 anyone noticing, the doctor took the object and tucked it into his coat.
 
-A stretcher was soon brought and before long, James was being carried
+A stretcher was soon brought forward.  Before long, James was being carried
 out of the yard and onto the street. In the middle of the street was a
 carriage with two men standing beside it. The stretcher, Doctor Hurley,
 and one other man somehow were squeezed into the carriage. As the
@@ -40,7 +40,7 @@ waking up from a long, dark dream.
 He groggily opened his eyes; he was having a hard time detaching his
 mind and body from sleep. After a time, he forced himself up with his
 elbows so that his head was just raised enough to look around. The room
-was relatively empty aside for the sink and toilet near the bed. There
+was relatively empty aside for a sink and toilet near the bed. There
 was also a mirror across the room in which he could see a bewildered
 little boy staring back at him. In the distance, he could hear what
 sounded like muffled moans and an occasional scream. There were many
@@ -49,19 +49,19 @@ half heard and half saw any of this. For the most part, his mind was
 clouded by fading dreams, both good and ill, but mostly ill. As he
 looked about the room, he had a growing apprehension that he ought to be
 very scared, and that even though he currently was not scared in the
-slightest, it would be only a matter of time before the emotion caught
+slightest, it was only a matter of time before the fear caught
 up to him in full. He was in a foreboding place, with foreboding
 memories clinging to him. The sort of memories people try to forget.
 
 He clumsily climbed out of bed. He felt as though he hadn't used his
 feet in ages. Carefully, he hobbled over to the mirror for a closer
 look. It was large enough that it covered most of the wall, and there
-were a few cracks running along it diagonally, greatly distorting the
+were a few cracks running along it diagonally, subtly distorting the
 room he saw through it. He raised his hand and waved at the boy. The boy
 waved back. He began to hop up and down. The boy likewise, hopped up and
-down. And yet something was telling him that they weren't quite the
+down. The reflection mirrored him yet somehow he felt like the reflection and he weren't quite the
 same. For one thing, he just couldn't imagine himself making the sort of
-face the other boy was. It was too ... well ... *wicked*.
+face the other reflection was. It was too ... well ... *wicked*.
 
 Suddenly, the reflection lunged forward. *"BOO!"*
 
@@ -121,15 +121,15 @@ and the liquid began to glow, weakly illuminating the room and turning
 their faces pale green. Filling the syringe with the vial's contents, he
 grabbed hold of James and emptied the syringe into his arm.
 
-The whole room began to become green and hazy. It looked like everything
-was underwater; thick, phosphorescent water. The man and the nurse began
+The whole room began to become green and hazy. Everything
+appeared to be underwater; thick, phosphorescent water. The man and the nurse began
 to move slowly and shakily toward the door, as though time was being
 rewound and sped up erratically.
 
 "Don't leave me with him!" James moaned.
 
 The man looked back and said something. His voice reverberated in the
-distance, so thick with echoes as to make them unintelligible. Before
+distance, so thick with echoes as to make it unintelligible. Before
 the door had closed behind them, the green had completely enveloped the
 place, and then faded into nothing.
 
@@ -212,26 +212,32 @@ As she spoke, the swan glided toward them and landed in the cloud water
 beside the bed.
 
 "Ah, she's awake!" said the swan. "It was about time. I was beginning to
-wonder if she wasn't under a spell."
+wonder if she was under a spell."
 
 "No spells." said Mrs. Gingersmile. "What did you see? Any sign of
 land?"
 
-"No, I saw no land. But I did come across a few people here and there."
+"No. I saw no land. But I did come across a few people here and there."
 
 "Anyone interesting?"
 
-"They're interesting. Downright mad, for the most part. As are most
+"All interesting. Downright mad, for the most part. As are most
 people outside of the castle."
 
-"But outside of the castle!"
+"But we're outside of the castle!"
 
-"Ah yes. That is why I said people. , of course, are the exception."
+"Ah yes. That is why I said *most people*. We, of course, are the exception."
 
 "But that's ridiculous!" said Adelle. "If that were so, then the castle
 would be like an asylum turned inside out!"
 
-"Come to think of it, there that zombie child." said Mrs. Gingersmile.
+"And it is, dear.  Most everyone inside the castle is civilized and sane."
+
+"*Most everyone?*" said Miss Perrywinkle.  Are you suggesting there are mad people inside the castle?"
+
+"Only a few.  The king is probably mad.  They usually are."
+
+"Come to think of it, there was that zombie child." said Mrs. Gingersmile.
 "He was inside the castle, and he was clearly mad."
 
 "What zombie---" Adelle began, but was cut off by Samantha.
@@ -244,7 +250,7 @@ piling them onto a small desk that was likewise floating in the water.
 The pile was already several yards tall, and was swaying about
 precariously.
 
-"A toad! I'm sure he would be loads of fun to converse with!" said Miss
+"A toad! I'm sure he would be fun to converse with!" said Miss
 Perrywinkle. "Say, Mr. Toad!" she called out. "Why don't you tarry a bit
 and relate to us your business!"
 
@@ -252,8 +258,7 @@ The toad looked up for a moment with a slightly startled expression and
 then went back to his work, muttering something derogatory about a bed
 full of women.
 
-"Never mind then." said Miss Perrywinkle. "Clearly he has no sense of
-manners."
+"Never mind then." said Miss Perrywinkle. "Clearly he has no manners."
 
 "Here it is!" said Samantha, pointing at the open book. "Here's the
 passage about the sea! See right here? The doll says 'Ahoy mate!'"
@@ -304,21 +309,21 @@ beside him, who looked to be close.
 
 "How are you feeling?" asked the voice.
 
-I suppose it wants me to say something. Stupid figure thing.
+*I suppose it wants me to say something. Stupid figure thing.*
 
 "Do you remember me?" asked the voice.
 
-No.
+*No.*
 
 "Do you remember anything?"
 
-No. Thankfully.
+*No. Thankfully.*
 
-The figure looked to be paused deep in thought.
+There was a long pause.
 
 "The drugs are working almost too well."
 
-Not if I can still see you.
+*Not if I can still see you.*
 
 The figure lowered several feet. Perhaps it had pulled up a chair and
 sat down.
@@ -368,7 +373,7 @@ this:
 
 "What is it?"
 
-"It is hard to say. Everything looks so similar when they are asleep."
+"It is hard to say. Everything looks so similar when asleep."
 
 "I think it must be an angel!"
 
@@ -395,7 +400,7 @@ all of which were staring at the girl curiously before sinking back into
 the mist. No longer was she in a world held together by things like
 longitude and latitude, but by mere ideas. It was impossible to tell
 whether the mist hid land and mass, or if there was nothing behind it at
-all. And in a way, it did not really matter; all that mattered was that
+all. And in a way, it did not really matter; all that mattered was what
 could be behind it, for this was not a world of actualities, but of
 possibilities.
 
@@ -419,7 +424,7 @@ rounds again.
 
 The tragedy of Life. Everyone, at one point or another, is dropped in
 the middle of it. They all try to cope with it one way or another. The
-popular choice is denial. Fortunately for these people, there's a whole
+popular choice is denial. Fortunately for these people, there is a whole
 world created just for their amusement.
 
 It's affectionately called the Asylum.
@@ -502,8 +507,7 @@ man. I don't know where he came from, or even on what business he was
 allowed into the Asylum, but he must have had some sort of authority,
 for my employers told me to take him to your cell and let him talk to
 you. I did as I was instructed, and when we arrived in this same room,
-you were in that same corner, except then you were moaning and
-screaming. When the man saw you, he looked sad, and yet there still
+you were in that same corner, moaning. When the man saw you, he looked sad, and yet there still
 remained a glow to his countenance. Then, he reached into his coat and
 pulled out a large, weathered book, and gave it to you.
 
@@ -532,7 +536,7 @@ of the square, there was a bed. In the middle of the bed there was a
 little girl, curled up and sleeping peacefully. She was very beautiful,
 and there was a crown on her head.
 
-Around the bed were many creatures. Some were human. Most were children.
+Around the bed were many creatures. Some were human. Some were children.
 A few were beasts from myth and legend.
 
 One of the bystanders was a goblin. He motioned for the children to grab
@@ -555,7 +559,7 @@ sight. She was alone.
 At first she was overwhelmed by apprehension, though the longer she sat
 there it was slowly replaced by curiosity. There was not much light
 where she was, but there was a great deal of light further ahead in the
-city. And noise. There must be something big and exciting taking place.
+city. And noise. There was something big and exciting taking place.
 Possibly even many big and exciting things all at once.
 
 And that's when it really dawned on her; she was outside the castle! Out
@@ -565,7 +569,7 @@ her bed!
 
 Cautiously, she slipped out of the covers and onto the cobbled surface
 of the street. Despite her newfound sense of freedom, she felt
-vulnerable with just her nightgown, so she took one of sheets from the
+vulnerable with just her nightgown, so she took one of the sheets from the
 bed and wrapped it around her. Thus attired, she embarked down one of
 the streets.
 
@@ -675,7 +679,7 @@ lunged forward, catapulting the coach along with them.
 Adelle looked at her clothes. The sheet had been torn from her by the
 gremlins, and her nightgown was in considerable disarray. She felt more
 uncomfortable than ever, but she was the daughter of the King, and she
-was determined to maintain whatever shred of decency she could muster.
+was determined to maintain whatever shred of dignity she could muster.
 
 "I am Princess Adelle." she said as pleasantly as she could manage. "Who
 are you?"
@@ -688,7 +692,7 @@ trying to get a taste of life. Learn all I can about this fascinating
 place. See the wonders of the world!"
 
 "Good Author of Everything!" the woman moaned. "You should just be
-grateful I got a hold of you when I did! You are evidently even more
+grateful I got a hold of you when I did! You are even more
 clueless than you look!"
 
 "What do you mean?"
@@ -2203,8 +2207,7 @@ his left and on his right. It was a low wall, barely taller than his
 shoulders.
 
 "Is this the boy named James?" boomed a voice that seemed to come out of
-nowhere. James had a suspicion that it had originated from the podium,
-in which case he figured that the owner of the voice must be a Judge.
+nowhere. James had a suspicion that it had originated from the podium.
 
 "Yes, your honor." cowered a second voice.
 
@@ -2219,7 +2222,7 @@ see people just beyond the light. People sitting behind the wall of
 wood. And a man coldly looking down at him from above the podium.
 
 "Well, to begin with, our records are a little confusing regarding the
-boy in question. It's actually somewhat mysterious. Apparently, the boy
+boy in question. It's actually somewhat mysterious. The boy
 was here before, but there is no mention of him leaving. Any indication
 of his being here simply trails off with no mention of why or how he
 left."
