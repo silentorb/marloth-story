@@ -1100,8 +1100,9 @@ that can blow people up or tell the future or turn day into night!"
 A group of children returned from the eastern wing with piles of
 
 "Junk!" Deadwick moaned. "You're bringing me piles of junk! We already
-live in junk! You zombies are practically made of it!" "Look what I
-found!" said another child, as it came rushing down the hall. "I found a
+live in junk! You zombies are practically made of it!"
+
+"Look what I found!" said another child, as it came rushing down the hall. "I found a
 book! And it's got words in it!"
 
 "Books?" Deadwick said. "Who wants books? All they do is mess with your
@@ -1151,7 +1152,7 @@ emotion.
 Emptiness. He could feel his numbness to the world around him. He had
 caught a glimpse of joy. A joy he would never experience. Now he saw
 just exactly what it was he didn't have. Even now, he could feel his
-body slowly disintegrating. He was naught not but an illusion. A carcass
+body slowly disintegrating. He was naught but an illusion. A carcass
 animated by dark sorcery and string.
 
 For once in his life, he felt Dead.
@@ -1188,7 +1189,7 @@ at once!"
 "I do not know. But if you come with me he can tell you himself."
 
 Ivy followed him out of the room while Adelle pulled herself together
-and hurried after them. They were brought to the spacious room that had
+enough to hurry after them. They were brought to the spacious room that had
 been provided for the duke and wherein the duke himself was presently
 stationed, rapidly giving orders to his servants as they came and went.
 He saw Ivy and quickly approached her.
@@ -1196,7 +1197,7 @@ He saw Ivy and quickly approached her.
 "What is going on?" she demanded.
 
 "It is time we were leaving this place," he said. "The servants are
-already packing your things. We will be leaving in an hour."
+already packing your things. We will be leaving within the hour."
 
 "Is this a joke? You aren't actually scared of that scene the raven
 made?"
@@ -1418,7 +1419,7 @@ the eyes of the world to your elegance!"
 "That all sounds most enchanting, but how can you do such things?"
 
 "Ah, that is my little secret. Through toys mostly. Toys are far more
-powerful than people realize. Only children seem to have any idea as to
+powerful than people realize. Only children seem to have any idea of
 their real value."
 
 "But how could I ever repay you for such things?"
@@ -2638,7 +2639,7 @@ wasn't very useful at first, but his latest version had been able to
 narrow the range of these random destinations to a more reasonable
 distance. The subjects would still appear within a mile radius and need
 to be rounded up, but that was a lot better than the first version where
-they could end up anywhere in Marloth.Most of those subjects have yet to
+they could end up anywhere in Marloth.  Most of those subjects have yet to
 be found.
 
 At the moment, these latest teleportation devices were being used to
@@ -2790,7 +2791,7 @@ conversation.
 
 "You're alive!" she exclaimed.
 
-"Of course, dear!" said Mrs. Gingersmile. "Why ever why shouldn't we be?
+"Of course, dear!" said Mrs. Gingersmile. "Why ever shouldn't we be?
 You've been talking to us all this time."
 
 "But, but, you're just dolls! You never talked by yourselves before!"
@@ -2981,9 +2982,9 @@ to light a fire with a lantern and burn their way through the wall.
 
 From behind the flood of zombies came Deadwick the goblin, furtively
 eyeing the chaos with growing enthusiasm. He had his new gun at the
-ready. Its barrel was so large it shot round the size of his fist! He
+ready. Its barrel was so large it shot rounds the size of his fist!  He
 was a little peeved that the children were so efficient in killing
-everyone; he had not yet had an opportunity to use it. But he wasn't too
+everyone; so far he had no opportunity to use it. But he wasn't too
 worried; war had a way of beating on his door.
 
 "Master!" said one of the zombie children. "Ogres have tunneled under
@@ -3028,7 +3029,7 @@ as a real person would!" He looked at the knife in bewilderment. "I'll
 have to figure out some new means of carrying these things!" And then,
 as if the full weight of his situation was just then dawning on him, he
 added slowly, (and you could hear the tears in his voice), "This is
-going to hurt ... "
+going to hurt... "
 
 "Well, I assume you are at least one of the more capable of the
 children, and can outmaneuver the lot of them?"
@@ -3146,10 +3147,10 @@ toys and proceeded to hand them out to the closest zombie children.
 
 "You must be mad!" said Deadwick. "Don't you realize that me and my army
 of the undead have just overcome and slaughtered every inhabitant of
-this castle except for the princess?"
+this castle except the princess?"
 
 "Well I'm sorry to hear that. This always was such a cheery place! But I
-haven't the time to dwell upon such things. I'm on a tight schedule and
+haven't the time to dwell on such things. I'm on a tight schedule and
 should have already departed a quarter hour ago!"
 
 "You'll depart right now!" Deadwick bellowed. "KILL HIM!"
@@ -3369,10 +3370,10 @@ of zombie children who had been on top of the machine found themselves
 hurtling into the twilight sky. An endless abyss of nothingness
 stretched out before them. The monkey had likewise been thrown from his
 perch and was floating some distance ahead. James twisted about in
-midair just in time to watch as the machine rocketed, into the horizon,
+midair just in time to watch as the machine rocketed into the horizon,
 quickly lost in the misty haze. Gradually, their horizontal velocity
 dissipated. With shrieks and screams, they began to fall, hurtling into
-the inky darkness below them.
+the inky darkness below.
 
 \*\*\*
 
@@ -3405,6 +3406,8 @@ smile off you face and make you eat it!"
 "You need to calm down, good fellow. All the things you've been scheming
 will work out in due time."
 
-"Due time just came and went, you idiot! It's all over now!" "On the
+"Due time just came and went, you idiot! It's all over now!"
+
+"On the
 contrary," said the toymaker, as he straightened his hat and turned to
-descend the stairs. "It's only just begun."
+leave. "It's only just begun."
