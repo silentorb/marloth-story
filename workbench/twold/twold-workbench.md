@@ -9,6 +9,19 @@
 
 The main characters are James and Nivana, and they have no relationship.
 
+### Desires
+
+So much of what makes a story engaging and driving is for the main characters to have well-defined and meaningful desires.
+
+#### What does James want?
+
+#### What does Nivana want?
+
+* Respect
+* Influence
+* Purpose
+* She wants power, but only as a means to an end
+
 ### Main Issues and Points
 
 ### Main Enemies
