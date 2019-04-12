@@ -15,12 +15,32 @@ So much of what makes a story engaging and driving is for the main characters to
 
 #### What does James want?
 
+This question has always been a problem with this book.  I don't know what James wants.  In the previous book his primary desires was to rescue Adelle.  That's what drove him.  Earlier in the book he was also driven by wanting to read Marloth, but that didn't drive the bulk of the story.
+
+Oh, he also wanted to be free from his zombie nature.
+
+That's a good desire, but once again, you have the problem of focusing on the negative instead of the positive.  Focusing exclusively on where you're running from and not where you're running toward will usually result in running into something just as bad as what you were trying to escape.
+
+James' focus should be on being good.  On doing particular good things.  He can forget at times, but only at times.
+
+What good needs doing?
+
+* Rescuing people
+* Reading Marloth
+* Fellowshipping with Tralvorkemen
+
+James also wants to find Adelle, which is motivated more by idolatry and discontent than love.
+
 #### What does Nivana want?
 
 * Respect
 * Influence
-* Purpose
-* She wants power, but only as a means to an end
+* To utilize her talents
+* Power, but only to assist her other desires
+* To be a good person
+* To help society/community
+
+Where do their 
 
 ### Main Issues and Points
 
