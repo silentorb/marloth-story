@@ -42,6 +42,12 @@ James also wants to find Adelle, which is motivated more by idolatry and discont
 
 Where do their 
 
+#### Dependence
+
+- Everyone depends on something.
+- Inside every heart is a war between good and evil.
+- Evil looks more powerful yet is powerless.
+
 ### Main Issues and Points
 
 ### Main Enemies
@@ -75,4 +81,16 @@ The one downside with that idea is so far George has had no direct connection wi
 A second option would be the nurse.  I've already had her connected to the Mediev household in previous versions of TWOLD and could continue to do so even though I've recently considered downplaying the roles of her and her husband.
 
 That approach could lead to a combination of the nurse and George.  The nurse could talk about James earlier on in the story, planting a seed in Nivana's mind that later has more significance in light of later events, spurring Nivana to seek out George.  Once found, she would interrogate him and then use him to manage a direct interview with the little mad boy himself.
+
+## Prose
+
+"You have a large cistern.  You could hold more magic than three of my girls.  Very valuable."
+
+"So I have the job?"
+
+"No, I'm not giving you any job."
+
+"What?  That doesn't make any sense!  Why won't you hire me?"
+
+"Because word's gotten around/about that you can use magic.  You're an empty gun, and no one's fool enough to fill/load you."
 
