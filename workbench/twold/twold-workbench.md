@@ -5,7 +5,7 @@
 * One of the main points at the end of the first book was that the good enchantment needs maintenance or it will crumble.
 * James is one of the few or only character with memory of the previous book.
 
-### Main Issues and Points
+## Main Issues and Points
 
 * Dependency
   * Everyone depends on something
@@ -52,8 +52,12 @@
   * Like Ecclesiastes, there's a time to submit and a time to rebel
     * Sometimes we need to submit to people we don't agree with
   * Humility brings a submissive heart
+* Shroud of Deceit
+  * Throughout these points is a reoccurring theme of light and darkness
+  * The villains hide the truth and sell lies
+  * The heroes debunk the lies and reveal the truth
 
-### Dependence
+## Dependence
 
 With dependence being such a major theme of the story, what are the primary dependencies that will be focused on?
 
@@ -67,28 +71,28 @@ With dependence being such a major theme of the story, what are the primary depe
 
 Out of all of these, Magic and people are the only neutral dependencies and the most universally fought over.
 
-### Main Enemies
+## Main Enemies
 
 * The Merchant of Sorcerers
-* The Goddess of Feminism
-* The God of Atheism
+* The goddess of Feminism
+* The god of Atheism
 * False Priest (Bishop?)
 * Ruler whose family becomes magic dependent
 * Representative Necromancer
-* The God of Lust
+* The god of Lust?
 * Demon Lord?
 
-### Biblical Inspiration
+## Biblical Inspiration
 
-### Main Characters
+## Main Characters
 
 The main characters are James and Nivana, and they have no relationship.
 
-### Desires
+## Desires
 
 So much of what makes a story engaging and driving is for the main characters to have well-defined and meaningful desires.
 
-#### What does James want?
+### What does James want?
 
 * Restrain his zombie nature
 * Find Adelle
@@ -96,13 +100,13 @@ So much of what makes a story engaging and driving is for the main characters to
 * Fight evil
 * Write a book
 
-##### Apologetics
+#### Apologetics
 
 Much of James' character is an apologist.  He stands up for truth and argues in its favor.  Even though he's reserved he has no problem stepping foward in a public forum.
 
 At its heart, Marloth is a war for people's souls.  An essential part of that is what people believe.  Marloth is a battle for mind share.
 
-#### What does Nivana want?
+### What does Nivana want?
 
 - Respect
 - Influence
@@ -112,7 +116,7 @@ At its heart, Marloth is a war for people's souls.  An essential part of that is
 - To help society/community
 - To fight injustice
 
-#### James and Nivana
+## James and Nivana
 
 Where do their desires overlap?  What do they both want?
 
@@ -133,10 +137,9 @@ Where do they differ?
 
 ### Story Direction
 
-Nivana is a more proactive character than James.  What if the story starts with her and then she needs to find James and convince him to team up with her?
+James and Nivana team up to turn on the lights.
 
-* Instead of the typical quest scenario of some aged character telling her she needs to find James, she figures out from pieces of information that James has a unique utility.
-* The main benefit of James in this case should probably be his ability to travel between dreams.
+James is depressed during the start of the book.  Nivana approaches James, slaps him out of his self-pity, and convinces him to work with her.
 
 ## Prose
 
