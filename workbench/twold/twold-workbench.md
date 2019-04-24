@@ -5,6 +5,81 @@
 * One of the main points at the end of the first book was that the good enchantment needs maintenance or it will crumble.
 * James is one of the few or only character with memory of the previous book.
 
+### Main Issues and Points
+
+* Dependency
+  * Everyone depends on something
+    * People tend to ignore dependencies
+    * People tend to have a false sense of independence
+    * Everyone depends on God to some degree
+    * In areas where a person rejects dependence on God, they are instead depending on evil
+  * People need God
+  * People need people
+    * Christians need other Christians (the church)
+  * Evil looks powerful yet is powerless
+* Inside every heart is a war between good and evil
+  * Good people are tempted to do evil
+    * Good people sometimes do bad things
+  * Evil people have a conscience that is still pricked
+    * Evil people sometimes do good things
+  * Evil forces are trying to sway people
+  * Good forces are trying to sway people
+  * It is not good to be on the sidelines of this war
+* False church
+  * Being in a cookie jar doesn't make a mouse a cookie
+  * Pharasees
+    * Misguide weak Christians
+    * Oppose strong Christians
+    * Repulse non-Christians
+  * False churches are used as a straw man argument against Christianity
+    * More generally, stories sometimes present a weak good to justify a strong bad
+* Gray hero fallacy
+  * The world likes to think that gray heroes are cool
+  * There are no real gray heroes
+    * Gray heroes are really villains
+  * Gray heroes rebel against God
+  * Gray heroes hurt people
+* Worship
+  * You must worship your dependencies
+  * Atheists pretend worship is optional
+    * Everyone worships something
+* There is no bargaining with evil
+  * Giving in to evil's demands only results in more evil
+* Submission
+  * Dependence on other people requires submission
+  * People chafe against submission
+    * Some more than others
+  * Like Ecclesiastes, there's a time to submit and a time to rebel
+    * Sometimes we need to submit to people we don't agree with
+  * Humility brings a submissive heart
+
+### Dependence
+
+With dependence being such a major theme of the story, what are the primary dependencies that will be focused on?
+
+* God
+* Idols
+* Magic
+* Light
+* Darkness
+* Marloth (the book)
+* People
+
+Out of all of these, Magic and people are the only neutral dependencies and the most universally fought over.
+
+### Main Enemies
+
+* The Merchant of Sorcerers
+* The Goddess of Feminism
+* The God of Atheism
+* False Priest (Bishop?)
+* Ruler whose family becomes magic dependent
+* Representative Necromancer
+* The God of Lust
+* Demon Lord?
+
+### Biblical Inspiration
+
 ### Main Characters
 
 The main characters are James and Nivana, and they have no relationship.
@@ -15,44 +90,44 @@ So much of what makes a story engaging and driving is for the main characters to
 
 #### What does James want?
 
-This question has always been a problem with this book.  I don't know what James wants.  In the previous book his primary desires was to rescue Adelle.  That's what drove him.  Earlier in the book he was also driven by wanting to read Marloth, but that didn't drive the bulk of the story.
+* Restrain his zombie nature
+* Find Adelle
+* Apologetics
+* Fight evil
+* Write a book
 
-Oh, he also wanted to be free from his zombie nature.
+##### Apologetics
 
-That's a good desire, but once again, you have the problem of focusing on the negative instead of the positive.  Focusing exclusively on where you're running from and not where you're running toward will usually result in running into something just as bad as what you were trying to escape.
+Much of James' character is an apologist.  He stands up for truth and argues in its favor.  Even though he's reserved he has no problem stepping foward in a public forum.
 
-James' focus should be on being good.  On doing particular good things.  He can forget at times, but only at times.
-
-What good needs doing?
-
-* Rescuing people
-* Reading Marloth
-* Fellowshipping with Tralvorkemen
-
-James also wants to find Adelle, which is motivated more by idolatry and discontent than love.
+At its heart, Marloth is a war for people's souls.  An essential part of that is what people believe.  Marloth is a battle for mind share.
 
 #### What does Nivana want?
 
-* Respect
-* Influence
-* To utilize her talents
-* Power, but only to assist her other desires
-* To be a good person
-* To help society/community
+- Respect
+- Influence
+- To utilize her talents
+- Power, but only to assist her other desires
+- To be a good person
+- To help society/community
+- To fight injustice
 
-Where do their 
+#### James and Nivana
 
-#### Dependence
+Where do their desires overlap?  What do they both want?
 
-- Everyone depends on something.
-- Inside every heart is a war between good and evil.
-- Evil looks more powerful yet is powerless.
+* They both are debaters.  They care deeply about the truth and what others believe.
+* They both want to fight evil, though they focus on different forms of evil.
+* Both want to be good and restrain their sinful natures.
+* Neither is very empathetic.
 
-### Main Issues and Points
+Where do they differ?
 
-### Main Enemies
-
-### Biblical Inspiration
+* Adelle wants respect and influence.  James disgregards these.
+  * Which is ironic for James because he tends to miss out on their benefits non realizing what he is missing.
+* James sometimes thinks about power but that is generally not something he is pursuing.
+* Nivana does not care about James' finding Adelle.
+* Nivana would see James' book writing as low priority.
 
 ## Proposals
 
@@ -62,25 +137,6 @@ Nivana is a more proactive character than James.  What if the story starts with 
 
 * Instead of the typical quest scenario of some aged character telling her she needs to find James, she figures out from pieces of information that James has a unique utility.
 * The main benefit of James in this case should probably be his ability to travel between dreams.
-
-#### If So, Then How?
-
-* What information leads her to search for James?
-* What information directs her where to search for him?
-
-Wait, I already had this idea before.  I'd combine the ghost idea with the James being in the Asylum again idea.  I think I may have even considered Nivana visiting him in prison, though if so that would have been in the Nameless City, not the City of Orphans.
-
-I also had one idea where they were both Asylum patients together.  Having her be a patient sounds both fun and diluting.  Madness is certain character's calling card and I don't want to have too many people be mad, unless its the other idea I had where most everyone turns out to be be patients in the Asylum.
-
-Anyhow, having Nivana visit James at the Asylum while she is in the City of Orphans works really well.  It has thematic continuity and makes it easy to connect the dots—especially easier than my earlier idea of having James and the ghost start out in the wilderness.
-
-One of the easiest connections would be George.  Somehow he and Nivana meets, he talks about James, and Nivana recognizes supernatural patterns in James' behavior.
-
-The one downside with that idea is so far George has had no direct connection with Nivana, and even if they did meet, why would he start talking about James?  It is contrived.
-
-A second option would be the nurse.  I've already had her connected to the Mediev household in previous versions of TWOLD and could continue to do so even though I've recently considered downplaying the roles of her and her husband.
-
-That approach could lead to a combination of the nurse and George.  The nurse could talk about James earlier on in the story, planting a seed in Nivana's mind that later has more significance in light of later events, spurring Nivana to seek out George.  Once found, she would interrogate him and then use him to manage a direct interview with the little mad boy himself.
 
 ## Prose
 
