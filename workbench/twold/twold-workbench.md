@@ -153,3 +153,32 @@ James is depressed during the start of the book.  Nivana approaches James, slaps
 
 "Because word's gotten around/about that you can use magic.  You're an empty gun, and no one's fool enough to fill/load you."
 
+## Protagonist Chemistry
+
+* Both are tenacious.
+* James is not bothered by Nivana's snide attitude
+  * Nivana respects that.  He can take a verbal punch.
+* Both are intellectual.
+* Sometimes Nivana prods James along.  Sometimes James charges forward.
+* Nivana has an artistic eye.  James is an artist.
+* Nivana needs James to lead, but to some degree she leads *through* him.
+* Both speak their minds fearlessly.
+* Nivana's mind is more disciplined and deductive.  She helps constrain James to logic.
+* Both usually have a plan.
+* James' plans are vague, Nivana's are precise.
+* Nivana is social; James isn't.  In this respect Nivana performs a similar role for James as Adelle did.
+* Nivana recruits people.  Once recruited, people root for James.
+* Neither is particularly compassionate or empathetic.
+* Both tend to be preoccupied with their goals.
+* Nivana at times has magic.  James at times has his dream/zombie abilities.
+* Both have a sinful nature and tainted body to fight against.
+* Both are damaged.
+* James is quick to forget and forgive.  Nivana holds grudges.
+* James rarely tells jokes.  Jokes are a Nivana staple.
+* People see James as harmless.  People are threatened by Nivana.
+* James trusts women more than Nivana trusts men.
+* Nivana is older than James.
+* Underneath, Nivana is more vulnerable and caring than she acts.
+* Nivana has a lot of similarities to the Raven, who was one of James' best friends in the first book.
+
+Don't yet know if they will ever have a romantic relationship.
