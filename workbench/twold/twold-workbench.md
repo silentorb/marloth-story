@@ -5,7 +5,7 @@
 * One of the main points at the end of the first book was that the good enchantment needs maintenance or it will crumble.
 * James is one of the few or only character with memory of the previous book.
 
-## Main Issues and Points
+## Main Issues, Points and Themes
 
 * Dependency
   * Everyone depends on something
@@ -56,6 +56,9 @@
   * Throughout these points is a reoccurring theme of light and darkness
   * The villains hide the truth and sell lies
   * The heroes debunk the lies and reveal the truth
+* Survival
+  * Few mechanics illuminate dependence as well as an indefinite threat to one's survival
+  * Survival illuminates people's hearts
 
 ## Dependence
 
@@ -116,23 +119,6 @@ At its heart, Marloth is a war for people's souls.  An essential part of that is
 - To help society/community
 - To fight injustice
 
-## James and Nivana
-
-Where do their desires overlap?  What do they both want?
-
-* They both are debaters.  They care deeply about the truth and what others believe.
-* They both want to fight evil, though they focus on different forms of evil.
-* Both want to be good and restrain their sinful natures.
-* Neither is very empathetic.
-
-Where do they differ?
-
-* Adelle wants respect and influence.  James disgregards these.
-  * Which is ironic for James because he tends to miss out on their benefits non realizing what he is missing.
-* James sometimes thinks about power but that is generally not something he is pursuing.
-* Nivana does not care about James' finding Adelle.
-* Nivana would see James' book writing as low priority.
-
 ## Proposals
 
 ### Story Direction
@@ -141,21 +127,11 @@ James and Nivana team up to turn on the lights.
 
 James is depressed during the start of the book.  Nivana approaches James, slaps him out of his self-pity, and convinces him to work with her.
 
-## Prose
-
-"You have a large cistern.  You could hold more magic than three of my girls.  Very valuable."
-
-"So I have the job?"
-
-"No, I'm not giving you any job."
-
-"What?  That doesn't make any sense!  Why won't you hire me?"
-
-"Because word's gotten around/about that you can use magic.  You're an empty gun, and no one's fool enough to fill/load you."
-
 ## Protagonist Chemistry
 
 * Both are tenacious.
+* Both are debaters.
+* Both want to fight evil.
 * James is not bothered by Nivana's snide attitude
   * Nivana respects that.  He can take a verbal punch.
 * Both are intellectual.
@@ -171,14 +147,28 @@ James is depressed during the start of the book.  Nivana approaches James, slaps
 * Neither is particularly compassionate or empathetic.
 * Both tend to be preoccupied with their goals.
 * Nivana at times has magic.  James at times has his dream/zombie abilities.
-* Both have a sinful nature and tainted body to fight against.
+* Both want to be good and restrain their sinful natures.
 * Both are damaged.
 * James is quick to forget and forgive.  Nivana holds grudges.
 * James rarely tells jokes.  Jokes are a Nivana staple.
 * People see James as harmless.  People are threatened by Nivana.
 * James trusts women more than Nivana trusts men.
+* Nivana wants respect and influence.  James disregards these.
+* Nivana often is in pursuit of power.  James rarely is.
 * Nivana is older than James.
 * Underneath, Nivana is more vulnerable and caring than she acts.
 * Nivana has a lot of similarities to the Raven, who was one of James' best friends in the first book.
 
 Don't yet know if they will ever have a romantic relationship.
+
+## Prose
+
+"You have a large cistern.  You could hold more magic than three of my girls.  Very valuable."
+
+"So I have the job?"
+
+"No, I'm not giving you any job."
+
+"What?  That doesn't make any sense!  Why won't you hire me?"
+
+"Because word's gotten around/about that you can use magic.  You're an empty gun, and no one's fool enough to fill/load you."
