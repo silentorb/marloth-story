@@ -312,7 +312,20 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 * A narrative can have deep, significant personal contests that don't encourage pride and insecurity, but it requires that the entire narrative is built around having deep personal contests tied to larger ideological struggles.
   * Marloth will never be built around personal contests to adequately support meaningful, healthy personal contests.
 
-### Society vs. Adventure
+### Social Restraint
+
+#### Background
+
+- One defining property of a narrative setting is how constrained the characters are by society via laws, customs, and politics.
+- A lawless setting does not mean there are no consequences for actions.  There are laws, just not laws enforced by a national government.
+- In a lawless setting there is less organization, and thus less need for customs.
+- In a lawless setting, characters are less affected by politics.
+- With less restraint, characters are more free to make decisions that would otherwise be made for them.  This can be useful for character studies.
+  - This is why child protagonists are so often disconnected from guardians.  Firm guardianship restricts the child's need to make hard life decisions.
+
+#### Rules
+
+* Marloth tries to strike a tenuous balance between a lawful and lawless setting, but leans more toward lawlessness.
 
 ### Villains
 
