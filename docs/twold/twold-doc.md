@@ -1,6 +1,8 @@
 # TWOLD Documentation
 
+## Synopsis
 
+TWOLD is a survival horror fantasy story.
 
 ## Main Issues and Points
 
