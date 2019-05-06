@@ -4,6 +4,8 @@
 
 TWOLD is a survival horror fantasy story.
 
+The main characters are James and Nivana.
+
 ## Main Issues and Points
 
 - Dependency

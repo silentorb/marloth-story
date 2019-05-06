@@ -1,5 +1,115 @@
 # TWOLD Workbench
 
+## Plot
+
+### Parts
+
+1. Prosperity
+2. Exile
+3. Survival
+4. Adventure
+5. Return
+6. Escape
+
+### Scenes
+
+#### Main
+
+* Introduce Nivana
+* Introduce Nivana's family
+* Introduce Millamer
+* Introduce Miles
+* Nivana's mother is murdered
+* Lord Mediev is arrested
+* Nivana and Jewel exiled
+* Nivana finds minimal shelter
+* The Merchant hires Nivana
+* Nivana meets Beth
+* Millamer sees Nivana working
+* Nivana seeks training from Desa
+* Millamer turns in Nivana
+* Jewel returns to the Nameless City
+* Nivana is severed
+* Nivana tries to get work as a vessel
+* Nivana is tempted by a goddess
+* Nivana convinces James to team up with her
+* The heroes return to the Nameless City
+* Lord Mediev is freed
+* Jewel is being drained of her magic
+* Jewel is rescued
+* The Nameless City is consumed by evil
+* The heroes escape the City
+
+#### Possible
+
+##### James Storyline
+
+* James tries to find Adelle
+* James discovers Adelle is older and married
+* James is depressed
+
+* James is captured as a zombie
+
+##### Duke's Family Storyline
+
+* Duke kills someone thinking he can get magic to feed his family
+* Desa informs Duke that the killed person had no magic
+
+### Characters
+
+#### Main Heroes
+
+* James
+* Nivana
+* Fugue
+* Samantha
+* Beth
+* George?
+
+#### Secondary Heroes
+
+* Drenodir
+* The Nurse
+* Lord Mediev
+* Lady Mediev
+* Jewel
+* George?
+* Mr. Mosspuddle?
+
+#### Hero Villains
+
+* George?
+* Millamer
+* Desa
+* The Head Mistress
+
+#### Villains
+
+* The Merchant of Sorcerers
+* Miles
+* The goddess of Feminism
+* The god of Atheism
+* False Priest (Bishop?)
+* Ruler whose family becomes magic dependent
+* Representative Necromancer?
+* The god of Lust?
+* Demon Lord?
+
+### Layers
+
+* This a tale of two cities where both cities are actually two sides of the same city
+
+### The Endgame
+
+* The blessed city becomes the cursed city
+* In every heart is war between light and darkness
+* Plot to weaken God by killing belief is foiled.  God doesn't need belief.
+* God's power and good is made more evident
+* Hypocrisy is exposed
+* Gray heroes are exposed
+* Seemingly invincible villain(s) revealed to have many dependencies that crumble
+* The heroes are more united than ever
+
 ## Dependence
 
 With dependence being such a major theme of the story, what are the primary dependencies that will be focused on?
@@ -14,16 +124,7 @@ With dependence being such a major theme of the story, what are the primary depe
 
 Out of all of these, Magic and people are the only neutral dependencies and the most universally fought over.
 
-## Main Enemies
 
-* The Merchant of Sorcerers
-* The goddess of Feminism
-* The god of Atheism
-* False Priest (Bishop?)
-* Ruler whose family becomes magic dependent
-* Representative Necromancer
-* The god of Lust?
-* Demon Lord?
 
 ## Biblical Inspiration
 
