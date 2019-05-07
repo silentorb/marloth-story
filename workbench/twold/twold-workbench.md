@@ -5,60 +5,17 @@
 ### Parts
 
 1. Prosperity
-2. Exile
-3. Survival
+2. Survival
+3. Adventure
 4. Adventure
-5. Return
+5. Adventure / Return
 6. Escape
-
-### Scenes
-
-#### Main
-
-* Introduce Nivana
-* Introduce Nivana's family
-* Introduce Millamer
-* Introduce Miles
-* Nivana's mother is murdered
-* Lord Mediev is arrested
-* Nivana and Jewel exiled
-* Nivana finds minimal shelter
-* The Merchant hires Nivana
-* Nivana meets Beth
-* Millamer sees Nivana working
-* Nivana seeks training from Desa
-* Millamer turns in Nivana
-* Jewel returns to the Nameless City
-* Nivana is severed
-* Nivana tries to get work as a vessel
-* Nivana is tempted by a goddess
-* Nivana convinces James to team up with her
-* The heroes return to the Nameless City
-* Lord Mediev is freed
-* Jewel is being drained of her magic
-* Jewel is rescued
-* The Nameless City is consumed by evil
-* The heroes escape the City
-
-#### Possible
-
-##### James Storyline
-
-* James tries to find Adelle
-* James discovers Adelle is older and married
-* James is depressed
-
-* James is captured as a zombie
-
-##### Duke's Family Storyline
-
-* Duke kills someone thinking he can get magic to feed his family
-* Desa informs Duke that the killed person had no magic
 
 ### Characters
 
 #### Main Heroes
 
+* Undetermined Christ character
 * James
 * Nivana
 * Fugue
@@ -75,6 +32,7 @@
 * Jewel
 * George?
 * Mr. Mosspuddle?
+* The Archmage
 
 #### Hero Villains
 
@@ -94,16 +52,18 @@
 * Representative Necromancer?
 * The god of Lust?
 * Demon Lord?
+* Token gray hero?
 
 ### Layers
 
 * This a tale of two cities where both cities are actually two sides of the same city
+* The world is the Asylum
 
 ### The Endgame
 
 * The blessed city becomes the cursed city
-* In every heart is war between light and darkness
-* Plot to weaken God by killing belief is foiled.  God doesn't need belief.
+* In every heart is a war between light and darkness
+* Plot to weaken the Christ character by killing belief is foiled.  The Christ character doesn't need belief.
 * God's power and good is made more evident
 * Hypocrisy is exposed
 * Gray heroes are exposed
