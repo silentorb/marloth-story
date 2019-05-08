@@ -72,5 +72,7 @@ Nivana rolled her eyes. "Coming here is starting to look like a mistake.  Whatev
 
 "Well that's your own fault.  True love is rubbish and you were a fool to put weight on it."
 
-"Oh, I believe in true love again.  It's real, and it hates me.  It exists to spite me."
+"Oh, I believe in true love again.  It's real, and it hates me."
+
+James looked at the floor.  "It exists to spite me.
 

@@ -26,10 +26,18 @@
 ## Movies
 
 * Inception
+* Scott Pilgrim vs. the World
 
 ## Shows
 
 * Stranger Things
+* RWBY
 * Buffy the Vampire Slayer
 * Angel
 * Twin Peaks
+* The Walking Dead
+* Daredevil
+* Jonathan Strange & Mr. Norrell
+* Supernatural
+* Foyle's War
+* Downton Abbey
