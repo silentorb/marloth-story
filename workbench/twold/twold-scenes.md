@@ -6,8 +6,12 @@
 
 - Introduce Nivana
 - Introduce Nivana's family
+- Introduce Bishop
 - Introduce Millamer
 - Introduce Miles
+- Introduce James' family
+- Introduce Minister and wife
+- James is arrested
 - Nivana's mother is murdered
 - Lord Mediev is arrested
 - Nivana and Jewel exiled
@@ -16,6 +20,7 @@
 
 - Nivana finds minimal shelter
 - The Merchant hires Nivana
+- Nivana meets the head mistress
 - Nivana meets Beth
 - Millamer sees Nivana working
 - Nivana seeks training from Desa
@@ -26,10 +31,10 @@
 - Nivana is informed that Jewel died
 - Nivana is tempted by a goddess
 - Beth stops Nivana from hurting people
-- Nivana convinces James to team up with her
 
 **Part 3**
 
+- Nivana convinces James to team up with her
 - The heroes locate a copy of Marloth
 
 **Part 4**
