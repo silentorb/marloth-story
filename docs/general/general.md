@@ -5,7 +5,7 @@
 #### Rules
 
 * A narrative should regularly keep details of the story ambiguous to allow multiple viable intrepretaions.
-* In such cases, these intrepretations should not be intended as not mutually exclusive.
+* In such cases, these interpretations should not be intended to be mutually exclusive.
 * When a Marloth narrative uses ambiguity, to some degree all possible interpretations are true at once.
 * Ambiguity in a Marloth narrative should not be used to allow the audience freedom of intrepretation.  It's not to be open-ended.  The purpose of ambiguity here is to layer one possibility on top of the other, forming a [legend](Legend).
 
@@ -28,11 +28,11 @@ Within this documentation, negative ambiguity is referred to as confusion.  Conf
 
 ### Awe
 
+#### Background
+
 One of the primary goals of a Marloth narrative is to inspire awe.  Most of the rules in this document are either directly or indirectly derived from this root goal.
 
 Wonder can be a synonym for awe, which is fitting since one of Marloth's primary influences is Lewis Carrol's "The Adventures of Alice in Wonderland".  Marloth is a type of Wonderland.
-
-### Battle of the Sexes
 
 ### Brevity
 
@@ -58,9 +58,9 @@ The writing style of Marloth is concise. Verbosity should be minimized. This inc
 
 * It's more efficient to write.  (This is offset by the work it takes to manage so many dimensions in a Marloth narrative.  Traditional story telling is more verbose but the verbosity is also more loosely coupled like a string of islands.)
 
-### Caustic Wit
-
 ### Continuity
+
+#### Background
 
 Narrative is a sequence of transitions from one state to the next.
 
@@ -75,19 +75,21 @@ Narrative is a sequence of transitions from one state to the next.
   * This is one of the main purposes of parts in Marloth narratives.  A six part Marloth book will roughly have six major states.
 * The transitions between books can be more extreme than the transitions between parts.
 * The transitions between books still need some continuity.
-  * 
 * Past, present, and future should overlap and occasionally blur.
   * Don't blur these too much or any sense of progression will be lost.
 * Avoid nonlinear narrative.
   * Some of the benefits of nonlinear narrative are still achieved through the blurring of past, present and future.
 * No prequels.
   * This could be organized under avoiding nonlinear narrative but is worth it's own point for emphasis.
+  * Since blurring time is allowed in a Marloth narrative, some notion of prequelishness is allowed, as long as a book is not a pure prequel.
 
 #### Reasons
 
-* Drastic state changes increase [dreaminess](Dreamlike).
+* Drastic state changes increase [dreaminess](Dreaminess).
 
 ### Cozy
+
+#### Background
 
 Many locations in Marloth fall into one of two opposing extremes: wilderness and sanctuaries.
 
@@ -117,7 +119,7 @@ Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food,
 
 #### Reasons
 
-* Deja Vu a critical means of generating [dreaminess](Dreamlike).
+* Deja Vu is a critical means of generating [dreaminess](Dreaminess).
 
 ### Dependency
 
@@ -128,10 +130,10 @@ Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food,
 * At the same time, dependency blindness can be utilized to add surprise to the narrative.  Make dependencies evident, but that doesn't have to happen right away.  Dependencies can be hidden and then
    later revealed to much amazement.
 * Aside for a Christ character like Tralvorkemen, do not have super characters that are absurdly more powerful than the characters around them.  This applies both for heroes and villains.
-  * If an opposing force needs to feel scary and overwhelming, either reduce the power of the heroes facing that force or have force be more quantity than quality (Facing an army instead of a single
+  * If an opposing force needs to feel scary and overwhelming, either reduce the power of the heroes facing that force or have the force be more quantity than quality (Facing an army instead of a single
     character as strong as an army.)
 
-### Dreamlike
+### Dreaminess
 
 #### Rules
 
@@ -160,6 +162,8 @@ Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food,
 
 ### Family
 
+#### Background
+
 When I was young, family did not mean much to me.  The more I have grown, the more my appreciation of family has grown.
 
 The first Marloth book has hardly any familial relationships.  Later books should revolve more around family.
@@ -184,6 +188,8 @@ The first book breaks most of these rules, but it is what it is.
 - Family is adds additional dimensions of situations for audiences to relate to.
 
 ### Friends
+
+#### Background
 
 As I age, past friendship becomes a stronger motivation for my art.  Most people are not good at keeping up with old friends, and of that I am the extreme.  I've had so many dear friends over the years that I will probably never see again in this lifetime.  Most of them simply from parting ways and no longer being in the same neighborhood of life, though the older I get the more death becomes the prime divider, as already some of my dearest friends are no longer in this world.
 
@@ -219,6 +225,8 @@ It may be self-delusion, but art is my knee-jerk reaction for capturing all of t
 
 ### Ideological Contests
 
+#### Background
+
 While Marloth is not about [personal contests](#Personal Contests), it is about contests between ideologies.
 
 #### Rules
@@ -228,16 +236,16 @@ While Marloth is not about [personal contests](#Personal Contests), it is about 
 - An ideological conflict should never be resolved over the course of a single scene.
 - They should resolve over at least a part's worth of time.
 - Each narrative should have multiple scenes with public forums.  The world is the stage.
-- Ideologies are most defined but what a person worships.
+- Ideologies are mostly defined by what a person worships.
 
 #### Reasons
 
 - Ideological conflict is one of the greatest ways to add depth and significance to a storyline.
-- Ideological conflicts are not about personal demonstration, they are about trust.  It is like betting on a horse and then seeing which horse wins. The people betting may be participants in the race, but it is not their individual qualities that determine the winning horse.  Those who trust in God will always win.
-
-### Impending Doom
+- Ideological conflicts are not about personal demonstration, they are about faith.  It is like betting on a horse and then seeing which horse wins. The people betting may be participants in the race, but it is not their individual qualities that determine the winning horse.  Those who trust in God will always win.
 
 ### Implication
+
+#### Background
 
 Marloth depends heavily on implication.
 
@@ -259,13 +267,36 @@ Marloth depends heavily on implication.
 
 ### Legend
 
+#### Background
+
 A legend is a dense, tense, composite idea.
 
 When an audience witnesses multiple versions of a character or story, those different versions are compiled into a singular, blurry composite idea.  The different versions contained within this idea are both unified and conflicting.  That tension is legend.
 
-### Magic
+#### Rules
+
+* A Marloth narrative should have a strong sense of being legendary.
+* This sense of legendary should not be confused with pomp and grandeur.
+  * It is not grand.
+* This sense of legendary should be personal and intimate.
+  * It is an understanding shared by only a few characters instead of a general world of characters.
+
+### Mania
+
+#### Rules
+
+* A Marloth narrative should have a significant amount of manic energy
+* A Marloth narrative should have a significant amount of insane humor
+* Not every scene should be manic
+
+#### Reasons
+
+* Because I like mania.
+* Mania is overwhelming, and through that can add [dreaminess](#Dreaminess) and [awe](#Awe).
 
 ### Mystery
+
+#### Background
 
 Mystery is a critical ingredient for Marloth.  Mystery evokes [awe](#Awe).  Arguably, awe is impossible without some element of mystery.
 
@@ -291,12 +322,20 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 * Narratives should have elements of the extraordinary.
   * Audiences love extraordinary.
   * I love extraordinary.
-  * Extraordinary can adds [dreaminess](Dreamlike).
+  * Extraordinary can adds [dreaminess](#Dreamlike).
   * Extraordinary adds narrative dimensions and depth that ordinary lacks.
+  * Extraordinary is good for metaphors and euphemisms.
 * Frequently flipping dominance can muddy the distinction and contrast between ordinary and extraordinary.
 * Frequently flipping dominance can interrupt continuity.
 
 ### Pacing
+
+* Marloth narratives generally follow a cycle of introduction, escalation, and climax.
+  * Often these cycles align with story parts.
+* Along each iteration of these cycles, the pace starts slow and gains velocity.
+  * The rate of this change is usually exponential.
+  * A Marloth book also follows this pattern of escalation, so later parts start with a faster pace than earlier parts.
+* Pacing is closely tied to continuity.  Breaks in [temporal continuity](#Temporal Continuity) slow down pacing.
 
 ### Personal Contests
 
@@ -317,22 +356,68 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 #### Background
 
 - One defining property of a narrative setting is how constrained the characters are by society via laws, customs, and politics.
-- A lawless setting does not mean there are no consequences for actions.  There are laws, just not laws enforced by a national government.
+- A lawless setting does not mean there are no consequences for actions.  There are still natural laws, just not laws enforced by a national government.
 - In a lawless setting there is less organization, and thus less need for customs.
 - In a lawless setting, characters are less affected by politics.
 - With less restraint, characters are more free to make decisions that would otherwise be made for them.  This can be useful for character studies.
-  - This is why child protagonists are so often disconnected from guardians.  Firm guardianship restricts the child's need to make hard life decisions.
+  - This is why child protagonists are so often disconnected from guardians.  Firm guardianship restricts the child's ability and need to make hard life decisions.
 
 #### Rules
 
 * Marloth tries to strike a tenuous balance between a lawful and lawless setting, but leans more toward lawlessness.
+
+### Temporal Continuity
+
+#### Background
+
+* Temporal continuity is a term I invented to refer to an aspect of [pacing]([#Pacing).
+  * There's probably a better, more established term but I don't know what it is and don't know where to find it.
+  * I'm thinking an alternate term could be "Temporal compression".
+  * The opposite of temporal continuity is a temporal break.
+* Temporal continuity is how much time passes between narrative elements (usually scenes).
+  * Strong temporal continuity is when one scene bleeds into the next scene within a gap of minutes
+  * Weak temporal continuity is when a scene begins on the following day
+  * Extremely weak temporal continuity is when months or years pass between scenes.
+* The pros of temporal continuity are:
+  * It speeds up pacing
+  * It is more immersive
+  * It is more personal
+  * It is more [manic](#Mania)
+* The cons of temporal continuity are:
+  * It restricts narrative scope to events that can happen within a short period of time
+  * It restricts the ability to build history during a narrative.  In this case any history must be pre-existing and referred to indirectly instead of depicted.
+    * Flashbacks can depict past history, but are significant breaks in temporal continuity and pacing.
+  * Can leave audiences feeling like not a lot happened.
+    * Another way of putting this is the impact of events is less efficient when the events are temporally compressed.
+    * A book could take place over the course of a single night and contain a perpetual string of major events, yet at the end of the book the audience would feel like only a night's worth of happenings took place.  Each major event would feel smaller than it normally would if it had a more isolated segment of time with a larger space between it and its neighboring events.
+* Some of the cons of temporal continuity are derived from a lack of one of the benefits of temporal breaks: temporal breaks give the audience a pause to absorb and catalog recent events.
+  * In some respects, a temporal break is like an audience nap.  It gives the audience time to think and process whether or not they put the book down.
+* Pockets of temporal breaks have reduced effectiveness compared to carefully spaced temporal breaks.
+  * One well placed temporal  break can be as effective as many temporal breaks
+  * Most writers do not consciously use temporal break for their macro benefits; they use temporal breaks because inserting them whenever convenient makes it easier to string events together.  Most writers pepper their stories liberally enough with temporal breaks that the macro benefits are incidentally provided.
+
+#### Rules
+
+* Marloth narratives should have as much temporal continuity as possible
+* Breaks in temporal continuity should only be used for:
+  * Setting up later depth, profoundness, and [deja vu](#Deja Vu).
+  * Major transitions
+    * Though in a way these don't necessarily contain much passage of time, just such a difference in context that there might as well be a significant passage of time.
+* Alongside the rules of [pacing](#Pacing), temporal breaks should mostly exist near the start of a book and its parts.  The later parts of a book should have more temporal continuity.
+  * The last part of the first book has nearly pure temporal continuity minus a few of its earlier scenes.  The bulk of its narrative takes place over the course of a single night.
+
+#### Reasons
+
+* I tend to prefer narratives with strong temporal continuity.
+* Marloth narratives should have a significant sense of progress.
+* Marloth scenes should be deeply overlaid with historical significance.
 
 ### Villains
 
 #### Rules
 
 - Always plural.
-  - There can be an over-arching villain that sort of represents all of the others.
+  - There can be an over-arching villain that sort of represents all the others.
 - Each major villain should represent a different ideology.
 - Villains rarely die.
   - And in death I mean permanent death without being resurrected as some kind of zombie.
@@ -365,7 +450,15 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 * Richer conflict and storytelling arise when the best versions of two ideologies clash and all of the hard questions are methodically wrestled with and addressed.
   * Straw man arguments tend to avoid the hard questions.
 
-### Waking Up
-
 ### Whimsy vs. Reason
 
+#### Background
+
+Whimsy and reason are at odds with each other and form a spectrum.  Generally a narrative falls on one side or the other of that spectrum.
+
+#### Rules
+
+* A Marloth narrative should strive to balance whimsy and reason.
+* Different locations, characters, and passages can be more whimsical or more rational.
+* Generally elements tied to science and the ordinary should be more rational.
+* Generally elements tied to magic and the extraordinary should be more whimsical.
