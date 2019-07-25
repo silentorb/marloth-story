@@ -25,3 +25,18 @@ I am beginning to suspect they are hiding something.
 
 Today the head doctor of the Asylum met with me about the girl.  He claimed there had never been such a patient.  I said there must be some mistake.  Seeing how much the cases had been related, I asked him if he would tell me that the boy had also never been a patient.  To this the doctor [shook his head], saying that James was actually a well known case and had caused multiple disturbances in the past.
 
+\* \* \*
+
+[ Osmand approaches Nivana on a grassy knoll not far from the Manor and proposes to her ]
+
+"I cannot due to your unfortunate birth."
+
+"What?  You are mistaken!  My birth is in every way superior to yours.  My father is of higher rank, my family is of greater renown and influence.  My fortune is vastly beyond your own."
+
+"[...] you were born a lout.  I do not hold you responsible for it.  You did not choose such a birth.  You have my pity.  It was Sovereign will that you be born a lout, and that will haunt you the rest of your life."
+
+[ Osmand hits her and knocks her to the ground ]
+
+"How dare you?" Nivana hissed.
+
+"I dare, because I can.  Go ahead and make a fuss.  See what your father can conjure.  He may be a lord, but my father is a god!  I can do with you as I please.  I could make love to you right now if I liked, if you hadn't suddenly turned so repulsive."
