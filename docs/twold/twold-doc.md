@@ -6,6 +6,12 @@ TWOLD is a survival horror fantasy story.
 
 The main characters are James and Nivana.
 
+## Overview
+
+One of the challenges of TWOLD is it's not simply an attempt for lightning to strike twice.  It's a transition between a lightning strike and perpetual lightning.  It's an attempt to turn a book into a franchise.  The first book relies heavily on one-off mechanics that do not perform well with repeated use.  TWOLD doesn't simply need to recapture the essence of the first book using fresh one-off mechanics, it needs to recapture the essence of the first book using mechanics that can perform well across any number of books.  TWOLD can still contain some fresh, one-off mechanics, but those need to be minimized.
+
+The challenge of TWOLD is to bring stability to a setting that thrives on instability.
+
 ## Main Issues and Points
 
 - Dependency

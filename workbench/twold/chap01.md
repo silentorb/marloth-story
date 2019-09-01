@@ -1,3 +1,22 @@
+Two men were walking down a street of the City of Orphans.  It was a dangerous street, but they were capable men.
+
+"I want to form a team.  A group of skilled individuals to fight evil. I want you to join me.  Together, we could do anything."
+
+"Not quite anything."
+
+"Well close enough.  So what do you say?  Are you ready for more action?"
+
+"I like to hope war is behind me.  My wife and I want to start an inn."
+
+"Well will you at least send my way any able-bodied individuals you come across?"
+
+"That may go against my conscience."
+
+"Whatever do you mean?"
+
+[ Is it possible to be both politely evasive and firmly straightforward here? ]
+
+* * * 
 
 The journal of George Hurley
 
@@ -25,7 +44,7 @@ I am beginning to suspect they are hiding something.
 
 Today the head doctor of the Asylum met with me about the girl.  He claimed there had never been such a patient.  I said there must be some mistake.  Seeing how much the cases had been related, I asked him if he would tell me that the boy had also never been a patient.  To this the doctor [shook his head], saying that James was actually a well known case and had caused multiple disturbances in the past.
 
-\* \* \*
+\* \* \*
 
 [ Osmand approaches Nivana on a grassy knoll not far from the Manor and proposes to her ]
 

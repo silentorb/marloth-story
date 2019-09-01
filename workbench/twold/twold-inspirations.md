@@ -27,6 +27,7 @@
 
 * Inception
 * Scott Pilgrim vs. the World
+* Dark City
 
 ## Shows
 

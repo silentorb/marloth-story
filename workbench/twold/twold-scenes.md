@@ -24,11 +24,9 @@
 - Nivana meets Beth
 - Millamer sees Nivana working
 - Nivana seeks training from Desa
-- Jewel returns to the Nameless City
 - Millamer turns in Nivana
 - Nivana is severed
 - Nivana tries to get work as a vessel
-- Nivana is informed that Jewel died
 - Nivana is tempted by a goddess
 - Beth stops Nivana from hurting people
 

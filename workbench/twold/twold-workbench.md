@@ -65,7 +65,6 @@
 * In every heart is a war between light and darkness
 * Plot to weaken the Christ character by killing belief is foiled.  The Christ character doesn't need belief.
 * God's power and good is made more evident
-* Hypocrisy is exposed
 * Gray heroes are exposed
 * Seemingly invincible villain(s) revealed to have many dependencies that crumble
 * The heroes are more united than ever
