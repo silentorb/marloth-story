@@ -4,17 +4,17 @@
 
 #### Rules
 
-* A narrative should regularly keep details of the story ambiguous to allow multiple viable intrepretaions.
+* A narrative should regularly keep details of the story ambiguous to allow multiple viable interpretations.
 * In such cases, these interpretations should not be intended to be mutually exclusive.
 * When a Marloth narrative uses ambiguity, to some degree all possible interpretations are true at once.
-* Ambiguity in a Marloth narrative should not be used to allow the audience freedom of intrepretation.  It's not to be open-ended.  The purpose of ambiguity here is to layer one possibility on top of the other, forming a [legend](Legend).
+* Ambiguity in a Marloth narrative should not be used to allow the audience freedom of interpretation.  It's not to be open-ended.  The purpose of ambiguity here is to layer one possibility on top of the other, forming a [legend](Legend).
 
 - [Confusion](#Confusion) should be avoided.
 
 #### Reasons
 
-* This form of ambiguity adds [dreaminess](Dreamlike).
-* This form of ambiguity is an efficient way of adding [dense](Brevity) depth.
+* This form of ambiguity adds [dreaminess](#Dreamlike).
+* This form of ambiguity is an efficient way of adding [dense](#Brevity) depth.
 
 #### Confusion
 
@@ -85,7 +85,7 @@ Narrative is a sequence of transitions from one state to the next.
 
 #### Reasons
 
-* Drastic state changes increase [dreaminess](Dreaminess).
+* Drastic state changes increase [dreaminess](#Dreaminess).
 
 ### Cozy
 
@@ -95,14 +95,14 @@ Many locations in Marloth fall into one of two opposing extremes: wilderness and
 
 The wilderness is dangerous and scary.  When a characters are in the wilderness they can never let their guard down.
 
-Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food, warm drinks.  And windows to see the harsh weather outside and emphasize the contrast.
+Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food, warm drinks.  And windows to see the harsh conditions outside and emphasize the contrast.
 
 #### Rules
 
-- A Marloth narrative needs to have major characters occasionally in wilderness settings.
-- A Marloth narrative needs to have major characters occasionally in sanctuary settings.
-- In most cases, whenever a major character is in a sanctuary, he or she should be in the company of friends.
-- At least some of the sanctuary scenes need friends dining together.
+- A Marloth narrative needs to have major characters occasionally in wilderness settings
+- A Marloth narrative needs to have major characters occasionally in sanctuary settings
+- In most cases, whenever a major character is in a sanctuary, he or she should be in the company of friends
+- At least some of the sanctuary scenes need friends dining together
 
 ### Deja Vu
 
@@ -137,13 +137,13 @@ Sanctuaries are safe and secure.  They invoke warmth.  Warm lighting, warm food,
 
 #### Rules
 
-* A Marloth narrative should be as dreamlike as possible without interfering with other rules.
+* A Marloth narrative should be as dreamlike as possible without interfering with other rules
 
 #### Reasons
 
-* Dreaminess is one of the most powerful methods of generating [awe](Awe).
-* I love dreaminess.
-* Dreaminess is a signature feature of Marloth.
+* Dreaminess is one of the most powerful methods of generating [awe](Awe)
+* I love dreaminess
+* Dreaminess is a signature feature of Marloth
 
 ### Euphemism
 
@@ -178,12 +178,12 @@ The first book breaks most of these rules, but it is what it is.
 
 - Every Marloth narrative should have many family relationships between its characters.
 - Family should be presented as something that is valuable.
-- Don't just show disfunctional family relationships.  Also show healthy family relationships.
+- Don't just show dysfunctional family relationships.  Also show healthy family relationships.
 
 #### Reasons
 
 - Family is devalued in modern narratives.
-  - Modern narratives either have an unrealistic lack of family relationships or focus on disfunctional family relationships.
+  - Modern narratives either have an unrealistic lack of family relationships or focus on dysfunctional family relationships.
 - Family adds meaning and depth to narratives.
 - Family is adds additional dimensions of situations for audiences to relate to.
 
@@ -218,7 +218,7 @@ It may be self-delusion, but art is my knee-jerk reaction for capturing all of t
     * It is not okay for a person to get stabbed in the eye.
       * There could be exceptions to this case such as if a main character losing an eye added a lot to the rest of the story.
     * It is okay for a person to fall to their death as long as impact is not described.
-* When horrific things are happening, rely heavily on [implication](Implication) and [euphemisms](Euphemisms).
+* When horrific things are happening, rely heavily on [implication](#Implication) and [euphemisms](Euphemisms).
 * Do not try to scare the audience.
   * It is fine if the audience is scared, but don't try to force it.  Don't include elements whose purpose is to scare the audience.
   * It is fine for characters in a narrative to be scared.
@@ -292,7 +292,33 @@ When an audience witnesses multiple versions of a character or story, those diff
 #### Reasons
 
 * Because I like mania.
-* Mania is overwhelming, and through that can add [dreaminess](#Dreaminess) and [awe](#Awe).
+* Mania is overwhelming, and through that can add [dreaminess](#Dreaminess) and [awe](#Awe).
+
+### Misfits
+
+#### Rules
+
+* A Marloth narrative should generally involve a band of misfit heroes
+* The heroes should have weaknesses and flaws
+* The heroes should not be misfits by choice
+* The heroes should not be proud about being misfits
+  * Unless some pride is allowed for a short period and then debased
+    * Marloth is not about misfit pride.  Such arcs should be neither dragged out nor central
+* Through God's power, the heroes should surprise the world by triumphing over seemingly more powerful forces of evil
+
+#### Reasons
+
+* Audiences empathize with underdogs
+* Audiences relate to protagonists with flaws
+* The portrayal of misfit heroes should be humble
+* Stories with misfit protagonists easily become pretentious
+* When not worshipped, misfit heroes can be a great depiction of humble
+
+#### References
+
+* "Blessed are the meek, for they shall inherit the earth" - Matthew 5:5
+* "So the last will be first, and the first last" - Matthew 20:16
+* "For consider your calling, brothers: not many of you were wise according to worldly standards, not many were powerful, not many were of noble birth. But God chose what is foolish in the world to shame the wise; God chose what is weak in the world to shame the strong; God chose what is low and despised in the world, even things that are not, to bring to nothing things that are, so that no human being might boast in the presence of God." - 1 Corinthians 1:26-29
 
 ### Mystery
 
@@ -351,6 +377,48 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 * A narrative can have deep, significant personal contests that don't encourage pride and insecurity, but it requires that the entire narrative is built around having deep personal contests tied to larger ideological struggles.
   * Marloth will never be built around personal contests to adequately support meaningful, healthy personal contests.
 
+### Rebellion - Fighting the System
+
+#### Background
+
+* An essential element of many of the dreams that inspire Marloth is fighting against some vague, vast, organized force
+* An essential element of what I get from TBM's music is rebellion
+
+#### Rules
+
+* Marloth narratives should generally involve some form of organized evil that must be rebelled against
+* Ideally this should be broken into smaller organizations that loosely form a larger system
+* These organizations should be vague
+* Similar with the rules for [villains](#Villains), there should not be a singular emperor
+  * Likewise, the narrative should not become fascinated by these organizations.  They are not the focal-point of the story.
+* Part of the rebellion should be ideological.  This is counter-cultural rebellion.
+* The rebellion should be tied to submission to something else
+  * At its heart, the rebellion is choosing between two masters
+    * Rebelling against the more apparent master in favor of the less apparent master
+
+#### Reasons
+
+* A part of my personality is rebellious
+* Rebellion is bad when it is rebelling against good things
+* Rebellion is usually a product of pride
+* Some forms of rebellion are good and healthy
+* The heroes need something evil to rebel against
+* These organizations are primarily a means-an-end.  They exists to be rebelled against.
+
+### Romance
+
+#### Rules
+
+* Don't convey the idea that there is a single, special someone out there
+* Don't matchmake characters solely on personality
+
+#### Reasons
+
+* Love is about sacrifice and kindness, not personal chemistry
+* Ultimately, the health of a marriage is based on love, not personality
+  * With enough mutual Spirit, any two Christians could be married and result in a wonderful marriage.  The world relies on superficial factors as a substitute for love.
+  * At the same time, there is wisdom in marrying someone with compatible personality and interests.  While love can overcome anything, such hurdles need not be sought out.
+
 ### Social Restraint
 
 #### Background
@@ -370,7 +438,7 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 
 #### Background
 
-* Temporal continuity is a term I invented to refer to an aspect of [pacing]([#Pacing).
+* Temporal continuity is a term I invented to refer to an aspect of [pacing]([Pacing).
   * There's probably a better, more established term but I don't know what it is and don't know where to find it.
   * I'm thinking an alternate term could be "Temporal compression".
   * The opposite of temporal continuity is a temporal break.
@@ -385,15 +453,15 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
   * It is more [manic](#Mania)
 * The cons of temporal continuity are:
   * It restricts narrative scope to events that can happen within a short period of time
-  * It restricts the ability to build history during a narrative.  In this case any history must be pre-existing and referred to indirectly instead of depicted.
-    * Flashbacks can depict past history, but are significant breaks in temporal continuity and pacing.
-  * Can leave audiences feeling like not a lot happened.
-    * Another way of putting this is the impact of events is less efficient when the events are temporally compressed.
+  * It restricts the ability to build history during a narrative.  In this case any history must be pre-existing and referred to indirectly instead of depicted
+    * Flashbacks can depict past history, but are significant breaks in temporal continuity and pacing
+  * Can leave audiences feeling like not a lot happened
+    * Another way of putting this is the impact of events is less efficient when the events are temporally compressed
     * A book could take place over the course of a single night and contain a perpetual string of major events, yet at the end of the book the audience would feel like only a night's worth of happenings took place.  Each major event would feel smaller than it normally would if it had a more isolated segment of time with a larger space between it and its neighboring events.
 * Some of the cons of temporal continuity are derived from a lack of one of the benefits of temporal breaks: temporal breaks give the audience a pause to absorb and catalog recent events.
   * In some respects, a temporal break is like an audience nap.  It gives the audience time to think and process whether or not they put the book down.
 * Pockets of temporal breaks have reduced effectiveness compared to carefully spaced temporal breaks.
-  * One well placed temporal  break can be as effective as many temporal breaks
+  * One well placed temporal break can be as effective as many temporal breaks
   * Most writers do not consciously use temporal break for their macro benefits; they use temporal breaks because inserting them whenever convenient makes it easier to string events together.  Most writers pepper their stories liberally enough with temporal breaks that the macro benefits are incidentally provided.
 
 #### Rules

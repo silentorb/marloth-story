@@ -13,3 +13,10 @@ She threw Beth across the room.  Except that's not what happened.  Nothing happe
 Nivana was confounded.  She did not have much time to adjust.  Beth stepped forward and punched Nivana in her pretty face.  And then punched her again.  And then a third time.
 
 Nivana fell over backwards and the world faded into shadow.
+
+
+
+* * *
+
+"We're not here to protect you.  We're here to protect *us*.  Sending any fewer men would be suicide."
+

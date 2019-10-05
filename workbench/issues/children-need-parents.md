@@ -32,7 +32,7 @@ Some examples:
 
 * Harry Potter
     * Generally the adults are capable but leave the world-saving to the children.  Lots of rebellious attitude in how this is handled.
- 
+
 * Buffy the Vampire Slayer
     * Giles is helpful but mostly weak in a fight.  Parent's are either disconnected from any of the conflict or simply no help.
 
@@ -41,7 +41,7 @@ Some examples:
 
 This option seems to work the best when the setting has a strong sense of generations, something that so far is not Marloth's strength.  At this point I can either play off Marloth's current strengths or try to redefine it.  There are so many areas that aren't Marloth's strengths for now I'd lean toward just eventually creating some other setting with different strengths.
 
-## 3. Skip ahead til the children are adults.
+## 3. Skip ahead til the children are adults
 
 I keep pushing the ages of the children just because so much of the storylines I want to tell are adult.  Currently I've increased the age gaps between them to cheat a little in this area.
 
