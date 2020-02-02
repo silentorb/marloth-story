@@ -1,0 +1,12 @@
+{
+  "name": "marloth-story-tools",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "@types/node": "^12.12.11",
+    "epub-gen": "^0.1.0",
+    "marked": "^0.7.0",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2"
+  }
+}
