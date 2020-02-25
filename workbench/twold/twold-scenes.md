@@ -22,18 +22,21 @@
 - The Merchant hires Nivana
 - Nivana meets the head mistress
 - Nivana meets Beth
+- Nivana meets Adelle
 - Millamer sees Nivana working
+- Jewel dies
 - Nivana seeks training from Desa
 - Millamer turns in Nivana
+- Nivana goes berserk
+- Beth stops Nivana from killing the Merchant
 - Nivana is severed
 - Nivana tries to get work as a vessel
-- Nivana is tempted by a goddess
-- Beth stops Nivana from hurting people
 
 **Part 3**
 
-- Nivana convinces James to team up with her
 - The heroes locate a copy of Marloth
+- Jewel is alive
+- James reveals Jewel is a zombie child
 
 **Part 4**
 
@@ -60,7 +63,6 @@
 ### James Storyline
 
 - James tries to find Adelle
-- James discovers Adelle is older and married
 - James is depressed
 - James is haunted by a ghost version of Adelle
 - James is adopted

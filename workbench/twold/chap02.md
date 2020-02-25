@@ -1,3 +1,38 @@
+The Collector sniffed the air.
+
+"I smell a rare kind of magic.  Something ancient.  Something primordial."
+
+He lingered on the thought and then said suddenly, "Line up the girls immediately!  I must see what wonders you have in store!"
+
+* * *
+
+The Collector threw open the door and strode into the room.  Adelle looked up.
+
+"She's empty!", said the Collector.
+
+"Excuse me?", said Adelle.
+
+"She's not one of my girls," said the Merchant.
+
+"But what is this?" said the Collector, "Residue was evident from the other side of the building!  She must have contained an unfathomable volume of magic!"
+
+"I did have magic once, but I discarded it."
+
+"Lies!  No one *discards* magic!  Obviously someone took it.  Someone powerful."
+
+He turned to the Merchant.  "How much will you take for her?"
+
+"He doesn't own me," said Adelle.
+
+"She's right.  I don't own her."
+
+The Collector turned back to Adelle and examined her thoughtfully.  "We can work something out"
+
+"I'm not for sale!"
+
+The Collector turned to leave.  "Come, [Merchant's name], let us return to the others.  Later we can speak more of this."
+
+* * *
 
 
 "If you stand there I *will* hurt you!  Move out of the way!"
