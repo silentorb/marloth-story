@@ -377,6 +377,37 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 * A narrative can have deep, significant personal contests that don't encourage pride and insecurity, but it requires that the entire narrative is built around having deep personal contests tied to larger ideological struggles.
   * Marloth will never be built around personal contests to adequately support meaningful, healthy personal contests.
 
+### Problems and Solutions
+
+#### Background
+
+I've found that good games have a basic activity that is their bread and butter.  It is both the foundation and the fallback that fills the gaps in more specialized activities.
+
+To a lesser degree, stories, especially long-running stories, need that same sort of bread-and-butter activity.  For now, the nominated fallback activity for Marloth is problem solving.  When in doubt about what a character should be doing, give him or her a problem to solve.
+
+Eventually Marloth will probably need more specialized bread-and-butter activities, but this is a good start.
+
+#### Rules
+
+* Regularly devise problems for characters to solve
+* Problems should be well defined
+* Characters should be proactive in solving problems
+* Focus on problems being challenges and opportunities instead of burdens
+* Problem solving should revolve around good application of knowledge about the problem domain
+  * If the character does not have enough knowledge about the problem domain, that is a prerequisite problem that must first be solved in the same manner as other problems
+* Problem solving should require minimum guessing.
+  * When experimentation is required, there should be some means by which that experimentation can be systematized and optimized.
+* Some personalities are more geared toward problem solving than others, so be careful not to over skew every character to hard-boiled problem solving
+  * Maybe I will find better techniques for how to handle this issue later.  Maybe have less problem-solving-personalities still solve problems in a less technical-looking way.
+
+#### Reasons
+
+* Problems defined this way help engage the audience
+* Problems defined this way help involve characters in the story more and reduce passivity
+* Problems defined this way help with world building
+* Problems defined this way help justify explaining world mechanics
+* Problems defined this way add meaning and depth to the story
+
 ### Rebellion - Fighting the System
 
 #### Background
@@ -486,6 +517,9 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
 
 - Always plural.
   - There can be an over-arching villain that sort of represents all the others.
+    - This should be downplayed
+- Most major villains should be representatives for villainous forces
+  - Focus audience animosity toward the force, not the representative
 - Each major villain should represent a different ideology.
 - Villains rarely die.
   - And in death I mean permanent death without being resurrected as some kind of zombie.
