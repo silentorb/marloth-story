@@ -43,6 +43,15 @@
 * The Head Mistress
 * Miles
 
+#### Forces
+
+* The Band of Misfits
+* The Scientists
+* The Necromancers
+* The Magic Dealers
+* The Demons
+* The Furies
+
 #### Villains
 
 * The Merchant of Sorcerers
@@ -62,15 +71,18 @@
 * The world is the Asylum
 * James and Adelle as a married couple and as children
 
-### The Endgame
+### The Endgame (Abstract)
 
 * The blessed city becomes the cursed city
 * In every heart is a war between light and darkness
-* Plot to weaken the Christ character by killing belief is foiled.  The Christ character doesn't need belief.
 * God's power and good is made more evident
 * Gray heroes are exposed
 * Seemingly invincible villain(s) revealed to have many dependencies that crumble
 * The heroes are more united than ever
+
+### The Endgame (Concrete)
+
+* 
 
 ## Dependence
 

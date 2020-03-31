@@ -25,6 +25,7 @@
 * Dark Souls
 * Neverwinter Nights
 * Mordheim
+* Darkest Dungeon
 
 ## Movies
 
@@ -70,7 +71,7 @@
 | Berserk                     |                                |                     |
 | Doom Patrol                 |                                |                     |
 | Spider-Man (RYV)            |                                |                     |
-|                             |                                |                     |
+| Darkest Dungeon             |                                |                     |
 |                             |                                |                     |
 
 ### Notes

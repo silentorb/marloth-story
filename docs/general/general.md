@@ -58,6 +58,22 @@ The writing style of Marloth is concise. Verbosity should be minimized. This inc
 
 * It's more efficient to write.  (This is offset by the work it takes to manage so many dimensions in a Marloth narrative.  Traditional story telling is more verbose but the verbosity is also more loosely coupled like a string of islands.)
 
+### Climax
+
+#### Rules
+
+* A story is an equation, where each part of the story is filling out the equation
+* When the equation is fully filled out, the solution becomes evident and the story is over
+* The point where the story is completed is the climax
+* The final puzzle piece should depend on previous puzzle pieces for meaning and significance
+  * Don't end on a reveal that would have had nearly as much weight earlier in the story
+  * The final puzzle piece and the final point should not be the same thing.  The final puzzle piece (within the context of all the other puzzle pieces) should imply the final point.
+    * The final point can also be explicitly pointed out after the last puzzle piece, but even so, it's still the final puzzle piece that is the main ah-ha moment, not the exposition.
+* The final puzzle piece should be non-obvious
+  * Hide it behind complexity and audience prejudice
+* The final puzzle piece should be information that involves people
+  * It should be either directly or indirectly about one or more people
+
 ### Continuity
 
 #### Background
