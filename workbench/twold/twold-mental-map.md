@@ -2,12 +2,6 @@
 
 ## Overview
 
-The forces opposing good are denounced one-by-one over the course of the story in this order:
-
-* Pharisees
-* Gray heroes
-* Gleefully wicked
-
 ## Part 1
 
 * People tend to ignore dependencies
@@ -21,7 +15,6 @@ The forces opposing good are denounced one-by-one over the course of the story i
 
 * Compassion appears weak
 * False churches are used as a straw man argument against Christianity
-* The world likes to think that gray heroes are cool
 * Evil forces are trying to sway people
 
 ## Part 3
@@ -41,19 +34,14 @@ The forces opposing good are denounced one-by-one over the course of the story i
 * Good cannot thrive without Godliness
 * Without Godliness, evil thrives
 * Good forces are trying to sway people
-* Being in a cookie jar doesn't make a mouse a cookie
 * Everyone worships something
 
 ## Part 5
 
 * When a person rejects God, they are depending on evil
-* Gray heroes rebel against God
-* Gray heroes hurt people
-* It is not good to be on the sidelines of this war
 
 ## Part 6
 
-* Gray heroes are really villains
 * God doesn't need anything
 * Evil looks powerful yet is powerless
 * There is no such thing as a super-powerful person without dependence on many people

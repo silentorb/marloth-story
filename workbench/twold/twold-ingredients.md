@@ -13,10 +13,9 @@
 
 ### Forces
 
-* Internally wicked
+* Noble Atheists
 * Repentant
-* Externally wicked
-* Antiheroes
+* Pagans
 
 ### Characters
 
