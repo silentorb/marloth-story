@@ -49,9 +49,15 @@ Nivana was confounded.  She did not have much time to adjust.  Beth stepped forw
 
 Nivana fell over backwards and the world faded into shadow.
 
-
-
 * * *
 
 "We're not here to protect you.  We're here to protect *us*.  Sending any fewer men would be suicide."
+
+------
+
+"Yeah, I think that was a... stage name."
+
+------
+
+Suddenly a half-formed memory returned to Nivana.  She was giving a presentation to a small crowd, and Millamer was passing by, and their eyes met, and she recognized him and he recognized her.  He started to laugh, and she was mortified, and she no longer knew why.  Something about magic.
 
