@@ -78,4 +78,9 @@
 
 * While each season of Stranger Things begins with independent agents, they always end with a unified team of heroes.
 * Twin Peaks has a team of police but most of the heroes are not a part of that team.
-* 
+
+## Survival Horror
+
+* Tenkuu Shinpan
+* Gantz
+* The Walking Dead
