@@ -24,15 +24,15 @@ const bookConfig = {
   author: "Christopher W. Johnson",
   publisher: "Silent Orb",
   cover: "assets/images/cover.jpg",
-  output: "output/marloth.epub",
+  output: "../output/marloth.epub",
   version: 3,
   fonts: ["assets/fonts/carleton.otf"],
   content
 }
 
 async function main() {
-  if (!fs.existsSync('output'))
-    fs.mkdirSync('output')
+  if (!fs.existsSync('../output'))
+    fs.mkdirSync('../output')
 
   process.chdir(path.resolve(__dirname, '..'))
   await new epub(bookConfig).promise
