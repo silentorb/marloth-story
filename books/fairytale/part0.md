@@ -7,13 +7,13 @@ sky, falling upon a castle that rose above the shadows.  Sunlight by
 day.  Moonlight by night.  The castle seemed untouchable.  They wanted
 it.  Even more, they wanted what it contained.  The castle's defenses
 were strong, but they had plotted for a long time, and soon they would
-be
+be able to strike.
 
 In one of the tallest towers was the bedroom of a little girl.  Her name
 was Adelle.  She was oblivious to the hatred and anguish that had
 engulfed the land.  As she looked out of her window, all she saw was
 mystery and excitement.  The world seemed to be beckoning to her.  And
-in fact, it
+in fact, it was...
 
 Every night, Adelle's mother would come to put her to bed and tell her a
 bedtime story.  She would tell her about heroes and princesses and wars
@@ -25,10 +25,10 @@ where the children played all day long.  She never finished the story.
 the age-old story about the pirate ship that sailed along the ocean
 floor.  She would apologize and say that there were things about the
 orphanage story Adelle shouldn't hear about.  Then, she would kiss her
-goodnight, douse the light, and disappear
+goodnight, douse the light, and disappear behind the door.
 
 Adelle always thought this was funny, and wondered why her mother kept
 bringing up the story if she didn't think she should tell it.  As Adelle
 would fade into sleep, she would imagine what dreadful things might be
 in the story. And so she would dream about orphanages and dark
-occurrences of which mothers never
+occurrences of which mothers never spoke of.
