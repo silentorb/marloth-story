@@ -2079,7 +2079,9 @@ You'll do whatever she tells you no matter how stupid it is!"
 are sneaky."
 
 "Well if you're so worried then why don't you go and shoot her? She'd
-probably appreciate it." "No way! I'm not going anywhere near her!"
+probably appreciate it."
+
+"No way! I'm not going anywhere near her!"
 
 \*\*\*
 
