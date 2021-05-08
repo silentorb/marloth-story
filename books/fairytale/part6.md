@@ -1,23 +1,23 @@
-Dear Sir,
+*Dear Sir,*
 
-It has come to my attention that you are still alive. I must say, that
+*It has come to my attention that you are still alive. I must say, that
 is an impressive trick. You may think me worried that you have returned,
 but you need not worry about me. From what I hear, you are hardly more
-than a ghost. I am not afraid of ghosts.
+than a ghost. I am not afraid of ghosts.*
 
-You were right about one thing: everything did pass away. But that
+*You were right about one thing: everything did pass away. But that
 turned out to be hardly a loss for me. With the passing of that
 dimension I have gotten my book back. And now I have made copies. Your
-death was in vain.
+death was in vain.*
 
-There have also been rumors of you wanting to end this world as well.
+*There have also been rumors of you wanting to end this world as well.
 That simply will not do. I don't appreciate your obsession with
 destroying worlds, and it is my duty to prevent you from destroying this
-one.
+one.*
 
-Hoping you see reason,
+*Hoping you see reason,*
 
-Jakob Damond
+*Jakob Damond*
 
 \*\*\*
 
@@ -3091,27 +3091,27 @@ collapsed beside James.
 
 \*\*\*
 
-Dear Sir,
+*Dear Sir,*
 
-You are neglecting to look beyond the surface. In this dream your book
+*You are neglecting to look beyond the surface. In this dream your book
 of contracts remains intact, but in the dream that dreams this dream
 your book is destroyed, and that is what matters. All of your contracts
-have been made void.
+have been made void.*
 
 *You say you want to keep this world going forever? But how are you to
 do that? What are you going to add to extend it? You cannot create
 pages. You cannot create anything. With or without my opposition, you
 have no means of perpetuating this dream. The end* **will** *come.*
 
-There is also the matter of compensation. You have taken everything from
+*There is also the matter of compensation. You have taken everything from
 me except what matters most: you can never take away who I am, and that
 is your undoing. I acknowledge that even in this present dream I am
 still an imperfect reflection, but I am now far more accurate a
 rendition then I was before, and growing more precise by the minute.
 Soon I will return for what is mine. All that has been taken, it shall
-be restored.
+be restored.*
 
-Edward Tralvorkemen
+*Edward Tralvorkemen*
 
 \*\*\*
 

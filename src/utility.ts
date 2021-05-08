@@ -1,14 +1,14 @@
-import * as fs from "fs"
-import { transformContent } from "./formatting"
+import * as fs from 'fs'
+import { transformContent } from './formatting'
 
-const marked = require("marked")
+const marked = require('marked')
 
 export function loadAdornment(filePath: string): string {
-  return fs.readFileSync("adornments/" + filePath, "utf8")
+  return fs.readFileSync('src/assets/adornments/' + filePath, 'utf8')
 }
 
 export function loadContent(filePath: string): string {
-  const input = fs.readFileSync("../books/" + filePath, "utf8")
+  const input = fs.readFileSync('books/' + filePath, 'utf8')
   const transformed = transformContent(input)
   return marked(transformed)
 }
@@ -53,7 +53,7 @@ export interface EpubChapter {
 }
 
 export const renderChapter = (book: string) => (chapter: Chapter): EpubChapter => {
-  const data = chapter.elements.map(renderContentElement(book)).join("\n")
+  const data = chapter.elements.map(renderContentElement(book)).join('\n')
   return {
     title: chapter.title,
     data,

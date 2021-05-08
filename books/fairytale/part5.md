@@ -1,20 +1,20 @@
-Dear Sir,
+*Dear Sir,*
 
-I thank you for your advice, for it is based on truth, even if its
+*I thank you for your advice, for it is based on truth, even if its
 motives are not. You would like me to remain in this state forever. But
-I am not going to oblige you.
+I am not going to oblige you.*
 
-I am a misshapen image of something far better than I. Until I fade from
+*I am a misshapen image of something far better than I. Until I fade from
 sight, I am obstructing the view. I must die, and all of this must pass
 away. But I am encouraged by the fact that after I fall into the earth,
-I will rise again as someone far better.
+I will rise again as someone far better.*
 
 *As for your ledger, somehow you twisted this reality so that I
 destroyed my book. That is the ultimate perversion and further reason
 why things cannot remain the way they are. This is* **your** *fantasy,
 and I am weary of being a part of it.*
 
-Edward Tralvorkemen
+*Edward Tralvorkemen*
 
 \*\*\*
 
