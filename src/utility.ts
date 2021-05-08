@@ -3,12 +3,16 @@ import { transformContent } from './formatting'
 
 const marked = require('marked')
 
+export function loadTextFile(filePath: string): string {
+  return fs.readFileSync(filePath, 'utf8')
+}
+
 export function loadAdornment(filePath: string): string {
-  return fs.readFileSync('src/assets/adornments/' + filePath, 'utf8')
+  return loadTextFile('src/assets/adornments/' + filePath)
 }
 
 export function loadContent(filePath: string): string {
-  const input = fs.readFileSync('books/' + filePath, 'utf8')
+  const input = loadTextFile('books/' + filePath)
   const transformed = transformContent(input)
   return marked(transformed)
 }

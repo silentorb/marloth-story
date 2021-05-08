@@ -6,6 +6,7 @@
     "build": "./node_modules/.bin/ts-node ../src/make-epub"
   },
   "dependencies": {
+    "@types/marked": "^2.0.2",
     "@types/node": "12.19.15",
     "epub-gen": "^0.1.0",
     "fs-extra": "9.1.0",
