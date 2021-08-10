@@ -5,10 +5,11 @@
   "scripts": {
     "build": "./node_modules/.bin/ts-node ../src/make-epub"
   },
+  "private": true,
   "dependencies": {
     "@types/marked": "^2.0.2",
     "@types/node": "12.19.15",
-    "epub-gen": "^0.1.0",
+    "epub-gen": "silentorb/epub-gen",
     "fs-extra": "9.1.0",
     "marked": "2.0.3",
     "ts-node": "9.1.1",

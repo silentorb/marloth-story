@@ -1,5 +1,4 @@
 import { adornmentElement, Chapter, contentElement, renderBook } from './utility'
-import * as path from 'path'
 
 const fse = require('fs-extra')
 const epub = require('epub-gen')
