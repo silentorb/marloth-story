@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/ts-node ../src/make-epub"
+    "build": "./node_modules/.bin/ts-node ../src/make-epub",
+    "mobi": "ebook-convert output/fairytale/marloth.epub output/fairytale/marloth.mobi"
   },
   "private": true,
   "dependencies": {

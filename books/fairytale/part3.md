@@ -1,3 +1,5 @@
+# Part 3
+
 Nighttime. It was very dark. The moon and stars were shrouded in cloud,
 and the city had few streetlamps. But there were several lights moving
 about the orphanage, both inside and out. These were the lamps of men;
@@ -133,7 +135,7 @@ distance, so thick with echoes as to make it unintelligible. Before
 the door had closed behind them, the green had completely enveloped the
 place, and then faded into nothing.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Adelle opened her eyes and looked about her. It was so bright she was
 nearly blinded. The sun was filling the sky with golden light. She
@@ -279,7 +281,7 @@ The clock struck 10 o'clock. The nurse promptly closed the book. Her
 break was over and it was time for her to make her rounds among the
 patients.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James groggily opened his eyes as best he could, but his vision was too
 dark and blurred to make anything out. He tried to move, but he could
@@ -356,7 +358,7 @@ most people had been trying to achieve the opposite.
 
 "Thank you." said the doctor, and then he left James to himself.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Somewhere in the swirling mists of Marloth, just at the crest of a
 setting sun, there was a bed, floating along the clouds as though it
@@ -420,7 +422,7 @@ heard the doctor approaching and she was sure he would not be happy if
 he found her reading that book. Besides, it was almost time for her
 rounds again.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The tragedy of Life. Everyone, at one point or another, is dropped in
 the middle of it. They all try to cope with it one way or another. The
@@ -529,7 +531,7 @@ smiled again.
 "We could use more men like that in this world." she said, and then
 closed the door behind her.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Somewhere in the City of Orphans there was an open square. In the middle
 of the square, there was a bed. In the middle of the bed there was a
@@ -967,7 +969,7 @@ inside and take her captive!
 But he didn't. Instead, he set off down the street, wondering why in the
 world he was doing it.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The Mediev Manor was not far from the Theatre, and this was where they
 eventually stopped for the night. It was agreed that it was too late to
@@ -1017,7 +1019,7 @@ Adelle and made her even more nervous about the next morning. When she
 finally did fall asleep she had humiliating dreams of what her first day
 of school would be like.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 In a back corner of a seedy bar somewhere within the City of Orphans,
 Deadwick the goblin was waiting for one of his many informants. Time
@@ -1131,7 +1133,7 @@ her own. It was very entertaining."
 out of sight, leaving behind for a few seconds longer the sound of
 slurping alcohol.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Doctor Hurley entered the medical room to find the nurse curled in a
 chair by the operating table, her attention wrapped up in a book. He no
@@ -1221,7 +1223,7 @@ She grabbed the tray of medical instruments and hurried for the door.
 
 "I fear the madness has already returned!"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James sat up and looked around. He thought he'd heard something.
 
@@ -1306,7 +1308,7 @@ apron to tend to his bleeding. The medication worked quickly. By the
 time she had turned to his wounds and was bandaging them, he was already
 fine. He no longer felt the pain. He no longer cared.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Adelle awoke the next morning with much apprehension. Today was her
 first day of school. It was not in a completely official capacity; she
@@ -1462,7 +1464,7 @@ slang?"
 
 "Right now we have class." Ivy said as they stepped into the classroom.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Adelle was having a difficult time concentrating on the different
 classes she was in. She had heard much from the other students, and the
@@ -1526,7 +1528,7 @@ hope you enjoy the lesson."
 The teacher resumed his lecture and Adelle was left staring at him in
 amazement.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 After school Ivy and Adelle hit the town to engage in some much needed
 shopping. While Adelle did not have any money, Ivy attempted to explain
@@ -1616,7 +1618,7 @@ the Globe was raised to full power it provided light for the entire
 City. And what was more, Adelle learned that the Ball was only a handful
 of weeks away. She could hardly wait!
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Never before had the nurse looked forward to her breaks between rounds
 as she did now. She was finding herself morbidly fascinated by the book
@@ -1744,7 +1746,7 @@ anything, but he took the object and held it close to him.
 
 "Fugue." said James.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The next day of school went much more steadily. While Adelle still saw
 much of the Lady Mediev, the woman was no longer hovering over her as
@@ -1895,7 +1897,7 @@ The toymaker laughed again and said he had no idea what he had been
 thinking of. After thanking him for all of his encouragement and the use
 of his carriage, Adelle entered the house.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Ivy returned that evening looking very cheerful. It was not long after
 her arrival that Adelle and the rest of the Mediev household sat down at
@@ -1915,7 +1917,7 @@ repertoire and practicing it. The Lady had a number of vocal instructors
 under her employ and knew of just the one for Adelle. Her training would
 begin on the morrow.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The problem that faces doctors in a mental institution was the same
 problem that faces doctors in any other medical field: if there is
@@ -1979,7 +1981,7 @@ path of least resistance. Before the doctor left, James told him that he
 would be ready for the examination, and thanked him for his miraculous
 elixir.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 As the days passed, more and more advertisements began appearing for
 Adelle's performance. But so did advertisements for the upcoming Ball.
@@ -2103,7 +2105,7 @@ quietly,
 "What happened to the little girl who defended me when no one else
 would?"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The nurse entered James' room. She did not appear as happy as she should
 be considering the occasion.

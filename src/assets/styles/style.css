@@ -1,0 +1,76 @@
+@font-face {
+    font-family: "Carleton";
+    font-style: normal;
+    font-weight: normal;
+    src : url("./fonts/carleton.otf");
+}
+
+@font-face {
+    font-family: "EBGaramond";
+    font-style: normal;
+    font-weight: normal;
+    src : url("./fonts/EBGaramond-Regular.ttf");
+}
+
+@font-face {
+    font-family: "EBGaramond";
+    font-style: normal;
+    font-weight: bold;
+    src : url("./fonts/EBGaramond-SemiBold.ttf");
+}
+
+@font-face {
+    font-family: "EBGaramond";
+    font-style: italic;
+    font-weight: normal;
+    src : url("./fonts/EBGaramond-Italic.ttf");
+}
+
+@font-face {
+    font-family: "EBGaramond";
+    font-style: italic;
+    font-weight: bold;
+    src : url("./fonts/EBGaramond-SemiBoldItalic.ttf");
+}
+
+body {
+    font-family: 'EBGaramond', serif;
+    line-height: 1.5;
+}
+
+.author-large {
+    text-align: center;
+    font-size: 130%;
+    font-family: 'Carleton', serif;
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+.centered-text {
+    text-align: center;
+}
+
+.centered-div {
+    text-align: center;
+}
+
+.centered-div > * {
+    display: inline-block;
+    text-align: left;
+}
+
+.centered-image {
+    display: block;
+    margin: 0 auto;
+}
+
+.scene-break {
+    text-align: center;
+    font-family: 'Times New Roman', serif;
+    letter-spacing: 1em;
+    margin-block-start: 1.5em;
+    margin-block-end: 1.5em;
+    color: #444;
+}

@@ -1,4 +1,4 @@
-import { adornmentElement, Chapter, contentElement, renderBook } from './utility'
+import { Chapter, contentElement, loadTextFile, renderBook } from './utility'
 
 const fse = require('fs-extra')
 const epub = require('epub-gen')
@@ -15,15 +15,20 @@ function fairytaleContent() {
     id: 'fairytale',
     chapters:[
       {
-        title: 'Frontmatter',
+        title: `Marloth: A Child's Fairytale World`,
         elements: [
-          contentElement('frontmatter'),
+          contentElement('front'),
+        ]
+      },
+      {
+        title: `Contents`,
+        elements: [
+          contentElement('contents'),
         ]
       },
       {
         title: 'Prelude',
         elements: [
-          adornmentElement('part0-front'),
           contentElement('part0'),
         ]
       }
@@ -40,14 +45,26 @@ export function fairytaleBook() {
     cover: 'src/assets/images/fairytale/cover.jpg',
     output: 'output/fairytale/marloth.epub',
     version: 3,
-    fonts: ['src/assets/fonts/carleton.otf'],
+    fonts: [
+      'src/assets/fonts/carleton.otf',
+      'src/assets/fonts/EBGaramond-Italic.ttf',
+      'src/assets/fonts/EBGaramond-Regular.ttf',
+      'src/assets/fonts/EBGaramond-SemiBold.ttf',
+      'src/assets/fonts/EBGaramond-SemiBoldItalic.ttf',
+    ],
     content: fairytaleContent(),
+    css: loadTextFile('src/assets/styles/style.css'),
+    verbose: true,
+    appendChapterTitles: false,
+    metadata: [
+      ['dc:subject', 'Fantasy fiction']
+    ],
   }
 }
 
 async function main() {
   fse.ensureDirSync('output/fairytale')
-  await new epub(fairytaleBook()).promise
+  await new epub(fairytaleBook()).generate()
   console.log('EPUB successfully generated!')
 }
 

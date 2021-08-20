@@ -1,3 +1,5 @@
+# Part 4
+
 *Dear Sir,*
 
 *It has come to my attention that you have destroyed my ledger of
@@ -15,7 +17,7 @@ children hate you, and if you return, they* **will** *kill you.*
 
 *Jakob Damond*
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 For such a late hour, the train was surprisingly full of passengers.
 *"Don't people ever sleep around here?"* James wondered to himself.
@@ -227,7 +229,7 @@ I don't know what any of us can do."
 handed him the book. The toad hesitated, and then eagerly took it and
 began to read. He read all the way to the City of Orphans.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 After much work and practice, the evening of Adelle's performance
 finally arrived. She was preparing to leave for the Theatre for her
@@ -343,7 +345,7 @@ said, "I don't believe the world is nearly as bad as you think it is."
 "And I want you to keep believing that. You're the best drug I've ever
 had."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The train slowed to a stop on the outskirts of the City of Orphans. The
 three heroes looked to be the only passengers getting off at that
@@ -688,7 +690,7 @@ hell out of there, burst through the door and peeled down the street.
 
 The dolls gathered at the doorway and merrily waved goodbye.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 After James had run a few blocks, he eventually stopped to listen to a
 particularly loud ruckus that was nearby. He turned a corner to find Mr.
@@ -715,7 +717,7 @@ where most everybody is right now."
 
 "She's a princess. Of course she can sing."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 After a final rehearsal, the patrons were allowed to start taking their
 seats. Adelle watched through the edge of the curtain as hundreds of
@@ -1173,7 +1175,7 @@ Mediev not to destroy her property (doors being a reasonable exception).
 Within moments, the group had slipped into the dwindling crowds outside
 the Manor and escaped.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 After some time had passed, Adelle turned to look at the platter of
 Jillybons. She hadn't noticed before, but they had little faces, and all
@@ -1237,7 +1239,7 @@ was deserted. After carefully tying the makeshift rope around her waist,
 she lowered herself out the window and down onto the moonlit streets
 below.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Mr. Mosspuddle had already been concerned the moment Fugue and James had
 jumped from the rooftop and into the crowded street, but as time passed
@@ -1310,7 +1312,7 @@ think most of us are willing to give you the benefit of the doubt."
 "Fine." said the raven. "I'll give them some trust. Just please don't
 let them get a hold of any sharp objects."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Ha! She was free once again! No stuck up lady was going to keep Adelle
 as her pet!
@@ -1400,7 +1402,7 @@ her to a carriage that was waiting nearby and dropped her inside like a
 sack of potatoes. The Lady took the seat across from her, the half-man
 took the reins outside, and then they set off for home.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Meanwhile in the Happy Little Inn, the band of heroes was continuing
 their rescue plans.
@@ -1520,7 +1522,7 @@ Princess Adelle?"
 "Nothing solid. But the discussion gave me an idea. I think I know how
 we can keep an eye on Adelle ... "
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The next morning Ivy awoke to find that Adelle was not yet up and would
 not be coming with her to school but would instead arrive sometime later
@@ -1751,7 +1753,7 @@ Mosspuddle.
 
 "Thank you." James said to everyone. And then they set out.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James arrived back at the inn around the same time as the dolls. Mr.
 Mosspuddle had already returned and had several new books he had
@@ -1871,7 +1873,7 @@ the door.
 
 "Don't worry." said James as he and Fugue stepped into the streets.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Deadwick was waiting impatiently at a street corner not far from the
 Mediev Manor. He had scouts positioned all around the neighborhood and
@@ -1893,7 +1895,7 @@ side of the Manor."
 
 "Got it." said the boy, and he ran back up the street.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James and Fugue carefully made their way through the halls of the Mediev
 Manor. Fugue had already neutralized several guards. There didn't seem
@@ -1972,7 +1974,7 @@ Nothing poisonous as far as I know."
 
 "Oh, don't worry. I brought a sack."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The Lady Mediev was sitting calmly in the parlor with Phyllis and Loury
 and a number of half-men when she suddenly jolted up as though she had
@@ -1998,7 +2000,7 @@ Deadwick sprang to his feet and threw his cards on the table. "The game
 is on!" he cried. He whipped out his gun, vaulted over the table, and
 followed the zombie child out the window and onto the rooftops.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Fugue and James were leaping from roof to roof when the raven dropped
 down and glided alongside them.
@@ -2048,7 +2050,7 @@ a cesspit can fathom!"
 
 The raven shot ahead and out of sight.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 In the very center of the City of Orphans, there was an open square, and
 in the middle of this square, there was a well. At that moment a toad, a

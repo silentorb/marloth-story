@@ -1,3 +1,5 @@
+# Part 1
+
 Once upon a time, nestled deep within the heart of a nameless city,
 there was an orphanage. Most people would never have taken a second look
 at the building. Perhaps it was because the surrounding buildings
@@ -159,7 +161,7 @@ so that he had to leave the orphanage as little as possible, though
 occasionally he would need to take extended business trips, during which
 a nanny would be brought in to watch the children.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Chores, lessons, and play. As far as the children knew, this was the
 routine they would follow for the rest of their lives. But one day,
@@ -277,7 +279,7 @@ the fireplace.
 grabbed his spade. "Next time I get my hands on a paper like that, he
 won't catch a hint of it!"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The next day, the children were spending the mid afternoon on the
 orphanage roof and watching the goings on of the city around them. The
@@ -438,7 +440,7 @@ book. With her insides turned in knots, she bowed her head in
 resignation and made her way down stairs, leaving the others to their
 talk of toys.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Several days passed, and yet the children made no progress toward
 visiting Jakob Damond's Toye Shoppe. One difficulty was that they were
@@ -466,7 +468,7 @@ and be more wrathful than they had ever experienced before. They had no
 choice but to bide their time and hope for an opportunity to present
 itself.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 It was tradition in the orphanage to spend cold evenings in the living
 room. Against the main wall of the room there was a large fireplace, and
@@ -744,7 +746,7 @@ am more convinced than ever that it is."
 At this, Hurley started to laugh, and before long Tralvorkemen had
 joined him.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James awkwardly climbed the ladder and pushed open the door to the
 attic. He had expected to be greeted by a cloud of dust but instead
@@ -934,7 +936,7 @@ stepped back, gathered the quilt, and left without saying a word.
 
 Catherine watched him go, sat down, and then burst into tears.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The next day, Catherine found James in one of the many corners he
 inhabited, and apologized for her outburst from the previous day. While
@@ -949,7 +951,7 @@ had, she had the unnerving suspicion that his mind had consciously
 blotted the event from his mind, like a white blood cell blots out a
 virus.
 
-\*\*\* It was not uncommon for Mr. Tralvorkemen to spend much of his
+<div class="scene-break">* * *</div> It was not uncommon for Mr. Tralvorkemen to spend much of his
 time in his study, but the day following Doctor Hurley's visit was an
 unusual one in that Mr. Tralvorkemen spent *all* of his time in his
 study, to the point of missing breakfast, lunch, and dinner. The
@@ -1190,7 +1192,7 @@ as Marloth turned from embers to ash. He did not feel the pain of his
 burnt flesh. He did not feel the tears streaming down his face. All he
 felt was emptiness.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Doctor Hurley was quickly brought to the orphanage and James was ushered
 to a facility where he was treated for his burns. He was transferred to
@@ -1291,7 +1293,7 @@ several more months."
 "If you must know, from here on I have but one object in mind: to find
 out who wrote that book."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 No one was more distressed by the fireplace incident than Catherine. The
 other children did not sympathize with her. Before, they had mocked her
@@ -1431,7 +1433,7 @@ orphanage.
 
 "I'm tired of being the good girl."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Over time, the burns healed, leaving only faint scars over James' face
 and arms, but his soul did not fare so well. He withdrew even more from
@@ -1512,7 +1514,7 @@ find a way ... "
 "I don't know. I'll need some time to think ... and gather information.
 I'll let you know when everything is ready."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 They didn't have to wait long. The next day Mr. Tralvorkemen set out on
 a mysterious business trip, leaving the children under the care of a
@@ -2158,7 +2160,7 @@ unceasingly as page after page of story flew from his pen. But finally
 sleep did catch up with him, and he slipped into slumber, his head
 resting atop of the book.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 "Wake up! Wake up! Big things are happening!"
 
@@ -2299,7 +2301,7 @@ forget you." he said at last.
 "Thank you!" said Catherine, and after a few more farewells, she was
 through the gates, into the carriage, and gone.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Tralvorkemen stood in the doorway for a long time, gazing at the closed
 gate that Catherine had disappeared through. The children watched him
@@ -2384,7 +2386,7 @@ better, they are going to get much worse." With that, Tralvorkemen
 disappeared into the twisting hallways, leaving James with the
 impossible idea that things could get any worse.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James felt weak. He wanted to go find his new book, but at the same time
 he was now afraid of it. His lack of sleep, the rush of the morning's
@@ -2392,7 +2394,7 @@ events, and Tralvorkemen's otherworldly speech had sapped all of his
 energy. Dragging himself up the stairs, he limped into the boys' bedroom
 and fell into an exhausted sleep.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 When James finally awoke, the sun was just setting. His first thought
 was that of regret. He liked Mr. Tralvorkemen a lot more after seeing
@@ -2471,7 +2473,7 @@ was the child.
 
 "If you must know," said Nivana. "You're standing on him."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James looked down at the large mound of dirt below him.
 

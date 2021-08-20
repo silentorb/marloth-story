@@ -1,3 +1,5 @@
+# Part 5
+
 *Dear Sir,*
 
 *I thank you for your advice, for it is based on truth, even if its
@@ -16,7 +18,7 @@ and I am weary of being a part of it.*
 
 *Edward Tralvorkemen*
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Their journey to the Great Library involved a lot of falling and
 shouting and plunging into water and scrambling out of water.
@@ -314,7 +316,7 @@ time.
 Fugue. "It looks like the remains of your house will make a wonderful
 campfire!"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Sometime later, the group was gathered around a roaring fire, dining on
 a meal the dolls and Fugue had concocted using what ingredients they
@@ -468,7 +470,7 @@ friends in the City of Orphans, especially Ivy. Here in this dismal
 dungeon of books, with fractured misfits as her only company, she felt
 more isolated from the rest of the world than she had ever before.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The sun did not shine on Deadwick the goblin. The twisted forest he was
 scurrying through was far beyond the reach of daylight. The path he was
@@ -619,7 +621,7 @@ The monkey smiled wickedly. Grabbing hold of a dial on the main control
 panel, he twisted it all the way to the right until it snapped. Red
 warning lights began to flash.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Night descended upon the Library and everyone fell asleep. Everyone,
 that is, except for James. Zombies don't need sleep. They can become
@@ -716,7 +718,7 @@ James feebly rose to his feet.
 "Fine then. Go ahead and follow me." he said, and he threw himself over
 a cliff.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Journal of Dr. Otto Marrechian - Entry \\\#253
 
@@ -763,7 +765,7 @@ and the children will be able to gain entrance into the Library."
 
 "Say *what?*"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The next morning Adelle awoke to find the others already up and about.
 Fugue had managed to hunt down a collection of library flora and fauna
@@ -996,7 +998,7 @@ began to distort like a crinkling tapestry.
 
 "I haven't the slightest idea!" Mr. Mosspuddle shouted back.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 At that same moment, on the roof of Otto Marrechian's laboratory, the
 doctor, Deadwick, and several zombie children were staring at the newly
@@ -1025,7 +1027,7 @@ There was a pause.
 
 "You don't pay me enough for this!"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 After much commotion, the Library slowly settled down to its normal
 state.
@@ -1106,7 +1108,7 @@ mowed down by machine gun fire.
 The raven dropped back to ground level and shouted to the others "What
 are you waiting for? *Run!*"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Adelle ran blindly down one of the rickety pathways of wood that wound
 their way through the Library. Her emotions were turbulently fighting
@@ -1151,7 +1153,7 @@ flew everywhere.
 
 "Come on!" said Bobby, taking her hand. "We've got to keep moving!"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 As the heroes made their way through the Library, one of the dolls
 commented on how nice it was after all this time in the dark to finally
@@ -1197,7 +1199,7 @@ corridor, but they were all deflected by the literary shield.
 
 "This is getting exciting!" said Fugue.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The monkey frowned. The sensors he was observing had dropped several
 points within the past half hour. Something must have happened to weaken
@@ -1209,7 +1211,7 @@ inside, he simply pushed a few buttons and adjusted a few levers. No
 more of this singling out zombies stuff; that could only go so far. It
 was time to pump up the juice for all of them.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Suddenly Bobby stopped and turned toward Adelle. Adelle likewise stopped
 and was puzzled by his sudden concentration on her. "Is everything all
@@ -1244,7 +1246,7 @@ everyone's talking about."
 Bobby looked back at her and gave a reassuring smile. "Let's first get
 you further away from this war zone and then I'll show you everything."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James turned a corner and found himself in a room lined with mirrors.
 Mirrors! James had a lousy track record with those things. He turned to
@@ -1256,7 +1258,7 @@ completely surrounded by glass.
 "I dunno." said his reflection. "I was kind of hoping you were the
 illusion."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The children hurried down one passageway after another and gradually
 left behind any hint of the activity going on in the more central parts
@@ -1343,7 +1345,7 @@ some had even nastier instruments.
 
 Adelle screamed.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Suddenly James froze.
 
@@ -1443,7 +1445,7 @@ James hesitated and then said "Yes, I do."
 "Then go." said Tralvorkemen. "Keep me in front of you and I will do the
 rest."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The monkey dizzily pushed away pieces of debris and put a hand to its
 head, trying to stop the spinning. It had been blown clear across the
@@ -1454,7 +1456,7 @@ The monkey would have investigated, but the sound of voices drew near.
 The monkey pulled itself to its feet and stumbled off. This looked like
 a good time to get out of there.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James ran. He ran faster than he had ever run in his life. He did not
 know his way through the Library, nor could he sense Adelle, and yet he
@@ -1565,7 +1567,7 @@ other hurtled away into the distance, James disappearing far above and
 Adelle disappearing far below into the darkness that quickly enveloped
 her.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Marloth is a most difficult place to map. That is largely due to the
 ambivalent humor of its geography. In Marloth, points in space still
@@ -1600,7 +1602,7 @@ zombie child.
 
 Then she cupped her hands over her mouth to hold back a scream.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 "Yes, I can imagine how fascinating some of these random objects would
 be to you, but we do not have time to stop and look at ...
@@ -1808,7 +1810,7 @@ sane. It could very well be that Adelle is simply an ordinary little
 girl and this world wants to corrupt her simply because it is evil. In
 the end, that is all the reason it needs."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Deadwick sat in one corner, tending to his wounds. The doctor was
 sitting at his desk looking over a pile of notes and mechanical devices.
@@ -1861,7 +1863,7 @@ and with little fuss. This is my home we're talking about, and I'd like
 to avoid walls getting blown up and bullets shooting out of the floor
 below me."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James looked around him. Everything was fuzzy and unnaturally bright, as
 if the room itself was glistening. As his vision began to come into
@@ -2009,7 +2011,7 @@ a past you never knew you had."
 
 And then everything blurred.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James sat up dizzily and looked around. He was in a cave. Mr. Mosspuddle
 was sitting nearby, surrounded by open books and shifting his gaze from
@@ -2131,7 +2133,7 @@ embrace that idea. He was still being driven forward by the guilt of his
 mistakes. No matter how hard he tried, he could not shake the feeling
 that somehow this entire fallen world was his fault.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 When Adelle met up with the dolls, they were busy organizing the debris
 into different piles and from these piles constructing some form of
@@ -2249,7 +2251,7 @@ done more to be certain of that. She was sure there were more questions
 she could have asked. For the first time she felt her heart longing to
 return to the castle and secure her mother's love for her.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Eventually it began to rain and James returned to the cave. He found Mr.
 Mosspuddle and Fugue much as he had left them.
@@ -2566,7 +2568,7 @@ his book of fairytales would be so adamant about reality."
 "I believe the fairytales are real and the world is a fairytale." said
 James. "Naturally, the world wants me mad."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Ivy was growing increasingly upset. Not a single boy had yet asked her
 to the ball. Normally she was having to turn them down right and left.
@@ -2592,7 +2594,7 @@ could be, and discussing those theories seemed to be the great new
 pastime for everyone in the City. Ivy was sick of it! Even her mother
 could talk of little else than retrieving Adelle to the Manor.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The next morning Adelle arose early and walked along the beach. The sun
 was just rising and a few of its rays managed to cut through the clouds.
@@ -2722,7 +2724,7 @@ went, he said one thing more.
 "There are things even I fear," he said to her. "Your toymaker is one of
 them."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 While the Lady Mediev was attending a formal evening party she happened
 upon Jakob Damond. He was holding a glass of wine in one hand and
@@ -2789,7 +2791,7 @@ their undoing."
 "No. What they need is self-confidence. And that is a need we are going
 to fill."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Once again, the lair of Doctor Otto Marrechian found a monkey sneaking
 into its core and tinkering with the recently repaired zombie machine.

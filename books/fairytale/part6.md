@@ -1,3 +1,5 @@
+# Part 6
+
 *Dear Sir,*
 
 *It has come to my attention that you are still alive. I must say, that
@@ -19,7 +21,7 @@ one.*
 
 *Jakob Damond*
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Deep within the farthest reaches of the most devious of minds, there was
 a room. It was a narrow, dingy room, with a tall ceiling and only the
@@ -122,7 +124,7 @@ upon James."
 circumstances. I don't like it. The sooner we leave this case behind us,
 the better."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 With the departure of the doctor, the room was once again dark. As James
 sat there, he noticed something different about the adjacent wall.
@@ -768,7 +770,7 @@ gates had already closed.
 
 A monkey handed him a ticket and scurried onto the train.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The first stage of their train ride was very quiet. The band of weary
 adventurers had found an empty car near the back of the train, and there
@@ -936,7 +938,7 @@ most."
 
 That went right over James' head.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 As the days passed and the public frenzy to know Princess Adelle's
 whereabouts increased, so did Ivy's jealousy. And her outspokenness. The
@@ -964,7 +966,7 @@ rules. It's time you started playing by mine."
 respective positions and leave Adelle carrying all the jealousy she left
 you to bear."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The band of adventurers arrived in the City on the eve of the ball. At
 the train station, Mr. Mosspuddle procured a coach as a discreet and
@@ -1153,7 +1155,7 @@ today. It must be due to my extra reading while we were on the train. I
 should be good for a long while. I'll go right now with Adelle and read
 up on Marloth when we get back."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Evening came and the two children set off for the Globe. That was where
 most everyone was going. It was one of the largest buildings in the
@@ -1422,7 +1424,7 @@ Slowly, he went to return to the inn. But before he left he looked back
 and said, "They would have said it was too late for me. But it wasn't.
 It's never too late."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Adelle rushed blindly forward, her emotions tearing her apart from the
 inside out. She felt so inadequate. And she felt so jealous of Ivy.
@@ -1446,7 +1448,7 @@ more upon her head.
 
 That's when she made up her mind. She knew what she had to do.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 When James returned to where he had left the inn, it wasn't there
 anymore. "Drat." James said to himself. It had moved again. He didn't
@@ -1455,7 +1457,7 @@ have time for this!
 With no methodical option available, he began to randomly race about the
 City in the hope of catching a glimpse of the inn.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Confused and tired, Ivy returned home. Phyllis and Loury were supposed
 to be there, but they had snuck out to the Ball. All the servants seemed
@@ -1509,7 +1511,7 @@ have any backbone."
 
 Ivy screamed in frustration and stormed out of the room.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James was at his wits end. He had been running about the City of Orphans
 for what felt like hours. He was getting nowhere, but he didn't know
@@ -1570,7 +1572,7 @@ to Otto's lair."
 
 "Then to the Globe it is." said James.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 At that moment, on the edge of the building that was both laboratory and
 factory, both the center of research and industry, Mr. Mosspuddle was
@@ -1672,7 +1674,7 @@ librarian. That life is behind me now."
 motioned toward the children standing in the doorway. "Get him out of my
 sight! And then silence him for good! Silence the lot of them!"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 As James and Ivy were heading toward the Globe, the raven dropped down
 from the sky and rested beside them. He looked sullen. So sullen in
@@ -1726,7 +1728,7 @@ her to the Globe."
 The raven grumbled low enough to avoid being understood and followed
 after them.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 There was a knock at the door of Otto Marrechian's fortress. Which was a
 bit awkward because the door was boarded up. But the children didn't
@@ -1771,7 +1773,7 @@ younger."
 "I did not come to listen to the Great Otto Marrechian babble. I have a
 job for you ... "
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 When Ivy returned to the Globe, the party was still in full swing. No
 one seemed to pay attention to the zombie boy and raven trailing behind
@@ -1825,7 +1827,7 @@ She paused for a moment in consideration, thanked the raven again, and
 moved down the passageway. The raven cringed inside. His job was getting
 harder. It had been easier when everyone had just hated him.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 For a moment that felt like years, James was surrounded by flashes of
 color and sound. The next moment he was standing in the basement of Otto
@@ -1872,7 +1874,7 @@ been Adelle. Her aura had been warm and comforting. This felt cold and
 malicious. James chose his path carefully. Whatever it was he was
 sensing, he wanted to avoid it.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 "What?" said the doctor. "But that will make everything so much more
 difficult! Not to say that your request is a new idea for me---I have
@@ -1909,7 +1911,7 @@ later."
 
 "Yes, your majesty."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James had not realized how big the factory really was. It was a fiendish
 labyrinth of twists and additions that spit in the face of geometry. The
@@ -1980,7 +1982,7 @@ study. It was on his desk."
 
 "Follow me."
 
-\*\*\* Mr. Mosspuddle continued to examine their predicament. He, Fugue,
+<div class="scene-break">* * *</div> Mr. Mosspuddle continued to examine their predicament. He, Fugue,
 the dolls, and Miss Bethany were stranded on a narrow plateau of marble
 rising high above the clouds.
 
@@ -2033,7 +2035,7 @@ brilliant!"
 
 "Yes," said Fugue. "This is going to take forever."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Deadwick was receiving more and more reports of fights breaking out
 around the factory. A fight every now and then was nothing remarkable
@@ -2083,7 +2085,7 @@ probably appreciate it."
 
 "No way! I'm not going anywhere near her!"
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James peered around the doorway into Otto's study. There was no one in
 sight. He motioned to the raven and they ducked inside. The raven landed
@@ -2150,7 +2152,7 @@ here to rescue the princess."
 
 "At the moment? Probably dying."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 Adelle could not believe how disorganized the laboratory was. Children
 were running everywhere and she could not get a straight answer from any
@@ -2191,7 +2193,7 @@ wistfully.
 
 "I want him to do it."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James was in a quandary. As he was in the midst of madly dodging the
 pursuit of one zombie child after another, he was at the same time
@@ -2406,7 +2408,7 @@ familiar with. Throughout her childhood she had heard so many
 fairytales. Now for the first time she began to read where they had come
 from.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 On a distant cliff a man was looking out over Marloth. The raven flew up
 and landed beside him.
@@ -2442,7 +2444,7 @@ her, and she'll play right into his hands! It's too late now!"
 
 Again the man looked gravely at the raven. "It's never too late."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 When Deadwick returned to where he had left the doctor, he found him
 searching the debris frantically.
@@ -3000,7 +3002,7 @@ There was a long pause, and then the raven spoke,
 
 "What princess? I don't see any princess. All I see is a queen."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 The forces of darkness continued to search for the princess, but they
 could not find her. The leaders of the forces began to speculate that
@@ -3089,7 +3091,7 @@ felt guilty the way her blood and tears were dripping onto the pages.
 Before long the loss of blood finally caught up with her and she
 collapsed beside James.
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 *Dear Sir,*
 
@@ -3113,7 +3115,7 @@ be restored.*
 
 *Edward Tralvorkemen*
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 James groggily opened his eyes and looked around. He had just been
 dreaming he was in the orphanage infirmary, and Mr. Tralvorkemen was
@@ -3149,7 +3151,7 @@ destroyed! How are you still moving?"
 can feel his enchantment working through me stronger than ever before.
 He's *here*."
 
-\*\*\*
+<div class="scene-break">* * *</div>
 
 I would like now to paint a picture for you. A slowly moving picture.
 First, there is a room. A huge room with ceilings so high that you have
@@ -3289,4 +3291,8 @@ something like, "Don't worry. We'll meet again."
 
 And then they awoke.
 
+<div style="height: 5%"></div>
+
+<div class="centered-text">
 The End
+</div>
