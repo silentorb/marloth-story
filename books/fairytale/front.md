@@ -1,7 +1,3 @@
-<img src="file://src/assets/images/fairytale/cover.jpg" alt="Marloth"/>
-
-<div class="page-break"></div>
-
 <div style="height: 10%"></div>
 
 <img class="centered-image" src="file://src/assets/images/fairytale/title.png" alt="Marloth"/>
@@ -29,7 +25,7 @@ It's about your own world creating you.
 <p>
 <div>Marloth</div>
 <div>A Child's Fairytale World</div>
-<div>Version 2.0.0 - May 2, 2021</div>
+<div>Version 2.0.0</div>
 </p>
 
 <p>
@@ -45,5 +41,6 @@ It's about your own world creating you.
 <div>Martha Johnson</div>
 </p>
 
-All rights reserved. This publication may not be reproduced, stored in a retrieval system, or transmitted, in any form or by any means, electronic, mechanical, photocopying, recording or otherwise without the prior permission of Silent Orb.
+This book is published under a CC BY-NC-ND 4.0 license, which means that you can copy and redistribute the material in any medium or format, for non-commercial use only, as long as you give appropriate credit, provide a link to the license, and you do not remix, transform, or build upon the material. License details: https://creativecommons.org/licenses/by-nc-nd/4.0/
+
 </div>

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/ts-node ../src/make-epub",
-    "mobi": "ebook-convert output/fairytale/marloth.epub output/fairytale/marloth.mobi"
+    "kindle": "ebook-convert output/fairytale/marloth.epub output/fairytale/marloth.azw3"
   },
   "private": true,
   "dependencies": {

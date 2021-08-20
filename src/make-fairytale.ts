@@ -13,7 +13,13 @@ function newPart(index: number): Chapter {
 function fairytaleContent() {
   return renderBook({
     id: 'fairytale',
-    chapters:[
+    chapters: [
+      {
+        title: `Cover`,
+        elements: [
+          contentElement('cover'),
+        ]
+      },
       {
         title: `Marloth: A Child's Fairytale World`,
         elements: [
@@ -58,6 +64,18 @@ export function fairytaleBook() {
     appendChapterTitles: false,
     metadata: [
       ['dc:subject', 'Fantasy fiction']
+    ],
+    guide: [
+      {
+        type:'toc',
+        title: 'Contents',
+        href:'2_contents.xhtml'
+      },
+      {
+        type:'cover',
+        title: 'Cover',
+        href:'0_cover.xhtml'
+      },
     ],
   }
 }
