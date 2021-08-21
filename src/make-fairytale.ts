@@ -16,8 +16,16 @@ function fairytaleContent() {
     chapters: [
       {
         title: `Cover`,
+        excludeFromToc: true,
         elements: [
           contentElement('cover'),
+        ]
+      },
+      {
+        title: `door1`,
+        excludeFromToc: true,
+        elements: [
+          contentElement('door1'),
         ]
       },
       {
@@ -39,7 +47,15 @@ function fairytaleContent() {
         ]
       }
     ]
-      .concat([1, 2, 3, 4, 5, 6].map(newPart))
+      .concat([1, 2, 3, 4, 5, 6].map(newPart)).concat([
+        {
+          title: `back`,
+          excludeFromToc: true,
+          elements: [
+            contentElement('back'),
+          ]
+        },
+      ])
   })
 }
 
@@ -67,14 +83,14 @@ export function fairytaleBook() {
     ],
     guide: [
       {
-        type:'toc',
+        type: 'toc',
         title: 'Contents',
-        href:'2_contents.xhtml'
+        href: '2_contents.xhtml'
       },
       {
-        type:'cover',
+        type: 'cover',
         title: 'Cover',
-        href:'0_cover.xhtml'
+        href: '0_cover.xhtml'
       },
     ],
   }

@@ -44,6 +44,10 @@ body {
     font-family: 'Carleton', serif;
 }
 
+.small-font {
+    font-size: 80%;
+}
+
 .page-break {
     page-break-after: always;
 }

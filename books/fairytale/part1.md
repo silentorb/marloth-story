@@ -602,13 +602,13 @@ Tralvorkemen assured him he had.
 have no official location for my work. I am scattered between multiple
 practices and none of them see fit to provide me an entire room for my
 labors. Instead I am forced to share space with others, most of whom
-know nothing about order."
+know nothing of order."
 
 "Perhaps if you focused more on a single field you would have more
 resources at your disposal."
 
-"But that is my main strength! My knowledge of one science helps me in
-my pursuit of another. For example, one of my colleagues is a
+"But diversity is my main strength! My knowledge of one science helps me in
+the pursuit of another. For example, one of my colleagues is a
 psychiatrist who is studying electrical impulses in the brain. But he's
 a psychiatrist, not an electrician. As for me, I am both! Thus, he is
 continually coming to me for explanations on the nature of electricity,
@@ -654,7 +654,7 @@ symptoms?"
 
 "The medication is definitely not the problem! He was exhibiting that
 behavior before I gave him a single dose! And for a time the symptoms
-subsided. All of the evidence points to the medication being
+subsided. All of the evidence points to the medicine being
 beneficial."
 
 "I'm not sure I fully agree with you, but I will hear you out. Let's say
@@ -684,7 +684,7 @@ forced to close another outlet."
 consider a new direction."
 
 "But that can't be the answer! Whoever is perpetrating these crimes must
-be stopped! Do the authorities have any clue as to who is behind it?"
+be stopped! Do the authorities have any clue who is behind it?"
 
 "No. I do not think there is much they can do."
 
@@ -808,7 +808,7 @@ Catherine shrieked and nearly knocked over the stool she was sitting on.
 outburst and keep her voice down. Her powdered face was now quite red.
 
 "Are there people on the other side of that mirror?" asked James, who
-had stepped closer to the glass and was examining it curiously.
+had stepped closer to the glass and examining it curiously.
 
 Catherine covered her face in exasperation. "Of course not! I was just
 ... "
@@ -882,7 +882,7 @@ wished James would pay her more attention, but she needed to be a lady
 and treat James with respect even if he didn't respect anyone else. And
 despite his total lack of social skills, he was one of the closest
 things to an ally she had in this place. Perhaps he could help her with
-some other things she had been weighed down with.
+other things weighing her down.
 
 "James, there's something I've been thinking about, and you may be the
 only person who would understand. It's about Mr. Tralvorkemen. I know
@@ -948,10 +948,12 @@ remember much of the conversation. This was hard for Catherine to hear,
 but she said she understood and did her best to continue on with her
 day. She was not sure whether or not he had really forgotten, but if he
 had, she had the unnerving suspicion that his mind had consciously
-blotted the event from his mind, like a white blood cell blots out a
+blotted the event from his mind, like a white blood cell blotting out a
 virus.
 
-<div class="scene-break">* * *</div> It was not uncommon for Mr. Tralvorkemen to spend much of his
+<div class="scene-break">* * *</div>
+
+It was not uncommon for Mr. Tralvorkemen to spend much of his
 time in his study, but the day following Doctor Hurley's visit was an
 unusual one in that Mr. Tralvorkemen spent *all* of his time in his
 study, to the point of missing breakfast, lunch, and dinner. The
@@ -1326,7 +1328,7 @@ it a single piece of paper on which was written the following:
 
 *Why is your heart so sad, little girl?*
 
-Jakob Damond
+*Jakob Damond*
 
 She looked up in puzzlement. "How am I to respond to such a letter?" she
 asked, looking at the monkey but addressing no one in particular. "I can
@@ -1353,19 +1355,19 @@ she quickly tore it open and examined the paper inside. This one had far
 more words than the previous paper, and it took her much longer to make
 any sense of it. The letter went something like this:
 
-I know how you must feel. I too am frequently misunderstood. So often I
+*I know how you must feel. I too am frequently misunderstood. So often I
 try to help people and in return they slander me. All I want to do is
-make the world a better place.
+make the world a better place.*
 
-If you came to my toyshop I could solve all your problems. I have toys
+*If you came to my toyshop I could solve all your problems. I have toys
 that would cause your friends to love you and Mr. Tralvorkemen to
 respect you. Right now you are a child, and will be for ever so long,
 but I could make you a Lady right now, so that you would have all the
 wisdom, admiration, and pleasures that adults experience. Unfortunately,
 I have heard that your headmaster has forbidden you from visiting any
-toyshop, so I guess there is nothing I can do for you.
+toyshop, so I guess there is nothing I can do for you.*
 
-Jakob Damond
+*Jakob Damond*
 
 She did not know what all the words meant, but she understood enough to
 see that the headmaster's commands were in question. Without thinking,
@@ -1379,18 +1381,18 @@ from the wall, reached into the bag slung over its shoulder, and handed
 Catherine yet another letter. Catherine looked and behold, like the ones
 before it, this letter was also addressed to her.
 
-Ah, I think I understand what is going on. There are many people who are
+*Ah, I think I understand what is going on. There are many people who are
 envious of my magical goods, and it sounds like your headmaster has
 heard some of the lies these people spread to spite me. I fear your
 headmaster is sadly misinformed as to my character. I want to help him
-by helping you.
+by helping you.*
 
-The fact of the matter is that your headmaster has never actually seen
+*The fact of the matter is that your headmaster has never actually seen
 my toys. If you were to acquire one of them and bring it back to the
 orphanage, he would be so amazed by it and so enraptured by you through
-its influence that he would never even think about punishing you.
+its influence that he would never even think about punishing you.*
 
-Jakob Damond
+*Jakob Damond*
 
 Along with the letter there was another piece of paper in the envelope.
 A colorful one. She took it out and found herself staring at a second
@@ -1407,12 +1409,12 @@ when the monkey once more dropped down and handed her another letter.
 She didn't even bother checking to see who it was addressed to before
 opening it.
 
-Believe me, the headmaster and I both have your best interest at heart.
+*Believe me, the headmaster and I both have your best interest at heart.
 I am not forcing you to do anything. Whether or not you accept my offer
 is the difference between everyone being miserable, and everyone being
-happy. The choice is yours.
+happy. The choice is yours.*
 
-Jakob Damond
+*Jakob Damond*
 
 When Catherine had finished reading the letter and looked up, the monkey
 was gone. She stood there for some time after that, staring at the pile

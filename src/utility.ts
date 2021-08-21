@@ -58,10 +58,13 @@ export interface EpubChapter {
 
 export const renderChapter = (book: string) => (chapter: Chapter): EpubChapter => {
   const data = chapter.elements.map(renderContentElement(book)).join('\n')
-  return {
-    title: chapter.title,
+  const result = {
+    ...chapter,
     data,
-  }
+  } as any
+
+  delete result.elements
+  return result
 }
 
 export interface BookInput {
