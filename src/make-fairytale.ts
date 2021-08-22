@@ -79,7 +79,9 @@ export function fairytaleBook() {
     verbose: true,
     appendChapterTitles: false,
     metadata: [
-      ['dc:subject', 'Fantasy fiction']
+      ['dc:subject', 'Fantasy fiction'],
+      ['dc:subject', 'Gothic fiction'],
+      ['dc:subject', 'Horror tales'],
     ],
     guide: [
       {

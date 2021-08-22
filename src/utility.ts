@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import { transformContent } from './formatting'
+import { postTransformContent, preTransformContent, } from './formatting'
 
 const marked = require('marked')
 
@@ -13,8 +13,8 @@ export function loadAdornment(filePath: string): string {
 
 export function loadContent(filePath: string): string {
   const input = loadTextFile('books/' + filePath)
-  const transformed = transformContent(input)
-  return marked(transformed)
+  const transformed = preTransformContent(input)
+  return postTransformContent(marked(transformed))
 }
 
 export enum ElementType {

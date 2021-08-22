@@ -15,7 +15,7 @@ In one of the tallest towers was the bedroom of a little girl.  Her name
 was Adelle.  She was oblivious to the hatred and anguish that had
 engulfed the land.  As she looked out of her window, all she saw was
 mystery and excitement.  The world seemed to be beckoning to her.  And
-in fact, it was...
+in fact, it was ...
 
 Every night, Adelle's mother would come to put her to bed and tell her a
 bedtime story.  She would tell her about heroes and princesses and wars

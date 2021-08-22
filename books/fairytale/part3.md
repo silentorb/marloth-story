@@ -22,7 +22,7 @@ As two of the men set out to procure a stretcher, the doctor noticed
 something lying on the ground beside the boy. It was a book. Without
 anyone noticing, the doctor took the object and tucked it into his coat.
 
-A stretcher was soon brought forward.  Before long, James was being carried
+A stretcher was soon brought forward. Before long, James was being carried
 out of the yard and onto the street. In the middle of the street was a
 carriage with two men standing beside it. The stretcher, Doctor Hurley,
 and one other man somehow were squeezed into the carriage. As the
@@ -32,6 +32,8 @@ in danger.
 
 "Don't worry about a thing." said the doctor to James. "We're taking you
 to a place where you can leave all of the pain and confusion behind."
+
+* * *
 
 Deep within the farthest reaches of the most devious of minds, there was
 a room. It was a narrow, dingy room with a tall ceiling. Its only source
@@ -135,156 +137,156 @@ distance, so thick with echoes as to make it unintelligible. Before
 the door had closed behind them, the green had completely enveloped the
 place, and then faded into nothing.
 
-<div class="scene-break">* * *</div>
+* * *
 
-Adelle opened her eyes and looked about her. It was so bright she was
+*Adelle opened her eyes and looked about her. It was so bright she was
 nearly blinded. The sun was filling the sky with golden light. She
 squinted to the east, where the sun was already setting. Or was it the
 moon? The color of the sky kept shifting; she could not tell if it was
-morning or evening.
+morning or evening.*
 
-She stretched out on her bed and tried to focus on the sky above her.
+*She stretched out on her bed and tried to focus on the sky above her.
 That was funny---she had never been able to see the sky from her bedroom
 before. And what was more, her bedroom had never been so unstable. Her
-bed was rocking back and forth.
+bed was rocking back and forth.*
 
-"Ahoy Matey!" shouted Samantha.
+*"Ahoy Matey!" shouted Samantha.*
 
-Adelle sat up in surprise. The dolls were there on her bed! And the bed,
+*Adelle sat up in surprise. The dolls were there on her bed! And the bed,
 as it turned out, was in the middle of the sea. Suddenly, every muscle
-in her body tensed and she clung to the mattress for dear life.
+in her body tensed and she clung to the mattress for dear life.*
 
-"Samantha!" Miss Perrywinkle scolded. "You speak as though you were a
-primitive!"
+*"Samantha!" Miss Perrywinkle scolded. "You speak as though you were a
+primitive!"*
 
-"But that's the sort of thing one is supposed to say when one is out at
-sea." said Samantha. "I even read it in a book once."
+*"But that's the sort of thing one is supposed to say when one is out at
+sea." said Samantha. "I even read it in a book once."*
 
-"You're making things up again!" said Miss Perrywinkle.
+*"You're making things up again!" said Miss Perrywinkle.*
 
-"Well if you don't believe me, look at this! The book is right here!"
+*"Well if you don't believe me, look at this! The book is right here!"*
 
-The doll reached over the edge of the bed and pulled a book out of the
-water.
+*The doll reached over the edge of the bed and pulled a book out of the
+water.*
 
-"Now that's what I call a coincidence!" said Miss Perrywinkle, taking
-the book.
+*"Now that's what I call a coincidence!" said Miss Perrywinkle, taking
+the book.*
 
-"Not really." said Samantha. "Probably just about every book must be out
-here."
+*"Not really." said Samantha. "Probably just about every book must be out
+here."*
 
-And she may have been right. The sea was strewn with hundreds of books,
-casually floating along the surface.
+*And she may have been right. The sea was strewn with hundreds of books,
+casually floating along the surface.*
 
-"What are we doing here?" Adelle said with a strong pitch of urgency.
+*"What are we doing here?" Adelle said with a strong pitch of urgency.*
 
-"What do you think?" said Samantha. "We're sailing!"
+*"What do you think?" said Samantha. "We're sailing!"*
 
-"But where's my bedroom? Where is the castle?"
+*"But where's my bedroom? Where is the castle?"*
 
-"It's hard to say." said Mrs. Gingersmile, who was baiting a fishing rod
-with a candy cane. "I think it exploded."
+*"It's hard to say." said Mrs. Gingersmile, who was baiting a fishing rod
+with a candy cane. "I think it exploded."*
 
-"We're very fortunate really." said Miss Perrywinkle. "It's a miracle
-that we are safe."
+*"We're very fortunate really." said Miss Perrywinkle. "It's a miracle
+we are all safe."*
 
-"Safe?" said Adelle. She was staring at the water suspiciously. Or was
+*"Safe?" said Adelle. She was staring at the water suspiciously. Or was
 it water? The more she looked at the stuff, the less it looked like
-water. It was too wispy and rose up and down too much.
+water. It was too wispy and rose up and down too much.*
 
-"Are we in the sea, or are we floating on the clouds?" asked Adelle.
+*"Are we in the sea, or are we floating on the clouds?" asked Adelle.*
 
-"I'll go with both." said Samantha.
+*"I'll go with both." said Samantha.*
 
-Adelle gathered her courage and reached her hand into the water. It was
+*Adelle gathered her courage and reached her hand into the water. It was
 the strangest sensation. It was too thick to be clouds. She cupped her
 hands and was able to lift some of it into her bed. Yet it was too light
 to be water. Most of the stuff was caught in the breeze and blown from
 her hand, and yet even as it was dissipating through the air, it still
-caught the sunlight and glittered just as water would.
+caught the sunlight and glittered just as water would.*
 
-Miss Perrywinkle closed the book and waved it at Samantha. "I can't find
-any passage in this book that talks about the sea!"
+*Miss Perrywinkle closed the book and waved it at Samantha. "I can't find
+any passage in this book that talks about the sea!"*
 
-"I'll show you!" said Samantha, taking the book and sitting beside her.
+*"I'll show you!" said Samantha, taking the book and sitting beside her.*
 
-"Look, the swan is back!" said Mrs. Gingersmile.
+*"Look, the swan is back!" said Mrs. Gingersmile.*
 
-As she spoke, the swan glided toward them and landed in the cloud water
-beside the bed.
+*As she spoke, the swan glided toward them and landed in the cloud water
+beside the bed.*
 
-"Ah, she's awake!" said the swan. "It was about time. I was beginning to
-wonder if she was under a spell."
+*"Ah, she's awake!" said the swan. "It was about time. I was beginning to
+wonder if she was under a spell."*
 
-"No spells." said Mrs. Gingersmile. "What did you see? Any sign of
-land?"
+*"No spells." said Mrs. Gingersmile. "What did you see? Any sign of
+land?"*
 
-"No. I saw no land. But I did come across a few people here and there."
+*"No. I saw no land. But I did come across a few people here and there."*
 
-"Anyone interesting?"
+*"Anyone interesting?"*
 
-"All interesting. Downright mad, for the most part. As are most
-people outside of the castle."
+*"All interesting. Downright mad, for the most part. As are most
+people outside of the castle."*
 
-"But we're outside of the castle!"
+*"But we're outside of the castle!"*
 
-"Ah yes. That is why I said *most people*. We, of course, are the exception."
+*"Ah yes. That is why I said *most* people. We, of course, are the exception."*
 
-"But that's ridiculous!" said Adelle. "If that were so, then the castle
-would be like an asylum turned inside out!"
+*"But that's ridiculous!" said Adelle. "If that were so, then the castle
+would be like an asylum turned inside out!"*
 
-"And it is, dear.  Most everyone inside the castle is civilized and sane."
+*"And it is, dear. Most everyone inside the castle is civilized and sane."*
 
-"*Most everyone?*" said Miss Perrywinkle.  Are you suggesting there are mad people inside the castle?"
+*"*Most everyone?*" said Miss Perrywinkle. Are you suggesting there are mad people *inside* the castle?"*
 
-"Only a few.  The king is probably mad.  They usually are."
+*"Only a few. The king is probably mad. They usually are."*
 
-"Come to think of it, there was that zombie child." said Mrs. Gingersmile.
-"He was inside the castle, and he was clearly mad."
+*"Come to think of it, there was that zombie child." said Mrs. Gingersmile.
+"He was inside the castle, and he was clearly mad."*
 
-"What zombie---" Adelle began, but was cut off by Samantha.
+*"What zombie---" Adelle began, but was cut off by Samantha.*
 
-"Look!" she said. "There's a toad out there!"
+*"Look!" she said. "There's a toad out there!"*
 
-Sure enough, a toad wearing a tweed jacket and thick glasses was
+*Sure enough, a toad wearing a tweed jacket and thick glasses was
 swimming about the sea of clouds, feverishly collecting the books and
 piling them onto a small desk that was likewise floating in the water.
 The pile was already several yards tall, and was swaying about
-precariously.
+precariously.*
 
-"A toad! I'm sure he would be fun to converse with!" said Miss
+*"A toad! I'm sure he would be fun to converse with!" said Miss
 Perrywinkle. "Say, Mr. Toad!" she called out. "Why don't you tarry a bit
-and relate to us your business!"
+and relate to us your business!"*
 
-The toad looked up for a moment with a slightly startled expression and
+*The toad looked up for a moment with a slightly startled expression and
 then went back to his work, muttering something derogatory about a bed
-full of women.
+full of women.*
 
-"Never mind then." said Miss Perrywinkle. "Clearly he has no manners."
+*"Never mind then." said Miss Perrywinkle. "Clearly he has no manners."*
 
-"Here it is!" said Samantha, pointing at the open book. "Here's the
-passage about the sea! See right here? The doll says 'Ahoy mate!'"
+*"Here it is!" said Samantha, pointing at the open book. "Here's the
+passage about the sea! See right here? The doll says 'Ahoy mate!'"*
 
-Miss Perrywinkle looked at the book. "You're right! She does say 'Ahoy
-mate!'"
+*Miss Perrywinkle looked at the book. "You're right! She does say 'Ahoy
+mate!'"*
 
-"And see here? She says it again!" said Samantha. "And then another doll
-says it on the next line!"
+*"And see here? She says it again!" said Samantha. "And then another doll
+says it on the next line!"*
 
-"Well." said Miss Perrywinkle. "You're a good deal sharper than I give
-you credit for."
+*"Well." said Miss Perrywinkle. "You're a good deal sharper than I give
+you credit for."*
 
-Adelle leaned over their shoulders and looked at the book curiously. It
-looked familiar.
+*Adelle leaned over their shoulders and looked at the book curiously. It
+looked familiar.*
 
 The clock struck 10 o'clock. The nurse promptly closed the book. Her
 break was over and it was time for her to make her rounds among the
 patients.
 
-<div class="scene-break">* * *</div>
+* * *
 
 James groggily opened his eyes as best he could, but his vision was too
-dark and blurred to make anything out. He tried to move, but he could
+dim and blurred to make anything out. He tried to move, but he could
 hardly feel the rest of his body. He suspected that he was in a bed. Not
 the nicest bed he had slept on, but he was in no condition to care.
 
@@ -358,8 +360,9 @@ most people had been trying to achieve the opposite.
 
 "Thank you." said the doctor, and then he left James to himself.
 
-<div class="scene-break">* * *</div>
+* * *
 
+<i>
 Somewhere in the swirling mists of Marloth, just at the crest of a
 setting sun, there was a bed, floating along the clouds as though it
 were on the sea. It was an elegant bed, with golden posts rising from
@@ -413,7 +416,7 @@ to no one in particular, and then motioned for the coachman to continue
 on his way.
 
 A few zombie children swam out to the bed, but were eaten by alligators
-before they could reach it.
+before they could reach it.</i>
 
 The nurse flipped back several pages and looked at what she had read the
 evening before. That was strange, from the best she could tell he had
@@ -422,7 +425,7 @@ heard the doctor approaching and she was sure he would not be happy if
 he found her reading that book. Besides, it was almost time for her
 rounds again.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The tragedy of Life. Everyone, at one point or another, is dropped in
 the middle of it. They all try to cope with it one way or another. The
@@ -485,11 +488,11 @@ and into a more beautiful world.
 "I used to hate working here. This is not the place for the hopeful
 cases. This is not the place people come to get better. Many of our
 patients are violent, or shout perverse and horrible things to me. We
-have patients who are in constant torment, and there is so little I can
-do to help. And much of what the doctors do, and require me to do, has
+have patients who are in constant torment, and there is little I can
+do for them. And much of what the doctors do, and require me to do, has
 greatly troubled my heart. I fear we are more villain than healer. If I
 could have left, I would have, but times were hard and I had nowhere to
-go. So I stayed, all the while cursing my existence. Until the day you
+go. So I stayed, all the while hating my existence. Until the day you
 left. That day changed my life."
 
 Then she checked herself and smiled reassuringly at James. "Not to say
@@ -531,7 +534,7 @@ smiled again.
 "We could use more men like that in this world." she said, and then
 closed the door behind her.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Somewhere in the City of Orphans there was an open square. In the middle
 of the square, there was a bed. In the middle of the bed there was a
@@ -969,7 +972,7 @@ inside and take her captive!
 But he didn't. Instead, he set off down the street, wondering why in the
 world he was doing it.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The Mediev Manor was not far from the Theatre, and this was where they
 eventually stopped for the night. It was agreed that it was too late to
@@ -1019,7 +1022,7 @@ Adelle and made her even more nervous about the next morning. When she
 finally did fall asleep she had humiliating dreams of what her first day
 of school would be like.
 
-<div class="scene-break">* * *</div>
+* * *
 
 In a back corner of a seedy bar somewhere within the City of Orphans,
 Deadwick the goblin was waiting for one of his many informants. Time
@@ -1133,7 +1136,7 @@ her own. It was very entertaining."
 out of sight, leaving behind for a few seconds longer the sound of
 slurping alcohol.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Doctor Hurley entered the medical room to find the nurse curled in a
 chair by the operating table, her attention wrapped up in a book. He no
@@ -1223,7 +1226,7 @@ She grabbed the tray of medical instruments and hurried for the door.
 
 "I fear the madness has already returned!"
 
-<div class="scene-break">* * *</div>
+* * *
 
 James sat up and looked around. He thought he'd heard something.
 
@@ -1308,7 +1311,7 @@ apron to tend to his bleeding. The medication worked quickly. By the
 time she had turned to his wounds and was bandaging them, he was already
 fine. He no longer felt the pain. He no longer cared.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Adelle awoke the next morning with much apprehension. Today was her
 first day of school. It was not in a completely official capacity; she
@@ -1464,7 +1467,7 @@ slang?"
 
 "Right now we have class." Ivy said as they stepped into the classroom.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Adelle was having a difficult time concentrating on the different
 classes she was in. She had heard much from the other students, and the
@@ -1528,7 +1531,7 @@ hope you enjoy the lesson."
 The teacher resumed his lecture and Adelle was left staring at him in
 amazement.
 
-<div class="scene-break">* * *</div>
+* * *
 
 After school Ivy and Adelle hit the town to engage in some much needed
 shopping. While Adelle did not have any money, Ivy attempted to explain
@@ -1618,7 +1621,7 @@ the Globe was raised to full power it provided light for the entire
 City. And what was more, Adelle learned that the Ball was only a handful
 of weeks away. She could hardly wait!
 
-<div class="scene-break">* * *</div>
+* * *
 
 Never before had the nurse looked forward to her breaks between rounds
 as she did now. She was finding herself morbidly fascinated by the book
@@ -1746,7 +1749,7 @@ anything, but he took the object and held it close to him.
 
 "Fugue." said James.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The next day of school went much more steadily. While Adelle still saw
 much of the Lady Mediev, the woman was no longer hovering over her as
@@ -1897,7 +1900,7 @@ The toymaker laughed again and said he had no idea what he had been
 thinking of. After thanking him for all of his encouragement and the use
 of his carriage, Adelle entered the house.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Ivy returned that evening looking very cheerful. It was not long after
 her arrival that Adelle and the rest of the Mediev household sat down at
@@ -1917,7 +1920,7 @@ repertoire and practicing it. The Lady had a number of vocal instructors
 under her employ and knew of just the one for Adelle. Her training would
 begin on the morrow.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The problem that faces doctors in a mental institution was the same
 problem that faces doctors in any other medical field: if there is
@@ -1981,7 +1984,7 @@ path of least resistance. Before the doctor left, James told him that he
 would be ready for the examination, and thanked him for his miraculous
 elixir.
 
-<div class="scene-break">* * *</div>
+* * *
 
 As the days passed, more and more advertisements began appearing for
 Adelle's performance. But so did advertisements for the upcoming Ball.
@@ -2105,7 +2108,7 @@ quietly,
 "What happened to the little girl who defended me when no one else
 would?"
 
-<div class="scene-break">* * *</div>
+* * *
 
 The nurse entered James' room. She did not appear as happy as she should
 be considering the occasion.

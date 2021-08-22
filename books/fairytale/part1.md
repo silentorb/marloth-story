@@ -161,7 +161,7 @@ so that he had to leave the orphanage as little as possible, though
 occasionally he would need to take extended business trips, during which
 a nanny would be brought in to watch the children.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Chores, lessons, and play. As far as the children knew, this was the
 routine they would follow for the rest of their lives. But one day,
@@ -279,7 +279,7 @@ the fireplace.
 grabbed his spade. "Next time I get my hands on a paper like that, he
 won't catch a hint of it!"
 
-<div class="scene-break">* * *</div>
+* * *
 
 The next day, the children were spending the mid afternoon on the
 orphanage roof and watching the goings on of the city around them. The
@@ -440,7 +440,7 @@ book. With her insides turned in knots, she bowed her head in
 resignation and made her way down stairs, leaving the others to their
 talk of toys.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Several days passed, and yet the children made no progress toward
 visiting Jakob Damond's Toye Shoppe. One difficulty was that they were
@@ -468,7 +468,7 @@ and be more wrathful than they had ever experienced before. They had no
 choice but to bide their time and hope for an opportunity to present
 itself.
 
-<div class="scene-break">* * *</div>
+* * *
 
 It was tradition in the orphanage to spend cold evenings in the living
 room. Against the main wall of the room there was a large fireplace, and
@@ -528,39 +528,27 @@ dream; they have an even stronger effect on reality than sleeping
 dreams."
 
 "I've never thought of a book as a dream before, but I can see the
-similarity. And I *have* seen the power books have over reality. Many
-books have influenced my life; some have turned the course of nations.
+similarity. And I *have* seen the power books have over reality. Some 
+books have turned the course of nations.
 
 "Which brings us back to the question that led to this part of the
 conversation: why don't you read other books than Marloth?"
 
-"Because Marloth is more sincere! Most books---"
-
-"'---try to be something they're not and act like there isn't a world
-beyond them.' Yes, I know. 'Marloth is a humble book. It knows it's a
+"Because Marloth is more sincere! Most books 
+try to be something they're not and act like there isn't a world
+beyond them. Marloth is a humble book. It knows it's a
 fairytale. It says so on the cover. It knows there is a world beyond
-itself.'"
+itself."
 
-"Wow! That's exactly what I was going to say!"
+"But can that not be said of any other book? Take the biology
+book I've been reading. All it speaks of is the world beyond itself."
 
-"That's because you've already said it. I wasn't actually asking you
-that question just then; I was bringing us back *to* it. I *already*
-asked it, and you *already* gave your answer to it; we don't need to go
-in circles."
-
-"I don't really understand what's going on."
-
-"That's all right. I'm keeping track of things for the both of us. The
-past several discussions we spent working out the background to my
-question about you reading other books. You've been arguing that Marloth
-has unique dreamlike properties that other books don't have. However,
-just now you presented an argument that could be applied to other books
-as well."
+James paused, unsure how to respond.
 
 "Fascinating," said Mr. Tralvorkemen. Both orphans stopped abruptly and
 turned toward the headmaster. Mr. Tralvorkemen was no longer reading. He
-had set his book down and was was listening to their conversation
-intently. "James' wild imagination meets George's rigorous mind---what
+had set his own book down and was was listening to their conversation
+intently. "James' wild intuition meets George's rigorous mind---what
 an interesting combination. Don't let me stop you; please continue."
 
 George was willing to resume the discourse, but James did not like
@@ -592,7 +580,7 @@ children and sent them outside to play, he mentioned a need to speak
 with Tralvorkemen alone, as they sometimes did, and they adjourned to
 the headmaster's study.
 
-"Ah, it's good to be in your study again. The d\\\'ecor, the view of the
+"Ah, it's good to be in your study again. The décor, the view of the
 city, your excellent selection of books, every bit of it forms a
 cohesive whole. Have I told you how much I admire this place?"
 
@@ -746,7 +734,7 @@ am more convinced than ever that it is."
 At this, Hurley started to laugh, and before long Tralvorkemen had
 joined him.
 
-<div class="scene-break">* * *</div>
+* * *
 
 James awkwardly climbed the ladder and pushed open the door to the
 attic. He had expected to be greeted by a cloud of dust but instead
@@ -936,7 +924,7 @@ stepped back, gathered the quilt, and left without saying a word.
 
 Catherine watched him go, sat down, and then burst into tears.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The next day, Catherine found James in one of the many corners he
 inhabited, and apologized for her outburst from the previous day. While
@@ -951,7 +939,7 @@ had, she had the unnerving suspicion that his mind had consciously
 blotted the event from his mind, like a white blood cell blotting out a
 virus.
 
-<div class="scene-break">* * *</div>
+* * *
 
 It was not uncommon for Mr. Tralvorkemen to spend much of his
 time in his study, but the day following Doctor Hurley's visit was an
@@ -1194,7 +1182,7 @@ as Marloth turned from embers to ash. He did not feel the pain of his
 burnt flesh. He did not feel the tears streaming down his face. All he
 felt was emptiness.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Doctor Hurley was quickly brought to the orphanage and James was ushered
 to a facility where he was treated for his burns. He was transferred to
@@ -1295,7 +1283,7 @@ several more months."
 "If you must know, from here on I have but one object in mind: to find
 out who wrote that book."
 
-<div class="scene-break">* * *</div>
+* * *
 
 No one was more distressed by the fireplace incident than Catherine. The
 other children did not sympathize with her. Before, they had mocked her
@@ -1435,7 +1423,7 @@ orphanage.
 
 "I'm tired of being the good girl."
 
-<div class="scene-break">* * *</div>
+* * *
 
 Over time, the burns healed, leaving only faint scars over James' face
 and arms, but his soul did not fare so well. He withdrew even more from
@@ -1516,7 +1504,7 @@ find a way ... "
 "I don't know. I'll need some time to think ... and gather information.
 I'll let you know when everything is ready."
 
-<div class="scene-break">* * *</div>
+* * *
 
 They didn't have to wait long. The next day Mr. Tralvorkemen set out on
 a mysterious business trip, leaving the children under the care of a
@@ -1684,12 +1672,12 @@ maker's countenance, and Catherine noticed it.
 remind me something of him in your stature and dress."
 
 The toymaker turned on her and for a brief second anger burned within
-his eyes. "I am not anything like Edward Tralvorkemen! He lives in a
+his eyes. "I am nothing like Edward Tralvorkemen! He lives in a
 cold, lifeless world filled with rules and self-induced labor. He thinks
 he is better and wiser than everyone else, which is farthest from the
 truth. In short, he is a miserable man who scorns all forms of fun."
 
-Then his familiar smile returned. "But as for me, I am the father of
+Then his smile returned. "But as for me, I am the father of
 fun!"
 
 Catherine was puzzled. That sounded very different from what he had said
@@ -1743,8 +1731,7 @@ than you? And the stories you write here will not be mere fantasies,
 they will be *real!*"
 
 James was not thrilled about the idea of purchasing a blank collection
-of paper, but surely Mr. Damond knew what he was talking about. He was
-an adult, was very intelligent, and seemed to know things few other
+of paper, but Mr. Damond seemed to know things few other
 people knew about.
 
 "If it's all right sir, I'd like to consider this for a while."
@@ -1752,13 +1739,14 @@ people knew about.
 "A wise call! We'll leave you to think things over." Taking Catherine's
 hand, he led her back toward the front of the store.
 
-"Now, my dear, what sort of wonder would you wish to buy?"
+"Now, my dear, what sort of wonder do you wish to buy?"
 
 "I fear that I shan't be able to decide! There are so many marvelous
 things here; I wish I could have them all!" Then her shoulders slumped
 as reality set in. "But I have very little money to spend!"
 
-"Don't fret! I'm positive we shall find just the right item for you!
+"Don't fret! I'm positive we can find just the right item for you,
+and a means for you to purchase it.
 Tell me, what are your interests? What do you aspire to do with your
 life?"
 
@@ -1860,8 +1848,8 @@ together.
 
 "That's all?" said Catherine. "It has a lot of words just to say that."
 
-"It also mentions that I am not responsible for anything that you might
-do to yourselves with the toys you are receiving." Mr. Damond added
+"It also mentions that I am not responsible for anything you might
+do to yourselves or others with the toys you are receiving." Mr. Damond added
 helpfully.
 
 "Oh, that makes sense." said Catherine. She picked up the pen and wrote
@@ -1879,8 +1867,8 @@ so you'd best be on your way."
 "Yes, thank you." said James
 
 "My pleasure!" said the toymaker, and then, just as the children were
-stepping outside, "Oh, and James, I wasn't joking about what that book
-can do. Be careful what you write."
+stepping outside, "Oh, and James, I wasn't exaggerating about that book.
+Be careful what you write."
 
 As the children stepped into the street, the door closed behind them and
 the toyshop suddenly dimmed. Now the city was far more quiet than it had
@@ -1971,25 +1959,25 @@ fire too."
 first thing that came to his mind. Below is a much embellished version
 of what he penned:
 
-Somewhere in the myriad of dimensions, there rose a hill. It had once
+*Somewhere in the myriad of dimensions, there rose a hill. It had once
 been a cemetery. It even looked like a cemetery. It had all the right
 tombstones and that creepy atmosphere clinging to it that just reeks of
 foreboding. But it was no longer a cemetery, for it had no bodies, and
-cemeteries always have bodies.
+cemeteries always have bodies.*
 
-On top of the hill stood the church. Well, what had once been a church.
+*On top of the hill stood the church. Well, what had once been a church.
 So many pilings and attachments had been hammered into it that it was
 next to impossible to distinguish any of the original walls. From inside
 the building came the hum and hammer of machinery. The eccentric
 inventor Otto Marecchian had turned the church into a factory. Now,
-instead of praying to God, he was playing God. And loving it.
+instead of praying to God, he was playing God. And loving it.*
 
-For the was nothing short of reanimated dead persons. H product of his
-factorye had dredged the grounds of all its occupants and, with science
+*For the product of his factory was nothing short of reanimated 
+dead persons. He had dredged the grounds of all its occupants and, with science
 and black magic, brought them to life. The best thing about his system
-was that once he got it rolling, the zombies had been given control of
+was that once he it was rolling, the zombies had been given control of
 the machinery, allowing him to tinker with other projects. The dead were
-reproducing.
+reproducing.*
 
 Suddenly, James was awoken from his writing by the sound of several
 objects within the room clattering to the floor. He couldn't see over
@@ -2025,7 +2013,9 @@ for something that would keep his attention for more than half a second.
 
 "Hmm?" said James. "What do you mean?"
 
-"You know, for fun!" James wasn't accustomed to thinking of things in
+"You know, for fun!"
+
+James wasn't accustomed to thinking of things in
 terms of fun. He liked to read Marloth and occasionally play with the
 other orphans, but he had never consciously pursued *fun*. Fun was
 something that just happened every now and then.
@@ -2072,8 +2062,8 @@ hiding. But he wasn't there.
 Now James was thoroughly unnerved. He climbed back into the chair and
 looked at what he had written.
 
-For the product of his factory was nothing short of reanimated dead
-persons.
+*For the product of his factory was nothing short of reanimated dead
+persons.*
 
 Could it be? Had that been a zombie child? Did his writing it make it
 come to life? James glanced over the room again. At first he was
@@ -2083,22 +2073,22 @@ to write some more!
 With new energy, he set to work creating an entire world. A world
 populated by a variety of demented denizens and mysterious locations.
 
-As the heroes made their way through the dark and haunted library, they
+*As the heroes made their way through the dark and haunted library, they
 were alerted by a scream to the presence of a skeleton splayed out on
-the damp ground and half concealed by moss.
+the damp ground and half concealed by moss.*
 
-"What happened here?" cried one of the girls.
+*"What happened here?" cried one of the girls.*
 
-"Oh, that was poor Philip." said Mr. Mosspuddle. "He died of
-starvation."
+*"Oh, that was poor Philip." said Mr. Mosspuddle. "He died of
+starvation."*
 
-"Did he get lost?"
+*"Did he get lost?"*
 
-"No. He read a book. Something in it took away his ability to eat. No
+*"No. He read a book. Something in it took away his ability to eat. No
 one was able to figure out how the book had caused it, which was due in
 part to everyone being afraid of reading the book and following in his
 plight. So he died. There are two kinds of wizards in the world: the
-careful ones and the dead ones."
+careful ones and the dead ones."*
 
 James reviewed his work with pride. This was what he was made for! While
 the text he penned was written in a childish manner that would have been
@@ -2113,31 +2103,31 @@ about their nature. James thought it would be fun to fill in the gaps
 and imagine how they functioned. When translated into more refined and
 educated language, it went something like this:
 
-It is a common belief that ogres are slow and stupid. There is some
+*It is a common belief that ogres are slow and stupid. There is some
 truth to that belief, and some misunderstanding. Ogres are creatures of
 momentum. Aside for their unparalleled strength and constitution, an
 ogre's base ability, both physically and mentally, is quite limited.
 However, the longer an ogre pursues a given task, the more proficient it
 becomes at that task, with no measurable limit. They are capable of
-almost anything if given enough time.
+almost anything if given enough time.*
 
-For example, when an ogre decides to devote itself to crafting a weapon,
+*For example, when an ogre decides to devote itself to crafting a weapon,
 it begins without knowing a thing about weaponry. As the ogre begins to
 think about weapons, and tinker with metal, it gradually grows in
 understanding. During this period the ogre does nothing but work on that
 craft. It does not eat. It does not sleep. It simply works. After
 several years of this, the ogre will have reached astonishing mastery of
 weapon crafting. This is how ogres, despite being initially simple and
-brutish, wield the most advanced and deadly weaponry in existence.
+brutish, wield the most advanced and deadly weaponry in existence.*
 
-After so many years, the ogre will eventually need to rest from its
+*After so many years, the ogre will eventually need to rest from its
 labors. This generally requires hibernation for nearly as long as the
-period of labor.
+period of labor.*
 
-Aside for a special process of frozen hibernation, if the ogre is ever
+*Aside for a special process of frozen hibernation, if the ogre is ever
 interrupted from its craft for more than a few minutes, the bulk of its
 development will be lost. Thankfully for ogres, this rarely ever
-happens. It is not easy to interrupt an ogre.
+happens. It is not easy to interrupt an ogre.*
 
 As he continued writing, James' thoughts turned to Catherine. He liked
 the idea of having her in the story. He wrote of a princess that would
@@ -2155,14 +2145,14 @@ known as Tralvorkemen. He punished all of the children for the most
 trivial of offenses. He even took their beloved book of lore and
 destroyed it. But one day the children rebelled. They slew the evil
 headmaster and went out into the world to learn and grow and become
-powerful heroes.
+powerful lords and ladies.
 
 The night seemed to stand still and go on forever. He was able to work
 unceasingly as page after page of story flew from his pen. But finally
 sleep did catch up with him, and he slipped into slumber, his head
 resting atop of the book.
 
-<div class="scene-break">* * *</div>
+* * *
 
 "Wake up! Wake up! Big things are happening!"
 
@@ -2178,10 +2168,11 @@ desk. His head lost its perch and he landed on the floor.
 James simply groaned.
 
 "Come on James! Everyone's already having breakfast! And then this
-fellow comes along with servants and everything! You've got to get up
-and see it!"
+fellow comes along with servants and everything! And then
+Mr. Tralvorkemen returns from his trip and drops his luggage in shock!
+You've got to get up and see all of it!"
 
-Before James could form the proper sort of retort for someone trying to
+Before James could form the proper retort for someone trying to
 sleep instead of think, Miles had lifted him to his feet and was shoving
 him out of the room.
 
@@ -2232,10 +2223,10 @@ James was speechless. All eyes were on him and Catherine.
 "I would have."
 
 While James was feeling increasingly uneasy, Catherine was thrilled by
-the attention. Reaching into one of her dress pockets, she took out the
-diadem and placed it upon her head.
+the attention. Reaching into a makeshift purse she had been clinging too,
+she took out the diadem and placed it upon her head.
 
-The children did more than simply ooh and ahh. They were stunned.
+The children did more than ooh and ahh. They were stunned.
 
 "It makes you look older!" said Henry.
 
@@ -2245,7 +2236,7 @@ The children did more than simply ooh and ahh. They were stunned.
 
 "And what about you, James? What did you buy?"
 
-James glanced about nervously. "Well ... . I did buy a book."
+James glanced about nervously. "Well ... I did buy a book."
 
 "Really! Is it like your old book?"
 
@@ -2266,7 +2257,7 @@ handkerchief.
 "Where was I? Oh, yes, the Duke. Anyhow, the Duke claims that you are of
 royal blood. Yes, I am quite serious. He told me that your parents were
 killed in a revolt and you were placed here so no one would know who you
-are. (Apparently they didn't even tell me!) Now, after many years of
+are. (Apparently they didn't even tell me.) Now, after many years of
 warfare, the throne has been taken back by your uncle. He sent Duke
 Philip to escort you to your new home ... in Castle Elington!"
 
@@ -2288,7 +2279,7 @@ leaving behind.
 When she came downstairs everyone was gathered to say farewell. Most of
 the children had not treated her kindly, and yet she still found it hard
 to say goodbye. She could not spend time with anyone without her heart
-gradually forming attachments. When she came to James she paused.
+forming attachments. When she came to James she paused.
 
 "I owe you so much." she said. "Without you none of this would be
 happening! Even though I may never see you again, I'll always remember
@@ -2303,7 +2294,7 @@ forget you." he said at last.
 "Thank you!" said Catherine, and after a few more farewells, she was
 through the gates, into the carriage, and gone.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Tralvorkemen stood in the doorway for a long time, gazing at the closed
 gate that Catherine had disappeared through. The children watched him
@@ -2388,7 +2379,7 @@ better, they are going to get much worse." With that, Tralvorkemen
 disappeared into the twisting hallways, leaving James with the
 impossible idea that things could get any worse.
 
-<div class="scene-break">* * *</div>
+* * *
 
 James felt weak. He wanted to go find his new book, but at the same time
 he was now afraid of it. His lack of sleep, the rush of the morning's
@@ -2396,7 +2387,7 @@ events, and Tralvorkemen's otherworldly speech had sapped all of his
 energy. Dragging himself up the stairs, he limped into the boys' bedroom
 and fell into an exhausted sleep.
 
-<div class="scene-break">* * *</div>
+* * *
 
 When James finally awoke, the sun was just setting. His first thought
 was that of regret. He liked Mr. Tralvorkemen a lot more after seeing
@@ -2475,7 +2466,7 @@ was the child.
 
 "If you must know," said Nivana. "You're standing on him."
 
-<div class="scene-break">* * *</div>
+* * *
 
 James looked down at the large mound of dirt below him.
 
@@ -2504,7 +2495,7 @@ left it. Had Tralvorkemen been right? Were the toys really evil? Either
 way, the headmaster was gone now. Suddenly James felt all alone. He was
 frightened of the other orphans. His vision fell upon the open book.
 This was all his fault! But what if Tralvorkemen had been wrong about
-the book *only* producing corruption? Now that he knew the danger, maybe
+the book only producing corruption? Now that he knew the danger, maybe
 he could fix things ... Rushing over to the desk, he took up the pen and
 began to write fervently, trying to conjure up the happiest images he
 could think of. *Knock! Knock! Knock!*
@@ -2582,7 +2573,7 @@ stood between him and them. Slowly, the children began to circle the
 desk. "Get away from me!" James cried. "Miles! Niv! Help me! *HELP ME!"*
 
 But none of the orphans replied. As far as he knew, they were in a whole
-nother world.
+other world.
 
 The zombie children leapt upon him. Each of them snatched his flailing
 limbs, and with one stomach lurching swing, hurled him through the

@@ -84,7 +84,7 @@ me, there were supposed to be some young people with the group."
 
 "Young people? As in *children?* People my own age?"
 
-"I think so. If you like you can accompany me to the gates when they
+"I think so. If you like you can accompany me in greeting them when they
 arrive."
 
 "Oh! I would love to!"
@@ -102,7 +102,7 @@ of sight. She was grateful he had only suggested the idea. The last
 thing in the world she wanted to do was find Miss Bethany. Instead she
 continued in the direction of the kitchen.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Miss Bethany was a large woman. Large in size; large in personality. She
 was taller than most men and maintained an equally considerable girth.
@@ -114,9 +114,9 @@ so as well, but Miss Bethany still saw need for a nanny, and that was
 the end of it.
 
 Adelle didn't have to find Miss Bethany; Miss Bethany found her. She
-grabbed the girl by the ear and led her down to the kitchen. Adelle had
+grabbed the girl by the ear and led her down to the kitchen. Adelle
 tried to explain to the woman that she had already been going to the
-kitchen, but it was a futile endeavor. Every time Adelle tried to speak,
+kitchen, but it was futile. Every time Adelle tried to speak,
 the lady pulled her along harder.
 
 "You try my patience, young lady. Why do you *always* try my patience?"
@@ -351,7 +351,7 @@ room? You could look in the mirror and see how it feels."
 "Well, at least you know your own mind." said Ivy, and she promptly
 changed the subject back to boys.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Adelle tried to remember where she had left her swan doll. She had been
 playing hide and seek with her dolls the day before and had forgotten
@@ -394,7 +394,7 @@ what to do.
 
 "But---"
 
-"Do you have to make *everything* so difficult? Just take them!"
+"Do you make *everything* so difficult? Just take them!"
 
 Adelle struggled inside. She didn't want to even touch the wicked
 looking things and she was certain her parents wouldn't want her to
@@ -406,7 +406,7 @@ either, but she felt wretched to refuse his gift.
 "Whatever!" said Bobby, clearly offended. As she left the room, he
 turned and hurled all four knives into the dresser.
 
-<div class="scene-break">* * *</div>
+* * *
 
 "I do not trust those children." said the King. He said this to his
 wife, who was on the other side of the bedchamber. It was just before
@@ -442,7 +442,7 @@ work?"
 
 "We always have been." said the queen.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Every evening the royal family would dine with the company of the most
 prominent members of the court, such as the chief counselor and his
@@ -558,7 +558,7 @@ it does pay to keep an eye on which way the games are going."
 "I think Harris is probably right. When you reach adulthood there may no
 longer be a crown for you to wear."
 
-<div class="scene-break">* * *</div>
+* * *
 
 The next morning Ivy spent some time with the boys, became upset with
 them, and set out in search of her young hostess. After looking about
@@ -631,12 +631,12 @@ it."
 "Because Bobby is one of those people who is strong enough to get just
 about whatever he wants, and he knows it."
 
-<div class="scene-break">* * *</div>
+* * *
 
 Dinner that night was much like the previous one, though Ivy spoke a
 little more than before. Bobby was still enigmatic. Harris was starting
-to get on Adelle's nerves. He dominated every conversation he was
-associated with. Adelle had experimented with several different tactics,
+to get on Adelle's nerves. He dominated every conversation within his vicinity.
+Adelle had experimented with several different tactics,
 but had yet to find a way to shut him up. As for Osmand, it was hard to
 tell if he was basking in their presence or pained to be in their
 society.
@@ -720,7 +720,7 @@ royalty."
 "That's probably best." said Ivy under her breath. "Those were the nicer
 ones."
 
-<div class="scene-break">* * *</div>
+* * *
 
 That night, as with every night, the queen crossed the hall to tuck her
 daughter into bed. During the day she was the Queen of Marloth, but when
@@ -762,7 +762,7 @@ The queen hugged her daughter close to her and they talked for some time
 more. Adelle loved her mother so much. But at the same time, in the back
 of her mind she wondered if her mother was one of those people.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The next morning Adelle was weighed down by her conduct toward Ivy the
 day before. She felt guilty for the way she had shouted and walked away
@@ -807,7 +807,7 @@ life diverting herself, it wasn't the same anymore. She wanted to be
 with *people*. She sighed and decided to go see what her father was
 doing.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Adelle put her ear to one of the large doors and listened. From inside
 the courtroom she could hear her father conferring with his counselors
@@ -823,13 +823,13 @@ through a nearby window and rested on the ground beside her. Adelle
 tilted her head and gazed at it curiously. She almost thought she could
 see through the bird to the wall behind.
 
-"What a ragged looking bird!" she said
+"What a ragged looking bird!" she said.
 
-"Where is the king?" The raven demanded, ignoring her.
+"Where is the king?" The raven demanded.
 
 Adelle dropped her jacks in surprise. "Why, it talks!" she exclaimed.
 
-"Why, she talks!" the bird replied sarcastically. "Off course I talk!
+"Why, she talks!" said the bird. "Off course I talk!
 Now tell me where the king is or I'll peck your eyes out!"
 
 Adelle looked affronted. "That's not a very nice thing to say. Don't you
@@ -856,7 +856,7 @@ peer inside.
 
 The courtroom, which was very dark and dreary due to a lack of lights
 and its windows being tinted, was packed with a great variety of
-official looking people, all of who were talking or yelling at one
+official looking people, all of whom were talking or yelling at one
 another. Beyond all of the heads, and at the far side of the room,
 Adelle could just make out the throne upon which sat her father. He was
 shouting for everyone to be silent, but no one seemed to hear him, or
@@ -894,7 +894,7 @@ looking around, they climbed onto the base of one of the pillars so they
 could see over the top of the crowd.
 
 There, in the rafters, perched the raven, sternly studying the chaos.
-Gradually, the voices dimmed and then died altogether. The raven dropped
+Gradually, the voices dimmed and then died. The raven dropped
 to the floor before the King and continued to look about.
 
 "So this is Marloth." it said. "It's even darker than I imagined."
@@ -937,8 +937,8 @@ The raven hopped up and down in feathered fury. "Details change! Names
 change! But the underlying reality stays the same! That's what the book
 was all about!"
 
-"I am the King of this kingdom, not you. So even though I apparently
-have no power to silence you, you have no power to do more than babble."
+"I am the King of this kingdom, not you. Even though I apparently
+have no power to silence you, you have no power to do more than babble at me."
 
 The raven calmed down to a simmer and kicked a nearby pebble. "I don't
 really know why I would expect anything else. No one ever listens to me.
@@ -997,19 +997,19 @@ can do more harm to you than bullets!"
 everything you are to hear."
 
 "What more is there to say?" spoke the Queen. "You have given your
-warning, and we have heard it!"
+warning, and it has been heard!"
 
 "You think I came simply to speak of your doom? No, that was only my
 greeting. The fate of the whole of Marloth lies upon the knowledge I
 bear.
 
-"For the situation is thus: The eyes of darkness are not upon your
+"For the situation is thus: the eyes of darkness are not upon your
 castle. It cares little for you or your pretty queen. Its eyes are upon
 the only thing left for it to feed upon. The only thing it has left to
 desire, and to fear."
 
 The raven fluttered about and turned toward the back of the room. The
-crowd followed his gaze to the pillar beside the entrance.
+crowd followed his gaze to one of the pillars beside the entrance.
 
 "In short, It seeks your daughter."
 
@@ -1034,24 +1034,25 @@ one piece of good news ... I'm getting out of here!"
 
 And with that the bird leapt to the window and was gone.
 
-<div class="scene-break">* * *</div>
+* * *
 
 At around that same time in another dimension of Marloth, the city of
 Rhumeveld was on the verge of a surprising visit. Its guests turned out
 to be an army of children. Unruly little children with knives and clubs
-and all sorts of objects that were never meant to be weapons. They
-swarmed over the city like a plague, quickly slashing apart any defenses
+and all sorts of objects that were never meant to be weapons but found
+themselves used as such. The children
+swarmed over the city like a plague, quickly disintegrating any defenses
 it might have had.
 
 In the center of the city there was a rather magnificent mansion that
 was the residence of the governor. He was one of the most rich and
 powerful men in Marloth. Powerful, that was, until his army of guards
-found themselves beset by creatures that could be shot, stabbed, and
-beaten and yet keep on biting you. The defenders were helpless.
+found themselves beset by creatures that could be shot, stabbed, 
+beaten and continue biting you.
 
 The governor's house had no sooner been captured than a short, battered
 looking goblin made his way through the spacious doorway of the mansion
-with about a dozen of the children trailing behind him. The goblin
+with around a dozen of the children trailing behind him. The goblin
 crossed the threshold of the lobby and stood before the governor
 himself, who at the moment was being held down by five more of the
 children.
@@ -1082,9 +1083,9 @@ it. They usually have colorful glowing auras or ancient inscriptions or
 disintegrates the first bloke who steps into the room. Something like
 that."
 
-"What about the governor?"
+"What about this guy?"
 
-"We're done with him. Take him outside and kill him."
+"We're done with him. Take him outside."
 
 The children split up into several groups and began to scour the
 mansion. The goblin went about the rooms, overseeing their questing.
@@ -1112,20 +1113,21 @@ head!"
 
 He grabbed the book and threw it out the window.
 
-"We're not here for a bedtime story! Somewhere around this place is that
+"We're not here for a bedtime story! Somewhere around this place is a
 relic of power, and I mean to find it!"
 
-<div class="scene-break">* * *</div>
+* * *
 
-No one noticed the dead governor. The people were too focused upon the
+No one noticed the motionless body of the governer. The people were too 
+focused upon the
 destruction around them, and the zombies were too focused upon causing
 it.
 
-Except for one. The zombie child with the straggly hair. He had thought
-nothing of the death of the governor, as the two children had taken him
-outside and stabbed him repeatedly. But then something had fallen from
-the sky and landed next to the body. He had been about to continue on
-his way, trying to find his next victim to play with, when he jolted
+Except for one. A zombie child with straggly hair. He had thought
+nothing of the governor, as the two children had taken him
+outside and put him to sleep for good. But then something had fallen from
+the sky and landed next to the body. The zombie child had been about to continue on
+his way, trying to find his next victim to pass the time, when he jolted
 backward. That was odd. It grabbed all his attention. Not the governor,
 but the item that had landed beside him. There had been something
 familiar about it. Slowly, gears began to turn within his mind. An ember
@@ -1159,7 +1161,7 @@ animated by dark sorcery and string.
 
 For once in his life, he felt Dead.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Ivy found Adelle cowering in her bedroom.
 
@@ -1167,8 +1169,7 @@ Ivy found Adelle cowering in her bedroom.
 long time! To be honest, I was figuring the court would be a bore, but
 that talking raven sure spiced things up!"
 
-She stopped and took a closer look at Adelle. "What's the matter with
-you?"
+She stopped and took a closer look at Adelle. "What's wrong with you?"
 
 "This is awful! Didn't you hear what it said? Dreadful things are coming
 to get me! And everyone saw me in the courtroom! I shouldn't have been
@@ -1224,15 +1225,13 @@ whether to be happy or glare. But he didn't say anything.
 
 "And you should be glad I am hurrying. I am off to speak to Lord
 Dominicus. Last I heard from him, he was preparing to side with the
-Merchant's Guild. I am going to try to sway him back to the throne. Then
+Merchant's Guild. I will try to sway him back to the throne. Then
 I will speak with the Lady Mediev. If she can support you then you will
 be in a very good position. But I do not know what she will say. Things
 are still very precarious right now."
 
 "Thank you for all your efforts." said the King. "I don't know where we
 would be without you."
-
-"Please! There is no need to thank me. The pleasure is all mine!"
 
 They spoke for a short time more before the Duke resumed his
 preparation. Once he and the children were ready, they gathered in the
@@ -1248,36 +1247,36 @@ grown-up friends; that's not exactly the same thing."
 
 "No, they aren't. But listen, you need to come to the City of Orphans
 soon. You could stay at my house and then I could show you what a
-*really* good time is like."
+*real* good time is like."
 
 Adelle said she would love to but did not know if her parents would ever
 allow her. Ivy said a few more choice words about the King and Queen and
 then the rest of the children said their farewells. Harris gave her a
-very warm parting, Bobby finally did say something about enjoying her
-company, and Osmand didn't say anything at all. After that, the group
+warm parting, Bobby said something potentially friendly,
+and Osmand didn't say anything at all. After that, the group
 climbed into the carriages and disappeared through the gates. Adelle was
 already missing them before they were out of sight.
 
-<div class="scene-break">* * *</div>
+* * *
 
 By the time the zombie child got to his feet, the carnage had ceased.
 Ceased, that is, simply because there was nothing left to destroy. Most
 of the other troupes had already left to find new things to torment.
 Only a few zombie children remained to scour the debris and ensure that
-they hadn't left anything alive.
+they hadn't left anything that could move.
 
 The zombie child closed the book and began to walk about. There was
 something familiar about this place. As though walking through a dream,
-he passed through the smoldering architecture. Bodies were strewn
-everywhere. The embers of what had only moments before been roaring
+he passed through the smoldering architecture. The embers of what had 
+only moments before been roaring
 fires were now shriveling away because there was nothing left to burn.
 Though the landmarks were all but gone, the zombie child was certain it
 had once read of this place.
 
 This was Rhumeveld, the City of Wonders. Or a mockery of it. Sinking
 back into the debris, the zombie child opened the book and flipped
-through the pages, eventually reaching the spot that described the city
-of wonders. It was a beautiful city of marble and crystal, all of which
+through the pages, eventually reaching the spot that described the city.
+It was a beautiful city of marble and crystal, all of which
 reflected the light in a dazzling manner, but no one could see any of
 that now. Depressed, the zombie child dropped the book and collapsed
 into the mud.
@@ -1336,12 +1335,12 @@ weren't!"
 That was it. Inside the goblin's mind, books were balanced and accounts
 were settled.
 
-"Kids, I have an idea of how you can all have more fun!" A cruel smile
+"Kids, I have an idea of how you can all have more fun." A smile
 spread across his face as he turned toward the zombie child. He began to
 speak slowly and methodically, like the caress of a torturer. "Let's ...
 play ... with ... *James*."
 
-<div class="scene-break">* * *</div>
+* * *
 
 Once again, Adelle was alone. All of her new friends had been torn away
 from her. Her initial fear of the raven was gone. Now she hated it. What
@@ -1411,18 +1410,16 @@ The world just needs to see it!"
 "But I don't know that it ever will. All my life I've been imprisoned
 within this dreary castle; and I will be for so much longer."
 
-The man's smile broadened. "But I can change that. I have the power to
-make a child's most impossible dreams come true. Would you like to break
+The man's smile broadened. "But I can change that.  Would you like to break
 free from these walls and experience Marloth? I could make it so! Do you
 want adventure? I'll have adventure fall from the sky like rain! Do you
 want to be adored and respected as the royal grace you are? I'll open
 the eyes of the world to your elegance!"
 
-"That all sounds most enchanting, but how can you do such things?"
+"That all sounds enchanting, but how can you do such things?"
 
 "Ah, that is my little secret. Through toys mostly. Toys are far more
-powerful than people realize. Only children seem to have any idea of
-their real value."
+powerful than people realize. Only children see their real value."
 
 "But how could I ever repay you for such things?"
 
@@ -1447,7 +1444,7 @@ world are you talking to?"
 
 Adelle looked about her in surprise. They were alone.
 
-<div class="scene-break">* * *</div>
+* * *
 
 James slowly opened his eyes and looked around him. He was lying on a
 stretcher in a room filled with many other stretchers on all of which
@@ -1462,7 +1459,7 @@ stepped the King, followed by two attendants.
 
 "So this is the only survivor?" he said, looking at James.
 
-The nurse continued on with her work. "If you like." she replied,
+The nurse continued with her work. "If you like." she replied,
 thumping one of the people on the head to see if he responded and then
 tucking him into bed. "I myself wouldn't call him a survivor. Hasn't
 done anything but moan and whine in his sleep."
@@ -1490,10 +1487,10 @@ some peace and quiet."
 "Fine. I'll be back tomorrow. Notify me immediately if he says so much
 as a word."
 
-The nurse wagged her head about as if to say *"who cares?"* and ushered
+The nurse wagged her head as if to say *"who cares?"* and ushered
 the King out of the room. After a while, James sat up for a better look
 at the room. For once the nurse paused long enough to actually look at
-him. She wasn't an official nurse really. All of the real nurses in the
+him. She wasn't an official nurse really. All the real nurses in the
 castle had caught some flu and keeled over. While her main profession
 was that of seamstress, she was also the castle Jill-of-All-Trades and
 had been chosen to fill their place. She was a Tough Old Byrd, and it
@@ -1516,7 +1513,7 @@ down the stairs. Sure enough, after descending several flights of
 stairs, he found himself standing before the most wondrous garden he had
 ever seen.
 
-<div class="scene-break">* * *</div>
+* * *
 
 As James walked about the garden, he came upon a girl sitting in the
 grass, looking idly at the birds flying overhead. James stood there for
@@ -1649,7 +1646,7 @@ adventures just like in the fairytales!"
 "Maybe your parents have good reason to keep you here." said James.
 "People who have adventures in this world tend to end up dead."
 
-"Oh James! You always did have a morbid air about you."
+"Oh James! You always did have such a morbid air about you."
 
 Both of them turned to look at each other in surprise. "I'm sorry!" said
 Adelle. "I know it's silly but I feel like we've met before. But the
@@ -1675,7 +1672,7 @@ the direction of the infirmary.
 
 "Dying sucks." he said.
 
-<div class="scene-break">* * *</div>
+* * *
 
 James returned to the infirmary only to find that the nurse had gone and
 he was all alone with the sleeping people. They slept very soundly.
@@ -1696,7 +1693,7 @@ covers.
 Now James was puzzled. "How can a sleeping person bring anything? You
 just lie there."
 
-"Stupid fool!" it shouted. From beneath the covers burst forth a jet
+"Brainless fool!" it shouted. From beneath the covers burst forth a jet
 black raven.
 
 "I am the Doombringer!" said the raven. "I have come to foretell the
@@ -1739,7 +1736,7 @@ And with that, the raven flew out the window. James sat around for a
 moment and then decided he'd explore the castle and see if he could find
 that girl again.
 
-<div class="scene-break">* * *</div>
+* * *
 
 At the same time, one of the royal attendants was hurrying through the
 castle. It was a daily ritual for attendants to be scurrying about the
@@ -1756,7 +1753,7 @@ demons!"
 The King half nodded as he and the attendant passed through the halls.
 "Yes. That's what I figured it was."
 
-"You know of them, sir? Then it's true?"
+"You know of them, sir? Then it's *true?*"
 
 "Of course. They're zombie children. What do you think me and the boys
 have been hunting all these years? There's no deer. There's no bears.
@@ -1811,7 +1808,7 @@ that he *is* a child? What if he's one of those ... *demon children?*"
 life in 'em. Some children it's hard to tell, but it was pretty easy to
 see that he's at least *alive* if nothing else."
 
-<div class="scene-break">* * *</div>
+* * *
 
 Somehow, James makes a wrong turn and winds up in some alternate
 dimension. (This is Marloth; things like that happen.)
@@ -1847,7 +1844,7 @@ Suddenly there appeared in front of the toad a shimmering, water-like
 figure. Its form was as that of a human, except featureless. It had no
 distinct legs and, instead of walking, it floated in the air.
 
-"Hello." said Mr. Mosspuddle. "It's good to see you again." Though he
+"Hello Message." said Mr. Mosspuddle, "It's good to see you again." Though he
 did not sound like he meant it.
 
 The figure did not return the greeting but instead spoke in an echoing
@@ -1885,7 +1882,7 @@ had best be grateful I am merely a creation of the Wizards and not a
 Wizard myself, or I would disintegrate you for your impudence. How is it
 that you are here?"
 
-"A door. I went through it."
+"A door. I went through one.  I think ..."
 
 "Yes, and how did you find this door?"
 
@@ -1916,7 +1913,7 @@ sworn I heard of other children, like in the City of Orphans."
 It's just that nobody wants to admit it. Stupid people."
 
 Message turned to the librarian. "There is still a doorway that has not
-been sealed. You were supposed to seal all of them!"
+yet been sealed. You were supposed to seal all of them!"
 
 "I'm sorry! I'm sorry! I'll seal it right away! I promise!"
 
@@ -1943,15 +1940,14 @@ Library contains every book ever written."
 "Really? I didn't know that. Does it have Marloth?"
 
 "This is a library, not a cosmotory. It holds books, not worlds. Of
-course, every book is vying for a piece of reality, but that's a
-different subject."
+course, every book is vying for a piece of reality, but that is a different subject."
 
 "No, I don't mean the world of Marloth, I mean the *book* of Marloth."
 
 "There is no such thing as a *book* of Marloth!"
 
 "Actually," said Mr. Mosspuddle. "I've read accounts of such a book. I
-don't know if any of those accounts are accurate, but if I were not
+don't know if any of those accounts are true.  If I were not
 constrained by my duties to the library I might be out searching for
 such a book."
 
@@ -1995,11 +1991,11 @@ suddenly as it had appeared. Mr. Mosspuddle looked at James miserably.
 remove me right away."
 
 The toad thought about this and then nodded. "Message *is* a stickler
-for precision. It would probably agree to such a technicality."
+for details. It would probably agree to such a technicality."
 
 James looked at Marloth, which was still resting on the desk. "Are you
 going to try to destroy Marloth?" he asked. James only asked out of
-curiosity; he wasn't about to let the librarian destroyed it.
+curiosity; he wasn't about to let the librarian destroy it.
 
 "No." said Mr. Mosspuddle. "I will be in grave trouble if I don't, but I
 cannot destroy it. I cannot destroy any book. It is against my nature."
@@ -2053,8 +2049,7 @@ shouldn't be controlling the Library. And there should be visitors
 everywhere reading the books!"
 
 "You keep saying things like that. Where are you getting all of these
-ideas about the Library from? And you speak like you know so much about
-me. How is that?"
+ideas from? And you speak like you know so much about me. How is that?"
 
 "Because you and the Library are in this book. It tells of how you were
 the leading expert in interpreting it."
@@ -2093,7 +2088,7 @@ be in charge."
 "He's one of the most powerful and upright men in the world. It talks
 about him in my book."
 
-"Again with your book! Stop using arguments from it! I can't read it and
+"Again with that book! Stop using arguments from it! I can't read it and
 so I can't address whatever ideas you have from it!"
 
 "But if you looked at it you'd understand what I'm talking about!"
@@ -2120,7 +2115,7 @@ though it had never been attached to anything, revealing a solid stone
 wall behind it. One more doorway to the Great Library was now closed
 forever.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The King was just about to leave his bedchamber when the queen hurried
 into the room.
@@ -2159,7 +2154,7 @@ the kingdom around her. She needed to relax. Considering all of her
 options, she decided upon a bath. A bath would help a lot. She called
 for one of the servants.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Adelle left her room and as she was heading for the stairs she stopped
 by the royal chambers to see if the queen was inside.
@@ -2200,9 +2195,9 @@ felt much younger than she.
 
 "Oh, I've always had it. I only wear it on special occasions."
 
-Zombies don't know fear. They have nothing to fear. But contrary to
-popular belief, they do feel something. They feel happy, or at least
-something close to it. It comes from being completely animated without
+Zombies don't know fear. They have no life to fear for.
+But contrary to popular belief, they do feel something. They feel happy,
+or at least a passable counterfeit. It comes from being completely animated without
 the need of things like glands, nerves, and organs. If they had anything
 to worry about, they didn't know about it. But James was not happy. He
 hadn't been happy since he had found the book. And now he was terrified.
@@ -2247,7 +2242,7 @@ her accomplice." she stated coldly.
 James didn't like the way this was going at all. Following Adelle's
 lead, he bolted down the hall and disappeared into the stairway.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The King looked around the infirmary. There was no one there but
 sleeping people.
@@ -2261,8 +2256,8 @@ ranger came up the hall and stopped in front of the King.
 "Well it's about time! You had better be of more use than that
 half-witted boy."
 
-The ranger managed to shrug this off and proceeded with his report. "I
-was over the city like a fine tooth comb and I think I know what
+The ranger managed to shrug this off and proceeded with his report. "We
+went over the city like a fine tooth comb and it's now clear what
 attacked the place. Children. Zombified children. A whole army of them,
 I reckon."
 
@@ -2286,8 +2281,7 @@ far from here."
 
 "Do you think they would actually attack the castle?"
 
-"I've heard of stranger things." said the King. "They leveled a whole
-city."
+"If what is happening is what I think is happening, Rhumeveld was just breakfast."
 
 "Our forces are already positioned in the two passes that lead from
 Rhumeveld to Castle Elington. It would take several days for this undead
@@ -2306,15 +2300,15 @@ the sleeping people.
 "Nurse!" the King shouted. "What sort of state did you find that boy
 in?"
 
-"Why, he was in pretty sore shape. I had to sew back a couple limbs and
-patch up his innards a good deal, but I'm good at that sort of thing.
+"Why, he was in pretty sore shape. I had to sew back a couple of limbs and
+patch up his innards, but I'm good at that sort of thing.
 Before long, he was up and about as though nothing had happened!"
 
 The King's face contorted with rage.
 
 "Have you lost your wits? That was no boy! It was a bloody zombie!"
 
-<div class="scene-break">* * *</div>
+* * *
 
 Once the sounds of her mother's ranting faded into the distance, Adelle
 relaxed and backed away from the door. What she needed now was some real
@@ -2327,7 +2321,7 @@ turn to. Searching about her room, she gathered her favorite dolls.
 
 "Let's have a tea party!" she spoke for them.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The queen stopped her shouting and leaned against the wall. She was
 suddenly struck by a wave of weakness and nausea, as though she were
@@ -2351,7 +2345,7 @@ she found what she was looking for: a large box of Jillybons. Without
 missing a beat she tore the lid from the container and began to eat them
 in rapid succession.
 
-<div class="scene-break">* * *</div>
+* * *
 
 James had no sooner reached the bottom of the stairs then he found
 himself surrounded by several guards.
@@ -2375,11 +2369,10 @@ The guards snickered.
 "But here's the situation. We need information, and we need it now. Tell
 us where this army of yours is, and what it's up to."
 
-"I don't know anything about them!" said James. "They beat me and chased
-me away!"
+"I don't know where they are!" said James. "They attacked me and left me behind!"
 
 "Ha! Perhaps I should rephrase things. Tell me all about the undead army
-or I'll cut you up into pieces the size of olives. I know a thing or two
+or I'll cut you down to pieces the size of olives. I know a thing or two
 about zombies, and I know they can't do much harm when they're comprised
 of a million separate pieces!"
 
@@ -2439,7 +2432,7 @@ with him?" one of them asked.
 "Place him in the dungeons for now." said the King, as he set off down
 one of the hallways. "I need to think. Alone."
 
-<div class="scene-break">* * *</div>
+* * *
 
 The queen stumbled toward her mirror and saw an old woman staring back.
 A blurry old woman. Everything was blurry now. How could this be? She
@@ -2457,18 +2450,18 @@ life. She bent over and began to weep bitterly.
 
 She loathed herself.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The King stood alone in his throne room, warring with a past he had
 thought had been put to rest. He considered his throne, and then sat
-beside it. In his hand he held the book of rules. After some time, he
+on the steps beside it. In his hand he held the book of rules. After some time, he
 opened the book and began to read. As he read, a man walked up and sat
 beside him.
 
 "You didn't hurt the zombie child." said the man. "Why didn't you?"
 
-The King didn't turn to look up. He just continued staring at the book
-and said "That boy. I have seen many zombie children, but never one like
+The King didn't look up. He just continued staring at the book
+and said, "That boy. I have seen many zombie children, but never one like
 that. I can't imagine that he is innocent, and yet he doesn't appear to
 be bent on malice either. He actually read the book of rules! What
 zombie child would ever do that? And he did not appear to flinch at the
@@ -2495,7 +2488,7 @@ against it. And they followed you despite themselves because I showed
 you favor for upholding my book and rules."
 
 "That's strange," said the King. "You are right; I completely forgot
-that there was such a time. It feels so long ago, as though it was
+there was such a time. It feels so long ago, as though it was
 someone else's life."
 
 "In a way it was."
@@ -2551,7 +2544,7 @@ still need to reap the consequences of your actions."
 The King sighed. "I understand." And then he rose to his feet and set
 out toward the door saying, "There is one thing I can do."
 
-<div class="scene-break">* * *</div>
+* * *
 
 James was growing agitated. He had a growing apprehension that terrible
 things were about to happen and there was nothing he could do about it
@@ -2587,12 +2580,12 @@ this world. But I can't do that any longer."
 
 The King looked straight into James' eyes.
 
-"Will you protect her? Protect my little girl?"
+"Will you protect Adelle? Protect my little girl?"
 
 James froze. Now he *really* didn't know what to say. He already felt
 willing to give his life for Adelle, but he was overwhelmed by the
 intensity and weight of the King's manner. James didn't like making
-promises, and he didn't know how something as tainted as him could keep
+promises, and he didn't know how something as accursed as him could keep
 anyone from evil. But he couldn't say no. He had to do what he could.
 
 "Yes." he said at last. "I'll protect her."
@@ -2611,7 +2604,7 @@ of the castle. He motioned for his guards to follow him.
 "We're all pawns in this game of life." said the King. "There's no going
 back. But we can move forward."
 
-<div class="scene-break">* * *</div>
+* * *
 
 Few souls know how to get there, but if you were to travel past the
 bleeding edge of technology and make a U-turn at morality, you would
@@ -2641,14 +2634,14 @@ wasn't very useful at first, but his latest version had been able to
 narrow the range of these random destinations to a more reasonable
 distance. The subjects would still appear within a mile radius and need
 to be rounded up, but that was a lot better than the first version where
-they could end up anywhere in Marloth.  Most of those subjects have yet to
+they could end up anywhere in Marloth. Most of those subjects had yet to
 be found.
 
 At the moment, these latest teleportation devices were being used to
 ferry a large quantity of creations past a host of soldiers and into a
 region not far from an equally large fortress.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The captain of the castle guard lit a cigar, drew in deeply, and slowly
 exhaled. With one waft he painted the air with a tapestry of ashen
@@ -2717,7 +2710,7 @@ waist. That was odd. She had looked much thinner from outside.
 
 "Perhaps she doesn't speak." said the gatekeeper.
 
-The captain didn't reply. He had continued to examine the girl, and now
+The captain didn't reply. His gaze had remained fixed on the girl, and now
 he was convinced that she was expanding. The child was swelling up like
 a balloon. He needed some answers, and he needed them now.
 
@@ -2728,7 +2721,7 @@ orphan?"
 Suddenly, the child turned around and smiled right at him. "I'm not an
 orphan! I'm a bomb!"
 
-<div class="scene-break">* * *</div>
+* * *
 
 The King turned in horror. With a deafening boom, the castle shook so
 violently he was thrown clear off his feet. Raising himself to a window,
@@ -2754,7 +2747,7 @@ less wield it. The King did so through muscle and momentum.
 he gathered speed it was impossible to tell if he was wielding his sword
 or riding it.
 
-<div class="scene-break">* * *</div>
+* * *
 
 "I think your mother is in need of a spanking!" said Mrs. Gingersmile.
 
@@ -2824,7 +2817,7 @@ royal castle, and occupied by only the most civil of persons!"
 With that, the dolls stepped out into the hallway. Adelle tried to think
 for a moment, gave up, and ran after them.
 
-<div class="scene-break">* * *</div>
+* * *
 
 There were no gates. But there were zombies. Hundreds of them rushed
 through the hole, slashing and bludgeoning anyone in their path. By the
@@ -2840,7 +2833,7 @@ They climbed up the columns and dropped on him like flies. It was only a
 matter of time before the deluge engulfed him. A million knives were fed
 upon royalty. The King was dead.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The queen found herself laughing uncontrollably. The Jillybons were
 having their effect. But then she started careening between laughter and
@@ -2857,17 +2850,17 @@ do. Trying to maintain as noble a gait as possible, she stumbled across
 the room and out onto the balcony. The moon was out. It was a very
 beautiful night. Hers was a very tall tower, and from it she could have
 seen the whole castle stretched out below her and bathed in moonlight,
-cradled in a sea of clouds and stars. But she didn't really notice that.
+cradled in a sea of clouds and stars. But she didn't notice that.
 She didn't notice the screams of the dying or the flames that were
 lazily spreading across parts of the castle. She was numb to all of it.
 Peacefully, she walked up to the edge of the balcony.
 
 And kept on walking.
 
-<div class="scene-break">* * *</div>
+* * *
 
 Things were happening far too quickly for James. He needed room to
-think. Jogging to the nearest window, he climbed out and onto the roof.
+think. Jogging to the nearest window, he climbed out and up onto the roof.
 He felt at home on the rooftops. From there, he could see all of the
 towers rising around him, the garden sprawled out in the moonlight
 below, and the lights hurriedly passing throughout the halls. He didn't
@@ -2885,7 +2878,7 @@ converging upon this place! People are coming from the City of Orphans
 and everywhere! There's even been talk of the toymaker himself coming
 this way!"
 
-"But they aren't here for the King. They're here for the princess."
+"They aren't here for the King. They're here for the princess."
 
 "Yes, but if it wasn't for the king they'd---wait a minute! How would
 you know that?"
@@ -2927,10 +2920,10 @@ that happen."
 about any of this. Events have been set in motion that cannot be
 changed. Trust me, I know about such things."
 
-James continued toward the roof edge and shouted over his shoulder, "But
+James continued toward the roof edge and said over his shoulder, "But
 do such things know about me?"
 
-<div class="scene-break">* * *</div>
+* * *
 
 "I wonder where everyone is?" said Adelle.
 
@@ -2980,11 +2973,11 @@ place within the castle, and she was not accustomed to being talked back
 to by her dolls. As she stormed up the stairs, the dolls were preparing
 to light a fire with a lantern and burn their way through the wall.
 
-<div class="scene-break">* * *</div>
+* * *
 
 From behind the flood of zombies came Deadwick the goblin, furtively
 eyeing the chaos with growing enthusiasm. He had his new gun at the
-ready. Its barrel was so large it shot rounds the size of his fist!  He
+ready. Its barrel was so large it shot rounds the size of his fist! He
 was a little peeved that the children were so efficient in killing
 everyone; so far he had no opportunity to use it. But he wasn't too
 worried; war had a way of beating on his door.
@@ -3002,7 +2995,7 @@ that is blocked off by a heavy door."
 "Yes, she could very well be behind it. Go get more explosives and see
 if you can't rid us of that door."
 
-<div class="scene-break">* * *</div>
+* * *
 
 James entered the kitchen and looked about him. He needed weapons, and
 this was the place to find them.
@@ -3016,12 +3009,12 @@ fear!"
 cupboards and dumping shelves onto the floor. Near the middle of the
 shelves he found what he was looking for: row after row of knives.
 
-"I'm no longer proud of it," said James, "but I have had an eternity of
-experience with such devices." He grabbed one, sheathed it, and screamed
+"I'm not proud of it," said James, "but I have an eternity of
+experience with such things." He grabbed one, sheathed it, and screamed
 in agony.
 
 "What's the matter?" said the Raven. "I thought you'd had an eternity of
-experience with such devices?"
+experience with such things?"
 
 James tore out the knife and clung to a table for support. "I used to
 just stick these through my waist and use my insides as a sheath," he
@@ -3031,7 +3024,7 @@ as a real person would!" He looked at the knife in bewilderment. "I'll
 have to figure out some new means of carrying these things!" And then,
 as if the full weight of his situation was just then dawning on him, he
 added slowly, (and you could hear the tears in his voice), "This is
-going to hurt... "
+going to hurt ... "
 
 "Well, I assume you are at least one of the more capable of the
 children, and can outmaneuver the lot of them?"
@@ -3059,7 +3052,7 @@ James gave a weak smile. "I don't know if there's any hope for me."
 "For many reasons." said James as he headed for the door. "Everything is
 pointing to the same thing: this is what I am supposed to do."
 
-<div class="scene-break">* * *</div>
+* * *
 
 Adelle was becoming agitated. It was growing late and the toymaker still
 hadn't arrived. To make matters worse, there had never been a time when
@@ -3217,25 +3210,37 @@ sounded as though every zombie child in the castle was converging upon
 the spot he now occupied.
 
 They were. From all directions, zombies jumped into view and rushed him.
-But just before the swarm could smother him, he slipped through the
-railing of the balcony beside him. This was only possible due to the
+He fended off the first few but
+before long he was being grappled by a dozen hands.
+Just before the swarm could smother him, he slipped through the
+railing of the balcony beside them. This was only possible due to the
 fact that several of his bones were broken and he was only partially
 relying upon them for animation, thus making him triple jointed and
-flexible as a sack. He fell two stories down and hit the floor rolling,
-possibly breaking more bones, but still managing to leap to his feet and
-break into a run. From far above a cascade of zombies followed suit,
-crashing upon the spot where he had landed and continuing pursuit along
-the ballroom floor.
+flexible as a sack. He and a several other children fell two stories
+down and hit the ballroom floor, breaking many more bones.
+The collision disloged any remaining handholds the others had on him,
+and he was able to stumble to his feet and
+break into a jog.  From far above a cascade of zombies followed suit,
+crashing upon the floor around him like an undead hail storm.
 
-James was determined to catch up with that monkey. But by now his limbs
-were broken in several places and he was not able to move as quickly as
-before. He still had a rhythm to his movement, but now it was a heavily
-syncopated one. And he didn't know where the monkey and that bizarre
-machine were. What he needed was a good vantage point. Turning a corner,
-he entered a long hall and nearly ran straight into another group of
-zombies. Screeching to a halt, he threw himself against the wall and
-proceeded to scale it. It was a rough stone wall, and he was able to
-shoot up it almost as fast as he could run. The top of the wall was
+James was determined to catch up with that monkey.
+Despite the fall, he still had a rhythm to his movement,
+though now it was a heavily syncopated one.
+Fortunately the other zombies were likewise worse for
+the wear and could do no more than keep pace directly behind him.
+
+He didn't know where the monkey and that bizarre
+machine were, and was not sure if he was rushing closer or further
+away from them. What he needed was a good vantage point. Turning a corner,
+he entered a long hall and nearly ran straight into a group of
+ogres. Ogres? Screeching to a halt, he threw himself against the wall 
+as the Ogres immediately unleashed a hail of bullets down the corridor,
+ripping several zombie children to shreds.
+
+James gripped the wall tightly and found it to be comprised of rough
+stone---perfect for a zombie child to scale. While the ogres and zombie
+children engaged in mayhemic combat, he was able to
+scramble up the wall almost as fast as he could run. The top of the wall was
 lined with stained glass windows. One of these he shattered with his
 staff and climbed outside. After crawling up several more stories
 outside, he reached the roof and once again commanded a view of the
@@ -3377,7 +3382,7 @@ quickly lost in the misty haze. Gradually, their horizontal velocity
 dissipated. With shrieks and screams, they began to fall, hurtling into
 the inky darkness below.
 
-<div class="scene-break">* * *</div>
+* * *
 
 The toymaker climbed out onto the roof of the tallest tower and looked
 out over the misty expanse surrounding the now burning castle. Smiling
