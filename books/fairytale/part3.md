@@ -2729,3 +2729,7 @@ pulling himself into the train.
 
 And so it was that James set off for the City of Orphans, leaving sanity
 far behind him.
+
+<div class="page-break"></div>
+<div style="height: 40%"></div>
+<img class="centered-image" style="width: 40%; margin-right: 0;" src="file://src/assets/images/fairytale/clock.jpg" alt=""/>
