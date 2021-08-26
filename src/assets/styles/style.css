@@ -102,4 +102,17 @@ body {
     position: relative;
     top: 0.2em;
     left: 0.1em;
+    background-color: rgba(0, 0, 0, 0) !important;
 }
+
+/*@media (inverted-colors: inverted) {*/
+/*    !**/
+/*      Specify body here to force precedence over the*/
+/*      body...background-color....important styles some readers use for night mode*/
+/*    *!*/
+/*    body img {*/
+/*        -webkit-filter: invert(1);*/
+/*        filter: invert(1);*/
+/*        background-color: rgba(0, 0, 0, 0) !important;*/
+/*    }*/
+/*}*/

@@ -1930,7 +1930,7 @@ tick? Well, they're going to find out!"
 Catherine was very quiet. He was starting to scare her. "Welcome to My
 World." said James.
 
-<img class="centered-image-scene-break" style="width: 50%;" src="file://src/assets/images/fairytale/book.png" alt="Marloth"/>
+<img class="centered-image-scene-break" style="width: 50%;" src="file://src/assets/images/fairytale/book.png" alt=""/>
 
 The children climbed back over the wall and into the orphanage without
 incident. They parted in the hallway between the bedrooms, where

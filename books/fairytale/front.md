@@ -1,6 +1,6 @@
 <div style="height: 10%"></div>
 
-<img class="centered-image" src="file://src/assets/images/fairytale/title.png" alt="Marloth"/>
+<img class="centered-image" src="file://src/assets/images/fairytale/title.png" alt="Marloth: A Child's Fairytale World"/>
 
 <div style="height: 10%"></div>
 

@@ -2760,4 +2760,4 @@ now.
 
 <div class="page-break"></div>
 <div style="height: 55%"></div>
-<img class="centered-image" src="file://src/assets/images/fairytale/crown.png" alt="Marloth"/>
+<img class="centered-image" src="file://src/assets/images/fairytale/crown.png" alt=""/>

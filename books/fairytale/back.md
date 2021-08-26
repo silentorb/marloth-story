@@ -1,5 +1,5 @@
 <div style="height: 50%"></div>
-<img class="centered-image" style="width: 20%;padding-right:30%" src="file://src/assets/images/fairytale/door2.png" alt="Marloth"/>
+<img class="centered-image" style="width: 20%;padding-right:30%" src="file://src/assets/images/fairytale/door2.png" alt=""/>
 
 <div class="page-break"></div>
 
