@@ -3407,3 +3407,7 @@ will work out in due time."
 "On the
 contrary," said the toymaker, as he straightened his hat and turned to
 leave. "It's only just begun."
+
+<div class="page-break"></div>
+<div style="height: 40%"></div>
+<img class="centered-image" style="width: 40%;" src="file://src/assets/images/fairytale/heart.jpg" alt=""/>

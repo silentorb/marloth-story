@@ -1,6 +1,8 @@
-<img class="centered-image" style="width: 20%;" src="file://src/assets/images/fairytale/doll.jpg" alt=""/>
 
-# Part 5
+
+<h1><img class="doll-image" src="file://src/assets/images/fairytale/doll.jpg" alt=""/>
+Part <span class="rotated-text">5</span>
+</h1>
 
 *Dear Sir,*
 

@@ -83,3 +83,23 @@ body {
     margin-block-end: 1.5em;
     color: #444;
 }
+
+.doll-image {
+    display: block;
+    width: 3em;
+    position: relative;
+    top: 0.75em;
+    left: 1.7em;
+}
+
+.rotated-text {
+    transform: rotate(50deg);
+    -webkit-transform: rotate(50deg);
+    -moz-transform: rotate(50deg);
+    -ms-transform: rotate(50deg);
+    -o-transform: rotate(50deg);
+    display: inline-block;
+    position: relative;
+    top: 0.2em;
+    left: 0.1em;
+}
