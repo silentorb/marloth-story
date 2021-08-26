@@ -1049,7 +1049,7 @@ After much of the morning passed by, Adelle finally stepped out into the
 main room modeling her new look. Everyone agreed it was stunning. Along
 with a new dress, her hair had been dyed black and her face made up in a
 way that, while maintaining her natural beauty, did change her identity.
-Now she looked like a very pretty zombie child. Adelle was very pleased
+Now she looked like a very pretty zombie child. Adelle was pleased
 with the feedback both her dress and disguise received, and then she
 glanced over at James.
 
@@ -1825,7 +1825,7 @@ tired, like someone who does not cry because they have run out of tears.
 But there was also a hint of peace. She looked like she *wanted* to die.
 She paused for a moment in consideration, thanked the raven again, and
 moved down the passageway. The raven cringed inside. His job was getting
-harder. It had been easier when everyone had just hated him.
+harder. It had been easier when everyone just hated him.
 
 * * *
 
@@ -1882,7 +1882,7 @@ been prepared for that possibility from the beginning. Somehow you *are*
 in the book of contracts, and you would be a candidate. But still, it
 would be a considerable inconvenience and I'd rather avoid it."
 
-"You know what, at this point I'm not really concerned about
+"At this point I'm not concerned about
 inconveniencing you." said Adelle. "I *am* the future Queen of Marloth."
 
 "Yes, you are."
@@ -1943,7 +1943,7 @@ are you?"
 "I'm new here." said James.
 
 The zombie wasn't buying it. "I would have been informed of anyone
-who---Ahhh!"
+who---ahhh!"
 
 James lifted him off his feet and hurled him through the nearest window.
 As with every other window in the factory, this one was boarded up, so
@@ -1982,14 +1982,16 @@ study. It was on his desk."
 
 "Follow me."
 
-* * * Mr. Mosspuddle continued to examine their predicament. He, Fugue,
+* * *
+
+Mr. Mosspuddle continued to examine their predicament. He, Fugue,
 the dolls, and Miss Bethany were stranded on a narrow plateau of marble
 rising high above the clouds.
 
 "What a pretty view!" said one of the dolls.
 
 The librarian wasn't enjoying the view. Neither was Fugue. "We need to
-get back to the action!" he exclaimed, and then turning to Mr.
+get back to the action!" Fugue exclaimed, and then turning to Mr.
 Mosspuddle, "You're the smartest fellow here. How are we to get off this
 place?"
 
@@ -2160,7 +2162,7 @@ of them as to what was going on. As she patrolled the winding corridors
 in search of any intelligence, she finally came across a person who was
 actually able to provide some useful information. It was Deadwick. They
 nearly bumped into each other turning a corner, and before the goblin
-could retreat he had once again under her magical charm.
+could retreat he was once again under her charm.
 
 "The doctor is looking for you," said Deadwick.
 
@@ -2168,9 +2170,8 @@ could retreat he had once again under her magical charm.
 turning into a riot!"
 
 "A troublemaker slipped into the factory. We're trying to find and
-dismember him, but so far he has eluded us. At one point we almost had
-him cornered in the East wing but he had planted a bomb that took out
-seven of my kids. That little bugger is going to pay!"
+dismember him, but so far he has eluded us.  He's been using bombs
+to blow up walls and zombies."
 
 The goblin stood there a moment stewing and then said, "Anyhow, the
 doctor is worried about you. He's afraid that something might happen to
@@ -2258,15 +2259,15 @@ don't have that much control anymore! If you won't tell me where Marloth
 is then please get away from me! I'm trying to fight it but I can't
 fight it much longer: I want to kill you!"
 
-"I know. I want you to. And I'm staying right here until you do it."
+"I know. I want you to. And I'm staying right here until you do."
 
 "What? Why are you doing this?"
 
 "I can't take the pain anymore. I want to be a zombie like the rest of
 you."
 
-"But what about the hell? The Judgment Day? All of the evil that a
-zombie child does facing them on the world beyond this world?"
+"But what about Hell? Judgment Day? All of the evil that a
+zombie child does facing them in the world beyond this world?"
 
 "I'm not sure there is such a thing."
 
@@ -2274,7 +2275,7 @@ zombie child does facing them on the world beyond this world?"
 
 "Maybe so, maybe not. It's a chance I'm willing to take. James, this
 isn't just for me, it's for you too! When I am dead, I will have more to
-offer you. You will be free to hurt me without any guilt. I know that's
+offer you. You will be free to hurt me without guilt. I know that's
 what you want."
 
 James reached out and grabbed her by the throat. "Stop tempting me!" he
@@ -2300,11 +2301,11 @@ with his knife hand outstretched behind him, ready to strike.
 
 But to James all of their talk was becoming a distant clattering. Every
 drop of his concentration had been sucked from the room and into the
-unseen battle being waged within him. "One more time," James whispered.
+unseen battle being waged within. "One more time," James whispered.
 "Please help me just one more time." Slowly, painfully, his left hand
 fought itself free from Adelle's throat and awkwardly worked its way up
 to the satchel slung over his back. As if with a mind of its own, his
-hand took out the bomb.
+hand took out his last bomb.
 
 "What are you doing?" the doctor demanded. "You can't be resisting! You
 have nothing to resist with!"
@@ -2327,7 +2328,7 @@ window, the raven watched solemnly. Adelle looked at the ground nearby
 where there was a crumpled glint of gold. A flying brick had just missed
 her head and clipped the crown from her temple. Now the crown was a
 mangled mass lying on the floor. There was no way it would ever fit on
-her head again.
+her head now.
 
 Then she spotted James. He was lying on the floor in a motionless heap,
 his vacant eyes staring up at the ceiling. "James!" she shouted, and
@@ -2346,7 +2347,7 @@ they've done, but we still need her. Now lock her upstairs until I can
 figure out how to fix this mess we're in."
 
 For a moment Deadwick looked like he was going to cast the doctor aside
-and shoot her anyway, but after much glaring he begrudgingly holstered
+and shoot her anyway, or just shoot both of them, but after much glaring he begrudgingly holstered
 his weapon.
 
 Adelle didn't hear any of this. The world around her and James had
@@ -2361,12 +2362,12 @@ her away from James until he had disappeared around a corner.
 
 James was lifeless! What had she done? What had she been thinking? But
 wait, what if he wasn't completely gone? She should have checked his
-pulse. No, on second thought, he had probably never had a pulse.
+pulse. No, on second thought, he had never had a pulse.
 
 This was silly! He had never really been alive! He had only ever been a
 puppet of the machine! And yet, if that was all it was, then why had she
 wanted to be just like him? It suddenly felt so foolish. Then the
-something let go of her and she heard a door close and lock behind her.
+something dragging her let go and she heard a door close and lock behind her.
 Gradually she slipped from her reverie and became aware of her
 surroundings. She was in a wide, dingy room with a low ceiling and a
 dusty atmosphere. It was crammed with tons of forgotten miscellany,
@@ -2375,7 +2376,7 @@ furniture. There was very little floor space left to walk on. While she
 did not forget about what had just happened to her and James and her
 guilt continued to play in part of her mind, her natural curiosity was
 triggered enough for her to begin to stumble through the piles of
-endless stuff and see what oddities she might find.
+endless stuff and see what oddities were there.
 
 It wasn't long before she came across a tall, framed object that she
 surmised might be a painting, but it was so caked in dust that she could
@@ -2426,7 +2427,7 @@ are you?"
 The raven jerked his head back and forth a few times. "Okay. Maybe a
 little."
 
-"None of this is really about trusting Adelle. Your complaint is with
+"None of this is really about Adelle. Your complaint is with
 me. The real question is: do you trust me?"
 
 "For the most part."
@@ -2510,13 +2511,12 @@ experiments." the Lady Mediev noted.
 "What happened?" the doctor wondered aloud, still gaping through the
 window.
 
-"I don't know what happened! It was *your* hole! It's gone and now your
+"How should I know? It was *your* portal! It's gone and now your
 ugly laboratory is in the middle of the Globe. My beautiful ballroom!
 It's now mixed with your doghouse like two works of clay that have been
 smashed together. And the clay is still moving around."
 
-The doctor launched into a stream of scientific theories as to what
-could be happening, all of which meant nothing to the Lady. As she
+The doctor launched into a stream of scientific theorizing, all of which meant nothing to the Lady. As she
 scanned the room, she noticed the mangled crown on the ground. "You
 mentioned that you had someone locked up. Who is it?"
 
@@ -2646,7 +2646,7 @@ his musing and rose to greet his guests.
 
 The others were surprised to find themselves in the house of Jakob
 Damond as well, and a little nervous. Especially Adelle. Her eyes were
-being opened to the fact that, despite his warm demeanor, he was a very
+being opened to the fact that, despite his warm demeanor, he truly was a very
 dangerous man. But then again, she was presently *surrounded* by some of
 the most dangerous people in Marloth.
 
@@ -2665,25 +2665,25 @@ down in the midst of such company, but the others complied. The Lady was
 just about to sit down when a half-man entered the room and handed her a
 note. She told him not to bother her, but still glanced at the note
 impatiently. Her countenance immediately changed. She asked if this was
-a joke. He said he didn't know. She asked who had written it. He said he
-didn't know that either. She asked him where he had gotten it. The
+a joke. He said he didn't know. She asked him where he had gotten it. The
 half-man told her. Now the Lady looked very agitated. She absently
 dropped the note, begged her leave, and hurried out of the room.
 Curious, Adelle went over and picked up the note from the floor.
 
-I'm sorry, Mother. I know I was a disappointment to you. I tried to
-redeem myself. I tried to redeem the mistake that was my existence, but
-I never succeeded. I'm sorry I said I hated you. I don't hate you. I'm
-grateful for all the good things you gave me and all the clever things
-you taught me.
-
-I have to go now. I may never see you again, but I hope that I will. I
-hope there is more to this world than what I see. I hope what the little
-mad boy says is true.
-
-Your loving daughter,
-
-Ivy
+> I'm sorry, Mother. I know I was a disappointment to you. I tried to
+> redeem myself. I tried to redeem the mistake that was my existence, but
+> I never succeeded. I'm sorry I said I hated you. I don't hate you. I'm
+> grateful for all the good things you gave me and all the clever things
+> you taught me.
+>
+> I have to go now. I may never see you again, but I hope that I will. I
+> hope there is more to this world than what I see. I hope what the little
+> mad boy says is true.
+>
+> Your loving daughter,
+>
+> Ivy
+>
 
 Adelle was breathless. She quickly stuffed the paper into her pocket.
 
@@ -2790,11 +2790,11 @@ There was a long pause.
 Adelle remained very quiet.
 
 "Ohhh, and I'm sure you'll guess it with this one: she's a princess! And
-she's gorgeous!"
+she's *gorgeous!"*
 
 More silence.
 
-"And she's a stubborn little *****!" he snapped. "Okay, so you
+"And she's a stubborn little \*\*\*\*\*!" he snapped. "Okay, so you
 can't guess it! She's you! You! You're the only one who can destroy it!
 And if you don't, this whole world will end very, very soon!"
 
@@ -2870,13 +2870,15 @@ means very little in a world of *Fantasy!*"
 of Jillybons into her mouth.
 
 "You'll thank me in a minute," he said, as he plugged her nose and
-clamped his hands over her mouth, strangling a noiseless scream.
+clamped his hands over her mouth, strangling a noiseless scream.  A noiseless scream for help.
+
+Suddenly, time slowed for Adelle. She felt as though she had a sixth sense.  She saw a path in front of her, and all she had to do was follow it.
 
 Convulsively, Adelle threw all of her weight backwards, kicking the
 platter of Jillybons into the air. The platter slammed into the side of
 Jakob Damond's head, sending Jillybons flying in all directions. The
 toymaker lost his balance, and his grip. Deadwick lost his balance, and
-his grip. Adelle fell to the floor, spitting out Jillybons. Before
+his grip. Adelle fell to the floor, squashing the monkey and spitting out Jillybons. Before
 anyone could realize what was happening, she was on her feet and had
 snatched the book. Deadwick swung at her but she ducked beneath the
 blow. As she ran for the door, he swung at her again and this time
@@ -2898,11 +2900,10 @@ The doctor turned to Jakob Damond. "So all this time you've been
 interested in the princess simply to destroy that book?"
 
 "No. I have a million things I want to do with her. But I can't do any
-of those if Edward messes everything up, now can I?"
+of those if Edward ruins everything, now can I?"
 
 Adelle was racing down the zigzagging staircase when the wall beside her
-exploded, showering her with bits of marble. She glanced up to see the
-toys cascading down the staircase after her and Deadwick above them,
+exploded, showering her with bits of marble. She glanced up to see toys cascading down the staircase after her and Deadwick above them,
 lowering his massive firearm and pulling out a second, smaller pistol
 from his belt.
 
@@ -3004,7 +3005,7 @@ There was a long pause, and then the raven spoke,
 
 * * *
 
-The forces of darkness continued to search for the princess, but they
+The forces of darkness continued to search for Adelle, but they
 could not find her. The leaders of the forces began to speculate that
 she may have slipped from the Globe and out into the City. They began
 expanding the radius of their hunting to include the immediate
@@ -3208,7 +3209,7 @@ doorway.
 The crowd finds this amusing. They begin to laugh and deride him using
 crude language. They gloat about the perverse things they will do to the
 princess. Except for the clever looking man. He doesn't say anything. He
-just takes a few steps back, turns around, and runs like a madman.
+just takes a few steps back, turns around, and flees.
 
 Despite all of their words, no one has yet taken a step forward.
 Instead, someone asks the man standing in front of the doorway what he

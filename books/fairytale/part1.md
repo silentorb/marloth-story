@@ -320,7 +320,7 @@ For instance, a wand that could make people like Millamer civilized.
 
 She smiled and looked over at Miles. "And what would you buy, Miles?"
 
-Miles did not look away from his spyglass but said, "All of you blokes
+Miles did not look away from his spyglass but said, "You blokes
 always think so small. I don't want to buy any toys. I want to find out
 how he makes them! I've never heard of anyone making things like that
 before. He must be using something no one else knows about! Some kind of
@@ -1929,6 +1929,8 @@ tick? Well, they're going to find out!"
 
 Catherine was very quiet. He was starting to scare her. "Welcome to My
 World." said James.
+
+<img class="centered-image-scene-break" style="width: 50%;" src="file://src/assets/images/fairytale/book.png" alt="Marloth"/>
 
 The children climbed back over the wall and into the orphanage without
 incident. They parted in the hallway between the bedrooms, where

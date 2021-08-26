@@ -1,3 +1,5 @@
+<img class="centered-image" style="width: 20%;" src="file://src/assets/images/fairytale/doll.jpg" alt=""/>
+
 # Part 5
 
 *Dear Sir,*
@@ -39,7 +41,7 @@ shaft was a solid wall of rock.
 Fugue shook the sack vigorously and deposited a sleeping princess onto
 the damp ground.
 
-"So she was in the sack." said the librarian. "Her condition looks even
+"So she *was* in the sack." said the librarian. "Her condition looks even
 worse than I had thought." He set out into the aisles of books and soon
 returned with a book titled *Pigsy's Rare Fruits and Herbs*. He was also
 carrying a frying pan.
@@ -80,7 +82,7 @@ Adelle moaned and fell back to the ground.
 
 "Well don't thank us all at once." said Fugue.
 
-James turned to the librarian. "They are all destroyed, aren't they?"
+James turned to the librarian. "They are all destroyed now, right?"
 
 "I think so, though it will take some time to be sure. If an hour has
 passed and the fever hasn't left her then we should probably administer
@@ -141,7 +143,7 @@ carry her."
 Adelle, who had been looking practically unconscious, suddenly opened
 her eyes. "No! I don't want any of you to carry me!"
 
-"That's not a problem." said Mr. Mosspuddle. "I'll summon my boat." He
+"No one needs to carry anyone." said Mr. Mosspuddle. "I'll summon my boat." He
 took a whistle from his coat pocket and blew on it, producing a noise
 reminiscent to a parrot biting itself. Before long, a small wooden boat
 arrived out of the darkness and stopped beside them.
@@ -293,7 +295,7 @@ The raven and the swan resumed their conversation. James stood there for
 a short time and watched as the boat continued past him. He was in the
 process of sinking into deeper reveries when there was a sudden cry from
 up ahead. It sounded like Mr. Mosspuddle and it sounded something like,
-"My house! My *poor house!"*
+"Oh My house! My *poor house!"*
 
 James rushed forward past the boat and the dolls, and the raven darted
 alongside him. They caught up with the librarian and Fugue, who were
@@ -321,11 +323,9 @@ campfire!"
 Sometime later, the group was gathered around a roaring fire, dining on
 a meal the dolls and Fugue had concocted using what ingredients they
 could gather from books and local vegetation. Mr. Mosspuddle was still
-very miserable and unusually quiet. The dolls were filling Adelle in on
-the events that had led to her being there. James had just finished
+very miserable and unusually quiet. The dolls were relating to Adelle the events that had led to her being there. James had just finished
 patching up the bullet holes in his body and was sitting back to reading
-Marloth. Fugue was trying to raise the spirits of the librarian, though
-with little success.
+Marloth. Fugue was trying to raise the spirits of the librarian, with little success.
 
 After some time, Adelle stood up and said "Now that we are all situated
 and together, I would like to discuss this matter of your kidnapping
@@ -348,14 +348,14 @@ have killed you!"
 "Well, if that truly was your main concern, I am now Jillybon free.
 Danger averted. I thank you, but that still leaves me here in the middle
 of nowhere with people who, regardless of their motive, did kidnap me.
-But that can be mended. If you return me to the Mediev Manor, I will put
+But that can be mended. If you return me to Mediev Manor, I will put
 this whole incident behind me. And the sooner the better. One of the
 grandest balls of the year will be taking place at the Globe next week,
 and there are so many things I need to do beforehand!"
 
 "We can't do that." said James. "The Lady Mediev is evil."
 
-Adelle unconsciously reached up and touched the crown to make sure it
+Adelle was no longer familiar with such a lack of cooperation. She unconsciously reached up and touched the crown to make sure it
 was still on her head. It was. *But it wasn't working!* She *was* still
 feeling some of the disorientation of the Jillybons; perhaps their
 lingering effects were hindering her use of the crown. Very well then,
@@ -368,7 +368,7 @@ would use the word *evil* to describe her, she is very arrogant and
 spiteful, and I was never entirely comfortable with being her guest. But
 I still need to return to the City. As another option, you could leave
 me in the charge of the toymaker, Jakob Damond. He is one of the kindest
-people I have ever met."
+people I know."
 
 At this the raven exploded (figuratively), and repeated his lecture on
 how the title of "Toymaker" was a gross misnomer and how everything the
@@ -379,7 +379,7 @@ Damond so! He is a good man, while you are arrogant and spiteful! In
 fact, you are just as unpleasant as the Lady Mediev!"
 
 Now the raven was truly furious. "I am nothing like her! She bends and
-breaks truth to serve her own selfish ends. I stand by truth and defend
+breaks truth to serve her own ends. I stand by truth and defend
 it to the death!"
 
 "If you can imagine that someone as compassionate as Jakob Damond is
@@ -416,7 +416,7 @@ that point us dolls agree with them."
 people are raving mad and terribly uncivil. It is our solemn duty to
 protect you from the influence of such company."
 
-"But what about our present company? They are outsiders to the castle!"
+"But what about our present company? They are outsiders as well!"
 
 "That has not escaped our notice. We are watching them very closely."
 All of the dolls turned to stare at James suspiciously. James tried to
@@ -429,7 +429,7 @@ everything in our power to keep you from it."
 
 "If that's what it takes, then Yes!"
 
-"Wait! Stop!" said Mr. Mosspuddle. "Why are we being so antagonistic?
+"Wait! Slow down!" said Mr. Mosspuddle. "Why are we being so antagonistic?
 Everyone here (except maybe the raven) is concerned for Princess
 Adelle's well-being. We're all agreed on that point. The only
 disagreement is over what is truly in her best interest. Now, at least
@@ -576,13 +576,12 @@ On the story below them rested his crowning achievement: a large boxish
 contraption bursting at the seams with gears, levers, gauges and every
 manner of technically mystifying apparatus conceivable by man. If you
 were to go to the Interdimensional Patent Office and look up patent
-\\\#4502935-308, you would find the following title: "A device for
+\#4502935-308, you would find the following title: "A device for
 rehabilitating the expired physical entities of juvenile Homo sapiens."
 
 Most people called it the Zombie Machine. It was the machine that
 maintained his entire army of undead children. And it was the children
-that made all of his experiments possible. His studies were phenomenally
-ambitious, and required a vast amount of manpower. Zombies had been the
+that made all of his experiments possible. His studies were absurdly ambitious, and required a vast amount of manpower. Zombies had been the
 perfect tool. By now he had filled the world with his remarkable lab
 assistants, though most of them were only loosely under his control.
 
@@ -612,8 +611,7 @@ was looking for: the one with the word "James" signed on the bottom with
 big red letters. Taking a pen and notepad, he jotted down the
 identification number on the top of the document and climbed out of the
 machine. Once he had secured the door behind him, he climbed over to a
-panel with rows of numerical digits and entered in the number he had
-written down and then pressed a square button below the panel. With
+panel with rows of numerical digits and entered in the number from the document and then pressed a button below the panel. With
 that, the machine made several creaking noises and then the word "James"
 floated up above the main control panel.
 
@@ -720,40 +718,39 @@ a cliff.
 
 * * *
 
-Journal of Dr. Otto Marrechian - Entry \\\#253
-
-Today I finished a machine that determines the girl's location. It
-harnesses that mysterious ability of my children to sense her presence.
-It utilizes the principle of triangulation, though in a much more
-complex manner. I have placed children across dozens of different
-dimensions. My machine monitors how strongly each of them is aware of
-the princess and prints out detailed reports of its findings. I can then
-take that data and use it to calculate a rough idea of where she is. It
-isn't a very fast process since I still need to do all the calculations
-by hand, but I'd rather not spend hours automating a process that will
-be obsolete once I have her.
-
-I just now finished my first run of this procedure and, assuming my
-calculations are correct, as of half an hour ago she was and probably
-still is in the Great Library.
-
-The Great Library! That is no easy fortress to surmount! I've known for
-some time that the librarian of that place has been gradually destroying
-gateways to the Library. By now, I don't think there are any gateways
-left. But since I've known this for some time this is not a new problem
-for me. Killing the librarian or attempting to forcibly take control of
-the Library have never been viable options. The Library is an incredible
-source of power I can tap into, but it is also heavily dependent on the
-librarian. For the Library to be of any use to me he must continue doing
-his job unhindered. Thus, I did the only logical thing left for me to
-do: I published a book.
+> Journal of Dr. Otto Marrechian - Entry #253
+>
+> Today I finished a machine that determines the girl's location. It
+> harnesses that mysterious ability of my children to sense her presence.
+> It utilizes the principle of triangulation, though in a much more
+> complex manner. I have placed children across dozens of different
+> dimensions. My machine monitors how strongly each of them is aware of
+> the princess and prints out detailed reports of its findings. I can then
+> take that data and use it to calculate a rough idea of where she is. It
+> isn't a very fast process since I still need to do all the calculations
+> by hand, but I'd rather not spend hours automating a process that will
+> be obsolete once I have her.
+>
+> I just now finished my first run of this procedure and, assuming my
+> calculations are correct, as of half an hour ago she was and probably
+> still is in the Great Library.
+>
+> The Great Library! That is no easy fortress to surmount! I've had my eye on that treasure trove for some time and I've known that the librarian of that place has been gradually destroying
+> its gateways. By now, I don't think there are any gateways
+> left. But since I've known this for some time this is not a new problem
+> for me. Killing the librarian or attempting to forcibly take control of
+> the Library have never been viable options. The Library is an incredible
+> source of power I long to harness, but it is also heavily dependent on the
+> librarian. For the Library to be of any use to me he must continue doing
+> his job unhindered. Thus, I did the only logical thing left for me to
+> do: I published a book.
 
 "A book? That's it! You really are a mad scientist!" said Deadwick when
 he heard of the doctor's plans.
 
 "If madness is not being constrained by what holds others from
 greatness, then yes, I am mad." said the doctor. "But there is reason
-behind my actions. I know Mosspuddle's great weakness." He held up a
+behind my actions. I know Mosspuddle's great weakness." The doctor held up a
 book in his hand entitled "A Book without an Author" by Otto Marrechian.
 "There is something even more important to him than protecting his
 library: filling it with every book ever printed. He has a copy of my
@@ -786,7 +783,7 @@ librarian.
 "He's almost finished. He should be here shortly."
 
 Fugue looked up from his cooking in shock. "He's training without me?
-Drat! Why didn't he tell me! I've been needing to work on my game!" He
+Why didn't he tell me! I've been needing to work on my game!" He
 kicked one of the toves in frustration. "All this lack of adventuring is
 making me lazy!"
 
@@ -813,9 +810,9 @@ what James was facing. The raven seemed to know a lot of things he
 didn't say.
 
 "I won't pry." said Mr. Mosspuddle and then, spotting a good subject to
-change to said, "Is that breakfast? I could use some sustenance!" He
-took the bowl that Fugue handed him and sat down by the fire. After
-taking a few bites, he said, "I can't shake the feeling that agents of
+change to said, "Is that breakfast? I could use some sustenance!" With thanks he
+accepted the bowl that Fugue handed him and then sat down by the fire. After
+taking a few bites and complimenting Fugue's cooking, he said, "I can't shake the feeling that agents of
 the wizards will be arriving any moment. My house (or what's left of it)
 will be one of the first places they check. I think we should set out
 for other parts of the library soon."
@@ -865,7 +862,7 @@ consort with such devices. There is one other way, but it is not very
 reliable. Throughout the Library there are holes through the dimension
 the Library rests within. Most of these holes can be found in the outer
 rooms and passageways of this dimension, areas that are so old not even
-I know who built them or to what purpose. They are one-way holes: things
+I know who built them or to what purpose. They are only one-way: things
 can go out but cannot come in. And when something passes through them,
 there is no way of knowing where they will land. If a person were to
 fall through, they would most likely plummet to their death."
@@ -893,8 +890,7 @@ crown. *Where had he seen it before?*
 
 Even though Mr. Mosspuddle had said he would immediately search for the
 books of Ohm, a subconscious part of his mind was against it, and looked
-for a way to counter it. At the thought of looking for books, Mr.
-Mosspuddle's mind drifted to the books he had just gathered, and began
+for a way to counter it. At the thought of looking for books, his mind drifted to the books he had just gathered, and so began
 to monologue. "I am better at organizing books than wielding them." he
 said. "However, I have collected a few of the books I actually know how
 to utilize. Here, let me show you."
@@ -954,7 +950,7 @@ now I think we are ready to begin searching for the books of Ohm."
 "Yes. Of course! We will set out immediately. Just let me gather my
 things."
 
-*This doesn't make any sense,* thought James. Once again, he found
+*This doesn't make sense,* thought James. Once again, he found
 himself staring at the crown, trying to figure out where he had seen it.
 It taunted him. Him and his rotting memory. He tried to work his way
 backward. He had a vague recollection of an orphanage. And walking
@@ -1094,7 +1090,7 @@ another explosion lit a nearby aisle.
 
 "What now?" cried Miss Perrywinkle.
 
-"Ogres." said Fugue. "Their firing rockets. Though they aren't firing at
+"Ogres." said Fugue. "They're firing rockets. Though they aren't firing at
 us."
 
 "How do you know that?"
@@ -1174,7 +1170,7 @@ After some hasty debate, it was agreed that one of the dolls would ride
 in Fugue's pack, another in Mosspuddle's, and one would ride the raven.
 The swan did not need any assistance.
 
-And so they continued on in this fashion. Periodically a zombie child
+And so they continued in this fashion. Periodically a zombie child
 would jump out at them and Fugue would blow it away with his firearm.
 This always had the awkward consequence (considering Fugue's lack of
 weight and the impressive force his weapon employed) of sending Fugue
@@ -1307,43 +1303,13 @@ need?"
 
 "I'll do anything for you!"
 
-"Thank you." said Bobby. He grabbed Adelle's wrists tightly, twisted
-them behind her back, and lifted her off her feet and against the
-nearest wall. Adelle was so surprised it took her a moment to realize
-how much pain he was suddenly causing her.
+"Thank you.  That means a lot."
 
-"Stop it!" she exclaimed. "You're hurting me!"
+"So what should I do?"
 
-The boy didn't seem to hear her. "Scream for me." he said.
+Bobby gently grabbed her shoulder and leaned her against the wall.
 
-"Bobby, what are you doing? Let go of me!"
-
-"Just one scream." he said.
-
-"No! Put me down this instant!"
-
-He suddenly let go of her, and her feet slipped from under her so that
-her head slammed into the wall.
-
-"You idiot!" she moaned, and was going to say more until she looked up
-and saw that he was now holding a knife.
-
-"Where did you get that?" she demanded. "Put it away before you---"
-
-He slashed her across the face. She was so shocked it took her a moment
-to even feel the pain. To feel the blood running down her cheeks.
-
-"Scream!" Bobby commanded. Adelle began to tremble. She turned to the
-other children.
-
-"Please! Somebody help me! He's lost his mind!"
-
-The children didn't seem to hear her. Some of them stepped closer. All
-of them were watching with what could only be described as intent
-fascination. She noticed that many of them were also holding knives, and
-some had even nastier instruments.
-
-Adelle screamed.
+"Scream for me."
 
 * * *
 
@@ -1352,7 +1318,7 @@ Suddenly James froze.
 Crying. He could hear crying in the distance. It was a girl.
 
 The reflection jumped up in excitement. "You heard that, didn't you!
-She's in pain! They're probably hurting her. You know what that means,
+She's in pain! It's all their doing. You know what that means,
 don't you?"
 
 "I should go save her?" James asked feebly.
@@ -1368,7 +1334,7 @@ through this routine. I don't want to hurt her, and you can't make me."
 Up to that point the reflection had been smiling, but suddenly the smile
 turned into a snarl. The reflection slammed its fist against the mirror.
 
-"I want to hurt her, and if I want to hurt her then so do you!" He hit
+"I want her, and if I want her then so do you!" He hit
 the mirror again.
 
 It began to crack.
@@ -1377,7 +1343,7 @@ It began to crack.
 repeatedly beat against the mirror. "I'm coming out!" he said. More
 cracks appeared in the mirror.
 
-"Stop it!" said James. "Leave me alone!"
+"Stop it!" said James. "Stay away!"
 
 The reflection continued his pounding with vicious enthusiasm. "Once I'm
 free there will be no more of these stupid fights. You'll be me again
@@ -1407,8 +1373,7 @@ And Adelle in pain."
 "I suggest you run away before I break free. James is about to get
 violent!"
 
-James cringed. "The mirror is giving way! I can feel him taking over
-me!"
+James cringed. "The mirror is giving way!"
 
 "Look past the mirror!"
 
@@ -1465,9 +1430,7 @@ room in front of him. Without skipping a beat, James threw himself
 forward and burst through the rotting wall. Everyone in the room had
 just enough time to turn in surprise as he came hurtling across the room
 and past Bobby, knocking the boy off his feet. As James flew by, he
-caught a glimpse of Adelle. She had cuts all over her body and blood was
-dripping down her face and limbs. Her once beautiful clothes were now in
-tatters.
+caught a glimpse of Adelle. She was alive, but barely conscious.
 
 James didn't have much time to see her distress. He landed on the far
 corner of the room, sprung to his feet, and immediately engaged the
@@ -1476,10 +1439,9 @@ with lightning speed. James moved even faster. Nay, not faster, it was
 as though James already knew every move the boy was about to make---as
 though he had already moved out of the way before Bobby swung. Within
 two blinks of an eye, Bobby was on the ground stunned and James was
-taking on the rest of the group at once. They could not believe how fast
-he moved. Up to six attacks were leveled at him at once and yet he would
-find a position in space to avoid every one of them and at the same time
-retaliate with precise blows of his own. None had ever seen anything
+taking on the rest of the group at once. They could not comprehend his movements. Up to six attacks were leveled at him at once and yet he would
+shift to a position in space to avoid every one of them and at the same time
+retaliate with precise blows of his own. They had never seen anything
 like it. James marveled, but not at himself. He marveled at the battle
 playing out before him; he felt like he was watching from a distance. He
 was not the one fighting. He was simply a channel, a channel through
@@ -1491,15 +1453,15 @@ shoulder and across the room.
 
 Meanwhile, Adelle was curled up against the adjacent wall, watching the
 fight with wide-eyed horror. She didn't know what to think. She forgot
-about how badly she was bleeding.
+about her injuries.
 
 As she watched James struggling to keep the zombie children on one side
-of the room and her on the other, she saw several of the other children
-climbing up the walls and around the area of conflict.
+of the room and her on the other, she saw more children
+arriving and climbing up the walls and around the area of conflict.
 
 "James, above you!" Adelle shouted.
 
-James looked up just in time to see three more zombie children dropping
+James looked up just in time to see a group of zombie children dropping
 down on top of him. It should be reiterated how nearly the entire room
 and surrounding structure was constructed from wood. In eons past it had
 probably been quite sturdy, but by the present time it had become little
@@ -1532,7 +1494,7 @@ oncoming children.
 Up above, Adelle was just thinking about making her escape when Osmand
 suddenly loomed up behind her and pinned her against the wall. Osmand
 was not strong, even as a zombie, and normally Adelle may have had a
-chance at fighting him off. But with the loss of blood, it was all
+chance at fighting him off. But in her current state, it was all
 Adelle could do to remain conscious.
 
 "Please, Osmand!" Adelle begged of him. "Please don't hurt me!"
@@ -1545,9 +1507,9 @@ Always, *always* teasing! But I caught the signals. I know what you
 
 Osmand didn't seem to hear, and didn't pause in his speech. "Teasing,
 teasing. You are *so* good at it! Both flaunting and demure, wanting to
-stay locked away, and wanting me to tear you open. Driving me insane to
-find out what's beneath your surface. Do *you* even know what is beneath
-your surface? Well now we can find out together ... "
+stay locked away, and wanting to reveal everything. Driving me insane to
+find out what's beneath the surface. Do *you* even know what's beneath
+the surface? Well now we can find out together ... "
 
 Suddenly, a hand burst through the floor beneath them, grabbed Osmand by
 the foot, and yanked him through the floor.
@@ -1562,7 +1524,7 @@ as though begging it not to abandon her, but it was too old to care
 anymore. With a stomach-dropping *crack,* the remaining floor
 disintegrated beneath her. James heard a cry and turned to watch the
 princess fly past him. He tried to reach out but he was held back by the
-undead lattice he was now a part of. Helplessly they watched as the
+undead lattice he was now a part of. Helplessly they each watched as the
 other hurtled away into the distance, James disappearing far above and
 Adelle disappearing far below into the darkness that quickly enveloped
 her.
@@ -1571,7 +1533,7 @@ her.
 
 Marloth is a most difficult place to map. That is largely due to the
 ambivalent humor of its geography. In Marloth, points in space still
-have a spacial relationship to one another, though that relationship is
+have a spatial relationship to one another, though that relationship is
 better defined by ideas than coordinates. For example, somewhere just
 past disenchantment (and a little north of the Isle of Mute Salesmen),
 lies a particularly mysterious shore. No one knows its location, for it
@@ -1591,7 +1553,7 @@ It was here that Adelle found herself, lying face down in the sand.
 She did not know how long she had been unconscious. It felt like years.
 She hurt all over, but she was surprised to find that she was not
 thinking about that. Nor was she thinking about how cold and wet she
-currently was. Nor was she thinking about how she missed her crown.
+was. Nor was she thinking about how she missed her crown.
 
 She was wondering where James was. Still a little dizzy, she pulled
 herself to her feet and discovered a whole new array of aches and pains.
@@ -1655,19 +1617,17 @@ She quivered and looked about to faint. Mr. Mosspuddle was at first
 taken aback by this news, but quickly recovered enough to reach out and
 gently keep her from falling.
 
-"Can you take me to his remains?" he asked.
+"Can you take us to where he—the places he is resting?" the librarian asked.
 
-She nodded. "I've gathered them together. They are wrapped in a
-blanket."
+She nodded. "I gathered everything together."
 
-She led them to a small cave that looked out over the beach. Sure
-enough, in the cave there was a bundled up blanket. Adelle turned her
-face away as Mr. Mosspuddle united the bundle and examined its contents.
+She led them to a small cave that looked out over the beach. In the cave there was a bundled up blanket. Adelle turned her
+face away as Mr. Mosspuddle untied the bundle and examined its contents.
 
-"Yes, that is definitely James," said the librarian. "The connection
+"That is him," said the librarian. "The connection
 between the Zombie Machine and James has been severed. This would happen
 whenever James' physical form deviated too far from his original
-definition in the machine."
+form."
 
 "Is there anything that can be done?" asked Samantha.
 
@@ -1699,34 +1659,34 @@ I know anything about sewing?"
 
 "Ooh! Ooh!" said Samantha, raising her little hand in the air and
 jumping up and down. "Adelle knows how to sew! She was taught by Miss
-Bethany, the greatest seamstress in the land!"
+Bethany, the bravest seamstress in the land!"
 
 Mr. Mosspuddle turned toward Adelle. "Is that true? Could you sew
 together James? *Would* you?"
 
-Adelle looked down at the blanket of body parts. She could not help
-feeling the weight of James' sacrifice for her. He had been telling the
+Adelle looked down at the blanket. She could not help
+feeling the weight of James' sacrifice. He had been telling the
 truth; he really *did* want to protect her.
 
 "I'll do it," she said. "I'll sew him back together."
 
 After more discussion, it was noted that several items would be needed
 for the procedure, and so the party set out to search for those things.
-Adelle sat nearby the searching, looking like she was trying fight off
+Adelle sat nearby the search, looking like she was trying fight off
 sleep. As they scoured the debris, Fugue sidled over to Mr. Mosspuddle
 confidentially.
 
 "What about the girl?" asked Fugue. "Should I tie her up so she doesn't
 run off again?"
 
-"What? No!" said Mr. Mosspuddle. "Her heart seems to be softening! If at
+"What? No!" said Mr. Mosspuddle. "She seems to be coming around! If at
 all possible, she should accompany us willingly. After all, she is the
 heir to the throne."
 
 "Oh," said Fugue, clearly disappointed.
 
 As the group looked for the needed items, Mr. Mosspuddle also located a
-few items that, along with one of his books, could be used to heal
+few items that, along with help of one of his books, could be used to heal
 Adelle's wounds. After some time, Adelle felt her awareness returning
 and her attention clearing enough to ask the librarian how they had
 found her.
@@ -1775,7 +1735,7 @@ there is a growing sense of freedom. It had never occurred to me how
 much time I've poured into a library that hardly anyone ever used. I
 spent most of my days reading about people living their lives, and it
 has only been since I was banished from the Library and caught up in
-this adventure that I began to truly live my own."
+this adventure that I began to truly live my own life."
 
 They continued searching for supplies, and after some time Adelle raised
 another question that had been bothering her. "Why are so many people
@@ -1792,7 +1752,7 @@ That means---"
 "What? The *only* living child? *Everyone* else is dead?"
 
 Mr. Mosspuddle suddenly realized that he probably should have eased into
-that information a little more softly. "Yes ... you are. That is why you
+that information a little more gradually. "Yes ... you are. That is why you
 may be valuable to so many people. Some may want to wipe the world of
 living children, or use you because of it. The wizards speculated that
 since you are the last living child in a world of imagination, your
@@ -1828,7 +1788,7 @@ was on the other side! It was hell back there! I was nearly blown to
 pieces a dozen times over! And that hole is still there! At any moment
 we could have an army of ogres coming down on us!"
 
-"Actually, the opening in this dimension isn't on the roof anymore; it's
+"Yes, siege is a concern now, though the opening in this dimension isn't on the roof anymore; it's
 been moving around. At the moment it is in the basement. I am not
 regretting my decision to make a way into the Library, though I have to
 admit: that rift is becoming a nuisance."
@@ -1854,9 +1814,9 @@ deadly stuff. I have a dozen syringes filled with the chemical and can
 give these to my children during key situations."
 
 "The kids don't need chemicals to take an ogre down! They just need
-numbers. About five kids per ogre should do it."
+numbers. About ten kids per ogre should do it."
 
-"That's true, and most of the time that is sufficient. But there are
+"That sounds right, and most of the time that would be sufficient. But there are
 occasional situations, such as the guarding of that rift, where I'd like
 to ensure that any ogre who steps through will be neutralized swiftly
 and with little fuss. This is my home we're talking about, and I'd like
@@ -1888,7 +1848,7 @@ James tried to leap from the bed and fell on his back from the strain.
 "Adelle is safe. For now. She's sewing you back together as we speak."
 
 James relaxed, at least as much as was ever possible for him. It didn't
-even occur to him to ask why he was in need of any sewing. His mind was
+even occur to him to ask why he was in need of sewing. His mind was
 still centered on the events at the Library.
 
 "I saw you there!" he said suddenly. "You saved me! If it wasn't for you
@@ -1924,7 +1884,7 @@ Adelle? Why not move on to other things?"
 
 "That involves your purpose. Do you remember the knight?"
 
-"What knight? The one from Marloth."
+"What knight? The one from Marloth?"
 
 "Yes. The one who rescued the princess. Do you remember what happened
 whenever the princess was endangered?"
@@ -1938,14 +1898,14 @@ can protect her. But unlike the knight, your zombie nature cares nothing
 for that end goal of protection. All it cares about is the thrill.
 Adelle gets hurt, the zombie nature grows in energy, and it seeks to
 cause her more pain, thus generating more energy, until the princess is
-ultimately dead. Your zombie enchantment is still drawn to the princess,
+ultimately lost. Your zombie enchantment is still drawn to the princess,
 but no longer to save her. As with most everything in this world, the
 end is severed from the means."
 
 "But that's not my only enchantment, is it? There's another one. A good
 one! It's what makes me want to protect her!"
 
-"You are correct. The other is *my* enchantment. It is a conduit between
+"Correct. The other is *my* enchantment. It is a conduit between
 this story and the original. It connects you to what you were meant to
 be."
 
@@ -1998,7 +1958,7 @@ All you've seen of me has been incomplete and distorted. But you *have*
 been given a means of seeing the real me."
 
 Tralvorkemen motioned downward. James looked and for the first time
-noticed that he was holding Marloth in his hands. 10pt
+noticed that he was holding Marloth in his hands.
 
 "That book you are holding, it is one hundred percent pure and genuine.
 If you want to know the real me, read that book." As he spoke, the light
@@ -2018,11 +1978,11 @@ was sitting nearby, surrounded by open books and shifting his gaze from
 one to the next. Then he noticed James.
 
 "You're awake, and alive!" said the toad. "Or, at least sort of alive.
-I'm sure you have so many questions."
+I'm sure you have many questions."
 
 James was still very disoriented. "Adelle." was all he managed to say.
 
-"She's safe. And nearby. She had several injuries, but with the help of
+"She's safe. And nearby. She had many injuries, but with the help of
 the swan and one of my books we were able to heal them. Her scars are
 nearly gone, and will completely fade with time. You, however---your
 injuries were much more severe."
@@ -2034,17 +1994,15 @@ doornail. But Princess Adelle gathered them and sewed them together
 again. There *were* a few bits missing so we had to substitute cloth and
 other random materials to fill the gaps."
 
-Fugue appeared and joined in updating updated about what had happened
-the past few days. But James wasn't very concerned about what he had
-missed except for one person.
+Fugue appeared and joined in updating James about what had happened
+the past few days. But James wasn't concerned about what he had
+missed.
 
 "Where is Adelle now?"
 
-3pt
-
 Adelle was sitting on the rocky slope above the cave and gazing out over
 the water. She had been doing a lot of that lately. Her mind was a
-washing machine of thoughts. As she was thus employed one of those
+washing machine of thoughts. As she was thus employed, one of those
 thoughts materialized as it stepped out of the cave below her and looked
 around. Her heart leapt within her. He was alive! Then another of the
 thoughts she had been struggling with rose to the surface: what if she
@@ -2112,7 +2070,7 @@ up and throw me across the room! I'm pathetic!"
 
 Once again, James was not sure what to say.
 
-Adelle rose to her feet with determination. "I am going to try very hard
+Adelle composed herself. "I am going to try very hard
 to forget about all of this blackness, if even for just a little while.
 Look, there are the dolls further down the beach. Maybe they will cheer
 me up."
@@ -2121,8 +2079,8 @@ She set off in their direction. James did not follow her. He remained
 there for some time, once again feeling the weight of his own inability.
 How could a creature of evil like him give her any good? Yes, he had
 just rescued her, but he had been a razor's breadth away from doing the
-opposite. He could not escape the images of all the things he had done
-to other children like her.
+opposite. He could not escape the vague memories of the atrocities he had committed
+before finding that book.
 
 But inside him loomed a guilt even larger than the pain of his career as
 an undead minion. The more he read Marloth, the more clearly he
@@ -2131,7 +2089,7 @@ him that Mr. Tralvorkemen had taken care of everything, and that he no
 longer needed to worry about the past, but James was unable to fully
 embrace that idea. He was still being driven forward by the guilt of his
 mistakes. No matter how hard he tried, he could not shake the feeling
-that somehow this entire fallen world was his fault.
+that somehow the entire fallen world was his fault.
 
 * * *
 
@@ -2144,7 +2102,7 @@ building.
 "Making a house." said Mrs. Gingersmile. "You should help us! This is
 something you will have to learn one day when you have a husband and
 children of your own. Every good wife and mother knows how to be a
-housemaker."
+homemaker."
 
 At this Adelle's countenance fell. "I don't want to be a mother
 anymore." All four dolls looked up in shock.
@@ -2165,10 +2123,10 @@ helpless! They need their mothers!"
 "Jillybons are just as helpless. They need people like me to suck the
 life out of!"
 
-"Children are precious gifts from above! We were *made* to care for
+"Children are precious gifts! We were *made* to care for
 them. We were never meant to care for Jillybons."
 
-"I don't know if I agree with that, but even if there is *technically* a
+"I don't know about that, but even if there is *technically* a
 difference between children and Jillybons, they don't *feel* any
 different."
 
@@ -2219,7 +2177,7 @@ even Miss Perrywinkle admitted she had spoken more out of anger than
 kindness, and was determined to make things right.
 
 Sometime later Miss Perrywinkle found Adelle curled up in a corner of
-the beach in much distress. Miss Perry climbed beside the girl and put
+the beach in much distress. Miss Perrywinkle climbed beside the girl and put
 her stubby arms around her tenderly.
 
 "I'm sorry, dearie! I shouldn't have spoken so! You are a good person; I
@@ -2249,7 +2207,7 @@ was not sure if it was loneliness, guilt, or the resurfacing of doubts
 about whether her mother had ever truly loved her. She wished she had
 done more to be certain of that. She was sure there were more questions
 she could have asked. For the first time she felt her heart longing to
-return to the castle and secure her mother's love for her.
+return to the castle and secure her mother's love.
 
 * * *
 
@@ -2301,7 +2259,7 @@ porch that looked out over the water. They climbed the short flight of
 stairs up to the porch. The front door was opened by Miss Perrywinkle.
 
 "Good evening good sirs!" she said, ushering them inside. Once she had
-taken their coats, she asked them if they would like to buy some tea."
+taken their coats, she asked them if they would like some tea."
 
 The librarian stood there for a moment in surprise before acquiescing
 with. "I suppose I would. What kinds of tea do you have?"
@@ -2334,7 +2292,7 @@ the librarian.
 providing both tea and dinner without charge! Please everyone, have a
 seat!"
 
-There was a long table along the front wall. Around the table was a wide
+There was a long table along near the front wall. Around the table was a wide
 variety of chairs that had been collected from the shore. Mr. Mosspuddle
 sat down in a chair with a back that was far taller than he was.
 
@@ -2393,18 +2351,18 @@ discuss our future course of action."
 "But what about the girly folk?" said Fugue loudly under his breath and
 motioning at them with his thumb. "They'll hear everything we say ... "
 
-"Yes," said Mr. Mosspuddle. "That was sort of what I just said. Whether
+"Yes," said Mr. Mosspuddle. "That was my intent. Whether
 formally or informally, the dolls have become a part of our band, and
 they have proved themselves very useful. As for Princess Adelle, she is
 our superior and has more right to be a part of these proceedings than
 any of us."
 
-Since no one voiced any dissension on that point, Mr. Mosspuddle
+Since no one voiced any dissension, Mr. Mosspuddle
 proceeded by addressing Adelle. "Earlier you disagreed that there were
 forces set on causing you harm. Do you still hold that position?"
 
 Adelle unconsciously reached up and touched the line across her cheek.
-"No. I very much agree that those children back there wanted to kill me.
+"No. I very much agree that those children back there wanted to harm me.
 But I don't agree that every force you claim is against me. The toymaker
 is still my friend."
 
@@ -2470,7 +2428,7 @@ Mr. Mosspuddle was not completely satisfied with that response, but
 decided it best to move on.
 
 "So to the orphanage it is then. That leaves us with the matter of
-actually finding that place; I have no idea where it is."
+actually finding the place; I have no idea where it is."
 
 "It's in a city." said James. "Though I don't know what the name of the
 city is."
@@ -2544,7 +2502,7 @@ his past.
 deep down there was a fear that I was living a lie and that sooner or
 later it would all catch up with me. I think all zombie children have
 that. We don't want to look beyond our little zombie world because
-somehow we know that if there is anything beyond this, it's Hell.
+somehow we know that if there is anything beyond, it's Hell.
 Judgment Day. Doom."
 
 "I think that's just you," said Adelle. "You seem to be drawn to most
@@ -2574,9 +2532,9 @@ Ivy was growing increasingly upset. Not a single boy had yet asked her
 to the ball. Normally she was having to turn them down right and left.
 In desperation, she took the initiative and begun asking boys if they
 would take her to the ball, and so far all of them had responded that
-they were holding out for a chance to be Princess Adelle's partner. And
-no one had seen the princess in over a week! Boys that used to drool
-over Ivy didn't even notice her anymore.
+they were holding out for a chance to be the partner of Princess Adelle. Boys that used to drool
+over Ivy didn't even notice her anymore. And
+that was with no one having seen the princess in over a week!
 
 But boys weren't the only issue. It was with people in general. Within a
 remarkably short period of time, Ivy had gone from being considered one
@@ -2632,7 +2590,7 @@ protecting you from yourself."
 
 "Of course! Do you really think you are as innocent and good as so many
 people have portrayed you to be? That's not innocence darling, it's
-naivet\\\'e. No, you are just as twisted as the rest of this world,
+naiveté. No, you are just as twisted as the rest of this world,
 you're simply being held back by the enchantment."
 
 Adelle was taken aback. "I can't believe you just said that! That's
@@ -2644,9 +2602,9 @@ the crown, motioning at it with his head. "Why don't you pick it up?"
 Adelle followed his gaze to the thing her heart desired. But she didn't
 move.
 
-"Do you know much about demonic devices?" the raven asked her.
+"How much do you know about demonic devices?" the raven asked her.
 
-"No." she replied. "I can't say that I do, or that I would ever want
+"Nothing." she replied. "I can't say I've ever even heard of them, or that I would ever want
 to."
 
 "That's curious, considering how you are intimately acquainted with
@@ -2663,7 +2621,7 @@ in reality they have nothing to give. All they do is take. Take and take
 and take until there is nothing left. A person tries to use one of these
 devices, but in the end it is the device that uses them." The raven
 paused to reload and then said, "You've already experienced this with
-the Jillybons."
+Jillybons."
 
 Adelle cringed at even the mention of them. She looked down at the crown
 with growing confusion.
@@ -2750,9 +2708,9 @@ The toymaker excused himself from his audience and started walking
 beside the Lady. As they walked the toymaker took a few sips from his
 wine and then said, "I would like to make you a proposition."
 
-"A proposition! How intriguing. What sort of proposition?"
+"A proposition! How intriguing. But I have to warn you, I don't come cheap."
 
-"If you were to do me a small favor, I could tell you---not right away
+"Oh, I think you'll like my offering. If you were to do me a small favor, I could tell you---not right away
 but sometime in the near future---where Adelle is going to be."
 
 "What! You know where she is?"
@@ -2763,7 +2721,7 @@ woman."
 The Lady eyed him suspiciously. "And what favor would I need to perform
 in return? Am I properly dressed for it?"
 
-The toymaker maintained his steady smile. "That you would leave Adelle
+The toymaker maintained his steady smile. "All I ask is for you to leave Adelle
 and her entourage alone. At least for now."
 
 "And why would I ever do that?"
@@ -2780,7 +2738,7 @@ realize."
 
 "Yes, yes. You get a pat on the back for that. But breaking her will not
 accomplish anything by itself. Someone is helping her. Someone with
-considerable powers. Neither you nor I nor anybody else is going to make
+considerable power. Neither you nor I nor anybody else is going to make
 much progress toward acquiring Adelle until that help is undermined. And
 the best way to do that is to give her and that band of heroes something
 they are presently lacking. Something that, once they possess, will be
@@ -2797,3 +2755,7 @@ Once again, the lair of Doctor Otto Marrechian found a monkey sneaking
 into its core and tinkering with the recently repaired zombie machine.
 Except now he wasn't turning up the juice, he was turning it down. For
 now.
+
+<div class="page-break"></div>
+<div style="height: 55%"></div>
+<img class="centered-image" src="file://src/assets/images/fairytale/crown.png" alt="Marloth"/>

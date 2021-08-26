@@ -41,6 +41,5 @@ It's about your own world creating you.
 <div>Martha Johnson</div>
 </p>
 
-This book is published under a CC BY-NC-ND 4.0 license, which means that you can copy and redistribute the material in any medium or format, for non-commercial use only, as long as you give appropriate credit, provide a link to the license, and you do not remix, transform, or build upon the material. License details: https://creativecommons.org/licenses/by-nc-nd/4.0/
-
+All rights reserved. This publication may not be reproduced, stored in a retrieval system, or transmitted, in any form or by any means, electronic, mechanical, photocopying, recording or otherwise without the prior permission of Silent Orb.
 </div>

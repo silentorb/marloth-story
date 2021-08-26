@@ -139,145 +139,149 @@ place, and then faded into nothing.
 
 * * *
 
-*Adelle opened her eyes and looked about her. It was so bright she was
+<blockquote>
+
+Adelle opened her eyes and looked about her. It was so bright she was
 nearly blinded. The sun was filling the sky with golden light. She
 squinted to the east, where the sun was already setting. Or was it the
 moon? The color of the sky kept shifting; she could not tell if it was
-morning or evening.*
+morning or evening.
 
-*She stretched out on her bed and tried to focus on the sky above her.
+She stretched out on her bed and tried to focus on the sky above her.
 That was funny---she had never been able to see the sky from her bedroom
 before. And what was more, her bedroom had never been so unstable. Her
-bed was rocking back and forth.*
+bed was rocking back and forth.
 
-*"Ahoy Matey!" shouted Samantha.*
+"Ahoy Matey!" shouted Samantha.
 
-*Adelle sat up in surprise. The dolls were there on her bed! And the bed,
+Adelle sat up in surprise. The dolls were there on her bed! And the bed,
 as it turned out, was in the middle of the sea. Suddenly, every muscle
-in her body tensed and she clung to the mattress for dear life.*
+in her body tensed and she clung to the mattress for dear life.
 
-*"Samantha!" Miss Perrywinkle scolded. "You speak as though you were a
-primitive!"*
+"Samantha!" Miss Perrywinkle scolded. "You speak as though you were a
+primitive!"
 
-*"But that's the sort of thing one is supposed to say when one is out at
-sea." said Samantha. "I even read it in a book once."*
+"But that's the sort of thing one is supposed to say when one is out at
+sea." said Samantha. "I even read it in a book once."
 
-*"You're making things up again!" said Miss Perrywinkle.*
+"You're making things up again!" said Miss Perrywinkle.
 
-*"Well if you don't believe me, look at this! The book is right here!"*
+"Well if you don't believe me, look at this! The book is right here!"
 
-*The doll reached over the edge of the bed and pulled a book out of the
-water.*
+The doll reached over the edge of the bed and pulled a book out of the
+water.
 
-*"Now that's what I call a coincidence!" said Miss Perrywinkle, taking
-the book.*
+"Now that's what I call a coincidence!" said Miss Perrywinkle, taking
+the book.
 
-*"Not really." said Samantha. "Probably just about every book must be out
-here."*
+"Not really." said Samantha. "Probably just about every book must be out
+here."
 
-*And she may have been right. The sea was strewn with hundreds of books,
-casually floating along the surface.*
+And she may have been right. The sea was strewn with hundreds of books,
+casually floating along the surface.
 
-*"What are we doing here?" Adelle said with a strong pitch of urgency.*
+"What are we doing here?" Adelle said with a strong pitch of urgency.
 
-*"What do you think?" said Samantha. "We're sailing!"*
+"What do you think?" said Samantha. "We're sailing!"
 
-*"But where's my bedroom? Where is the castle?"*
+"But where's my bedroom? Where is the castle?"
 
-*"It's hard to say." said Mrs. Gingersmile, who was baiting a fishing rod
-with a candy cane. "I think it exploded."*
+"It's hard to say." said Mrs. Gingersmile, who was baiting a fishing rod
+with a candy cane. "I think it exploded."
 
-*"We're very fortunate really." said Miss Perrywinkle. "It's a miracle
-we are all safe."*
+"We're very fortunate really." said Miss Perrywinkle. "It's a miracle
+we are all safe."
 
-*"Safe?" said Adelle. She was staring at the water suspiciously. Or was
+"Safe?" said Adelle. She was staring at the water suspiciously. Or was
 it water? The more she looked at the stuff, the less it looked like
-water. It was too wispy and rose up and down too much.*
+water. It was too wispy and rose up and down too much.
 
-*"Are we in the sea, or are we floating on the clouds?" asked Adelle.*
+"Are we in the sea, or are we floating on the clouds?" asked Adelle.
 
-*"I'll go with both." said Samantha.*
+"I'll go with both." said Samantha.
 
-*Adelle gathered her courage and reached her hand into the water. It was
+Adelle gathered her courage and reached her hand into the water. It was
 the strangest sensation. It was too thick to be clouds. She cupped her
 hands and was able to lift some of it into her bed. Yet it was too light
 to be water. Most of the stuff was caught in the breeze and blown from
 her hand, and yet even as it was dissipating through the air, it still
-caught the sunlight and glittered just as water would.*
+caught the sunlight and glittered just as water would.
 
-*Miss Perrywinkle closed the book and waved it at Samantha. "I can't find
-any passage in this book that talks about the sea!"*
+Miss Perrywinkle closed the book and waved it at Samantha. "I can't find
+any passage in this book that talks about the sea!"
 
-*"I'll show you!" said Samantha, taking the book and sitting beside her.*
+"I'll show you!" said Samantha, taking the book and sitting beside her.
 
-*"Look, the swan is back!" said Mrs. Gingersmile.*
+"Look, the swan is back!" said Mrs. Gingersmile.
 
-*As she spoke, the swan glided toward them and landed in the cloud water
-beside the bed.*
+As she spoke, the swan glided toward them and landed in the cloud water
+beside the bed.
 
-*"Ah, she's awake!" said the swan. "It was about time. I was beginning to
-wonder if she was under a spell."*
+"Ah, she's awake!" said the swan. "It was about time. I was beginning to
+wonder if she was under a spell."
 
-*"No spells." said Mrs. Gingersmile. "What did you see? Any sign of
-land?"*
+"No spells." said Mrs. Gingersmile. "What did you see? Any sign of
+land?"
 
-*"No. I saw no land. But I did come across a few people here and there."*
+"No. I saw no land. But I did come across a few people here and there."
 
-*"Anyone interesting?"*
+"Anyone interesting?"
 
-*"All interesting. Downright mad, for the most part. As are most
-people outside of the castle."*
+"All interesting. Downright mad, for the most part. As are most
+people outside of the castle."
 
-*"But we're outside of the castle!"*
+"But we're outside of the castle!"
 
-*"Ah yes. That is why I said *most* people. We, of course, are the exception."*
+"Ah yes. That is why I said *most* people. We, of course, are the exception."
 
-*"But that's ridiculous!" said Adelle. "If that were so, then the castle
-would be like an asylum turned inside out!"*
+"But that's ridiculous!" said Adelle. "If that were so, then the castle
+would be like an asylum turned inside out!"
 
-*"And it is, dear. Most everyone inside the castle is civilized and sane."*
+"And it is, dear. Most everyone inside the castle is civilized and sane."
 
-*"*Most everyone?*" said Miss Perrywinkle. Are you suggesting there are mad people *inside* the castle?"*
+"Most everyone?" said Miss Perrywinkle. Are you suggesting there are mad people inside the castle?"
 
-*"Only a few. The king is probably mad. They usually are."*
+"Only a few. The king is probably mad. They usually are."
 
-*"Come to think of it, there was that zombie child." said Mrs. Gingersmile.
-"He was inside the castle, and he was clearly mad."*
+"Come to think of it, there was that zombie child." said Mrs. Gingersmile.
+"He was inside the castle, and he was clearly mad."
 
-*"What zombie---" Adelle began, but was cut off by Samantha.*
+"What zombie---" Adelle began, but was cut off by Samantha.
 
-*"Look!" she said. "There's a toad out there!"*
+"Look!" she said. "There's a toad out there!"
 
-*Sure enough, a toad wearing a tweed jacket and thick glasses was
+Sure enough, a toad wearing a tweed jacket and thick glasses was
 swimming about the sea of clouds, feverishly collecting the books and
 piling them onto a small desk that was likewise floating in the water.
 The pile was already several yards tall, and was swaying about
-precariously.*
+precariously.
 
-*"A toad! I'm sure he would be fun to converse with!" said Miss
+"A toad! I'm sure he would be fun to converse with!" said Miss
 Perrywinkle. "Say, Mr. Toad!" she called out. "Why don't you tarry a bit
-and relate to us your business!"*
+and relate to us your business!"
 
-*The toad looked up for a moment with a slightly startled expression and
+The toad looked up for a moment with a slightly startled expression and
 then went back to his work, muttering something derogatory about a bed
-full of women.*
+full of women.
 
-*"Never mind then." said Miss Perrywinkle. "Clearly he has no manners."*
+"Never mind then." said Miss Perrywinkle. "Clearly he has no manners."
 
-*"Here it is!" said Samantha, pointing at the open book. "Here's the
-passage about the sea! See right here? The doll says 'Ahoy mate!'"*
+"Here it is!" said Samantha, pointing at the open book. "Here's the
+passage about the sea! See right here? The doll says 'Ahoy mate!'"
 
-*Miss Perrywinkle looked at the book. "You're right! She does say 'Ahoy
-mate!'"*
+Miss Perrywinkle looked at the book. "You're right! She does say 'Ahoy
+mate!'"
 
-*"And see here? She says it again!" said Samantha. "And then another doll
-says it on the next line!"*
+"And see here? She says it again!" said Samantha. "And then another doll
+says it on the next line!"
 
-*"Well." said Miss Perrywinkle. "You're a good deal sharper than I give
-you credit for."*
+"Well." said Miss Perrywinkle. "You're a good deal sharper than I give
+you credit for."
 
-*Adelle leaned over their shoulders and looked at the book curiously. It
-looked familiar.*
+Adelle leaned over their shoulders and looked at the book curiously. It
+looked familiar.
+
+</blockquote>
 
 The clock struck 10 o'clock. The nurse promptly closed the book. Her
 break was over and it was time for her to make her rounds among the
@@ -362,7 +366,8 @@ most people had been trying to achieve the opposite.
 
 * * *
 
-<i>
+<blockquote>
+
 Somewhere in the swirling mists of Marloth, just at the crest of a
 setting sun, there was a bed, floating along the clouds as though it
 were on the sea. It was an elegant bed, with golden posts rising from
@@ -386,7 +391,7 @@ this:
 
 "A girl? Like us?"
 
-"No, this is a girl! I know it! I saw a picture of one in a book!"
+"No, this is a *girl!* I know it! I saw a picture of one in a book!"
 
 "You mean she is real? She can actually do things?"
 
@@ -416,7 +421,9 @@ to no one in particular, and then motioned for the coachman to continue
 on his way.
 
 A few zombie children swam out to the bed, but were eaten by alligators
-before they could reach it.</i>
+before they could reach it.
+
+</blockquote>
 
 The nurse flipped back several pages and looked at what she had read the
 evening before. That was strange, from the best she could tell he had
@@ -753,14 +760,15 @@ gawking passerby.
 
 The streets were rather haphazardly thrown together, rising up and down
 and crisscrossing like a labyrinthian roller coaster track. The
-strangest thing about it was that the streets genuinely appeared to be
+strangest thing about it was how the streets genuinely appeared to be
 moving and changing course around them, shifting from one side of a
 building to another, suddenly deciding to double back against
 themselves, or throw themselves across one of the many canals. Yet the
 coachman proved to be a brilliant driver, and before long they came to a
-magnificent structure at the edge of the main waterway. There were
-several barges making their way across the water to the Theatre, and
-crowds of people were scurrying along the streets and into the Theatre.
+magnificent structure at the edge of the main waterway.
+
+It felt as though the entire city was converging upon the Theatre. Several barges were crossing the water to it, and
+crowds of people were scurrying along the streets and into its multiple entryways.
 
 As they drew nearer and Adelle saw the crowds of people, a new fear
 struck her. "I can't go to a play dressed like this!"
@@ -1140,7 +1148,7 @@ slurping alcohol.
 
 Doctor Hurley entered the medical room to find the nurse curled in a
 chair by the operating table, her attention wrapped up in a book. He no
-sooner arrived than the nurse hurriedly jumped up and began fiddling
+sooner arrived then the nurse hurriedly jumped up and began fiddling
 with several metal implements. The doctor stood there for a moment,
 looking stern.
 
@@ -1162,7 +1170,7 @@ doctor asked.
 The nurse didn't immediately reply. "All I know is that it's a good
 window into the boy's mind."
 
-The doctor hadn't expected that. "What do you mean by that?" he
+The doctor hadn't expected that. "What ever do you mean by that?" he
 demanded.
 
 "Well, I've grown to care a great deal for the child, and I wanted to
@@ -1288,9 +1296,7 @@ wall. "Don't cry. It will only hurt a little bit."
 
 "Stop it!" James screamed. He slammed his fist against the mirror. It
 had no effect. He hit it again. He kept hitting it until both his hand
-and the mirror were covered in blood, but still the mirror remained. The
-reflection boy was still in the same pose as when he had stabbed the
-poster, except now he was slowly tearing the picture up with his knife.
+and the mirror were covered in blood, but still the mirror remained. By now the poster was a pile of shreds.
 
 "And then, you will be born again. You will be a new person, and see us
 through new and kinder eyes." the reflection went on, not seeming to
@@ -1300,7 +1306,7 @@ James took hold of the chair and began beating the mirror with it. Legs
 splintered off the chair and flew bouncing off the walls. By then his
 rage had blurred into sobbing.
 
-"And then, for once, you will love us."
+"And then, finally, you will love us."
 
 James' soul broke in half. When the nurse finally came rushing into the
 room, she found him collapsed onto the floor in a pool of his tears and
@@ -1371,7 +1377,7 @@ could teach me was wisdom. He was a very good teacher and very patient."
 
 "It sounds like your education has been neglected."
 
-"Neglected? What do you mean?"
+"Neglected? What ever do you mean?"
 
 "I mean that the limited selection of subjects you've been exposed to
 explains much about your behavior."
@@ -1424,7 +1430,7 @@ What was that called again ... ?"
 
 "Flesh tones?" said Sandwich.
 
-"Yes! Flesh tones! That is *so* pass\\\'e! Chalk white, ash gray, or
+"Yes! Flesh tones! That is *so* passé! Chalk white, ash gray, or
 coal black---those are the complexions of choice."
 
 "But I can't change the color of my skin!"
@@ -1700,8 +1706,7 @@ it was out of sight, but now their pursuers were catching up to them.
 "How do I get out of the Asylum?" James asked.
 
 "That's a bit complicated." said the dog creature. "Much more
-complicated than me simply giving a few directions. You have to to get
-out of here."
+complicated than me simply giving a few directions."
 
 "Wait a minute," said the zombie child, who had been eyeing the monkey
 for a good while. "I think you're cheating!"
@@ -1711,7 +1716,7 @@ The monkey made a face and went back to his cards.
 "I'm positive! That little devil is cheating!" the zombie child shouted,
 pointing at the monkey.
 
-"So what?" said the dog creature. "We're cheating."
+"So what?" said the dog creature. "We're all cheating."
 
 "That mob is getting closer!" the raven crowed.
 
@@ -1803,11 +1808,10 @@ them?"
 "Fine. It's your life."
 
 As Adelle watched her friends set off for the Candy Castle, she
-forlornly turned her mind to wondering how she was to get back to the
+forlornly turned her mind to how she was to return to the
 Manor. She had heard that large cities like this contained many forms of
-public transportation, but she was not sure how to employ them. It was
-while she was considering this predicament that she heard a voice beside
-her say, "You know, you always could ride with me."
+public transportation, but she did not know how to employ them. She was thus pondering when she heard a voice beside
+her say, "You know, you can always ride with me."
 
 Adelle turned to see Jakob Damond standing by her side like an out of
 place shadow. She wasn't surprised anymore. He had become like some
@@ -1868,7 +1872,7 @@ you need more than a pretty face; you need to *do* something with it."
 "To sing? As with music?"
 
 "Exactly! A performance could be arranged at the Theatre. The entire
-City would show up to hear your lovely voice, and every one of them
+City would show up to hear your voice, and every one of them
 would fall in love with you!"
 
 "I'm sorry to disappoint you, Mr. Damond, but even though that sounds
@@ -1891,7 +1895,7 @@ needed. Queenhood was just around the corner.
 
 It was not much later that they arrived at the Mediev Manor. Before
 Adelle left the carriage the toymaker expressed how great his delight
-would be if she could again visit his toyshop sometime soon.
+would be if she could again visit his toyshop.
 
 Adelle looked perplexed. "I would love to visit your toyshop, though
 I've never actually been there before."
@@ -1949,7 +1953,7 @@ of much use. They weren't part of the big picture, and were simply
 draining resources from an establishment that didn't really understand
 what it could be doing. It wasn't enough for Doctor Hurley to simply
 return patients to functioning roles in society. People could function
-in society and yet still harbor gross delusions. He wanted to slay *all*
+in society and yet still harbor delusions. He wanted to slay *all*
 the fantasies. He wanted to reach into the minds of men and mold them
 until they clearly saw reality for what it was. Or at least what he
 thought it was.
@@ -2114,7 +2118,7 @@ The nurse entered James' room. She did not appear as happy as she should
 be considering the occasion.
 
 "Today is the day," she said. "The day of your examination. The doctor
-asked me to get your prepared for your hearing."
+asked me to prepare you for the hearing."
 
 She had all of her regular collection of instruments with her. One of
 them was a syringe. The other was a bottle of the doctor's serum which
@@ -2381,11 +2385,6 @@ he could see was the Judge and the people standing in the pews.
 The light was still slowly expanding, and by now, James could see the
 wall directly behind the Judge.
 
-"Did anyone in your delusions ever go out of their way to keep you from
-harm; to preserve your life?"
-
-"No."
-
 "Describe your delusions to the court. What sort of things did you see
 during your madness?"
 
@@ -2401,7 +2400,7 @@ I did."
 
 The reflection waved at James.
 
-"A mirror that didn't mimic you?" said the Judge. "How intriguing. What
+"A mirror that didn't mimic you?" said the Judge. "That *is* unnatural. What
 sort of things did it do?"
 
 "It waved at me." said James.

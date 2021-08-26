@@ -303,19 +303,19 @@ but first you have to promise never to repeat it to anyone."
 "I won't say a word of it to anyone. Cross my heart and hope to die!"
 
 Ivy winced. "Okay." she said at last. "Here I go. I've never told this
-to anyone before. Do you know why I'm so popular? I'm not a princess
+to anyone before. I'm popular, right?  I got that modeling gig.  I have friends in all of the most prominent families.  But how do you think I got there? I'm not a princess
 like you. Sure, my mother is a bit of a celebrity, but being her
 daughter draws more negative attention than positive. I have money and
 decent looks, and that helps, but so do hundreds of other girls in this
-city, and most of them are hardly even heard of. Do you know why I'm so
-popular? It's because I'm everyone's slut. Everyone I've ever known has
+city, and most of them are hardly ever heard of. Do you know why I'm so
+popular? It's because I've sold myself to anyone and everyone. Everyone I've ever known has
 used and abused me. Everyone except you."
 
 Ivy paused as though she expected Adelle to comment, but Adelle was very
 quiet. And wide eyed. Ivy sighed and then continued.
 
 "I don't understand myself. I love boys. I can't stop thinking about
-them. They define me. And yet all they've ever done is hurt me. I keep
+them. And yet all they've ever done is hurt me. I keep
 throwing myself at them, and I keep getting crushed into the ground and
 the rare drops of good in me stolen away. I hate to say it, but they are
 stronger. Even when it's all a matter of magic, somehow they are still
@@ -364,10 +364,10 @@ James looked up to find the raven resting on a signpost above them.
 "Why, hello." said James.
 
 The raven scanned the party, paused for a moment at Fugue, and turned
-back to James. "What are you doing with one of the Jakob Damond's
+back to James. "What are you doing with one of Jakob Damond's
 minions?"
 
-Fugue gave a flawless expression of innocent surprise. "Who? Me? I'm no
+Fugue noticed that he was the focus of the Raven's gaze. "Who? Me? I'm no
 minion. I'm Fugue!"
 
 "You're an enchanted toy. There are few enchanted toys in this world who
@@ -379,23 +379,19 @@ haven't escaped his taint."
 
 "Well they're not against me. I'm as odd as they get."
 
-"I like your thinking." said the raven.
+The raven snorted in spite of himself.
 
 "Who is this Jakob Damond you speak of?" asked Mr. Mosspuddle.
 
 "The toymaker." said James.
 
-"The Toymaker!" cried the raven. "That is what he calls himself, but
-that is a gross misnomer! The *'Toymaker'* doesn't make anything. He
-can't! Despite his imaginative appearance, he is the most uncreative
-person in existence! All he does is steals other people's creations,
-curses them, and then sells them to clueless people he wants to control!
-Look around us! We have already passed several toyshops, all of them
-closed. They were driven out of business because they had no more
-merchandise to sell!"
+The raven shook his head. "That title is a charade. The more I have learned of this place, the more I have seen how the toymaker doesn't make anything. He steals existing creations,
+curses them, and then sells them to clueless people he wants to control. We have already passed several toyshops along this street, and all of them
+were shuttered. They were driven out of business because they had no more
+merchandise to sell."
 
-"Fugue was not made in any toyshop, and he was never stolen by any
-toymaker." said James. "He was made by children. Real, live children.
+"I've seen some of those toys, but Fugue is different. said James. "Fugue was not made in any toyshop, and he was never stolen by any
+toymaker. He was made by children. Real, live children.
 Fugue is one of the good guys."
 
 The raven looked back at Fugue. "Very well. Maybe you aren't an agent of
@@ -427,7 +423,7 @@ smile', that's my motto." Then he turned back to James.
 "We're here to rescue Adelle." said James.
 
 "You're still after the princess? Getting stabbed and thrown into an
-endless abyss wasn't enough for you, eh? Well good luck with that. What
+endless abyss wasn't enough for you? Well good luck with that. What
 makes you think she's here in the City?"
 
 "I can sense her." said James. "Somehow I know she is somewhere around
@@ -499,7 +495,7 @@ James replied that he didn't have any weapons at all.
 
 "But aren't you still a force to be reckoned with?" James asked him.
 
-"Yeah. I am. But I would require even more reckoning if I had a sword!"
+"Yeah. I am. But I would require even more reckoning if I had a gun!"
 After some quick searching Fugue was able to find a stick, and he said
 that would help a great deal.
 
@@ -523,8 +519,7 @@ split up and keep looking for Adelle separately."
 
 "No."
 
-The group split up. As the raven took to the air and the amphibian and
-cloth animal set off down a nearby street, James mulled over which way
+The group split up. As they dispersed, James mulled over which way
 to turn. He knew nothing about the City's present layout, which was
 understandable since it had probably already changed within the short
 period they had been there. Where should he go to get information? He
@@ -542,8 +537,7 @@ stout woman who was vigorously wiping teacups. It was the nurse from the
 castle.
 
 The nurse turned around and spotted James. "Have a seat!" she commanded,
-motioning to one of the tables by the front window and then returning
-back to her work. James approached the table and found that it was
+motioning to one of the tables by the front window and then returned back to her work. James approached the table and found that it was
 ridiculously small. James was not big, even for a child, and yet he had
 a terrible time trying to squeeze between the chair and table. When he
 finally managed to reach a position that could be considered sitting, he
@@ -755,40 +749,40 @@ to the heart. Before long the warmth had engulfed her and she had
 forgotten about the people and she was in the moment and singing with
 all her might.
 
-D\\\'ej\\\`a vu
-
-Do I know you?
-
-Have I been here before now?
-
-The days pass me by, and slip away
-
-Forever why
-
-Can I not cry
-
-For the loved ones who've faded?
-
-Am I truly so jaded within?
-
-As my heart begs to melt
-
-Ice turns to tears
-
-Foes turn to friends
-
-Hope replaces fear
+> Déjà vu
+>
+> Do I know you?
+>
+> Have I been here before now?
+>
+> The days pass me by, and drift away
+>
+> Forever why
+>
+> Can I not cry
+>
+> For the loved ones who've faded?
+>
+> Am I truly so jaded within?
+>
+> As my heart begs to melt
+>
+> Ice turns to tears
+>
+> Foes turn to friends
+>
+> Hope replaces fear
 
 When she hit the chorus her voice soared, and the audience soared with
 her.
 
-Please don't tell me that I'm dreaming
-
-I so want to believe that the fairytale is true
-
-I've never been so happy before
-
-I stand before the stranger that I've always known
+> Please don't tell me that I'm dreaming
+>
+> I so want to believe that the fairytale is true
+>
+> I've never been so happy before
+>
+> I stand before the stranger that I've always known
 
 Far above the audience and near the back of the auditorium, a raven, a
 toad, a cloth animal, and a zombie boy were watching the performance
@@ -806,44 +800,44 @@ The raven snickered. "She's dressing more conservatively."
 
 "Conservatively?"
 
-"Yeah, she's conserving material."
+"Yes, she's conserving material."
 
 James was the only one who did not say anything. He just watched and
 listened, not missing a detail.
 
-Though I desperately try
-
-To imprison my eyes
-
-The visions still course through my mind
-
-Shivering and afraid
-
-I gaze up in surprise
-
-As I hear someone calling my name
-
-And then I am drowned
-
-By the million sounds
-
-Of memories long since thrown away
-
-The morn of my birth
-
-The taste of first love
-
-And the wondrous face of God
+> Though I desperately try
+>
+> To imprison my eyes
+>
+> The visions still course through my mind
+>
+> Shivering and afraid
+>
+> I gaze up in surprise
+>
+> As I hear someone calling my name
+>
+> And then I am drowned
+>
+> By the million sounds
+>
+> Of memories long since thrown away
+>
+> The morn of my birth
+>
+> The taste of first love
+>
+> And the wondrous face of God
 
 Everyone rose to their feet as she sang the final chorus.
 
-Please don't tell me that I'm dreaming
-
-I so want to believe that the fairytale is true
-
-I've never been so happy before
-
-I stand before the stranger that I've always known
+> Please don't tell me that I'm dreaming
+>
+> I so want to believe that the fairytale is true
+>
+> I've never been so happy before
+>
+> I stand before the stranger that I've always known
 
 When Adelle finished, every person in the room was leaping up and down
 and applauding until their hands were ready to bleed. Within less than
@@ -1029,8 +1023,7 @@ The Lady turned toward James. "Go out into the hall." she commanded, and
 he complied, his hands outstretched in front of him like a ... well,
 like a zombie.
 
-Adelle was feeling terrible. She could not get the image of a knife
-sticking out of a boy's stomach from her mind. Feeling woozy, she sat
+Adelle was feeling terrible. She could not get the image of James getting stabbed from her mind. Feeling woozy, she sat
 down on the bed.
 
 The Lady Mediev walked across the room and stopped at an ornate, wooden
@@ -1073,8 +1066,8 @@ James standing there patiently, awaiting her next command.
 
 "Follow me." she said.
 
-They walked through several hallways and into a large and slightly more
-rustic room that was in her study. The Lady sat down behind a desk while
+They walked through several hallways and into her study, a large and slightly more
+rustic room than the rest of the Manor. The Lady sat down behind a desk while
 James remained standing in front of her. But she had barely sat down
 when James flung himself on the ground and lay there, gasping for
 breath.
@@ -1105,7 +1098,9 @@ more to herself than anyone else.
 that I have seen before. A small part of me would like to study this new
 enchantment and learn its nature and where it came from, but the rest of
 me would rather just destroy the boy and move on to more important
-matters." Suddenly the doors burst open and Fugue was standing before
+matters."
+
+Suddenly the doors burst open and Fugue was standing before
 them. He was carrying a large musket and was loaded down with all sorts
 of bombs, daggers, and other implements of war.
 
@@ -1141,7 +1136,7 @@ again! Did you find the princess?"
 
 Fugue, who had poked his head out of the doorway and was peering down
 each direction of the hall, hurriedly pulled back and slammed the door.
-"Get ourselves out of here!" he retorted. "The guards have finally
+"Getting ourselves out of here!" he retorted. "The guards have finally
 caught up with us!"
 
 He threw open the window and surveyed the alley below. Earlier that
@@ -1158,16 +1153,14 @@ A faint moaning came from the direction of the Lady Mediev. She was
 starting to come to. The occupants of the room couldn't see what was
 happening in the hall, but the ogres (who were slower and had been near
 the back of the pursuit) had finally managed to walk over the half-men
-(who were at the front and were rather pathetic when it came to breaking
+(who were at the front and were rather useless when it came to breaking
 heavy objects). The door was promptly ripped off its hinges and hurled
 across the room.
 
 Miss Bethany took in the situation. "Here. I'll make this easy." She
-grabbed James and jumped through the window. Her feet landed solidly on
+grabbed James and Fugue and jumped through the window. Her feet landed solidly on
 the alley with a cement-cracking thud. The dolls lightly dropped down
-beside her (being practically weightless had its advantages), while
-Fugue had to be a little more careful in his descent due to the number
-of explosives he was now packing.
+beside her (being practically weightless had its advantages).
 
 In different circumstances there probably would have been several ogres
 crashing through the walls, but they had fervent orders from the Lady
@@ -1222,15 +1215,14 @@ she liked the taste, (they were frankly vile), but there was something
 about these Jillybons that was beyond taste. It was a sensation she had
 never experienced before.
 
-And she needed more of it! Well, she couldn't see any more Jillybons
-here. She remembered the Lady Mediev saying that they were all the rave
-in the City. Surely there were shops and the like from which she could
+She needed more!  She searched but there were no signs of additional Jillybon reserves anywhere in the room.  Adelle remembered the Lady Mediev saying that Jillybons were all the rave
+in the City. Surely there were shops from which she could
 find more. But the door was locked. She was trapped, just like she was
 in the castle.
 
 "I hate her!" Adelle whispered under her breath. *"We do too!"* she
-thought she heard a chorus of Jillybons concede from inside her stomach.
-She turned to look at the window, and then at her bed. Well, she had
+thought she heard a chorus of Jillybons concurring from inside her stomach.
+She turned to look at the window, and then at the bed. Well, she had
 heard of it in stories. Why couldn't it work here ... She tore off all
 of the covers, tied them together, fastening one end to the bedpost. So
 far so good. Thankfully, the window wasn't locked. She opened it and
@@ -1248,7 +1240,7 @@ raven told him not to worry, and had even taken a nap, but Mr.
 Mosspuddle was not one to be so easily calmed.
 
 Eventually James and Fugue did return. And with them were the four
-dolls. (Miss Bethany had immediately returned to the Happy Little Inn.)
+dolls. (Miss Bethany had left in the direction of the Happy Little Inn.)
 
 "You're safe!" said Mr. Mosspuddle. "I was so worried!"
 
@@ -1285,7 +1277,7 @@ dolls.
 "Who are these people accompanying you?" he asked James.
 
 "Dolls I met earlier in the city." said James. "They own a teashop. They
-say they know Adelle, and would like to help us protect her. And they've
+say they know Adelle, and want to help protect her. They've
 invited us to stay at their inn."
 
 "Dolls!" the raven exclaimed. "Don't you know *anything?* Talking dolls
@@ -1314,7 +1306,7 @@ let them get a hold of any sharp objects."
 
 * * *
 
-Ha! She was free once again! No stuck up lady was going to keep Adelle
+Ha! She was free once again! No stuck up old lady was going to keep Adelle
 as her pet!
 
 As she walked down the streets, Adelle could feel the Jillybons
@@ -1337,16 +1329,15 @@ desire was all it took for no one to notice her. At one point she passed
 by a little teashop. It didn't sell any Jillybons, but inside there were
 a number of quirky heroes discussing plans for rescuing a princess.
 
-Adelle paused before a store window. There in the front there was an
+Adelle paused before a store window. There in the front was an
 entire box of Jillybons on display. She put her face to the window. The
-Jillybons were calling to her. And I'm not speaking figuratively; they
-were literally calling her name. (By now everyone knew the princess).
-They pleaded and begged for her to eat them, and she hated not being
+Jillybons were calling to her. (And I'm not speaking figuratively; they
+were literally calling her name.) They pleaded and begged for her to eat them, and she hated not being
 able to.
 
 Her hand slipped through the glass. Startled, she pulled it back and
 looked at her hand as though it were a foreign object. Her hand looked
-perfectly fine and normal. Cautiously, she reached it toward the window.
+perfectly fine and normal. Cautiously, she reached toward the window.
 Her hand passed right through it, sending ripples across the face of the
 glass. She was able to put the other hand through as well, and then her
 head.
@@ -1354,14 +1345,12 @@ head.
 She paused to consider her new position. The Jillybons were right within
 her reach. In the corner of her mind, a little voice cried that it would
 be wrong to take them. But look! She had passed clean through the
-window! It was meant to be! Maybe she was hallucinating. It didn't
-really matter to her.
+window! A miracle!  It was meant to be!
 
 She took the box of Jillybons. It passed through the window with her.
 She wanted to sit on the curb and eat them right then, but another voice
 inside her head (there were a lot of those in there at the moment) told
-her the proper thing to do in such a situation is to scurry off into
-some dark corner and eat them in secret.
+her the proper thing to do in such a situation is to scurry off to some dark corner and eat them in secret.
 
 She was just about to do this when she discovered that she was standing
 in front of the Lady Mediev.
@@ -1369,28 +1358,28 @@ in front of the Lady Mediev.
 "Well! I finally found you!" said the Lady.
 
 Adelle was speechless. This was both because she was startled and
-because her faculties of speech were impaired at the moment.
+because her faculties of speech were presently impaired.
 
 The Lady Mediev eyed the box of Jillybons in Adelle's hands. "What
 mischief is this? I thought you didn't like Jillybons. Well, it is nice
 that your tastes have matured, but you had better put that back.
-Subjects tend to get uptight when they think their Ladies and Lords are
+Subjects tend to get uptight when they know their Ladies and Lords are
 stealing from them."
 
-Adelle still didn't say anything. She wasn't completely coherent. After
-much coaxing, the Lady Mediev was able to persuade the princess to
+Adelle still didn't say anything. She wasn't completely coherent. The Lady tried to magic the box back into the shop before remembering that such actions didn't work with Adelle. After
+much coaxing, the Lady was able to persuade Adelle to
 re-perform her window trick and return the Jillybons to their place in
 the front display. When that was finished, the Lady took out her watch.
 
 "Look at the time! If you thought it was past your bedtime before, now
 it is really far gone! Next time you feel like escaping on a candy binge
-it would be polite for you to check with me first."
+it would be polite to check with me first."
 
 The Lady's words were somewhat misleading. She had many enchantments
-rigged inside Adelle's bedroom, and had known the moment of Adelle
+rigged inside Adelle's bedroom, and had known the moment of Adelle's
 absence. Also, she could easily sense the various enchantments attached
 to Adelle and had no problem tracking her. In short, the Lady Mediev
-could have stopped Adelle at any time, and had only decided to wait as
+could have confronted Adelle at any time, and had only decided to wait as
 long as she had.
 
 Adelle's condition was worsening. She was far beyond exhaustion and
@@ -1399,8 +1388,7 @@ stomach can hold. She slumped to the curb in a dizzy stupor. The Lady
 motioned to a half-man who was waiting in the shadows. The half-man
 stepped forward and lifted the girl over his shoulder. Then he carried
 her to a carriage that was waiting nearby and dropped her inside like a
-sack of potatoes. The Lady took the seat across from her, the half-man
-took the reins outside, and then they set off for home.
+sack of potatoes. Before long they were on their way back home through the moonlit streets.
 
 * * *
 
@@ -1415,8 +1403,10 @@ protect her."
 "I don't think that's going to be very easy right now." said Fugue.
 "Right now she seems to be a real hot item."
 
-"We know something about that." said the dolls. "We pick up a lot of the
-gossip around the City."
+"Then we'll need to gather information about her routines.  See if there are any opportunities to rescue her."
+
+"We know a great deal about the princess." said the dolls. "We pick up a lot of the
+gossip around the City, and most of the gossip is about her these days."
 
 James turned his attention to the dolls. "How frequently is Adelle by
 herself?"
@@ -1424,33 +1414,35 @@ herself?"
 "Aside when she sleeps? Hardly ever. Between school and shopping and
 parties the princess is constantly surrounded by people."
 
-"And I'm sure when she's sleeping in her room is when that place will be
-the most guarded." said Fugue. "Especially after our little stunt this
-evening."
+"And I'm sure when she's sleeping is when that place will be
+the most guarded." said Fugue.
 
-James groaned. "This City is doing a bang up job at keeping us from the
-princess!"
+"Especially after your visit this
+evening." said the raven.
 
-Fugue tapped his head pensively. "Maybe if we could blend in with the
+James groaned.  Fugue tapped his head pensively. "Maybe if we could blend in with the
 locals. Slip into the crowds around Adelle."
 
 "Most of you are too cutesy to fit in with the local populace." said the
 raven. "You stick out like sore noses."
 
-After the discussions wound down without reaching any solid conclusions,
+After the discussions wound down without reaching any resolutions,
 people started talking about heading to bed. Someone suggested they
 should keep watch in case anything tried to break into the inn. The
 dolls assured them that the building was perfectly safe, but no one
 really trusted the dolls' confidence in their friendly neighborhood.
-Fugue volunteered to perform the first shift. As he was sitting on the
-roof and enjoying the view, of the twilit City, the raven flew up and
-landed beside him all in a flurry.
+Fugue volunteered to perform the first shift.
+
+------
+
+As Fugue was sitting on the roof and enjoying the view of the twilit City,
+the raven flew up and landed beside him all in a flurry.
 
 "Curse you!" said the raven.
 
 "What did I do now?" asked Fugue.
 
-"I just spotted some doom ahead for you."
+"I just received insight on some doom ahead of you."
 
 "Well, you don't look too pleased about it. Does some hideous fate await
 me?"
@@ -1524,7 +1516,7 @@ we can keep an eye on Adelle ... "
 
 * * *
 
-The next morning Ivy awoke to find that Adelle was not yet up and would
+The next morning Ivy awoke to find that Adelle was still asleep and would
 not be coming with her to school but would instead arrive sometime later
 that day.
 
@@ -1572,8 +1564,7 @@ At the end of the day's classes James entered the hallways in search of
 Adelle. He was amazed at how mild the other zombie children were. He was
 accustomed to the constant fighting and debauchery that normally
 occurred in zombie child ranks. He figured high society school zombies
-must be more genteel. He was wrong. It was actually Adelle's presence
-that caused this effect. As long as she was present with her crown, the
+must be more genteel. He was wrong. It was actually Adelle's presence. As long as she was in the vicinity with her crown, the
 zombie children conducted themselves as respectable nobles in the royal
 court. They were still cruel and manipulative, but now they did so with
 good manners.
@@ -1583,11 +1574,11 @@ usual friends. James approached the group cautiously. Very cautiously.
 He knew that if they wanted they could easily tear him to pieces. As he
 came within earshot he could hear them talking about Jakob Damond's Toye
 Shoppe. Apparently it had just appeared in the City and was scheduled to
-open its doors the next day.
+open its doors soon.
 
 James tried to blend in with the fringe of the crowd, but the moment he
 stepped near enough to be noticed everyone backed away and focused all
-their attention on him. Any conversation that had been going on abruptly
+their attention on him. Any conversations abruptly
 ceased except for whispering near the back of the crowd. Ivy stepped
 forward and introduced herself. Then she asked him who he was.
 
@@ -1619,7 +1610,7 @@ pressure you to eat one!"
 
 "Actually, I'd love to have a few Jillybons." said Adelle.
 
-James suddenly spoke up. "Are you joking? Jillybons are parasites!
+James suddenly spoke. "Are you joking? Jillybons are parasites!
 They'll suck the life out of you and drive you insane!"
 
 Adelle looked at him in shock. "Nonsense! All the other children eat
@@ -1639,7 +1630,7 @@ level), discerned this to be a good time to laugh with her.
 
 "Not that it's any of your business, but yes, I have."
 
-"They're inside you right now? This can't be happening!"
+"They're inside you right now? We've got to do something!  You need medical attention!"
 
 "Is this bloke giving you trouble?" Bobby asked Adelle. His posture was
 very straight and at ease, yet it was clear that with one word he would
@@ -1664,22 +1655,22 @@ children who would have no scruples in killing her, while she turned her
 back on the only zombie child with a conscience; the injustice stabbed
 at him like a dagger.
 
-He debated about following after them, but he couldn't see any use in
-it. She had already eaten the Jillybons. She had already given herself
-over to the other children's influence. All he could do was make things
+He debated about following after them, but he couldn't see any use. She had already eaten the Jillybons. She had already given herself
+over to the other children's influence. Now all he could do was make things
 worse. Even though he was better at reading books than reading people,
 he had still noticed how uncomfortable he had made her, and that grieved
-him. The last thing he wanted to do was make things worse. Yet as he
+him. He didn't want to make things worse, yet as he
 reflected on everything he had done since his arrival at the City, all
-he had done was make things worse. Then again, he wouldn't have caused
-so many problems if she had just trusted him. But why would she? He
+he had done was make things worse.
+
+His actions wouldn't have resulted in so many problems if she had just trusted him. But why would she? He
 *was* a zombie child. He *did* have desires to cause her harm. He would
 never forget his reflection in the mirror. He would never forget what
 his twisted heart was capable of. Who wouldn't flinch away from him?
 
 He had originally planned to return to the Happy Little Inn after
 school, but now he had no desire for it. Feeling as black as black can
-get, he climbed up a nearby building and sat down on the roof, where he
+be, he climbed up a nearby building and sat down on the roof, where he
 untied his book bag and took out the only book he had in it, Marloth.
 Then he opened it to a random page and began to read.
 
@@ -1698,7 +1689,7 @@ about Jillybons?"
 "No. What are they?"
 
 "They're a parasite that zombie children eat. Normally they do terrible
-stuff to people but they don't hurt zombies."
+stuff to people but they don't hurt zombies.  I need to find a remedy."
 
 "Hmm. Do these Jillybons take residence within the stomach or
 intestines?"
@@ -1745,7 +1736,7 @@ help you find these fire berries!"
 
 "Really?"
 
-"We have much experience shopping for rare ingredients. We will scour
+"We have much experience with shopping. We will scour
 the city for these berries you seek!"
 
 "And I will search for any more information about Jillybons." said Mr.
@@ -1818,7 +1809,7 @@ fly between dimensions, but there's rules to that, just as there's rules
 to moving around the physical world. For one thing, I can't pass through
 magical walls. If the wizards have the library sealed, then I would need
 a special portal just like anybody else. And besides, even if I were to
-phase into the library or any of those other fanciful locations, I can't
+phase into the library or any of those other fire berry locations, I can't
 carry things with me when I do that. The berries would just fall out of
 my beak. Now---if you don't mind---I'm going to get some sleep."
 
@@ -1842,13 +1833,12 @@ and not have done a thing; they are very stingy with resources. In
 short, I won't know what to expect if we enter the Library."
 
 James wasn't dissuaded. "If you don't know what to expect then there's
-no way to prepare for it. We'll just deal with that pickle when we come
-to it. Right now, I need to get Adelle."
+no way to prepare for it. We'll just deal with those problems when we face them. Right now, I need to get Adelle."
 
 "But she didn't respond well to you the last time. How will now be any
 different?"
 
-"Desperate times call for desperate measures. So far I've been cautious.
+"Desperate times call for desperate measures. So far I've been restrained.
 Now I'll do whatever it takes to get her to that library."
 
 "Cool!" said Fugue. "I want to be a part of that!"
@@ -1881,7 +1871,7 @@ it had been some time since any of them had reported back to him.
 Something big was going down. He could feel it. He was about to set out
 to check on his scouts when one of them came rushing around the corner
 and nearly ran into him. Deadwick waited a moment for the zombie to
-catch his breath, remembered that he didn't have any breath, and said
+catch his breath, remembered that the creature had no any breath, and said
 "Come on! Spit it out! What's happening?"
 
 "I just came from the west side of the Mediev Manor!" the zombie gasped.
@@ -1980,7 +1970,7 @@ The Lady Mediev was sitting calmly in the parlor with Phyllis and Loury
 and a number of half-men when she suddenly jolted up as though she had
 stepped on a nail.
 
-"She has escaped!" shrieked the Lady Mediev. All of the half-men turned
+"She has escaped!" shrieked the Lady. All of the half-men turned
 to stare at her nervously. "You mean the girl?" One of them asked,
 twisting his cap in his hand.
 
@@ -2042,7 +2032,7 @@ don't know if the toad is ready yet. Nobody said anything about you
 hurrying back with an angry mob chasing you."
 
 James ducked down as a zombie child lunged at him, missed, and fell into
-the street below. "Well now there is. Can you fly ahead and tell Mr.
+the streets below. "Well sorry but now there is. Can you fly ahead and tell Mr.
 Mosspuddle to hurry?"
 
 "Certainly. I can tell him you once again climbed into more trouble than
@@ -2050,9 +2040,9 @@ a cesspit can fathom!"
 
 The raven shot ahead and out of sight.
 
-* * *
+<img class="centered-image-scene-break" style="width: 70%;" src="file://src/assets/images/fairytale/ogre.png" alt=""/>
 
-In the very center of the City of Orphans, there was an open square, and
+In the very center of the City of Orphans there was an open square, and
 in the middle of this square, there was a well. At that moment a toad, a
 raven, and a number of dolls were gathered around it.
 
@@ -2069,14 +2059,14 @@ Library."
 "It had better be the library down there! I wouldn't go down if it was
 still a regular well. The bottoms of wells are slimy and muddy!"
 
-Mr. Mosspuddle thought about this and how, if someone had such an
+Mr. Mosspuddle considered her remarks and how, if someone had such an
 aversion to wells, they probably would not be happy with the Great
 Library either, but he decided not to say anything.
 
 During this time, a sound had been slowly forming in the distance. It
-had been barely audible at first, but it had continued growing until now
-there was no mistaking the noise of dozens of pursuers rushing toward
-them. None of the individuals by the well said anything about it, but
+had been barely audible at first, but it continued growing until now
+there was no mistaking the noise of many individuals rushing toward
+them. None of the individuals already at the well said anything about it, but
 they were all apprehensively staring in the direction that the wall of
 sound was charging from.
 
@@ -2084,7 +2074,7 @@ Then James and Fugue appeared over the top of one of the roofs and
 wearily dropped down to the street level. Between them they were
 carrying a large, lumpy sack.
 
-"Please don't tell me that's the princess." said Mr. Mosspuddle as they
+"Please don't tell me that is the princess." said Mr. Mosspuddle as they
 drew near.
 
 "Okay, I won't." said Fugue.

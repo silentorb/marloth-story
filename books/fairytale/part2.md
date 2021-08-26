@@ -26,7 +26,7 @@ like a loyal gnat and eventually caught up to him, struggling to
 maintain stride with the King's sweeping gate.
 
 "Sir, a number of farms have been attacked! The occupants were
-gruesomely killed and the buildings razed. But there has been little
+slain and the buildings razed. But there has been little
 sign of looting, just senseless destruction. The rangers do not know
 what to make of it."
 
@@ -46,10 +46,10 @@ running. Can I do those first?"
 on your plate? What errands do you speak of?"
 
 "They're mostly regarding the queen, Milord. I need to go and deliver a
-gift from the governor of Rhumeveld to the queen and then I need to
+gift from the mayor of Rhumeveld to the queen and then I need to
 review this list of items she said she---"
 
-"A gift from the governor? To the queen? Well I guess I shouldn't be
+"A gift from the mayor? To the queen? Well I guess I shouldn't be
 surprised. Things have reached the point where I only hear of these
 things in passing."
 
@@ -1045,31 +1045,31 @@ swarmed over the city like a plague, quickly disintegrating any defenses
 it might have had.
 
 In the center of the city there was a rather magnificent mansion that
-was the residence of the governor. He was one of the most rich and
+was the residence of the mayor. He was one of the most rich and
 powerful men in Marloth. Powerful, that was, until his army of guards
 found themselves beset by creatures that could be shot, stabbed, 
 beaten and continue biting you.
 
-The governor's house had no sooner been captured than a short, battered
+The mayor's house had no sooner been captured than a short, battered
 looking goblin made his way through the spacious doorway of the mansion
 with around a dozen of the children trailing behind him. The goblin
-crossed the threshold of the lobby and stood before the governor
+crossed the threshold of the lobby and stood before the mayor
 himself, who at the moment was being held down by five more of the
 children.
 
 "Hello." said the goblin. "My name is Deadwick. What's yours?"
 
-"Joe." said the governor.
+"Joe." said the mayor.
 
 "Well, Joe, I've heard that you've got a mighty powerful relic hidden
 somewhere in this place. Something that could change the world! Know
 what I'm talking about?"
 
-The governor shook his head.
+The mayor shook his head.
 
 "That's okay. I'll refresh your memory for you."
 
-The goblin hit the fellow over the head. The governor slumped to the
+The goblin hit the fellow over the head. The mayor slumped to the
 floor unconscious.
 
 "Aren't you supposed to just hurt him?" said one of the children.
@@ -1082,10 +1082,6 @@ place for anything that looks really powerful. You'll know when you see
 it. They usually have colorful glowing auras or ancient inscriptions or
 disintegrates the first bloke who steps into the room. Something like
 that."
-
-"What about this guy?"
-
-"We're done with him. Take him outside."
 
 The children split up into several groups and began to scour the
 mansion. The goblin went about the rooms, overseeing their questing.
@@ -1118,21 +1114,14 @@ relic of power, and I mean to find it!"
 
 * * *
 
-No one noticed the motionless body of the governer. The people were too 
-focused upon the
-destruction around them, and the zombies were too focused upon causing
-it.
+In a place where each person was focused on either fleeing destruction or causing it,
+no one noticed the object that fell through the air and landed in the dirt near the mayor's house.
 
-Except for one. A zombie child with straggly hair. He had thought
-nothing of the governor, as the two children had taken him
-outside and put him to sleep for good. But then something had fallen from
-the sky and landed next to the body. The zombie child had been about to continue on
-his way, trying to find his next victim to pass the time, when he jolted
-backward. That was odd. It grabbed all his attention. Not the governor,
-but the item that had landed beside him. There had been something
-familiar about it. Slowly, gears began to turn within his mind. An ember
-flickered to life for just an instant. Walking into the middle of the
-street, he awkwardly bent over and looked at the object.
+Except for one. A zombie child with straggly hair. He had been passing by 
+the house when the object landed a short distance from him. He stopped and stared at it. 
+Odd; there had been something familiar about it. Slowly, gears began to turn within his mind.
+An ember flickered to life for just an instant. Walking across the street,
+he bent over and looked at the object.
 
 It was a book.
 
@@ -1693,7 +1682,7 @@ covers.
 Now James was puzzled. "How can a sleeping person bring anything? You
 just lie there."
 
-"Brainless fool!" it shouted. From beneath the covers burst forth a jet
+"Fool!" it shouted. From beneath the covers burst forth a jet
 black raven.
 
 "I am the Doombringer!" said the raven. "I have come to foretell the
@@ -2675,7 +2664,7 @@ there? It's dangerous as hell!"
 there all alone in the dark!"
 
 The captain rose to his feet and headed for the door. "Fine. I'm coming.
-But if you're wrong about this, I'm gonna kill you."
+But if you're wrong about this, you'll be the one outside the gate."
 
 "Yes, sir!"
 
