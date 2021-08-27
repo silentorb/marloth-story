@@ -1,25 +1,25 @@
 # Part 6
 
-*Dear Sir,*
-
-*It has come to my attention that you are still alive. I must say, that
-is an impressive trick. You may think me worried that you have returned,
-but you need not worry about me. From what I hear, you are hardly more
-than a ghost. I am not afraid of ghosts.*
-
-*You were right about one thing: everything did pass away. But that
-turned out to be hardly a loss for me. With the passing of that
-dimension I have gotten my book back. And now I have made copies. Your
-death was in vain.*
-
-*There have also been rumors of you wanting to end this world as well.
-That simply will not do. I don't appreciate your obsession with
-destroying worlds, and it is my duty to prevent you from destroying this
-one.*
-
-*Hoping you see reason,*
-
-*Jakob Damond*
+> Dear Sir,
+>
+> It has come to my attention that you are still alive. I must say, that
+> is an impressive trick. You may think me worried that you have returned,
+> but you need not worry about me. From what I hear, you are hardly more
+> than a ghost. I am not afraid of ghosts.
+>
+> You were right about one thing: everything did pass away. But that
+> turned out to be hardly a loss for me. With the passing of that
+> dimension I have gotten my book back. And now I have made copies. Your
+> death was in vain.
+>
+> There have also been rumors of you wanting to end this world as well.
+> That simply will not do. I don't appreciate your obsession with
+> destroying worlds, and it is my duty to prevent you from destroying this
+> one.
+>
+> Hoping you see reason,
+>
+> Jakob Damond
 
 * * *
 
@@ -1323,7 +1323,7 @@ It was Adelle. She was staring at them, horrified.
 
 "Adelle!" he exclaimed. "It's not what it, don't---"
 
-Adelle's heart broke in two. She turned around and ran out of the hall.
+Adelle's heart broke in two. She turned around and ran from the hall.
 James watched in shock as she disappeared around the corner. He pushed
 himself away from Ivy and threw the knife to the ground. "I'm so
 stupid!" he said. "Stupid, stupid, *stupid!*"
@@ -1399,7 +1399,7 @@ read Marloth?"
 
 "Yes." said James.
 
-It was Ivy's turn to let go. "Look, I'm feeling a little better already.
+It was Ivy's turn to let go. "I'm feeling a little better now.
 And I can see my house in the distance. Don't let me keep you any
 longer. You need to find Marloth as soon as you can."
 
@@ -1415,7 +1415,7 @@ setup! I was supposed to get you away from Adelle and push her over the
 edge. She was the only real friend I ever had, and I betrayed her!
 That's the kind of person I am! I have no heart. I have no soul. And
 it's too late to fix that. Now leave me! Help the only girl who can
-still be saved."
+still be saved!"
 
 James stood there stunned. It took him a long time to catch up to all
 she had said. Then he sadly nodded. "Each moment it's getting harder to
@@ -1428,7 +1428,7 @@ It's never too late."
 
 Adelle rushed blindly forward, her emotions tearing her apart from the
 inside out. She felt so inadequate. And she felt so jealous of Ivy.
-James could freely hurt Ivy without worrying about killing her. And the
+James could freely hurt Ivy without worrying about slaying her. And the
 way most zombie children were deadened to pain, Ivy would probably enjoy
 it. But he was deathly afraid of hurting Adelle, and he avoided her
 because of it. For the first time, Adelle saw his desire to cause pain
@@ -1699,7 +1699,8 @@ already out of my sight."
 
 "How could she have done that?"
 
-"I don't know! It's all a blur! All I know is that I should never have
+"Guess! It's all a blur now, but there's only one explanation.
+All I know for sure is I should never have
 bothered helping her! She's nothing but trouble. All girls are trouble!"
 
 It was then that he noticed Ivy.
@@ -2254,10 +2255,10 @@ it."
 "I'm not going to tell you."
 
 "Adelle, listen to me! My zombie nature is taking over! If I don't read
-Marloth soon, I will kill you. I'm trying to get away from you but I
+Marloth soon, I could hurt you. I'm trying to get away from you but I
 don't have that much control anymore! If you won't tell me where Marloth
 is then please get away from me! I'm trying to fight it but I can't
-fight it much longer: I want to kill you!"
+fight it much longer.  If much more time passes I will kill you!"
 
 "I know. I want you to. And I'm staying right here until you do."
 
@@ -2955,9 +2956,8 @@ quite elegant but was now rather decrepit and looked as though it had
 not been used in centuries. Its posts were tarnished, its headboard
 moldy, and the fabric of its pillows and linens were a faded brown.
 
-The toys were not intelligent enough to look under the bed. They were
-only designed to walk around and kill things. After a quick scan of the
-room, they proceeded on to the next room.
+The toys were not intelligent enough to look under the bed.
+After a quick scan of the room, they proceeded on to the next.
 
 Underneath the bed was the band of misfits. Once the room was vacated,
 they climbed out from the bed, being extra careful of Adelle and her
@@ -3094,27 +3094,28 @@ collapsed beside James.
 
 * * *
 
-*Dear Sir,*
-
-*You are neglecting to look beyond the surface. In this dream your book
-of contracts remains intact, but in the dream that dreams this dream
-your book is destroyed, and that is what matters. All of your contracts
-have been made void.*
-
-*You say you want to keep this world going forever? But how are you to
-do that? What are you going to add to extend it? You cannot create
-pages. You cannot create anything. With or without my opposition, you
-have no means of perpetuating this dream. The end* **will** *come.*
-
-*There is also the matter of compensation. You have taken everything from
-me except what matters most: you can never take away who I am, and that
-is your undoing. I acknowledge that even in this present dream I am
-still an imperfect reflection, but I am now far more accurate a
-rendition then I was before, and growing more precise by the minute.
-Soon I will return for what is mine. All that has been taken, it shall
-be restored.*
-
-*Edward Tralvorkemen*
+> Dear Sir,
+>
+> You are neglecting to look beyond the surface. In this dream your book
+> of contracts remains intact, but in the dream that dreams this dream
+> your book is destroyed, and that is what matters. All of your contracts
+> have been made void.
+>
+> You say you want to keep this world going forever? But how are you to
+> do that? What are you going to add to extend it? You cannot create
+> pages. You cannot create anything. With or without my opposition, you
+> have no means of perpetuating this dream. The end *will* come.
+>
+> There is also the matter of compensation. You have taken everything from
+> me except what matters most: you can never take away who I am, and that
+> is your undoing. I acknowledge that even in this present dream I am
+> still an imperfect reflection, but I am now far more accurate a
+> rendition then I was before, and growing more precise by the minute.
+> Soon I will return for what is mine. All that has been taken, it shall
+> be restored.
+>
+> Edward Tralvorkemen
+>
 
 * * *
 

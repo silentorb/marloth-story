@@ -139,149 +139,145 @@ place, and then faded into nothing.
 
 * * *
 
-<blockquote>
-
-Adelle opened her eyes and looked about her. It was so bright she was
-nearly blinded. The sun was filling the sky with golden light. She
-squinted to the east, where the sun was already setting. Or was it the
-moon? The color of the sky kept shifting; she could not tell if it was
-morning or evening.
-
-She stretched out on her bed and tried to focus on the sky above her.
-That was funny---she had never been able to see the sky from her bedroom
-before. And what was more, her bedroom had never been so unstable. Her
-bed was rocking back and forth.
-
-"Ahoy Matey!" shouted Samantha.
-
-Adelle sat up in surprise. The dolls were there on her bed! And the bed,
-as it turned out, was in the middle of the sea. Suddenly, every muscle
-in her body tensed and she clung to the mattress for dear life.
-
-"Samantha!" Miss Perrywinkle scolded. "You speak as though you were a
-primitive!"
-
-"But that's the sort of thing one is supposed to say when one is out at
-sea." said Samantha. "I even read it in a book once."
-
-"You're making things up again!" said Miss Perrywinkle.
-
-"Well if you don't believe me, look at this! The book is right here!"
-
-The doll reached over the edge of the bed and pulled a book out of the
-water.
-
-"Now that's what I call a coincidence!" said Miss Perrywinkle, taking
-the book.
-
-"Not really." said Samantha. "Probably just about every book must be out
-here."
-
-And she may have been right. The sea was strewn with hundreds of books,
-casually floating along the surface.
-
-"What are we doing here?" Adelle said with a strong pitch of urgency.
-
-"What do you think?" said Samantha. "We're sailing!"
-
-"But where's my bedroom? Where is the castle?"
-
-"It's hard to say." said Mrs. Gingersmile, who was baiting a fishing rod
-with a candy cane. "I think it exploded."
-
-"We're very fortunate really." said Miss Perrywinkle. "It's a miracle
-we are all safe."
-
-"Safe?" said Adelle. She was staring at the water suspiciously. Or was
-it water? The more she looked at the stuff, the less it looked like
-water. It was too wispy and rose up and down too much.
-
-"Are we in the sea, or are we floating on the clouds?" asked Adelle.
-
-"I'll go with both." said Samantha.
-
-Adelle gathered her courage and reached her hand into the water. It was
-the strangest sensation. It was too thick to be clouds. She cupped her
-hands and was able to lift some of it into her bed. Yet it was too light
-to be water. Most of the stuff was caught in the breeze and blown from
-her hand, and yet even as it was dissipating through the air, it still
-caught the sunlight and glittered just as water would.
-
-Miss Perrywinkle closed the book and waved it at Samantha. "I can't find
-any passage in this book that talks about the sea!"
-
-"I'll show you!" said Samantha, taking the book and sitting beside her.
-
-"Look, the swan is back!" said Mrs. Gingersmile.
-
-As she spoke, the swan glided toward them and landed in the cloud water
-beside the bed.
-
-"Ah, she's awake!" said the swan. "It was about time. I was beginning to
-wonder if she was under a spell."
-
-"No spells." said Mrs. Gingersmile. "What did you see? Any sign of
-land?"
-
-"No. I saw no land. But I did come across a few people here and there."
-
-"Anyone interesting?"
-
-"All interesting. Downright mad, for the most part. As are most
-people outside of the castle."
-
-"But we're outside of the castle!"
-
-"Ah yes. That is why I said *most* people. We, of course, are the exception."
-
-"But that's ridiculous!" said Adelle. "If that were so, then the castle
-would be like an asylum turned inside out!"
-
-"And it is, dear. Most everyone inside the castle is civilized and sane."
-
-"Most everyone?" said Miss Perrywinkle. Are you suggesting there are mad people inside the castle?"
-
-"Only a few. The king is probably mad. They usually are."
-
-"Come to think of it, there was that zombie child." said Mrs. Gingersmile.
-"He was inside the castle, and he was clearly mad."
-
-"What zombie---" Adelle began, but was cut off by Samantha.
-
-"Look!" she said. "There's a toad out there!"
-
-Sure enough, a toad wearing a tweed jacket and thick glasses was
-swimming about the sea of clouds, feverishly collecting the books and
-piling them onto a small desk that was likewise floating in the water.
-The pile was already several yards tall, and was swaying about
-precariously.
-
-"A toad! I'm sure he would be fun to converse with!" said Miss
-Perrywinkle. "Say, Mr. Toad!" she called out. "Why don't you tarry a bit
-and relate to us your business!"
-
-The toad looked up for a moment with a slightly startled expression and
-then went back to his work, muttering something derogatory about a bed
-full of women.
-
-"Never mind then." said Miss Perrywinkle. "Clearly he has no manners."
-
-"Here it is!" said Samantha, pointing at the open book. "Here's the
-passage about the sea! See right here? The doll says 'Ahoy mate!'"
-
-Miss Perrywinkle looked at the book. "You're right! She does say 'Ahoy
-mate!'"
-
-"And see here? She says it again!" said Samantha. "And then another doll
-says it on the next line!"
-
-"Well." said Miss Perrywinkle. "You're a good deal sharper than I give
-you credit for."
-
-Adelle leaned over their shoulders and looked at the book curiously. It
-looked familiar.
-
-</blockquote>
+> Adelle opened her eyes and looked about her. It was so bright she was
+> nearly blinded. The sun was filling the sky with golden light. She
+> squinted to the east, where the sun was already setting. Or was it the
+> moon? The color of the sky kept shifting; she could not tell if it was
+> morning or evening.
+>
+> She stretched out on her bed and tried to focus on the sky above her.
+> That was funny---she had never been able to see the sky from her bedroom
+> before. And what was more, her bedroom had never been so unstable. Her
+> bed was rocking back and forth.
+>
+> "Ahoy Matey!" shouted Samantha.
+>
+> Adelle sat up in surprise. The dolls were there on her bed! And the bed,
+> as it turned out, was in the middle of the sea. Suddenly, every muscle
+> in her body tensed and she clung to the mattress for dear life.
+>
+> "Samantha!" Miss Perrywinkle scolded. "You speak as though you were a
+> primitive!"
+>
+> "But that's the sort of thing one is supposed to say when one is out at
+> sea." said Samantha. "I even read it in a book once."
+>
+> "You're making things up again!" said Miss Perrywinkle.
+>
+> "Well if you don't believe me, look at this! The book is right here!"
+>
+> The doll reached over the edge of the bed and pulled a book out of the
+> water.
+>
+> "Now that's what I call a coincidence!" said Miss Perrywinkle, taking
+> the book.
+>
+> "Not really." said Samantha. "Probably just about every book must be out
+> here."
+>
+> And she may have been right. The sea was strewn with hundreds of books,
+> casually floating along the surface.
+>
+> "What are we doing here?" Adelle said with a strong pitch of urgency.
+>
+> "What do you think?" said Samantha. "We're sailing!"
+>
+> "But where's my bedroom? Where is the castle?"
+>
+> "It's hard to say." said Mrs. Gingersmile, who was baiting a fishing rod
+> with a candy cane. "I think it exploded."
+>
+> "We're very fortunate really." said Miss Perrywinkle. "It's a miracle
+> we are all safe."
+>
+> "Safe?" said Adelle. She was staring at the water suspiciously. Or was
+> it water? The more she looked at the stuff, the less it looked like
+> water. It was too wispy and rose up and down too much.
+>
+> "Are we in the sea, or are we floating on the clouds?" asked Adelle.
+>
+> "I'll go with both." said Samantha.
+>
+> Adelle gathered her courage and reached her hand into the water. It was
+> the strangest sensation. It was too thick to be clouds. She cupped her
+> hands and was able to lift some of it into her bed. Yet it was too light
+> to be water. Most of the stuff was caught in the breeze and blown from
+> her hand, and yet even as it was dissipating through the air, it still
+> caught the sunlight and glittered just as water would.
+>
+> Miss Perrywinkle closed the book and waved it at Samantha. "I can't find
+> any passage in this book that talks about the sea!"
+>
+> "I'll show you!" said Samantha, taking the book and sitting beside her.
+>
+> "Look, the swan is back!" said Mrs. Gingersmile.
+>
+> As she spoke, the swan glided toward them and landed in the cloud water
+> beside the bed.
+>
+> "Ah, she's awake!" said the swan. "It was about time. I was beginning to
+> wonder if she was under a spell."
+>
+> "No spells." said Mrs. Gingersmile. "What did you see? Any sign of
+> land?"
+>
+> "No. I saw no land. But I did come across a few people here and there."
+>
+> "Anyone interesting?"
+>
+> "All interesting. Downright mad, for the most part. As are most
+> people outside of the castle."
+>
+> "But we're outside of the castle!"
+>
+> "Ah yes. That is why I said *most* people. We, of course, are the exception."
+>
+> "But that's ridiculous!" said Adelle. "If that were so, then the castle
+> would be like an asylum turned inside out!"
+>
+> "And it is, dear. Most everyone inside the castle is civilized and sane."
+>
+> "Most everyone?" said Miss Perrywinkle. Are you suggesting there are mad people inside the castle?"
+>
+> "Only a few. The king is probably mad. They usually are."
+>
+> "Come to think of it, there was that zombie child." said Mrs. Gingersmile.
+> "He was inside the castle, and he was clearly mad."
+>
+> "What zombie---" Adelle began, but was cut off by Samantha.
+>
+> "Look!" she said. "There's a toad out there!"
+>
+> Sure enough, a toad wearing a tweed jacket and thick glasses was
+> swimming about the sea of clouds, feverishly collecting the books and
+> piling them onto a small desk that was likewise floating in the water.
+> The pile was already several yards tall, and was swaying about
+> precariously.
+>
+> "A toad! I'm sure he would be fun to converse with!" said Miss
+> Perrywinkle. "Say, Mr. Toad!" she called out. "Why don't you tarry a bit
+> and relate to us your business!"
+>
+> The toad looked up for a moment with a slightly startled expression and
+> then went back to his work, muttering something derogatory about a bed
+> full of women.
+>
+> "Never mind then." said Miss Perrywinkle. "Clearly he has no manners."
+>
+> "Here it is!" said Samantha, pointing at the open book. "Here's the
+> passage about the sea! See right here? The doll says 'Ahoy mate!'"
+>
+> Miss Perrywinkle looked at the book. "You're right! She does say 'Ahoy
+> mate!'"
+>
+> "And see here? She says it again!" said Samantha. "And then another doll
+> says it on the next line!"
+>
+> "Well." said Miss Perrywinkle. "You're a good deal sharper than I give
+> you credit for."
+>
+> Adelle leaned over their shoulders and looked at the book curiously. It
+> looked familiar.
 
 The clock struck 10 o'clock. The nurse promptly closed the book. Her
 break was over and it was time for her to make her rounds among the
@@ -302,7 +298,7 @@ Who cared.
 
 He liked it. He felt invincible. For once, no one could mess with him.
 No one could hurt him. After all, what could they do to him? Any
-vulnerability had been killed. He was finally free from it all.
+vulnerability had been destroyed. He was finally free from it all.
 
 After a time, possibly minutes, possibly hours, the gloom opened up and
 a figure appeared. Some faint talking sounds came from the crack of
@@ -356,74 +352,70 @@ I know you've clung to in the past. But it will be worth it."
 The doctor looked at his watch.
 
 "I wish I could talk to you more, but I need to check on another of my
-projects. Before I go, there is one question I would like to ask you.
+projects." Before I go, there is one question I would like to ask you.
 Has anyone gone out of his way to save your life?"
 
 James thought about that for a moment and then shook his head. Of late
 most people had been trying to achieve the opposite.
 
-"Thank you." said the doctor, and then he left James to himself.
+"Thank you." said" the doctor, and then he left James to himself.
 
 * * *
 
-<blockquote>
-
-Somewhere in the swirling mists of Marloth, just at the crest of a
-setting sun, there was a bed, floating along the clouds as though it
-were on the sea. It was an elegant bed, with golden posts rising from
-each corner, and a large headboard across the top on which was engraved
-an elaborate depiction of an ocean shore. The bed was lined with
-embroidered linens and pillows. In the middle of the bed a little girl
-was curled up and sleeping peacefully.
-
-All about the bed were flitting little lights which, if you looked more
-closely, would have turned out to be fairies. The fairies were very
-excited, and were carrying on a conversation that went something like
-this:
-
-"What is it?"
-
-"It is hard to say. Everything looks so similar when asleep."
-
-"I think it must be an angel!"
-
-"Do not be silly! It is a girl!"
-
-"A girl? Like us?"
-
-"No, this is a *girl!* I know it! I saw a picture of one in a book!"
-
-"You mean she is real? She can actually do things?"
-
-"Yes! She is made from the earth! She is like a woman, but smaller."
-
-"Oh, yes, I remember now! I heard about them! And see that object on her
-head? That means she is a princess!"
-
-"How wonderful! This is a day to be remembered!"
-
-And the bed continued on. Presently the fairies began to drop out of
-sight. Night was falling, and they were growing sleepy. (Though where
-the fairies sleep, only they know.) The shadows thickened. Here and
-there through the fog could be caught glimpses of buildings and people,
-all of which were staring at the girl curiously before sinking back into
-the mist. No longer was she in a world held together by things like
-longitude and latitude, but by mere ideas. It was impossible to tell
-whether the mist hid land and mass, or if there was nothing behind it at
-all. And in a way, it did not really matter; all that mattered was what
-could be behind it, for this was not a world of actualities, but of
-possibilities.
-
-The bed gradually followed the current under a low bridge that crossed
-the mist. As the bed passed underneath, a small carriage paused atop the
-bridge and an elegant woman peered down at the boat. She made a comment
-to no one in particular, and then motioned for the coachman to continue
-on his way.
-
-A few zombie children swam out to the bed, but were eaten by alligators
-before they could reach it.
-
-</blockquote>
+> Somewhere in the swirling mists of Marloth, just at the crest of a
+> setting sun, there was a bed, floating along the clouds as though it
+> were on the sea. It was an elegant bed, with golden posts rising from
+> each corner, and a large headboard across the top on which was engraved
+> an elaborate depiction of an ocean shore. The bed was lined with
+> embroidered linens and pillows. In the middle of the bed a little girl
+> was curled up and sleeping peacefully.
+>
+> All about the bed were flitting little lights which, if you looked more
+> closely, would have turned out to be fairies. The fairies were very
+> excited, and were carrying on a conversation that went something like
+> this:
+>
+> "What is it?"
+>
+> "It is hard to say. Everything looks so similar when asleep."
+>
+> "I think it must be an angel!"
+>
+> "Do not be silly! It is a girl!"
+>
+> "A girl? Like us?"
+>
+> "No, this is a *girl!* I know it! I saw a picture of one in a book!"
+>
+> "You mean she is real? She can actually do things?"
+>
+> "Yes! She is made from the earth! She is like a woman, but smaller."
+>
+> "Oh, yes, I remember now! I heard about them! And see that object on her
+> head? That means she is a princess!"
+>
+> "How wonderful! This is a day to be remembered!"
+>
+> And the bed continued on. Presently the fairies began to drop out of
+> sight. Night was falling, and they were growing sleepy. (Though where
+> the fairies sleep, only they know.) The shadows thickened. Here and
+> there through the fog could be caught glimpses of buildings and people,
+> all of which were staring at the girl curiously before sinking back into
+> the mist. No longer was she in a world held together by things like
+> longitude and latitude, but by mere ideas. It was impossible to tell
+> whether the mist hid land and mass, or if there was nothing behind it at
+> all. And in a way, it did not really matter; all that mattered was what
+> could be behind it, for this was not a world of actualities, but of
+> possibilities.
+>
+> The bed gradually followed the current under a low bridge that crossed
+> the mist. As the bed passed underneath, a small carriage paused atop the
+> bridge and an elegant woman peered down at the boat. She made a comment
+> to no one in particular, and then motioned for the coachman to continue
+> on his way.
+>
+> A few zombie children swam out to the bed, but were eaten by alligators
+> before they could reach it.
 
 The nurse flipped back several pages and looked at what she had read the
 evening before. That was strange, from the best she could tell he had
@@ -533,10 +525,10 @@ ever find."
 The nurse shook her head. "My recounting doesn't do the scene justice. I
 can't even explain why, but I never looked at life the same way since."
 
-She reached over and gave James a gentle hug. James had stopped eating
-again, and didn't move at all. The nurse rose to her feet and moved
-toward the door. Before she left the room, she turned back to James and
-smiled again.
+She reached over and gave James a gentle hug. James had finished eating,
+and didn't move at all. The nurse gathered the tray, rose to her feet,
+and moved toward the door.
+Before she left, she turned back to James and smiled again.
 
 "We could use more men like that in this world." she said, and then
 closed the door behind her.
@@ -1292,25 +1284,25 @@ Leaping viciously across the room, he pulled out a knife seemingly from
 mid air and buried it into the center of the poster.
 
 "Don't worry my love," he whispered soothingly, leaning against the
-wall. "Don't cry. It will only hurt a little bit."
+wall. "It will only hurt a little bit."
 
 "Stop it!" James screamed. He slammed his fist against the mirror. It
-had no effect. He hit it again. He kept hitting it until both his hand
-and the mirror were covered in blood, but still the mirror remained. By now the poster was a pile of shreds.
+had no effect. He hit it again. He kept hitting it repeatedly but still the mirror remained.
+
+By now the poster was a pile of shreds.
 
 "And then, you will be born again. You will be a new person, and see us
 through new and kinder eyes." the reflection went on, not seeming to
-notice James' desperate attempts.
+notice James' desperate rage.
 
 James took hold of the chair and began beating the mirror with it. Legs
-splintered off the chair and flew bouncing off the walls. By then his
-rage had blurred into sobbing.
+splintered off the chair and flew bouncing off the walls.
 
 "And then, finally, you will love us."
 
-James' soul broke in half. When the nurse finally came rushing into the
-room, she found him collapsed onto the floor in a pool of his tears and
-blood. He lay huddled and twitching, deliriously begging for more drugs.
+James' collapsed. When the nurse finally came rushing into the
+room, she found him collapsed onto the floor in a pool of tears.
+He lay huddled and shaking, deliriously begging for more drugs.
 "I am so sorry!" she said, as she knelt beside him. Taking the syringe,
 she hurriedly administered the shot, and then took some gauze out of her
 apron to tend to his bleeding. The medication worked quickly. By the
@@ -1573,8 +1565,8 @@ reason; he's just trying to increase the rarity of his goods."
 Adelle was also amazed at how many interesting people she met in the
 city. Everyone was so friendly and gracious to her. All of the
 shopkeepers were eager to give her discounts. The query gremlins had
-published many articles with pictures of her so that many people
-recognized her on sight and would wave and call out to welcome her to
+published many articles with pictures of her so that people
+were recognizing her on sight and would wave and call out to welcome her to
 the City of Orphans. The query goblins were still following her, but in
 the public crowds of daylight they were much more discreet and limited
 their activities to flashing their strange devices from a distance.
@@ -1610,7 +1602,7 @@ she was pleased to find so many young men who also knew the forms of
 dance she enjoyed most. From then on the Globe became her regular place
 to visit every evening. While between her and Ivy she was normally the
 more responsible one, when it came to the Globe it was Ivy who was
-always pulling Adelle away from it and begging to get home and to bed.
+pulling Adelle away from it and begging to get home and to bed.
 
 Adelle soon learned that the magic which controlled the Globe's
 appearance was not presently running at full capacity, which she found
@@ -2013,7 +2005,7 @@ installment, Tralvorkemen rose back to life to continue his scourge upon
 the children. But this time he had a much larger scheme; he wanted to
 destroy the world. But a noble toymaker appeared on the scene and
 rallied the remaining children to fight the crazed undead hunter. After
-an epic battle, Tralvorkemen was slain once and for all and the world
+an epic battle, Tralvorkemen was slain through that the world
 was saved.
 
 When it was over there was little else anyone could talk about but the
@@ -2585,12 +2577,11 @@ The Judge almost looked amused. "I'm sorry, little boy, but you aren't
 going anywhere unless I say so, and I don't appear to be in the saying
 mood."
 
-James was nonplussed. "I am *going* to rescue Adelle," he said, "and
-anyone who gets in my way will either wish they were dead, or wish they
-were still alive." The audience gasped. The subject was definitely
-suggesting violent tendencies. The Judge, however, looked as calm as
-James. He leaned over the edge of the podium and examined him coolly.
-Men began to enter through the two doorways and cut off any possible
+James was nonplussed. "I am *going* to rescue Adelle," he said,
+"Nothing you do will stop me."
+The crowd was amazed but the Judge was unflinching.
+He leaned over the edge of the podium and examined James coolly.
+Men began to enter through the two doorways to cut off any possible
 exits.
 
 "Will you now? And all because of a girl?"
@@ -2607,7 +2598,7 @@ One of the men called out something about the only place James running
 toward being a padded cell.
 
 "If you had read Marloth you would know that's not what's going to
-happen."
+happen." said James to the crowd.
 
 The Judge suddenly spoke up, contempt dripping from his voice.
 

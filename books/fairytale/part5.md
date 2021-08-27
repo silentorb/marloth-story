@@ -3,24 +3,23 @@
 <h1><img class="doll-image" src="file://src/assets/images/fairytale/doll.jpg" alt=""/>
 Part <span class="rotated-text">5</span>
 </h1>
-
-*Dear Sir,*
-
-*I thank you for your advice, for it is based on truth, even if its
-motives are not. You would like me to remain in this state forever. But
-I am not going to oblige you.*
-
-*I am a misshapen image of something far better than I. Until I fade from
-sight, I am obstructing the view. I must die, and all of this must pass
-away. But I am encouraged by the fact that after I fall into the earth,
-I will rise again as someone far better.*
-
-*As for your ledger, somehow you twisted this reality so that I
-destroyed my book. That is the ultimate perversion and further reason
-why things cannot remain the way they are. This is* **your** *fantasy,
-and I am weary of being a part of it.*
-
-*Edward Tralvorkemen*
+> Dear Sir,
+>
+> I thank you for your advice, for it is based on truth, even if its
+> motives are not. You would like me to remain in this state forever. But
+> I am not going to oblige you.
+>
+> I am a misshapen image of something far better than I. Until I fade from
+> sight, I am obstructing the view. I must die, and all of this must pass
+> away. But I am encouraged by the fact that after I fall into the earth,
+> I will rise again as someone far better.
+>
+> As for your ledger, somehow you twisted this reality so that I
+> destroyed my book. That is the ultimate perversion and further reason
+> why things cannot remain the way they are. This is *your* fantasy,
+> and I am weary of being a part of it.
+>
+> Edward Tralvorkemen
 
 * * *
 
@@ -679,10 +678,10 @@ fear. She's all ours!"
 himself standing before another mirror. His reflection was carrying a
 grungy knife and an eager grin.
 
-"Look at her!" said the reflection. "Look at all that skin! You wouldn't
-have to kill her, just a few strokes on that canvas would be enough."
+"I can't believe you're going to waste this opportunity!" said the reflection.
+"Clearly it was meant to be!"
 
-"It's never enough!" James shouted, and started to run away. But no
+"I was meant to protect her!" James shouted, and started to run away. But no
 matter how far he ran or which way he turned, he could not evade his
 reflection.
 
@@ -694,12 +693,12 @@ James was surprised to find that he was fatiguing. Zombies never tired!
 But he continued onward, expending just enough energy for a wearied
 "Never!"
 
-But his reflection had not lost a drop of energy. "Admit it! You want to
-kill her!"
+But his reflection had not lost a drop of energy. "Admit it!
+You want what I want!"
 
-James collapsed to the ground. "Fine! You're right; I want to kill her!
-I'm a zombie! I want what every zombie in this world wants; to see her
-whimpering in pain! But that is the enchantment of the Zombie Machine.
+James collapsed to the ground. "Fine! You're right!
+I'm a zombie! I want what every zombie in this world wants: to see her
+gasping in pain! But that is the enchantment of the Zombie Machine.
 Ever since I found that book, I think I've become under the control of
 two enchantments. The second enchantment is from the author of this
 book, and it is deeper and better than anything I have ever known. When
@@ -1441,7 +1440,8 @@ with lightning speed. James moved even faster. Nay, not faster, it was
 as though James already knew every move the boy was about to make---as
 though he had already moved out of the way before Bobby swung. Within
 two blinks of an eye, Bobby was on the ground stunned and James was
-taking on the rest of the group at once. They could not comprehend his movements. Up to six attacks were leveled at him at once and yet he would
+taking on the rest of the group at once. They could not comprehend his movements.
+Up to six attacks were leveled at him at once and yet he would
 shift to a position in space to avoid every one of them and at the same time
 retaliate with precise blows of his own. They had never seen anything
 like it. James marveled, but not at himself. He marveled at the battle

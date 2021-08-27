@@ -1314,9 +1314,10 @@ information from the monkey's steady smile. Deciding that there was no
 mistaking the monkey's intention, she opened the envelope and took from
 it a single piece of paper on which was written the following:
 
-*Why is your heart so sad, little girl?*
-
-*Jakob Damond*
+> Why is your heart so sad, little girl?
+>
+> Jakob Damond
+>
 
 She looked up in puzzlement. "How am I to respond to such a letter?" she
 asked, looking at the monkey but addressing no one in particular. "I can
@@ -1343,19 +1344,20 @@ she quickly tore it open and examined the paper inside. This one had far
 more words than the previous paper, and it took her much longer to make
 any sense of it. The letter went something like this:
 
-*I know how you must feel. I too am frequently misunderstood. So often I
-try to help people and in return they slander me. All I want to do is
-make the world a better place.*
-
-*If you came to my toyshop I could solve all your problems. I have toys
-that would cause your friends to love you and Mr. Tralvorkemen to
-respect you. Right now you are a child, and will be for ever so long,
-but I could make you a Lady right now, so that you would have all the
-wisdom, admiration, and pleasures that adults experience. Unfortunately,
-I have heard that your headmaster has forbidden you from visiting any
-toyshop, so I guess there is nothing I can do for you.*
-
-*Jakob Damond*
+> I know how you must feel. I too am frequently misunderstood. So often I
+> try to help people and in return they slander me. All I want to do is
+> make the world a better place.
+>
+> If you came to my toyshop I could solve all your problems. I have toys
+> that would cause your friends to love you and Mr. Tralvorkemen to
+> respect you. Right now you are a child, and will be for ever so long,
+> but I could make you a Lady right now, so that you would have all the
+> wisdom, admiration, and pleasures that adults experience. Unfortunately,
+> I have heard that your headmaster has forbidden you from visiting any
+> toyshop, so I guess there is nothing I can do for you.
+>
+> Jakob Damond
+>
 
 She did not know what all the words meant, but she understood enough to
 see that the headmaster's commands were in question. Without thinking,
@@ -1369,18 +1371,18 @@ from the wall, reached into the bag slung over its shoulder, and handed
 Catherine yet another letter. Catherine looked and behold, like the ones
 before it, this letter was also addressed to her.
 
-*Ah, I think I understand what is going on. There are many people who are
-envious of my magical goods, and it sounds like your headmaster has
-heard some of the lies these people spread to spite me. I fear your
-headmaster is sadly misinformed as to my character. I want to help him
-by helping you.*
-
-*The fact of the matter is that your headmaster has never actually seen
-my toys. If you were to acquire one of them and bring it back to the
-orphanage, he would be so amazed by it and so enraptured by you through
-its influence that he would never even think about punishing you.*
-
-*Jakob Damond*
+> Ah, I think I understand what is going on. There are many people who are
+> envious of my magical goods, and it sounds like your headmaster has
+> heard some of the lies these people spread to spite me. I fear your
+> headmaster is sadly misinformed as to my character. I want to help him
+> by helping you.
+>
+> The fact of the matter is that your headmaster has never actually seen
+> my toys. If you were to acquire one of them and bring it back to the
+> orphanage, he would be so amazed by it and so enraptured by you through
+> its influence that he would never even think about punishing you.
+>
+> Jakob Damond
 
 Along with the letter there was another piece of paper in the envelope.
 A colorful one. She took it out and found herself staring at a second
@@ -1397,12 +1399,12 @@ when the monkey once more dropped down and handed her another letter.
 She didn't even bother checking to see who it was addressed to before
 opening it.
 
-*Believe me, the headmaster and I both have your best interest at heart.
-I am not forcing you to do anything. Whether or not you accept my offer
-is the difference between everyone being miserable, and everyone being
-happy. The choice is yours.*
-
-*Jakob Damond*
+> Believe me, the headmaster and I both have your best interest at heart.
+> I am not forcing you to do anything. Whether or not you accept my offer
+> is the difference between everyone being miserable, and everyone being
+> happy. The choice is yours.
+>
+> Jakob Damond
 
 When Catherine had finished reading the letter and looked up, the monkey
 was gone. She stood there for some time after that, staring at the pile
@@ -1961,25 +1963,25 @@ fire too."
 first thing that came to his mind. Below is a much embellished version
 of what he penned:
 
-*Somewhere in the myriad of dimensions, there rose a hill. It had once
-been a cemetery. It even looked like a cemetery. It had all the right
-tombstones and that creepy atmosphere clinging to it that just reeks of
-foreboding. But it was no longer a cemetery, for it had no bodies, and
-cemeteries always have bodies.*
-
-*On top of the hill stood the church. Well, what had once been a church.
-So many pilings and attachments had been hammered into it that it was
-next to impossible to distinguish any of the original walls. From inside
-the building came the hum and hammer of machinery. The eccentric
-inventor Otto Marecchian had turned the church into a factory. Now,
-instead of praying to God, he was playing God. And loving it.*
-
-*For the product of his factory was nothing short of reanimated 
-dead persons. He had dredged the grounds of all its occupants and, with science
-and black magic, brought them to life. The best thing about his system
-was that once he it was rolling, the zombies had been given control of
-the machinery, allowing him to tinker with other projects. The dead were
-reproducing.*
+> Somewhere in the myriad of dimensions, there rose a hill. It had once
+> been a cemetery. It even looked like a cemetery. It had all the right
+> tombstones and that creepy atmosphere clinging to it that just reeks of
+> foreboding. But it was no longer a cemetery, for it had no bodies, and
+> cemeteries always have bodies.
+>
+> On top of the hill stood the church. Well, what had once been a church.
+> So many pilings and attachments had been hammered into it that it was
+> next to impossible to distinguish any of the original walls. From inside
+> the building came the hum and hammer of machinery. The eccentric
+> inventor Otto Marecchian had turned the church into a factory. Now,
+> instead of praying to God, he was playing God. And loving it.
+>
+> For the product of his factory was nothing short of reanimated 
+> dead persons. He had dredged the grounds of all its occupants and, with science
+> and black magic, brought them to life. The best thing about his system
+> was that once he it was rolling, the zombies had been given control of
+> the machinery, allowing him to tinker with other projects. The dead were
+> reproducing.
 
 Suddenly, James was awoken from his writing by the sound of several
 objects within the room clattering to the floor. He couldn't see over
@@ -2064,8 +2066,8 @@ hiding. But he wasn't there.
 Now James was thoroughly unnerved. He climbed back into the chair and
 looked at what he had written.
 
-*For the product of his factory was nothing short of reanimated dead
-persons.*
+> For the product of his factory was nothing short of reanimated dead
+> persons.
 
 Could it be? Had that been a zombie child? Did his writing it make it
 come to life? James glanced over the room again. At first he was
@@ -2075,22 +2077,22 @@ to write some more!
 With new energy, he set to work creating an entire world. A world
 populated by a variety of demented denizens and mysterious locations.
 
-*As the heroes made their way through the dark and haunted library, they
-were alerted by a scream to the presence of a skeleton splayed out on
-the damp ground and half concealed by moss.*
-
-*"What happened here?" cried one of the girls.*
-
-*"Oh, that was poor Philip." said Mr. Mosspuddle. "He died of
-starvation."*
-
-*"Did he get lost?"*
-
-*"No. He read a book. Something in it took away his ability to eat. No
-one was able to figure out how the book had caused it, which was due in
-part to everyone being afraid of reading the book and following in his
-plight. So he died. There are two kinds of wizards in the world: the
-careful ones and the dead ones."*
+> As the heroes made their way through the dark and haunted library, they
+> were alerted by a scream to the presence of a skeleton splayed out on
+> the damp ground and half concealed by moss.
+>
+> "What happened here?" cried one of the girls.
+>
+> "Oh, that was poor Philip." said Mr. Mosspuddle. "He died of
+> starvation."
+>
+> "Did he get lost?"
+>
+> "No. He read a book. Something in it took away his ability to eat. No
+> one was able to figure out how the book had caused it, which was due in
+> part to everyone being afraid of reading the book and following in his
+> plight. So he died. There are two kinds of wizards in the world: the
+> careful ones and the dead ones."
 
 James reviewed his work with pride. This was what he was made for! While
 the text he penned was written in a childish manner that would have been
@@ -2105,31 +2107,31 @@ about their nature. James thought it would be fun to fill in the gaps
 and imagine how they functioned. When translated into more refined and
 educated language, it went something like this:
 
-*It is a common belief that ogres are slow and stupid. There is some
-truth to that belief, and some misunderstanding. Ogres are creatures of
-momentum. Aside for their unparalleled strength and constitution, an
-ogre's base ability, both physically and mentally, is quite limited.
-However, the longer an ogre pursues a given task, the more proficient it
-becomes at that task, with no measurable limit. They are capable of
-almost anything if given enough time.*
-
-*For example, when an ogre decides to devote itself to crafting a weapon,
-it begins without knowing a thing about weaponry. As the ogre begins to
-think about weapons, and tinker with metal, it gradually grows in
-understanding. During this period the ogre does nothing but work on that
-craft. It does not eat. It does not sleep. It simply works. After
-several years of this, the ogre will have reached astonishing mastery of
-weapon crafting. This is how ogres, despite being initially simple and
-brutish, wield the most advanced and deadly weaponry in existence.*
-
-*After so many years, the ogre will eventually need to rest from its
-labors. This generally requires hibernation for nearly as long as the
-period of labor.*
-
-*Aside for a special process of frozen hibernation, if the ogre is ever
-interrupted from its craft for more than a few minutes, the bulk of its
-development will be lost. Thankfully for ogres, this rarely ever
-happens. It is not easy to interrupt an ogre.*
+> It is a common belief that ogres are slow and stupid. There is some
+> truth to that belief, and some misunderstanding. Ogres are creatures of
+> momentum. Aside for their unparalleled strength and constitution, an
+> ogre's base ability, both physically and mentally, is quite limited.
+> However, the longer an ogre pursues a given task, the more proficient it
+> becomes at that task, with no measurable limit. They are capable of
+> almost anything if given enough time.
+>
+> For example, when an ogre decides to devote itself to crafting a weapon,
+> it begins without knowing a thing about weaponry. As the ogre begins to
+> think about weapons, and tinker with metal, it gradually grows in
+> understanding. During this period the ogre does nothing but work on that
+> craft. It does not eat. It does not sleep. It simply works. After
+> several years of this, the ogre will have reached astonishing mastery of
+> weapon crafting. This is how ogres, despite being initially simple and
+> brutish, wield the most advanced and deadly weaponry in existence.
+>
+> After so many years, the ogre will eventually need to rest from its
+> labors. This generally requires hibernation for nearly as long as the
+> period of labor.
+>
+> Aside for a special process of frozen hibernation, if the ogre is ever
+> interrupted from its craft for more than a few minutes, the bulk of its
+> development will be lost. Thankfully for ogres, this rarely ever
+> happens. It is not easy to interrupt an ogre.
 
 As he continued writing, James' thoughts turned to Catherine. He liked
 the idea of having her in the story. He wrote of a princess that would

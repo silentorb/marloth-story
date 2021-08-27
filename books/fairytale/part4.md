@@ -1,21 +1,21 @@
 # Part 4
 
-*Dear Sir,*
-
-*It has come to my attention that you have destroyed my ledger of
-contracts. You know the rules; you know the forces at work here: whoever
-nullifies that ledger will himself be nullified. In this case, even
-though they do not know that rule, your children are unwittingly eager
-to fulfill it. But I don't want to see you dead. I am a very merciful
-person, and am willing to make an exception in your case. If you never
-return to the children, I will forget about the whole thing.*
-
-*So please heed my advice: do not go back to your orphanage. Your
-children hate you, and if you return, they* **will** *kill you.*
-
-*Best of luck,*
-
-*Jakob Damond*
+> Dear Sir,
+>
+> It has come to my attention that you have destroyed my ledger of
+> contracts. You know the rules; you know the forces at work here: whoever
+> nullifies that ledger will himself be nullified. In this case, even
+> though they do not know that rule, your children are unwittingly eager
+> to fulfill it. But I don't want to see you dead. I am a very merciful
+> person, and am willing to make an exception in your case. If you never
+> return to the children, I will forget about the whole thing.
+>
+> So please heed my advice: do not go back to your orphanage. Your
+> children hate you, and if you return, they *will* kill you.
+>
+> Best of luck,
+>
+> Jakob Damond
 
 * * *
 
@@ -1933,7 +1933,7 @@ like that!"
 
 James finally lost his cool. "We don't have time for this! I'm trying to
 rescue you! Right now you have a parasitic candy inside of you and if we
-don't kill it you will die!"
+don't destroy it you will die!"
 
 Adelle looked thoroughly frightened. She staggered to her feet so she
 could move further away from James. "I'm their mother! I won't let

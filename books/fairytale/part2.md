@@ -2251,7 +2251,7 @@ attacked the place. Children. Zombified children. A whole army of them,
 I reckon."
 
 "Zombies? An army of them? But that's impossible! Where in the world
-would an army of zombies come from? What would keep them from killing
+would an army of zombies come from? What would keep them from fighting
 each other and wandering off?"
 
 "It was hard to say. There was definitely a vast number of them, and
