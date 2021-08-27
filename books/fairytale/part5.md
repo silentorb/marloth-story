@@ -3,6 +3,7 @@
 <h1><img class="doll-image" src="file://src/assets/images/fairytale/doll.jpg" alt=""/>
 Part <span class="rotated-text">5</span>
 </h1>
+
 > Dear Sir,
 >
 > I thank you for your advice, for it is based on truth, even if its

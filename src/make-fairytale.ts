@@ -87,7 +87,7 @@ export function fairytaleBook() {
       {
         type: 'toc',
         title: 'Contents',
-        href: '2_contents.xhtml'
+        href: '3_contents.xhtml'
       },
       {
         type: 'cover',
