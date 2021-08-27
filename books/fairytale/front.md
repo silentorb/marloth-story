@@ -25,7 +25,7 @@ It's about your own world creating you.
 <p>
 <div>Marloth</div>
 <div>A Child's Fairytale World</div>
-<div>Version 2.0.0</div>
+<div>Version $version</div>
 </p>
 
 <p>

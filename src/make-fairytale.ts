@@ -10,9 +10,10 @@ function newPart(index: number): Chapter {
   }
 }
 
-function fairytaleContent() {
+function fairytaleContent(config: any) {
   return renderBook({
     id: 'fairytale',
+    config,
     chapters: [
       {
         title: `Cover`,
@@ -55,17 +56,19 @@ function fairytaleContent() {
             contentElement('back'),
           ]
         },
-      ])
+      ]),
   })
 }
 
 export function fairytaleBook() {
+  const { config } = require('../package.json')
+  const version = config.versions.fairytale
   return {
     title: `Marloth: A Child's Fairytale World`,
     author: 'Christopher W. Johnson',
     publisher: 'Silent Orb',
     cover: 'src/assets/images/fairytale/cover.jpg',
-    output: 'output/fairytale/marloth.epub',
+    output: `output/fairytale/marloth-fairytale-${version}.epub`,
     version: 3,
     fonts: [
       'src/assets/fonts/carleton.otf',
@@ -74,7 +77,7 @@ export function fairytaleBook() {
       'src/assets/fonts/EBGaramond-SemiBold.ttf',
       'src/assets/fonts/EBGaramond-SemiBoldItalic.ttf',
     ],
-    content: fairytaleContent(),
+    content: fairytaleContent({ version }),
     css: loadTextFile('src/assets/styles/style.css'),
     verbose: true,
     appendChapterTitles: false,

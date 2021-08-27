@@ -2,7 +2,7 @@ export function preTransformContent(content: string): string {
   return content
 }
 
-export function postTransformContent(content: string): string {
+export function postTransformContent(content: string, version: string): string {
   // Could use &hellip; for Ellipses but the spacing was too narrow in my tests and didn't allow
   // any control over the spacing
   return content
@@ -13,4 +13,5 @@ export function postTransformContent(content: string): string {
     })
     .replace(/--+/g, '&mdash;')
     .replace(/<hr>/g, '<div class="scene-break">* * *</div>')
+    .replace(/\$version/g, version)
 }

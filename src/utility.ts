@@ -11,10 +11,10 @@ export function loadAdornment(filePath: string): string {
   return loadTextFile('src/assets/adornments/' + filePath)
 }
 
-export function loadContent(filePath: string): string {
+export function loadContent(filePath: string, config: any): string {
   const input = loadTextFile('books/' + filePath)
   const transformed = preTransformContent(input)
-  return postTransformContent(marked(transformed))
+  return postTransformContent(marked(transformed), config.version)
 }
 
 export enum ElementType {
@@ -40,15 +40,15 @@ export interface Chapter {
   elements: ContentElement[]
 }
 
-export type Loader = (book: string, name: string) => string
+export type Loader = (book: string, name: string, config: any) => string
 
 const elementLoaders: { [key: string]: Loader } = {
   [ElementType.adornment]: (book, name) => loadAdornment(`${book}/${name}.html`),
-  [ElementType.content]: (book, name) => loadContent(`${book}/${name}.md`),
+  [ElementType.content]: (book, name, config) => loadContent(`${book}/${name}.md`, config),
 }
 
-export const renderContentElement = (book: string) => (element: ContentElement) => {
-  return elementLoaders[element.type](book, element.name)
+export const renderContentElement = (book: string, config: any) => (element: ContentElement) => {
+  return elementLoaders[element.type](book, element.name, config)
 }
 
 export interface EpubChapter {
@@ -56,8 +56,8 @@ export interface EpubChapter {
   data: string
 }
 
-export const renderChapter = (book: string) => (chapter: Chapter): EpubChapter => {
-  const data = chapter.elements.map(renderContentElement(book)).join('\n')
+export const renderChapter = (book: string, config: any) => (chapter: Chapter): EpubChapter => {
+  const data = chapter.elements.map(renderContentElement(book, config)).join('\n')
   const result = {
     ...chapter,
     data,
@@ -70,8 +70,9 @@ export const renderChapter = (book: string) => (chapter: Chapter): EpubChapter =
 export interface BookInput {
   id: string
   chapters: Chapter[]
+  config: any
 }
 
 export function renderBook(input: BookInput): EpubChapter[] {
-  return input.chapters.map(renderChapter(input.id))
+  return input.chapters.map(renderChapter(input.id, input.config))
 }

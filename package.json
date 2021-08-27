@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/ts-node ../src/make-epub",
-    "kindle": "ebook-convert output/fairytale/marloth.epub output/fairytale/marloth.azw3"
+    "kindle": "ebook-convert output/fairytale/marloth-fairytale-$npm_package_config_versions_fairytale.epub output/fairytale/marloth-fairytale-$npm_package_config_versions_fairytale.azw3"
   },
   "private": true,
   "dependencies": {
@@ -15,5 +15,10 @@
     "marked": "2.0.3",
     "ts-node": "9.1.1",
     "typescript": "4.2.4"
+  },
+  "config": {
+    "versions": {
+      "fairytale": "2.0.0"
+    }
   }
 }
