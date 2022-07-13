@@ -6,6 +6,22 @@ The purpose of this document is to define the qualities of a Marloth narrative.
 
 ## Items
 
+### Adaptive Setting
+
+#### Rules
+
+* The setting for each Marloth story should be tailored to that story
+  * This tailoring should *not* result in [the world revolving around the main characters](#Background Protagonists)
+
+#### Motivation
+
+* It enhances the story by having a setting specialized in highlighting the features of the story
+* It strengthens the following attributes:
+  * [Dreamlike](#Dreaminess): since part of the dreamlike quality is to be as dynamic as possible while still maintaining a minimum degree of [continuity](#Continuity)
+  * [Allegory](#Allegory): it allows more specialized setting metaphors
+    * Which also further increases the [dreamlike](#Dreaminess) quality
+  * [Personal](#Personal): It allows a closer connection between the world and the main characters
+
 ### Allegory
 
 #### Rules
@@ -63,6 +79,7 @@ Wonder can be a synonym for awe, which is fitting since one of Marloth's primary
   * Humility
   * Irony
   * Harmonizing many characters and plot threads
+  * Larger quantities of ensemble casts and supporting characters
 
 ### Brevity
 
@@ -381,7 +398,7 @@ When an audience witnesses multiple versions of a character or story, those diff
 * A Marloth narrative should have a strong sense of being legendary
 * This sense of legendary should not be confused with pomp and grandeur
   * It is not grand
-* This sense of legendary should be personal and intimate
+* This sense of legendary should be [personal and intimate](#Personal)
   * It is an understanding shared by only a few characters instead of a general world of characters
 
 ### Mania
@@ -465,6 +482,17 @@ I love mystery, but I don't like mystery novels.  The term *mystery novel* is al
   * The rate of this change is usually exponential.
   * A Marloth book also follows this pattern of escalation, so later parts start with a faster pace than earlier parts.
 * Pacing is closely tied to continuity.  Breaks in [temporal continuity](#temporal-continuity) slow down pacing.
+
+### Personal
+
+#### Rules
+
+* As much as possible, the elements of a Marloth story should be personal in relation to lead characters
+
+#### Motivation
+
+* Personal connection increases audience engagement
+  * Conversely, lack of personal connection can destroy that engagement and result in losing the audience
 
 ### Personal Contests
 
