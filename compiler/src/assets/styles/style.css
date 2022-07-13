@@ -1,0 +1,118 @@
+@font-face {
+    font-family: "Carleton";
+    font-style: normal;
+    font-weight: normal;
+    src : url("./fonts/carleton.otf");
+}
+
+@font-face {
+    font-family: "EBGaramond";
+    font-style: normal;
+    font-weight: normal;
+    src : url("./fonts/EBGaramond-Regular.ttf");
+}
+
+@font-face {
+    font-family: "EBGaramond";
+    font-style: normal;
+    font-weight: bold;
+    src : url("./fonts/EBGaramond-SemiBold.ttf");
+}
+
+@font-face {
+    font-family: "EBGaramond";
+    font-style: italic;
+    font-weight: normal;
+    src : url("./fonts/EBGaramond-Italic.ttf");
+}
+
+@font-face {
+    font-family: "EBGaramond";
+    font-style: italic;
+    font-weight: bold;
+    src : url("./fonts/EBGaramond-SemiBoldItalic.ttf");
+}
+
+body {
+    font-family: 'EBGaramond', serif;
+    line-height: 1.5;
+}
+
+.author-large {
+    text-align: center;
+    font-size: 130%;
+    font-family: 'Carleton', serif;
+}
+
+.small-font {
+    font-size: 80%;
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+.centered-text {
+    text-align: center;
+}
+
+.centered-div {
+    text-align: center;
+}
+
+.centered-div > * {
+    display: inline-block;
+    text-align: left;
+}
+
+.centered-image {
+    display: block;
+    margin: 0 auto;
+}
+
+.centered-image-scene-break {
+    display: block;
+    margin: 0 1.6em;
+}
+
+.scene-break {
+    text-align: center;
+    font-family: 'Times New Roman', serif;
+    letter-spacing: 1em;
+    margin-block-start: 1.5em;
+    margin-block-end: 1.5em;
+    color: #444;
+}
+
+.doll-image {
+    display: block;
+    width: 3em;
+    position: relative;
+    top: 0.75em;
+    left: 1.7em;
+}
+
+.rotated-text {
+    transform: rotate(50deg);
+    -webkit-transform: rotate(50deg);
+    -moz-transform: rotate(50deg);
+    -ms-transform: rotate(50deg);
+    -o-transform: rotate(50deg);
+    display: inline-block;
+    position: relative;
+    top: 0.2em;
+    left: 0.1em;
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+
+/*@media (inverted-colors: inverted) {*/
+/*    !**/
+/*      Specify body here to force precedence over the*/
+/*      body...background-color....important styles some readers use for night mode*/
+/*    *!*/
+/*    body img {*/
+/*        -webkit-filter: invert(1);*/
+/*        filter: invert(1);*/
+/*        background-color: rgba(0, 0, 0, 0) !important;*/
+/*    }*/
+/*}*/

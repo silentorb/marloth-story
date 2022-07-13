@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2019",
+    "lib": [
+      "ES2020"
+    ],
+    "strict": true,
+    "newLine": "lf"
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

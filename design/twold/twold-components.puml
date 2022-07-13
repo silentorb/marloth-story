@@ -1,0 +1,53 @@
+@startuml
+skinparam componentStyle rectangle
+
+[The Book] as book
+[Tralvorkemen] as tralvorkemen
+[Prayer] as prayer
+(Nivana Story Arc) as nivanaArc
+[James and Adelle Marriage] as marriage
+[Band of Heroes] as heroes
+[Magic Agency] as magicAgency
+(James Searching for Friends) as jamesSearching
+(James Employed by Agency) as jamesEmployed
+(James and Adelle Meet) as jamesAndAdelleMeet
+cloud "Conflict over Magic" as conflictOverMagic
+cloud "Tension between\nSecular and Sacred" as tensionSS
+(Nivana Envies Adelle) as nivanaEnvy
+(?) as question1
+(?) as question2
+(Nivana Hunted\nby Agency?) as question3
+(?) as question4
+
+jamesSearching --> question1
+question1 --> jamesEmployed
+question1 --> jamesAndAdelleMeet
+jamesAndAdelleMeet --> marriage
+jamesEmployed <-- magicAgency
+jamesEmployed --> marriage
+heroes --> tensionSS
+tensionSS <-- magicAgency
+marriage --> question4
+question4 <-- heroes
+marriage --> tensionSS
+conflictOverMagic --> magicAgency
+conflictOverMagic --> heroes
+nivanaArc <-- conflictOverMagic
+jamesSearching <-- heroes
+nivanaArc --> nivanaEnvy
+nivanaEnvy <-- marriage
+nivanaArc --> question2
+question2 <-- heroes
+nivanaArc --> question3
+question3 <-- magicAgency
+question4 --> nivanaEnvy
+
+note top of question1
+What pulls James
+back into the real world?
+
+The impetus needs to be
+connected to other nodes
+end note
+
+@enduml

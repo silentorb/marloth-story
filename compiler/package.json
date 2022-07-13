@@ -1,0 +1,24 @@
+{
+  "name": "marloth-story-tools",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/ts-node ../src/make-epub",
+    "kindle": "ebook-convert output/fairytale/marloth-fairytale-$npm_package_config_versions_fairytale.epub output/fairytale/marloth-fairytale-$npm_package_config_versions_fairytale.azw3"
+  },
+  "private": true,
+  "dependencies": {
+    "@types/marked": "^2.0.2",
+    "@types/node": "12.19.15",
+    "epub-gen": "silentorb/epub-gen",
+    "fs-extra": "9.1.0",
+    "marked": "2.0.3",
+    "ts-node": "9.1.1",
+    "typescript": "4.2.4"
+  },
+  "config": {
+    "versions": {
+      "fairytale": "2.0.0"
+    }
+  }
+}
