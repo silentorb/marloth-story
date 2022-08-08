@@ -11,7 +11,7 @@ The purpose of this document is to define the qualities of a Marloth narrative.
 #### Rules
 
 * The setting for each Marloth story should be tailored to that story
-  * This tailoring should *not* result in [the world revolving around the main characters](#Background Protagonists)
+  * This tailoring should *not* result in [the world revolving around the main characters](#Background-Protagonists)
 
 #### Motivation
 
@@ -295,10 +295,10 @@ Marloth is a setting I call "Gothic Christianity".  Basically, it emphasizes and
 #### Motivation
 
 * World saving is a pretentious power-trip
-* World saving loses all sense of scale and relatability
+* World saving loses all sense of scale and [relatability](#Personal)
   * It's ironic that when it comes to world building, save-the-world stories tend to have the most under-developed worlds
-    * The world in such cases may still have much detail, but there is generally a dissonance between the adventures and the world that is being saved
-* World saving is a lazy attempt to add grandeur to a story without any actual investment in depth of impetus
+    * The world in such cases may still have much detail, but the audience only ever sees a slice of the world, so there is a general dissonance between the focused adventures and the comprehensive world that is being saved
+* World saving is a lazy attempt to add grandeur to a story without any actual investment in deep impetus
 * Presenting good as a tiny, fragile thing that can get permanently snuffed out is border-line blasphemous
 * Such stories cultivate anxiety over lofty issues the audience has no control over, and distracts from the smaller, immediate concerns the audience actually is responsible for
 

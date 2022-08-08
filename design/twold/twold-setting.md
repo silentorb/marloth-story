@@ -4,9 +4,9 @@
 
 The setting of TWOLD is largely defined by the following concepts;
 
-* Cozy horror
-* Civilized anarchy
-* Surreal allegory
+* [Cozy horror](../general/marloth-narrative-guidelines.md#Cozy)
+* [Civilized anarchy](../general/marloth-narrative-guidelines.md#Social Restraint)
+* [Surreal](../general/marloth-narrative-guidelines.md#Dreaminess) [allegory](../general/marloth-narrative-guidelines.md#Allegory)
 
 ## Perspective
 

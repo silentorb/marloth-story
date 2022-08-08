@@ -14,11 +14,8 @@
 
 
 * James struggles to find significant work
-* Drenodir speaks with James about finding work in the City of Orphans
-* Siegfried spots James
-* Siegfried offers James a job
-* James starts working for Siegfried
-* James meets Deadwick
+* Someone speaks with James about finding work in the City of Orphans
+* James finds work in the City of Orphans
 
 
 
@@ -57,3 +54,10 @@
 ## Part 4
 
 * James and Adelle purchase a house South of the City of Orphans
+
+
+
+* Siegfried spots James
+* Siegfried offers James a job
+* James starts working for Siegfried
+* James meets Deadwick
