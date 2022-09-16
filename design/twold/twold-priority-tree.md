@@ -173,3 +173,27 @@ shopping --- survival3
 
 ```
 
+## James Job Relationships
+
+```mermaid
+flowchart TD
+
+%% Layer 1
+
+root([James Jobs])
+
+%% Layer 2
+
+root --- cleanup([Cleanup])
+root --- design([Design])
+root --- expedition([Expedition])
+
+%% Layer 3
+
+cleanup --- boss1([Boss 1])
+design --- bear([Bear])
+design --- grihulone([Grihulone])
+expedition --- boss3([Boss 3])
+
+```
+

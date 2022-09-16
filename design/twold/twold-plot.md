@@ -42,6 +42,7 @@
 
 * Adelle hears about Nivana
 * Adelle talks to James about her helping Nivana
+* [Palace Cleanup](./twold-plot-design.md#palace-cleanup)
 * Adelle seeks out Nivana
 * Adelle finds Nivana
 
