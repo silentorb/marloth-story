@@ -1,8 +1,4 @@
-# TWOLD Documentation Candidates
-
-## Summaries
-
-* TWOLD is a class story.  Less of a class conflict than a class contrast.  Two forms of evil, one privileged and one desperate, with the forces of good trapped in the middle.
+# TWOLD Concepts
 
 ## Survival Horror
 
@@ -18,7 +14,7 @@
   * Some characters can be distanced from the survival but it should be because they are extraordinary, not ordinary
 * The majority of characters are either victims, oppressors, or both
   * The victimization here is being trapped in the horrific world
-  * This rules out narratives where most of the characters willingly throw themselves at the horrors
+  * This rules out narratives where most of the characters willingly throw themselves at the horrors (such as treasure hunters or explorers)
 
 ### Calamity
 

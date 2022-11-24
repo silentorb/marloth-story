@@ -35,6 +35,8 @@
 ## Part 2
 
 * James bring Adelle to the City of Orphans
+  * Or: James and Adelle wake up in the Asylum
+
 * Adelle finds employment sewing
 * Adelle begins improving the apartment
 

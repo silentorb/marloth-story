@@ -307,7 +307,7 @@ Marloth is a setting I call "Gothic Christianity".  Basically, it emphasizes and
 #### Rules
 
 * Each narrative must include a significant amount of moral horror
-* Each narrative must include a significant amount of creepiness
+* Each narrative must include some creepiness
 * Avoid gross happenings
   * This includes:
     * Gruesome violence
@@ -319,9 +319,9 @@ Marloth is a setting I call "Gothic Christianity".  Basically, it emphasizes and
     * It is not okay for a person to get stabbed in the eye
       * There could be exceptions to this case such as if a main character losing an eye added a lot to the rest of the story
     * It is okay for a person to fall to their death as long as impact is not described
-* When horrific things are happening, rely heavily on [implication](#implication) and [euphemisms](#euphemisms).
-* Do not try to scare the audience.
-  * It is fine if the audience is scared, but don't try to force it.  Don't include elements whose purpose is to scare the audience.
+* When horrific things are happening, rely heavily on [implication](#implication) and [euphemisms](#euphemisms)
+* Do not try to scare the audience
+  * It is fine if the audience is scared, but don't try to force it.  Don't include elements whose sole purpose is to scare the audience
   * It is fine for characters in a narrative to be scared
 
 ### Ideological Contests
@@ -526,10 +526,10 @@ Eventually Marloth will probably need more specialized bread-and-butter activiti
 * Focus on problems being challenges and opportunities instead of burdens
 * Problem solving should revolve around good application of knowledge about the problem domain
   * If the character does not have enough knowledge about the problem domain, that is a prerequisite problem that must first be solved in the same manner as other problems
-* Problem solving should require minimum guessing.
-  * When experimentation is required, there should be some means by which that experimentation can be systematized and optimized.
+* Problem solving should require minimal guessing
+  * When experimentation is required, there should be some means by which that experimentation can be systematized and optimized
 * Some personalities are more geared toward problem solving than others, so be careful not to over skew every character to hard-boiled problem solving
-  * Maybe I will find better techniques for how to handle this issue later.  Maybe have less problem-solving-personalities still solve problems in a less technical-looking way.
+  * Maybe I will find better techniques for how to handle this issue later.  Maybe having less problem-solving-personalities still solve problems in a less technical-looking way
 
 #### Motivation
 
@@ -578,32 +578,32 @@ Eventually Marloth will probably need more specialized bread-and-butter activiti
 
 * Love is about sacrifice and kindness, not personal chemistry
 * Ultimately, the health of a marriage is based on love, not personality
-  * With enough mutual Spirit, any two Christians could be married and result in a wonderful marriage.  The world relies on superficial factors as a substitute for love.
-  * At the same time, there is wisdom in marrying someone with compatible personality and interests.  While love can overcome anything, such hurdles need not be sought out.
+  * With enough mutual Spirit, any two Christians could be married and result in a wonderful marriage.  The world relies on superficial factors as a substitute for love
+  * At the same time, there is wisdom in marrying someone with compatible personality and interests.  While love can overcome anything, such hurdles need not be sought out
 
 ### Social Restraint
 
 #### Background
 
-- One defining property of a narrative setting is how constrained the characters are by society via laws, customs, and politics.
-- A lawless setting does not mean there are no consequences for actions.  There are still natural laws, just not laws enforced by a national government.
-- In a lawless setting there is less organization, and thus less need for customs.
-- In a lawless setting, characters are less affected by politics.
-- With less restraint, characters are more free to make decisions that would otherwise be made for them.  This can be useful for character studies.
-  - This is why child protagonists are so often disconnected from guardians.  Firm guardianship restricts the child's ability and need to make hard life decisions.
+- One defining property of a narrative setting is how constrained the characters are by society via laws, customs, and politics
+- A lawless setting does not mean there are no consequences for actions.  There are still natural laws, just not laws enforced by a national government
+- In a lawless setting there is less organization, and thus less need for customs
+- In a lawless setting, characters are less affected by politics
+- With less restraint, characters are more free to make decisions that would otherwise be made for them.  This can be useful for character studies
+  - This is why child protagonists are so often disconnected from guardians.  Firm guardianship restricts the child's ability and need to make hard life decisions
 
 #### Rules
 
-* Marloth tries to strike a tenuous balance between a lawful and lawless setting, but leans more toward lawlessness.
+* Marloth tries to strike a tenuous balance between a lawful and lawless setting, but leans more toward lawlessness
 
 ### Temporal Continuity
 
 #### Background
 
-* Temporal continuity is a term I invented to refer to an aspect of [pacing]([Pacing).
-  * There's probably a better, more established term but I don't know what it is and don't know where to find it.
-  * I'm thinking an alternate term could be "Temporal compression".
-  * The opposite of temporal continuity is a temporal break.
+* Temporal continuity is a term I invented to refer to an aspect of [pacing]([Pacing)
+  * There's probably a better, more established term but I don't know what it is and don't know where to find it
+  * I'm thinking an alternate term could be "Temporal compression"
+  * The opposite of temporal continuity is a temporal break
 * Temporal continuity is how much time passes between narrative elements (usually scenes).
   * Strong temporal continuity is when one scene bleeds into the next scene within a gap of minutes
   * Weak temporal continuity is when a scene begins on the following day

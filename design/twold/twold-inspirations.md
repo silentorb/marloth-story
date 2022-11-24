@@ -87,7 +87,6 @@
 
 | Teams                          | Impetus                                                      |
 | ------------------------------ | ------------------------------------------------------------ |
-|                                |                                                              |
 | Alice: Madness Returns         | Mystery, Isolation, Injustice                                |
 | Dark City                      | Mystery, Isolation                                           |
 | Dark Souls                     | Mystery, Isolation                                           |
