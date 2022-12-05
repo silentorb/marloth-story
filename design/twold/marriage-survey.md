@@ -4,6 +4,11 @@ The primary purpose of this article is to inform the design of the second Marlot
 
 This article also has potential to inform on the subject of fiction in marriage in general, though its selection of references are weighted toward Marloth's sub genre, whatever that is.
 
+## Background Marriage
+
+* Many narratives involve married characters but the spouse(s) are not involved much with the story
+* That is fine as long as there
+
 ### The Romance Genre
 
 * I wonder what the statistic is: something like 99% of romance narratives are about single people?
@@ -42,4 +47,3 @@ This article also has potential to inform on the subject of fiction in marriage 
 
 * One of the best depictions of family in comic books, though like the Incredibles, it is still a super hero story with marriage forced into it
 
-### Green Arrow and Black Canary

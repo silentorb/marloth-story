@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "books",
+  "info": {
+    "singularName": "book",
+    "pluralName": "books",
+    "displayName": "Book"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "scenes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::scene.scene",
+      "mappedBy": "book"
+    },
+    "requirements": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::requirement.requirement",
+      "inversedBy": "books"
+    }
+  }
+}

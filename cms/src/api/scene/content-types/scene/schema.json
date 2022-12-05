@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "scenes",
+  "info": {
+    "singularName": "scene",
+    "pluralName": "scenes",
+    "displayName": "Scene",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "dependencies": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::scene.scene",
+      "inversedBy": "dependents"
+    },
+    "dependents": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::scene.scene",
+      "inversedBy": "dependencies"
+    },
+    "characters": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::character.character",
+      "inversedBy": "scenes"
+    },
+    "position": {
+      "type": "integer"
+    },
+    "book": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::book.book",
+      "inversedBy": "scenes"
+    }
+  }
+}

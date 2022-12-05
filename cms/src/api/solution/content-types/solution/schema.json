@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "solutions",
+  "info": {
+    "singularName": "solution",
+    "pluralName": "solutions",
+    "displayName": "Solution"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "requirement": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::requirement.requirement"
+    },
+    "scene": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::scene.scene"
+    }
+  }
+}
