@@ -4,10 +4,11 @@
   "info": {
     "singularName": "requirement",
     "pluralName": "requirements",
-    "displayName": "Requirement"
+    "displayName": "Requirement",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -25,6 +26,18 @@
       "relation": "manyToMany",
       "target": "api::book.book",
       "inversedBy": "requirements"
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::requirement.requirement",
+      "inversedBy": "children"
+    },
+    "children": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::requirement.requirement",
+      "mappedBy": "parent"
     }
   }
 }

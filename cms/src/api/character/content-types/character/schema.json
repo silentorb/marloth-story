@@ -4,10 +4,11 @@
   "info": {
     "singularName": "character",
     "pluralName": "characters",
-    "displayName": "Character"
+    "displayName": "Character",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
