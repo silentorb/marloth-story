@@ -51,6 +51,12 @@
       "relation": "manyToMany",
       "target": "api::solution.solution",
       "inversedBy": "scenes"
+    },
+    "locations": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::location.location",
+      "inversedBy": "scenes"
     }
   }
 }
