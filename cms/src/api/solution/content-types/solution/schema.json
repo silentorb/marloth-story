@@ -24,10 +24,11 @@
       "target": "api::requirement.requirement",
       "inversedBy": "solutions"
     },
-    "scene": {
+    "scenes": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::scene.scene"
+      "relation": "manyToMany",
+      "target": "api::scene.scene",
+      "inversedBy": "solutions"
     },
     "parent": {
       "type": "relation",
