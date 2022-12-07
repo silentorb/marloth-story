@@ -38,6 +38,12 @@
       "relation": "oneToMany",
       "target": "api::requirement.requirement",
       "mappedBy": "parent"
+    },
+    "solutions": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::solution.solution",
+      "inversedBy": "requirements"
     }
   }
 }

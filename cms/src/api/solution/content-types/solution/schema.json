@@ -18,15 +18,28 @@
     "description": {
       "type": "richtext"
     },
-    "requirement": {
+    "requirements": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::requirement.requirement"
+      "relation": "manyToMany",
+      "target": "api::requirement.requirement",
+      "inversedBy": "solutions"
     },
     "scene": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::scene.scene"
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::solution.solution",
+      "inversedBy": "children"
+    },
+    "children": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::solution.solution",
+      "mappedBy": "parent"
     }
   }
 }
