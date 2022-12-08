@@ -1,9 +1,10 @@
 import React from 'react'
 import { ReportTable } from '../components'
-import { useModels } from '@strapi/admin/admin/src/content-manager/pages/App/useModels'
+import { useSchema } from '../utils/use-schema'
 
 const requirementsView = {
   title: 'Requirements',
+  baseModel: 'requirement',
   query: `query {
   requirements {
     data {
@@ -35,13 +36,10 @@ const requirementsView = {
 }
 
 const HomePage: React.VoidFunctionComponent = () => {
-  const k = useModels
-  // const {models } = useModels();
-  return (
-    <div>
-      <ReportTable reportProps={requirementsView}/>
-    </div>
-  )
+  const schema = useSchema()
+  return schema ? (
+    <ReportTable reportProps={requirementsView} schema={schema}/>
+  ) : (<></>)
 }
 
 export default HomePage

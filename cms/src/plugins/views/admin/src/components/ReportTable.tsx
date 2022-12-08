@@ -5,22 +5,23 @@ import { DynamicTable, Link, } from '@strapi/helper-plugin'
 import { Main } from '@strapi/design-system/Main'
 import { ContentLayout, HeaderLayout } from '@strapi/design-system/Layout'
 import ArrowLeft from '@strapi/icons/ArrowLeft'
-import axiosInstance from '../utils/axiosInstance'
 import { TableRows } from './index'
-import { ReportProps } from '../types'
+import { AppSchema, ReportProps } from '../types'
+import { publicAxios } from '../utils/axiosInstance'
 
 interface Props {
   reportProps: ReportProps
+  schema: AppSchema
 }
 
 export const ReportTable = (props: Props) => {
-  const { reportProps } = props
+  const { reportProps, schema } = props
   const { query, dataMap } = reportProps
   const [records, setRecords] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    axiosInstance.post(`/graphql`, { query })
+    publicAxios.post(`/graphql`, { query })
       .then(res => {
         const data = dataMap(res.data.data)
         setRecords(data)
@@ -53,7 +54,7 @@ export const ReportTable = (props: Props) => {
           contentType={''}
           rows={records}
         >
-          <TableRows/>
+          <TableRows contentType={reportProps.baseModel} schema={schema}/>
         </DynamicTable>
       </>
     </ContentLayout>

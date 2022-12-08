@@ -10,6 +10,9 @@ import Trash from '@strapi/icons/Trash'
 import Duplicate from '@strapi/icons/Duplicate'
 import Pencil from '@strapi/icons/Pencil'
 import { useTracking, stopPropagation, onRowClick } from '@strapi/helper-plugin'
+import { AppSchema } from '../types'
+import { CellContent } from './CellContent'
+
 // import { usePluginsQueryParams } from '../../../hooks'
 
 interface Props {
@@ -23,20 +26,22 @@ interface Props {
   withMainAction?
   withBulkActions?
   rows?
+  schema: AppSchema
 }
 
 export const TableRows = ({
-                     canCreate,
-                     canDelete,
-                     contentType,
-                     headers,
-                     entriesToDelete,
-                     onClickDelete,
-                     onSelectRow,
-                     withMainAction,
-                     withBulkActions,
-                     rows,
-                   }: Props) => {
+                            canCreate,
+                            canDelete,
+                            contentType,
+                            headers,
+                            entriesToDelete,
+                            onClickDelete,
+                            onSelectRow,
+                            withMainAction,
+                            withBulkActions,
+                            rows,
+                            schema,
+                          }: Props) => {
   const {
     push,
     location: { pathname },
@@ -96,7 +101,7 @@ export const TableRows = ({
                   {typeof cellFormatter === 'function' ? (
                     cellFormatter(data, { key, name, ...rest })
                   ) : (
-                    <>{data[name]}</>
+                    <CellContent schema={schema} data={data} contentType={contentType} fieldName={name}/>
                     // <CellContent
                     //   content={data[name.split('.')[0]]}
                     //   name={name}
@@ -127,7 +132,7 @@ export const TableRows = ({
                       { target: itemLineText }
                     )}
                     noBorder
-                    icon={<Pencil />}
+                    icon={<Pencil/>}
                   />
 
                   {canCreate && (
@@ -147,7 +152,7 @@ export const TableRows = ({
                           { target: itemLineText }
                         )}
                         noBorder
-                        icon={<Duplicate />}
+                        icon={<Duplicate/>}
                       />
                     </Box>
                   )}
@@ -164,7 +169,7 @@ export const TableRows = ({
                           { target: itemLineText }
                         )}
                         noBorder
-                        icon={<Trash />}
+                        icon={<Trash/>}
                       />
                     </Box>
                   )}
