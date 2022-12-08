@@ -1,5 +1,6 @@
 import React from 'react'
 import { ReportTable } from '../components'
+import { useModels } from '@strapi/admin/admin/src/content-manager/pages/App/useModels'
 
 const requirementsView = {
   title: 'Requirements',
@@ -34,6 +35,8 @@ const requirementsView = {
 }
 
 const HomePage: React.VoidFunctionComponent = () => {
+  const k = useModels
+  // const {models } = useModels();
   return (
     <div>
       <ReportTable reportProps={requirementsView}/>
