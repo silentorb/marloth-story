@@ -1,4 +1,5 @@
-import { AppSchema } from '../types'
+import { AppSchema, Model } from '../types'
+import { Attribute } from '@strapi/strapi/lib/types/core/attributes'
 
 export const getModelFullName = (key: string) =>
   key.substring(0, 5) == 'api::'
@@ -10,3 +11,7 @@ export const getRecordUrlPath = (model: string, id: string | number) =>
 
 export const getSchemaModel = (schema: AppSchema, key: string) =>
   schema.models.get(getModelFullName(key))
+
+export function getModelField(model: Model, name: string): Attribute | undefined {
+  return model.attributes[name]
+}

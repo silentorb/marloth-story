@@ -8,10 +8,16 @@ import ArrowLeft from '@strapi/icons/ArrowLeft'
 import { TableRows } from './index'
 import { AppSchema, ReportProps } from '../types'
 import { publicAxios } from '../utils/axiosInstance'
+import { formatGraphQuery } from '../utils/graphql'
+import { getSchemaModel } from '../utils'
 
 interface Props {
   reportProps: ReportProps
   schema: AppSchema
+}
+
+function capitalizeFirstLetter(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export const ReportTable = (props: Props) => {
@@ -21,7 +27,7 @@ export const ReportTable = (props: Props) => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    publicAxios.post(`/graphql`, { query })
+    publicAxios.post(`/graphql`, { query: formatGraphQuery(schema, query) })
       .then(res => {
         const data = dataMap(res.data.data)
         setRecords(data)
@@ -29,7 +35,18 @@ export const ReportTable = (props: Props) => {
       })
   }, [setRecords])
 
+  const model = getSchemaModel(schema, query.base)
+  if (!model)
+    return <></>
+
   const { formatMessage } = useIntl()
+
+  const headers = query.fields
+    .filter(f => !f.transient)
+    .map(f => {
+      const name = f.name
+      return { key: name, name, metadatas: { label: capitalizeFirstLetter(name) } }
+    })
 
   return <Main aria-busy={false}>
     <HeaderLayout
@@ -47,14 +64,11 @@ export const ReportTable = (props: Props) => {
       <>
         <DynamicTable
           isLoading={isLoading}
-          headers={[
-            { key: 'id', name: 'id', metadatas: { label: 'Id' } },
-            { key: 'name', name: 'name', metadatas: { label: 'Name' } },
-          ]}
+          headers={headers}
           contentType={''}
           rows={records}
         >
-          <TableRows contentType={reportProps.baseModel} schema={schema}/>
+          <TableRows contentType={reportProps.query.base} schema={schema}/>
         </DynamicTable>
       </>
     </ContentLayout>
