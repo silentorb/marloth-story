@@ -44,7 +44,7 @@ export function formatGraphSubQuery(schema: AppSchema, modelName: string, query:
     : ''
 
   const attributes = fields
-    .filter(f => f.name !== 'id')
+    .filter(f => f.name !== 'id' && f.continuity !== 'virtual')
 
   return block(nameClause,
     block('data',

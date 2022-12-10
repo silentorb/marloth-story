@@ -10,7 +10,7 @@ import Trash from '@strapi/icons/Trash'
 import Duplicate from '@strapi/icons/Duplicate'
 import Pencil from '@strapi/icons/Pencil'
 import { useTracking, stopPropagation, onRowClick } from '@strapi/helper-plugin'
-import { AppSchema } from '../types'
+import { AppSchema, QueryField } from '../types'
 import { CellContent } from './CellContent'
 
 // import { usePluginsQueryParams } from '../../../hooks'
@@ -25,6 +25,7 @@ interface Props {
   onSelectRow?
   withMainAction?
   withBulkActions?
+  columns: QueryField[]
   rows?
   schema: AppSchema
 }
@@ -39,6 +40,7 @@ export const TableRows = ({
                             onSelectRow,
                             withMainAction,
                             withBulkActions,
+  columns,
                             rows,
                             schema,
                           }: Props) => {
@@ -96,19 +98,13 @@ export const TableRows = ({
               </Td>
             )}
             {headers.map(({ key, cellFormatter, name, ...rest }) => {
+              const queryField = columns.filter(f => f.name == name)[0]
               return (
                 <Td key={key}>
                   {typeof cellFormatter === 'function' ? (
                     cellFormatter(data, { key, name, ...rest })
                   ) : (
-                    <CellContent schema={schema} data={data} contentType={contentType} fieldName={name}/>
-                    // <CellContent
-                    //   content={data[name.split('.')[0]]}
-                    //   name={name}
-                    //   contentType={contentType}
-                    //   {...rest}
-                    //   rowId={data.id}
-                    // />
+                    <CellContent schema={schema} data={data} contentType={contentType} fieldName={name} queryField={queryField}/>
                   )}
                 </Td>
               )

@@ -6,16 +6,26 @@ export interface AppSchema {
   models: Map<string, Model>
 }
 
-export interface QueryField {
+export type GetFieldValue = (data: any) => any
+
+export type Continuity =
+  'full' |
+  'transient' | // Temporary data used to generate final data
+  'virtual' // Dynamically calculated data derived from other data
+
+export interface QueryFieldBase {
   name: string
-  fields: QueryField[]
-  transient?: boolean
+  title?: string
+  continuity?: Continuity
+  getValue?: GetFieldValue
 }
 
-export interface InputQueryFieldObject {
-  name: string
+export interface QueryField extends QueryFieldBase{
+  fields: QueryField[]
+}
+
+export interface InputQueryFieldObject extends QueryFieldBase{
   fields?: InputQueryField[]
-  transient?: boolean
 }
 
 export type InputQueryField = string | InputQueryFieldObject
@@ -33,7 +43,7 @@ export interface InputDataQuery {
 export interface ReportPropsBase<T> {
   title: string
   query: T
-  dataMap: (input: any) => any[]
+  // dataMap: (input: any) => any[]
 }
 
 export type InputReportProps = ReportPropsBase<InputDataQuery>

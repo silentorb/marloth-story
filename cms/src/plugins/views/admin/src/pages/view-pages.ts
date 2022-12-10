@@ -1,7 +1,7 @@
-import { ReportProps } from '../types'
+import { InputReportProps, ReportProps } from '../types'
 import { normalizeInputReportProps } from '../utils'
 
-export const viewPages: ReportProps[] = [
+const data: InputReportProps[] = [
   {
     title: 'Requirements',
     query: {
@@ -11,7 +11,7 @@ export const viewPages: ReportProps[] = [
         'name',
         {
           name: 'solutions',
-          transient: true,
+          continuity: 'transient',
           fields: [
             'id',
             'name',
@@ -20,13 +20,20 @@ export const viewPages: ReportProps[] = [
               fields: ['id'],
             }
           ]
-        }
+        },
+        {
+          name: 'sceneCount',
+          title: 'Scene Count',
+          continuity: 'virtual',
+          getValue: data => new Set(
+            data.solutions
+              .reduce((a, b) => a.concat(b.scenes.map(s => s.id)), [])
+          )
+            .size
+        },
       ]
-    },
-    dataMap: data => data.requirements.data.map(r => ({
-      id: r.id,
-      name: r.attributes.name,
-    }))
+    }
   }
 ]
-  .map(normalizeInputReportProps)
+
+export const viewPages: ReportProps[] = data.map(normalizeInputReportProps)

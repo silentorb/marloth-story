@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AppSchema } from '../types'
+import { AppSchema, QueryField } from '../types'
 import { Link } from '@strapi/design-system/Link'
 import { getRecordUrlPath, getSchemaModel } from '../utils'
 
@@ -8,6 +8,7 @@ interface Props {
   contentType: string
   fieldName: string
   schema: AppSchema
+  queryField: QueryField
 }
 
 export const CellContent = (props: Props) => {
@@ -18,7 +19,7 @@ export const CellContent = (props: Props) => {
     return <></>
 
   const field = model.attributes[fieldName]
-  return field.type == 'relation'
+  return field?.type == 'relation'
     ? (
       <Link to={''}>{value}</Link>
     )
