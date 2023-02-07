@@ -1,0 +1,85 @@
+{
+  "id": "marloth",
+  "title": "Marloth",
+  "structures": {
+    "books": {
+      "title": "Books",
+      "properties": {
+        "scenes": {
+          "title": "Scenes",
+          "type": {
+            "name": "list",
+            "types": ["scenes"]
+          }
+        }
+      }
+    },
+    "characters": {
+      "title": "Characters",
+      "properties": {
+        "scenes": {
+          "title": "Scenes",
+          "type": {
+            "name": "list",
+            "types": ["scenes"]
+          }
+        }
+      }
+    },
+    "locations": {
+      "title": "Locations",
+      "properties": {
+        "scenes": {
+          "title": "Scenes",
+          "type": {
+            "name": "list",
+            "types": ["scenes"]
+          }
+        }
+      }
+    },
+    "scenes": {
+      "title": "Scenes",
+      "properties": {
+        "characters": {
+          "title": "Characters",
+          "type": {
+            "name": "list",
+            "types": ["characters"]
+          }
+        },
+        "locations": {
+          "title": "Locations",
+          "type": {
+            "name": "list",
+            "types": ["locations"]
+          }
+        }
+      }
+    },
+    "requirements": {
+      "title": "Requirements",
+      "properties": {
+        "solutions": {
+          "title": "Solutions",
+          "type": {
+            "name": "list",
+            "types": ["solutions"]
+          }
+        }
+      }
+    },
+    "solutions": {
+      "title": "Solutions",
+      "properties": {
+        "requirements": {
+          "title": "Requirements",
+          "type": {
+            "name": "list",
+            "types": ["requirements"]
+          }
+        }
+      }
+    }
+  }
+}

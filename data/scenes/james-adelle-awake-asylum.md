@@ -3,4 +3,7 @@
 ## Characters
 
 * [James](../characters/james.md)
-* 
+* [Adelle](../characters/adelle.md)
+
+## Locations
+
