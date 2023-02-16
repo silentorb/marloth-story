@@ -54,6 +54,13 @@
             "name": "list",
             "types": ["locations"]
           }
+        },
+        "solutions": {
+          "title": "Solutions",
+          "type": {
+            "name": "list",
+            "types": ["solutions"]
+          }
         }
       }
     },
@@ -77,6 +84,13 @@
           "type": {
             "name": "list",
             "types": ["requirements"]
+          }
+        },
+        "scenes": {
+          "title": "Scenes",
+          "type": {
+            "name": "list",
+            "types": ["scenes"]
           }
         }
       }

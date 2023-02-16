@@ -1,4 +1,8 @@
-# Drenodir
+# Friends and family dining together
+
+## Requirements
+
+* [Cozy](../requirements/cozy.md)
 
 ## Scenes
 

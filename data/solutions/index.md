@@ -1,0 +1,16 @@
+# Solutions
+
+* [Adelle making everywhere home](./adelle-making-everywhere-home.md)
+* [Adelle's poor fortune as a maid](./adelles-poor-fortune-as-maid.md)
+* [Adelle's weaknesses](./adelles-weaknesses.md)
+* [Family having fun together](./family-having-fun-together.md)
+* [Friends and family dining together](./friends-and-family-dining-together.md)
+* [James and Adelle remembering each other](./james-and-adelle-remembering-each-other.md)
+* [James and Adelle safely live in a haunted house](./james-and-adelle-safely-live-in-haunted-house.md)
+* [James haunted by ghost Adelle](./james-haunted-by-ghost-adelle.md)
+* [James weaknesses](./james-weaknesses.md)
+* [Lord Mediev draws magic energy from his wife](./lord-mediev-draws-magic-energy-from-his-wife.md)
+* [Nivana embracing magic](./nivana-embracing-magic.md)
+* [Nivana's bitterness](./nivanas-bitterness.md)
+* [Subvert horror tropes with virtue](./subvert-horror-tropes-with-virtue.md)
+* [Suffering softened by marriage](./suffering-softened-by-marriage.md)
