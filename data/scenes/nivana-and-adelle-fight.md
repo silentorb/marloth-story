@@ -4,10 +4,6 @@
 
 ## Locations
 
-## Characters
-
-## Locations
-
 ## Locations
 
 ## Characters
@@ -28,6 +24,12 @@
 * [Nivana Mediev](../characters/nivana.md)
 * [Nivana Mediev](../characters/nivana.md)
 * [Nivana Mediev](../characters/nivana.md)
+
+## Locations
+
+## Characters
+
+
 
 ## Locations
 

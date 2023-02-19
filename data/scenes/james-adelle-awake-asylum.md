@@ -4,6 +4,8 @@
 
 ## Locations
 
+* [The Asylum](../locations/asylum.md)
+
 ## Characters
 
 * [James](../characters/james.md)
@@ -15,7 +17,7 @@
 
 ## Locations
 
-* [The Asylum](../locations/asylum.md)
+
 
 ## Solutions
 

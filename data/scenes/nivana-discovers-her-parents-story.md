@@ -2,16 +2,18 @@
 
 ## Characters
 
+* [Nivana Mediev](../characters/nivana.md)
+* [Nivana Mediev](../characters/nivana.md)
+* [Nivana Mediev](../characters/nivana.md)
+* [Nivana Mediev](../characters/nivana.md)
+* [Nivana Mediev](../characters/nivana.md)
+* [Nivana Mediev](../characters/nivana.md)
+
 ## Locations
 
 ## Characters
 
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
+
 
 ## Locations
 

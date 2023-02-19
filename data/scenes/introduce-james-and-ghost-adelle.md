@@ -2,10 +2,6 @@
 
 ## Characters
 
-## Locations
-
-## Characters
-
 ## Characters
 
 * [Ghost Adelle](../characters/ghost-adelle.md)
@@ -18,6 +14,14 @@
 ## Locations
 
 * [The Wilderness](../locations/wilderness.md)
+
+## Characters
+
+
+
+## Locations
+
+
 
 ## Solutions
 

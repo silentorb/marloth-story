@@ -1,4 +1,4 @@
-# Don't Idolize Marriage
+# Don't idolize marriage
 
 ## Solutions
 

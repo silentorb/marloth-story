@@ -1,9 +1,5 @@
 # Nivana grows jealous of Adelle
 
-## Characters
-
-## Solutions
-
 ## Solutions
 
 ## Characters
@@ -24,6 +20,12 @@
 * [Nivana Mediev](../characters/nivana.md)
 * [Nivana Mediev](../characters/nivana.md)
 * [Nivana Mediev](../characters/nivana.md)
+
+## Solutions
+
+## Characters
+
+
 
 ## Locations
 

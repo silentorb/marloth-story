@@ -10,7 +10,8 @@
           "type": {
             "name": "list",
             "types": ["scenes"]
-          }
+          },
+          "order": "indexed"
         }
       }
     },

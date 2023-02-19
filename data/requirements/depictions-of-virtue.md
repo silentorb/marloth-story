@@ -1,4 +1,4 @@
-# Depictions of Virtue
+# Depictions of virtue
 
 ## Solutions
 

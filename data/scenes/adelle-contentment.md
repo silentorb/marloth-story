@@ -6,20 +6,22 @@
 
 ## Characters
 
+* [Adelle](../characters/adelle.md)
+* [Adelle](../characters/adelle.md)
+* [Adelle](../characters/adelle.md)
+* [Adelle](../characters/adelle.md)
+* [Adelle](../characters/adelle.md)
+* [Adelle](../characters/adelle.md)
+* [Adelle](../characters/adelle.md)
+* [Adelle](../characters/adelle.md)
+* [Adelle](../characters/adelle.md)
+* [Adelle](../characters/adelle.md)
+
 ## Locations
 
 ## Characters
 
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
+
 
 ## Locations
 

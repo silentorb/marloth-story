@@ -2,10 +2,6 @@
 
 ## Characters
 
-## Locations
-
-## Characters
-
 ## Characters
 
 * [Adelle](../characters/adelle.md)
@@ -30,6 +26,14 @@
 ## Locations
 
 * [James and Adelle's Home](../locations/james-adelle-home.md)
+
+## Characters
+
+
+
+## Locations
+
+
 
 ## Solutions
 

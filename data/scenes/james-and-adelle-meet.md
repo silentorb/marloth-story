@@ -2,10 +2,6 @@
 
 ## Characters
 
-## Locations
-
-## Characters
-
 ## Characters
 
 * [Adelle](../characters/adelle.md)
@@ -28,6 +24,14 @@
 * [Drenodir's Inn](../locations/drenodir-inn.md)
 * [Drenodir's Inn](../locations/drenodir-inn.md)
 * [Drenodir's Inn](../locations/drenodir-inn.md)
+
+## Characters
+
+
+
+## Locations
+
+
 
 ## Solutions
 
