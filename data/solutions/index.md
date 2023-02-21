@@ -14,3 +14,4 @@
 * [Nivana's bitterness](./nivanas-bitterness.md)
 * [Subvert horror tropes with virtue](./subvert-horror-tropes-with-virtue.md)
 * [Suffering softened by marriage](./suffering-softened-by-marriage.md)
+* [Campfire in the wilderness](./campfire-in-wilderness.md)

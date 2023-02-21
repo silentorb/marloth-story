@@ -1,19 +1,12 @@
 # Nivana discovers her parents' story
 
-## Characters
+## Books
 
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
-* [Nivana Mediev](../characters/nivana.md)
-
-## Locations
+* [TWOLD](../books/twold.md)
 
 ## Characters
 
-
+* [Nivana Mediev](../characters/nivana.md)
 
 ## Locations
 

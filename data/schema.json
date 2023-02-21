@@ -12,6 +12,13 @@
             "types": ["scenes"]
           },
           "order": "indexed"
+        },
+        "requirements": {
+          "title": "Requirements",
+          "type": {
+            "name": "list",
+            "types": ["requirements"]
+          }
         }
       }
     },
@@ -42,6 +49,13 @@
     "scenes": {
       "title": "Scenes",
       "properties": {
+        "books": {
+          "title": "Books",
+          "type": {
+            "name": "list",
+            "types": ["books"]
+          }
+        },
         "characters": {
           "title": "Characters",
           "type": {
@@ -68,6 +82,13 @@
     "requirements": {
       "title": "Requirements",
       "properties": {
+        "books": {
+          "title": "Books",
+          "type": {
+            "name": "list",
+            "types": ["books"]
+          }
+        },
         "solutions": {
           "title": "Solutions",
           "type": {

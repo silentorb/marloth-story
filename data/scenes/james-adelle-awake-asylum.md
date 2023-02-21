@@ -1,23 +1,17 @@
 # James and Adelle awake in the asylum
 
-## Locations
+## Books
 
-## Locations
-
-* [The Asylum](../locations/asylum.md)
+* [TWOLD](../books/twold.md)
 
 ## Characters
 
 * [James](../characters/james.md)
 * [Adelle](../characters/adelle.md)
-* [James](../characters/james.md)
-* [James](../characters/james.md)
-* [James](../characters/james.md)
-* [James](../characters/james.md)
 
 ## Locations
 
-
+* [The Asylum](../locations/asylum.md)
 
 ## Solutions
 

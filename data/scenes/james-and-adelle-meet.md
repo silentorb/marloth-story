@@ -1,37 +1,17 @@
 # James and Adelle meet
 
-## Characters
+## Books
+
+* [TWOLD](../books/twold.md)
 
 ## Characters
 
 * [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [James](../characters/james.md)
-* [James](../characters/james.md)
-* [James](../characters/james.md)
 * [James](../characters/james.md)
 
 ## Locations
 
 * [Drenodir's Inn](../locations/drenodir-inn.md)
-* [Drenodir's Inn](../locations/drenodir-inn.md)
-* [Drenodir's Inn](../locations/drenodir-inn.md)
-
-## Characters
-
-
-
-## Locations
-
-
 
 ## Solutions
 

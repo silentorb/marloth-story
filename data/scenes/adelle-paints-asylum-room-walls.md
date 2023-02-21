@@ -1,23 +1,12 @@
 # Adelle paints asylum room walls
 
-## Characters
+## Books
 
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-
-## Locations
+* [TWOLD](../books/twold.md)
 
 ## Characters
 
-
+* [Adelle](../characters/adelle.md)
 
 ## Locations
 

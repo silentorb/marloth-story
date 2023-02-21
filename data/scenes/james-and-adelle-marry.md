@@ -1,24 +1,12 @@
 # James and Adelle marry
 
-## Locations
+## Books
 
-## Solutions
+* [TWOLD](../books/twold.md)
 
 ## Characters
 
 * [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [Adelle](../characters/adelle.md)
-* [James](../characters/james.md)
-* [James](../characters/james.md)
-* [James](../characters/james.md)
 * [James](../characters/james.md)
 
 ## Locations
