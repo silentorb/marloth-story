@@ -1,6 +1,6 @@
 # Nivana and Adelle fight
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

@@ -1,6 +1,6 @@
 # Adelle struggles with contentment
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

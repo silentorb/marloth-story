@@ -1,6 +1,6 @@
 # Nivana discovers her parents' story
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

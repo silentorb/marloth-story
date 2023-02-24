@@ -1,6 +1,6 @@
 # James and Adelle awake in the asylum
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

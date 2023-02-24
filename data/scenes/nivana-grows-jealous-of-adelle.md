@@ -1,6 +1,6 @@
 # Nivana grows jealous of Adelle
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

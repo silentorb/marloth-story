@@ -1,6 +1,6 @@
 # Adelle discovers her ghost
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

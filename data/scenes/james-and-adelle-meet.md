@@ -1,6 +1,6 @@
 # James and Adelle meet
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

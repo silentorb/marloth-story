@@ -1,6 +1,6 @@
 # James and Adelle marry
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

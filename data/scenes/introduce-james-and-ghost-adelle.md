@@ -14,7 +14,7 @@ This scene is a Prelude candidate.
 *   Drenodir and his men have their hands full trying to hold their current position and can't afford to assist the other soldiers
 *   James sets out into the woods to act as a roamer and help the other soldiers
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

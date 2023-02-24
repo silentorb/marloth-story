@@ -1,7 +1,7 @@
 {
-  "id": "marloth",
+  "id": "marloth/story",
   "title": "Marloth",
-  "structures": {
+  "types": {
     "books": {
       "title": "Books",
       "properties": {
@@ -49,11 +49,10 @@
     "scenes": {
       "title": "Scenes",
       "properties": {
-        "books": {
-          "title": "Books",
+        "book": {
+          "title": "Book",
           "type": {
-            "name": "list",
-            "types": ["books"]
+            "name": "books"
           }
         },
         "characters": {
@@ -95,6 +94,22 @@
             "name": "list",
             "types": ["solutions"]
           }
+        },
+        "children": {
+          "title": "Children",
+          "type": {
+            "name": "list",
+            "types": ["requirements"]
+          },
+          "otherProperty": "parents"
+        },
+        "parents": {
+          "title": "Parents",
+          "type": {
+            "name": "list",
+            "types": ["requirements"]
+          },
+          "otherProperty": "children"
         }
       }
     },

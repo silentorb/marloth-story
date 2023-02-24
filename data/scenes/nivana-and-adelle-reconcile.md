@@ -1,6 +1,6 @@
 # Nivana and Adelle reconcile
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

@@ -1,6 +1,6 @@
 # Introduce Adelle
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

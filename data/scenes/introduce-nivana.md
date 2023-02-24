@@ -1,6 +1,6 @@
 # Introduce Nivana
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

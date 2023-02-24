@@ -1,6 +1,6 @@
 # James and Adelle family dinner
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 

@@ -1,6 +1,6 @@
 # Adelle paints asylum room walls
 
-## Books
+## Book
 
 * [TWOLD](../books/twold.md)
 
