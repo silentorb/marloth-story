@@ -1,16 +1,12 @@
 {
-  "id": "marloth/story",
-  "title": "Marloth",
+  "id": "marloth-story",
+  "title": "Marloth Story",
   "types": {
     "books": {
       "title": "Books",
       "properties": {
         "scenes": {
-          "title": "Scenes",
-          "type": {
-            "name": "list",
-            "types": ["scenes"]
-          },
+          "type": "list",
           "order": "indexed"
         },
         "requirements": {
@@ -130,6 +126,36 @@
             "types": ["scenes"]
           }
         }
+      }
+    }
+  },
+  "documents": {
+    "requirements": {
+      "index": {
+        "columns": [
+          {
+            "id": "sceneCount",
+            "title": "Scene Count",
+            "query": [
+              ["get", ["@", "nodeId", "L", "solutions", "L", "scenes"]],
+              ["count"]
+            ]
+          }
+        ]
+      }
+    },
+    "solutions": {
+      "index": {
+        "columns": [
+          {
+            "id": "sceneCount",
+            "title": "Scene Count",
+            "query": [
+              ["get", ["@", "nodeId", "L", "scenes"]],
+              ["count"]
+            ]
+          }
+        ]
       }
     }
   }

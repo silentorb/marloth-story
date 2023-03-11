@@ -3,6 +3,7 @@
 * [Adelle making everywhere home](./adelle-making-everywhere-home.md)
 * [Adelle's poor fortune as a maid](./adelles-poor-fortune-as-maid.md)
 * [Adelle's weaknesses](./adelles-weaknesses.md)
+* [Campfire in the wilderness](./campfire-in-wilderness.md)
 * [Family having fun together](./family-having-fun-together.md)
 * [Friends and family dining together](./friends-and-family-dining-together.md)
 * [James and Adelle remembering each other](./james-and-adelle-remembering-each-other.md)
@@ -14,4 +15,3 @@
 * [Nivana's bitterness](./nivanas-bitterness.md)
 * [Subvert horror tropes with virtue](./subvert-horror-tropes-with-virtue.md)
 * [Suffering softened by marriage](./suffering-softened-by-marriage.md)
-* [Campfire in the wilderness](./campfire-in-wilderness.md)
