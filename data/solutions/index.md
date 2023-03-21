@@ -13,5 +13,4 @@
 * [Lord Mediev draws magic energy from his wife](./lord-mediev-draws-magic-energy-from-his-wife.md)
 * [Nivana embracing magic](./nivana-embracing-magic.md)
 * [Nivana's bitterness](./nivanas-bitterness.md)
-* [Subvert horror tropes with virtue](./subvert-horror-tropes-with-virtue.md)
 * [Suffering softened by marriage](./suffering-softened-by-marriage.md)

@@ -9,6 +9,7 @@
 * [Dreamlike](./dreamlike.md)
 * [Family](./family.md)
 * [Fight the system](./fight-the-system.md)
+* [Friend enemies](./friend-enemies.md)
 * [God empowering sinners to do good](./empowering-good.md)
 * [Horror](./horror.md)
 * [Ideological contests](./ideological-contests.md)
@@ -19,5 +20,4 @@
 * [Manic](./manic.md)
 * [Misfit underdogs](./misfit-underdogs.md)
 * [Mystery](./mystery.md)
-* [Problem solving](./problem-solving.md)
 * [Wife responsibilities](./wife-responsibilities.md)

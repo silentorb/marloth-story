@@ -1,0 +1,15 @@
+# Characters
+
+* [Adelle](./adelle.md)
+* [Beth](./beth.md)
+* [Drenodir](./drenodir.md)
+* [Fugue](./fugue.md)
+* [Ghost Adelle](./ghost-adelle.md)
+* [James](./james.md)
+* [Millamer](./millamer.md)
+* [Nivana Mediev](./nivana.md)
+* [Nivana's uncle](./nivanas-uncle.md)
+* [Samantha](./samantha.md)
+* [The Bear](./bear.md)
+* [The Bear](./bear.md)
+* [The Nurse](./nurse.md)
