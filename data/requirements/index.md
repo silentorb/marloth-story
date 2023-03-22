@@ -15,6 +15,7 @@
 * [Ideological contests](./ideological-contests.md)
 * [Irony](./irony.md)
 * [Isolation](./isolation.md)
+* [James working](./james-working.md)
 * [Light and darkness](./light-and-darkness.md)
 * [Make marriage cool](./marriage-cool.md)
 * [Manic](./manic.md)

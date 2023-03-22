@@ -21,6 +21,7 @@
 * [Manic](../requirements/manic.md)
 * [Mystery](../requirements/mystery.md)
 * [Wife responsibilities](../requirements/wife-responsibilities.md)
+* [James working](../requirements/james-working.md)
 
 ## Scenes
 
@@ -33,7 +34,9 @@
 * [James and Adelle marry](../scenes/james-and-adelle-marry.md)
 * [James and Adelle Awake in the Asylum](../scenes/james-adelle-awake-asylum.md)
 * [Adelle paints asylum room walls](../scenes/adelle-paints-asylum-room-walls.md)
+* [Nivana works for the Merchant](../scenes/nivana-works-for-merchant.md)
 * [Adelle discovers her ghost](../scenes/adelle-discovers-her-ghost.md)
+* [Nivana is severed](../scenes/nivana-is-severed.md)
 * [Nivana grows jealous of Adelle](../scenes/nivana-grows-jealous-of-adelle.md)
 * [Nivana and Adelle fight](../scenes/nivana-and-adelle-fight.md)
 * [Nivana discovers her parents' story](../scenes/nivana-discovers-her-parents-story.md)

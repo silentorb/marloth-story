@@ -14,3 +14,5 @@
 * [Nivana and Adelle reconcile](./nivana-and-adelle-reconcile.md)
 * [Nivana discovers her parents' story](./nivana-discovers-her-parents-story.md)
 * [Nivana grows jealous of Adelle](./nivana-grows-jealous-of-adelle.md)
+* [Nivana is severed](./nivana-is-severed.md)
+* [Nivana works for the Merchant](./nivana-works-for-merchant.md)
