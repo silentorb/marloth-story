@@ -6,8 +6,8 @@
 
 ## Characters
 
-* [James](../characters/james.md)
 * [Adelle](../characters/adelle.md)
+* [James](../characters/james.md)
 
 ## Locations
 
