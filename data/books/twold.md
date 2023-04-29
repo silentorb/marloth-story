@@ -16,12 +16,12 @@
 * [Ideological contests](../requirements/ideological-contests.md)
 * [Irony](../requirements/irony.md)
 * [Isolation](../requirements/isolation.md)
+* [James working](../requirements/james-working.md)
 * [Light and darkness](../requirements/light-and-darkness.md)
 * [Make marriage cool](../requirements/marriage-cool.md)
 * [Manic](../requirements/manic.md)
 * [Mystery](../requirements/mystery.md)
 * [Wife responsibilities](../requirements/wife-responsibilities.md)
-* [James working](../requirements/james-working.md)
 
 ## Scenes
 
@@ -32,6 +32,7 @@
 * [James and Adelle family dinner](../scenes/james-and-adelle-family-dinner.md)
 * [James and Adelle meet](../scenes/james-and-adelle-meet.md)
 * [James and Adelle marry](../scenes/james-and-adelle-marry.md)
+* [Nivana is exiled](../scenes/nivana-is-exiled.md)
 * [James and Adelle Awake in the Asylum](../scenes/james-adelle-awake-asylum.md)
 * [Adelle paints asylum room walls](../scenes/adelle-paints-asylum-room-walls.md)
 * [Nivana works for the Merchant](../scenes/nivana-works-for-merchant.md)
