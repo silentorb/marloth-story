@@ -42,6 +42,59 @@
         }
       }
     },
+    "priorities": {
+      "title": "Priorities",
+      "properties": {
+        "requirements": {
+          "title": "Requirements",
+          "type": {
+            "name": "list",
+            "types": ["requirements"]
+          }
+        }
+      }
+    },
+    "requirements": {
+      "title": "Requirements",
+      "properties": {
+        "books": {
+          "title": "Books",
+          "type": {
+            "name": "list",
+            "types": ["books"]
+          }
+        },
+        "priority": {
+          "title": "Priority",
+          "type": {
+            "name": "priorities"
+          }
+        },
+        "solutions": {
+          "title": "Solutions",
+          "type": {
+            "name": "list",
+            "types": ["solutions"]
+          }
+        },
+        "children": {
+          "title": "Children",
+          "type": {
+            "name": "list",
+            "types": ["requirements"]
+          },
+          "otherProperty": "parents"
+        },
+        "parents": {
+          "title": "Parents",
+          "type": {
+            "name": "list",
+            "types": ["requirements"]
+          },
+          "otherProperty": "children"
+        }
+      }
+    },
     "scenes": {
       "title": "Scenes",
       "properties": {
@@ -71,41 +124,6 @@
             "name": "list",
             "types": ["solutions"]
           }
-        }
-      }
-    },
-    "requirements": {
-      "title": "Requirements",
-      "properties": {
-        "books": {
-          "title": "Books",
-          "type": {
-            "name": "list",
-            "types": ["books"]
-          }
-        },
-        "solutions": {
-          "title": "Solutions",
-          "type": {
-            "name": "list",
-            "types": ["solutions"]
-          }
-        },
-        "children": {
-          "title": "Children",
-          "type": {
-            "name": "list",
-            "types": ["requirements"]
-          },
-          "otherProperty": "parents"
-        },
-        "parents": {
-          "title": "Parents",
-          "type": {
-            "name": "list",
-            "types": ["requirements"]
-          },
-          "otherProperty": "children"
         }
       }
     },
@@ -139,6 +157,13 @@
             "query": [
               ["get", ["@", "nodeId", "L", "solutions", "L", "scenes"]],
               ["count"]
+            ]
+          },
+          {
+            "id": "priority",
+            "title": "Priority",
+            "query": [
+              ["get", ["@", "nodeId", "L", "priority"]]
             ]
           }
         ]

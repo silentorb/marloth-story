@@ -5,5 +5,4 @@
 * [Mediev Manor](./mediev-manor.md)
 * [The Asylum](./asylum.md)
 * [The Playhouse](./playhouse.md)
-* [The Playhouse](./playhouse.md)
 * [The Wilderness](./wilderness.md)

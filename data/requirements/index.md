@@ -2,6 +2,7 @@
 
 * [A Spectacular climax](./spectacular-climax.md)
 * [Biblical](./biblical.md)
+* [Condescension](./condescension.md)
 * [Cozy](./cozy.md)
 * [Dependency](./dependency.md)
 * [Depictions of virtue](./depictions-of-virtue.md)
