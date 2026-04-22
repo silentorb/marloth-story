@@ -3,7 +3,7 @@
 ## Project Context
 - This repository contains the Marloth Story project, related to the Marloth series of fantasy novels.
 - Keep updates aligned with the repository's current scope and documentation.
-- The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents.
+- The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. For the Notion → `src/` import pipeline, layout, and front-matter rules, see `./docs/notion-conversion.md`.
 - The `./src` directory contains all of the articles, design, records, and prose for the Marloth books.
 - The `./external/notion/` directory contains exported Notion data which is used to populate `./src` files.
 

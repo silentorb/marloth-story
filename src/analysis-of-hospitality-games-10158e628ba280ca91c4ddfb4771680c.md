@@ -1,0 +1,86 @@
+---
+title: "Analysis of hospitality games"
+notion_id: "10158e628ba280ca91c4ddfb4771680c"
+aliases:
+  - "Analysis of hospitality games"
+source_export: "external/notion/Marloth/Articles/Analysis of hospitality games 10158e628ba280ca91c4ddfb4771680c.md"
+inferred_notion_path: "Marloth/Articles"
+---
+# Analysis of hospitality games
+
+# The general genre
+
+I don’t know what to call it, but there has been a growing genre, and particularly a subgenre within that which I find intriguing.
+
+The general genre is games which simulate an ordinary job, often in an extraordinary setting, involving customers.  For example, games where the player must prepare meals for customers.
+
+# A personal touch
+
+The general genre has gradually evolved into a subgenre.
+
+Most of the earlier games of this type where impersonal.  Generic customers would line up for service, and the focus of the game was exclusively on the mechanics of the service tasks.
+
+But then games started putting a more social spin on the genre.
+
+Socializing with the customers became an important part of the games.  The customers took on more distinct personalities.
+
+Service tasks were still usually a part of the gameplay as well, but now the gameplay was a hybrid.
+
+Except it wasn’t like there wasn’t room for both the technical and social mechanics.  They actually compliment each other nicely.  In a way, they are two sides of the same coin, and the games which focused exclusively on the technical mechanics were blurring the social aspect.
+
+# Cozy
+
+The customer service genre in general, particularly when it emphasizes socialization, has become a fertile ground for the cozy aesthetic that is rising in popularity with this generation.
+
+In such cases, the location where the player works becomes a welcoming refuge for customers to visit.
+
+Since most of the player’s time is spent on the job site, whether or not that location is the player avatars home, it effectively feels like the players home.
+
+When this cozy element is added to the mix, maybe a better term for this genre is “Hospitality games”. ([Hospitality](../Features/Hospitality%20cad51fd00b284dc094de3a19c1aed59c.md))
+
+# Small business
+
+It’s important to highlight that a key ingredient to the hospitality genre is it almost always involves a small business.
+
+The technically focused games in the genre tend to have a more corporate feel.  Even when the player is working at a small restaurant, that restaurant is often a part of a chain.  The player is simply an employee.
+
+When the player owns the business, the business feels more personal, and makes the player feel more invested in the workspace.  The player is inviting customers into the player’s workspace.
+
+# Example jobs
+
+1. Food and beverage sales
+2. Cleaning
+3. Solo industry (Solo what?  Is this a typo?  What was I thinking here???)
+4. Medical aid
+5. Occasionally farming (Many farming games have a social aspect, but the socialization is usually more with neighbors than customers, and is more incidental and inject than natural like customer service.)
+
+# Game loop
+
+Suddenly, the job becomes a channel for socialization.  The service the player provides funnels people into the player’s life.
+
+In a way, this is similar to [Mordheim](mordheim-e6b55f683b5849d8a23bbbf0b219411b.md)’s scenario-based game loop I have grown to love.  A customer-facing job provides an excellent context for randomly generated encounters with other people.
+
+# Stationary
+
+Yet with all that said, I’ve never actually *played* a hospitality game.
+
+<aside>
+💡
+
+I *have* played some of the purely work-oriented customer service games.
+
+</aside>
+
+I’m intrigued by the hospitality genre, but only from a distance.
+
+I think there are two main deterrents for me:
+
+1. In everyday life I have the same fascination with the idea of hospitality but no interest in actually *doing* it.
+2. The hospitality genre is inherently stationary.  You could probably have some form of mobile service unit, but at the end of the day, the players still set up shop and wait for customers to come to them.
+
+<aside>
+💡
+
+Those two items are probably interrelated, but still worth noting separately.
+
+</aside>

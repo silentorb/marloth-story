@@ -1,0 +1,25 @@
+---
+title: "Making paths straight"
+notion_id: "11a58e628ba280698d5cc32d8ccf0505"
+aliases:
+  - "Making paths straight"
+source_export: "external/notion/Marloth/Articles/Making paths straight 11a58e628ba280698d5cc32d8ccf0505.md"
+inferred_notion_path: "Marloth/Articles"
+---
+# Making paths straight
+
+I’m so used to designing through an ocean of chaos, that I can’t even tell when my paths aren’t straight.
+
+Realizing that I need to kill my darlings is the first step, but it isn’t enough.
+
+Sometimes there are darlings I can keep, and the issue isn’t that I haven’t killed enough of them, but that I have such a crowded vantage point I can’t see more than two feet in front of me.
+
+# Clarity
+
+Instead of simply cutting things, I need to take temporary steps back and create stripped down views of aspects of the story, and assess them as though they were standalone stories without the rest of the noise.
+
+And isolate what the friction is that is getting in the way of that storyline.
+
+Add more definition to the storylines in that state, and then look into reintegrating them.
+
+Reintegration may not be clean, but *that* is when I need to start killing darlings.

@@ -1,0 +1,34 @@
+---
+title: "A priest friend who forsakes Nivana"
+notion_id: "2aa58e628ba2807fb550fe23d1424694"
+aliases:
+  - "A priest friend who forsakes Nivana"
+source_export: "external/notion/Marloth/Solutions/A priest friend who forsakes Nivana 2aa58e628ba2807fb550fe23d1424694.md"
+inferred_notion_path: "Marloth/Solutions"
+priority: "Low"
+---
+# A priest friend who forsakes Nivana
+
+Features: Irony (../Features/Irony%200a85bc33ac144718937789d5db7d793c.md)
+[Products: TWOLD](twold-e028aa0786f5449984a4f497c1d746fa.md)
+
+Originally I thought of this happening in events of the second part (those events are now in the third part), but now the logistics don’t fit well with that, and it might work better to happen near the end of Part 1.
+
+I don’t know though, there is something about the setting of the later parts which makes me intrigued by to mix the two.
+
+Part of the logistical challenge is the priest is a candidate for the [Tale of two cities](tale-of-two-cities-4ad86022c46e49e9843a4c05ab0d3bcd.md) duality, and the duality is easier to pull off if we only see his “good” version in the first part (and maybe also in the final part)
+
+Originally I considered the forsaking to be done through letter correspondence.  In a way I don’t like that now, where it would be nice to keep Nivana completely separated from the brighter outside world.
+
+However, once again I may be getting too extreme.  Often it is better to have two compromised elements than a single pure element.
+
+One of my biggest challenges with [TWOLD](twold-e028aa0786f5449984a4f497c1d746fa.md) is maintaining cohesive harmony between its diverse elements, and the last thing I need is to reject connections in favor of isolation.
+
+<aside>
+💡
+
+Maybe I can use letter correspondence, but also add some twists to its implementation details that make it surreal and questionable—almost casting doubt on whether this is the actual priest writing and implying there are weird things going on.
+
+Maybe I could evoke a sense similar to [Through the Looking Glass](through-the-looking-glass-1d458e628ba280709ae1d7e3d15c2624.md), where everything through the mirror is backwards, or like in movies where characters turn into cartoons when they step into the magical cartoon land.  The correspondence could become transformed as it crosses over from the mildly fantastic domain to the wildly fantastic and nightmarish domain.
+
+</aside>

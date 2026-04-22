@@ -1,0 +1,16 @@
+---
+title: "Mr. Mosspuddle"
+notion_id: "27e58e628ba28079b3dbea177182d1f9"
+aliases:
+  - "Mr. Mosspuddle"
+source_export: "external/notion/Marloth/Data/Characters/Mr Mosspuddle 27e58e628ba28079b3dbea177182d1f9.md"
+inferred_notion_path: "Marloth/Data/Characters"
+all_scene_count: "21"
+twold_scene_count: "0"
+personality: "INFJ"
+---
+# Mr. Mosspuddle
+
+Scenes: Adelle and her dolls on her floating bed (../../Scenes/Adelle%20and%20her%20dolls%20on%20her%20floating%20bed%202ba58e628ba280b1bf72ee7e44509aaf.md), The heroes discuss around campfire (../../Scenes/The%20heroes%20discuss%20around%20campfire%202ba58e628ba280cd84f4d347ff9a2e7f.md), The heroes scour the beach (../../Scenes/The%20heroes%20scour%20the%20beach%202ba58e628ba280e09cd2de421e33b9f6.md), The heroes explore the desolate city (../../Scenes/The%20heroes%20explore%20the%20desolate%20city%202bb58e628ba2805488e0e3568eed44f4.md), The dolls host dinner in their new house (../../Scenes/The%20dolls%20host%20dinner%20in%20their%20new%20house%202bb58e628ba2800c9cbce80846d22c11.md), The heroes prepare for the ball (../../Scenes/The%20heroes%20prepare%20for%20the%20ball%202bb58e628ba280399e5eeebb83157b56.md), Train ride back to the City of Orphans (../../Scenes/Train%20ride%20back%20to%20the%20City%20of%20Orphans%202bb58e628ba280daa13dc1a68969c899.md), The Doctor and Mr. Mosspuddle (../../Scenes/The%20Doctor%20and%20Mr%20Mosspuddle%202bb58e628ba2801db56ff33065a6d00d.md), The heroes stranded (../../Scenes/The%20heroes%20stranded%202bb58e628ba280c4864afeafacf15984.md), Tralvorkemen returns (../../Scenes/Tralvorkemen%20returns%202bb58e628ba280a29be3c3aa3aa07407.md), James on the train (../../Scenes/James%20on%20the%20train%202ba58e628ba2808fb9c5e480a0b78edb.md), The heroes arrive at the City of Orphans (../../Scenes/The%20heroes%20arrive%20at%20the%20City%20of%20Orphans%202ba58e628ba2807784e7c365eb59807e.md), The heroes head for the Theatre (../../Scenes/The%20heroes%20head%20for%20the%20Theatre%202ba58e628ba2800a8ca2d1e2f811b6ca.md), Adelle’s performance (../../Scenes/Adelle%E2%80%99s%20performance%202ba58e628ba280629398fcee70cc8c07.md), The heroes traverse the Library (../../Scenes/The%20heroes%20traverse%20the%20Library%202ba58e628ba2807990ced66b6ac725ef.md), James throws away the crown (../../Scenes/James%20throws%20away%20the%20crown%202ba58e628ba280ffa44ce05f23c9a9c6.md), The Library under attack (../../Scenes/The%20Library%20under%20attack%202ba58e628ba2800297e7d6232e41dedc.md), The heroes find Adelle (../../Scenes/The%20heroes%20find%20Adelle%202ba58e628ba2809fb7a4e53913a631cf.md), James recovers and talks with Adelle (../../Scenes/James%20recovers%20and%20talks%20with%20Adelle%202bb58e628ba2802db150c922614c1a61.md), The heroes find James in the Asylum (../../Scenes/The%20heroes%20find%20James%20in%20the%20Asylum%202bb58e628ba280569996fd16b19a66a9.md), The heroes help Adelle (../../Scenes/The%20heroes%20help%20Adelle%202bb58e628ba280f1a7aff4a015ec23a4.md)
+[Character Attributes: Elemental character](elemental-character-1a758e628ba2806bba7ec053001f2dd0.md)
+[Products: A Child’s Fairytale World](a-childs-fairytale-world-c368a02eabb74a47ab322615f2769723.md)

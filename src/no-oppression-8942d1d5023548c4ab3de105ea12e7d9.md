@@ -1,0 +1,59 @@
+---
+title: "No oppression"
+notion_id: "8942d1d5023548c4ab3de105ea12e7d9"
+aliases:
+  - "No oppression"
+source_export: "external/notion/Marloth/Archive/Negative requirements/No oppression 8942d1d5023548c4ab3de105ea12e7d9.md"
+inferred_notion_path: "Marloth/Archive/Negative requirements"
+---
+# No oppression
+
+# No rebel sympathy
+
+Within TWOLD, avoid riling up the audience with rebellious feelings.
+
+Characters can have rebellious feelings, but decouple the audience  from those feelings.
+
+# Despot sympathy
+
+There can still be leaders abusing their power.  There can still be injustice.
+
+However, those cases should be painted as a neutral hustle.  The masses of TWOLD, high and low, are trying to get by.  What they are doing is wrong, but they aren’t unique in doing wrong.
+
+When a leader in TWOLD abuses their power, the audience shouldn’t be surprised.
+
+There can also be incompetent leaders.  Leaders can make mistakes, and the subjects will pay the price for those mistakes.
+
+<aside>
+💡 It may be useful to have a king-of-the-hill arc where a lowly character is elevated to a position of power and proceeds to abuse that power.
+
+</aside>
+
+# Submission
+
+TWOLD has plenty of issues, and the only authority issue I want to deal with is submission.
+
+I live in a rebellious culture that defaults to authority figures being evil.
+
+# Rebellion
+
+[Rebel without pause](rebel-without-pause-04e29177f2fa4425a02d1c2b3d64eb38.md) 
+
+Any rebels in TWOLD will be in the wrong, rebelling where they have no proper justification to do so.
+
+This will help clear the air and strengthen the other issues being addressed.
+
+# Balance
+
+Previously, my stance on this issue was more extreme, stating that there should be no oppression whatsoever.
+
+But while working on the [Nivana sorceress arc](nivana-sorceress-arc-ba9bd93692634691a49a337080acf339.md), I realized I need to be careful to not suggest that all of the oppression she sees is her imagination.  There really are oppressors in the world, and I don’t want to excuse them.
+
+I don’t want to suggest that anyone feeling oppressed is simply discontent.
+
+# Repercussions
+
+<aside>
+💡 This affects the old Nirvana storyline.  At first glance it demolishes it, but the storyline may still be salvageable, and this requirement actually tempers and solves some of the problems that have blocked it.
+
+</aside>
