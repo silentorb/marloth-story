@@ -1,0 +1,5 @@
+# Adelle and Nivana friendship
+
+Priority: Consideration
+Products: TWOLD (../Data/Products/TWOLD%20e028aa0786f5449984a4f497c1d746fa.md)
+Scenes: Introduce Nivana and Adelle (../Scenes/Introduce%20Nivana%20and%20Adelle%2090a5c6953ff5423ba7cc1a40c8540322.md), Adelle finds Nivana in the Asylum (../Scenes/Adelle%20finds%20Nivana%20in%20the%20Asylum%20543f59b84b3b4fedb40806663e785071.md), Nivana jealous of Adelle’s fortune (../Scenes/Nivana%20jealous%20of%20Adelle%E2%80%99s%20fortune%208dc41b560cee4606a10b9ef417193dc2.md), Adelle and James resolve to help Nivana (../Scenes/Adelle%20and%20James%20resolve%20to%20help%20Nivana%202bb9f6c4c9b84a31b6d676d75119fabc.md), Drenodir provides Nivana shelter (../Scenes/Drenodir%20provides%20Nivana%20shelter%2074ce324df8a54f3b9a75f657edb11a12.md), Nivana and Adelle quarrel (../Scenes/Nivana%20and%20Adelle%20quarrel%200a96768c45b34fca82e219c465abd5f8.md)

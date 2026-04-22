@@ -1,0 +1,11 @@
+# Maze-like
+
+Priority: Low
+Inspirations: Alice in Wonderland (../Inspirations/Inspirations/Alice%20in%20Wonderland%20ca98e0e27dff4b77adff51cfedaca5ce.md), American McGee’s Alice (../Inspirations/Inspirations/American%20McGee%E2%80%99s%20Alice%202392ae8e06574413acc3590f1f416e24.md), Batman Returns (../Inspirations/Inspirations/Batman%20Returns%20bb12768ac7c14b5ab55779aa3729e99c.md), Big Trouble in Little China (../Inspirations/Inspirations/Big%20Trouble%20in%20Little%20China%200a1639ebedd74085b350e568bfab2e71.md), Dark City (../Inspirations/Inspirations/Dark%20City%205a033978a93e45789ab3944344d619a3.md), Mordheim (../Inspirations/Inspirations/Mordheim%20e6b55f683b5849d8a23bbbf0b219411b.md), Sapphire and Steel (../Inspirations/Inspirations/Sapphire%20and%20Steel%20f4522f813fe047fe9cc7daef159bed6d.md), Tenkuu Shinpan (../Inspirations/Inspirations/Tenkuu%20Shinpan%20748ff563f82047c68c5bc3e6c8842598.md), The Evil Dead 2 (../Inspirations/Inspirations/The%20Evil%20Dead%202%2093629e42ee3a488c821794ec47db5374.md), The Great Muppet Caper (../Inspirations/Inspirations/The%20Great%20Muppet%20Caper%2015058e628ba280528132f64f29593742.md), The Office (../Inspirations/Inspirations/The%20Office%20ff3a2fef6cac42b199eb43c00fa8849f.md), Labyrinth (../Inspirations/Inspirations/Labyrinth%201d458e628ba280ba8976f66237b73d67.md), Dark Souls (../Inspirations/Inspirations/Dark%20Souls%204126541b1c124056b5dff756778cdba2.md), Surviving Romance (../Inspirations/Inspirations/Surviving%20Romance%2022858e628ba280fba349c779daae8c37.md), River City Girls (../Inspirations/Inspirations/River%20City%20Girls%2022a58e628ba280688bb9eae58590609a.md), Alan Wake (../Inspirations/Inspirations/Alan%20Wake%200e04bd5170f74a378ff7c68afe4843e3.md), Aliens (../Inspirations/Inspirations/Aliens%2028c58e628ba2801a919ce41fb9a52aaa.md), Paprika Opening (../Inspirations/Inspirations/Paprika%20Opening%20ef876f9318794798b9f08c669615c3dd.md), Silent Hill (../Inspirations/Inspirations/Silent%20Hill%202a458e628ba28059b174ede173d12c5f.md)
+Products: TWOLD (../Data/Products/TWOLD%20e028aa0786f5449984a4f497c1d746fa.md)
+Tags: Wonderland
+Wonderland count: 1
+
+- Disorienting spatial relationships between locations
+
+Maps like 90s first person shooters.

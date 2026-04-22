@@ -1,0 +1,13 @@
+﻿Name,Type,👥 Characters,Parents,Children,Enemies,Tags
+Magicians,Domain,,,"The Necromancers (Groups/The%20Necromancers%205fe18fead3844cea92136ea65ede0940.csv), The Wizards’ Council (Groups/The%20Wizards%E2%80%99%20Council%20ce4eb95bd97942df823e745b3f7a8560.csv), The Black Market (Groups/The%20Black%20Market%202fd545de1f944dcba025524099ced961.csv)",Scientists (Groups/Scientists%20d1dc50b0a8874d2d990918572e168022.csv),
+The Promenade,Business,"Nivana (Characters/Nivana%20a2ee9cd0a28b4945af74fd3022fd97af.csv), The Merchant of Sorcerers (Characters/The%20Merchant%20of%20Sorcerers%20c48080a70bbb443a8eba9c60d24bd331.csv), The Matron (Characters/The%20Matron%20b0f3c553544944f48857e06b95ed57af.csv)",The Black Market (Groups/The%20Black%20Market%202fd545de1f944dcba025524099ced961.csv),,,
+The Asylum business,Business,,,,,
+Asylum magic factory,Business,,,,,
+Quality Tech company,Business,,,,,
+The Medievs,Family,"Nivana (Characters/Nivana%20a2ee9cd0a28b4945af74fd3022fd97af.csv), Lord Mediev (Characters/Lord%20Mediev%201b19d49697be4210828da0f74c16f8e9.csv), Lady Mediev (Characters/Lady%20Mediev%20b210b5db3ef945b0834c2600d3838dca.csv), Jewel (Characters/Jewel%2020f58e628ba2804dae2ceb19a9717da5.csv)",,,,
+The Black Market,Community,,Magicians (Groups/Magicians%20993b14e4e8e54ed8b690f56cea8429a2.csv),The Promenade (Groups/The%20Promenade%202a1f585a908a4db48c45976919492af7.csv),,
+The Wizards’ Council,Society,Jarvanis (Characters/Jarvanis%20373b77c5f599467d9f1dbdd198cca4e5.csv),Magicians (Groups/Magicians%20993b14e4e8e54ed8b690f56cea8429a2.csv),,,
+The Necromancers,Society,,Magicians (Groups/Magicians%20993b14e4e8e54ed8b690f56cea8429a2.csv),,,
+Scientists,Society,,,,Magicians (Groups/Magicians%20993b14e4e8e54ed8b690f56cea8429a2.csv),
+City of Orphans government,Society,,,,,
+Lite Co.,Business,,,,,

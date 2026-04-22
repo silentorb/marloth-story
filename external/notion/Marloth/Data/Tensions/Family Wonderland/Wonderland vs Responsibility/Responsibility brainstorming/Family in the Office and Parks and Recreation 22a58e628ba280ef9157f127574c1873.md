@@ -1,0 +1,25 @@
+# Family in the Office and Parks and Recreation
+
+# The Office and Parks and Recreation
+
+Both the shows *The Office* and *Parks and Recreation* involve married couples who:
+
+1. Both work at the same job or at least in the same building
+2. Their life revolves around work
+3. Their coworkers are their main family
+4. Have kids
+5. The kids are mostly relegated to the background (especially the case for Parks)
+
+I want to avoid *that*.
+
+# Jim and Pam
+
+It’s great that Pam can work with her husband every weekday, but in isolation, it sends the wrong message to wives and mothers.
+
+Subconsciously, it paints a picture that to have a really close, idyllic relationship with your spouse, you need to work with them.
+
+That scenario is an outlier.  Most spouses don’t work together at the same job.  And possibly a significant percentage of the couples that do have far more work-related tension than the Office depicts.
+
+It’s an outlier, and it’s a romanticized outlier.
+
+I admit, it’s fun to watch.  But I don’t think it’s an entirely healthy depiction.

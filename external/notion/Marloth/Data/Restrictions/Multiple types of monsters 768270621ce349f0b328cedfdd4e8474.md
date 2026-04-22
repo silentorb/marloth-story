@@ -1,0 +1,13 @@
+# Multiple types of monsters
+
+Priority: Medium
+Type: Restriction
+
+<aside>
+💡 Related to [No primary villain](No%20primary%20villain%20c35043530c934c40b855bf28c1a1ad0c.md).
+
+</aside>
+
+One distinction between horror games and horror movies, is horror games usually have a plethora of monsters, while horror movies usually have a single monster.
+
+In this respect, I want the setting of Marloth to be modeled more after games, with a wide variety of monsters roaming the world.

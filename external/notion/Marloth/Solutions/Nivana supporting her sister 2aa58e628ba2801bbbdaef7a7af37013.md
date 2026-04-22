@@ -1,0 +1,36 @@
+# Nivana supporting her sister
+
+Features: Desperation (../Features/Desperation%203c8bb63bea1440cba5eb8b570cecec24.md), Family provision (../Features/Family%20provision%20a4f827664b094b91ae244ffa2385ce4d.md)
+Priority: Medium
+Products: TWOLD (../Data/Products/TWOLD%20e028aa0786f5449984a4f497c1d746fa.md)
+
+[Archive for Nivana supporting her sister](Nivana%20supporting%20her%20sister/Archive%20for%20Nivana%20supporting%20her%20sister%202aa58e628ba28096a3d8ce76019ab7b6.md)
+
+# Motivation
+
+This story arc has the following benefits:
+
+1. It makes [Nivana](../Data/Characters/Nivana%20a2ee9cd0a28b4945af74fd3022fd97af.md) more sympathetic
+2. It adds more [Family](../Features/Family%204a141498769b409797d96a49f190e96f.md).
+3. It fleshes out the Mediev family dynamics
+    1. Similar but slightly different: It ties together the skeletal remains of previous Mediev story plans and puts meat back on those bones
+4. It adds more weight to Nivana’s [Desperation](../Features/Desperation%203c8bb63bea1440cba5eb8b570cecec24.md) 
+5. It makes Nivana’s circumstances less about Nivana.
+6. It is an unusual feature for this kind of story and adds a splash of Charles Dickens-style narrative to [TWOLD](../Data/Products/TWOLD%20e028aa0786f5449984a4f497c1d746fa.md).
+7. It adds drama (without being melodramatic)
+
+# Adelle
+
+At one point I discarded this idea because I felt Nivana’s ongoing relationship with Jewel distracted from Nivana and Adelle’s relationship.
+
+However, now that Adelle’s role in the setting is better established and Nivana is a secondary character, I’m less concerned about them directly relating to each other.
+
+Increasingly, they will need to be indirectly relating to each other through their larger circumstances.
+
+In this case, [Jewel](../Data/Characters/Jewel%2020f58e628ba2804dae2ceb19a9717da5.md) may actually provide another dimension *for* Nivana and Adelle to relate to each other.
+
+It’s like in rom-coms when one of the main characters is a single parent and the other main character earns favor by befriending the child.
+
+Both Nivana and Adelle are concerned for [Jewel](../Data/Characters/Jewel%2020f58e628ba2804dae2ceb19a9717da5.md)’s well being, and as a [former Mediev maid](Adelle%20as%20a%20maid%20e44bfe4304c44cfca11e22c29d2a08dd.md), Adelle has history with [Jewel](../Data/Characters/Jewel%2020f58e628ba2804dae2ceb19a9717da5.md)’s care.
+
+[Jewel](../Data/Characters/Jewel%2020f58e628ba2804dae2ceb19a9717da5.md) might also provide relational contrast.  Nivana is used to helping [Jewel](../Data/Characters/Jewel%2020f58e628ba2804dae2ceb19a9717da5.md) as her younger, mild-mannered sister, while post-maid Adelle is a peer that pushes back.

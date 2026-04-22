@@ -1,0 +1,32 @@
+# Relation to city
+
+# Overview
+
+One question for the forest is how many supporting characters to include in the arc?
+
+If it is foreign for all of them, then I feel like I would need to minimize the supporting characters that all end up in the forest.  I could stretch belief if I needed to, but more than just realism is at stake—part of the contextual tone is lost if too many cross-acquainted foreigners arrive at the forest.  There is a spiritual solitude which is trampled by too many tourists.
+
+# Closer proximity between city and forest
+
+But the other option is to make more characters natives or at least close neighbors of the forest.
+
+I have been picturing most of the early parallel threads being on the outskirts of the City of Orphans—not actually in the middle of it.  On the edge of the wilderness.  That could be close to the forest.
+
+Up until this point I had visualized the TWOLD Asylum being in the City of Orphans, and the Asylum part of the story being the full transition between the two cities.
+
+However, it would work better to either keep the Asylum in the Nameless City or keep its location undefined.
+
+# Native main characters
+
+Some characters could act as partial natives of the forest, and be more seamlessly incorporated into the forest arc.  They could take on the role of natives instead of foreigners.
+
+<aside>
+💡 I’m particularly thinking of [Millamer](../../../Data/Characters/Millamer%20b9feb3f85e784020a074f460918e85b7.md).
+
+</aside>
+
+# Avoid moral contrasts between city and forest
+
+One conclusion I reached after brainstorming this arc is:
+
+[Avoid moral contrasts between city and countryside](../../../Data/Restrictions/Avoid%20moral%20contrasts%20between%20city%20and%20countryside%2003687ae45ce9492e82dff4bd461c68f3.md).

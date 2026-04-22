@@ -1,0 +1,14 @@
+{
+    "name": "Marloth Story",
+    "build": {
+        "dockerfile": "Dockerfile"
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [],
+            "settings": {
+                "files.eol": "\n"
+            }
+        }
+    }
+}
