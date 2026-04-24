@@ -1,0 +1,10 @@
+{
+  "name": "marloth-story",
+  "private": true,
+  "packageManager": "bun@1.3.13",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "watch": "bun run --cwd packages/rippledoc start",
+    "build:watch": "bun run --cwd packages/rippledoc run build"
+  }
+}

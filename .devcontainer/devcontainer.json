@@ -3,6 +3,8 @@
     "build": {
         "dockerfile": "Dockerfile"
     },
+    "remoteUser": "vscode",
+    "postCreateCommand": "bun install",
     "customizations": {
         "vscode": {
             "extensions": [],

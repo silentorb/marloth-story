@@ -57,7 +57,7 @@ def resolve_target(
     id_to_basename: dict[str, str],
     csv_to_output: dict[str, str] | None = None,
 ) -> str | None:
-    """Return output basename in src/, or None if unresolvable."""
+    """Return output basename in content/, or None if unresolvable."""
     target_raw = unquote_path(target_raw)
     if not target_raw or target_raw.startswith(("#", "http://", "https://")):
         return None
@@ -177,7 +177,7 @@ def rewrite_all_links(
     id_to_basename: dict[str, str],
     csv_to_output: dict[str, str] | None = None,
 ) -> tuple[str, list[str]]:
-    """Iteratively turn Notion paren links and relative markdown links into flat src/ links."""
+    """Iteratively turn Notion paren links and relative markdown links into flat content/ links."""
     errs: list[str] = []
     for _ in range(16):
         prev = text

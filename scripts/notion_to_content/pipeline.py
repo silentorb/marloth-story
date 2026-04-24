@@ -132,16 +132,16 @@ def run(
     clean: bool = False,
 ) -> None:
     external = (repo_root / "external" / "notion").resolve()
-    src = (repo_root / "src").resolve()
+    out_root = (repo_root / "content").resolve()
     docs = (repo_root / "docs").resolve()
     if not external.is_dir():
         raise SystemExit(f"missing {external}")
 
-    if clean and src.is_dir():
-        for child in src.glob("*.md"):
+    if clean and out_root.is_dir():
+        for child in out_root.glob("*.md"):
             child.unlink()
 
-    src.mkdir(parents=True, exist_ok=True)
+    out_root.mkdir(parents=True, exist_ok=True)
     docs.mkdir(parents=True, exist_ok=True)
 
     md_files = [p for p in external.rglob("*.md") if p.is_file()]
@@ -156,11 +156,11 @@ def run(
     for abs_md in sorted(md_files, key=lambda p: str(p)):
         relp = abs_md.resolve().relative_to(repo_root)
         out_name, content, mentry = process_markdown_file(abs_md, repo_root)
-        out_p = src / out_name
-        mentry["output"] = f"src/{out_name}"
+        out_p = out_root / out_name
+        mentry["output"] = f"content/{out_name}"
         manifest["files"][out_name] = mentry
         all_outputs.append((out_p, content, relp.as_posix(), "page"))
-        (src / out_name).parent.mkdir(parents=True, exist_ok=True)
+        (out_root / out_name).parent.mkdir(parents=True, exist_ok=True)
 
     # write initial content then link pass
     for out_p, text, __, _ in all_outputs:
@@ -198,12 +198,12 @@ def run(
         content = (
             yamlfmt.format_front_matter(fmd) + f"# {ttitle}\n\n" + table
         )
-        ip = src / out_idx
+        ip = out_root / out_idx
         ip.write_text(content, encoding="utf-8", newline="\n")
         manifest["files"][out_idx] = {
             "type": "notion-index",
             "source_export": relp,
-            "output": f"src/{out_idx}",
+            "output": f"content/{out_idx}",
         }
         if parsed:
             manifest["files"][out_idx]["notion_database"] = parsed[1]
@@ -218,7 +218,7 @@ def run(
         return errs
 
     all_err: list[str] = []
-    for p in src.glob("*.md"):
+    for p in out_root.glob("*.md"):
         m = manifest["files"].get(p.name, {})
         src_exp = m.get("source_export")
         if not src_exp:
@@ -233,7 +233,7 @@ def run(
     )
 
     # link check
-    lc = _link_check(src)
+    lc = _link_check(out_root)
     (docs / "notion-link-check.txt").write_text(
         "\n".join(lc) if lc else "ok\n", encoding="utf-8", newline="\n"
     )
@@ -244,7 +244,9 @@ def run(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Notion export → flat src/ markdown")
+    ap = argparse.ArgumentParser(
+        description="Notion export → flat content/ markdown"
+    )
     ap.add_argument(
         "--repo",
         type=Path,
@@ -254,11 +256,11 @@ def main() -> None:
     ap.add_argument(
         "--clean",
         action="store_true",
-        help="Delete all src/*.md before import",
+        help="Delete all content/*.md before import",
     )
     args = ap.parse_args()
     run(args.repo.resolve(), clean=args.clean)
-    print("done. See src/ and docs/notion-*.md / manifest json")
+    print("done. See content/ and docs/notion-*.md / manifest json")
 
 
 if __name__ == "__main__":

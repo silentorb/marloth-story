@@ -9,10 +9,16 @@ mkdir -p /workspaces/dev /workspaces/build
 chown vscode:vscode /workspaces/dev /workspaces/build
 EOF
 
-# Update packages; python3 for scripts/godot_remote.py; curl for rustup / smoke tests;
-# build-essential + pkg-config + libssl-dev for native Rust / -sys crates
+# curl/unzip: Bun install script; ca-certificates: HTTPS.
 RUN <<EOF
 apt-get update
+apt-get install -y --no-install-recommends ca-certificates curl unzip
 apt-get upgrade -y
 rm -rf /var/lib/apt/lists/*
 EOF
+
+# Bun (pin matches root package.json "packageManager"). Installed for the default dev user.
+ENV BUN_INSTALL=/home/vscode/.bun
+ENV PATH="${BUN_INSTALL}/bin:${PATH}"
+USER vscode
+RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.13"
