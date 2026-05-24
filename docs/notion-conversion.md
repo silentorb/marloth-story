@@ -7,6 +7,7 @@ This document describes how narrative and database content from the Notion expor
 From the repository root (after Python 3 is available):
 
 ```bash
+# default: prefers ./exports, falls back to ./external/notion
 python3 -m scripts.notion_to_content
 ```
 
@@ -16,7 +17,17 @@ To replace all generated `content/*.md` notes in one go:
 python3 -m scripts.notion_to_content --clean
 ```
 
-- **Inputs**: all `*.md` and `*.csv` under `external/notion/`.
+Options:
+
+- Use a specific export directory or zip file with `--source`:
+
+```bash
+python3 -m scripts.notion_to_content --source ./exports/my-export.zip
+```
+
+- Or set the environment variable `NOTION_EXPORT_DIR` to point at a directory or zip.
+
+- **Inputs**: by default the pipeline prefers any export found in `./exports/` (selecting the most-recent file or directory by modification time); if no `./exports/` entry exists it falls back to `external/notion/`. You can override with `--source` or `NOTION_EXPORT_DIR`.
 - **Outputs**:
   - `content/*.md` — one file per exported page, plus one index file per database CSV view.
   - `docs/notion-import-manifest.json` — per-file `notion_id`, `source_export`, `output`, and index metadata.

@@ -7,6 +7,7 @@
 - The `./content` directory contains all of the articles, design, records, and prose for the Marloth books.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
 - The `./external/notion/` directory contains exported Notion data which is used to populate `./content` files.
+- All external dependencies and tooling installs should be performed within the devcontainer Dockerfile, not via user-local or post-create commands.
 
 ## Working Conventions
 - Make focused changes that address the requested task only.

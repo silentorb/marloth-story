@@ -1,0 +1,3 @@
+# Add Python dependencies here for the dev container environment.
+# Example:
+# requests==2.31.0

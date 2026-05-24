@@ -1,10 +1,10 @@
 {
     "name": "Marloth Story",
     "build": {
-        "dockerfile": "Dockerfile"
+        "dockerfile": "Dockerfile",
+        "context": ".."
     },
     "remoteUser": "vscode",
-    "postCreateCommand": "bun install",
     "customizations": {
         "vscode": {
             "extensions": [],

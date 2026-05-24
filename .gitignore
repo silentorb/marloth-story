@@ -22,3 +22,6 @@ venv/
 .ruff_cache/
 .coverage
 htmlcov/
+
+# Local editor state
+content/.obsidian/
