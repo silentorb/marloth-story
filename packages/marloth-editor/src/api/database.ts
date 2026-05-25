@@ -3,19 +3,20 @@ import {
   exportFullGraph,
   exportOverviewGraph,
   getDatabaseViewDetail,
-  getRecordDetail,
+  getRecordPageDetail,
   GraphDatabase,
   searchRecords,
   updateRecordBody,
   type GraphSnapshot,
+  type RecordPageDetail,
 } from "marloth-db";
 import { statSync } from "node:fs";
-import type { RecordDetail, RecordSummary } from "../shared/types";
+import type { RecordSummary } from "../shared/types";
 import type { DatabaseViewDetail } from "marloth-db";
 
 export interface EditorDatabase {
   getHomeId(): string;
-  getRecord(id: string): RecordDetail | null;
+  getRecord(id: string, databaseView?: string): RecordPageDetail | null;
   getDatabaseView(id: string, view?: string): DatabaseViewDetail | null;
   search(query: string, limit?: number): RecordSummary[];
   saveBody(id: string, body: string): boolean;

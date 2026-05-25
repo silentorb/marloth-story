@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { editorViewCtx } from "@milkdown/kit/core";
 import { Crepe } from "@milkdown/crepe";
 import "@milkdown/crepe/theme/common/style.css";
 import "@milkdown/crepe/theme/frame-dark.css";
@@ -9,10 +10,8 @@ import {
 } from "../../shared/types";
 import type { RecordSummary } from "../../shared/types";
 import { installCalloutDecoration } from "../callout-decoration";
-import {
-  resolveRecordLinkTarget,
-  rewriteStandaloneRecordLinks,
-} from "../record-links";
+import { resolveRecordLinkTarget } from "../record-links";
+import { preprocessStandaloneMarkdown } from "../standalone-markdown";
 import "./editor.css";
 
 interface MentionState {
@@ -27,6 +26,7 @@ interface MarlothEditorProps {
   recordId: string;
   title: string;
   initialBody: string;
+  hideTitle?: boolean;
   onBodyChange?: (body: string) => void;
   onNavigate?: (recordId: string, openInNewTab?: boolean) => void;
 }
@@ -36,6 +36,7 @@ export function MarlothEditor({
   recordId,
   title,
   initialBody,
+  hideTitle = false,
   onBodyChange,
   onNavigate,
 }: MarlothEditorProps) {
@@ -43,8 +44,11 @@ export function MarlothEditor({
   const crepeRef = useRef<Crepe | null>(null);
   const [mention, setMention] = useState<MentionState | null>(null);
   const [results, setResults] = useState<RecordSummary[]>([]);
+  const [initError, setInitError] = useState<string | null>(null);
   const mentionRef = useRef<MentionState | null>(null);
+  const resultsRef = useRef<RecordSummary[]>([]);
   mentionRef.current = mention;
+  resultsRef.current = results;
 
   const closeMention = useCallback(() => {
     setMention(null);
@@ -56,7 +60,7 @@ export function MarlothEditor({
       const editor = crepeRef.current?.editor;
       if (!editor) return;
       editor.action((ctx) => {
-        const view = ctx.get("editorView");
+        const view = ctx.get(editorViewCtx);
         const { state, dispatch } = view;
         const { from } = state.selection;
         const mentionState = mentionRef.current;
@@ -83,9 +87,15 @@ export function MarlothEditor({
     if (!root) return;
 
     let destroyed = false;
+    setInitError(null);
+    root.replaceChildren();
+    const editorDefault =
+      api.host === "standalone"
+        ? preprocessStandaloneMarkdown(initialBody, window.location.href)
+        : initialBody;
     const crepe = new Crepe({
       root,
-      defaultValue: initialBody,
+      defaultValue: editorDefault,
       features: {
         [Crepe.Feature.Toolbar]: true,
         [Crepe.Feature.LinkTooltip]: true,
@@ -105,13 +115,18 @@ export function MarlothEditor({
       },
     });
 
+    crepe.on((listener) => {
+      listener.markdownUpdated((_ctx, markdown, prevMarkdown) => {
+        if (markdown !== prevMarkdown) onBodyChange?.(markdown);
+      });
+    });
+
     crepeRef.current = crepe;
 
     void crepe.create().then(() => {
       if (destroyed) return;
-      const editor = crepe.editor;
-      editor.action((ctx) => {
-        const view = ctx.get("editorView");
+      crepe.editor.action((ctx) => {
+        const view = ctx.get(editorViewCtx);
         const dom = view.dom;
         installCalloutDecoration(view);
 
@@ -124,10 +139,9 @@ export function MarlothEditor({
             return;
           }
           if (event.key === "ArrowDown") {
+            const count = resultsRef.current.length;
             setMention((prev) =>
-              prev
-                ? { ...prev, activeIndex: Math.min(prev.activeIndex + 1, results.length - 1) }
-                : prev,
+              prev ? { ...prev, activeIndex: Math.min(prev.activeIndex + 1, count - 1) } : prev,
             );
             event.preventDefault();
             return;
@@ -139,9 +153,12 @@ export function MarlothEditor({
             event.preventDefault();
             return;
           }
-          if (event.key === "Enter" && results[state.activeIndex]) {
-            insertMention(results[state.activeIndex]!);
-            event.preventDefault();
+          if (event.key === "Enter") {
+            const item = resultsRef.current[state.activeIndex];
+            if (item) {
+              insertMention(item);
+              event.preventDefault();
+            }
           }
         };
 
@@ -168,39 +185,27 @@ export function MarlothEditor({
         dom.addEventListener("keydown", onKeyDown);
         dom.addEventListener("input", onInput);
       });
-
-      editor.on((listener) => {
-        listener.markdownUpdated((_ctx, markdown, prevMarkdown) => {
-          if (markdown !== prevMarkdown) onBodyChange?.(markdown);
-          if (api.host === "standalone") {
-            editor.action((ctx) => {
-              rewriteStandaloneRecordLinks(ctx.get("editorView").dom);
-            });
-          }
-        });
-      });
-
-      if (api.host === "standalone") {
-        editor.action((ctx) => {
-          rewriteStandaloneRecordLinks(ctx.get("editorView").dom);
-        });
+    }).catch((err: unknown) => {
+      console.error("Marloth editor failed to initialize:", err);
+      if (!destroyed) {
+        setInitError(err instanceof Error ? err.message : String(err));
       }
     });
 
-    const onClick = api.host === "vscode"
-      ? (event: MouseEvent) => {
-          const target = event.target as HTMLElement | null;
-          const anchor = target?.closest("a") as HTMLAnchorElement | null;
-          if (!anchor) return;
-          const recordTarget = resolveRecordLinkTarget(anchor.getAttribute("href") ?? "");
-          if (!recordTarget) return;
-          event.preventDefault();
-          event.stopPropagation();
-          const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
-          onNavigate?.(recordTarget, openInNewTab);
-          api.navigate(recordTarget, openInNewTab);
-        }
-      : null;
+    const onClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      const anchor = target?.closest("a") as HTMLAnchorElement | null;
+      if (!anchor) return;
+      const recordTarget = resolveRecordLinkTarget(anchor.getAttribute("href") ?? "");
+      if (!recordTarget) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
+      onNavigate?.(recordTarget, openInNewTab);
+      if (api.host === "vscode") {
+        api.navigate(recordTarget, openInNewTab);
+      }
+    };
 
     const onContextMenu = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
@@ -221,19 +226,16 @@ export function MarlothEditor({
       anchor.setAttribute("href", marlothHref(recordTarget));
     };
 
-    if (onClick) {
-      root.addEventListener("click", onClick);
-      root.addEventListener("auxclick", onClick);
-    }
+    root.addEventListener("click", onClick);
+    root.addEventListener("auxclick", onClick);
     root.addEventListener("contextmenu", onContextMenu);
 
     return () => {
       destroyed = true;
-      if (onClick) {
-        root.removeEventListener("click", onClick);
-        root.removeEventListener("auxclick", onClick);
-      }
+      root.removeEventListener("click", onClick);
+      root.removeEventListener("auxclick", onClick);
       root.removeEventListener("contextmenu", onContextMenu);
+      root.replaceChildren();
       void crepe.destroy();
       crepeRef.current = null;
     };
@@ -245,16 +247,18 @@ export function MarlothEditor({
     onBodyChange,
     onNavigate,
     recordId,
-    results.length,
     title,
   ]);
 
   return (
     <div className="marloth-editor-shell">
-      <header className="marloth-editor-header">
-        <h1 className="marloth-editor-title">{title}</h1>
-      </header>
+      {hideTitle ? null : (
+        <header className="marloth-editor-header">
+          <h1 className="marloth-editor-title">{title}</h1>
+        </header>
+      )}
       <div className="marloth-editor-body" ref={rootRef} />
+      {initError ? <div className="marloth-editor-error">{initError}</div> : null}
       {mention ? (
         <div
           className="marloth-mention-menu"

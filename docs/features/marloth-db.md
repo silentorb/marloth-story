@@ -44,7 +44,7 @@ The database **must** model a **labeled property graph**:
 | Page (`.md`) | Vertex labeled `NotionPage`; scalar properties in JSON; markdown body in `body` |
 | Page relation property | Edge from page to related page; label from property name |
 | Database (CSV export) | Vertex labeled `NotionDatabase` |
-| Database row | Edge `(page)-[:IN_DATABASE {view, row_index, …columns}]->(database)` |
+| Database row / type instance | Edge `(page)-[:IS_A {view, row_index, …columns}]->(type)`; Name/title lives on the page vertex only |
 | CSV relation column | Edge from row's page to target page |
 
 - Relation targets missing from the export **may** be created as stub `NotionPage` vertices (title only) so the graph stays connected.
@@ -75,7 +75,8 @@ The database **must** model a **labeled property graph**:
 
 - `upsertVertex(id, labels, properties)` — create or merge vertex
 - `upsertEdge(sourceId, targetId, label, properties)` — create or merge edge
-- `getVertex` / `getEdge` / `counts` — inspection
+- `getRecordDetail` / `getRecordPageDetail` — inspection; the latter adds ordered **sections** (markdown, database table, relation tables)
+- `getDatabaseViewDetail` — database row table for a `NotionDatabase` vertex
 - `finalize()` — `PRAGMA optimize` + `VACUUM` for compact storage
 - Constructor `{ clean: true }` — delete existing file before open
 
@@ -121,6 +122,8 @@ See [notion-import.md](./notion-import.md) for export source options.
 | --- | --- |
 | `packages/marloth-db/src/schema.ts` | DDL and version |
 | `packages/marloth-db/src/graph.ts` | GraphDatabase API |
+| `packages/marloth-db/src/record-sections.ts` | Universal page sections (markdown + relation/database tables) |
+| `packages/marloth-db/src/database-view.ts` | Type instance table reconstruction from incoming `IS_A` edges |
 | `packages/notion-importer/src/graph-pipeline.ts` | Notion → graph import |
 | `packages/notion-importer/src/relations.ts` | Parse Notion relation link syntax |
 

@@ -1,4 +1,5 @@
 import type { GraphDatabase } from "./graph";
+import { TYPE_MEMBERSHIP_LABELS } from "./labels";
 
 const ROW_META_KEYS = new Set(["view", "row_index", "row_name"]);
 
@@ -66,7 +67,7 @@ function rowSort(a: DatabaseRow, b: DatabaseRow): number {
   return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
 }
 
-/** Build a database table view from IN_DATABASE membership edges and linked page titles. */
+/** Build a database table view from incoming IS_A (type instance) edges and linked page titles. */
 export function getDatabaseViewDetail(
   db: GraphDatabase,
   databaseId: string,
@@ -75,7 +76,9 @@ export function getDatabaseViewDetail(
   const database = db.getVertex(databaseId);
   if (!database || !database.labels.includes("NotionDatabase")) return null;
 
-  const incoming = db.listEdgesToTarget(databaseId, "IN_DATABASE");
+  const incoming = TYPE_MEMBERSHIP_LABELS.flatMap((label) =>
+    db.listEdgesToTarget(databaseId, label),
+  );
 
   const edgeViews = incoming
     .map((edge) => stringProperty(edge.properties.view))

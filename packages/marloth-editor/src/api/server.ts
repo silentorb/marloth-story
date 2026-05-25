@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { Database } from "bun:sqlite";
 import { openEditorDatabase } from "./database";
 
 const DEFAULT_PORT = 3847;
@@ -29,11 +30,8 @@ function corsPreflight(): Response {
   });
 }
 
-export function resolveDbPath(): string {
-  if (process.env.MARLOTH_DB_PATH) {
-    return resolve(process.env.MARLOTH_DB_PATH);
-  }
-
+function dbPathCandidates(): string[] {
+  const canonical = resolve(moduleDir, "../../../data/marloth.sqlite");
   const candidates: string[] = [];
   let dir = process.cwd();
   for (let depth = 0; depth < 6; depth += 1) {
@@ -42,15 +40,51 @@ export function resolveDbPath(): string {
     if (parent === dir) break;
     dir = parent;
   }
-  candidates.push(resolve(moduleDir, "../../../data/marloth.sqlite"));
+  candidates.push(canonical);
 
   const seen = new Set<string>();
-  for (const candidate of candidates) {
-    if (seen.has(candidate)) continue;
+  return candidates.filter((candidate) => {
+    if (seen.has(candidate)) return false;
     seen.add(candidate);
-    if (existsSync(candidate)) return candidate;
+    return true;
+  });
+}
+
+function vertexCount(dbPath: string): number {
+  try {
+    const db = new Database(dbPath, { readonly: true });
+    const row = db.prepare("SELECT COUNT(*) AS c FROM vertices").get() as { c: number };
+    db.close();
+    return row.c;
+  } catch {
+    return 0;
   }
-  return candidates[0]!;
+}
+
+export function pickExistingDbPath(candidates: string[], fallback: string): string {
+  let bestPath = fallback;
+  let bestCount = -1;
+
+  for (const candidate of candidates) {
+    if (!existsSync(candidate)) continue;
+    const count = vertexCount(candidate);
+    if (count > bestCount) {
+      bestCount = count;
+      bestPath = candidate;
+    }
+  }
+
+  return bestCount >= 0 ? bestPath : fallback;
+}
+
+export function resolveDbPath(): string {
+  if (process.env.MARLOTH_DB_PATH) {
+    return resolve(process.env.MARLOTH_DB_PATH);
+  }
+
+  const candidates = dbPathCandidates();
+  const canonical = candidates[candidates.length - 1]!;
+  return pickExistingDbPath(candidates, canonical);
 }
 
 export function resolveApiPort(): number {

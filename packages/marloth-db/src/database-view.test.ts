@@ -3,6 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { GraphDatabase } from "./graph";
+import { IS_A_LABEL } from "./labels";
 import { getDatabaseViewDetail } from "./database-view";
 
 describe("database-view", () => {
@@ -15,11 +16,11 @@ describe("database-view", () => {
     expect(getDatabaseViewDetail(db, "page1")).toBeNull();
   });
 
-  test("reads IN_DATABASE edges for a view", () => {
+  test("reads IS_A edges for a view", () => {
     const databaseId = "db12345678901234567890123456789012";
     db.upsertVertex(databaseId, ["NotionDatabase"], { title: "Features" });
     db.upsertVertex("page1", ["NotionPage"], { title: "Desperation" });
-    db.upsertEdge("page1", databaseId, "IN_DATABASE", {
+    db.upsertEdge("page1", databaseId, IS_A_LABEL, {
       view: "all",
       row_index: 0,
       priority: "High",
@@ -47,7 +48,7 @@ describe("database-view", () => {
     const databaseId = "db22345678901234567890123456789012";
     db.upsertVertex(databaseId, ["NotionDatabase"], { title: "Features" });
     db.upsertVertex("page2", ["NotionPage"], { title: "Peace in the eye of the storm" });
-    db.upsertEdge("page2", databaseId, "IN_DATABASE", {
+    db.upsertEdge("page2", databaseId, IS_A_LABEL, {
       view: "default",
       row_index: 0,
       row_name: "Stale CSV label",

@@ -20,6 +20,9 @@ For graph storage semantics, read [`marloth-db.md`](./marloth-db.md) and [`../on
 ### Editing model
 
 - The editor **must** read and write the `body` property of graph vertices via `marloth-db`.
+- Every record **must** render as a **universal page**: markdown (Milkdown) as the first section, followed by optional relationship and database table sections derived from graph edges.
+- Relationship tables **must** group outgoing edges by label; edge properties (except import metadata like `ordinal`, `via_database`) **must** appear as table columns.
+- Database table sections **must** appear on `NotionDatabase` records, built from incoming `IS_A` edges (row scalars on edges; Name from linked pages).
 - The canonical database path **must** follow `MARLOTH_DB_PATH` / `data/marloth.sqlite` conventions (see marloth-db).
 - Autosave **should** debounce writes (default ~800ms after last edit).
 
@@ -49,6 +52,7 @@ For graph storage semantics, read [`marloth-db.md`](./marloth-db.md) and [`../on
 ### Out of scope (v0.1)
 
 - Creating new graph records from the UI
+- Editing relationship edges or database row cells from the UI
 - Weighted edges or typed link metadata in the editor
 
 ## Design rationale
@@ -116,10 +120,12 @@ bun run editor:dev
 
 ## Verification
 
-- `bun test packages/marloth-editor/src`
-- `bun test packages/marloth-db/src`
+- `bun test` (repo root — runs marloth-db unit tests and marloth-editor typecheck + unit/component tests)
+- `bun run --cwd packages/marloth-editor test` includes `tsc -p tsconfig.check.json` (webview/shared/api)
+- Component smoke tests use synthetic fixtures in `src/webview/test-fixtures/` (no real graph content)
 - Manual: open home → edit → reload → body persisted
 - Manual: `@` search inserts link; click navigates; Ctrl+click opens new tab
+- Manual: open any record with relation sections and confirm tables render
 
 ## Implementation pointers
 
@@ -128,7 +134,10 @@ bun run editor:dev
 | `packages/marloth-editor/src/api/server.ts` | Bun HTTP API |
 | `packages/marloth-editor/src/webview/` | React + Milkdown Crepe UI |
 | `packages/marloth-editor/src/extension/` | VS Code custom editor provider |
+| `packages/marloth-editor/src/webview/components/RecordPageView.tsx` | Universal page layout (markdown + sections) |
+| `packages/marloth-editor/src/webview/components/RelationSectionView.tsx` | Outgoing relationship table section |
 | `packages/marloth-db/src/queries.ts` | Record get/search/save helpers |
+| `packages/marloth-db/src/record-sections.ts` | Section assembly for record API |
 
 ## See also
 

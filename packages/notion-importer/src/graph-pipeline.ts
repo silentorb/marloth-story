@@ -10,7 +10,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve } from "node:path";
-import { GraphDatabase } from "marloth-db";
+import { GraphDatabase, IS_A_LABEL } from "marloth-db";
 import { findExportFiles, readExportText } from "./export-fs";
 import { extractNotionId } from "./ids";
 import * as indexes from "./indexes";
@@ -350,11 +350,11 @@ function importCsvFile(
     const targetPageId = pageId;
     if (targetPageId) {
       ensurePageVertex(db, targetPageId, (nameLinks[0]?.label ?? rowName) || targetPageId);
-      db.upsertEdge(targetPageId, databaseId, "IN_DATABASE", rowProperties);
+      db.upsertEdge(targetPageId, databaseId, IS_A_LABEL, rowProperties);
     } else if (rowName || Object.keys(rowScalars).length > 0) {
       const orphanId = orphanPageId(databaseId, parsed.viewKey, rowIndex);
       ensurePageVertex(db, orphanId, rowName || orphanId, { orphan_row: "true" });
-      db.upsertEdge(orphanId, databaseId, "IN_DATABASE", rowProperties);
+      db.upsertEdge(orphanId, databaseId, IS_A_LABEL, rowProperties);
     }
 
     for (const [col, val] of Object.entries(cells)) {

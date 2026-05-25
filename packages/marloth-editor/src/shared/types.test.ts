@@ -30,5 +30,8 @@ describe("link helpers", () => {
     expect(standaloneRecordUrl(id, "http://127.0.0.1:5173/?view=overview")).toBe(
       "http://127.0.0.1:5173/?record=72b6fb455b824b78962b0e509cc091c9",
     );
+    expect(standaloneRecordUrl(id, "http://127.0.0.1:5173/")).toBe(
+      "http://127.0.0.1:5173/?record=72b6fb455b824b78962b0e509cc091c9",
+    );
   });
 });

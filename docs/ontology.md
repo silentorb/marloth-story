@@ -102,6 +102,7 @@ Relationships express **meaning**, not just connectivity. Imported Notion relati
 
 | Relationship | Typical meaning | Example |
 | --- | --- | --- |
+| **IS_A** | Page is an instance of a type (imported from Notion database membership) | Scene → *Scene Archive* type |
 | **INSPIRATIONS** | B is influenced by or references external work A | Arc ← inspiration from *Pride and Prejudice* |
 | **FEATURES** | B implements, requires, or engages design feature A | Scene uses *Desperation* |
 | **MOTIVATIONS** | A explains why B exists | Motivation record → scene |
@@ -165,8 +166,20 @@ This section is a **hint**, not the authoritative schema spec.
 | Record | `vertices` row (`NotionPage` or `NotionDatabase`) |
 | Record type (semantic) | `inferred_notion_path`, title, body; future explicit labels |
 | Relationship | `edges` row with `label` + JSON `properties` |
-| Prose / notes | Vertex property `body` (markdown) |
+| Prose / notes | Vertex property `body` (markdown) — **first section** on every page |
+| Database row scalars | Edge properties on `(page)-[:IS_A]->(type)` — not on the page vertex |
+| Relation metadata | Edge properties on labeled relationship edges (e.g. `ordinal`, future `weight`) |
 | Stable identity | 32-hex Notion id (pages) or database id (CSVs) |
+
+### Universal pages (direction)
+
+The corpus is moving away from Notion’s split between “database rows” and “markdown pages.” **Every record is a page** that may combine:
+
+1. **Markdown section** — primary prose and notes (`body` on the vertex).
+2. **Relationship sections** — one table per outgoing relationship type (edge label), listing linked records plus any properties stored on those edges.
+3. **Database table section** — for `NotionDatabase` vertices (types), incoming `IS_A` instances rendered as a table (Name from the linked page; other columns from edge properties).
+
+Scalar values that belonged to a database row in Notion (except Name/title) **belong on the relationship edge**, not duplicated on the page vertex, unless the value is clearly intrinsic to the referenced node itself.
 
 Full DDL and import rules: [`docs/features/marloth-db.md`](./features/marloth-db.md).
 

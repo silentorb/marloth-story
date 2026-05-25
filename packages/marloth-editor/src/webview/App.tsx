@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DatabaseTableView } from "./components/DatabaseTableView";
 import { GraphView } from "./components/GraphView";
-import { MarlothEditor } from "./components/MarlothEditor";
+import { RecordPageView } from "./components/RecordPageView";
 import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
-import type { AppView, DatabaseViewDetail, RecordDetail } from "../shared/types";
+import type { AppView, RecordPageDetail } from "../shared/types";
 import { standaloneRecordUrl } from "../shared/types";
 import { navigateStandaloneRecord, standaloneViewUrl } from "./record-links";
 import {
@@ -15,10 +14,6 @@ import {
 export type { AppView };
 
 type SaveState = "idle" | "dirty" | "saving" | "saved" | "error";
-
-function isDatabaseRecord(record: RecordDetail): boolean {
-  return record.labels.includes("NotionDatabase");
-}
 
 function recordFromLocation(): string | null {
   const params = new URLSearchParams(window.location.search);
@@ -33,6 +28,12 @@ function viewFromLocation(): AppView {
   return "record";
 }
 
+function databaseViewFromLocation(): string | undefined {
+  const params = new URLSearchParams(window.location.search);
+  const dbView = params.get("dbView");
+  return dbView ?? undefined;
+}
+
 function viewToQueryParam(view: AppView): string | null {
   if (view === "graph-overview") return "overview";
   if (view === "graph-explorer") return "explorer";
@@ -44,8 +45,7 @@ export function App() {
   const [view, setView] = useState<AppView>(() =>
     api.host === "standalone" ? viewFromLocation() : "record",
   );
-  const [record, setRecord] = useState<RecordDetail | null>(null);
-  const [databaseView, setDatabaseView] = useState<DatabaseViewDetail | null>(null);
+  const [record, setRecord] = useState<RecordPageDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [showGraphNodeLabels, setShowGraphNodeLabels] = useState(readGraphShowNodeLabels);
@@ -79,30 +79,10 @@ export function App() {
     async (recordId: string, databaseViewName?: string) => {
       setError(null);
       try {
-        const detail = await api.getRecord(recordId);
+        const detail = await api.getRecord(recordId, databaseViewName);
         setRecord(detail);
         pendingBody.current = detail.body;
         setSaveState("idle");
-
-        if (isDatabaseRecord(detail)) {
-          const view = await api.getDatabaseView(recordId, databaseViewName);
-          setDatabaseView(view);
-        } else {
-          setDatabaseView(null);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : String(err));
-      }
-    },
-    [api],
-  );
-
-  const loadDatabaseView = useCallback(
-    async (recordId: string, view: string) => {
-      setError(null);
-      try {
-        const viewDetail = await api.getDatabaseView(recordId, view);
-        setDatabaseView(viewDetail);
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       }
@@ -120,7 +100,7 @@ export function App() {
 
     const fromUrl = recordFromLocation();
     if (fromUrl) {
-      await loadRecord(fromUrl);
+      await loadRecord(fromUrl, databaseViewFromLocation());
       return;
     }
     await loadRecord(home);
@@ -255,42 +235,15 @@ export function App() {
           <div className="marloth-error">{error}</div>
         ) : !record ? (
           <div className="marloth-loading">Loading…</div>
-        ) : isDatabaseRecord(record) ? (
-          databaseView ? (
-            <DatabaseTableView
-              api={api}
-              databaseView={databaseView}
-              onViewChange={(view) => void loadDatabaseView(record.id, view)}
-              onOpenRecord={openLinkedRecord}
-            />
-          ) : (
-            <div className="marloth-loading">Loading database…</div>
-          )
         ) : (
-          <>
-            <div className="marloth-app-bar">
-              {record.path ? <span className="marloth-save-status">{record.path}</span> : null}
-              <span className={`marloth-save-status is-${saveState}`}>
-                {saveState === "dirty"
-                  ? "Unsaved changes"
-                  : saveState === "saving"
-                    ? "Saving…"
-                    : saveState === "saved"
-                      ? "Saved"
-                      : saveState === "error"
-                        ? "Save failed"
-                        : ""}
-              </span>
-            </div>
-            <MarlothEditor
-              key={record.id}
-              api={api}
-              recordId={record.id}
-              title={record.title}
-              initialBody={record.body}
-              onBodyChange={scheduleSave}
-            />
-          </>
+          <RecordPageView
+            api={api}
+            record={record}
+            saveState={saveState}
+            onBodyChange={scheduleSave}
+            onDatabaseViewChange={(dbView) => void loadRecord(record.id, dbView)}
+            onOpenRecord={openLinkedRecord}
+          />
         )}
       </div>
     </div>

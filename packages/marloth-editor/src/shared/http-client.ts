@@ -1,4 +1,4 @@
-import type { GraphSnapshot, RecordDetail, RecordSummary, DatabaseViewDetail } from "./types";
+import type { GraphSnapshot, RecordPageDetail, RecordSummary, DatabaseViewDetail } from "./types";
 
 export type { GraphLink, GraphNode, GraphSnapshot, DatabaseViewDetail } from "marloth-db";
 
@@ -6,7 +6,7 @@ export const DEFAULT_API_BASE_URL = "http://127.0.0.1:3847";
 
 export interface EditorApiClient {
   getHomeId(): Promise<string>;
-  getRecord(id: string): Promise<RecordDetail>;
+  getRecord(id: string, view?: string): Promise<RecordPageDetail>;
   getDatabaseView(id: string, view?: string): Promise<DatabaseViewDetail>;
   search(query: string, limit?: number): Promise<RecordSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
@@ -41,8 +41,9 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       const data = await fetchJson<{ id: string }>("/api/home");
       return data.id;
     },
-    async getRecord(id: string): Promise<RecordDetail> {
-      const data = await fetchJson<{ record: RecordDetail }>(`/api/records/${id}`);
+    async getRecord(id: string, view?: string): Promise<RecordPageDetail> {
+      const params = view ? `?view=${encodeURIComponent(view)}` : "";
+      const data = await fetchJson<{ record: RecordPageDetail }>(`/api/records/${id}${params}`);
       return data.record;
     },
     async getDatabaseView(id: string, view?: string): Promise<DatabaseViewDetail> {

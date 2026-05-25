@@ -15,7 +15,10 @@
         "vscode": {
             "extensions": [],
             "settings": {
-                "files.eol": "\n"
+                "files.eol": "\n",
+                "terminal.integrated.automationProfile.linux": {
+                    "path": "/bin/bash"
+                }
             }
         }
     }

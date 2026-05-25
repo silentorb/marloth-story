@@ -9,7 +9,9 @@
   "engines": {
     "vscode": "^1.90.0"
   },
-  "categories": ["Other"],
+  "categories": [
+    "Other"
+  ],
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
@@ -56,8 +58,9 @@
     "build": "bun run build:webview && bun run build:extension",
     "build:webview": "vite build",
     "build:extension": "bun run scripts/build-extension.ts",
-    "test": "bun test src",
-    "vscode:prepublish": "bun run build"
+    "test": "bun run typecheck && bun test --preload ./src/test-setup.ts src",
+    "vscode:prepublish": "bun run build",
+    "typecheck": "tsc -p tsconfig.check.json --noEmit"
   },
   "dependencies": {
     "@milkdown/crepe": "7.20.0",
@@ -74,6 +77,9 @@
     "@vitejs/plugin-react": "4.3.4",
     "esbuild": "0.25.1",
     "typescript": "5.8.2",
-    "vite": "6.2.2"
+    "vite": "6.2.2",
+    "@happy-dom/global-registrator": "17.4.4",
+    "@testing-library/react": "16.2.0",
+    "happy-dom": "17.4.4"
   }
 }

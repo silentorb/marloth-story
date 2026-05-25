@@ -53,7 +53,8 @@ Each Notion page (`.md`) **must** become a vertex labeled `NotionPage` with prop
 For each `*.csv` matching Notion database export naming (`Name {database_id}.csv`, `Name {id}_all.csv`, etc.):
 
 - Emit a `NotionDatabase` vertex keyed by `database_id`.
-- Each row with a linked Name **must** create an `IN_DATABASE` edge from the page to the database, carrying scalar column values as edge properties.
+- Each row with a linked Name **must** create an `IS_A` edge from the page to the type (database), carrying scalar column values as edge properties (not on the page vertex).
+- Rows without a resolvable page **must** create a stub `NotionPage` and an `IS_A` edge (deterministic orphan id); do not store row payloads on the database vertex.
 - Relation columns **must** become edges from the row's page to targets.
 
 ### Manifest and reports

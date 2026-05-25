@@ -22,3 +22,4 @@ export type {
   RelationTableSection,
 } from "./record-sections";
 export { DDL, SCHEMA_VERSION } from "./schema";
+export { IS_A_LABEL, LEGACY_IN_DATABASE_LABEL, TYPE_MEMBERSHIP_LABELS, isTypeMembershipLabel } from "./labels";

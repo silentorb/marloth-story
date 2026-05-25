@@ -66,7 +66,9 @@ export function recordIdFromUri(uri: string): string | null {
 
 /** Browser URL for standalone dev mode (`?record=` query param). */
 export function standaloneRecordUrl(recordId: string, base?: string | URL): string {
-  const url = base instanceof URL ? new URL(base.href) : new URL(base ?? "http://127.0.0.1/");
+  const defaultBase =
+    typeof window !== "undefined" ? window.location.href : "http://127.0.0.1:5173/";
+  const url = base instanceof URL ? new URL(base.href) : new URL(base ?? defaultBase);
   url.searchParams.set("record", recordId);
   url.searchParams.delete("view");
   return url.toString();

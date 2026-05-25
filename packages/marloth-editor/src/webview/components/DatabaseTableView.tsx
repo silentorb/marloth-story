@@ -7,6 +7,7 @@ import "./database-table-view.css";
 interface DatabaseTableViewProps {
   api: EditorApi;
   databaseView: DatabaseViewDetail;
+  embedded?: boolean;
   onViewChange: (view: string) => void;
   onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
 }
@@ -22,6 +23,7 @@ function formatColumnLabel(key: string): string {
 export function DatabaseTableView({
   api,
   databaseView,
+  embedded = false,
   onViewChange,
   onOpenRecord,
 }: DatabaseTableViewProps) {
@@ -33,11 +35,13 @@ export function DatabaseTableView({
   );
 
   return (
-    <div className="marloth-database-view">
+    <div className={`marloth-database-view${embedded ? " is-embedded" : ""}`}>
       <header className="marloth-database-header">
-        <div className="marloth-database-heading">
-          <h1 className="marloth-database-title">{databaseView.title}</h1>
-        </div>
+        {embedded ? null : (
+          <div className="marloth-database-heading">
+            <h1 className="marloth-database-title">{databaseView.title}</h1>
+          </div>
+        )}
         {databaseView.views.length > 1 ? (
           <div className="marloth-database-view-tabs" role="tablist" aria-label="Database views">
             {databaseView.views.map((view) => (
