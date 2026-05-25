@@ -227,6 +227,16 @@ export class GraphDatabase {
       .all(limit) as { id: string; title: string; path: string | null }[];
   }
 
+  listVerticesWithBodyLike(pattern: string): { id: string; body: string }[] {
+    return this.db
+      .prepare(
+        `SELECT id, json_extract(properties, '$.body') AS body
+         FROM vertices
+         WHERE json_extract(properties, '$.body') LIKE ?`,
+      )
+      .all(pattern) as { id: string; body: string }[];
+  }
+
   /** Compact and optimize for deterministic, git-friendly storage. */
   finalize(): void {
     this.db.exec("PRAGMA optimize");

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Crepe } from "@milkdown/crepe";
 import "@milkdown/crepe/theme/common/style.css";
-import "@milkdown/crepe/theme/frame.css";
+import "@milkdown/crepe/theme/frame-dark.css";
 import type { EditorApi } from "../api/client";
 import {
   formatMarlothLink,
@@ -11,6 +11,7 @@ import {
   resolveLinkTarget,
 } from "../../shared/types";
 import type { RecordSummary } from "../../shared/types";
+import { installCalloutDecoration } from "../callout-decoration";
 import "./editor.css";
 
 interface MentionState {
@@ -111,6 +112,7 @@ export function MarlothEditor({
       editor.action((ctx) => {
         const view = ctx.get("editorView");
         const dom = view.dom;
+        installCalloutDecoration(view);
 
         const onKeyDown = (event: KeyboardEvent) => {
           const state = mentionRef.current;
@@ -238,9 +240,6 @@ export function MarlothEditor({
     <div className="marloth-editor-shell">
       <header className="marloth-editor-header">
         <h1 className="marloth-editor-title">{title}</h1>
-        <p className="marloth-editor-hint">
-          Click links to navigate · Ctrl/Cmd+click or middle-click for a new tab · @ to link records
-        </p>
       </header>
       <div className="marloth-editor-body" ref={rootRef} />
       {mention ? (

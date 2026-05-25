@@ -214,6 +214,7 @@ function importMarkdownPage(
   let body = bodyLines.join("\n").trim();
   if (body) body = `${sp.h1}\n\n${body}`;
   else body = sp.h1;
+  body = textutil.convertNotionAsidesToBlockquotes(body);
 
   const properties: Record<string, string> = {
     title: sp.h1Text,
