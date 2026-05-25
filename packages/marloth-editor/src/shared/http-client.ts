@@ -1,4 +1,10 @@
-import type { GraphSnapshot, RecordPageDetail, RecordSummary, DatabaseViewDetail } from "./types";
+import type {
+  GraphSnapshot,
+  RecordPageDetail,
+  RecordSummary,
+  DatabaseViewDetail,
+} from "./types";
+import type { UserSettings, UserSettingsPatch } from "./user-settings";
 
 export type { GraphLink, GraphNode, GraphSnapshot, DatabaseViewDetail } from "marloth-db";
 
@@ -12,6 +18,8 @@ export interface EditorApiClient {
   saveBody(id: string, body: string): Promise<void>;
   getGraphOverview(): Promise<GraphSnapshot>;
   getGraphFull(): Promise<GraphSnapshot>;
+  getUserSettings(): Promise<UserSettings>;
+  patchUserSettings(patch: UserSettingsPatch): Promise<UserSettings>;
 }
 
 function parseApiError(text: string, status: number): string {
@@ -74,6 +82,18 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     async getGraphFull(): Promise<GraphSnapshot> {
       const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/full");
       return data.graph;
+    },
+    async getUserSettings(): Promise<UserSettings> {
+      const data = await fetchJson<{ settings: UserSettings }>("/api/user-settings");
+      return data.settings;
+    },
+    async patchUserSettings(patch: UserSettingsPatch): Promise<UserSettings> {
+      const data = await fetchJson<{ settings: UserSettings }>("/api/user-settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(patch),
+      });
+      return data.settings;
     },
   };
 }

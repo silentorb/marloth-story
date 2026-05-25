@@ -1,4 +1,5 @@
 import type { EditorApi } from "../api/client";
+import { emptyUserSettings } from "../../shared/user-settings";
 
 export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"): EditorApi {
   return {
@@ -14,6 +15,8 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     saveBody: async () => {},
     getGraphOverview: async () => ({ nodes: [], links: [] }),
     getGraphFull: async () => ({ nodes: [], links: [] }),
+    getUserSettings: async () => emptyUserSettings(),
+    patchUserSettings: async () => emptyUserSettings(),
     navigate: () => {},
   };
 }

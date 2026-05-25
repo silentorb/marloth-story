@@ -5,8 +5,9 @@ beforeAll(() => {
   GlobalRegistrator.register({ url: "http://127.0.0.1:5173/" });
 });
 
-afterEach(() => {
+afterEach(async () => {
   document.body.replaceChildren();
+  await new Promise((resolve) => setTimeout(resolve, 0));
 });
 
 afterAll(async () => {

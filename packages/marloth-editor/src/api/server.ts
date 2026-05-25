@@ -1,11 +1,9 @@
-import { existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { Database } from "bun:sqlite";
 import { openEditorDatabase } from "./database";
+import { UserSettingsStore } from "./user-settings-store";
+import { resolveApiPort, resolveDbPath } from "./paths";
+import type { UserSettingsPatch } from "../shared/user-settings";
 
-const DEFAULT_PORT = 3847;
-const moduleDir = dirname(fileURLToPath(import.meta.url));
+export { pickExistingDbPath, resolveApiPort, resolveDbPath } from "./paths";
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -13,7 +11,7 @@ function json(data: unknown, status = 200): Response {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, PUT, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, PUT, PATCH, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     },
   });
@@ -24,77 +22,15 @@ function corsPreflight(): Response {
     status: 204,
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, PUT, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, PUT, PATCH, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     },
   });
 }
 
-function dbPathCandidates(): string[] {
-  const canonical = resolve(moduleDir, "../../../data/marloth.sqlite");
-  const candidates: string[] = [];
-  let dir = process.cwd();
-  for (let depth = 0; depth < 6; depth += 1) {
-    candidates.push(resolve(dir, "data/marloth.sqlite"));
-    const parent = resolve(dir, "..");
-    if (parent === dir) break;
-    dir = parent;
-  }
-  candidates.push(canonical);
-
-  const seen = new Set<string>();
-  return candidates.filter((candidate) => {
-    if (seen.has(candidate)) return false;
-    seen.add(candidate);
-    return true;
-  });
-}
-
-function vertexCount(dbPath: string): number {
-  try {
-    const db = new Database(dbPath, { readonly: true });
-    const row = db.prepare("SELECT COUNT(*) AS c FROM vertices").get() as { c: number };
-    db.close();
-    return row.c;
-  } catch {
-    return 0;
-  }
-}
-
-export function pickExistingDbPath(candidates: string[], fallback: string): string {
-  let bestPath = fallback;
-  let bestCount = -1;
-
-  for (const candidate of candidates) {
-    if (!existsSync(candidate)) continue;
-    const count = vertexCount(candidate);
-    if (count > bestCount) {
-      bestCount = count;
-      bestPath = candidate;
-    }
-  }
-
-  return bestCount >= 0 ? bestPath : fallback;
-}
-
-export function resolveDbPath(): string {
-  if (process.env.MARLOTH_DB_PATH) {
-    return resolve(process.env.MARLOTH_DB_PATH);
-  }
-
-  const candidates = dbPathCandidates();
-  const canonical = candidates[candidates.length - 1]!;
-  return pickExistingDbPath(candidates, canonical);
-}
-
-export function resolveApiPort(): number {
-  const raw = process.env.MARLOTH_EDITOR_API_PORT ?? String(DEFAULT_PORT);
-  const port = Number.parseInt(raw, 10);
-  return Number.isFinite(port) ? port : DEFAULT_PORT;
-}
-
-export function createApiHandler(dbPath = resolveDbPath()) {
+export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: UserSettingsStore) {
   const db = openEditorDatabase(dbPath);
+  const settingsStore = userSettingsStore ?? new UserSettingsStore();
 
   return async (req: Request): Promise<Response> => {
     if (req.method === "OPTIONS") return corsPreflight();
@@ -123,6 +59,17 @@ export function createApiHandler(dbPath = resolveDbPath()) {
         const q = url.searchParams.get("q") ?? "";
         const limit = Number.parseInt(url.searchParams.get("limit") ?? "20", 10);
         return json({ results: db.search(q, limit) });
+      }
+
+      if (path === "/api/user-settings") {
+        if (req.method === "GET") {
+          return json({ settings: settingsStore.read() });
+        }
+        if (req.method === "PATCH") {
+          const payload = (await req.json()) as UserSettingsPatch;
+          const settings = settingsStore.patch(payload);
+          return json({ settings });
+        }
       }
 
       const recordMatch = /^\/api\/records\/([a-f0-9]{32})$/i.exec(path);
@@ -162,10 +109,14 @@ export function createApiHandler(dbPath = resolveDbPath()) {
   };
 }
 
-export function startApiServer(options?: { dbPath?: string; port?: number }) {
+export function startApiServer(options?: {
+  dbPath?: string;
+  port?: number;
+  userSettingsStore?: UserSettingsStore;
+}) {
   const dbPath = options?.dbPath ?? resolveDbPath();
   const port = options?.port ?? resolveApiPort();
-  const handler = createApiHandler(dbPath);
+  const handler = createApiHandler(dbPath, options?.userSettingsStore);
 
   const server = Bun.serve({
     port,

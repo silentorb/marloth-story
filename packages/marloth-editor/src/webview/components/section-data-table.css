@@ -1,0 +1,26 @@
+.marloth-table-sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: inherit;
+}
+
+.marloth-table-sort-button:hover {
+  color: var(--marloth-text);
+}
+
+.marloth-table-sort-button.is-active {
+  color: var(--marloth-text);
+}
+
+.marloth-table-sort-indicator {
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--marloth-link);
+}

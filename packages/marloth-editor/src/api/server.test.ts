@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { GraphDatabase } from "marloth-db";
-import { pickExistingDbPath } from "./server";
+import { pickExistingDbPath } from "./paths";
 
 describe("pickExistingDbPath", () => {
   test("prefers populated database over empty stub", () => {

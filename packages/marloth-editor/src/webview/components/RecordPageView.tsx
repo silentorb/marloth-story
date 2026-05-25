@@ -72,7 +72,7 @@ export function RecordPageView({
               <section key={`database-${section.databaseView.view}`} className="marloth-record-section">
                 <SectionTitle
                   api={api}
-                  title={section.databaseView.title}
+                  title="Items"
                   typeRecordId={
                     record.id === section.databaseView.id ? null : section.databaseView.id
                   }
@@ -80,6 +80,7 @@ export function RecordPageView({
                 />
                 <DatabaseTableView
                   api={api}
+                  recordId={record.id}
                   databaseView={section.databaseView}
                   embedded
                   onViewChange={onDatabaseViewChange}
@@ -92,6 +93,7 @@ export function RecordPageView({
             <RelationSectionView
               key={`${section.label}-${index}`}
               api={api}
+              recordId={record.id}
               section={section}
               onOpenRecord={onOpenRecord}
             />

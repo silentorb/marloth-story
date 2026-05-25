@@ -25,6 +25,8 @@ For graph storage semantics, read [`marloth-db.md`](./marloth-db.md) and [`../on
 - Database table sections **must** appear on `NotionDatabase` records, built from incoming `IS_A` edges (row scalars on edges; Name from linked pages).
 - The canonical database path **must** follow `MARLOTH_DB_PATH` / `data/marloth.sqlite` conventions (see marloth-db).
 - Autosave **should** debounce writes (default ~800ms after last edit).
+- Local UI preferences (table sort order, etc.) **must** persist in a gitignored user settings file (`.marloth/user-settings.json` by default), storing sparse overrides only—not full copies of graph data.
+- Section tables **must** support sortable columns; default sort is Name ascending. Sort preferences **must** persist per section table across sessions.
 
 ### Cross-linking
 
@@ -117,6 +119,7 @@ bun run editor:dev
 | Database path | `MARLOTH_DB_PATH` | `data/marloth.sqlite` |
 | API port | `MARLOTH_EDITOR_API_PORT` | `3847` |
 | Dev webview URL | `MARLOTH_EDITOR_WEBVIEW_URL` | `http://127.0.0.1:5173` |
+| User settings file | `MARLOTH_USER_SETTINGS_PATH` | `.marloth/user-settings.json` (repo root) |
 
 ## Verification
 
@@ -126,12 +129,15 @@ bun run editor:dev
 - Manual: open home → edit → reload → body persisted
 - Manual: `@` search inserts link; click navigates; Ctrl+click opens new tab
 - Manual: open any record with relation sections and confirm tables render
+- Manual: click a section table column header to sort; reload and confirm sort persists in `.marloth/user-settings.json`
 
 ## Implementation pointers
 
 | Module | Responsibility |
 | --- | --- |
 | `packages/marloth-editor/src/api/server.ts` | Bun HTTP API |
+| `packages/marloth-editor/src/api/user-settings-store.ts` | Local user settings file I/O |
+| `packages/marloth-editor/src/shared/user-settings.ts` | User settings types and table sort helpers |
 | `packages/marloth-editor/src/webview/` | React + Milkdown Crepe UI |
 | `packages/marloth-editor/src/extension/` | VS Code custom editor provider |
 | `packages/marloth-editor/src/webview/components/RecordPageView.tsx` | Universal page layout (markdown + sections) |

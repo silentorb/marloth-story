@@ -3,6 +3,7 @@ import { GraphView } from "./components/GraphView";
 import { RecordPageView } from "./components/RecordPageView";
 import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
+import { UserSettingsProvider } from "./hooks/useUserSettings";
 import type { AppView, RecordPageDetail } from "../shared/types";
 import { standaloneRecordUrl } from "../shared/types";
 import { navigateStandaloneRecord, standaloneViewUrl } from "./record-links";
@@ -207,7 +208,8 @@ export function App() {
   }, []);
 
   return (
-    <div className="marloth-layout">
+    <UserSettingsProvider api={api}>
+      <div className="marloth-layout">
       <SidePanel
         activeView={view}
         onHome={() => void goHome()}
@@ -246,6 +248,7 @@ export function App() {
           />
         )}
       </div>
-    </div>
+      </div>
+    </UserSettingsProvider>
   );
 }
