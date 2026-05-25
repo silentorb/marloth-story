@@ -5,6 +5,7 @@ export interface ResolvedConfig {
   repoRoot: string;
   source?: string;
   clean: boolean;
+  dbPath?: string;
 }
 
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -80,7 +81,15 @@ function buildResolvedConfig(
 
   const clean = kv.has("clean");
 
-  return { repoRoot, source, clean };
+  const rawDb = kv.get("db");
+  const dbFromCli = typeof rawDb === "string" ? rawDb : undefined;
+  const rawDbPath =
+    dbFromCli ?? envString("MARLOTH_DB_PATH", env) ?? join("data", "marloth.sqlite");
+  const dbPath = resolve(
+    rawDbPath.startsWith("/") ? rawDbPath : join(repoRoot, rawDbPath),
+  );
+
+  return { repoRoot, source, clean, dbPath };
 }
 
 export function readConfig(
@@ -94,18 +103,20 @@ export function readConfig(
 
 export function printHelp(): void {
   const lines = [
-    "notion-importer — Notion export → flat content/ markdown",
+    "notion-importer — Notion export → Marloth SQLite property graph",
     "",
     "Usage: notion-importer [options]",
     "",
     "Options (CLI overrides environment):",
     "  --repo <path>     Repository root (default: marloth-story repo root)",
     "  --source <path>   Notion export directory or .zip (overrides exports/)",
-    "  --clean           Delete all content/*.md before import",
+    "  --db <path>       Output SQLite database (default: data/marloth.sqlite)",
+    "  --clean           Replace database contents on import",
     "  -h, --help",
     "",
     "Environment:",
     "  NOTION_EXPORT_DIR  Export directory or zip when --source is omitted",
+    "  MARLOTH_DB_PATH    Database path when --db is omitted",
     "",
     "Source resolution order: --source → NOTION_EXPORT_DIR → newest ./exports/ → ./external/notion/",
   ];

@@ -2,6 +2,8 @@
 
 Everything under `./docs` is **primarily for AI agents** — stable, high-level workspace knowledge so agents need not re-analyze the repo for basics on every task. Docs should remain **easy for humans to read and edit** when needed.
 
+The **[design ontology](../ontology.md)** (`docs/ontology.md`) describes the creative/design domain model in human terms. **Project feature** specs in this directory describe workspace tooling. Agents working with graph data should use **both** the ontology and schema-specific feature docs.
+
 Each file in this directory is the **authoritative design spec** for one major workspace feature. A feature doc should:
 
 1. **Streamline agent onboarding** — enough context to orient quickly without spelunking `packages/` or `content/`.
@@ -13,7 +15,8 @@ Each file in this directory is the **authoritative design spec** for one major w
 
 | Feature | Doc |
 | --- | --- |
-| Notion export → `content/` import | [notion-import.md](./notion-import.md) |
+| SQLite property graph (`data/`) | [marloth-db.md](./marloth-db.md) |
+| Notion export → graph import | [notion-import.md](./notion-import.md) |
 | Content watcher / pipeline (rippledoc) | [rippledoc.md](./rippledoc.md) |
 
 ## Split of concerns

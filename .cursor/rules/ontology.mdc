@@ -1,0 +1,20 @@
+---
+description: Design ontology — read for domain meaning before editing graph data
+globs: data/**,external/notion/**
+alwaysApply: false
+---
+
+# Design ontology
+
+You are working with Marloth **design records** (scenes, features, inspirations, products, etc.).
+
+Read the storage-agnostic domain model before interpreting or changing data:
+
+[`docs/ontology.md`](../../docs/ontology.md)
+
+Pair with schema docs when querying or importing:
+
+- [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)
+- [`docs/features/notion-import.md`](../../docs/features/notion-import.md)
+
+**Terminology:** “project feature” = `./docs/features/` tooling; “feature” = graph design record.

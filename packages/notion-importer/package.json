@@ -8,6 +8,9 @@
     "build": "bun build src/main.ts --outdir=../../dist/notion-importer --target=bun",
     "test": "bun test"
   },
+  "dependencies": {
+    "marloth-db": "workspace:*"
+  },
   "devDependencies": {
     "@types/bun": "1.2.23",
     "typescript": "5.8.2"

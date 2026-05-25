@@ -1,0 +1,185 @@
+# Marloth design ontology
+
+## Summary
+
+This document describes the **domain model** of the Marloth design corpus in human-friendly terms: what kinds of things exist, what they mean, and how they relate. It is **storage-agnostic**—agents should treat it as the conceptual source of truth for *what the data is about*, independent of SQLite tables or Notion export quirks.
+
+For how records are stored, queried, and imported, see [`docs/features/marloth-db.md`](./features/marloth-db.md) and [`docs/features/notion-import.md`](./features/notion-import.md).
+
+## When to read this
+
+Read this doc when your task involves:
+
+- Understanding or editing **design records** in the graph (scenes, features, inspirations, products, etc.)
+- Reasoning about **relationships** between creative, design, and finished-work artifacts
+- Deciding how new records should be categorized or linked
+- Traceability questions (why does this scene exist? what principle does it serve?)
+
+**Read both** this ontology and the schema-specific docs when interacting with data: ontology for *meaning*, schema docs for *mechanics*.
+
+## How agents should use this doc
+
+| Question | Start here | Then consult |
+| --- | --- | --- |
+| What is a “feature” in this project? | [Terminology](#terminology) | — |
+| What kinds of records exist? | [Entity types](#entity-types) | `inferred_notion_path` on vertices (legacy grouping) |
+| What does a link *mean*? | [Relationship types](#relationship-types) | Edge `label` in SQLite |
+| How is work scoped to a book vs game? | [Dimensions](#dimensions) | `PRODUCTS` / `PRODUCT` edges |
+| How does design connect to finished prose? | [Traceability](#traceability) | Vertex `body`, scene records |
+
+When ontology and storage disagree, **update one explicitly**—usually the ontology first (intent), then schema or import mapping.
+
+## Terminology
+
+| Term | Meaning |
+| --- | --- |
+| **Project feature** | Workspace tooling documented in `./docs/features/` (import pipeline, database package, etc.). Never use “feature” alone for this. |
+| **Feature** | A **design record**: a story, world, or craft idea the author may implement (e.g. *Desperation*, *Guest consultant*, *Dark forest*). Lives in the graph under `Marloth/Features/` and related paths. |
+| **Product** | A **deliverable umbrella**: a book, game, or related work that consumes and organizes design (e.g. *TWOLD*, *A Child's Fairytale World*, *The Shadowhood*). Products share inspirations and structural patterns. |
+| **Inspiration** | An external or reference work that informs design (novel, film, game, trope cluster). |
+| **Scene** | A unit of story action—often the bridge between high-level design and eventual prose. |
+| **Record** | Any vertex in the design graph unless context specifies otherwise. |
+
+## Entity types
+
+Types below are **semantic**. In the current import most records are stored as generic `NotionPage` vertices; type is inferred from Notion folder path (`inferred_notion_path`), title, and relation patterns. Future work may add explicit ontology labels on vertices.
+
+### Creative outputs and scope
+
+| Type | Description | Typical location (legacy Notion path) |
+| --- | --- | --- |
+| **Product** | Top-level deliverable: a book in the trilogy, a game, or adjacent work. Primary **scope** dimension. | `Marloth/Data/Products/` |
+| **Part** | Major division within a book's structure (e.g. *The Orphanage*, *The Castle*). | `Marloth/TWOLD Plot/.../Parts database/` |
+| **Arc** | Plot or thematic thread spanning scenes (e.g. forest arc, sorceress arc). | `Marloth/TWOLD Plot/Arcs/` |
+| **Scene** | Concrete story beat or sequence; primary unit linking plot structure to future prose. | `Marloth/Scenes/`, `Marloth/TWOLD Plot/.../Scene Archive/` |
+
+### Design vocabulary
+
+| Type | Description | Typical location |
+| --- | --- | --- |
+| **Feature** | Named design idea, mechanism, tone, or technique to employ or avoid. | `Marloth/Features/` |
+| **Inspiration** | Reference work or cultural source driving tone, structure, or motif. | `Marloth/Inspirations/` |
+| **Tension** | Paired or opposing forces in the design space (e.g. wonderland vs responsibility). | `Marloth/Data/Tensions/` |
+| **Problem** | Open design question or gap. | `Marloth/Data/Problems/` |
+| **Solution** | Proposed answer to a problem or way to resolve a tension. | `Marloth/Solutions/` |
+| **Motivation** | Rationale for a choice—why something should exist or matter narratively. | Often linked via `MOTIVATIONS` edges |
+| **Foil** | Contrasting pattern or anti-pattern (what *not* to do, or a deliberately opposed approach). | `Marloth/Archive/Foils/` |
+
+### World and cast
+
+| Type | Description | Typical location |
+| --- | --- | --- |
+| **Character** | Person (or person-like entity) in the story world. | `Marloth/Data/Characters/` |
+| **Group** | Faction, family, or ensemble. | `Marloth/Data/Groups/` |
+| **Location** | Place in the story world. | `Marloth/Data/Locations/` |
+| **Monster** | Creature or antagonistic entity type. | `Marloth/Data/Monsters/` |
+| **Character attribute** | Trait, role, or dimension applied to characters. | `Marloth/Data/Character Attributes/` |
+
+### Craft, pacing, and systems
+
+| Type | Description | Typical location |
+| --- | --- | --- |
+| **Article** | Longer-form design essay, exploration, or general writing idea (may outlive a single product). | `Marloth/Articles/` |
+| **Pacing type** | Temporal rhythm model (days, weeks, etc.) linked to inspirations. | `Marloth/Inspirations/Pacing types/` |
+| **Traversal type / reason** | How and why movement or progression through space/time works in the design. | Linked via `TRAVERSAL_*` edges |
+| **Restriction** | Constraint on what the work may do. | `Marloth/Data/Restrictions/` |
+| **Prop type** | Category of story object or symbolic item. | Linked via `PROP_TYPE` edges |
+
+### Meta and archive
+
+| Type | Description | Notes |
+| --- | --- | --- |
+| **Task** | Action item from planning; may reference features or arcs. | `Task List/` |
+| **Archive** | Superseded or experimental material kept for reference. | `Marloth/Archive/` |
+
+Not every record fits one type cleanly. Composite and cross-linked records are expected—use **relationships** and **dimensions** rather than forcing a single label.
+
+## Relationship types
+
+Relationships express **meaning**, not just connectivity. Imported Notion relation properties become directed edges; labels are uppercase slug forms of the property name (e.g. `Inspirations` → `INSPIRATIONS`).
+
+### Common semantic relationships
+
+| Relationship | Typical meaning | Example |
+| --- | --- | --- |
+| **INSPIRATIONS** | B is influenced by or references external work A | Arc ← inspiration from *Pride and Prejudice* |
+| **FEATURES** | B implements, requires, or engages design feature A | Scene uses *Desperation* |
+| **MOTIVATIONS** | A explains why B exists | Motivation record → scene |
+| **SCENES** | Parent contains or orders child scenes | Part → scenes in sequence |
+| **PART** / **ARCS** | Structural containment or membership | Scene belongs to arc / part |
+| **PRODUCTS** / **PRODUCT** | Scoped to deliverable | Part → *A Child's Fairytale World* |
+| **CHARACTERS**, **LOCATIONS**, **MONSTERS** | World elements present in or relevant to record | Scene → characters |
+| **SOLUTIONS** | Proposed resolution linked to problem or tension | Solution → tension |
+| **BLOCKING** / **BLOCKED_BY** | Dependency or sequencing constraint | Task A blocks task B |
+| **PARENTS** / **CHILDREN** | Hierarchical decomposition | Design tree |
+
+### Relationship strength (future)
+
+Today, edges are **boolean**: linked or not. The author intends **weighted** associations for many pairs—especially **feature ↔ inspiration**, where some inspirations strongly shape a feature and others only weakly apply. Weights are not implemented yet; when added they will be numeric edge properties (e.g. `weight`) without changing the underlying ontology.
+
+## Dimensions
+
+Records are organized along several **dimensions**. Only some are explicit today; others are implied by paths and edges.
+
+| Dimension | Role today | Notes |
+| --- | --- | --- |
+| **Product** | Primary scope slice | Books, game, shared corpus |
+| **Plot structure** | Part, arc, scene hierarchy | TWOLD-heavy |
+| **Design layer** | Feature, tension, solution, motivation | Cross-product |
+| **Reference layer** | Inspiration, article, foil | Shared across products |
+| **World layer** | Character, location, monster, group | Shared or product-specific |
+| **Craft layer** | Pacing, traversal, articles | Techniques portable to other writers |
+
+Expect **additional dimensions** over time. The ontology should evolve; storage may use vertex labels, properties, or edge metadata to make dimensions queryable.
+
+## Traceability
+
+A core project goal is linking **finished work** back through **design** to **intent** and **sources**. A typical traceability chain:
+
+```text
+Inspiration → Feature → Motivation → Scene → (future) Prose
+                ↓
+             Tension → Solution
+                ↓
+             Product / Part / Arc (scope)
+```
+
+Agents helping with design or writing should preserve and strengthen these links—not treat records as isolated notes. When adding or editing records, ask:
+
+1. **What product(s)** does this serve?
+2. **What design ideas (features)** does it implement or test?
+3. **What inspirations** inform it—and how strongly (when weights exist)?
+4. **Why** does it exist (motivation, tension, problem)?
+5. **Where** does it land in structure (part, arc, scene)?
+
+## Articles and portable ideas
+
+**Articles** often capture general craft insights that may benefit readers beyond Marloth. They may reference features and inspirations but are not always tied to a single product. Treat them as a bridge between the private design graph and potentially publishable writing-about-writing.
+
+## Current storage mapping (brief)
+
+This section is a **hint**, not the authoritative schema spec.
+
+| Ontology | Current storage |
+| --- | --- |
+| Record | `vertices` row (`NotionPage` or `NotionDatabase`) |
+| Record type (semantic) | `inferred_notion_path`, title, body; future explicit labels |
+| Relationship | `edges` row with `label` + JSON `properties` |
+| Prose / notes | Vertex property `body` (markdown) |
+| Stable identity | 32-hex Notion id (pages) or database id (CSVs) |
+
+Full DDL and import rules: [`docs/features/marloth-db.md`](./features/marloth-db.md).
+
+## Evolution
+
+This ontology will grow with the trilogy and game work. When adding entity or relationship types:
+
+1. Document them here in plain language.
+2. Align import tooling or manual conventions if needed.
+3. Prefer explicit vertex labels or properties over folder-path inference over time.
+
+## See also
+
+- [`AGENTS.md`](../AGENTS.md) — project purpose, terminology, modeling direction
+- [`docs/features/marloth-db.md`](./features/marloth-db.md) — property graph schema and API
+- [`docs/features/notion-import.md`](./features/notion-import.md) — Notion → graph import

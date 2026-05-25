@@ -5,9 +5,20 @@
     "": {
       "name": "marloth-story",
     },
+    "packages/marloth-db": {
+      "name": "marloth-db",
+      "version": "0.1.0",
+      "devDependencies": {
+        "@types/bun": "1.2.23",
+        "typescript": "5.8.2",
+      },
+    },
     "packages/notion-importer": {
       "name": "notion-importer",
       "version": "0.1.0",
+      "dependencies": {
+        "marloth-db": "workspace:*",
+      },
       "devDependencies": {
         "@types/bun": "1.2.23",
         "typescript": "5.8.2",
@@ -37,6 +48,8 @@
     "chokidar": ["chokidar@4.0.3", "", { "dependencies": { "readdirp": "^4.0.1" } }, "sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA=="],
 
     "csstype": ["csstype@3.2.3", "", {}, "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="],
+
+    "marloth-db": ["marloth-db@workspace:packages/marloth-db"],
 
     "notion-importer": ["notion-importer@workspace:packages/notion-importer"],
 

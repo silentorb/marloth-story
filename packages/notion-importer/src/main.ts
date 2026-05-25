@@ -13,6 +13,7 @@ await run({
   repoRoot: config.repoRoot,
   clean: config.clean,
   source: config.source,
+  dbPath: config.dbPath,
 });
 
-console.log("done. See content/ and docs/notion-*.md / manifest json");
+console.log("done. See data/marloth.sqlite and docs/notion-import-manifest.json");

@@ -25,3 +25,7 @@ htmlcov/
 
 # Local editor state
 content/.obsidian/
+
+# SQLite WAL sidecars (main db file under data/ is tracked)
+data/*.sqlite-wal
+data/*.sqlite-shm
