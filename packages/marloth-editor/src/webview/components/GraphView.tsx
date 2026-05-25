@@ -1,7 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ForceGraph2D, { type ForceGraphMethods, type LinkObject, type NodeObject } from "react-force-graph-2d";
 import type { EditorApi } from "../api/client";
-import type { GraphLink, GraphNode, GraphSnapshot } from "../../shared/types";
+import type { GraphLink, GraphLodSnapshot, GraphNode, GraphSnapshot } from "../../shared/types";
+import {
+  defaultExplorerLayerIndex,
+  graphLodLayerLabel,
+  isAggregatedLayer,
+  isOpenableGraphNode,
+  layerForceSettings,
+  pickExplorerSnapshot,
+  resolveGraphLodLayerIndex,
+} from "../graph-lod";
+import { readCssVar } from "../theme";
 import "./graph-view.css";
 
 type GraphMode = "overview" | "explorer";
@@ -11,7 +21,7 @@ interface GraphViewProps {
   api: EditorApi;
   showNodeLabels: boolean;
   onShowNodeLabelsChange: (value: boolean) => void;
-  onOpenRecord: (recordId: string) => void;
+  onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
 }
 
 type ForceNode = GraphNode & NodeObject;
@@ -19,20 +29,29 @@ type ForceLink = GraphLink & LinkObject;
 
 const NODE_REL_SIZE = 4;
 
-function snapshotTitle(mode: GraphMode): string {
-  return mode === "overview" ? "Graph Overview" : "Graph Explorer";
+const LINK_COLOR_EXPLORER_FALLBACK = "rgba(235, 235, 234, 0.28)";
+const LINK_COLOR_OVERVIEW_FALLBACK = "rgba(235, 235, 234, 0.42)";
+const LABEL_COLOR_FALLBACK = "#ebebea";
+
+function snapshotTitle(mode: GraphMode, layerIndex?: number, layerCount?: number): string {
+  if (mode === "overview") return "Graph Overview";
+  if (layerIndex === undefined || layerCount === undefined) return "Graph Explorer";
+  return `Graph Explorer · ${graphLodLayerLabel(layerIndex, layerCount)}`;
 }
 
-function nodeDisplayValue(node: ForceNode, mode: GraphMode): number {
-  if (mode === "overview") return Math.max(3, Math.sqrt((node.val ?? 1) + 1) * 2);
+function nodeDisplayValue(node: ForceNode, aggregated: boolean): number {
+  if (aggregated) return Math.max(3, Math.sqrt((node.val ?? 1) + 1) * 2);
   return 1;
 }
 
-function nodeRadius(node: ForceNode, mode: GraphMode): number {
-  return Math.sqrt(Math.max(0, nodeDisplayValue(node, mode) || 1)) * NODE_REL_SIZE;
+function nodeRadius(node: ForceNode, aggregated: boolean): number {
+  return Math.sqrt(Math.max(0, nodeDisplayValue(node, aggregated) || 1)) * NODE_REL_SIZE;
 }
 
 function formatNodeLabel(node: ForceNode): string {
+  if (node.isCluster && node.val !== undefined) {
+    return `${node.title} (${node.val})`;
+  }
   return node.title;
 }
 
@@ -59,9 +78,35 @@ export function GraphView({
   const containerRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<ForceGraphMethods<ForceNode, ForceLink> | undefined>(undefined);
   const [size, setSize] = useState({ width: 0, height: 0 });
-  const [snapshot, setSnapshot] = useState<GraphSnapshot | null>(null);
+  const [overviewSnapshot, setOverviewSnapshot] = useState<GraphSnapshot | null>(null);
+  const [explorerLod, setExplorerLod] = useState<GraphLodSnapshot | null>(null);
+  const [layerIndex, setLayerIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const { linkColorExplorer, linkColorOverview, labelColor } = useMemo(
+    () => ({
+      linkColorExplorer: readCssVar("--marloth-graph-link", LINK_COLOR_EXPLORER_FALLBACK),
+      linkColorOverview: readCssVar("--marloth-graph-link-strong", LINK_COLOR_OVERVIEW_FALLBACK),
+      labelColor: readCssVar("--marloth-text", LABEL_COLOR_FALLBACK),
+    }),
+    [],
+  );
+
+  const layerCount = explorerLod?.layerCount ?? 1;
+  const aggregated =
+    mode === "overview" ||
+    (explorerLod !== null && isAggregatedLayer(layerIndex, explorerLod.layerCount));
+  const snapshot =
+    mode === "overview"
+      ? overviewSnapshot
+      : explorerLod
+        ? pickExplorerSnapshot(explorerLod, layerIndex)
+        : null;
+  const linkColor = aggregated ? linkColorOverview : linkColorExplorer;
+  const { charge, linkDistance, cooldownTicks } =
+    mode === "overview"
+      ? { charge: -220, linkDistance: 90, cooldownTicks: 120 }
+      : layerForceSettings(layerIndex, layerCount);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -82,13 +127,22 @@ export function GraphView({
     let cancelled = false;
     setLoading(true);
     setError(null);
-    setSnapshot(null);
+    setOverviewSnapshot(null);
+    setExplorerLod(null);
+    setLayerIndex(0);
 
     void (async () => {
       try {
-        const graph =
-          mode === "overview" ? await api.getGraphOverview() : await api.getGraphFull();
-        if (!cancelled) setSnapshot(graph);
+        if (mode === "overview") {
+          const graph = await api.getGraphOverview();
+          if (!cancelled) setOverviewSnapshot(graph);
+        } else {
+          const graph = await api.getGraphExplorerLod();
+          if (!cancelled) {
+            setExplorerLod(graph);
+            setLayerIndex(defaultExplorerLayerIndex(graph.layerCount));
+          }
+        }
       } catch (err) {
         if (!cancelled) {
           setError(err instanceof Error ? err.message : String(err));
@@ -113,18 +167,28 @@ export function GraphView({
 
   useEffect(() => {
     if (!graphRef.current || graphData.nodes.length === 0) return;
-    graphRef.current.d3Force("charge")?.strength(mode === "overview" ? -220 : -40);
-    graphRef.current.d3Force("link")?.distance(mode === "overview" ? 90 : 30);
-  }, [graphData, mode]);
+    graphRef.current.d3Force("charge")?.strength(charge);
+    graphRef.current.d3Force("link")?.distance(linkDistance);
+  }, [graphData, charge, linkDistance]);
+
+  const handleZoom = useCallback(
+    (transform: { k: number }) => {
+      if (mode !== "explorer" || !explorerLod) return;
+      setLayerIndex((current) =>
+        resolveGraphLodLayerIndex(transform.k, current, explorerLod.layerCount),
+      );
+    },
+    [explorerLod, mode],
+  );
 
   const paintNodeLabel = useCallback(
     (node: ForceNode, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const label = formatNodeLabel(node);
-      const fontSize = Math.max(3, (mode === "overview" ? 12 : 10) / globalScale);
+      const fontSize = Math.max(3, (aggregated ? 12 : 10) / globalScale);
       const x = node.x ?? 0;
       const y = node.y ?? 0;
-      const offset = nodeRadius(node, mode) + 2 / globalScale;
-      const maxWidth = (mode === "overview" ? 96 : 72) / globalScale;
+      const offset = nodeRadius(node, aggregated) + 2 / globalScale;
+      const maxWidth = (aggregated ? 96 : 72) / globalScale;
 
       ctx.font = `${fontSize}px ui-sans-serif, sans-serif`;
       ctx.textAlign = "center";
@@ -132,10 +196,21 @@ export function GraphView({
 
       const text = truncateLabel(ctx, label, maxWidth);
 
-      ctx.fillStyle = "#ebebea";
+      ctx.fillStyle = labelColor;
       ctx.fillText(text, x, y + offset);
     },
-    [mode],
+    [aggregated, labelColor],
+  );
+
+  const handleNodeClick = useCallback(
+    (node: ForceNode, event?: MouseEvent) => {
+      if (!isOpenableGraphNode(node)) return;
+      const openInNewTab = Boolean(
+        event && (event.metaKey || event.ctrlKey || event.button === 1),
+      );
+      onOpenRecord(node.id, openInNewTab);
+    },
+    [onOpenRecord],
   );
 
   if (loading) {
@@ -153,8 +228,13 @@ export function GraphView({
   return (
     <div className="marloth-graph-view">
       <div className="marloth-graph-toolbar">
-        <span className="marloth-graph-toolbar-title">{snapshotTitle(mode)}</span>
+        <span className="marloth-graph-toolbar-title">
+          {snapshotTitle(mode, layerIndex, explorerLod?.layerCount)}
+        </span>
         <div className="marloth-graph-toolbar-actions">
+          {mode === "explorer" ? (
+            <span className="marloth-graph-toolbar-hint">Zoom in/out to change detail</span>
+          ) : null}
           <label className="marloth-graph-toggle">
             <input
               type="checkbox"
@@ -177,26 +257,30 @@ export function GraphView({
             graphData={graphData}
             nodeId="id"
             nodeLabel={(node) => formatNodeLabel(node as ForceNode)}
-            nodeVal={(node) => nodeDisplayValue(node as ForceNode, mode)}
+            nodeVal={(node) => nodeDisplayValue(node as ForceNode, aggregated)}
             nodeAutoColorBy="group"
             nodeCanvasObjectMode={showNodeLabels ? () => "after" : undefined}
             nodeCanvasObject={showNodeLabels ? paintNodeLabel : undefined}
             linkLabel={(link) => {
               const l = link as ForceLink;
-              if (mode === "overview" && l.weight !== undefined) {
+              if (aggregated && l.weight !== undefined) {
                 return `${l.label} (${l.weight})`;
               }
               return l.label;
             }}
+            linkColor={() => linkColor}
             linkWidth={(link) => {
               const l = link as ForceLink;
-              if (mode === "overview") return Math.min(6, 1 + Math.log2((l.weight ?? 1) + 1));
+              if (aggregated) return Math.min(6, 1 + Math.log2((l.weight ?? 1) + 1));
               return 0.5;
             }}
-            linkDirectionalArrowLength={mode === "overview" ? 4 : 2}
+            linkDirectionalArrowColor={() => linkColor}
+            linkDirectionalArrowLength={aggregated ? 4 : 2}
             linkDirectionalArrowRelPos={1}
-            onNodeClick={(node) => onOpenRecord((node as ForceNode).id)}
-            cooldownTicks={mode === "overview" ? 120 : 80}
+            onNodeClick={(node, event) => handleNodeClick(node as ForceNode, event)}
+            onZoom={handleZoom}
+            onZoomEnd={handleZoom}
+            cooldownTicks={cooldownTicks}
             d3AlphaDecay={0.02}
             d3VelocityDecay={0.3}
           />

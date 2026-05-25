@@ -108,9 +108,10 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy" content="${csp}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <title>Marloth Editor (dev)</title>
 </head>
-<body>
+<body style="background: #191919; color: #ebebea">
   <div id="root"></div>
   <script type="module" src="${this.devWebviewUrl}/@vite/client"></script>
   <script type="module" src="${this.devWebviewUrl}/src/webview/main.tsx"></script>
@@ -137,10 +138,11 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
   <meta charset="UTF-8" />
   <meta http-equiv="Content-Security-Policy" content="${csp}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <link rel="stylesheet" href="${styleUri}">
   <title>Marloth Editor</title>
 </head>
-<body>
+<body style="background: #191919; color: #ebebea">
   <div id="root"></div>
   <script type="module" src="${scriptUri}"></script>
 </body>

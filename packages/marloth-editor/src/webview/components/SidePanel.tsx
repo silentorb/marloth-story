@@ -1,17 +1,21 @@
 import { useState } from "react";
 import type { AppView } from "../../shared/types";
+import { SIDEBAR_RECORD_LINKS } from "../sidebar-nav";
 import "./side-panel.css";
 
 export interface SidePanelStandaloneUrls {
   home: string;
   overview: string;
   explorer: string;
+  records: Record<string, string>;
 }
 
 interface SidePanelProps {
   activeView: AppView;
+  activeRecordId?: string | null;
   onHome: () => void;
   onViewChange: (view: AppView) => void;
+  onOpenRecord: (recordId: string) => void;
   standaloneUrls?: SidePanelStandaloneUrls;
 }
 
@@ -51,7 +55,14 @@ function NavItem({
   );
 }
 
-export function SidePanel({ activeView, onHome, onViewChange, standaloneUrls }: SidePanelProps) {
+export function SidePanel({
+  activeView,
+  activeRecordId,
+  onHome,
+  onViewChange,
+  onOpenRecord,
+  standaloneUrls,
+}: SidePanelProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -98,6 +109,18 @@ export function SidePanel({ activeView, onHome, onViewChange, standaloneUrls }: 
           href={standaloneUrls?.explorer}
           onClick={standaloneUrls ? undefined : () => onViewChange("graph-explorer")}
         />
+        <div className="marloth-side-panel-divider" role="presentation" />
+        {SIDEBAR_RECORD_LINKS.map(({ id, label, icon }) => (
+          <NavItem
+            key={id}
+            active={activeView === "record" && activeRecordId === id}
+            title={label}
+            icon={icon}
+            label={label}
+            href={standaloneUrls?.records[id]}
+            onClick={standaloneUrls ? undefined : () => onOpenRecord(id)}
+          />
+        ))}
       </nav>
     </aside>
   );

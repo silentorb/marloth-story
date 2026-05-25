@@ -56,6 +56,15 @@
   flex-direction: column;
   gap: 4px;
   padding: 8px;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.marloth-side-panel-divider {
+  flex-shrink: 0;
+  height: 1px;
+  margin: 4px 2px;
+  background: var(--marloth-border);
 }
 
 .marloth-side-panel-item {

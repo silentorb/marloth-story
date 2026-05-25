@@ -13,8 +13,19 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     },
     search: async () => [],
     saveBody: async () => {},
+    saveTitle: async () => {},
     getGraphOverview: async () => ({ nodes: [], links: [] }),
     getGraphFull: async () => ({ nodes: [], links: [] }),
+    getGraphExplorerLod: async () => ({
+      layerCount: 5,
+      levels: [
+        { nodes: [], links: [] },
+        { nodes: [], links: [] },
+        { nodes: [], links: [] },
+        { nodes: [], links: [] },
+        { nodes: [], links: [] },
+      ],
+    }),
     getUserSettings: async () => emptyUserSettings(),
     patchUserSettings: async () => emptyUserSettings(),
     moveOrderedAssociation: async () => {

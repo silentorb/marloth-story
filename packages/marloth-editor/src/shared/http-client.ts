@@ -1,5 +1,6 @@
 import type {
   GraphSnapshot,
+  GraphLodSnapshot,
   RecordPageDetail,
   RecordSummary,
   DatabaseViewDetail,
@@ -8,7 +9,7 @@ import type {
 import type { UserSettings, UserSettingsPatch } from "./user-settings";
 import type { OrderedAssociationMoveParams } from "marloth-db";
 
-export type { GraphLink, GraphNode, GraphSnapshot, DatabaseViewDetail } from "marloth-db";
+export type { GraphLink, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseViewDetail } from "marloth-db";
 export type { OrderedAssociationViewDetail } from "marloth-db";
 
 export const DEFAULT_API_BASE_URL = "http://127.0.0.1:3847";
@@ -28,8 +29,10 @@ export interface EditorApiClient {
   ): Promise<OrderedAssociationViewDetail>;
   search(query: string, limit?: number): Promise<RecordSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
+  saveTitle(id: string, title: string): Promise<void>;
   getGraphOverview(): Promise<GraphSnapshot>;
   getGraphFull(): Promise<GraphSnapshot>;
+  getGraphExplorerLod(): Promise<GraphLodSnapshot>;
   getUserSettings(): Promise<UserSettings>;
   patchUserSettings(patch: UserSettingsPatch): Promise<UserSettings>;
 }
@@ -108,12 +111,23 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         body: JSON.stringify({ body }),
       });
     },
+    async saveTitle(id: string, title: string): Promise<void> {
+      await fetchJson(`/api/records/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title }),
+      });
+    },
     async getGraphOverview(): Promise<GraphSnapshot> {
       const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/overview");
       return data.graph;
     },
     async getGraphFull(): Promise<GraphSnapshot> {
       const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/full");
+      return data.graph;
+    },
+    async getGraphExplorerLod(): Promise<GraphLodSnapshot> {
+      const data = await fetchJson<{ graph: GraphLodSnapshot }>("/api/graph/explorer-lod");
       return data.graph;
     },
     async getUserSettings(): Promise<UserSettings> {

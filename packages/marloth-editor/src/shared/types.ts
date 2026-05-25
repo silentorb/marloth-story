@@ -82,4 +82,4 @@ export function standaloneRecordUrl(recordId: string, base?: string | URL): stri
   return url.toString();
 }
 
-export type { GraphLink, GraphNode, GraphSnapshot, DatabaseRow, DatabaseViewDetail } from "marloth-db";
+export type { GraphLink, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseRow, DatabaseViewDetail } from "marloth-db";

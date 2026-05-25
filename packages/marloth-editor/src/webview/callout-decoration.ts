@@ -24,6 +24,29 @@ export function hasLeadingCalloutEmoji(text: string): boolean {
   return LEADING_CALLOUT_EMOJI.test(text.trimStart());
 }
 
+export function extractLeadingCalloutEmoji(text: string): string | null {
+  const match = LEADING_CALLOUT_EMOJI.exec(text.trimStart());
+  return match ? match[0].trim() : null;
+}
+
+/** First page icon from markdown: emoji-only line or callout blockquote. */
+export function extractPageIconFromMarkdown(body: string): string | null {
+  for (const line of body.split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+
+    if (trimmed.startsWith(">")) {
+      const emoji = extractLeadingCalloutEmoji(trimmed.slice(1));
+      if (emoji) return emoji;
+      continue;
+    }
+
+    if (isEmojiOnlyLine(trimmed)) return trimmed;
+    break;
+  }
+  return null;
+}
+
 export function isCalloutBlockquote(blockquote: HTMLElement): boolean {
   const firstParagraph = blockquote.querySelector(":scope > p");
   if (!firstParagraph) return false;

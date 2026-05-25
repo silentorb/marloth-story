@@ -21,6 +21,7 @@ describe("RecordPageView", () => {
           record={makeRecordPageDetail()}
           saveState="idle"
           onBodyChange={() => {}}
+          onTitleChange={() => {}}
           onDatabaseViewChange={() => {}}
           onScopeChange={() => {}}
           onOrderedAssociationViewChange={() => {}}
@@ -29,7 +30,8 @@ describe("RecordPageView", () => {
       </UserSettingsProvider>,
     );
 
-    expect(screen.getByRole("heading", { name: "Example page", level: 1 })).toBeTruthy();
+    const titleField = screen.getByRole("textbox", { name: "Page title" }) as HTMLTextAreaElement;
+    expect(titleField.value).toBe("Example page");
     expect(screen.getByTestId("marloth-editor-stub")).toBeTruthy();
     expect(screen.getByRole("heading", { name: "Related items", level: 2 })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();

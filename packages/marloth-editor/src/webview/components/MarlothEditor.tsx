@@ -24,9 +24,10 @@ interface MentionState {
 interface MarlothEditorProps {
   api: EditorApi;
   recordId: string;
-  title: string;
   initialBody: string;
+  title?: string;
   hideTitle?: boolean;
+  onEditorBaseline?: (body: string) => void;
   onBodyChange?: (body: string) => void;
   onNavigate?: (recordId: string, openInNewTab?: boolean) => void;
 }
@@ -34,9 +35,10 @@ interface MarlothEditorProps {
 export function MarlothEditor({
   api,
   recordId,
-  title,
   initialBody,
-  hideTitle = false,
+  title = "",
+  hideTitle = true,
+  onEditorBaseline,
   onBodyChange,
   onNavigate,
 }: MarlothEditorProps) {
@@ -87,6 +89,8 @@ export function MarlothEditor({
     if (!root) return;
 
     let destroyed = false;
+    let editorReady = false;
+    let baselineCaptured = false;
     setInitError(null);
     root.replaceChildren();
     const editorDefault =
@@ -117,7 +121,13 @@ export function MarlothEditor({
 
     crepe.on((listener) => {
       listener.markdownUpdated((_ctx, markdown, prevMarkdown) => {
-        if (markdown !== prevMarkdown) onBodyChange?.(markdown);
+        if (markdown === prevMarkdown || destroyed || !editorReady) return;
+        if (!baselineCaptured) {
+          baselineCaptured = true;
+          onEditorBaseline?.(markdown);
+          return;
+        }
+        onBodyChange?.(markdown);
       });
     });
 
@@ -125,6 +135,7 @@ export function MarlothEditor({
 
     void crepe.create().then(() => {
       if (destroyed) return;
+      editorReady = true;
       crepe.editor.action((ctx) => {
         const view = ctx.get(editorViewCtx);
         const dom = view.dom;
@@ -244,6 +255,7 @@ export function MarlothEditor({
     closeMention,
     initialBody,
     insertMention,
+    onEditorBaseline,
     onBodyChange,
     onNavigate,
     recordId,

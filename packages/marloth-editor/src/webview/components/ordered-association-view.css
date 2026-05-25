@@ -51,14 +51,14 @@
 }
 
 .marloth-ordered-association-empty-row td {
-  color: var(--marloth-muted, #888);
+  color: var(--marloth-muted);
   font-style: italic;
 }
 
 .marloth-ordered-association-drag-overlay {
   padding: 0.5rem 0.75rem;
   border-radius: 0.375rem;
-  background: var(--marloth-surface, #fff);
+  background: var(--marloth-surface);
   box-shadow: 0 4px 16px rgb(0 0 0 / 0.12);
 }
 

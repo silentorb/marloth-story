@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { hasLeadingCalloutEmoji, isEmojiOnlyLine } from "./callout-decoration";
+import { hasLeadingCalloutEmoji, extractPageIconFromMarkdown, isEmojiOnlyLine } from "./callout-decoration";
 
 describe("callout-decoration", () => {
   test("hasLeadingCalloutEmoji detects inline callout text", () => {
@@ -11,5 +11,11 @@ describe("callout-decoration", () => {
   test("isEmojiOnlyLine detects icon-only lines", () => {
     expect(isEmojiOnlyLine("💡")).toBe(true);
     expect(isEmojiOnlyLine("💡 There could be two Manors…")).toBe(false);
+  });
+
+  test("extractPageIconFromMarkdown reads emoji-only and callout icons", () => {
+    expect(extractPageIconFromMarkdown("💡\n\n# Title")).toBe("💡");
+    expect(extractPageIconFromMarkdown("> ⚠️ Watch out\n\nBody")).toBe("⚠️");
+    expect(extractPageIconFromMarkdown("# Title only\n\nBody")).toBe(null);
   });
 });

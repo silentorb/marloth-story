@@ -1,5 +1,6 @@
 import {
   DEFAULT_HOME_RECORD_ID,
+  exportExplorerLodGraph,
   exportFullGraph,
   exportOverviewGraph,
   getDatabaseViewDetail,
@@ -7,7 +8,9 @@ import {
   GraphDatabase,
   searchRecords,
   updateRecordBody,
+  updateRecordTitle,
   applyOrderedAssociationMove,
+  type GraphLodSnapshot,
   type GraphSnapshot,
   type OrderedAssociationMoveParams,
   type OrderedAssociationViewDetail,
@@ -27,8 +30,10 @@ export interface EditorDatabase {
   ): OrderedAssociationViewDetail | null;
   search(query: string, limit?: number): RecordSummary[];
   saveBody(id: string, body: string): boolean;
+  saveTitle(id: string, title: string): boolean;
   getGraphOverview(): GraphSnapshot;
   getGraphFull(): GraphSnapshot;
+  getGraphExplorerLod(): GraphLodSnapshot;
   close(): void;
 }
 
@@ -81,11 +86,17 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
     saveBody(id: string, body: string): boolean {
       return updateRecordBody(currentDb(), id, body);
     },
+    saveTitle(id: string, title: string): boolean {
+      return updateRecordTitle(currentDb(), id, title);
+    },
     getGraphOverview(): GraphSnapshot {
       return exportOverviewGraph(currentDb());
     },
     getGraphFull(): GraphSnapshot {
       return exportFullGraph(currentDb());
+    },
+    getGraphExplorerLod(): GraphLodSnapshot {
+      return exportExplorerLodGraph(currentDb());
     },
     close(): void {
       db.close();

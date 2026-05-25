@@ -47,6 +47,12 @@
   color: var(--marloth-muted);
 }
 
+.marloth-graph-toolbar-hint {
+  font-size: 0.85rem;
+  color: var(--marloth-muted);
+  opacity: 0.85;
+}
+
 .marloth-graph-canvas {
   flex: 1;
   min-height: 0;

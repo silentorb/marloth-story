@@ -76,3 +76,23 @@ export function updateRecordBody(db: GraphDatabase, id: string, body: string): b
   db.mergeVertexProperties(id, { body });
   return true;
 }
+
+export function updateRecordTitle(db: GraphDatabase, id: string, title: string): boolean {
+  const vertex = db.getVertex(id);
+  if (!vertex) return false;
+  const trimmed = title.trim() || "Untitled";
+  const oldTitle = titleFromProperties(vertex.properties);
+  const body = bodyFromProperties(vertex.properties);
+  const content = stripLeadingTitleHeadingIfMatches(body, oldTitle);
+  db.mergeVertexProperties(id, { title: trimmed, body: content });
+  return true;
+}
+
+function stripLeadingTitleHeadingIfMatches(body: string, title: string): string {
+  const normalized = body.replace(/\r\n/g, "\n").trimStart();
+  const match = /^#\s+(.+?)(?:\n|$)/.exec(normalized);
+  if (!match) return body;
+  const heading = match[1]!.trim();
+  if (heading.localeCompare(title.trim(), undefined, { sensitivity: "accent" }) !== 0) return body;
+  return normalized.slice(match[0].length).replace(/^\n+/, "");
+}

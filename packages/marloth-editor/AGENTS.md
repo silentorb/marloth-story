@@ -4,6 +4,10 @@
 
 VS Code extension + React webview for editing Marloth design records stored in `data/marloth.sqlite`. Uses **Milkdown Crepe** for a Notion-like markdown experience with `@` cross-link autocomplete.
 
+## Theme
+
+The editor is **dark-first**: it always uses the `:root` palette in `src/webview/styles.css`, not the host OS or VS Code workbench theme. Milkdown loads `frame-dark.css`; code blocks use Crepe’s One Dark CodeMirror theme. New UI should use `--marloth-*` tokens (add tokens to `styles.css` rather than hardcoding colors).
+
 ## Architecture
 
 | Layer | Path | Runtime |

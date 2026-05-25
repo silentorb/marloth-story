@@ -1,10 +1,11 @@
 import { DatabaseTableView } from "./DatabaseTableView";
 import { MarlothEditor } from "./MarlothEditor";
 import { OrderedAssociationView } from "./OrderedAssociationView";
+import { PageTitle } from "./PageTitle";
 import { RelationSectionView } from "./RelationSectionView";
 import type { EditorApi } from "../api/client";
 import type { OrderedAssociationViewDetail, RecordPageDetail } from "../../shared/types";
-import { isEffectivelyEmptyMarkdown } from "../markdown-body";
+import { isEffectivelyEmptyMarkdown, resolvePageTitleAndContent } from "../markdown-body";
 import { SectionTitle } from "./RecordNameLink";
 import "./record-page-view.css";
 
@@ -13,6 +14,8 @@ interface RecordPageViewProps {
   record: RecordPageDetail;
   saveState: "idle" | "dirty" | "saving" | "saved" | "error";
   onBodyChange: (body: string) => void;
+  onEditorBaseline?: (body: string) => void;
+  onTitleChange: (title: string) => void;
   onDatabaseViewChange: (view: string) => void;
   onScopeChange: (scopeId: string) => void;
   onOrderedAssociationViewChange: (view: OrderedAssociationViewDetail) => void;
@@ -24,21 +27,21 @@ export function RecordPageView({
   record,
   saveState,
   onBodyChange,
+  onEditorBaseline,
+  onTitleChange,
   onDatabaseViewChange,
   onScopeChange,
   onOrderedAssociationViewChange,
   onOpenRecord,
 }: RecordPageViewProps) {
-  const markdownSection = record.sections.find((section) => section.type === "markdown");
-  const body = markdownSection?.type === "markdown" ? markdownSection.body : record.body;
-  const emptyMarkdown = isEffectivelyEmptyMarkdown(body, record.title);
-  const editorBody = emptyMarkdown ? "" : body;
+  const { content } = resolvePageTitleAndContent(record.body, record.title);
+  const emptyMarkdown = isEffectivelyEmptyMarkdown(record.body, record.title);
+  const editorBody = emptyMarkdown ? "" : content;
 
   return (
     <div className="marloth-record-page">
       <div className="marloth-app-bar">
         <div className="marloth-record-page-heading">
-          <h1 className="marloth-record-page-title">{record.title}</h1>
           {record.path ? <span className="marloth-record-page-path">{record.path}</span> : null}
         </div>
         <span className={`marloth-save-status is-${saveState}`}>
@@ -58,13 +61,13 @@ export function RecordPageView({
         <section
           className={`marloth-record-section marloth-markdown-section${emptyMarkdown ? " is-empty" : ""}`}
         >
+          <PageTitle value={record.title} onChange={onTitleChange} />
           <MarlothEditor
             key={record.id}
             api={api}
             recordId={record.id}
-            title={record.title}
             initialBody={editorBody}
-            hideTitle
+            onEditorBaseline={onEditorBaseline}
             onBodyChange={onBodyChange}
             onNavigate={onOpenRecord}
           />

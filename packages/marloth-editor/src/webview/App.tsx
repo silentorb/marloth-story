@@ -8,11 +8,19 @@ import type { GetRecordOptions } from "../shared/http-client";
 import type { AppView, OrderedAssociationViewDetail, RecordPageDetail } from "../shared/types";
 import { standaloneRecordUrl } from "../shared/types";
 import { navigateStandaloneRecord, standaloneViewUrl } from "./record-links";
+import { resolvePageTitleAndContent } from "./markdown-body";
+import {
+  bodyNeedsSave,
+  normalizeEditorBody,
+  titleNeedsSave,
+} from "./editor-save";
+import { SIDEBAR_RECORD_LINKS } from "./sidebar-nav";
 import {
   readGraphShowNodeLabels,
   writeGraphShowNodeLabels,
 } from "./graph-preferences";
 import { syncDocumentTitle } from "./document-title";
+import { syncDocumentIcon } from "./document-icon";
 
 export type { AppView };
 
@@ -60,14 +68,22 @@ export function App() {
   const [showGraphNodeLabels, setShowGraphNodeLabels] = useState(readGraphShowNodeLabels);
   const [homeId, setHomeId] = useState<string | null>(null);
   const pendingBody = useRef<string | null>(null);
+  const pendingTitle = useRef<string | null>(null);
+  const savedBody = useRef<string | null>(null);
+  const savedTitle = useRef<string | null>(null);
+  const recordIdRef = useRef<string | null>(null);
   const saveTimer = useRef<number | null>(null);
 
   const standaloneUrls = useMemo(() => {
     if (api.host !== "standalone" || !homeId) return undefined;
+    const records = Object.fromEntries(
+      SIDEBAR_RECORD_LINKS.map(({ id }) => [id, standaloneRecordUrl(id)]),
+    );
     return {
       home: standaloneRecordUrl(homeId),
       overview: standaloneViewUrl("graph-overview"),
       explorer: standaloneViewUrl("graph-explorer"),
+      records,
     };
   }, [api.host, homeId]);
 
@@ -90,12 +106,29 @@ export function App() {
   const loadRecord = useCallback(
     async (recordId: string, options?: GetRecordOptions | string) => {
       setError(null);
+      if (saveTimer.current) {
+        window.clearTimeout(saveTimer.current);
+        saveTimer.current = null;
+      }
       try {
         const normalized =
           typeof options === "string" ? { view: options } : (options ?? {});
         const detail = await api.getRecord(recordId, normalized);
-        setRecord(detail);
-        pendingBody.current = detail.body;
+        const { title, content } = resolvePageTitleAndContent(detail.body, detail.title);
+        const normalizedRecord = {
+          ...detail,
+          title,
+          body: content,
+          sections: detail.sections.map((section) =>
+            section.type === "markdown" ? { ...section, body: content } : section,
+          ),
+        };
+        recordIdRef.current = recordId;
+        setRecord(normalizedRecord);
+        pendingBody.current = content;
+        pendingTitle.current = title;
+        savedBody.current = content;
+        savedTitle.current = title;
         setSaveState("idle");
         syncStandaloneUrl("record", recordId, normalized);
       } catch (err) {
@@ -130,7 +163,18 @@ export function App() {
 
   useEffect(() => {
     syncDocumentTitle(view, record?.title);
-  }, [view, record?.title]);
+    if (api.host === "standalone") {
+      const urlRecordId = recordFromLocation();
+      syncDocumentIcon({
+        view,
+        recordId: record?.id ?? urlRecordId,
+        recordPath: record?.path,
+        recordBody: record?.body,
+        recordLabels: record?.labels,
+        homeId,
+      });
+    }
+  }, [api.host, view, record?.id, record?.title, record?.path, record?.body, record?.labels, homeId]);
 
   useEffect(() => {
     if (api.host !== "vscode") return;
@@ -150,18 +194,61 @@ export function App() {
     return () => window.removeEventListener("message", onMessage);
   }, [api.host, loadRecord]);
 
+  const syncEditorBaseline = useCallback(
+    (markdown: string) => {
+      if (!record) return;
+      const normalized = normalizeEditorBody(markdown, record.title);
+      savedBody.current = normalized;
+      pendingBody.current = normalized;
+    },
+    [record],
+  );
+
   const scheduleSave = useCallback(
     (body: string) => {
       if (!record) return;
-      pendingBody.current = body;
+      const normalizedBody = normalizeEditorBody(body, record.title);
+      if (!bodyNeedsSave(body, savedBody.current, record.title)) return;
+      pendingBody.current = normalizedBody;
       setSaveState("dirty");
       if (saveTimer.current) window.clearTimeout(saveTimer.current);
       saveTimer.current = window.setTimeout(() => {
         void (async () => {
-          if (!record || pendingBody.current === null) return;
+          const id = recordIdRef.current;
+          const nextBody = pendingBody.current;
+          if (!id || nextBody === null) return;
           setSaveState("saving");
           try {
-            await api.saveBody(record.id, pendingBody.current);
+            await api.saveBody(id, nextBody);
+            savedBody.current = nextBody;
+            setSaveState("saved");
+          } catch {
+            setSaveState("error");
+          }
+        })();
+      }, 800);
+    },
+    [api, record],
+  );
+
+  const scheduleSaveTitle = useCallback(
+    (title: string) => {
+      if (!record) return;
+      const trimmed = title.trim() || "Untitled";
+      if (!titleNeedsSave(title, savedTitle.current)) return;
+      pendingTitle.current = trimmed;
+      setRecord((prev) => (prev ? { ...prev, title: trimmed } : prev));
+      setSaveState("dirty");
+      if (saveTimer.current) window.clearTimeout(saveTimer.current);
+      saveTimer.current = window.setTimeout(() => {
+        void (async () => {
+          const id = recordIdRef.current;
+          const nextTitle = pendingTitle.current;
+          if (!id || nextTitle === null) return;
+          setSaveState("saving");
+          try {
+            await api.saveTitle(id, nextTitle);
+            savedTitle.current = nextTitle;
             setSaveState("saved");
           } catch {
             setSaveState("error");
@@ -198,7 +285,11 @@ export function App() {
   );
 
   const openRecordFromGraph = useCallback(
-    (recordId: string) => {
+    (recordId: string, openInNewTab = false) => {
+      if (openInNewTab) {
+        api.navigate(recordId, true);
+        return;
+      }
       if (api.host === "standalone") {
         navigateStandaloneRecord(recordId);
         return;
@@ -207,7 +298,7 @@ export function App() {
       syncStandaloneUrl("record", recordId);
       void loadRecord(recordId);
     },
-    [api.host, loadRecord, syncStandaloneUrl],
+    [api, loadRecord, syncStandaloneUrl],
   );
 
   const openLinkedRecord = useCallback(
@@ -245,8 +336,10 @@ export function App() {
       <div className="marloth-layout">
       <SidePanel
         activeView={view}
+        activeRecordId={view === "record" ? (record?.id ?? recordFromLocation()) : null}
         onHome={() => void goHome()}
         onViewChange={changeView}
+        onOpenRecord={(recordId) => openLinkedRecord(recordId)}
         standaloneUrls={standaloneUrls}
       />
       <div className="marloth-main">
@@ -276,6 +369,8 @@ export function App() {
             record={record}
             saveState={saveState}
             onBodyChange={scheduleSave}
+            onEditorBaseline={syncEditorBaseline}
+            onTitleChange={scheduleSaveTitle}
             onDatabaseViewChange={(dbView) => void loadRecord(record.id, { view: dbView, scope: scopeFromLocation() })}
             onScopeChange={(scopeId) => void loadRecord(record.id, { scope: scopeId })}
             onOrderedAssociationViewChange={updateOrderedAssociationView}

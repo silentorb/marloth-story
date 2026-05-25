@@ -1,3 +1,4 @@
+/* Dark-first: the editor does not follow OS light mode. Tokens live on :root only. */
 :root {
   color-scheme: dark;
   --marloth-font: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
@@ -8,6 +9,8 @@
   --marloth-border: rgba(255, 255, 255, 0.09);
   --marloth-hover: rgba(255, 255, 255, 0.06);
   --marloth-link: #6cb6ff;
+  --marloth-graph-link: rgba(235, 235, 234, 0.28);
+  --marloth-graph-link-strong: rgba(235, 235, 234, 0.42);
   font-family: var(--marloth-font);
   font-size: 16px;
   line-height: 1.5;
@@ -17,6 +20,11 @@
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  background: var(--marloth-bg);
 }
 
 html,

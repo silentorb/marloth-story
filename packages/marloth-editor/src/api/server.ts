@@ -55,6 +55,10 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
         return json({ graph: db.getGraphFull() });
       }
 
+      if (path === "/api/graph/explorer-lod") {
+        return json({ graph: db.getGraphExplorerLod() });
+      }
+
       if (path === "/api/records/search") {
         const q = url.searchParams.get("q") ?? "";
         const limit = Number.parseInt(url.searchParams.get("limit") ?? "20", 10);
@@ -83,12 +87,20 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
           return json({ record });
         }
         if (req.method === "PUT") {
-          const payload = (await req.json()) as { body?: string };
-          if (typeof payload.body !== "string") {
-            return json({ error: "body required" }, 400);
+          const payload = (await req.json()) as { body?: string; title?: string };
+          const hasBody = typeof payload.body === "string";
+          const hasTitle = typeof payload.title === "string";
+          if (!hasBody && !hasTitle) {
+            return json({ error: "body or title required" }, 400);
           }
-          const ok = db.saveBody(id, payload.body);
-          if (!ok) return json({ error: "not found" }, 404);
+          if (hasBody) {
+            const ok = db.saveBody(id, payload.body!);
+            if (!ok) return json({ error: "not found" }, 404);
+          }
+          if (hasTitle) {
+            const ok = db.saveTitle(id, payload.title!);
+            if (!ok) return json({ error: "not found" }, 404);
+          }
           return json({ ok: true });
         }
       }

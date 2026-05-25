@@ -28,6 +28,49 @@
   outline: none;
 }
 
+/* Notion-like: page title is outside the editor; demote in-content headings one level. */
+.marloth-editor-body .milkdown .ProseMirror h1 {
+  font-size: 36px;
+  line-height: 44px;
+  margin-top: 28px;
+}
+
+.marloth-editor-body .milkdown .ProseMirror h2 {
+  font-size: 32px;
+  line-height: 40px;
+  margin-top: 24px;
+}
+
+.marloth-editor-body .milkdown .ProseMirror h3 {
+  font-size: 28px;
+  line-height: 36px;
+  margin-top: 20px;
+}
+
+.marloth-editor-body .milkdown .ProseMirror h4 {
+  font-size: 24px;
+  line-height: 32px;
+  margin-top: 16px;
+}
+
+.marloth-editor-body .milkdown .ProseMirror h5 {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 28px;
+  margin-top: 16px;
+}
+
+.marloth-editor-body .milkdown .ProseMirror h6 {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  margin-top: 12px;
+}
+
+.marloth-editor-body .milkdown .ProseMirror > :first-child {
+  margin-top: 0;
+}
+
 .marloth-editor-body a {
   color: var(--marloth-link);
   text-decoration: underline;

@@ -45,6 +45,11 @@ For graph storage semantics, read [`marloth-db.md`](./marloth-db.md) and [`../on
 - Default home is the Marloth root page (`72b6fb455b824b78962b0e509cc091c9`) when present in the graph.
 - Records **must** open via virtual URIs: `marloth://record/{id}` using a custom editor (`marloth.editor`).
 
+### Presentation
+
+- The editor UI **must** default to a **dark** theme in standalone browser and VS Code webview modes, independent of OS `prefers-color-scheme` or VS Code workbench theme.
+- Shared colors **must** live as `--marloth-*` CSS custom properties on `:root` in `src/webview/styles.css`; canvas or library code that cannot use CSS directly should read those tokens (see `src/webview/theme.ts`).
+
 ### Dev / agent workflow
 
 - A **standalone browser mode** **must** be supported: Vite dev server + Bun API, without VS Code.
