@@ -6,8 +6,6 @@
     "packages/*"
   ],
   "scripts": {
-    "watch": "bun run --cwd packages/rippledoc start",
-    "build:watch": "bun run --cwd packages/rippledoc run build",
     "notion:import": "bun run --cwd packages/notion-importer start",
     "editor:dev": "bun run --cwd packages/marloth-editor dev:standalone",
     "editor:api": "bun run --cwd packages/marloth-editor dev:api",

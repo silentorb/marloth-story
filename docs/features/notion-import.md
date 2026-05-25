@@ -162,6 +162,5 @@ When implementation and this doc disagree, treat **this doc as authoritative** u
 ## See also
 
 - [marloth-db.md](./marloth-db.md) — property graph schema and API
-- [rippledoc.md](./rippledoc.md) — content watcher (legacy markdown; separate from import)
 - [`packages/notion-importer/AGENTS.md`](../../packages/notion-importer/AGENTS.md)
 - [`AGENTS.md`](../../AGENTS.md)
