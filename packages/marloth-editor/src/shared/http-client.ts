@@ -1,4 +1,6 @@
-import type { RecordDetail, RecordSummary } from "./types";
+import type { GraphSnapshot, RecordDetail, RecordSummary } from "./types";
+
+export type { GraphLink, GraphNode, GraphSnapshot } from "marloth-db";
 
 export const DEFAULT_API_BASE_URL = "http://127.0.0.1:3847";
 
@@ -7,6 +9,8 @@ export interface EditorApiClient {
   getRecord(id: string): Promise<RecordDetail>;
   search(query: string, limit?: number): Promise<RecordSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
+  getGraphOverview(): Promise<GraphSnapshot>;
+  getGraphFull(): Promise<GraphSnapshot>;
 }
 
 function parseApiError(text: string, status: number): string {
@@ -53,6 +57,14 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ body }),
       });
+    },
+    async getGraphOverview(): Promise<GraphSnapshot> {
+      const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/overview");
+      return data.graph;
+    },
+    async getGraphFull(): Promise<GraphSnapshot> {
+      const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/full");
+      return data.graph;
     },
   };
 }

@@ -35,6 +35,8 @@ export function createEditorApi(): EditorApi {
       getRecord: rest.getRecord.bind(rest),
       search: rest.search.bind(rest),
       saveBody: rest.saveBody.bind(rest),
+      getGraphOverview: rest.getGraphOverview.bind(rest),
+      getGraphFull: rest.getGraphFull.bind(rest),
       navigate(recordId: string, openInNewTab = false): void {
         vscode.postMessage({ type: "navigate", recordId, openInNewTab });
       },
@@ -47,6 +49,8 @@ export function createEditorApi(): EditorApi {
     getRecord: rest.getRecord.bind(rest),
     search: rest.search.bind(rest),
     saveBody: rest.saveBody.bind(rest),
+    getGraphOverview: rest.getGraphOverview.bind(rest),
+    getGraphFull: rest.getGraphFull.bind(rest),
     navigate(recordId: string, openInNewTab = false): void {
       const url = new URL(window.location.href);
       url.searchParams.set("record", recordId);

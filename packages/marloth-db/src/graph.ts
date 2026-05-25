@@ -237,6 +237,69 @@ export class GraphDatabase {
       .all(pattern) as { id: string; body: string }[];
   }
 
+  listVerticesForGraphExport(): {
+    id: string;
+    title: string;
+    path: string | null;
+    labels: string[];
+  }[] {
+    const rows = this.db
+      .prepare(
+        `SELECT id,
+                COALESCE(
+                  NULLIF(json_extract(properties, '$.title'), ''),
+                  NULLIF(json_extract(properties, '$.alias'), ''),
+                  'Untitled'
+                ) AS title,
+                json_extract(properties, '$.inferred_notion_path') AS path
+         FROM vertices`,
+      )
+      .all() as { id: string; title: string; path: string | null }[];
+
+    const labelRows = this.db
+      .prepare("SELECT vertex_id, label FROM vertex_labels ORDER BY vertex_id, label")
+      .all() as { vertex_id: string; label: string }[];
+
+    const labelsByVertex = new Map<string, string[]>();
+    for (const row of labelRows) {
+      const labels = labelsByVertex.get(row.vertex_id) ?? [];
+      labels.push(row.label);
+      labelsByVertex.set(row.vertex_id, labels);
+    }
+
+    return rows.map((row) => ({
+      id: row.id,
+      title: row.title,
+      path: row.path,
+      labels: labelsByVertex.get(row.id) ?? [],
+    }));
+  }
+
+  listEdgesForGraphExport(): {
+    id: string;
+    sourceId: string;
+    targetId: string;
+    label: string;
+  }[] {
+    return this.db
+      .prepare("SELECT id, source_id, target_id, label FROM edges")
+      .all()
+      .map((row) => {
+        const r = row as {
+          id: string;
+          source_id: string;
+          target_id: string;
+          label: string;
+        };
+        return {
+          id: r.id,
+          sourceId: r.source_id,
+          targetId: r.target_id,
+          label: r.label,
+        };
+      });
+  }
+
   /** Compact and optimize for deterministic, git-friendly storage. */
   finalize(): void {
     this.db.exec("PRAGMA optimize");

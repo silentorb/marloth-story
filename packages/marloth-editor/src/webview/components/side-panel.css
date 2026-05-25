@@ -1,0 +1,108 @@
+.marloth-side-panel {
+  --marloth-side-panel-width: 220px;
+  --marloth-side-panel-collapsed-width: 48px;
+
+  flex-shrink: 0;
+  align-self: stretch;
+  height: 100%;
+  width: var(--marloth-side-panel-width);
+  border-right: 1px solid var(--marloth-border);
+  background: var(--marloth-surface);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.2s ease;
+  overflow: hidden;
+}
+
+.marloth-side-panel.is-collapsed {
+  width: var(--marloth-side-panel-collapsed-width);
+}
+
+.marloth-side-panel-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+  border-bottom: 1px solid var(--marloth-border);
+}
+
+.marloth-side-panel.is-collapsed .marloth-side-panel-header {
+  justify-content: center;
+}
+
+.marloth-side-panel-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  background: var(--marloth-bg);
+  color: inherit;
+  cursor: pointer;
+}
+
+.marloth-side-panel-toggle:hover {
+  background: var(--marloth-hover);
+}
+
+.marloth-side-panel-toggle-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.marloth-side-panel-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+}
+
+.marloth-side-panel-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.marloth-side-panel-item:hover {
+  background: var(--marloth-hover);
+  border-color: var(--marloth-border);
+}
+
+.marloth-side-panel-item.is-active {
+  background: var(--marloth-hover);
+  border-color: var(--marloth-border);
+  color: var(--marloth-link);
+}
+
+.marloth-side-panel-item-icon {
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.marloth-side-panel-item-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.marloth-side-panel.is-collapsed .marloth-side-panel-item {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.marloth-side-panel.is-collapsed .marloth-side-panel-item-label {
+  display: none;
+}

@@ -18,6 +18,8 @@ export interface RecordDetail extends RecordSummary {
 
 export type EditorHost = "vscode" | "standalone";
 
+export type AppView = "record" | "graph-overview" | "graph-explorer";
+
 export function marlothHref(recordId: string): string {
   return `${MARLOTH_LINK_SCHEME}${recordId}`;
 }
@@ -52,3 +54,5 @@ export function recordIdFromUri(uri: string): string | null {
   const m = /^marloth:\/\/record\/([a-f0-9]{32})$/i.exec(uri);
   return m?.[1]?.toLowerCase() ?? null;
 }
+
+export type { GraphLink, GraphNode, GraphSnapshot } from "marloth-db";

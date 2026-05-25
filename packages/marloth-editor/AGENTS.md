@@ -22,7 +22,11 @@ The extension host **does not** open SQLite directly. It spawns (or connects to)
 From repo root:
 
 ```bash
-# Browser UI + API (keep terminal open)
+# API only (auto-started on devcontainer attach + workspace folder open)
+bun run editor:api
+# → http://127.0.0.1:3847
+
+# Browser UI + API (keep terminal open; for webview HMR)
 bun run editor:dev
 # → http://127.0.0.1:5173
 ```

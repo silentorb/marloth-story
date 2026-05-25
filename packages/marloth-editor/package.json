@@ -63,7 +63,8 @@
     "@milkdown/crepe": "7.20.0",
     "marloth-db": "workspace:*",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.0.0",
+    "react-force-graph-2d": "^1.29.1"
   },
   "devDependencies": {
     "@types/bun": "1.2.23",

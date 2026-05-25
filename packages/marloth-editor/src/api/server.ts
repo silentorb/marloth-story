@@ -77,6 +77,14 @@ export function createApiHandler(dbPath = resolveDbPath()) {
         return json({ id: db.getHomeId() });
       }
 
+      if (path === "/api/graph/overview") {
+        return json({ graph: db.getGraphOverview() });
+      }
+
+      if (path === "/api/graph/full") {
+        return json({ graph: db.getGraphFull() });
+      }
+
       if (path === "/api/records/search") {
         const q = url.searchParams.get("q") ?? "";
         const limit = Number.parseInt(url.searchParams.get("limit") ?? "20", 10);

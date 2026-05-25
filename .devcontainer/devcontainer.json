@@ -10,6 +10,7 @@
     ],
     "postCreateCommand": "bun install --frozen-lockfile",
     "updateContentCommand": "bun install --frozen-lockfile",
+    "postAttachCommand": "bash scripts/marloth-editor-start",
     "customizations": {
         "vscode": {
             "extensions": [],

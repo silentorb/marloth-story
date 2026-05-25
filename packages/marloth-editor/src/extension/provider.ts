@@ -1,7 +1,18 @@
 import * as vscode from "vscode";
+import { existsSync } from "node:fs";
 import { ensureApiServer, resolveApiBaseUrl } from "./api-bridge";
 import { recordIdFromUri, recordUri } from "../shared/types";
 import type { EditorApiClient } from "../shared/http-client";
+
+async function isDevWebviewReachable(baseUrl: string): Promise<boolean> {
+  const url = baseUrl.replace(/\/$/, "");
+  try {
+    const res = await fetch(url, { signal: AbortSignal.timeout(800) });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
 
 export class MarlothDocument implements vscode.CustomDocument {
   static async create(recordId: string): Promise<MarlothDocument> {
@@ -49,6 +60,8 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
     webviewPanel: vscode.WebviewPanel,
     _token: vscode.CancellationToken,
   ): Promise<void> {
+    await this.client();
+
     webviewPanel.webview.options = {
       enableScripts: true,
       localResourceRoots: [
@@ -56,7 +69,7 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
       ],
     };
 
-    webviewPanel.webview.html = this.getHtml(webviewPanel.webview);
+    webviewPanel.webview.html = await this.buildHtml(webviewPanel.webview);
     webviewPanel.webview.onDidReceiveMessage(async (message) => {
       await this.handleMessage(message, webviewPanel);
     });
@@ -64,17 +77,32 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
     webviewPanel.webview.postMessage({ type: "init", recordId: document.recordId });
   }
 
-  private getHtml(webview: vscode.Webview): string {
-    if (this.devMode) {
-      const csp = [
-        "default-src 'none'",
-        `script-src ${webview.cspSource} 'unsafe-inline' 'unsafe-eval' ${this.devWebviewUrl}`,
-        `style-src ${webview.cspSource} 'unsafe-inline' ${this.devWebviewUrl}`,
-        `font-src ${webview.cspSource} ${this.devWebviewUrl}`,
-        `img-src ${webview.cspSource} data: ${this.devWebviewUrl}`,
-        `connect-src ${webview.cspSource} ws://127.0.0.1:5173 ${this.devWebviewUrl} ${resolveApiBaseUrl()}`,
-      ].join("; ");
-      return `<!DOCTYPE html>
+  private async buildHtml(webview: vscode.Webview): Promise<string> {
+    const bundledReady = existsSync(
+      vscode.Uri.joinPath(this.context.extensionUri, "dist-webview", "assets", "index.js").fsPath,
+    );
+    const useVite = this.devMode && (await isDevWebviewReachable(this.devWebviewUrl));
+    if (useVite) {
+      return this.getViteHtml(webview);
+    }
+    if (!bundledReady) {
+      throw new Error(
+        "Marloth webview is not built. Run: bun run editor:build (or bun run editor:dev for HMR).",
+      );
+    }
+    return this.getBundledHtml(webview);
+  }
+
+  private getViteHtml(webview: vscode.Webview): string {
+    const csp = [
+      "default-src 'none'",
+      `script-src ${webview.cspSource} 'unsafe-inline' 'unsafe-eval' ${this.devWebviewUrl}`,
+      `style-src ${webview.cspSource} 'unsafe-inline' ${this.devWebviewUrl}`,
+      `font-src ${webview.cspSource} ${this.devWebviewUrl}`,
+      `img-src ${webview.cspSource} data: ${this.devWebviewUrl}`,
+      `connect-src ${webview.cspSource} ws://127.0.0.1:5173 ${this.devWebviewUrl} ${resolveApiBaseUrl()}`,
+    ].join("; ");
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -88,8 +116,9 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
   <script type="module" src="${this.devWebviewUrl}/src/webview/main.tsx"></script>
 </body>
 </html>`;
-    }
+  }
 
+  private getBundledHtml(webview: vscode.Webview): string {
     const assetsDir = vscode.Uri.joinPath(this.context.extensionUri, "dist-webview", "assets");
     const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(assetsDir, "index.js"));
     const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(assetsDir, "index.css"));

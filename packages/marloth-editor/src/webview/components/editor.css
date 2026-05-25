@@ -3,7 +3,7 @@
   max-width: 1280px;
   margin: 0 auto;
   padding: 48px 24px 120px;
-  min-height: 100vh;
+  min-height: 100%;
 }
 
 .marloth-editor-header {
@@ -121,15 +121,6 @@
   border-bottom: 1px solid var(--marloth-border);
   background: color-mix(in srgb, var(--marloth-bg) 92%, transparent);
   backdrop-filter: blur(8px);
-}
-
-.marloth-app-bar button {
-  border: 1px solid var(--marloth-border);
-  border-radius: 6px;
-  background: var(--marloth-surface);
-  color: inherit;
-  padding: 4px 10px;
-  cursor: pointer;
 }
 
 .marloth-save-status {

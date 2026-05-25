@@ -42,6 +42,23 @@
       "problemMatcher": []
     },
     {
+      "label": "Marloth Editor: dev servers",
+      "type": "shell",
+      "command": "bash scripts/marloth-editor-start",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated",
+        "showReuseMessage": false
+      },
+      "runOptions": {
+        "runOn": "folderOpen"
+      }
+    },
+    {
       "label": "Marloth Editor: dev (API + webview)",
       "type": "shell",
       "command": "bun run editor:dev",

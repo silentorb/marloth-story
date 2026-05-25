@@ -1,9 +1,12 @@
 import {
   DEFAULT_HOME_RECORD_ID,
+  exportFullGraph,
+  exportOverviewGraph,
   getRecordDetail,
   GraphDatabase,
   searchRecords,
   updateRecordBody,
+  type GraphSnapshot,
 } from "marloth-db";
 import type { RecordDetail, RecordSummary } from "../shared/types";
 
@@ -12,6 +15,8 @@ export interface EditorDatabase {
   getRecord(id: string): RecordDetail | null;
   search(query: string, limit?: number): RecordSummary[];
   saveBody(id: string, body: string): boolean;
+  getGraphOverview(): GraphSnapshot;
+  getGraphFull(): GraphSnapshot;
   close(): void;
 }
 
@@ -32,6 +37,12 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
     },
     saveBody(id: string, body: string): boolean {
       return updateRecordBody(db, id, body);
+    },
+    getGraphOverview(): GraphSnapshot {
+      return exportOverviewGraph(db);
+    },
+    getGraphFull(): GraphSnapshot {
+      return exportFullGraph(db);
     },
     close(): void {
       db.close();

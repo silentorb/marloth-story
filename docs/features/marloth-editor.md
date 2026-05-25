@@ -93,12 +93,14 @@ Search/autocomplete:
 
 ## Quick start
 
+The editor API and Vite dev server **start automatically** when you attach to the devcontainer (`postAttachCommand`) or open this workspace in VS Code/Cursor (task **Marloth Editor: dev servers**, `runOn: folderOpen`). Manual start: `bash scripts/marloth-editor-start` or `bun run editor:dev`. If Vite is not running, the VS Code extension falls back to the built `dist-webview` bundle.
+
 ```bash
 # Standalone (browser) — best for rapid UI iteration
 bun run editor:dev
 # → API http://127.0.0.1:3847  ·  UI http://127.0.0.1:5173
 
-# VS Code extension (F5 after dev:extension watch + editor:dev)
+# VS Code extension (F5 after dev:extension watch + editor:dev for webview HMR)
 # Command Palette → Marloth: Open Home
 ```
 

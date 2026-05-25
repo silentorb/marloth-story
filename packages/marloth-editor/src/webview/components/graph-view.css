@@ -1,0 +1,73 @@
+.marloth-graph-view {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.marloth-graph-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--marloth-border);
+  background: var(--marloth-surface);
+}
+
+.marloth-graph-toolbar-title {
+  font-size: 0.9rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-graph-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.marloth-graph-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--marloth-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.marloth-graph-toggle input {
+  margin: 0;
+  accent-color: var(--marloth-link);
+}
+
+.marloth-graph-toolbar-stats {
+  font-size: 0.85rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-graph-canvas {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  background: var(--marloth-bg);
+}
+
+.marloth-graph-canvas canvas {
+  display: block;
+}
+
+.marloth-graph-loading,
+.marloth-graph-error {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: var(--marloth-muted);
+}
+
+.marloth-graph-error {
+  color: #ff8a8a;
+}
