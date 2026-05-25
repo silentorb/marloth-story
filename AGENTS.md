@@ -13,12 +13,18 @@
 - Make focused changes that address the requested task only.
 - Avoid unrelated refactors unless they are required to complete the task safely.
 - Prefer small, incremental edits that are easy to review.
+- **Script language:** agentic scripts created for this project should use **TypeScript** (Bun) by default — place durable tooling under `packages/` with tests and a shell wrapper in `scripts/` when appropriate. **One-off temporary scripts** (exploratory, throwaway, not intended to be maintained) may still be written in Python.
 
 ## Implementation Expectations
 - Read existing files before editing to preserve intent and style.
 - Keep assumptions explicit in commit or PR notes when behavior is unclear.
 - Run relevant checks or tests when changing code, if such checks are available.
 - Add self-documentation to files under `./docs` when making agent-relevant updates.
+
+## Notion-importer (`packages/notion-importer`)
+- Imports Notion exports into flat `content/` markdown, rewrites links, and writes manifest/report files under `docs/`.
+- Run from repo root: `bun run notion:import` or `./scripts/notion-importer`.
+- Settings: every option is available via CLI and environment variables; **CLI overrides env** over defaults. See `bun run notion:import -- --help`.
 
 ## Rippledoc (`packages/rippledoc`)
 - Watches `content/` and runs the content pipeline on changes, rippling work through linked documents.

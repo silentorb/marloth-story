@@ -5,6 +5,7 @@
   "workspaces": ["packages/*"],
   "scripts": {
     "watch": "bun run --cwd packages/rippledoc start",
-    "build:watch": "bun run --cwd packages/rippledoc run build"
+    "build:watch": "bun run --cwd packages/rippledoc run build",
+    "notion:import": "bun run --cwd packages/notion-importer start"
   }
 }

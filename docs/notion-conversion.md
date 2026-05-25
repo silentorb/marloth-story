@@ -4,17 +4,17 @@ This document describes how narrative and database content from the Notion expor
 
 ## Re-running the import
 
-From the repository root (after Python 3 is available):
+From the repository root (after Bun is available):
 
 ```bash
 # default: prefers ./exports, falls back to ./external/notion
-python3 -m scripts.notion_to_content
+bun run notion:import
 ```
 
 To replace all generated `content/*.md` notes in one go:
 
 ```bash
-python3 -m scripts.notion_to_content --clean
+bun run notion:import -- --clean
 ```
 
 Options:
@@ -22,12 +22,13 @@ Options:
 - Use a specific export directory or zip file with `--source`:
 
 ```bash
-python3 -m scripts.notion_to_content --source ./exports/my-export.zip
+bun run notion:import -- --source ./exports/my-export.zip
 ```
 
 - Or set the environment variable `NOTION_EXPORT_DIR` to point at a directory or zip.
 
 - **Inputs**: by default the pipeline prefers any export found in `./exports/` (selecting the most-recent file or directory by modification time); if no `./exports/` entry exists it falls back to `external/notion/`. You can override with `--source` or `NOTION_EXPORT_DIR`.
+- **Zip exports**: a source `.zip` is extracted to a temporary directory for the run. Nested part archives (e.g. `ExportBlock-…-Part-1.zip` inside the outer download) are unpacked recursively until only pages and CSVs remain.
 - **Outputs**:
   - `content/*.md` — one file per exported page, plus one index file per database CSV view.
   - `docs/notion-import-manifest.json` — per-file `notion_id`, `source_export`, `output`, and index metadata.
@@ -124,5 +125,5 @@ This is the primary hook for **filtering** (“all rows from a given database id
 
 ## See also
 
-- `scripts/notion_to_content/` — import implementation.
+- `packages/notion-importer/` — import implementation.
 - `AGENTS.md` — workspace context for agents.
