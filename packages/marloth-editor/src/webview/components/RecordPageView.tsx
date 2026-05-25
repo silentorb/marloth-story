@@ -1,8 +1,9 @@
 import { DatabaseTableView } from "./DatabaseTableView";
 import { MarlothEditor } from "./MarlothEditor";
+import { OrderedAssociationView } from "./OrderedAssociationView";
 import { RelationSectionView } from "./RelationSectionView";
 import type { EditorApi } from "../api/client";
-import type { RecordPageDetail } from "../../shared/types";
+import type { OrderedAssociationViewDetail, RecordPageDetail } from "../../shared/types";
 import { isEffectivelyEmptyMarkdown } from "../markdown-body";
 import { SectionTitle } from "./RecordNameLink";
 import "./record-page-view.css";
@@ -13,6 +14,8 @@ interface RecordPageViewProps {
   saveState: "idle" | "dirty" | "saving" | "saved" | "error";
   onBodyChange: (body: string) => void;
   onDatabaseViewChange: (view: string) => void;
+  onScopeChange: (scopeId: string) => void;
+  onOrderedAssociationViewChange: (view: OrderedAssociationViewDetail) => void;
   onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
 }
 
@@ -22,6 +25,8 @@ export function RecordPageView({
   saveState,
   onBodyChange,
   onDatabaseViewChange,
+  onScopeChange,
+  onOrderedAssociationViewChange,
   onOpenRecord,
 }: RecordPageViewProps) {
   const markdownSection = record.sections.find((section) => section.type === "markdown");
@@ -84,6 +89,31 @@ export function RecordPageView({
                   databaseView={section.databaseView}
                   embedded
                   onViewChange={onDatabaseViewChange}
+                  onOpenRecord={onOpenRecord}
+                />
+              </section>
+            );
+          }
+          if (section.type === "ordered-association") {
+            return (
+              <section
+                key={`ordered-association-${section.configId}-${section.view.activeScopeId}`}
+                className="marloth-record-section"
+              >
+                <SectionTitle
+                  api={api}
+                  title="Items"
+                  typeRecordId={
+                    record.id === section.view.typeDatabaseId ? null : section.view.typeDatabaseId
+                  }
+                  onOpenRecord={onOpenRecord}
+                />
+                <OrderedAssociationView
+                  api={api}
+                  configId={section.configId}
+                  view={section.view}
+                  onScopeChange={onScopeChange}
+                  onViewChange={onOrderedAssociationViewChange}
                   onOpenRecord={onOpenRecord}
                 />
               </section>

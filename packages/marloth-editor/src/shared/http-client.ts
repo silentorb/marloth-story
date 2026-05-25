@@ -3,17 +3,29 @@ import type {
   RecordPageDetail,
   RecordSummary,
   DatabaseViewDetail,
+  OrderedAssociationViewDetail,
 } from "./types";
 import type { UserSettings, UserSettingsPatch } from "./user-settings";
+import type { OrderedAssociationMoveParams } from "marloth-db";
 
 export type { GraphLink, GraphNode, GraphSnapshot, DatabaseViewDetail } from "marloth-db";
+export type { OrderedAssociationViewDetail } from "marloth-db";
 
 export const DEFAULT_API_BASE_URL = "http://127.0.0.1:3847";
 
+export interface GetRecordOptions {
+  view?: string;
+  scope?: string;
+}
+
 export interface EditorApiClient {
   getHomeId(): Promise<string>;
-  getRecord(id: string, view?: string): Promise<RecordPageDetail>;
+  getRecord(id: string, options?: GetRecordOptions | string): Promise<RecordPageDetail>;
   getDatabaseView(id: string, view?: string): Promise<DatabaseViewDetail>;
+  moveOrderedAssociation(
+    configId: string,
+    params: OrderedAssociationMoveParams,
+  ): Promise<OrderedAssociationViewDetail>;
   search(query: string, limit?: number): Promise<RecordSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
   getGraphOverview(): Promise<GraphSnapshot>;
@@ -49,9 +61,16 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       const data = await fetchJson<{ id: string }>("/api/home");
       return data.id;
     },
-    async getRecord(id: string, view?: string): Promise<RecordPageDetail> {
-      const params = view ? `?view=${encodeURIComponent(view)}` : "";
-      const data = await fetchJson<{ record: RecordPageDetail }>(`/api/records/${id}${params}`);
+    async getRecord(id: string, options?: GetRecordOptions | string): Promise<RecordPageDetail> {
+      const normalized =
+        typeof options === "string" ? { view: options } : (options ?? {});
+      const params = new URLSearchParams();
+      if (normalized.view) params.set("view", normalized.view);
+      if (normalized.scope) params.set("scope", normalized.scope);
+      const query = params.toString();
+      const data = await fetchJson<{ record: RecordPageDetail }>(
+        `/api/records/${id}${query ? `?${query}` : ""}`,
+      );
       return data.record;
     },
     async getDatabaseView(id: string, view?: string): Promise<DatabaseViewDetail> {
@@ -60,6 +79,20 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         `/api/databases/${id}${params}`,
       );
       return data.databaseView;
+    },
+    async moveOrderedAssociation(
+      configId: string,
+      params: OrderedAssociationMoveParams,
+    ): Promise<OrderedAssociationViewDetail> {
+      const data = await fetchJson<{ view: OrderedAssociationViewDetail }>(
+        `/api/ordered-associations/${encodeURIComponent(configId)}/move`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(params),
+        },
+      );
+      return data.view;
     },
     async search(query: string, limit = 20): Promise<RecordSummary[]> {
       const params = new URLSearchParams({ q: query, limit: String(limit) });

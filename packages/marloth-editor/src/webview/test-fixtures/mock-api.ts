@@ -17,6 +17,9 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     getGraphFull: async () => ({ nodes: [], links: [] }),
     getUserSettings: async () => emptyUserSettings(),
     patchUserSettings: async () => emptyUserSettings(),
+    moveOrderedAssociation: async () => {
+      throw new Error("not implemented in mock");
+    },
     navigate: () => {},
   };
 }

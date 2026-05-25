@@ -1,7 +1,7 @@
 import type { GraphDatabase } from "./graph";
 import { TYPE_MEMBERSHIP_LABELS } from "./labels";
 
-const ROW_META_KEYS = new Set(["view", "row_index", "row_name"]);
+const ROW_META_KEYS = new Set(["view", "row_index", "row_name", "order"]);
 
 export interface DatabaseRow {
   rowIndex: number;

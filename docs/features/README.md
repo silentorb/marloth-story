@@ -16,8 +16,10 @@ Each file in this directory is the **authoritative design spec** for one major w
 | Feature | Doc |
 | --- | --- |
 | SQLite property graph (`data/`) | [marloth-db.md](./marloth-db.md) |
-| Notion export → graph import | [notion-import.md](./notion-import.md) |
+| Notion export → graph import (**legacy**) | [notion-import.md](./notion-import.md) |
 | Web markdown editor (VS Code + graph) | [marloth-editor.md](./marloth-editor.md) |
+| Ordered associations (scene order, DnD) | [ordered-associations.md](./ordered-associations.md) |
+| Ordered associations (scene order, DnD) | [ordered-associations.md](./ordered-associations.md) |
 
 ## Split of concerns
 

@@ -16,10 +16,25 @@ export { getRecordPageDetail } from "./record-sections";
 export type {
   DatabaseTableSection,
   MarkdownSection,
+  OrderedAssociationSection,
   RecordPageDetail,
   RecordSection,
   RelationRow,
   RelationTableSection,
 } from "./record-sections";
+export {
+  applyOrderedAssociationMove,
+  getOrderedAssociationConfigForDatabase,
+  getOrderedAssociationView,
+  UNASSIGNED_GROUP_ID,
+} from "./ordered-associations";
+export type {
+  OrderedAssociationConfig,
+  OrderedAssociationGroup,
+  OrderedAssociationMoveParams,
+  OrderedAssociationRow,
+  OrderedAssociationScope,
+  OrderedAssociationViewDetail,
+} from "./ordered-associations";
 export { DDL, SCHEMA_VERSION } from "./schema";
 export { IS_A_LABEL, LEGACY_IN_DATABASE_LABEL, TYPE_MEMBERSHIP_LABELS, isTypeMembershipLabel } from "./labels";

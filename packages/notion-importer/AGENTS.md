@@ -1,7 +1,7 @@
 # Notion-importer — agent notes
 
 ## What it is
-- TypeScript + **Bun**: imports Notion exports into the repo's SQLite property graph (`data/marloth.sqlite`), and writes manifest/report files under `docs/`.
+- TypeScript + **Bun**: **legacy** pipeline that imported Notion exports into `data/marloth.sqlite` and wrote manifest/report files under `docs/`. **Not the ongoing update path** — edit the graph directly; reuse parsing helpers to mine `./exports/` when needed.
 - Graph storage API: `marloth-db` workspace package.
 - Source lives in `src/`; bundled output in repo root `dist/notion-importer/` (run `bun run build` after meaningful changes if you rely on the bundle).
 

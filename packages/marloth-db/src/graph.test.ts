@@ -47,4 +47,17 @@ describe("GraphDatabase", () => {
     expect(v?.properties).toEqual({ title: "A", body: "text" });
     db.close();
   });
+
+  test("deleteEdge removes an edge", () => {
+    tempDir = mkdtempSync(join(tmpdir(), "marloth-db-test-"));
+    dbPath = join(tempDir, "delete.sqlite");
+    const db = new GraphDatabase(dbPath);
+    db.upsertVertex("a", ["Page"], { title: "A" });
+    db.upsertVertex("b", ["Page"], { title: "B" });
+    db.upsertEdge("a", "b", "RELATED", { ordinal: 0 });
+    expect(db.getEdge("a:RELATED:b")).not.toBeNull();
+    expect(db.deleteEdge("a", "b", "RELATED")).toBe(true);
+    expect(db.getEdge("a:RELATED:b")).toBeNull();
+    db.close();
+  });
 });

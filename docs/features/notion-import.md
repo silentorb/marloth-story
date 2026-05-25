@@ -1,17 +1,23 @@
-# Notion import
+# Notion import (legacy)
+
+## Status
+
+**Legacy / archival.** This pipeline was used to build the initial `data/marloth.sqlite` from Notion exports. **Ongoing work must not rely on full re-imports.** Edit the graph directly ([marloth-db.md](./marloth-db.md)); use `./exports/` only to **mine** missing data into the existing database.
 
 ## Summary
 
-The Notion import feature transforms narrative and database content from a Notion export into a **SQLite property graph** at `data/marloth.sqlite`, plus machine-readable metadata under `docs/` for tooling and AI. Implementation lives in `packages/notion-importer`; graph storage in `packages/marloth-db`.
+The Notion import feature transforms narrative and database content from a Notion export into a **SQLite property graph** at `data/marloth.sqlite`, plus machine-readable metadata under `docs/`. Implementation lives in `packages/notion-importer`; graph storage in `packages/marloth-db`.
 
 ## When to read this
 
 Read this doc when your task involves:
 
-- Notion export → graph import or re-import
-- `packages/notion-importer/`, or `./exports/`
-- Import manifest or unresolved relation reports
-- Changing Notion → graph mapping conventions
+- Maintaining or understanding the **legacy** import implementation
+- **Mining** `./exports/` for data not yet in the graph (targeted upserts, not `notion:import --clean`)
+- Import manifest or unresolved relation reports from a past import
+- Notion → graph mapping conventions (for export mining scripts)
+
+**Do not read this for routine graph edits** — use [marloth-db.md](./marloth-db.md) and root [`AGENTS.md`](../../AGENTS.md) (**Graph data workflow**).
 
 For graph schema, storage, and query API, see [marloth-db.md](./marloth-db.md).
 
@@ -65,7 +71,16 @@ For each `*.csv` matching Notion database export naming (`Name {database_id}.csv
 
 ### Clean mode
 
-- With `--clean`, the pipeline **must** replace the database file before import (full rebuild).
+- With `--clean`, the pipeline **must** replace the database file before import (full rebuild). **Deprecated for production workflow** — destroys in-graph edits (e.g. ordered-association `order`, manual fixes). Reserved for empty dev copies or historical reproduction.
+
+## Mining exports without full import
+
+When required data exists only under `./exports/`:
+
+1. Locate the page `.md` or database `.csv` in the archive (see **Source resolution** and mapping tables in [marloth-db.md](./marloth-db.md)).
+2. Parse with existing `packages/notion-importer` helpers (`parse`, `relations`, `indexes`, etc.) or equivalent logic in a one-off script.
+3. **Upsert** only the affected vertices/edges into the current `data/marloth.sqlite` via `GraphDatabase` — no `{ clean: true }`, no whole-tree import.
+4. Spot-check with `getRecordDetail` or SQL; commit the updated sqlite file.
 
 ## Design rationale
 
@@ -104,23 +119,14 @@ High-level stages (see `packages/notion-importer/src/graph-pipeline.ts`):
 
 ## Quick start
 
-From the repository root (Bun required):
+**Preferred:** edit `data/marloth.sqlite` directly — see [marloth-db.md](./marloth-db.md).
+
+Legacy full import (avoid for routine work; overwrites the graph):
 
 ```bash
-# default: uses newest entry in ./exports/
-bun run notion:import
-```
-
-Full replace of the graph:
-
-```bash
+# Uses newest entry in ./exports/ — destructive with --clean
 bun run notion:import -- --clean
-```
-
-Specific export directory or zip:
-
-```bash
-bun run notion:import -- --source ./exports/my-export.zip
+bun run notion:import -- --source ./exports/my-export.zip --clean
 ```
 
 Alternative entry points: `./scripts/notion-importer` or `bun run --cwd packages/notion-importer start`.

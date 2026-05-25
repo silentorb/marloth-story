@@ -1,0 +1,23 @@
+---
+description: Marloth SQLite property graph — direct edits, no full re-import
+globs:
+  - packages/marloth-db/**
+  - data/**
+  - docs/features/marloth-db.md
+alwaysApply: false
+---
+
+# Marloth database
+
+You are working on the git-tracked property graph (`data/marloth.sqlite`) or `packages/marloth-db/`.
+
+Read before making changes:
+
+- [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)
+- Root [`AGENTS.md`](../../AGENTS.md) — **Graph data workflow**
+
+**Default:** edit `data/marloth.sqlite` in place via `GraphDatabase`, the editor, or a focused migration. **Do not** run `bun run notion:import` / `--clean` for routine data or schema work.
+
+**Archival exports:** if data exists only in `./exports/`, mine the relevant files and upsert surgically — see [`docs/features/notion-import.md`](../../docs/features/notion-import.md) (legacy).
+
+For design record semantics: [`docs/ontology.md`](../../docs/ontology.md).

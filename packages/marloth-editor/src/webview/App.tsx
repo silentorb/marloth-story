@@ -4,13 +4,15 @@ import { RecordPageView } from "./components/RecordPageView";
 import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
 import { UserSettingsProvider } from "./hooks/useUserSettings";
-import type { AppView, RecordPageDetail } from "../shared/types";
+import type { GetRecordOptions } from "../shared/http-client";
+import type { AppView, OrderedAssociationViewDetail, RecordPageDetail } from "../shared/types";
 import { standaloneRecordUrl } from "../shared/types";
 import { navigateStandaloneRecord, standaloneViewUrl } from "./record-links";
 import {
   readGraphShowNodeLabels,
   writeGraphShowNodeLabels,
 } from "./graph-preferences";
+import { syncDocumentTitle } from "./document-title";
 
 export type { AppView };
 
@@ -33,6 +35,12 @@ function databaseViewFromLocation(): string | undefined {
   const params = new URLSearchParams(window.location.search);
   const dbView = params.get("dbView");
   return dbView ?? undefined;
+}
+
+function scopeFromLocation(): string | undefined {
+  const params = new URLSearchParams(window.location.search);
+  const scope = params.get("scope");
+  return scope ?? undefined;
 }
 
 function viewToQueryParam(view: AppView): string | null {
@@ -64,31 +72,37 @@ export function App() {
   }, [api.host, homeId]);
 
   const syncStandaloneUrl = useCallback(
-    (nextView: AppView, recordId?: string | null) => {
+    (nextView: AppView, recordId?: string | null, options?: GetRecordOptions) => {
       if (api.host !== "standalone") return;
       const url = new URL(window.location.href);
       const viewParam = viewToQueryParam(nextView);
       if (viewParam) url.searchParams.set("view", viewParam);
       else url.searchParams.delete("view");
       if (recordId) url.searchParams.set("record", recordId);
+      if (options?.scope) url.searchParams.set("scope", options.scope);
+      else url.searchParams.delete("scope");
+      if (options?.view) url.searchParams.set("dbView", options.view);
       window.history.replaceState({}, "", url.toString());
     },
     [api.host],
   );
 
   const loadRecord = useCallback(
-    async (recordId: string, databaseViewName?: string) => {
+    async (recordId: string, options?: GetRecordOptions | string) => {
       setError(null);
       try {
-        const detail = await api.getRecord(recordId, databaseViewName);
+        const normalized =
+          typeof options === "string" ? { view: options } : (options ?? {});
+        const detail = await api.getRecord(recordId, normalized);
         setRecord(detail);
         pendingBody.current = detail.body;
         setSaveState("idle");
+        syncStandaloneUrl("record", recordId, normalized);
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       }
     },
-    [api],
+    [api, syncStandaloneUrl],
   );
 
   const bootstrap = useCallback(async () => {
@@ -101,7 +115,10 @@ export function App() {
 
     const fromUrl = recordFromLocation();
     if (fromUrl) {
-      await loadRecord(fromUrl, databaseViewFromLocation());
+      await loadRecord(fromUrl, {
+        view: databaseViewFromLocation(),
+        scope: scopeFromLocation(),
+      });
       return;
     }
     await loadRecord(home);
@@ -110,6 +127,10 @@ export function App() {
   useEffect(() => {
     void bootstrap();
   }, [bootstrap]);
+
+  useEffect(() => {
+    syncDocumentTitle(view, record?.title);
+  }, [view, record?.title]);
 
   useEffect(() => {
     if (api.host !== "vscode") return;
@@ -207,6 +228,18 @@ export function App() {
     writeGraphShowNodeLabels(value);
   }, []);
 
+  const updateOrderedAssociationView = useCallback((view: OrderedAssociationViewDetail) => {
+    setRecord((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        sections: prev.sections.map((section) =>
+          section.type === "ordered-association" ? { ...section, view } : section,
+        ),
+      };
+    });
+  }, []);
+
   return (
     <UserSettingsProvider api={api}>
       <div className="marloth-layout">
@@ -243,7 +276,9 @@ export function App() {
             record={record}
             saveState={saveState}
             onBodyChange={scheduleSave}
-            onDatabaseViewChange={(dbView) => void loadRecord(record.id, dbView)}
+            onDatabaseViewChange={(dbView) => void loadRecord(record.id, { view: dbView, scope: scopeFromLocation() })}
+            onScopeChange={(scopeId) => void loadRecord(record.id, { scope: scopeId })}
+            onOrderedAssociationViewChange={updateOrderedAssociationView}
             onOpenRecord={openLinkedRecord}
           />
         )}

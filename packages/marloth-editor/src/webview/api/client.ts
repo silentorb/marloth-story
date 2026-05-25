@@ -44,6 +44,7 @@ export function createEditorApi(): EditorApi {
       getGraphFull: rest.getGraphFull.bind(rest),
       getUserSettings: rest.getUserSettings.bind(rest),
       patchUserSettings: rest.patchUserSettings.bind(rest),
+      moveOrderedAssociation: rest.moveOrderedAssociation.bind(rest),
       navigate(recordId: string, openInNewTab = false): void {
         vscode.postMessage({ type: "navigate", recordId, openInNewTab });
       },
@@ -61,6 +62,7 @@ export function createEditorApi(): EditorApi {
     getGraphFull: rest.getGraphFull.bind(rest),
     getUserSettings: rest.getUserSettings.bind(rest),
     patchUserSettings: rest.patchUserSettings.bind(rest),
+    moveOrderedAssociation: rest.moveOrderedAssociation.bind(rest),
     navigate(recordId: string, openInNewTab = false): void {
       if (openInNewTab) {
         openStandaloneRecordInNewTab(recordId);

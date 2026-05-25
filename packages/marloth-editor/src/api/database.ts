@@ -7,17 +7,24 @@ import {
   GraphDatabase,
   searchRecords,
   updateRecordBody,
+  applyOrderedAssociationMove,
   type GraphSnapshot,
+  type OrderedAssociationMoveParams,
+  type OrderedAssociationViewDetail,
   type RecordPageDetail,
+  type DatabaseViewDetail,
 } from "marloth-db";
 import { statSync } from "node:fs";
 import type { RecordSummary } from "../shared/types";
-import type { DatabaseViewDetail } from "marloth-db";
 
 export interface EditorDatabase {
   getHomeId(): string;
-  getRecord(id: string, databaseView?: string): RecordPageDetail | null;
+  getRecord(id: string, options?: { databaseView?: string; scopeId?: string }): RecordPageDetail | null;
   getDatabaseView(id: string, view?: string): DatabaseViewDetail | null;
+  moveOrderedAssociation(
+    configId: string,
+    params: OrderedAssociationMoveParams,
+  ): OrderedAssociationViewDetail | null;
   search(query: string, limit?: number): RecordSummary[];
   saveBody(id: string, body: string): boolean;
   getGraphOverview(): GraphSnapshot;
@@ -56,11 +63,17 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
       const recent = searchRecords(active, "", 1);
       return recent[0]?.id ?? DEFAULT_HOME_RECORD_ID;
     },
-    getRecord(id: string, databaseView?: string): RecordPageDetail | null {
-      return getRecordPageDetail(currentDb(), id, databaseView);
+    getRecord(id: string, options?: { databaseView?: string; scopeId?: string }): RecordPageDetail | null {
+      return getRecordPageDetail(currentDb(), id, options);
     },
     getDatabaseView(id: string, view?: string) {
       return getDatabaseViewDetail(currentDb(), id, view);
+    },
+    moveOrderedAssociation(
+      configId: string,
+      params: OrderedAssociationMoveParams,
+    ): OrderedAssociationViewDetail | null {
+      return applyOrderedAssociationMove(currentDb(), configId, params);
     },
     search(query: string, limit?: number): RecordSummary[] {
       return searchRecords(currentDb(), query, limit);

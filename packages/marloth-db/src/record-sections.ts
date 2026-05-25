@@ -1,6 +1,11 @@
 import type { GraphDatabase, EdgeRecord } from "./graph";
 import { getDatabaseViewDetail, type DatabaseViewDetail } from "./database-view";
 import { IS_A_LABEL, isTypeMembershipLabel, LEGACY_IN_DATABASE_LABEL } from "./labels";
+import {
+  getOrderedAssociationConfigForDatabase,
+  getOrderedAssociationView,
+  type OrderedAssociationViewDetail,
+} from "./ordered-associations";
 import { getRecordDetail, type RecordDetail } from "./queries";
 
 const RELATION_META_KEYS = new Set([
@@ -22,6 +27,12 @@ export interface DatabaseTableSection {
   databaseView: DatabaseViewDetail;
 }
 
+export interface OrderedAssociationSection {
+  type: "ordered-association";
+  configId: string;
+  view: OrderedAssociationViewDetail;
+}
+
 export interface RelationRow {
   targetId: string;
   name: string;
@@ -39,7 +50,7 @@ export interface RelationTableSection {
   rows: RelationRow[];
 }
 
-export type RecordSection = MarkdownSection | DatabaseTableSection | RelationTableSection;
+export type RecordSection = MarkdownSection | DatabaseTableSection | OrderedAssociationSection | RelationTableSection;
 
 export interface RecordPageDetail extends RecordDetail {
   sections: RecordSection[];
@@ -211,7 +222,7 @@ function buildRelationSections(db: GraphDatabase, recordId: string): RelationTab
 export function getRecordPageDetail(
   db: GraphDatabase,
   id: string,
-  databaseView?: string,
+  options?: { databaseView?: string; scopeId?: string },
 ): RecordPageDetail | null {
   const record = getRecordDetail(db, id);
   if (!record) return null;
@@ -219,9 +230,21 @@ export function getRecordPageDetail(
   const sections: RecordSection[] = [{ type: "markdown", body: record.body }];
 
   if (record.labels.includes("NotionDatabase")) {
-    const databaseSection = getDatabaseViewDetail(db, id, databaseView);
-    if (databaseSection) {
-      sections.push({ type: "database", databaseView: databaseSection });
+    const orderedConfig = getOrderedAssociationConfigForDatabase(id);
+    if (orderedConfig) {
+      const orderedView = getOrderedAssociationView(db, orderedConfig.id, options?.scopeId);
+      if (orderedView) {
+        sections.push({
+          type: "ordered-association",
+          configId: orderedConfig.id,
+          view: orderedView,
+        });
+      }
+    } else {
+      const databaseSection = getDatabaseViewDetail(db, id, options?.databaseView);
+      if (databaseSection) {
+        sections.push({ type: "database", databaseView: databaseSection });
+      }
     }
   }
 

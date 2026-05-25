@@ -22,6 +22,8 @@ describe("RecordPageView", () => {
           saveState="idle"
           onBodyChange={() => {}}
           onDatabaseViewChange={() => {}}
+          onScopeChange={() => {}}
+          onOrderedAssociationViewChange={() => {}}
           onOpenRecord={() => {}}
         />
       </UserSettingsProvider>,

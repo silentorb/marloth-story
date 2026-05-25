@@ -8,7 +8,7 @@
   },
   "tasks": [
     {
-      "label": "Notion: convert to content",
+      "label": "Notion: legacy full import (--clean, destructive)",
       "type": "shell",
       "command": "bun run notion:import -- --clean",
       "options": {

@@ -150,6 +150,12 @@ export class GraphDatabase {
     }
   }
 
+  deleteEdge(sourceId: string, targetId: string, label: string): boolean {
+    const id = edgeId(sourceId, label, targetId);
+    const result = this.db.prepare("DELETE FROM edges WHERE id = ?").run(id);
+    return result.changes > 0;
+  }
+
   getVertex(id: string): VertexRecord | null {
     const row = this.db.prepare("SELECT id, properties FROM vertices WHERE id = ?").get(id) as
       | { id: string; properties: string }

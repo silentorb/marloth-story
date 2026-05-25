@@ -19,10 +19,18 @@ export interface RecordDetail extends RecordSummary {
 export type {
   DatabaseTableSection,
   MarkdownSection,
+  OrderedAssociationSection,
   RecordPageDetail,
   RecordSection,
   RelationRow,
   RelationTableSection,
+} from "marloth-db";
+
+export type {
+  OrderedAssociationGroup,
+  OrderedAssociationRow,
+  OrderedAssociationScope,
+  OrderedAssociationViewDetail,
 } from "marloth-db";
 
 export type EditorHost = "vscode" | "standalone";

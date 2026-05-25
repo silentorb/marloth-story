@@ -77,7 +77,8 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
         const id = recordMatch[1]!.toLowerCase();
         if (req.method === "GET") {
           const view = url.searchParams.get("view") ?? undefined;
-          const record = db.getRecord(id, view);
+          const scopeId = url.searchParams.get("scope") ?? undefined;
+          const record = db.getRecord(id, { databaseView: view, scopeId });
           if (!record) return json({ error: "not found" }, 404);
           return json({ record });
         }
@@ -99,6 +100,33 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
         const databaseView = db.getDatabaseView(id, view);
         if (!databaseView) return json({ error: "not found" }, 404);
         return json({ databaseView });
+      }
+
+      const moveMatch = /^\/api\/ordered-associations\/([a-z0-9-]+)\/move$/i.exec(path);
+      if (moveMatch && req.method === "PATCH") {
+        const configId = moveMatch[1]!;
+        const payload = (await req.json()) as {
+          scopeId?: string;
+          sceneId?: string;
+          targetGroupId?: string;
+          targetIndex?: number;
+        };
+        if (
+          typeof payload.scopeId !== "string" ||
+          typeof payload.sceneId !== "string" ||
+          typeof payload.targetGroupId !== "string" ||
+          typeof payload.targetIndex !== "number"
+        ) {
+          return json({ error: "scopeId, sceneId, targetGroupId, and targetIndex required" }, 400);
+        }
+        const view = db.moveOrderedAssociation(configId, {
+          scopeId: payload.scopeId,
+          sceneId: payload.sceneId,
+          targetGroupId: payload.targetGroupId,
+          targetIndex: payload.targetIndex,
+        });
+        if (!view) return json({ error: "not found" }, 404);
+        return json({ view });
       }
 
       return json({ error: "not found" }, 404);

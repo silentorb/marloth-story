@@ -54,7 +54,7 @@ For graph storage semantics, read [`marloth-db.md`](./marloth-db.md) and [`../on
 ### Out of scope (v0.1)
 
 - Creating new graph records from the UI
-- Editing relationship edges or database row cells from the UI
+- Editing relationship edges or database row cells from the UI (except ordered-association reorder/part moves; see [ordered-associations.md](./ordered-associations.md))
 - Weighted edges or typed link metadata in the editor
 
 ## Design rationale
@@ -148,5 +148,6 @@ bun run editor:dev
 ## See also
 
 - [marloth-db.md](./marloth-db.md)
+- [ordered-associations.md](./ordered-associations.md)
 - [`../ontology.md`](../ontology.md)
 - [`packages/marloth-editor/AGENTS.md`](../../packages/marloth-editor/AGENTS.md)

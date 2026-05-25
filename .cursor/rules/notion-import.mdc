@@ -1,16 +1,18 @@
 ---
-description: Notion import feature — read authoritative spec before changing import behavior
-globs: packages/notion-importer/**,packages/marloth-db/**,external/notion/**,data/**,docs/notion-import-manifest.json,docs/notion-link-*.txt
+description: Legacy Notion import pipeline — maintenance and export mining only
+globs: packages/notion-importer/**,external/notion/**,docs/notion-import-manifest.json,docs/notion-link-*.txt
 alwaysApply: false
 ---
 
-# Notion import
+# Notion import (legacy)
 
-You are working on paths related to the Notion → SQLite graph import pipeline.
+You are working on the **legacy** Notion → SQLite import pipeline (`packages/notion-importer/`).
 
-Read the authoritative feature specs before making changes:
+**Do not use full re-import** (`notion:import`, especially `--clean`) to update production graph data. Ongoing edits go directly to `data/marloth.sqlite` — see [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) and root [`AGENTS.md`](../../AGENTS.md).
+
+Read before changing import behavior:
 
 - [`docs/features/notion-import.md`](../../docs/features/notion-import.md)
-- [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)
+- [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) (mapping rules for export mining)
 
 Configuration precedence: **CLI flags > environment > defaults**.
