@@ -1,0 +1,15 @@
+---
+description: Notion import feature — read authoritative spec before changing import behavior
+globs: packages/notion-importer/**,external/notion/**,docs/notion-import-manifest.json,docs/notion-link-*.txt
+alwaysApply: false
+---
+
+# Notion import
+
+You are working on paths related to the Notion → `content/` import pipeline.
+
+Read the authoritative feature spec before making changes:
+
+[`docs/features/notion-import.md`](../../docs/features/notion-import.md)
+
+Configuration precedence: **CLI flags > environment > defaults**.

@@ -3,7 +3,7 @@
 ## Project Context
 - This repository contains the Marloth Story project, related to the Marloth series of fantasy novels.
 - Keep updates aligned with the repository's current scope and documentation.
-- The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. For the Notion → `content/` import pipeline, layout, and front-matter rules, see `./docs/notion-conversion.md`.
+- The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative feature specs live in `./docs/features/`.
 - The `./content` directory contains all of the articles, design, records, and prose for the Marloth books.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
 - The `./external/notion/` directory contains exported Notion data which is used to populate `./content` files.
@@ -21,15 +21,19 @@
 - Run relevant checks or tests when changing code, if such checks are available.
 - Add self-documentation to files under `./docs` when making agent-relevant updates.
 
-## Notion-importer (`packages/notion-importer`)
-- Imports Notion exports into flat `content/` markdown, rewrites links, and writes manifest/report files under `docs/`.
-- Run from repo root: `bun run notion:import` or `./scripts/notion-importer`.
-- Settings: every option is available via CLI and environment variables; **CLI overrides env** over defaults. See `bun run notion:import -- --help`.
+## Feature documentation
 
-## Rippledoc (`packages/rippledoc`)
-- Watches `content/` and runs the content pipeline on changes, rippling work through linked documents.
-- Run from repo root: `bun run --cwd packages/rippledoc start` or `./scripts/rippledoc`.
-- Settings: every option is available via CLI and environment variables; **CLI overrides env** over defaults. See `bun run --cwd packages/rippledoc start -- --help`.
+Authoritative design specs live in `./docs/features/` (one file per major feature). They state requirements, design rationale, and behavior so agents need not re-analyze the repo for basics.
+
+**Do not read all feature docs by default.** When your task matches a row, read only that file (and the package `AGENTS.md` if editing that package). Treat the feature doc as the source of truth over implementation when they disagree—update code or the doc explicitly.
+
+| If your task involves… | Read |
+| --- | --- |
+| Notion export → `content/` import, `packages/notion-importer/`, `external/notion/`, link rewrite, manifest, re-import | [`docs/features/notion-import.md`](./docs/features/notion-import.md) |
+| Content watcher/pipeline, `packages/rippledoc/`, rippling linked docs | [`docs/features/rippledoc.md`](./docs/features/rippledoc.md) |
+| Editing story/design markdown in `content/` (not import tooling) | start with the file's front matter; use feature docs only if changing import/layout conventions |
+
+See also [`docs/features/README.md`](./docs/features/README.md) for the feature-doc template and how to add new features.
 
 ## Future Expansion
 - Architecture overview

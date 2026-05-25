@@ -1,7 +1,7 @@
 # Rippledoc — agent notes
 
 ## What it is
-- TypeScript + **Bun** + **chokidar**: watches the repo’s `content/` tree and runs the content **pipeline** on file changes, so work can ripple through linked documents.
+- TypeScript + **Bun** + **chokidar**: watches the repo's `content/` tree and runs the content **pipeline** on file changes, so work can ripple through linked documents.
 - Source lives in `src/`; bundled output in repo root `dist/rippledoc/` (run `bun run build` after meaningful changes if you rely on the bundle).
 
 ## Run
@@ -19,4 +19,5 @@
 - When changing behavior, update or add tests in `src/*.test.ts` when practical.
 
 ## Repo-wide context
-- For Marloth Story layout, Notion import docs, and global conventions, see the repository root `AGENTS.md`.
+- **Feature spec (requirements, rationale, behavior):** [`docs/features/rippledoc.md`](../../docs/features/rippledoc.md)
+- Global conventions and feature routing: repository root [`AGENTS.md`](../../AGENTS.md)
