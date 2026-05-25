@@ -5,6 +5,11 @@
         "context": ".."
     },
     "remoteUser": "vscode",
+    "mounts": [
+        "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+    ],
+    "postCreateCommand": "bun install --frozen-lockfile",
+    "updateContentCommand": "bun install --frozen-lockfile",
     "customizations": {
         "vscode": {
             "extensions": [],

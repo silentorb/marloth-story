@@ -18,6 +18,7 @@ Each file in this directory is the **authoritative design spec** for one major w
 | SQLite property graph (`data/`) | [marloth-db.md](./marloth-db.md) |
 | Notion export → graph import | [notion-import.md](./notion-import.md) |
 | Content watcher / pipeline (rippledoc) | [rippledoc.md](./rippledoc.md) |
+| Web markdown editor (VS Code + graph) | [marloth-editor.md](./marloth-editor.md) |
 
 ## Split of concerns
 

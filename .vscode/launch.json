@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Marloth Editor: Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/marloth-editor"
+      ],
+      "outFiles": ["${workspaceFolder}/packages/marloth-editor/dist/**/*.js"],
+      "preLaunchTask": "Marloth Editor: build extension"
+    }
+  ]
+}

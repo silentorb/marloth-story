@@ -19,7 +19,7 @@ The git-tracked property graph in `./data/` is the canonical store for this desi
 - The `./content` directory may hold markdown exports or editor artifacts; the canonical data store is `./data/`.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
 - The `./external/notion/` directory contains exported Notion data which is used to populate the graph database.
-- All external dependencies and tooling installs should be performed within the devcontainer Dockerfile, not via user-local or post-create commands.
+- All external dependencies and tooling installs should be performed within the devcontainer Dockerfile (and synced on container create/update via devcontainer lifecycle). **Rebuild the container** after changing `package.json` or `bun.lock` — do not run `bun install` manually in a terminal or on the host.
 
 ## Terminology
 
@@ -60,6 +60,7 @@ For **design data** (what records mean, how they relate conceptually), read [`do
 | SQLite property graph, `data/marloth.sqlite`, `packages/marloth-db/` | [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) (+ ontology when interpreting data) |
 | Notion export → graph import, `packages/notion-importer/`, `external/notion/` | [`docs/features/notion-import.md`](./docs/features/notion-import.md) |
 | Content watcher/pipeline, `packages/rippledoc/`, rippling linked docs | [`docs/features/rippledoc.md`](./docs/features/rippledoc.md) |
+| Web markdown editor, `packages/marloth-editor/`, VS Code graph editing | [`docs/features/marloth-editor.md`](./docs/features/marloth-editor.md) |
 | Editing story/design content in the graph | [`docs/ontology.md`](./docs/ontology.md) + marloth-db as needed |
 
 See also [`docs/features/README.md`](./docs/features/README.md) for the feature-doc template and how to add new features.

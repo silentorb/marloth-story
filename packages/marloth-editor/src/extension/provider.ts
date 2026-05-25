@@ -1,0 +1,160 @@
+import * as vscode from "vscode";
+import { ensureApiServer, resolveApiBaseUrl } from "./api-bridge";
+import { recordIdFromUri, recordUri } from "../shared/types";
+import type { EditorApiClient } from "../shared/http-client";
+
+export class MarlothDocument implements vscode.CustomDocument {
+  static async create(recordId: string): Promise<MarlothDocument> {
+    return new MarlothDocument(recordId);
+  }
+
+  private constructor(readonly recordId: string) {}
+
+  dispose(): void {
+    /* no resources */
+  }
+}
+
+export class MarlothEditorProvider implements vscode.CustomEditorProvider<MarlothDocument> {
+  private api: EditorApiClient | null = null;
+  private readonly devMode: boolean;
+  private readonly devWebviewUrl: string;
+
+  constructor(private readonly context: vscode.ExtensionContext) {
+    this.devMode = context.extensionMode === vscode.ExtensionMode.Development;
+    this.devWebviewUrl = process.env.MARLOTH_EDITOR_WEBVIEW_URL ?? "http://127.0.0.1:5173";
+  }
+
+  private async client(): Promise<EditorApiClient> {
+    if (!this.api) {
+      this.api = await ensureApiServer(this.context.extensionPath);
+    }
+    return this.api;
+  }
+
+  async openCustomDocument(
+    uri: vscode.Uri,
+    _openContext: vscode.CustomDocumentOpenContext,
+    _token: vscode.CancellationToken,
+  ): Promise<MarlothDocument> {
+    const recordId = recordIdFromUri(uri.toString());
+    if (!recordId) {
+      throw new Error(`Invalid Marloth URI: ${uri.toString()}`);
+    }
+    return MarlothDocument.create(recordId);
+  }
+
+  async resolveCustomEditor(
+    document: MarlothDocument,
+    webviewPanel: vscode.WebviewPanel,
+    _token: vscode.CancellationToken,
+  ): Promise<void> {
+    webviewPanel.webview.options = {
+      enableScripts: true,
+      localResourceRoots: [
+        vscode.Uri.joinPath(this.context.extensionUri, "dist-webview"),
+      ],
+    };
+
+    webviewPanel.webview.html = this.getHtml(webviewPanel.webview);
+    webviewPanel.webview.onDidReceiveMessage(async (message) => {
+      await this.handleMessage(message, webviewPanel);
+    });
+
+    webviewPanel.webview.postMessage({ type: "init", recordId: document.recordId });
+  }
+
+  private getHtml(webview: vscode.Webview): string {
+    if (this.devMode) {
+      const csp = [
+        "default-src 'none'",
+        `script-src ${webview.cspSource} 'unsafe-inline' 'unsafe-eval' ${this.devWebviewUrl}`,
+        `style-src ${webview.cspSource} 'unsafe-inline' ${this.devWebviewUrl}`,
+        `font-src ${webview.cspSource} ${this.devWebviewUrl}`,
+        `img-src ${webview.cspSource} data: ${this.devWebviewUrl}`,
+        `connect-src ${webview.cspSource} ws://127.0.0.1:5173 ${this.devWebviewUrl} ${resolveApiBaseUrl()}`,
+      ].join("; ");
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="${csp}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marloth Editor (dev)</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="${this.devWebviewUrl}/@vite/client"></script>
+  <script type="module" src="${this.devWebviewUrl}/src/webview/main.tsx"></script>
+</body>
+</html>`;
+    }
+
+    const assetsDir = vscode.Uri.joinPath(this.context.extensionUri, "dist-webview", "assets");
+    const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(assetsDir, "index.js"));
+    const styleUri = webview.asWebviewUri(vscode.Uri.joinPath(assetsDir, "index.css"));
+    const csp = [
+      "default-src 'none'",
+      `script-src ${webview.cspSource}`,
+      `style-src ${webview.cspSource} 'unsafe-inline'`,
+      `font-src ${webview.cspSource}`,
+      `img-src ${webview.cspSource} data:`,
+      `connect-src ${webview.cspSource} ${resolveApiBaseUrl()}`,
+    ].join("; ");
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="${csp}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="${styleUri}">
+  <title>Marloth Editor</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="${scriptUri}"></script>
+</body>
+</html>`;
+  }
+
+  private async handleMessage(
+    message: { type?: string; recordId?: string; openInNewTab?: boolean },
+    panel: vscode.WebviewPanel,
+  ): Promise<void> {
+    if (message.type !== "navigate") return;
+
+    const targetId = message.recordId;
+    if (!targetId) return;
+
+    if (message.openInNewTab) {
+      await vscode.commands.executeCommand("marloth.openRecord", targetId, { preview: false });
+      return;
+    }
+
+    panel.webview.postMessage({ type: "navigate", recordId: targetId });
+    try {
+      const api = await this.client();
+      const record = await api.getRecord(targetId);
+      panel.title = record.title;
+    } catch {
+      panel.title = targetId;
+    }
+  }
+}
+
+export async function openRecord(recordId: string, options?: { preview?: boolean }): Promise<void> {
+  const uri = vscode.Uri.parse(recordUri(recordId));
+  await vscode.commands.executeCommand(
+    "vscode.openWith",
+    uri,
+    "marloth.editor",
+    { preview: options?.preview ?? false },
+  );
+}
+
+export async function openHome(context: vscode.ExtensionContext): Promise<void> {
+  const api = await ensureApiServer(context.extensionPath);
+  const homeId = await api.getHomeId();
+  await openRecord(homeId, { preview: false });
+}

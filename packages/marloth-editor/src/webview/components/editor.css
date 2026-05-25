@@ -1,0 +1,142 @@
+.marloth-editor-shell {
+  position: relative;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 48px 96px 120px;
+  min-height: 100vh;
+}
+
+.marloth-editor-header {
+  margin-bottom: 24px;
+}
+
+.marloth-editor-title {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.marloth-editor-hint {
+  margin: 8px 0 0;
+  color: var(--marloth-muted);
+  font-size: 0.85rem;
+}
+
+.marloth-editor-body {
+  min-height: 60vh;
+}
+
+.marloth-editor-body .milkdown {
+  outline: none;
+}
+
+.marloth-editor-body a {
+  color: var(--marloth-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.marloth-mention-menu {
+  position: absolute;
+  z-index: 20;
+  min-width: 280px;
+  max-width: 420px;
+  max-height: 280px;
+  overflow: auto;
+  border: 1px solid var(--marloth-border);
+  border-radius: 8px;
+  background: var(--marloth-surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.marloth-mention-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.marloth-mention-item.is-active,
+.marloth-mention-item:hover {
+  background: var(--marloth-hover);
+}
+
+.marloth-mention-title {
+  font-weight: 600;
+}
+
+.marloth-mention-path {
+  font-size: 0.75rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-mention-empty {
+  padding: 12px;
+  color: var(--marloth-muted);
+  font-size: 0.85rem;
+}
+
+.marloth-loading,
+.marloth-error {
+  max-width: 820px;
+  margin: 48px auto;
+  padding: 0 96px;
+}
+
+.marloth-error {
+  color: #f87171;
+}
+
+.marloth-app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 24px;
+  border-bottom: 1px solid var(--marloth-border);
+  background: color-mix(in srgb, var(--marloth-bg) 92%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.marloth-app-bar button {
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  background: var(--marloth-surface);
+  color: inherit;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.marloth-save-status {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-save-status.is-dirty {
+  color: #fbbf24;
+}
+
+.marloth-save-status.is-saving {
+  color: #60a5fa;
+}
+
+.marloth-save-status.is-saved {
+  color: #34d399;
+}
+
+.marloth-save-status.is-error {
+  color: #f87171;
+}

@@ -187,6 +187,46 @@ export class GraphDatabase {
     return { vertices: v.c, edges: e.c };
   }
 
+  searchVerticesByTitle(
+    pattern: string,
+    limit: number,
+  ): { id: string; title: string; path: string | null }[] {
+    return this.db
+      .prepare(
+        `SELECT id,
+                COALESCE(
+                  NULLIF(json_extract(properties, '$.title'), ''),
+                  NULLIF(json_extract(properties, '$.alias'), ''),
+                  'Untitled'
+                ) AS title,
+                json_extract(properties, '$.inferred_notion_path') AS path
+         FROM vertices
+         WHERE COALESCE(json_extract(properties, '$.title'), json_extract(properties, '$.alias'), '') LIKE ? ESCAPE '\\'
+         ORDER BY title COLLATE NOCASE
+         LIMIT ?`,
+      )
+      .all(pattern, limit) as { id: string; title: string; path: string | null }[];
+  }
+
+  listVerticesByTitle(limit: number): { id: string; title: string; path: string | null }[] {
+    return this.db
+      .prepare(
+        `SELECT id,
+                COALESCE(
+                  NULLIF(json_extract(properties, '$.title'), ''),
+                  NULLIF(json_extract(properties, '$.alias'), ''),
+                  'Untitled'
+                ) AS title,
+                json_extract(properties, '$.inferred_notion_path') AS path
+         FROM vertices
+         WHERE json_extract(properties, '$.title') IS NOT NULL
+            OR json_extract(properties, '$.alias') IS NOT NULL
+         ORDER BY title COLLATE NOCASE
+         LIMIT ?`,
+      )
+      .all(limit) as { id: string; title: string; path: string | null }[];
+  }
+
   /** Compact and optimize for deterministic, git-friendly storage. */
   finalize(): void {
     this.db.exec("PRAGMA optimize");

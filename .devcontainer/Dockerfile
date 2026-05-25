@@ -23,3 +23,12 @@ ENV BUN_INSTALL=/home/vscode/.bun
 ENV PATH="${BUN_INSTALL}/bin:${PATH}"
 USER vscode
 RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.13"
+
+# Workspace dependencies (installed at image build; devcontainer syncs into bind-mounted workspace).
+USER root
+WORKDIR /opt/marloth-story
+COPY package.json bun.lock bunfig.toml ./
+COPY packages packages
+RUN chown -R vscode:vscode /opt/marloth-story
+USER vscode
+RUN bun install --frozen-lockfile

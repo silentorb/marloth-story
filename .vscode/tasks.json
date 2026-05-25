@@ -15,6 +15,45 @@
         "focus": true
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Marloth Editor: build",
+      "type": "shell",
+      "command": "bun run editor:build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Marloth Editor: build extension",
+      "type": "shell",
+      "command": "bun run build:extension",
+      "options": {
+        "cwd": "${workspaceFolder}/packages/marloth-editor"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Marloth Editor: dev (API + webview)",
+      "type": "shell",
+      "command": "bun run editor:dev",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
     }
   ]
 }
