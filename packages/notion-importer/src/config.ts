@@ -118,7 +118,7 @@ export function printHelp(): void {
     "  NOTION_EXPORT_DIR  Export directory or zip when --source is omitted",
     "  MARLOTH_DB_PATH    Database path when --db is omitted",
     "",
-    "Source resolution order: --source → NOTION_EXPORT_DIR → newest ./exports/ → ./external/notion/",
+    "Source resolution order: --source → NOTION_EXPORT_DIR → newest ./exports/",
   ];
   console.log(lines.join("\n"));
 }

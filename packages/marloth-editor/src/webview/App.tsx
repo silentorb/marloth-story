@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { DatabaseTableView } from "./components/DatabaseTableView";
 import { GraphView } from "./components/GraphView";
 import { MarlothEditor } from "./components/MarlothEditor";
 import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
-import type { AppView } from "../shared/types";
+import type { AppView, DatabaseViewDetail, RecordDetail } from "../shared/types";
+import { standaloneRecordUrl } from "../shared/types";
+import { navigateStandaloneRecord, standaloneViewUrl } from "./record-links";
 import {
   readGraphShowNodeLabels,
   writeGraphShowNodeLabels,
@@ -12,6 +15,10 @@ import {
 export type { AppView };
 
 type SaveState = "idle" | "dirty" | "saving" | "saved" | "error";
+
+function isDatabaseRecord(record: RecordDetail): boolean {
+  return record.labels.includes("NotionDatabase");
+}
 
 function recordFromLocation(): string | null {
   const params = new URLSearchParams(window.location.search);
@@ -37,12 +44,23 @@ export function App() {
   const [view, setView] = useState<AppView>(() =>
     api.host === "standalone" ? viewFromLocation() : "record",
   );
-  const [record, setRecord] = useState<Awaited<ReturnType<typeof api.getRecord>> | null>(null);
+  const [record, setRecord] = useState<RecordDetail | null>(null);
+  const [databaseView, setDatabaseView] = useState<DatabaseViewDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [showGraphNodeLabels, setShowGraphNodeLabels] = useState(readGraphShowNodeLabels);
+  const [homeId, setHomeId] = useState<string | null>(null);
   const pendingBody = useRef<string | null>(null);
   const saveTimer = useRef<number | null>(null);
+
+  const standaloneUrls = useMemo(() => {
+    if (api.host !== "standalone" || !homeId) return undefined;
+    return {
+      home: standaloneRecordUrl(homeId),
+      overview: standaloneViewUrl("graph-overview"),
+      explorer: standaloneViewUrl("graph-explorer"),
+    };
+  }, [api.host, homeId]);
 
   const syncStandaloneUrl = useCallback(
     (nextView: AppView, recordId?: string | null) => {
@@ -58,13 +76,33 @@ export function App() {
   );
 
   const loadRecord = useCallback(
-    async (recordId: string) => {
+    async (recordId: string, databaseViewName?: string) => {
       setError(null);
       try {
         const detail = await api.getRecord(recordId);
         setRecord(detail);
         pendingBody.current = detail.body;
         setSaveState("idle");
+
+        if (isDatabaseRecord(detail)) {
+          const view = await api.getDatabaseView(recordId, databaseViewName);
+          setDatabaseView(view);
+        } else {
+          setDatabaseView(null);
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
+      }
+    },
+    [api],
+  );
+
+  const loadDatabaseView = useCallback(
+    async (recordId: string, view: string) => {
+      setError(null);
+      try {
+        const viewDetail = await api.getDatabaseView(recordId, view);
+        setDatabaseView(viewDetail);
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       }
@@ -74,6 +112,8 @@ export function App() {
 
   const bootstrap = useCallback(async () => {
     if (api.host === "vscode") return;
+    const home = await api.getHomeId();
+    setHomeId(home);
     const initialView = viewFromLocation();
     setView(initialView);
     if (initialView !== "record") return;
@@ -83,8 +123,7 @@ export function App() {
       await loadRecord(fromUrl);
       return;
     }
-    const homeId = await api.getHomeId();
-    await loadRecord(homeId);
+    await loadRecord(home);
   }, [api, loadRecord]);
 
   useEffect(() => {
@@ -109,18 +148,6 @@ export function App() {
     return () => window.removeEventListener("message", onMessage);
   }, [api.host, loadRecord]);
 
-  useEffect(() => {
-    if (api.host !== "standalone") return;
-    const onNavigate = (event: Event) => {
-      const detail = (event as CustomEvent<{ recordId: string }>).detail;
-      setView("record");
-      syncStandaloneUrl("record", detail.recordId);
-      void loadRecord(detail.recordId);
-    };
-    window.addEventListener("marloth:navigate", onNavigate);
-    return () => window.removeEventListener("marloth:navigate", onNavigate);
-  }, [api.host, loadRecord, syncStandaloneUrl]);
-
   const scheduleSave = useCallback(
     (body: string) => {
       if (!record) return;
@@ -144,27 +171,52 @@ export function App() {
   );
 
   const goHome = useCallback(async () => {
-    const homeId = await api.getHomeId();
+    const nextHomeId = homeId ?? (await api.getHomeId());
+    if (api.host === "standalone") {
+      navigateStandaloneRecord(nextHomeId);
+      return;
+    }
     setView("record");
-    syncStandaloneUrl("record", homeId);
-    api.navigate(homeId, false);
-    if (api.host === "standalone") await loadRecord(homeId);
-  }, [api, loadRecord, syncStandaloneUrl]);
+    syncStandaloneUrl("record", nextHomeId);
+    void loadRecord(nextHomeId);
+  }, [api, homeId, loadRecord, syncStandaloneUrl]);
 
   const changeView = useCallback(
     (nextView: AppView) => {
+      if (api.host === "standalone") {
+        window.location.assign(
+          standaloneViewUrl(nextView, record?.id ?? recordFromLocation()),
+        );
+        return;
+      }
       setView(nextView);
       syncStandaloneUrl(nextView, record?.id ?? recordFromLocation());
     },
-    [record?.id, syncStandaloneUrl],
+    [api.host, record?.id, syncStandaloneUrl],
   );
 
   const openRecordFromGraph = useCallback(
     (recordId: string) => {
+      if (api.host === "standalone") {
+        navigateStandaloneRecord(recordId);
+        return;
+      }
       setView("record");
       syncStandaloneUrl("record", recordId);
-      api.navigate(recordId, false);
-      if (api.host === "standalone") void loadRecord(recordId);
+      void loadRecord(recordId);
+    },
+    [api.host, loadRecord, syncStandaloneUrl],
+  );
+
+  const openLinkedRecord = useCallback(
+    (recordId: string, openInNewTab = false) => {
+      if (openInNewTab) {
+        api.navigate(recordId, true);
+        return;
+      }
+      setView("record");
+      syncStandaloneUrl("record", recordId);
+      void loadRecord(recordId);
     },
     [api, loadRecord, syncStandaloneUrl],
   );
@@ -176,7 +228,12 @@ export function App() {
 
   return (
     <div className="marloth-layout">
-      <SidePanel activeView={view} onHome={() => void goHome()} onViewChange={changeView} />
+      <SidePanel
+        activeView={view}
+        onHome={() => void goHome()}
+        onViewChange={changeView}
+        standaloneUrls={standaloneUrls}
+      />
       <div className="marloth-main">
         {view === "graph-overview" ? (
           <GraphView
@@ -198,6 +255,17 @@ export function App() {
           <div className="marloth-error">{error}</div>
         ) : !record ? (
           <div className="marloth-loading">Loading…</div>
+        ) : isDatabaseRecord(record) ? (
+          databaseView ? (
+            <DatabaseTableView
+              api={api}
+              databaseView={databaseView}
+              onViewChange={(view) => void loadDatabaseView(record.id, view)}
+              onOpenRecord={openLinkedRecord}
+            />
+          ) : (
+            <div className="marloth-loading">Loading database…</div>
+          )
         ) : (
           <>
             <div className="marloth-app-bar">
@@ -221,9 +289,6 @@ export function App() {
               title={record.title}
               initialBody={record.body}
               onBodyChange={scheduleSave}
-              onNavigate={(id, openInNewTab) => {
-                if (api.host === "standalone" && !openInNewTab) void loadRecord(id);
-              }}
             />
           </>
         )}

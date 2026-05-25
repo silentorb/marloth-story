@@ -9,7 +9,7 @@ The Notion import feature transforms narrative and database content from a Notio
 Read this doc when your task involves:
 
 - Notion export → graph import or re-import
-- `packages/notion-importer/`, `external/notion/`, or `./exports/`
+- `packages/notion-importer/`, or `./exports/`
 - Import manifest or unresolved relation reports
 - Changing Notion → graph mapping conventions
 
@@ -20,14 +20,15 @@ For graph schema, storage, and query API, see [marloth-db.md](./marloth-db.md).
 ### Source resolution
 
 - The pipeline **must** accept a directory or `.zip` export path via `--source` or `NOTION_EXPORT_DIR`.
-- By default, the pipeline **must** prefer the most recently modified entry in `./exports/`; if `./exports/` is empty or missing, it **must** fall back to `external/notion/`.
+- By default, the pipeline **must** prefer the most recently modified entry in `./exports/`.
+- If `./exports/` is empty or missing (and no `--source` / `NOTION_EXPORT_DIR`), the pipeline **must** fail with a clear error.
 - Zip sources **must** be extracted to a temporary directory for the run. Nested part archives (e.g. `ExportBlock-…-Part-1.zip`) **must** be unpacked recursively until only pages and CSVs remain.
 
 ### Output
 
 - The pipeline **must** write the property graph to `data/marloth.sqlite` by default (`--db` / `MARLOTH_DB_PATH` to override).
 - Stable row identity **must** be the **32-hex Notion id** as the vertex id for pages.
-- Original export files under `external/notion/` **must** keep Notion exporter names; vertex `source_export` records the repo-relative path.
+- Export archives under `./exports/` **must** keep Notion exporter names; vertex `source_export` records the repo-relative path.
 
 ### Page import
 
@@ -36,7 +37,7 @@ Each Notion page (`.md`) **must** become a vertex labeled `NotionPage` with prop
 - `title` — from first `#` heading
 - `notion_id` — 32-hex id from source filename
 - `source_export` — repo-relative path to exported `.md`
-- `inferred_notion_path` — parent path inside export, when under `external/notion/` or `exports/`
+- `inferred_notion_path` — parent path inside export, when under `exports/`
 - `body` — markdown body (relation property lines removed; converted to edges)
 - `alias` — short title without trailing id suffix
 - Scalar `Key: value` lines before the body **must** be stored as slugified, emoji-stripped property keys
@@ -95,8 +96,7 @@ High-level stages (see `packages/notion-importer/src/graph-pipeline.ts`):
 
 | Path | Role |
 | --- | --- |
-| `./exports/` | Preferred export drop zone (most recent wins) |
-| `external/notion/` | Fallback committed export tree |
+| `./exports/` | Notion export drop zone (most recent `.zip` or directory wins) |
 | `data/marloth.sqlite` | Property graph output |
 | `docs/notion-import-manifest.json` | Import summary |
 | `docs/notion-link-report.txt` | Unresolved relation paths |
@@ -106,7 +106,7 @@ High-level stages (see `packages/notion-importer/src/graph-pipeline.ts`):
 From the repository root (Bun required):
 
 ```bash
-# default: prefers ./exports, falls back to ./external/notion
+# default: uses newest entry in ./exports/
 bun run notion:import
 ```
 

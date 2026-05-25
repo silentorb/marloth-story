@@ -1,7 +1,0 @@
-# Doctor Who
-
-Monsters: Zombies (../Monsters%20and%20Villains/Zombies%20901eef0e94024304bb9512fee842e3b3.md), Ink / shadow monsters (../Monsters%20and%20Villains/Ink%20shadow%20monsters%206be80fcebcc24064987d9483aae6fa34.md), Eldritch horrors (../Monsters%20and%20Villains/Eldritch%20horrors%209d977fe97699437880fbc4b55651f78c.md), Wicked rulers (../Monsters%20and%20Villains/Wicked%20rulers%201fe9ce4060e04133a4ce24cbe8054c4a.md), Supervillains (../Monsters%20and%20Villains/Supervillains%20e279a3db427941fea851e6a6e016ec61.md), Beasts (../Monsters%20and%20Villains/Beasts%203fefb3b547bb4b4985c3ef149b16290a.md)
-Motivations: Free spirited / adaptable main characters (../../Features/Free%20spirited%20adaptable%20main%20characters%201d458e628ba2803d9f73cd30fd59b6ef.md), Adventure (../../Features/Adventure%201d458e628ba28026830dfe3db74cba19.md), Travelers (../../Features/Travelers%20bbc494a7892947fd8bc516fab446f6da.md), Sojourner (../../Features/Sojourner%201e2cf9c7997f48f7bf052c4ee98aec4b.md), Supernatural forces few people can see (../../Features/Supernatural%20forces%20few%20people%20can%20see%201dbf653b6a894de39bbc08de004b862f.md), Manic energy (../../Features/Manic%20energy%2031db79f67d82432ca15cc17bbffb2bfd.md)
-Pacing: Continuous (../Pacing%20types/Continuous%20e187a8c9a0cf44aea652648d5970a0db.md)
-Weighted Use: 7
-Wonder: 2

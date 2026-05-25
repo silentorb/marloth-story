@@ -10,4 +10,15 @@ export {
   updateRecordBody,
 } from "./queries";
 export type { RecordDetail, RecordSummary } from "./queries";
+export { getDatabaseViewDetail } from "./database-view";
+export type { DatabaseRow, DatabaseViewDetail } from "./database-view";
+export { getRecordPageDetail } from "./record-sections";
+export type {
+  DatabaseTableSection,
+  MarkdownSection,
+  RecordPageDetail,
+  RecordSection,
+  RelationRow,
+  RelationTableSection,
+} from "./record-sections";
 export { DDL, SCHEMA_VERSION } from "./schema";

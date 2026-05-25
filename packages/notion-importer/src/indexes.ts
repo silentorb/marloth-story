@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readExportText } from "./export-fs";
 import { disambiguateHeaders, stripEmojis } from "./textutil";
 
 const ID_VIEW =
@@ -91,8 +91,8 @@ function parseCsv(text: string): string[][] {
   return rows;
 }
 
-export function readCsvRows(path: string): [string[], string[][]] {
-  const text = readFileSync(path, { encoding: "utf-8" });
+export function readCsvRows(path: string, searchRoot?: string): [string[], string[][]] {
+  const text = readExportText(path, searchRoot);
   const rows = parseCsv(text);
   if (rows.length === 0) return [[], []];
   let header = rows[0]!.map((h) => stripEmojis(h));

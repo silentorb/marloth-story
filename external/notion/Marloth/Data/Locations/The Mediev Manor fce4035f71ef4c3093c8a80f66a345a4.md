@@ -1,4 +1,0 @@
-# The Mediev Manor
-
-Parents: The Nameless Countryside (The%20Nameless%20Countryside%202a758e628ba2802f956ce4732a520dfa.md)
-Scenes: Adelle struggles with contentment (../../Scenes/Adelle%20struggles%20with%20contentment%20ad003084367d4c8893785b7795c9245c.md), Introduce Nivana and Adelle (../../Scenes/Introduce%20Nivana%20and%20Adelle%2090a5c6953ff5423ba7cc1a40c8540322.md), Nivana in the Mediev garden (../../Scenes/Nivana%20in%20the%20Mediev%20garden%2023058e628ba280e6917fe01d0e802892.md), Nivana mocks Millamer (../../Scenes/Nivana%20mocks%20Millamer%209d9696095f2e47f8afa2ef306f1b479a.md), Mediev family conversation (../../Scenes/Mediev%20family%20conversation%202aa58e628ba2806cb21cfcd50621bcfb.md)

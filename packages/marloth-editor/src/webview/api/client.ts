@@ -4,6 +4,10 @@ import {
   type EditorApiClient,
 } from "../../shared/http-client";
 import type { EditorHost } from "../../shared/types";
+import {
+  navigateStandaloneRecord,
+  openStandaloneRecordInNewTab,
+} from "../record-links";
 
 export interface EditorApi extends EditorApiClient {
   host: EditorHost;
@@ -33,6 +37,7 @@ export function createEditorApi(): EditorApi {
       host: "vscode",
       getHomeId: rest.getHomeId.bind(rest),
       getRecord: rest.getRecord.bind(rest),
+      getDatabaseView: rest.getDatabaseView.bind(rest),
       search: rest.search.bind(rest),
       saveBody: rest.saveBody.bind(rest),
       getGraphOverview: rest.getGraphOverview.bind(rest),
@@ -47,19 +52,17 @@ export function createEditorApi(): EditorApi {
     host: "standalone",
     getHomeId: rest.getHomeId.bind(rest),
     getRecord: rest.getRecord.bind(rest),
+    getDatabaseView: rest.getDatabaseView.bind(rest),
     search: rest.search.bind(rest),
     saveBody: rest.saveBody.bind(rest),
     getGraphOverview: rest.getGraphOverview.bind(rest),
     getGraphFull: rest.getGraphFull.bind(rest),
     navigate(recordId: string, openInNewTab = false): void {
-      const url = new URL(window.location.href);
-      url.searchParams.set("record", recordId);
       if (openInNewTab) {
-        window.open(url.toString(), "_blank", "noopener,noreferrer");
-      } else {
-        window.history.pushState({}, "", url.toString());
-        window.dispatchEvent(new CustomEvent("marloth:navigate", { detail: { recordId } }));
+        openStandaloneRecordInNewTab(recordId);
+        return;
       }
+      navigateStandaloneRecord(recordId);
     },
   };
 }

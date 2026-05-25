@@ -95,7 +95,8 @@ export function createApiHandler(dbPath = resolveDbPath()) {
       if (recordMatch) {
         const id = recordMatch[1]!.toLowerCase();
         if (req.method === "GET") {
-          const record = db.getRecord(id);
+          const view = url.searchParams.get("view") ?? undefined;
+          const record = db.getRecord(id, view);
           if (!record) return json({ error: "not found" }, 404);
           return json({ record });
         }
@@ -108,6 +109,15 @@ export function createApiHandler(dbPath = resolveDbPath()) {
           if (!ok) return json({ error: "not found" }, 404);
           return json({ ok: true });
         }
+      }
+
+      const databaseMatch = /^\/api\/databases\/([a-f0-9]{32})$/i.exec(path);
+      if (databaseMatch && req.method === "GET") {
+        const id = databaseMatch[1]!.toLowerCase();
+        const view = url.searchParams.get("view") ?? undefined;
+        const databaseView = db.getDatabaseView(id, view);
+        if (!databaseView) return json({ error: "not found" }, 404);
+        return json({ databaseView });
       }
 
       return json({ error: "not found" }, 404);

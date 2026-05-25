@@ -1,5 +1,0 @@
-# Save the world
-
-People who think it is up to themselves to save the world.
-
-People can't save the world.  Only God can.

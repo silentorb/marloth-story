@@ -300,6 +300,74 @@ export class GraphDatabase {
       });
   }
 
+  listEdgesFromSource(sourceId: string, label?: string): EdgeRecord[] {
+    const rows = label
+      ? (this.db
+          .prepare(
+            "SELECT id, source_id, target_id, label, properties FROM edges WHERE source_id = ? AND label = ? ORDER BY id",
+          )
+          .all(sourceId, label) as {
+          id: string;
+          source_id: string;
+          target_id: string;
+          label: string;
+          properties: string;
+        }[])
+      : (this.db
+          .prepare(
+            "SELECT id, source_id, target_id, label, properties FROM edges WHERE source_id = ? ORDER BY label, id",
+          )
+          .all(sourceId) as {
+          id: string;
+          source_id: string;
+          target_id: string;
+          label: string;
+          properties: string;
+        }[]);
+
+    return rows.map((row) => ({
+      id: row.id,
+      sourceId: row.source_id,
+      targetId: row.target_id,
+      label: row.label,
+      properties: parseJsonObject(row.properties),
+    }));
+  }
+
+  listEdgesToTarget(targetId: string, label?: string): EdgeRecord[] {
+    const rows = label
+      ? (this.db
+          .prepare(
+            "SELECT id, source_id, target_id, label, properties FROM edges WHERE target_id = ? AND label = ? ORDER BY id",
+          )
+          .all(targetId, label) as {
+          id: string;
+          source_id: string;
+          target_id: string;
+          label: string;
+          properties: string;
+        }[])
+      : (this.db
+          .prepare(
+            "SELECT id, source_id, target_id, label, properties FROM edges WHERE target_id = ? ORDER BY id",
+          )
+          .all(targetId) as {
+          id: string;
+          source_id: string;
+          target_id: string;
+          label: string;
+          properties: string;
+        }[]);
+
+    return rows.map((row) => ({
+      id: row.id,
+      sourceId: row.source_id,
+      targetId: row.target_id,
+      label: row.label,
+      properties: parseJsonObject(row.properties),
+    }));
+  }
+
   /** Compact and optimize for deterministic, git-friendly storage. */
   finalize(): void {
     this.db.exec("PRAGMA optimize");

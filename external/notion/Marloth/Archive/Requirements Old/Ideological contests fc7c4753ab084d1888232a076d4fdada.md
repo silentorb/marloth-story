@@ -1,1 +1,0 @@
-# Ideological contests

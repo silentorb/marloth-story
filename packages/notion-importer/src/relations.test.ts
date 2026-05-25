@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { parseRelationLinks } from "./relations";
+import { normalizeRelationLabel, parseRelationLinks } from "./relations";
 
 describe("parseRelationLinks", () => {
   test("extracts notion ids from relation lists", () => {
@@ -9,5 +9,19 @@ describe("parseRelationLinks", () => {
     expect(links.length).toBe(2);
     expect(links[0]!.notionId).toBe("dbdd3ba02f5d4fa2b469fa674b5a0b93");
     expect(links[1]!.notionId).toBe("0c0f5dc9289549968753fa24d3494c8d");
+  });
+
+  test("strips leading comma from labels after the first relation", () => {
+    const val =
+      "Mieruko-chan (a.md), Peace in the eye of the storm (Peace%204e21b1585595437d834a897e603fb87a.md)";
+    const links = parseRelationLinks(val);
+    expect(links[1]!.label).toBe("Peace in the eye of the storm");
+    expect(links[1]!.notionId).toBe("4e21b1585595437d834a897e603fb87a");
+  });
+
+  test("normalizeRelationLabel trims comma prefixes", () => {
+    expect(normalizeRelationLabel(", Peace in the eye of the storm")).toBe(
+      "Peace in the eye of the storm",
+    );
   });
 });

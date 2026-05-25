@@ -2,13 +2,56 @@ import { useState } from "react";
 import type { AppView } from "../../shared/types";
 import "./side-panel.css";
 
+export interface SidePanelStandaloneUrls {
+  home: string;
+  overview: string;
+  explorer: string;
+}
+
 interface SidePanelProps {
   activeView: AppView;
   onHome: () => void;
   onViewChange: (view: AppView) => void;
+  standaloneUrls?: SidePanelStandaloneUrls;
 }
 
-export function SidePanel({ activeView, onHome, onViewChange }: SidePanelProps) {
+function NavItem({
+  active,
+  title,
+  icon,
+  label,
+  href,
+  onClick,
+}: {
+  active: boolean;
+  title: string;
+  icon: string;
+  label: string;
+  href?: string;
+  onClick?: () => void;
+}) {
+  const className = `marloth-side-panel-item${active ? " is-active" : ""}`;
+  if (href) {
+    return (
+      <a className={className} href={href} title={title}>
+        <span className="marloth-side-panel-item-icon" aria-hidden="true">
+          {icon}
+        </span>
+        <span className="marloth-side-panel-item-label">{label}</span>
+      </a>
+    );
+  }
+  return (
+    <button type="button" className={className} onClick={onClick} title={title}>
+      <span className="marloth-side-panel-item-icon" aria-hidden="true">
+        {icon}
+      </span>
+      <span className="marloth-side-panel-item-label">{label}</span>
+    </button>
+  );
+}
+
+export function SidePanel({ activeView, onHome, onViewChange, standaloneUrls }: SidePanelProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -31,39 +74,30 @@ export function SidePanel({ activeView, onHome, onViewChange }: SidePanelProps) 
         </button>
       </div>
       <nav className="marloth-side-panel-nav">
-        <button
-          type="button"
-          className={`marloth-side-panel-item${activeView === "record" ? " is-active" : ""}`}
-          onClick={onHome}
+        <NavItem
+          active={activeView === "record"}
           title="Home"
-        >
-          <span className="marloth-side-panel-item-icon" aria-hidden="true">
-            ⌂
-          </span>
-          <span className="marloth-side-panel-item-label">Home</span>
-        </button>
-        <button
-          type="button"
-          className={`marloth-side-panel-item${activeView === "graph-overview" ? " is-active" : ""}`}
-          onClick={() => onViewChange("graph-overview")}
+          icon="⌂"
+          label="Home"
+          href={standaloneUrls?.home}
+          onClick={standaloneUrls ? undefined : onHome}
+        />
+        <NavItem
+          active={activeView === "graph-overview"}
           title="Graph Overview"
-        >
-          <span className="marloth-side-panel-item-icon" aria-hidden="true">
-            ◉
-          </span>
-          <span className="marloth-side-panel-item-label">Graph Overview</span>
-        </button>
-        <button
-          type="button"
-          className={`marloth-side-panel-item${activeView === "graph-explorer" ? " is-active" : ""}`}
-          onClick={() => onViewChange("graph-explorer")}
+          icon="◉"
+          label="Graph Overview"
+          href={standaloneUrls?.overview}
+          onClick={standaloneUrls ? undefined : () => onViewChange("graph-overview")}
+        />
+        <NavItem
+          active={activeView === "graph-explorer"}
           title="Graph Explorer"
-        >
-          <span className="marloth-side-panel-item-icon" aria-hidden="true">
-            ⊕
-          </span>
-          <span className="marloth-side-panel-item-label">Graph Explorer</span>
-        </button>
+          icon="⊕"
+          label="Graph Explorer"
+          href={standaloneUrls?.explorer}
+          onClick={standaloneUrls ? undefined : () => onViewChange("graph-explorer")}
+        />
       </nav>
     </aside>
   );

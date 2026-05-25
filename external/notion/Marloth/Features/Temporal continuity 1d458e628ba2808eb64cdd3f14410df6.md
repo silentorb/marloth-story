@@ -1,9 +1,0 @@
-# Temporal continuity
-
-Priority: Medium
-Inspirations: Alice in Wonderland (../Inspirations/Inspirations/Alice%20in%20Wonderland%20ca98e0e27dff4b77adff51cfedaca5ce.md), American McGee’s Alice (../Inspirations/Inspirations/American%20McGee%E2%80%99s%20Alice%202392ae8e06574413acc3590f1f416e24.md), Ash vs. the Evil Dead (../Inspirations/Inspirations/Ash%20vs%20the%20Evil%20Dead%206c3ea4b72e4e4e6e8f3474bbab490186.md), Big Trouble in Little China (../Inspirations/Inspirations/Big%20Trouble%20in%20Little%20China%200a1639ebedd74085b350e568bfab2e71.md), Sapphire and Steel (../Inspirations/Inspirations/Sapphire%20and%20Steel%20f4522f813fe047fe9cc7daef159bed6d.md), Stranger Things (../Inspirations/Inspirations/Stranger%20Things%20d4c962a2859a4f14b6acfc4260514175.md), Tenkuu Shinpan (../Inspirations/Inspirations/Tenkuu%20Shinpan%20748ff563f82047c68c5bc3e6c8842598.md), The Evil Dead 2 (../Inspirations/Inspirations/The%20Evil%20Dead%202%2093629e42ee3a488c821794ec47db5374.md), Labyrinth (../Inspirations/Inspirations/Labyrinth%201d458e628ba280ba8976f66237b73d67.md), Through the Looking Glass (../Inspirations/Inspirations/Through%20the%20Looking%20Glass%201d458e628ba280709ae1d7e3d15c2624.md), Surviving Romance (../Inspirations/Inspirations/Surviving%20Romance%2022858e628ba280fba349c779daae8c37.md), River City Girls (../Inspirations/Inspirations/River%20City%20Girls%2022a58e628ba280688bb9eae58590609a.md), Paprika Opening (../Inspirations/Inspirations/Paprika%20Opening%20ef876f9318794798b9f08c669615c3dd.md), Alan Wake (../Inspirations/Inspirations/Alan%20Wake%200e04bd5170f74a378ff7c68afe4843e3.md), Silent Hill (../Inspirations/Inspirations/Silent%20Hill%202a458e628ba28059b174ede173d12c5f.md)
-Products: TWOLD (../Data/Products/TWOLD%20e028aa0786f5449984a4f497c1d746fa.md)
-Tags: Wonderland
-Wonderland count: 1
-
-- [Temporal continuity](https://github.com/silentorb/marloth-story/blob/master/design/general/marloth-narrative-guidelines.md#temporal-continuity)

@@ -16,6 +16,15 @@ export interface RecordDetail extends RecordSummary {
   labels: string[];
 }
 
+export type {
+  DatabaseTableSection,
+  MarkdownSection,
+  RecordPageDetail,
+  RecordSection,
+  RelationRow,
+  RelationTableSection,
+} from "marloth-db";
+
 export type EditorHost = "vscode" | "standalone";
 
 export type AppView = "record" | "graph-overview" | "graph-explorer";
@@ -55,4 +64,12 @@ export function recordIdFromUri(uri: string): string | null {
   return m?.[1]?.toLowerCase() ?? null;
 }
 
-export type { GraphLink, GraphNode, GraphSnapshot } from "marloth-db";
+/** Browser URL for standalone dev mode (`?record=` query param). */
+export function standaloneRecordUrl(recordId: string, base?: string | URL): string {
+  const url = base instanceof URL ? new URL(base.href) : new URL(base ?? "http://127.0.0.1/");
+  url.searchParams.set("record", recordId);
+  url.searchParams.delete("view");
+  return url.toString();
+}
+
+export type { GraphLink, GraphNode, GraphSnapshot, DatabaseRow, DatabaseViewDetail } from "marloth-db";

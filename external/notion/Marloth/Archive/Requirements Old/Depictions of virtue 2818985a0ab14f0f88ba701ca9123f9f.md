@@ -1,1 +1,0 @@
-# Depictions of virtue

@@ -17,6 +17,8 @@ The extension host **does not** open SQLite directly. It spawns (or connects to)
 
 **Data transport:** webview → REST (`src/shared/http-client.ts`) in all modes. **Navigation transport:** webview → postMessage → extension host (VS Code only).
 
+**Link/navigation convention:** prefer real URLs and native browser behavior in standalone mode (`src/webview/record-links.ts`). Stored markdown still uses `marloth:{id}`; the standalone UI rewrites rendered anchors to `?record=` query URLs. Only intercept clicks when no native URL exists (VS Code `marloth:` links). Canvas/graph clicks are an exception.
+
 ## Run
 
 From repo root:

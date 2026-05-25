@@ -1,6 +1,6 @@
 ---
 description: Design ontology — read for domain meaning before editing graph data
-globs: data/**,external/notion/**
+globs: data/**,exports/**
 alwaysApply: false
 ---
 

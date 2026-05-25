@@ -31,6 +31,8 @@ For graph storage semantics, read [`marloth-db.md`](./marloth-db.md) and [`../on
   - plain click → same editor tab
   - Ctrl/Cmd+click or middle-click → new editor tab (VS Code custom editor instance)
 - Legacy Notion export links (32-hex id embedded in path) **should** resolve at navigation time without requiring a bulk migration.
+- **Standalone browser mode** should use normal `<a href="?record=…">` URLs and native browser navigation (including Ctrl/Cmd+click for new tabs). Avoid `preventDefault`, `window.open`, and other JS overrides where a real link works.
+- **VS Code webview** may intercept `marloth:` links (no native target) and route via postMessage; keep that interception minimal and limited to cases without a usable URL.
 
 ### Entry / navigation
 

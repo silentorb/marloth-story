@@ -5,13 +5,14 @@ import "@milkdown/crepe/theme/frame-dark.css";
 import type { EditorApi } from "../api/client";
 import {
   formatMarlothLink,
-  isMarlothHref,
   marlothHref,
-  recordIdFromHref,
-  resolveLinkTarget,
 } from "../../shared/types";
 import type { RecordSummary } from "../../shared/types";
 import { installCalloutDecoration } from "../callout-decoration";
+import {
+  resolveRecordLinkTarget,
+  rewriteStandaloneRecordLinks,
+} from "../record-links";
 import "./editor.css";
 
 interface MentionState {
@@ -171,34 +172,42 @@ export function MarlothEditor({
       editor.on((listener) => {
         listener.markdownUpdated((_ctx, markdown, prevMarkdown) => {
           if (markdown !== prevMarkdown) onBodyChange?.(markdown);
+          if (api.host === "standalone") {
+            editor.action((ctx) => {
+              rewriteStandaloneRecordLinks(ctx.get("editorView").dom);
+            });
+          }
         });
       });
+
+      if (api.host === "standalone") {
+        editor.action((ctx) => {
+          rewriteStandaloneRecordLinks(ctx.get("editorView").dom);
+        });
+      }
     });
 
-    const onClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null;
-      const anchor = target?.closest("a") as HTMLAnchorElement | null;
-      if (!anchor) return;
-      const href = anchor.getAttribute("href") ?? "";
-      const recordTarget = isMarlothHref(href)
-        ? recordIdFromHref(href)
-        : resolveLinkTarget(href);
-      if (!recordTarget) return;
-      event.preventDefault();
-      event.stopPropagation();
-      const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
-      onNavigate?.(recordTarget, openInNewTab);
-      api.navigate(recordTarget, openInNewTab);
-    };
+    const onClick = api.host === "vscode"
+      ? (event: MouseEvent) => {
+          const target = event.target as HTMLElement | null;
+          const anchor = target?.closest("a") as HTMLAnchorElement | null;
+          if (!anchor) return;
+          const recordTarget = resolveRecordLinkTarget(anchor.getAttribute("href") ?? "");
+          if (!recordTarget) return;
+          event.preventDefault();
+          event.stopPropagation();
+          const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
+          onNavigate?.(recordTarget, openInNewTab);
+          api.navigate(recordTarget, openInNewTab);
+        }
+      : null;
 
     const onContextMenu = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
       const anchor = target?.closest("a") as HTMLAnchorElement | null;
       if (!anchor) return;
       const href = anchor.getAttribute("href") ?? "";
-      const recordTarget = isMarlothHref(href)
-        ? recordIdFromHref(href)
-        : resolveLinkTarget(href);
+      const recordTarget = resolveRecordLinkTarget(href);
       if (!recordTarget) return;
       event.preventDefault();
       const action = window.prompt(
@@ -212,14 +221,18 @@ export function MarlothEditor({
       anchor.setAttribute("href", marlothHref(recordTarget));
     };
 
-    root.addEventListener("click", onClick);
-    root.addEventListener("auxclick", onClick);
+    if (onClick) {
+      root.addEventListener("click", onClick);
+      root.addEventListener("auxclick", onClick);
+    }
     root.addEventListener("contextmenu", onContextMenu);
 
     return () => {
       destroyed = true;
-      root.removeEventListener("click", onClick);
-      root.removeEventListener("auxclick", onClick);
+      if (onClick) {
+        root.removeEventListener("click", onClick);
+        root.removeEventListener("auxclick", onClick);
+      }
       root.removeEventListener("contextmenu", onContextMenu);
       void crepe.destroy();
       crepeRef.current = null;

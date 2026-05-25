@@ -1,7 +1,7 @@
+import { createHash } from "node:crypto";
 import {
   mkdirSync,
   mkdtempSync,
-  readFileSync,
   readdirSync,
   rmSync,
   statSync,
@@ -11,10 +11,11 @@ import {
 import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve } from "node:path";
 import { GraphDatabase } from "marloth-db";
+import { findExportFiles, readExportText } from "./export-fs";
 import { extractNotionId } from "./ids";
 import * as indexes from "./indexes";
 import { splitNotionPage } from "./parse";
-import { parseRelationLinks } from "./relations";
+import { normalizeRelationLabel, parseRelationLinks } from "./relations";
 import * as textutil from "./textutil";
 
 const PROP_LINE = /^(.{1,200}?):\s+(.*)\s*$/;
@@ -64,13 +65,23 @@ function primaryAlias(title: string, notionId: string): string {
 }
 
 function inferredNotionPath(sourceReposix: string): string | undefined {
-  if (sourceReposix.startsWith("external/notion/")) {
-    return dirname(sourceReposix.slice("external/notion/".length));
-  }
+  const relative = exportRelativePath(sourceReposix);
+  if (!relative) return undefined;
+  const dir = dirname(relative);
+  return dir === "." ? undefined : dir;
+}
+
+function exportRelativePath(sourceReposix: string): string | null {
   if (sourceReposix.startsWith("exports/")) {
-    return dirname(sourceReposix.slice("exports/".length));
+    const rest = sourceReposix.slice("exports/".length);
+    const slash = rest.indexOf("/");
+    return slash >= 0 ? rest.slice(slash + 1) : null;
   }
-  return undefined;
+  // Legacy paths in older graph imports (before ./exports/ was canonical).
+  if (sourceReposix.startsWith("external/notion/")) {
+    return sourceReposix.slice("external/notion/".length);
+  }
+  return null;
 }
 
 export interface GraphRunOptions {
@@ -115,7 +126,7 @@ async function runUnzip(zipPath: string, destDir: string): Promise<void> {
 
 async function unpackNestedArchives(root: string, maxRounds = 32): Promise<void> {
   for (let round = 0; round < maxRounds; round += 1) {
-    const zips = findFiles(root, (p) => p.endsWith(".zip"));
+    const zips = findExportFiles(root, (p) => p.endsWith(".zip"));
     if (zips.length === 0) return;
     zips.sort((a, b) => b.split("/").length - a.split("/").length);
     for (const zpath of zips) {
@@ -124,19 +135,6 @@ async function unpackNestedArchives(root: string, maxRounds = 32): Promise<void>
     }
   }
   throw new Error(`nested zip extraction exceeded ${maxRounds} rounds`);
-}
-
-function findFiles(root: string, pred: (p: string) => boolean): string[] {
-  const out: string[] = [];
-  function walk(dir: string): void {
-    for (const ent of readdirSync(dir, { withFileTypes: true })) {
-      const p = join(dir, ent.name);
-      if (ent.isDirectory()) walk(p);
-      else if (ent.isFile() && pred(p)) out.push(p);
-    }
-  }
-  walk(root);
-  return out;
 }
 
 async function extractExportArchive(srcPath: string): Promise<[string, string]> {
@@ -180,7 +178,9 @@ function resolveSourcePath(repoRoot: string, source?: string): string {
   } catch {
     /* no exports dir */
   }
-  return resolve(repoRoot, "external", "notion");
+  throw new Error(
+    "No Notion export found. Add a .zip or directory under ./exports/ or set NOTION_EXPORT_DIR.",
+  );
 }
 
 function relationLabel(rawKey: string): string {
@@ -193,19 +193,56 @@ function ensurePageVertex(
   title: string,
   extra: Record<string, string | undefined> = {},
 ): void {
-  const props: Record<string, string> = { title };
+  const existing = db.getVertex(notionId);
+  const props: Record<string, string> = {};
+  const hasFullPage = typeof existing?.properties.source_export === "string";
+  if (!hasFullPage) {
+    props.title = normalizeRelationLabel(title);
+  }
   for (const [k, v] of Object.entries(extra)) {
     if (v !== undefined) props[k] = v;
   }
   db.upsertVertex(notionId, ["NotionPage"], props);
 }
 
+function plainNameFromCell(nameVal: string, nameLinks: ReturnType<typeof parseRelationLinks>): string {
+  const trimmed = nameVal.trim();
+  if (!trimmed) return "";
+  if (nameLinks[0]?.label) return nameLinks[0].label.trim();
+  return trimmed;
+}
+
+function normalizeTitleForMatch(title: string): string {
+  return normalizeRelationLabel(title);
+}
+
+function resolvePageIdByTitle(db: GraphDatabase, title: string): string | null {
+  const trimmed = normalizeTitleForMatch(title);
+  if (!trimmed) return null;
+  const pattern = trimmed.replace(/[%_\\]/g, "\\$&");
+  const rows = db.searchVerticesByTitle(pattern, 20);
+  const exact = rows.filter(
+    (row) =>
+      normalizeTitleForMatch(row.title).localeCompare(trimmed, undefined, {
+        sensitivity: "base",
+      }) === 0,
+  );
+  if (exact.length === 0) return null;
+  exact.sort((a, b) => {
+    const aScore = a.path ? 1 : 0;
+    const bScore = b.path ? 1 : 0;
+    return bScore - aScore;
+  });
+  return exact[0]!.id;
+}
+
 function importMarkdownPage(
   db: GraphDatabase,
   absMd: string,
   sourceReposix: string,
+  exportRoot: string,
 ): PagePlan {
-  const text = readFileSync(absMd, { encoding: "utf-8" });
+  const text = readExportText(absMd, exportRoot);
   const sp = splitNotionPage(text);
   const notionId = extractNotionId(basename(absMd));
   if (!notionId) throw new Error(`no notion id in ${absMd}`);
@@ -257,11 +294,19 @@ function importRelations(
   }
 }
 
+function orphanPageId(databaseId: string, viewKey: string, rowIndex: number): string {
+  return createHash("sha256")
+    .update(`${databaseId}\0${viewKey}\0${rowIndex}`)
+    .digest("hex")
+    .slice(0, 32);
+}
+
 function importCsvFile(
   db: GraphDatabase,
   csvPath: string,
   sourceReposix: string,
   unresolved: string[],
+  exportRoot: string,
 ): { databaseId: string; view: string } | null {
   const parsed = indexes.parseCsvBasename(basename(csvPath));
   if (!parsed) return null;
@@ -273,7 +318,7 @@ function importCsvFile(
     source_export: sourceReposix,
   });
 
-  const [headers, rows] = indexes.readCsvRows(csvPath);
+  const [headers, rows] = indexes.readCsvRows(csvPath, exportRoot);
   if (headers.length === 0) return { databaseId, view: parsed.viewKey };
 
   const nameCol = headers.find((h) => h.toLowerCase() === "name") ?? headers[0]!;
@@ -282,7 +327,11 @@ function importCsvFile(
     const cells = Object.fromEntries(headers.map((h, i) => [h, row[i] ?? ""]));
     const nameVal = cells[nameCol] ?? "";
     const nameLinks = parseRelationLinks(nameVal);
-    const pageId = nameLinks[0]?.notionId ?? null;
+    const rowName = plainNameFromCell(nameVal, nameLinks);
+    let pageId = nameLinks[0]?.notionId ?? null;
+    if (!pageId && rowName) {
+      pageId = resolvePageIdByTitle(db, rowName);
+    }
 
     const rowScalars: Record<string, string> = {};
     for (const [col, val] of Object.entries(cells)) {
@@ -292,18 +341,20 @@ function importCsvFile(
       rowScalars[textutil.slugifyKey(col)] = val.trim();
     }
 
+    const rowProperties: Record<string, string | number> = {
+      view: parsed.viewKey,
+      row_index: rowIndex,
+      ...rowScalars,
+    };
+
     const targetPageId = pageId;
     if (targetPageId) {
-      ensurePageVertex(db, targetPageId, nameLinks[0]?.label ?? targetPageId);
-      db.upsertEdge(targetPageId, databaseId, "IN_DATABASE", {
-        view: parsed.viewKey,
-        row_index: rowIndex,
-        ...rowScalars,
-      });
-    } else if (Object.keys(rowScalars).length > 0) {
-      db.mergeVertexProperties(databaseId, {
-        [`orphan_row_${parsed.viewKey}_${rowIndex}`]: JSON.stringify(rowScalars),
-      });
+      ensurePageVertex(db, targetPageId, (nameLinks[0]?.label ?? rowName) || targetPageId);
+      db.upsertEdge(targetPageId, databaseId, "IN_DATABASE", rowProperties);
+    } else if (rowName || Object.keys(rowScalars).length > 0) {
+      const orphanId = orphanPageId(databaseId, parsed.viewKey, rowIndex);
+      ensurePageVertex(db, orphanId, rowName || orphanId, { orphan_row: "true" });
+      db.upsertEdge(orphanId, databaseId, "IN_DATABASE", rowProperties);
     }
 
     for (const [col, val] of Object.entries(cells)) {
@@ -354,7 +405,7 @@ export async function runGraphImport(opts: GraphRunOptions): Promise<void> {
   db.setMeta("import_source", relative(repoRoot, external) || external);
   db.setMeta("imported_at", new Date().toISOString());
 
-  const mdFiles = findFiles(external, (p) => p.endsWith(".md")).sort();
+  const mdFiles = findExportFiles(external, (p) => p.endsWith(".md"));
   const externalResolved = resolve(external);
   const repoResolved = resolve(repoRoot);
   let sourceLabel: string;
@@ -364,7 +415,7 @@ export async function runGraphImport(opts: GraphRunOptions): Promise<void> {
   } else if (basename(dirname(srcPath)) === "exports") {
     sourceLabel = `exports/${basename(srcPath)}`;
   } else {
-    sourceLabel = "external/notion";
+    sourceLabel = basename(srcPath);
   }
 
   const manifest: GraphManifest = {
@@ -378,7 +429,7 @@ export async function runGraphImport(opts: GraphRunOptions): Promise<void> {
   const pagePlans: PagePlan[] = [];
   for (const absMd of mdFiles) {
     const relposix = makeReposix(absMd, repoRoot, external, sourceLabel);
-    const plan = importMarkdownPage(db, absMd, relposix);
+    const plan = importMarkdownPage(db, absMd, relposix, external);
     pagePlans.push(plan);
     manifest.vertices[plan.notionId] = {
       notion_id: plan.notionId,
@@ -391,10 +442,10 @@ export async function runGraphImport(opts: GraphRunOptions): Promise<void> {
   const unresolved: string[] = [];
   importRelations(db, pagePlans, unresolved);
 
-  const csvFiles = findFiles(external, (p) => p.endsWith(".csv")).sort();
+  const csvFiles = findExportFiles(external, (p) => p.endsWith(".csv"));
   for (const csvPath of csvFiles) {
     const relposix = makeReposix(csvPath, repoRoot, external, sourceLabel);
-    const info = importCsvFile(db, csvPath, relposix, unresolved);
+    const info = importCsvFile(db, csvPath, relposix, unresolved, external);
     if (info) {
       manifest.databases[`${info.databaseId}:${info.view}`] = {
         notion_database: info.databaseId,

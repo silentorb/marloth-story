@@ -71,6 +71,9 @@
   color: inherit;
   text-align: left;
   cursor: pointer;
+  text-decoration: none;
+  font: inherit;
+  box-sizing: border-box;
 }
 
 .marloth-side-panel-item:hover {

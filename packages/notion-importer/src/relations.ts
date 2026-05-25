@@ -11,6 +11,11 @@ export interface ParsedLink {
   notionId: string | null;
 }
 
+/** Strip list separators mistakenly captured in relation labels after the first item. */
+export function normalizeRelationLabel(label: string): string {
+  return label.trim().replace(/^,\s*/, "").trim();
+}
+
 export function extractNotionIdFromText(text: string): string | null {
   const m = ID_IN_TEXT.exec(text);
   return m ? m[1]!.toLowerCase() : null;
@@ -33,7 +38,7 @@ export function parseRelationLinks(value: string): ParsedLink[] {
     const notionId =
       extractNotionId(pathBasename) ?? extractNotionIdFromText(decoded);
     out.push({
-      label: m[1]!.trim(),
+      label: normalizeRelationLabel(m[1]!),
       path: pathPart,
       notionId,
     });

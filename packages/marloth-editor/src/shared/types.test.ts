@@ -5,6 +5,7 @@ import {
   recordIdFromHref,
   recordIdFromUri,
   resolveLinkTarget,
+  standaloneRecordUrl,
 } from "./types";
 
 describe("link helpers", () => {
@@ -22,5 +23,12 @@ describe("link helpers", () => {
   test("resolves legacy notion export paths", () => {
     const href = "Marloth/TWOLD%20design%2013458e628ba28073850dea0edb9acde1.md";
     expect(resolveLinkTarget(href)).toBe("13458e628ba28073850dea0edb9acde1");
+  });
+
+  test("builds standalone browser record urls", () => {
+    const id = "72b6fb455b824b78962b0e509cc091c9";
+    expect(standaloneRecordUrl(id, "http://127.0.0.1:5173/?view=overview")).toBe(
+      "http://127.0.0.1:5173/?record=72b6fb455b824b78962b0e509cc091c9",
+    );
   });
 });
