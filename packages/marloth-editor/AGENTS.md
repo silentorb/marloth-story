@@ -56,5 +56,6 @@ bun test packages/marloth-db/src
 ## Repo-wide context
 
 - Feature spec: [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md)
+- Graph Explorer: [`docs/features/graph-explorer.md`](../../docs/features/graph-explorer.md)
 - Graph storage: [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)
 - Root [`AGENTS.md`](../../AGENTS.md)

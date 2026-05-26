@@ -135,6 +135,8 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 | --- | --- |
 | `packages/marloth-db/src/schema.ts` | DDL and version |
 | `packages/marloth-db/src/graph.ts` | GraphDatabase API |
+| `packages/marloth-db/src/graph-export.ts` | Full graph and Graph Explorer LOD export |
+| `packages/marloth-db/src/graph-lod-cluster.ts` | Graph Explorer layer subdivision |
 | `packages/marloth-db/src/record-sections.ts` | Universal page sections (markdown + relation/database tables) |
 | `packages/marloth-db/src/database-view.ts` | Type instance table reconstruction from incoming `IS_A` edges |
 | `packages/marloth-db/src/ordered-associations.ts` | Ordered association config, view query, move mutation |
@@ -143,6 +145,7 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 
 ## See also
 
+- [graph-explorer.md](./graph-explorer.md) — anchor-scoped LOD graph visualization
 - [notion-import.md](./notion-import.md) — export resolution and import pipeline
 - [ordered-associations.md](./ordered-associations.md) — automatic sequence for associations (scenes-first)
 - [`../ontology.md`](../ontology.md) — design domain model (storage-agnostic)

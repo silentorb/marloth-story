@@ -18,5 +18,6 @@
 
 ## Repo-wide context
 - **Feature spec:** [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)
+- Graph Explorer LOD export: [`docs/features/graph-explorer.md`](../../docs/features/graph-explorer.md)
 - Legacy Notion import / export mining: [`docs/features/notion-import.md`](../../docs/features/notion-import.md)
 - Global conventions: repository root [`AGENTS.md`](../../AGENTS.md)

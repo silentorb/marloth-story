@@ -9,7 +9,6 @@ export interface SidebarRecordLink {
 export const HOME_ICON = "⌂";
 
 export const VIEW_ICONS: Record<Exclude<AppView, "record">, string> = {
-  "graph-overview": "◉",
   "graph-explorer": "⊕",
 };
 

@@ -2,7 +2,6 @@ import {
   DEFAULT_HOME_RECORD_ID,
   exportExplorerLodGraph,
   exportFullGraph,
-  exportOverviewGraph,
   getDatabaseViewDetail,
   getRecordPageDetail,
   GraphDatabase,
@@ -10,10 +9,13 @@ import {
   updateRecordBody,
   updateRecordTitle,
   applyOrderedAssociationMove,
+  archiveRecord as archiveRecordInDb,
+  deleteRecord as deleteRecordInDb,
   type GraphLodSnapshot,
   type GraphSnapshot,
   type OrderedAssociationMoveParams,
   type OrderedAssociationViewDetail,
+  type RecordLifecycleError,
   type RecordPageDetail,
   type DatabaseViewDetail,
 } from "marloth-db";
@@ -31,9 +33,10 @@ export interface EditorDatabase {
   search(query: string, limit?: number): RecordSummary[];
   saveBody(id: string, body: string): boolean;
   saveTitle(id: string, title: string): boolean;
-  getGraphOverview(): GraphSnapshot;
+  deleteRecord(id: string): RecordLifecycleError | null;
+  archiveRecord(id: string): RecordLifecycleError | null;
   getGraphFull(): GraphSnapshot;
-  getGraphExplorerLod(): GraphLodSnapshot;
+  getGraphExplorerLod(anchorId?: string): GraphLodSnapshot;
   close(): void;
 }
 
@@ -89,14 +92,17 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
     saveTitle(id: string, title: string): boolean {
       return updateRecordTitle(currentDb(), id, title);
     },
-    getGraphOverview(): GraphSnapshot {
-      return exportOverviewGraph(currentDb());
+    deleteRecord(id: string): RecordLifecycleError | null {
+      return deleteRecordInDb(currentDb(), id);
+    },
+    archiveRecord(id: string): RecordLifecycleError | null {
+      return archiveRecordInDb(currentDb(), id);
     },
     getGraphFull(): GraphSnapshot {
       return exportFullGraph(currentDb());
     },
-    getGraphExplorerLod(): GraphLodSnapshot {
-      return exportExplorerLodGraph(currentDb());
+    getGraphExplorerLod(anchorId?: string): GraphLodSnapshot {
+      return exportExplorerLodGraph(currentDb(), { anchorId });
     },
     close(): void {
       db.close();

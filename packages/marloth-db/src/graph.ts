@@ -156,6 +156,11 @@ export class GraphDatabase {
     return result.changes > 0;
   }
 
+  deleteVertex(id: string): boolean {
+    const result = this.db.prepare("DELETE FROM vertices WHERE id = ?").run(id);
+    return result.changes > 0;
+  }
+
   getVertex(id: string): VertexRecord | null {
     const row = this.db.prepare("SELECT id, properties FROM vertices WHERE id = ?").get(id) as
       | { id: string; properties: string }

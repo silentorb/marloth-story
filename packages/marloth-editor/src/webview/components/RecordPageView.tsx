@@ -1,13 +1,16 @@
 import { DatabaseTableView } from "./DatabaseTableView";
 import { MarlothEditor } from "./MarlothEditor";
 import { OrderedAssociationView } from "./OrderedAssociationView";
+import { PageActionsMenu } from "./PageActionsMenu";
 import { PageTitle } from "./PageTitle";
 import { RelationSectionView } from "./RelationSectionView";
 import type { EditorApi } from "../api/client";
 import type { OrderedAssociationViewDetail, RecordPageDetail } from "../../shared/types";
+import { isProtectedEditorRecord } from "../../shared/types";
 import { isEffectivelyEmptyMarkdown, resolvePageTitleAndContent } from "../markdown-body";
 import { SectionTitle } from "./RecordNameLink";
 import "./record-page-view.css";
+import "./page-actions-menu.css";
 
 interface RecordPageViewProps {
   api: EditorApi;
@@ -20,6 +23,8 @@ interface RecordPageViewProps {
   onScopeChange: (scopeId: string) => void;
   onOrderedAssociationViewChange: (view: OrderedAssociationViewDetail) => void;
   onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
+  onArchiveRecord: (recordId: string) => Promise<void>;
+  onDeleteRecord: (recordId: string) => Promise<void>;
 }
 
 export function RecordPageView({
@@ -33,10 +38,13 @@ export function RecordPageView({
   onScopeChange,
   onOrderedAssociationViewChange,
   onOpenRecord,
+  onArchiveRecord,
+  onDeleteRecord,
 }: RecordPageViewProps) {
   const { content } = resolvePageTitleAndContent(record.body, record.title);
   const emptyMarkdown = isEffectivelyEmptyMarkdown(record.body, record.title);
   const editorBody = emptyMarkdown ? "" : content;
+  const showPageActions = !isProtectedEditorRecord(record.id);
 
   return (
     <div className="marloth-record-page">
@@ -44,7 +52,17 @@ export function RecordPageView({
         <div className="marloth-record-page-heading">
           {record.path ? <span className="marloth-record-page-path">{record.path}</span> : null}
         </div>
-        <span className={`marloth-save-status is-${saveState}`}>
+        <div className="marloth-app-bar-actions">
+          {showPageActions ? (
+            <PageActionsMenu
+              recordTitle={record.title}
+              recordPath={record.path}
+              disabled={saveState === "saving"}
+              onArchive={() => onArchiveRecord(record.id)}
+              onDelete={() => onDeleteRecord(record.id)}
+            />
+          ) : null}
+          <span className={`marloth-save-status is-${saveState}`}>
           {saveState === "dirty"
             ? "Unsaved changes"
             : saveState === "saving"
@@ -54,7 +72,8 @@ export function RecordPageView({
                 : saveState === "error"
                   ? "Save failed"
                   : ""}
-        </span>
+          </span>
+        </div>
       </div>
 
       <div className="marloth-record-sections">

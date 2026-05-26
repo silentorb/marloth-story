@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ForceGraph2D, { type ForceGraphMethods, type LinkObject, type NodeObject } from "react-force-graph-2d";
 import type { EditorApi } from "../api/client";
-import type { GraphLink, GraphLodSnapshot, GraphNode, GraphSnapshot } from "../../shared/types";
+import type { GraphLink, GraphLodSnapshot, GraphNode } from "../../shared/types";
 import {
   defaultExplorerLayerIndex,
   graphLodLayerLabel,
@@ -14,11 +14,9 @@ import {
 import { readCssVar } from "../theme";
 import "./graph-view.css";
 
-type GraphMode = "overview" | "explorer";
-
 interface GraphViewProps {
-  mode: GraphMode;
   api: EditorApi;
+  anchorId?: string;
   showNodeLabels: boolean;
   onShowNodeLabelsChange: (value: boolean) => void;
   onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
@@ -29,12 +27,11 @@ type ForceLink = GraphLink & LinkObject;
 
 const NODE_REL_SIZE = 4;
 
-const LINK_COLOR_EXPLORER_FALLBACK = "rgba(235, 235, 234, 0.28)";
-const LINK_COLOR_OVERVIEW_FALLBACK = "rgba(235, 235, 234, 0.42)";
+const LINK_COLOR_FALLBACK = "rgba(235, 235, 234, 0.28)";
+const LINK_COLOR_AGGREGATED_FALLBACK = "rgba(235, 235, 234, 0.42)";
 const LABEL_COLOR_FALLBACK = "#ebebea";
 
-function snapshotTitle(mode: GraphMode, layerIndex?: number, layerCount?: number): string {
-  if (mode === "overview") return "Graph Overview";
+function snapshotTitle(layerIndex?: number, layerCount?: number): string {
   if (layerIndex === undefined || layerCount === undefined) return "Graph Explorer";
   return `Graph Explorer · ${graphLodLayerLabel(layerIndex, layerCount)}`;
 }
@@ -69,8 +66,8 @@ function truncateLabel(
 }
 
 export function GraphView({
-  mode,
   api,
+  anchorId,
   showNodeLabels,
   onShowNodeLabelsChange,
   onOpenRecord,
@@ -78,35 +75,24 @@ export function GraphView({
   const containerRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<ForceGraphMethods<ForceNode, ForceLink> | undefined>(undefined);
   const [size, setSize] = useState({ width: 0, height: 0 });
-  const [overviewSnapshot, setOverviewSnapshot] = useState<GraphSnapshot | null>(null);
   const [explorerLod, setExplorerLod] = useState<GraphLodSnapshot | null>(null);
   const [layerIndex, setLayerIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const { linkColorExplorer, linkColorOverview, labelColor } = useMemo(
+  const { linkColor, linkColorAggregated, labelColor } = useMemo(
     () => ({
-      linkColorExplorer: readCssVar("--marloth-graph-link", LINK_COLOR_EXPLORER_FALLBACK),
-      linkColorOverview: readCssVar("--marloth-graph-link-strong", LINK_COLOR_OVERVIEW_FALLBACK),
+      linkColor: readCssVar("--marloth-graph-link", LINK_COLOR_FALLBACK),
+      linkColorAggregated: readCssVar("--marloth-graph-link-strong", LINK_COLOR_AGGREGATED_FALLBACK),
       labelColor: readCssVar("--marloth-text", LABEL_COLOR_FALLBACK),
     }),
     [],
   );
 
   const layerCount = explorerLod?.layerCount ?? 1;
-  const aggregated =
-    mode === "overview" ||
-    (explorerLod !== null && isAggregatedLayer(layerIndex, explorerLod.layerCount));
-  const snapshot =
-    mode === "overview"
-      ? overviewSnapshot
-      : explorerLod
-        ? pickExplorerSnapshot(explorerLod, layerIndex)
-        : null;
-  const linkColor = aggregated ? linkColorOverview : linkColorExplorer;
-  const { charge, linkDistance, cooldownTicks } =
-    mode === "overview"
-      ? { charge: -220, linkDistance: 90, cooldownTicks: 120 }
-      : layerForceSettings(layerIndex, layerCount);
+  const aggregated = explorerLod !== null && isAggregatedLayer(layerIndex, explorerLod.layerCount);
+  const snapshot = explorerLod ? pickExplorerSnapshot(explorerLod, layerIndex) : null;
+  const activeLinkColor = aggregated ? linkColorAggregated : linkColor;
+  const { charge, linkDistance, cooldownTicks } = layerForceSettings(layerIndex, layerCount);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -127,21 +113,15 @@ export function GraphView({
     let cancelled = false;
     setLoading(true);
     setError(null);
-    setOverviewSnapshot(null);
     setExplorerLod(null);
     setLayerIndex(0);
 
     void (async () => {
       try {
-        if (mode === "overview") {
-          const graph = await api.getGraphOverview();
-          if (!cancelled) setOverviewSnapshot(graph);
-        } else {
-          const graph = await api.getGraphExplorerLod();
-          if (!cancelled) {
-            setExplorerLod(graph);
-            setLayerIndex(defaultExplorerLayerIndex(graph.layerCount));
-          }
+        const graph = await api.getGraphExplorerLod(anchorId);
+        if (!cancelled) {
+          setExplorerLod(graph);
+          setLayerIndex(defaultExplorerLayerIndex(graph.layerCount));
         }
       } catch (err) {
         if (!cancelled) {
@@ -155,7 +135,7 @@ export function GraphView({
     return () => {
       cancelled = true;
     };
-  }, [api, mode]);
+  }, [anchorId, api]);
 
   const graphData = useMemo(() => {
     if (!snapshot) return { nodes: [] as ForceNode[], links: [] as ForceLink[] };
@@ -173,12 +153,12 @@ export function GraphView({
 
   const handleZoom = useCallback(
     (transform: { k: number }) => {
-      if (mode !== "explorer" || !explorerLod) return;
+      if (!explorerLod) return;
       setLayerIndex((current) =>
         resolveGraphLodLayerIndex(transform.k, current, explorerLod.layerCount),
       );
     },
-    [explorerLod, mode],
+    [explorerLod],
   );
 
   const paintNodeLabel = useCallback(
@@ -229,12 +209,10 @@ export function GraphView({
     <div className="marloth-graph-view">
       <div className="marloth-graph-toolbar">
         <span className="marloth-graph-toolbar-title">
-          {snapshotTitle(mode, layerIndex, explorerLod?.layerCount)}
+          {snapshotTitle(layerIndex, explorerLod?.layerCount)}
         </span>
         <div className="marloth-graph-toolbar-actions">
-          {mode === "explorer" ? (
-            <span className="marloth-graph-toolbar-hint">Zoom in/out to change detail</span>
-          ) : null}
+          <span className="marloth-graph-toolbar-hint">Zoom in/out to change detail</span>
           <label className="marloth-graph-toggle">
             <input
               type="checkbox"
@@ -268,13 +246,13 @@ export function GraphView({
               }
               return l.label;
             }}
-            linkColor={() => linkColor}
+            linkColor={() => activeLinkColor}
             linkWidth={(link) => {
               const l = link as ForceLink;
               if (aggregated) return Math.min(6, 1 + Math.log2((l.weight ?? 1) + 1));
               return 0.5;
             }}
-            linkDirectionalArrowColor={() => linkColor}
+            linkDirectionalArrowColor={() => activeLinkColor}
             linkDirectionalArrowLength={aggregated ? 4 : 2}
             linkDirectionalArrowRelPos={1}
             onNodeClick={(node, event) => handleNodeClick(node as ForceNode, event)}

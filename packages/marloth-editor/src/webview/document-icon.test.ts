@@ -4,7 +4,6 @@ import { iconToFaviconHref, resolveDocumentIcon } from "./document-icon";
 
 describe("resolveDocumentIcon", () => {
   test("uses graph view icons", () => {
-    expect(resolveDocumentIcon({ view: "graph-overview" })).toBe("◉");
     expect(resolveDocumentIcon({ view: "graph-explorer" })).toBe("⊕");
   });
 

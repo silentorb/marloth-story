@@ -15,7 +15,6 @@ describe("formatDocumentTitle", () => {
   });
 
   test("labels graph views", () => {
-    expect(formatDocumentTitle("graph-overview")).toBe("Graph Overview · Marloth");
     expect(formatDocumentTitle("graph-explorer")).toBe("Graph Explorer · Marloth");
   });
 });

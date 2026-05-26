@@ -5,7 +5,6 @@ import { afterEach, describe, expect, test } from "bun:test";
 import {
   exportExplorerLodGraph,
   exportFullGraph,
-  exportOverviewGraph,
   isArchivedNotionPath,
 } from "./graph-export";
 import { DEFAULT_EXPLORER_LOD_LAYER_COUNT } from "./graph-lod-cluster";
@@ -86,47 +85,6 @@ describe("graph export", () => {
     expect(isArchivedNotionPath(null)).toBe(false);
   });
 
-  test("exportOverviewGraph aggregates cross-database links", () => {
-    tempDir = mkdtempSync(join(tmpdir(), "marloth-graph-export-"));
-    dbPath = join(tempDir, "overview.sqlite");
-    const db = new GraphDatabase(dbPath);
-
-    db.upsertVertex("db-scenes", ["NotionDatabase"], { title: "Scenes" });
-    db.upsertVertex("db-features", ["NotionDatabase"], { title: "Features" });
-    db.upsertVertex("db-untitled", ["NotionDatabase"], { title: "Untitled" });
-
-    db.upsertVertex("scene1", ["NotionPage"], {
-      title: "Scene 1",
-      inferred_notion_path: "Marloth/Scenes/scene1",
-    });
-    db.upsertVertex("scene2", ["NotionPage"], {
-      title: "Scene 2",
-      inferred_notion_path: "Marloth/Scenes/scene2",
-    });
-    db.upsertVertex("feature1", ["NotionPage"], {
-      title: "Feature 1",
-      inferred_notion_path: "Marloth/Features/feature1",
-    });
-
-    db.upsertEdge("scene1", "feature1", "FEATURES");
-    db.upsertEdge("scene2", "feature1", "FEATURES");
-    db.upsertEdge("scene1", "scene2", "BLOCKS");
-
-    const snapshot = exportOverviewGraph(db);
-    db.close();
-
-    expect(snapshot.nodes).toHaveLength(2);
-    expect(snapshot.nodes.find((node) => node.id === "db-scenes")?.val).toBe(2);
-    expect(snapshot.nodes.find((node) => node.id === "db-features")?.val).toBe(1);
-
-    const crossLink = snapshot.links.find(
-      (link) => link.source === "db-scenes" && link.target === "db-features",
-    );
-    expect(crossLink?.label).toBe("FEATURES");
-    expect(crossLink?.weight).toBe(2);
-    expect(snapshot.links.some((link) => link.label === "BLOCKS")).toBe(false);
-  });
-
   test("exportExplorerLodGraph builds five heuristic layers", () => {
     tempDir = mkdtempSync(join(tmpdir(), "marloth-graph-export-"));
     dbPath = join(tempDir, "lod.sqlite");
@@ -145,5 +103,24 @@ describe("graph export", () => {
     expect(lod.levels).toHaveLength(DEFAULT_EXPLORER_LOD_LAYER_COUNT);
     expect(lod.levels[0]!.nodes.length).toBeLessThanOrEqual(lod.levels[1]!.nodes.length);
     expect(lod.levels[lod.levels.length - 1]!.nodes.some((node) => node.id === "page1")).toBe(true);
+  });
+
+  test("exportExplorerLodGraph filters to anchor connected component", () => {
+    tempDir = mkdtempSync(join(tmpdir(), "marloth-graph-export-"));
+    dbPath = join(tempDir, "anchor.sqlite");
+    const db = new GraphDatabase(dbPath);
+
+    db.upsertVertex("anchor", ["NotionPage"], { title: "Anchor" });
+    db.upsertVertex("near", ["NotionPage"], { title: "Near" });
+    db.upsertVertex("far", ["NotionPage"], { title: "Far" });
+    db.upsertEdge("anchor", "near", "RELATES");
+
+    const lod = exportExplorerLodGraph(db, { anchorId: "anchor" });
+    db.close();
+
+    const finest = lod.levels[lod.levels.length - 1]!;
+    expect(finest.nodes.some((node) => node.id === "anchor")).toBe(true);
+    expect(finest.nodes.some((node) => node.id === "near")).toBe(true);
+    expect(finest.nodes.some((node) => node.id === "far")).toBe(false);
   });
 });

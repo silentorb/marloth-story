@@ -1,4 +1,5 @@
-import { edgeId, type GraphDatabase } from "./graph";
+import { type GraphDatabase } from "./graph";
+import { isArchivedNotionPath } from "./archive-path";
 import {
   buildHeuristicLodLevels,
   DEFAULT_EXPLORER_LOD_LAYER_COUNT,
@@ -33,55 +34,15 @@ export interface GraphLodSnapshot {
   levels: GraphSnapshot[];
 }
 
-const ARCHIVE_NOTION_PATH_PREFIX = "Marloth/Archive";
+export { ARCHIVE_NOTION_PATH_PREFIX, isArchivedNotionPath } from "./archive-path";
+
+/** Default graph explorer anchor: TWOLD product record. */
+export const DEFAULT_GRAPH_EXPLORER_ANCHOR_ID = "e028aa0786f5449984a4f497c1d746fa";
+
 const GRAPH_CLUSTER_PREFIX = "lod:c:";
-
-const DATABASE_PATH_PREFIXES = [
-  "Marloth/Data",
-  "Marloth/Inspirations",
-  "Marloth/TWOLD Plot",
-  "Marloth",
-] as const;
-
-export function isArchivedNotionPath(path: string | null): boolean {
-  if (!path) return false;
-  return (
-    path === ARCHIVE_NOTION_PATH_PREFIX ||
-    path.startsWith(`${ARCHIVE_NOTION_PATH_PREFIX}/`)
-  );
-}
 
 export function isGraphClusterNode(node: Pick<GraphNode, "id" | "isCluster">): boolean {
   return node.isCluster === true || node.id.startsWith(GRAPH_CLUSTER_PREFIX);
-}
-
-function databasePathPrefixes(title: string): string[] {
-  const prefixes = DATABASE_PATH_PREFIXES.map((base) => `${base}/${title}`);
-  prefixes.push(title);
-  return prefixes;
-}
-
-function mapPageToDatabase(
-  pagePath: string | null,
-  databases: { id: string; title: string }[],
-): string | null {
-  if (!pagePath) return null;
-
-  let bestId: string | null = null;
-  let bestLen = -1;
-
-  for (const database of databases) {
-    for (const prefix of databasePathPrefixes(database.title)) {
-      if (pagePath === prefix || pagePath.startsWith(`${prefix}/`)) {
-        if (prefix.length > bestLen) {
-          bestLen = prefix.length;
-          bestId = database.id;
-        }
-      }
-    }
-  }
-
-  return bestId;
 }
 
 interface ActiveGraphVertex {
@@ -117,41 +78,50 @@ function collectActiveGraphData(db: GraphDatabase): {
   return { vertices, edges };
 }
 
-function aggregateEndpointLinks(
+function reachableVertexIds(
+  vertices: ActiveGraphVertex[],
   edges: ActiveGraphEdge[],
-  endpointForVertex: (vertexId: string) => string | undefined,
-): GraphLink[] {
-  const linkCounts = new Map<
-    string,
-    { source: string; target: string; label: string; weight: number }
-  >();
+  anchorId: string,
+): Set<string> | null {
+  const vertexIds = new Set(vertices.map((vertex) => vertex.id));
+  if (!vertexIds.has(anchorId)) return null;
 
+  const adjacency = new Map<string, Set<string>>();
+  for (const vertex of vertices) adjacency.set(vertex.id, new Set());
   for (const edge of edges) {
-    const source = endpointForVertex(edge.sourceId);
-    const target = endpointForVertex(edge.targetId);
-    if (!source || !target || source === target) continue;
+    adjacency.get(edge.sourceId)?.add(edge.targetId);
+    adjacency.get(edge.targetId)?.add(edge.sourceId);
+  }
 
-    const key = `${source}:${edge.label}:${target}`;
-    const existing = linkCounts.get(key);
-    if (existing) {
-      existing.weight += 1;
-    } else {
-      linkCounts.set(key, {
-        source,
-        target,
-        label: edge.label,
-        weight: 1,
-      });
+  const reachable = new Set<string>();
+  const queue = [anchorId];
+
+  while (queue.length > 0) {
+    const id = queue.shift()!;
+    if (reachable.has(id)) continue;
+    reachable.add(id);
+    for (const neighbor of adjacency.get(id) ?? []) {
+      if (!reachable.has(neighbor)) queue.push(neighbor);
     }
   }
 
-  return [...linkCounts.values()].map((link) => ({
-    id: edgeId(link.source, link.label, link.target),
-    source: link.source,
-    target: link.target,
-    label: link.label,
-    weight: link.weight,
-  }));
+  return reachable;
+}
+
+function filterActiveGraphByAnchor(
+  vertices: ActiveGraphVertex[],
+  edges: ActiveGraphEdge[],
+  anchorId: string,
+): { vertices: ActiveGraphVertex[]; edges: ActiveGraphEdge[] } {
+  const reachable = reachableVertexIds(vertices, edges, anchorId);
+  if (!reachable) return { vertices, edges };
+
+  return {
+    vertices: vertices.filter((vertex) => reachable.has(vertex.id)),
+    edges: edges.filter(
+      (edge) => reachable.has(edge.sourceId) && reachable.has(edge.targetId),
+    ),
+  };
 }
 
 export function exportFullGraph(db: GraphDatabase): GraphSnapshot {
@@ -175,52 +145,19 @@ export function exportFullGraph(db: GraphDatabase): GraphSnapshot {
   return { nodes, links };
 }
 
-export function exportOverviewGraph(db: GraphDatabase): GraphSnapshot {
-  const vertices = db.listVerticesForGraphExport();
-  const edges = db.listEdgesForGraphExport();
-
-  const databases = vertices.filter(
-    (vertex) =>
-      vertex.labels.includes("NotionDatabase") &&
-      vertex.title.trim() !== "" &&
-      vertex.title !== "Untitled",
-  );
-
-  const pages = vertices.filter(
-    (vertex) =>
-      vertex.labels.includes("NotionPage") && !isArchivedNotionPath(vertex.path),
-  );
-
-  const pageToDatabase = new Map<string, string>();
-  for (const page of pages) {
-    const databaseId = mapPageToDatabase(page.path, databases);
-    if (databaseId) pageToDatabase.set(page.id, databaseId);
-  }
-
-  const memberCounts = new Map<string, number>();
-  for (const databaseId of pageToDatabase.values()) {
-    memberCounts.set(databaseId, (memberCounts.get(databaseId) ?? 0) + 1);
-  }
-
-  const nodes: GraphNode[] = databases.map((database) => ({
-    id: database.id,
-    title: database.title,
-    path: database.path,
-    labels: database.labels,
-    group: database.title,
-    val: memberCounts.get(database.id) ?? 0,
-  }));
-
-  const links = aggregateEndpointLinks(edges, (vertexId) => pageToDatabase.get(vertexId));
-
-  return { nodes, links };
-}
-
 export function exportExplorerLodGraph(
   db: GraphDatabase,
-  layerCount = DEFAULT_EXPLORER_LOD_LAYER_COUNT,
+  options?: {
+    layerCount?: number;
+    anchorId?: string;
+  },
 ): GraphLodSnapshot {
-  const { vertices, edges } = collectActiveGraphData(db);
+  const layerCount = options?.layerCount ?? DEFAULT_EXPLORER_LOD_LAYER_COUNT;
+  let { vertices, edges } = collectActiveGraphData(db);
+  const anchorId = options?.anchorId ?? DEFAULT_GRAPH_EXPLORER_ANCHOR_ID;
+  if (anchorId) {
+    ({ vertices, edges } = filterActiveGraphByAnchor(vertices, edges, anchorId));
+  }
   const levels = buildHeuristicLodLevels(vertices, edges, layerCount);
 
   return {

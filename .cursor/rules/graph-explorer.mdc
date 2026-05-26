@@ -1,0 +1,19 @@
+---
+description: Graph Explorer LOD visualization (editor + graph export)
+globs:
+  - packages/marloth-db/src/graph-export.ts
+  - packages/marloth-db/src/graph-lod-cluster.ts
+  - packages/marloth-editor/src/webview/components/GraphView.tsx
+  - packages/marloth-editor/src/webview/graph-lod.ts
+  - docs/features/graph-explorer.md
+---
+
+# Graph Explorer
+
+Read the authoritative feature spec before making changes:
+
+[`docs/features/graph-explorer.md`](../../docs/features/graph-explorer.md)
+
+For editor shell and API context: [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md)
+
+For graph storage and export: [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)

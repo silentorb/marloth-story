@@ -22,7 +22,6 @@ export interface DocumentIconContext {
 }
 
 export function resolveDocumentIcon(ctx: DocumentIconContext): string {
-  if (ctx.view === "graph-overview") return VIEW_ICONS["graph-overview"];
   if (ctx.view === "graph-explorer") return VIEW_ICONS["graph-explorer"];
 
   const recordId = ctx.recordId?.toLowerCase();

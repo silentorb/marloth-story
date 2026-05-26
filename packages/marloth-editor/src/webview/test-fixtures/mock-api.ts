@@ -14,7 +14,8 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     search: async () => [],
     saveBody: async () => {},
     saveTitle: async () => {},
-    getGraphOverview: async () => ({ nodes: [], links: [] }),
+    deleteRecord: async () => {},
+    archiveRecord: async () => {},
     getGraphFull: async () => ({ nodes: [], links: [] }),
     getGraphExplorerLod: async () => ({
       layerCount: 5,

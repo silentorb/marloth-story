@@ -7,7 +7,12 @@ import { UserSettingsProvider } from "./hooks/useUserSettings";
 import type { GetRecordOptions } from "../shared/http-client";
 import type { AppView, OrderedAssociationViewDetail, RecordPageDetail } from "../shared/types";
 import { standaloneRecordUrl } from "../shared/types";
-import { navigateStandaloneRecord, standaloneViewUrl } from "./record-links";
+import {
+  anchorFromLocation,
+  navigateStandaloneRecord,
+  resolveGraphExplorerAnchor,
+  standaloneViewUrl,
+} from "./record-links";
 import { resolvePageTitleAndContent } from "./markdown-body";
 import {
   bodyNeedsSave,
@@ -34,8 +39,7 @@ function recordFromLocation(): string | null {
 function viewFromLocation(): AppView {
   const params = new URLSearchParams(window.location.search);
   const view = params.get("view");
-  if (view === "overview") return "graph-overview";
-  if (view === "explorer") return "graph-explorer";
+  if (view === "overview" || view === "explorer") return "graph-explorer";
   return "record";
 }
 
@@ -52,7 +56,6 @@ function scopeFromLocation(): string | undefined {
 }
 
 function viewToQueryParam(view: AppView): string | null {
-  if (view === "graph-overview") return "overview";
   if (view === "graph-explorer") return "explorer";
   return null;
 }
@@ -67,6 +70,9 @@ export function App() {
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [showGraphNodeLabels, setShowGraphNodeLabels] = useState(readGraphShowNodeLabels);
   const [homeId, setHomeId] = useState<string | null>(null);
+  const [explorerAnchorId, setExplorerAnchorId] = useState(() =>
+    resolveGraphExplorerAnchor(anchorFromLocation()),
+  );
   const pendingBody = useRef<string | null>(null);
   const pendingTitle = useRef<string | null>(null);
   const savedBody = useRef<string | null>(null);
@@ -81,11 +87,10 @@ export function App() {
     );
     return {
       home: standaloneRecordUrl(homeId),
-      overview: standaloneViewUrl("graph-overview"),
-      explorer: standaloneViewUrl("graph-explorer"),
+      explorer: standaloneViewUrl("graph-explorer", null, undefined, explorerAnchorId),
       records,
     };
-  }, [api.host, homeId]);
+  }, [api.host, explorerAnchorId, homeId]);
 
   const syncStandaloneUrl = useCallback(
     (nextView: AppView, recordId?: string | null, options?: GetRecordOptions) => {
@@ -95,12 +100,18 @@ export function App() {
       if (viewParam) url.searchParams.set("view", viewParam);
       else url.searchParams.delete("view");
       if (recordId) url.searchParams.set("record", recordId);
+      else url.searchParams.delete("record");
       if (options?.scope) url.searchParams.set("scope", options.scope);
       else url.searchParams.delete("scope");
       if (options?.view) url.searchParams.set("dbView", options.view);
+      if (nextView === "graph-explorer") {
+        url.searchParams.set("anchor", explorerAnchorId);
+      } else {
+        url.searchParams.delete("anchor");
+      }
       window.history.replaceState({}, "", url.toString());
     },
-    [api.host],
+    [api.host, explorerAnchorId],
   );
 
   const loadRecord = useCallback(
@@ -144,6 +155,7 @@ export function App() {
     setHomeId(home);
     const initialView = viewFromLocation();
     setView(initialView);
+    setExplorerAnchorId(resolveGraphExplorerAnchor(anchorFromLocation()));
     if (initialView !== "record") return;
 
     const fromUrl = recordFromLocation();
@@ -274,14 +286,19 @@ export function App() {
     (nextView: AppView) => {
       if (api.host === "standalone") {
         window.location.assign(
-          standaloneViewUrl(nextView, record?.id ?? recordFromLocation()),
+          standaloneViewUrl(
+            nextView,
+            record?.id ?? recordFromLocation(),
+            undefined,
+            nextView === "graph-explorer" ? explorerAnchorId : undefined,
+          ),
         );
         return;
       }
       setView(nextView);
       syncStandaloneUrl(nextView, record?.id ?? recordFromLocation());
     },
-    [api.host, record?.id, syncStandaloneUrl],
+    [api.host, explorerAnchorId, record?.id, syncStandaloneUrl],
   );
 
   const openRecordFromGraph = useCallback(
@@ -331,6 +348,38 @@ export function App() {
     });
   }, []);
 
+  const archiveCurrentRecord = useCallback(
+    async (recordId: string) => {
+      if (saveTimer.current) {
+        window.clearTimeout(saveTimer.current);
+        saveTimer.current = null;
+      }
+      try {
+        await api.archiveRecord(recordId);
+        await goHome();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
+      }
+    },
+    [api, goHome],
+  );
+
+  const deleteCurrentRecord = useCallback(
+    async (recordId: string) => {
+      if (saveTimer.current) {
+        window.clearTimeout(saveTimer.current);
+        saveTimer.current = null;
+      }
+      try {
+        await api.deleteRecord(recordId);
+        await goHome();
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
+      }
+    },
+    [api, goHome],
+  );
+
   return (
     <UserSettingsProvider api={api}>
       <div className="marloth-layout">
@@ -343,18 +392,10 @@ export function App() {
         standaloneUrls={standaloneUrls}
       />
       <div className="marloth-main">
-        {view === "graph-overview" ? (
+        {view === "graph-explorer" ? (
           <GraphView
-            mode="overview"
             api={api}
-            showNodeLabels={showGraphNodeLabels}
-            onShowNodeLabelsChange={setShowGraphNodeLabelsPersisted}
-            onOpenRecord={openRecordFromGraph}
-          />
-        ) : view === "graph-explorer" ? (
-          <GraphView
-            mode="explorer"
-            api={api}
+            anchorId={explorerAnchorId}
             showNodeLabels={showGraphNodeLabels}
             onShowNodeLabelsChange={setShowGraphNodeLabelsPersisted}
             onOpenRecord={openRecordFromGraph}
@@ -375,6 +416,8 @@ export function App() {
             onScopeChange={(scopeId) => void loadRecord(record.id, { scope: scopeId })}
             onOrderedAssociationViewChange={updateOrderedAssociationView}
             onOpenRecord={openLinkedRecord}
+            onArchiveRecord={archiveCurrentRecord}
+            onDeleteRecord={deleteCurrentRecord}
           />
         )}
       </div>

@@ -5,7 +5,6 @@ import "./side-panel.css";
 
 export interface SidePanelStandaloneUrls {
   home: string;
-  overview: string;
   explorer: string;
   records: Record<string, string>;
 }
@@ -92,14 +91,6 @@ export function SidePanel({
           label="Home"
           href={standaloneUrls?.home}
           onClick={standaloneUrls ? undefined : onHome}
-        />
-        <NavItem
-          active={activeView === "graph-overview"}
-          title="Graph Overview"
-          icon="◉"
-          label="Graph Overview"
-          href={standaloneUrls?.overview}
-          onClick={standaloneUrls ? undefined : () => onViewChange("graph-overview")}
         />
         <NavItem
           active={activeView === "graph-explorer"}

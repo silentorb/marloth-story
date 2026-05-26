@@ -71,6 +71,7 @@ For **design data** (what records mean, how they relate conceptually), read [`do
 | Design domain model, record types, relationships, traceability | [`docs/ontology.md`](./docs/ontology.md) |
 | SQLite property graph, `data/marloth.sqlite`, `packages/marloth-db/` | [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) (+ ontology when interpreting data) |
 | Web markdown editor, `packages/marloth-editor/`, VS Code graph editing | [`docs/features/marloth-editor.md`](./docs/features/marloth-editor.md) |
+| Graph Explorer, LOD layers, anchor-scoped graph viz | [`docs/features/graph-explorer.md`](./docs/features/graph-explorer.md) |
 | Editing story/design content in the graph | [`docs/ontology.md`](./docs/ontology.md) + [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) (direct DB edits; see **Graph data workflow** above) |
 | Legacy Notion import / mining `./exports/` | [`docs/features/notion-import.md`](./docs/features/notion-import.md) |
 | Ordered associations, scene order, drag-and-drop reorder | [`docs/features/ordered-associations.md`](./docs/features/ordered-associations.md) |

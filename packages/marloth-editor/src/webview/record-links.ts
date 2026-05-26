@@ -5,6 +5,24 @@ import {
   standaloneRecordUrl,
   type AppView,
 } from "../shared/types";
+import { DEFAULT_GRAPH_EXPLORER_ANCHOR_ID } from "../shared/graph-explorer";
+
+const RECORD_ID_PATTERN = /^[a-f0-9]{32}$/i;
+
+export function isRecordId(value: string): boolean {
+  return RECORD_ID_PATTERN.test(value);
+}
+
+export function resolveGraphExplorerAnchor(anchorId?: string | null): string {
+  if (anchorId && isRecordId(anchorId)) return anchorId.toLowerCase();
+  return DEFAULT_GRAPH_EXPLORER_ANCHOR_ID;
+}
+
+export function anchorFromLocation(): string | undefined {
+  if (typeof window === "undefined") return undefined;
+  const anchor = new URLSearchParams(window.location.search).get("anchor");
+  return anchor && isRecordId(anchor) ? anchor.toLowerCase() : undefined;
+}
 
 export function resolveRecordLinkTarget(href: string): string | null {
   if (isMarlothHref(href)) return recordIdFromHref(href);
@@ -37,13 +55,20 @@ export function rewriteStandaloneRecordLinks(root: ParentNode, base?: string | U
   }
 }
 
-export function standaloneViewUrl(view: AppView, recordId?: string | null, base?: string | URL): string {
+export function standaloneViewUrl(
+  view: AppView,
+  recordId?: string | null,
+  base?: string | URL,
+  anchorId?: string | null,
+): string {
   const url = base instanceof URL ? new URL(base.href) : new URL(base ?? window.location.href);
-  if (view === "graph-overview") url.searchParams.set("view", "overview");
-  else if (view === "graph-explorer") url.searchParams.set("view", "explorer");
-  else url.searchParams.delete("view");
+  if (view === "graph-explorer") {
+    url.searchParams.set("view", "explorer");
+    url.searchParams.set("anchor", resolveGraphExplorerAnchor(anchorId));
+  } else url.searchParams.delete("view");
   if (recordId) url.searchParams.set("record", recordId);
   else url.searchParams.delete("record");
+  if (view !== "graph-explorer") url.searchParams.delete("anchor");
   return url.toString();
 }
 

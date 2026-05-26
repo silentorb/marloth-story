@@ -30,9 +30,10 @@ export interface EditorApiClient {
   search(query: string, limit?: number): Promise<RecordSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
   saveTitle(id: string, title: string): Promise<void>;
-  getGraphOverview(): Promise<GraphSnapshot>;
+  deleteRecord(id: string): Promise<void>;
+  archiveRecord(id: string): Promise<void>;
   getGraphFull(): Promise<GraphSnapshot>;
-  getGraphExplorerLod(): Promise<GraphLodSnapshot>;
+  getGraphExplorerLod(anchorId?: string): Promise<GraphLodSnapshot>;
   getUserSettings(): Promise<UserSettings>;
   patchUserSettings(patch: UserSettingsPatch): Promise<UserSettings>;
 }
@@ -118,16 +119,19 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         body: JSON.stringify({ title }),
       });
     },
-    async getGraphOverview(): Promise<GraphSnapshot> {
-      const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/overview");
-      return data.graph;
+    async deleteRecord(id: string): Promise<void> {
+      await fetchJson(`/api/records/${id}`, { method: "DELETE" });
+    },
+    async archiveRecord(id: string): Promise<void> {
+      await fetchJson(`/api/records/${id}/archive`, { method: "POST" });
     },
     async getGraphFull(): Promise<GraphSnapshot> {
       const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/full");
       return data.graph;
     },
-    async getGraphExplorerLod(): Promise<GraphLodSnapshot> {
-      const data = await fetchJson<{ graph: GraphLodSnapshot }>("/api/graph/explorer-lod");
+    async getGraphExplorerLod(anchorId?: string): Promise<GraphLodSnapshot> {
+      const params = anchorId ? `?anchor=${encodeURIComponent(anchorId)}` : "";
+      const data = await fetchJson<{ graph: GraphLodSnapshot }>(`/api/graph/explorer-lod${params}`);
       return data.graph;
     },
     async getUserSettings(): Promise<UserSettings> {

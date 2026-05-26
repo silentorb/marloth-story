@@ -60,4 +60,17 @@ describe("GraphDatabase", () => {
     expect(db.getEdge("a:RELATED:b")).toBeNull();
     db.close();
   });
+
+  test("deleteVertex removes a vertex and its edges", () => {
+    tempDir = mkdtempSync(join(tmpdir(), "marloth-db-test-"));
+    dbPath = join(tempDir, "delete-vertex.sqlite");
+    const db = new GraphDatabase(dbPath);
+    db.upsertVertex("a", ["Page"], { title: "A" });
+    db.upsertVertex("b", ["Page"], { title: "B" });
+    db.upsertEdge("a", "b", "RELATED", { ordinal: 0 });
+    expect(db.deleteVertex("a")).toBe(true);
+    expect(db.getVertex("a")).toBeNull();
+    expect(db.getEdge("a:RELATED:b")).toBeNull();
+    db.close();
+  });
 });

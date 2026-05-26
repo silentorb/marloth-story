@@ -26,6 +26,8 @@ describe("RecordPageView", () => {
           onScopeChange={() => {}}
           onOrderedAssociationViewChange={() => {}}
           onOpenRecord={() => {}}
+          onArchiveRecord={async () => {}}
+          onDeleteRecord={async () => {}}
         />
       </UserSettingsProvider>,
     );
@@ -35,5 +37,6 @@ describe("RecordPageView", () => {
     expect(screen.getByTestId("marloth-editor-stub")).toBeTruthy();
     expect(screen.getByRole("heading", { name: "Related items", level: 2 })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Page actions" })).toBeTruthy();
   });
 });

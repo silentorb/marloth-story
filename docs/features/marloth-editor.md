@@ -12,8 +12,10 @@ Read this doc when your task involves:
 - Cross-linking between design records in markdown
 - The VS Code Marloth editor extension or its API/webview packages
 - Notion-like editing UX for the design corpus
+- Graph Explorer (multi-resolution graph visualization)
 
 For graph storage semantics, read [`marloth-db.md`](./marloth-db.md) and [`../ontology.md`](../ontology.md).
+For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph-explorer.md).
 
 ## Requirements
 
@@ -153,6 +155,7 @@ bun run editor:dev
 ## See also
 
 - [marloth-db.md](./marloth-db.md)
+- [graph-explorer.md](./graph-explorer.md)
 - [ordered-associations.md](./ordered-associations.md)
 - [`../ontology.md`](../ontology.md)
 - [`packages/marloth-editor/AGENTS.md`](../../packages/marloth-editor/AGENTS.md)

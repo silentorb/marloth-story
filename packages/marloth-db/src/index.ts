@@ -1,6 +1,15 @@
 export { GraphDatabase, edgeId } from "./graph";
 export type { EdgeRecord, GraphCounts, Properties, PropertyValue, VertexRecord } from "./graph";
-export { exportFullGraph, exportOverviewGraph, exportExplorerLodGraph, isArchivedNotionPath, isGraphClusterNode } from "./graph-export";
+export {
+  ARCHIVE_NOTION_PATH_PREFIX,
+  isArchivedNotionPath,
+} from "./archive-path";
+export {
+  DEFAULT_GRAPH_EXPLORER_ANCHOR_ID,
+  exportFullGraph,
+  exportExplorerLodGraph,
+  isGraphClusterNode,
+} from "./graph-export";
 export {
   buildHeuristicLodLevels,
   buildHeuristicLodLevelsFromCounts,
@@ -16,6 +25,14 @@ export {
   updateRecordBody,
   updateRecordTitle,
 } from "./queries";
+export {
+  archivePathForRecord,
+  archiveRecord,
+  DEFAULT_ARCHIVE_RECORD_ID,
+  deleteRecord,
+  isProtectedRecordId,
+} from "./record-lifecycle";
+export type { RecordLifecycleError } from "./record-lifecycle";
 export type { RecordDetail, RecordSummary } from "./queries";
 export { getDatabaseViewDetail } from "./database-view";
 export type { DatabaseRow, DatabaseViewDetail } from "./database-view";

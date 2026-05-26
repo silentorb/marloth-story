@@ -2,6 +2,7 @@ import { openEditorDatabase } from "./database";
 import { UserSettingsStore } from "./user-settings-store";
 import { resolveApiPort, resolveDbPath } from "./paths";
 import type { UserSettingsPatch } from "../shared/user-settings";
+import type { RecordLifecycleError } from "marloth-db";
 
 export { pickExistingDbPath, resolveApiPort, resolveDbPath } from "./paths";
 
@@ -11,7 +12,7 @@ function json(data: unknown, status = 200): Response {
     headers: {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, PUT, PATCH, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, PUT, PATCH, POST, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     },
   });
@@ -22,10 +23,22 @@ function corsPreflight(): Response {
     status: 204,
     headers: {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, PUT, PATCH, OPTIONS",
+      "Access-Control-Allow-Methods": "GET, PUT, PATCH, POST, DELETE, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     },
   });
+}
+
+function lifecycleStatus(error: RecordLifecycleError): number {
+  if (error === "not_found") return 404;
+  if (error === "protected") return 403;
+  return 409;
+}
+
+function lifecycleMessage(error: RecordLifecycleError): string {
+  if (error === "not_found") return "not found";
+  if (error === "protected") return "protected record";
+  return "already archived";
 }
 
 export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: UserSettingsStore) {
@@ -47,16 +60,13 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
         return json({ id: db.getHomeId() });
       }
 
-      if (path === "/api/graph/overview") {
-        return json({ graph: db.getGraphOverview() });
-      }
-
       if (path === "/api/graph/full") {
         return json({ graph: db.getGraphFull() });
       }
 
       if (path === "/api/graph/explorer-lod") {
-        return json({ graph: db.getGraphExplorerLod() });
+        const anchor = url.searchParams.get("anchor") ?? undefined;
+        return json({ graph: db.getGraphExplorerLod(anchor) });
       }
 
       if (path === "/api/records/search") {
@@ -103,6 +113,19 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
           }
           return json({ ok: true });
         }
+        if (req.method === "DELETE") {
+          const error = db.deleteRecord(id);
+          if (error) return json({ error: lifecycleMessage(error) }, lifecycleStatus(error));
+          return json({ ok: true });
+        }
+      }
+
+      const archiveMatch = /^\/api\/records\/([a-f0-9]{32})\/archive$/i.exec(path);
+      if (archiveMatch && req.method === "POST") {
+        const id = archiveMatch[1]!.toLowerCase();
+        const error = db.archiveRecord(id);
+        if (error) return json({ error: lifecycleMessage(error) }, lifecycleStatus(error));
+        return json({ ok: true });
       }
 
       const databaseMatch = /^\/api\/databases\/([a-f0-9]{32})$/i.exec(path);

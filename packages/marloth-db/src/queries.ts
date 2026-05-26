@@ -1,4 +1,5 @@
 import type { GraphDatabase } from "./graph";
+import { isArchivedNotionPath } from "./archive-path";
 
 export interface RecordSummary {
   id: string;
@@ -43,6 +44,19 @@ export function getRecordDetail(db: GraphDatabase, id: string): RecordDetail | n
   };
 }
 
+function toActiveRecordSummary(row: {
+  id: string;
+  title: string;
+  path: string | null;
+}): RecordSummary | null {
+  if (isArchivedNotionPath(row.path)) return null;
+  return {
+    id: row.id,
+    title: row.title,
+    path: row.path,
+  };
+}
+
 export function searchRecords(
   db: GraphDatabase,
   query: string,
@@ -54,20 +68,18 @@ export function searchRecords(
     return listRecentRecords(db, cap);
   }
   const pattern = `%${trimmed.replace(/[%_\\]/g, "\\$&")}%`;
-  return db.searchVerticesByTitle(pattern, cap).map((row) => ({
-    id: row.id,
-    title: row.title,
-    path: row.path,
-  }));
+  return db
+    .searchVerticesByTitle(pattern, cap)
+    .map(toActiveRecordSummary)
+    .filter((row): row is RecordSummary => row !== null);
 }
 
 export function listRecentRecords(db: GraphDatabase, limit = 20): RecordSummary[] {
   const cap = Math.max(1, Math.min(limit, 100));
-  return db.listVerticesByTitle(cap).map((row) => ({
-    id: row.id,
-    title: row.title,
-    path: row.path,
-  }));
+  return db
+    .listVerticesByTitle(cap)
+    .map(toActiveRecordSummary)
+    .filter((row): row is RecordSummary => row !== null);
 }
 
 export function updateRecordBody(db: GraphDatabase, id: string, body: string): boolean {

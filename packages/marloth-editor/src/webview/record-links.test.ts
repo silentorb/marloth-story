@@ -16,8 +16,8 @@ describe("record-links", () => {
   });
 
   test("standaloneViewUrl maps app views to query params", () => {
-    expect(standaloneViewUrl("graph-overview", null, "http://127.0.0.1:5173/")).toBe(
-      "http://127.0.0.1:5173/?view=overview",
+    expect(standaloneViewUrl("graph-explorer", null, "http://127.0.0.1:5173/")).toBe(
+      "http://127.0.0.1:5173/?view=explorer&anchor=e028aa0786f5449984a4f497c1d746fa",
     );
     expect(
       standaloneViewUrl("record", "72b6fb455b824b78962b0e509cc091c9", "http://127.0.0.1:5173/"),
