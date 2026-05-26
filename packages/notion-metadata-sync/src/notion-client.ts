@@ -12,6 +12,8 @@ export interface NotionPageResponse {
 export interface NotionDatabaseResponse {
   id: string;
   url?: string;
+  created_time?: string;
+  last_edited_time?: string;
   title?: { plain_text: string }[];
   properties: Record<string, NotionPropertySchemaRaw>;
 }
@@ -147,23 +149,40 @@ function isNotFoundOrUnsupported(err: unknown): boolean {
   return status === 404 || status === 400;
 }
 
+function timestampMetadataPatch(
+  source: { created_time?: string; last_edited_time?: string; url?: string },
+  existing: Record<string, unknown>,
+  force: boolean,
+): Record<string, string> {
+  const patch: Record<string, string> = {};
+  if (source.created_time && (force || !existing.created_at)) {
+    patch.created_at = source.created_time;
+  }
+  if (source.last_edited_time && (force || !existing.modified_at)) {
+    patch.modified_at = source.last_edited_time;
+  }
+  if (source.url && (force || !existing.notion_url)) {
+    patch.notion_url = source.url;
+  }
+  return patch;
+}
+
 export function pageMetadataPatch(
   page: NotionPageResponse,
   existing: Record<string, unknown>,
   force: boolean,
 ): Record<string, string | boolean> {
-  const patch: Record<string, string | boolean> = {};
-  if (page.created_time && (force || !existing.created_at)) {
-    patch.created_at = page.created_time;
-  }
-  if (page.last_edited_time && (force || !existing.modified_at)) {
-    patch.modified_at = page.last_edited_time;
-  }
-  if (page.url && (force || !existing.notion_url)) {
-    patch.notion_url = page.url;
-  }
+  const patch = timestampMetadataPatch(page, existing, force);
   if (page.archived !== undefined && (force || existing.notion_archived === undefined)) {
     patch.notion_archived = page.archived;
   }
   return patch;
+}
+
+export function databaseMetadataPatch(
+  database: NotionDatabaseResponse,
+  existing: Record<string, unknown>,
+  force: boolean,
+): Record<string, string> {
+  return timestampMetadataPatch(database, existing, force);
 }

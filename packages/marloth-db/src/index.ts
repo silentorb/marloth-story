@@ -57,6 +57,11 @@ export type {
   NotionViewDefinition,
 } from "./notion-database-schema";
 export { filterEvalRows, matchesNotionFilter, sortEvalRows } from "./notion-view-eval";
+export {
+  findMarkdownLinksToTarget,
+  resolveMarkdownHrefTarget,
+} from "./markdown-links";
+export type { MarkdownLinkMatch } from "./markdown-links";
 export { getRecordPageMetadata } from "./record-metadata";
 export type { RecordBacklink, RecordPageMetadata } from "./record-metadata";
 export { getRecordPageDetail } from "./record-sections";

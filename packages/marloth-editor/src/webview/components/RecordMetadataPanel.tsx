@@ -103,7 +103,7 @@ export function RecordMetadataPanel({
                     <div className="marloth-record-metadata-backlink-empty">No backlinks</div>
                   ) : (
                     metadata.backlinks.map((backlink) => (
-                      <div key={`${backlink.sourceId}-${backlink.label}`} className="marloth-record-metadata-backlink-item" role="none">
+                      <div key={backlink.sourceId} className="marloth-record-metadata-backlink-item" role="none">
                         <RecordNameLink
                           api={api}
                           recordId={backlink.sourceId}
@@ -111,7 +111,6 @@ export function RecordMetadataPanel({
                         >
                           {backlink.title}
                         </RecordNameLink>
-                        <span className="marloth-record-metadata-backlink-label">{backlink.label}</span>
                       </div>
                     ))
                   )}

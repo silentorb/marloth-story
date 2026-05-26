@@ -13,7 +13,7 @@ const metadata: RecordPageMetadata = {
       sourceId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       title: "Source page",
       path: null,
-      label: "LINKS",
+      linkText: "Target page",
     },
   ],
 };

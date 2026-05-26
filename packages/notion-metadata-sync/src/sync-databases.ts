@@ -1,6 +1,6 @@
 import type { GraphDatabase } from "marloth-db";
 import { TYPE_MEMBERSHIP_LABELS, slugifyPropertyKey } from "marloth-db";
-import type { NotionReadClient } from "./notion-client";
+import { databaseMetadataPatch, type NotionReadClient } from "./notion-client";
 import { isNotionHexId, notionIdToHex } from "./notion-ids";
 import {
   extractPagePropertyValue,
@@ -75,13 +75,13 @@ export async function syncDatabases(
       }
 
       const patch: Record<string, string> = {
+        ...databaseMetadataPatch(database, vertex.properties, options.force),
         notion_schema: JSON.stringify(schema),
         notion_views: JSON.stringify({
           syncedAt: new Date().toISOString(),
           views,
         }),
       };
-      if (database.url) patch.notion_url = database.url;
 
       if (options.dryRun) {
         summary.updated += 1;

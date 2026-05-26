@@ -1,11 +1,12 @@
 import type { GraphDatabase } from "./graph";
+import { findMarkdownLinksToTarget } from "./markdown-links";
 import { getRecordDetail } from "./queries";
 
 export interface RecordBacklink {
   sourceId: string;
   title: string;
   path: string | null;
-  label: string;
+  linkText: string | null;
 }
 
 export interface RecordPageMetadata {
@@ -30,21 +31,29 @@ export function getRecordPageMetadata(db: GraphDatabase, id: string): RecordPage
   const vertex = db.getVertex(id);
   if (!vertex) return null;
 
-  const incoming = db.listEdgesToTarget(id);
-  const backlinks: RecordBacklink[] = incoming.map((edge) => {
-    const source = getRecordDetail(db, edge.sourceId);
-    return {
-      sourceId: edge.sourceId,
+  const backlinks: RecordBacklink[] = [];
+  const seenSources = new Set<string>();
+
+  for (const candidate of db.listVerticesWithBodyLike(`%${id}%`)) {
+    if (candidate.id === id) continue;
+    const matches = findMarkdownLinksToTarget(candidate.body, id);
+    if (matches.length === 0 || seenSources.has(candidate.id)) continue;
+
+    seenSources.add(candidate.id);
+    const source = getRecordDetail(db, candidate.id);
+    const linkText = matches[0]?.linkText.trim() || null;
+    backlinks.push({
+      sourceId: candidate.id,
       title: source?.title ?? "Untitled",
       path: source?.path ?? null,
-      label: edge.label,
-    };
-  });
+      linkText,
+    });
+  }
 
   backlinks.sort((a, b) => {
     const byTitle = a.title.localeCompare(b.title, undefined, { sensitivity: "base" });
     if (byTitle !== 0) return byTitle;
-    return a.label.localeCompare(b.label);
+    return (a.linkText ?? "").localeCompare(b.linkText ?? "", undefined, { sensitivity: "base" });
   });
 
   return {

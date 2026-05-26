@@ -4,32 +4,55 @@ import { getRecordPageMetadata } from "./record-metadata";
 import { getRecordPageDetail } from "./record-sections";
 import { updateRecordBody } from "./queries";
 
-describe("record-metadata", () => {
-  test("counts incident edges and lists backlinks", () => {
-    const db = new GraphDatabase(":memory:", { clean: true });
-    db.upsertVertex("page-a", ["NotionPage"], { title: "Page A" });
-    db.upsertVertex("page-b", ["NotionPage"], { title: "Page B" });
-    db.upsertVertex("page-c", ["NotionPage"], { title: "Page C" });
-    db.upsertEdge("page-b", "page-a", "LINKS");
-    db.upsertEdge("page-c", "page-a", "REFERENCES");
+const PAGE_A = "0123456789abcdef0123456789abcdef";
+const PAGE_B = "11111111111111111111111111111111";
+const PAGE_C = "22222222222222222222222222222222";
 
-    const meta = getRecordPageMetadata(db, "page-a");
+describe("record-metadata", () => {
+  test("counts incident edges but ignores them for backlinks", () => {
+    const db = new GraphDatabase(":memory:", { clean: true });
+    db.upsertVertex(PAGE_A, ["NotionPage"], { title: "Page A" });
+    db.upsertVertex(PAGE_B, ["NotionPage"], { title: "Page B" });
+    db.upsertVertex(PAGE_C, ["NotionPage"], { title: "Page C" });
+    db.upsertEdge(PAGE_B, PAGE_A, "LINKS");
+    db.upsertEdge(PAGE_C, PAGE_A, "REFERENCES");
+
+    const meta = getRecordPageMetadata(db, PAGE_A);
     expect(meta?.connectionCount).toBe(2);
+    expect(meta?.backlinks).toEqual([]);
+
+    db.close();
+  });
+
+  test("lists markdown body backlinks only", () => {
+    const db = new GraphDatabase(":memory:", { clean: true });
+    db.upsertVertex(PAGE_A, ["NotionPage"], { title: "Page A" });
+    db.upsertVertex(PAGE_B, ["NotionPage"], {
+      title: "Page B",
+      body: `# Page B\n\nSee [Page A](marloth:${PAGE_A}).`,
+    });
+    db.upsertVertex(PAGE_C, ["NotionPage"], {
+      title: "Page C",
+      body: `# Page C\n\nRelated (${PAGE_A}.md)`,
+    });
+
+    const meta = getRecordPageMetadata(db, PAGE_A);
     expect(meta?.backlinks).toHaveLength(2);
     expect(meta?.backlinks.map((b) => b.title).sort()).toEqual(["Page B", "Page C"]);
+    expect(meta?.backlinks.find((b) => b.sourceId === PAGE_B)?.linkText).toBe("Page A");
 
     db.close();
   });
 
   test("reads created_at and modified_at from vertex properties", () => {
     const db = new GraphDatabase(":memory:", { clean: true });
-    db.upsertVertex("page-a", ["NotionPage"], {
+    db.upsertVertex(PAGE_A, ["NotionPage"], {
       title: "Page A",
       created_at: "2024-01-15T10:00:00.000Z",
       modified_at: "2024-06-01T12:30:00.000Z",
     });
 
-    const meta = getRecordPageMetadata(db, "page-a");
+    const meta = getRecordPageMetadata(db, PAGE_A);
     expect(meta?.createdAt).toBe("2024-01-15T10:00:00.000Z");
     expect(meta?.modifiedAt).toBe("2024-06-01T12:30:00.000Z");
 
@@ -38,9 +61,9 @@ describe("record-metadata", () => {
 
   test("getRecordPageDetail includes metadata", () => {
     const db = new GraphDatabase(":memory:", { clean: true });
-    db.upsertVertex("page-a", ["NotionPage"], { title: "Page A", body: "Hello" });
+    db.upsertVertex(PAGE_A, ["NotionPage"], { title: "Page A", body: "Hello" });
 
-    const detail = getRecordPageDetail(db, "page-a");
+    const detail = getRecordPageDetail(db, PAGE_A);
     expect(detail?.metadata.connectionCount).toBe(0);
     expect(detail?.metadata.backlinks).toEqual([]);
 
@@ -49,10 +72,10 @@ describe("record-metadata", () => {
 
   test("updateRecordBody sets modified_at and bootstraps created_at", () => {
     const db = new GraphDatabase(":memory:", { clean: true });
-    db.upsertVertex("page-a", ["NotionPage"], { title: "Page A", body: "Old" });
+    db.upsertVertex(PAGE_A, ["NotionPage"], { title: "Page A", body: "Old" });
 
-    updateRecordBody(db, "page-a", "New");
-    const vertex = db.getVertex("page-a");
+    updateRecordBody(db, PAGE_A, "New");
+    const vertex = db.getVertex(PAGE_A);
     expect(typeof vertex?.properties.modified_at).toBe("string");
     expect(typeof vertex?.properties.created_at).toBe("string");
 
