@@ -30,7 +30,12 @@ import {
   type CanvasSize,
 } from "../graph-canvas-size";
 import { formatNodeHoverLines, paintGraphNodeLabelOnCanvas } from "../graph-node-label";
-import { CLUSTER_COLOR_FALLBACK, recordGroupColor, resolveGraphNodeColor } from "../graph-node-color";
+import {
+  ANCHOR_COLOR_FALLBACK,
+  buildGraphLegendEntries,
+  CLUSTER_COLOR_FALLBACK,
+  resolveGraphNodeColor,
+} from "../graph-node-color";
 import {
   createCollisionForce,
   layoutLinkDistance,
@@ -290,7 +295,7 @@ export function GraphView({
   const [hoveredNode, setHoveredNode] = useState<HoveredNodeState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const { linkColor, linkColorAggregated, labelColor, labelBackgroundColor, labelBorderColor, clusterColor } =
+  const { linkColor, linkColorAggregated, labelColor, labelBackgroundColor, labelBorderColor, clusterColor, anchorColor } =
     useMemo(
     () => ({
       linkColor: readCssVar("--marloth-graph-link", LINK_COLOR_FALLBACK),
@@ -299,6 +304,7 @@ export function GraphView({
       labelBackgroundColor: readCssVar("--marloth-graph-label-bg", LABEL_BG_FALLBACK),
       labelBorderColor: readCssVar("--marloth-graph-label-border", LABEL_BORDER_FALLBACK),
       clusterColor: readCssVar("--marloth-graph-cluster-node", CLUSTER_COLOR_FALLBACK),
+      anchorColor: readCssVar("--marloth-graph-anchor-node", ANCHOR_COLOR_FALLBACK),
     }),
     [],
   );
@@ -319,6 +325,18 @@ export function GraphView({
       links: snapshot.links.map((link) => ({ ...link })),
     };
   }, [snapshot]);
+
+  const legendEntries = useMemo(
+    () =>
+      snapshot
+        ? buildGraphLegendEntries(snapshot.nodes, {
+            anchorId,
+            clusterColor,
+            anchorColor,
+          })
+        : [],
+    [anchorColor, anchorId, clusterColor, snapshot],
+  );
 
   useLayoutEffect(() => {
     const container = containerRef.current;
@@ -447,8 +465,9 @@ export function GraphView({
   }, [aggregated]);
 
   const nodeColor = useCallback(
-    (node: ForceNode) => resolveGraphNodeColor(node, clusterColor),
-    [clusterColor],
+    (node: ForceNode) =>
+      resolveGraphNodeColor(node, { clusterColor, anchorColor, anchorId }),
+    [anchorColor, anchorId, clusterColor],
   );
 
   const paintNodeLabel = useCallback(
@@ -542,24 +561,18 @@ export function GraphView({
               ← Out
             </button>
           ) : null}
-          {aggregated ? (
+          {legendEntries.length > 0 ? (
             <span className="marloth-graph-legend" aria-label="Node colors">
-              <span className="marloth-graph-legend-item">
-                <span
-                  className="marloth-graph-legend-swatch"
-                  style={{ background: recordGroupColor("Record") }}
-                  aria-hidden="true"
-                />
-                Record
-              </span>
-              <span className="marloth-graph-legend-item">
-                <span
-                  className="marloth-graph-legend-swatch"
-                  style={{ background: clusterColor }}
-                  aria-hidden="true"
-                />
-                Cluster
-              </span>
+              {legendEntries.map((entry) => (
+                <span key={entry.label} className="marloth-graph-legend-item">
+                  <span
+                    className="marloth-graph-legend-swatch"
+                    style={{ background: entry.color }}
+                    aria-hidden="true"
+                  />
+                  {entry.label}
+                </span>
+              ))}
             </span>
           ) : null}
           <span className="marloth-graph-toolbar-hint">

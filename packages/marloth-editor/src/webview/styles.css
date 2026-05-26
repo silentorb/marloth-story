@@ -12,6 +12,7 @@
   --marloth-graph-link: rgba(235, 235, 234, 0.28);
   --marloth-graph-link-strong: rgba(235, 235, 234, 0.42);
   --marloth-graph-cluster-node: #d4a24c;
+  --marloth-graph-anchor-node: #7ee787;
   --marloth-graph-label-bg: rgba(37, 37, 37, 0.94);
   --marloth-graph-label-border: rgba(255, 255, 255, 0.12);
   font-family: var(--marloth-font);

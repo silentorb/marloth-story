@@ -33,7 +33,8 @@ Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth
 - The finest layer **must** show one node per individual record with unaggregated edges.
 - Each coarser layer **must** have no more visible nodes than the next finer layer (monotonic non-decreasing node counts).
 - Cluster nodes **must** be visually distinguishable (warm amber color; size reflects member count; labels show the gateway title only). They **must not** be openable as records.
-- Individual record nodes **must** use cool-toned colors by record type (`group`); on aggregated layers the toolbar **should** show a compact Record / Cluster legend.
+- The anchor record (or its branch cluster when merged) **must** use a distinct anchor color (green by default), separate from cluster amber and record-type colors.
+- Individual record nodes **must** use cool-toned colors by record type (`group`); the toolbar legend **must** list the anchor, clusters, and each record type present in the current view (not a generic “Record” swatch).
 - Individual record nodes (32-character hex IDs, non-cluster) **must** be openable: click → same tab; Ctrl/Cmd/middle-click → new tab (same navigation semantics as record links elsewhere in the editor).
 
 ### Interaction
