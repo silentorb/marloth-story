@@ -3,6 +3,7 @@ import { MarlothEditor } from "./MarlothEditor";
 import { OrderedAssociationView } from "./OrderedAssociationView";
 import { PageActionsMenu } from "./PageActionsMenu";
 import { PageTitle } from "./PageTitle";
+import { RecordMetadataPanel } from "./RecordMetadataPanel";
 import { RelationSectionView } from "./RelationSectionView";
 import type { EditorApi } from "../api/client";
 import type { OrderedAssociationViewDetail, RecordPageDetail } from "../../shared/types";
@@ -16,6 +17,8 @@ interface RecordPageViewProps {
   api: EditorApi;
   record: RecordPageDetail;
   saveState: "idle" | "dirty" | "saving" | "saved" | "error";
+  metadataExpanded: boolean;
+  onMetadataExpandedChange: (expanded: boolean) => void;
   onBodyChange: (body: string) => void;
   onEditorBaseline?: (body: string) => void;
   onTitleChange: (title: string) => void;
@@ -31,6 +34,8 @@ export function RecordPageView({
   api,
   record,
   saveState,
+  metadataExpanded,
+  onMetadataExpandedChange,
   onBodyChange,
   onEditorBaseline,
   onTitleChange,
@@ -75,6 +80,14 @@ export function RecordPageView({
           </span>
         </div>
       </div>
+
+      <RecordMetadataPanel
+        api={api}
+        metadata={record.metadata}
+        expanded={metadataExpanded}
+        onExpandedChange={onMetadataExpandedChange}
+        onOpenRecord={onOpenRecord}
+      />
 
       <div className="marloth-record-sections">
         <section

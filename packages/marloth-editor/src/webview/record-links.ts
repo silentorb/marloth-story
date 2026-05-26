@@ -55,6 +55,23 @@ export function rewriteStandaloneRecordLinks(root: ParentNode, base?: string | U
   }
 }
 
+export function metadataExpandedFromLocation(): boolean {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("meta") === "1";
+}
+
+export function syncMetadataExpandedParam(expanded: boolean, base?: string | URL): void {
+  if (typeof window === "undefined") return;
+  const url = base instanceof URL ? new URL(base.href) : new URL(base ?? window.location.href);
+  if (expanded) url.searchParams.set("meta", "1");
+  else url.searchParams.delete("meta");
+  window.history.replaceState({}, "", url.toString());
+}
+
+export function stripMetadataParamFromUrl(url: URL): void {
+  url.searchParams.delete("meta");
+}
+
 export function standaloneViewUrl(
   view: AppView,
   recordId?: string | null,
@@ -68,6 +85,7 @@ export function standaloneViewUrl(
   } else url.searchParams.delete("view");
   if (recordId) url.searchParams.set("record", recordId);
   else url.searchParams.delete("record");
+  stripMetadataParamFromUrl(url);
   if (view !== "graph-explorer") url.searchParams.delete("anchor");
   return url.toString();
 }

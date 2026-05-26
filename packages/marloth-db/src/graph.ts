@@ -131,6 +131,13 @@ export class GraphDatabase {
     this.updateVertexProps.run(JSON.stringify(merged), id);
   }
 
+  mergeEdgeProperties(id: string, properties: Properties): void {
+    const existing = this.getEdge(id);
+    if (!existing) return;
+    const merged = mergeProperties(existing.properties, properties);
+    this.updateEdgeProps.run(JSON.stringify(merged), id);
+  }
+
   addVertexLabel(id: string, label: string): void {
     this.insertLabel.run(id, label);
   }
@@ -377,6 +384,15 @@ export class GraphDatabase {
       label: row.label,
       properties: parseJsonObject(row.properties),
     }));
+  }
+
+  countIncidentEdges(vertexId: string): number {
+    const row = this.db
+      .prepare(
+        "SELECT COUNT(*) AS c FROM edges WHERE source_id = ? OR target_id = ?",
+      )
+      .get(vertexId, vertexId) as { c: number };
+    return row.c;
   }
 
   /** Compact and optimize for deterministic, git-friendly storage. */

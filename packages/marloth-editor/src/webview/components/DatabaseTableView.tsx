@@ -25,6 +25,23 @@ export function DatabaseTableView({
 }: DatabaseTableViewProps) {
   const tableKey = databaseTableSortKey(recordId, databaseView.id, databaseView.view);
 
+  const columnLabels = useMemo(() => {
+    if (!databaseView.columnDefs?.length) return undefined;
+    return Object.fromEntries(databaseView.columnDefs.map((col) => [col.key, col.name]));
+  }, [databaseView.columnDefs]);
+
+  const renderCell = useCallback((column: string, value: string) => {
+    const def = databaseView.columnDefs?.find((col) => col.key === column);
+    if (!def || !value) return value;
+    if (def.type === "checkbox") {
+      return value === "true" ? "☑" : value === "false" ? "☐" : value;
+    }
+    if (def.type === "select" || def.type === "status" || def.type === "multi_select") {
+      return <span className="marloth-database-cell-badge">{value}</span>;
+    }
+    return value;
+  }, [databaseView.columnDefs]);
+
   const rows = useMemo(
     () =>
       databaseView.rows.map((row) => ({
@@ -104,6 +121,8 @@ export function DatabaseTableView({
           columns={databaseView.columns}
           rows={rows}
           renderNameCell={renderNameCell}
+          columnLabels={columnLabels}
+          renderCell={renderCell}
         />
       )}
     </div>

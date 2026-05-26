@@ -39,6 +39,12 @@ export function makeRecordPageDetail(
     path: "Folder/Example page",
     body: "# Example page\n\nBody text.",
     labels: ["NotionPage"],
+    metadata: {
+      createdAt: null,
+      modifiedAt: null,
+      connectionCount: 1,
+      backlinks: [],
+    },
     sections,
     ...overrides,
   };

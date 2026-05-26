@@ -29,6 +29,8 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 - Autosave **should** debounce writes (default ~800ms after last edit).
 - Local UI preferences (table sort order, etc.) **must** persist in a gitignored user settings file (`.marloth/user-settings.json` by default), storing sparse overrides only—not full copies of graph data.
 - Section tables **must** support sortable columns; default sort is Name ascending. Sort preferences **must** persist per section table across sessions.
+- Each record page **must** include a collapsible **metadata** panel (created/modified timestamps, connection count, backlinks). Collapsed by default; standalone mode supports `?meta=1` to expand (not persisted in user settings).
+- Database tables **should** use synced Notion view definitions (`notion_views` on `NotionDatabase` vertices) for view tabs, filters, sorts, and typed columns when present; see [notion-metadata-sync.md](./notion-metadata-sync.md).
 
 ### Cross-linking
 

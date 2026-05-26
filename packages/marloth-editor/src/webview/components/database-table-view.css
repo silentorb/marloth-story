@@ -1,3 +1,12 @@
+.marloth-database-cell-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: var(--marloth-surface);
+  border: 1px solid var(--marloth-border);
+}
+
 .marloth-database-view {
   display: flex;
   flex-direction: column;

@@ -20,6 +20,8 @@ describe("RecordPageView", () => {
           api={api}
           record={makeRecordPageDetail()}
           saveState="idle"
+          metadataExpanded={false}
+          onMetadataExpandedChange={() => {}}
           onBodyChange={() => {}}
           onTitleChange={() => {}}
           onDatabaseViewChange={() => {}}

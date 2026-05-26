@@ -44,7 +44,21 @@ export {
 export type { RecordLifecycleError } from "./record-lifecycle";
 export type { RecordDetail, RecordSummary } from "./queries";
 export { getDatabaseViewDetail } from "./database-view";
-export type { DatabaseRow, DatabaseViewDetail } from "./database-view";
+export type { DatabaseColumnDef, DatabaseRow, DatabaseViewDetail } from "./database-view";
+export {
+  parseNotionSchema,
+  parseNotionViews,
+  slugifyPropertyKey,
+} from "./notion-database-schema";
+export type {
+  NotionDatabaseSchema,
+  NotionDatabaseViews,
+  NotionPropertyDefinition,
+  NotionViewDefinition,
+} from "./notion-database-schema";
+export { filterEvalRows, matchesNotionFilter, sortEvalRows } from "./notion-view-eval";
+export { getRecordPageMetadata } from "./record-metadata";
+export type { RecordBacklink, RecordPageMetadata } from "./record-metadata";
 export { getRecordPageDetail } from "./record-sections";
 export type {
   DatabaseTableSection,

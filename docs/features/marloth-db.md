@@ -88,8 +88,8 @@ The database **must** model a **labeled property graph**:
 
 - `upsertVertex(id, labels, properties)` — create or merge vertex
 - `upsertEdge(sourceId, targetId, label, properties)` — create or merge edge
-- `getRecordDetail` / `getRecordPageDetail` — inspection; the latter adds ordered **sections** (markdown, database table, relation tables)
-- `getDatabaseViewDetail` — database row table for a `NotionDatabase` vertex
+- `getRecordDetail` / `getRecordPageDetail` — inspection; the latter adds **metadata** (timestamps, connection count, backlinks) and ordered **sections** (markdown, database table, relation tables)
+- `getDatabaseViewDetail` — database row table for a `NotionDatabase` vertex; uses synced `notion_views` / `notion_schema` when present (see [notion-metadata-sync.md](./notion-metadata-sync.md))
 - `finalize()` — `PRAGMA optimize` + `VACUUM` for compact storage
 - Constructor `{ clean: true }` — delete existing file before open
 
@@ -138,6 +138,9 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 | `packages/marloth-db/src/graph-export.ts` | Full graph and Graph Explorer LOD export |
 | `packages/marloth-db/src/graph-lod-cluster.ts` | Graph Explorer layer subdivision |
 | `packages/marloth-db/src/record-sections.ts` | Universal page sections (markdown + relation/database tables) |
+| `packages/marloth-db/src/record-metadata.ts` | Page metadata (timestamps, connections, backlinks) |
+| `packages/marloth-db/src/notion-database-schema.ts` | Parsed Notion database schema/view JSON on vertices |
+| `packages/marloth-db/src/notion-view-eval.ts` | Notion view filter/sort evaluation for database tables |
 | `packages/marloth-db/src/database-view.ts` | Type instance table reconstruction from incoming `IS_A` edges |
 | `packages/marloth-db/src/ordered-associations.ts` | Ordered association config, view query, move mutation |
 | `packages/notion-importer/src/graph-pipeline.ts` | Notion → graph import |
@@ -146,6 +149,7 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 ## See also
 
 - [graph-explorer.md](./graph-explorer.md) — anchor-scoped LOD graph visualization
+- [notion-metadata-sync.md](./notion-metadata-sync.md) — read-only Notion API sync for timestamps and database views
 - [notion-import.md](./notion-import.md) — export resolution and import pipeline
 - [ordered-associations.md](./ordered-associations.md) — automatic sequence for associations (scenes-first)
 - [`../ontology.md`](../ontology.md) — design domain model (storage-agnostic)

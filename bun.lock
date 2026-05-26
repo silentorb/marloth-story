@@ -51,6 +51,17 @@
         "typescript": "5.8.2",
       },
     },
+    "packages/notion-metadata-sync": {
+      "name": "notion-metadata-sync",
+      "version": "0.1.0",
+      "dependencies": {
+        "marloth-db": "workspace:*",
+      },
+      "devDependencies": {
+        "@types/bun": "1.2.23",
+        "typescript": "5.8.2",
+      },
+    },
   },
   "packages": {
     "@babel/code-frame": ["@babel/code-frame@7.29.0", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.28.5", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw=="],
@@ -666,6 +677,8 @@
     "node-releases": ["node-releases@2.0.46", "", {}, "sha512-GYVXHE2KnrzAfsAjl4uP++evGFCrAU1jta4ubEjIG7YWt/64Gqv66a30yKwWczVjA6j3bM4nBwH7Pk1JmDHaxQ=="],
 
     "notion-importer": ["notion-importer@workspace:packages/notion-importer"],
+
+    "notion-metadata-sync": ["notion-metadata-sync@workspace:packages/notion-metadata-sync"],
 
     "object-assign": ["object-assign@4.1.1", "", {}, "sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg=="],
 

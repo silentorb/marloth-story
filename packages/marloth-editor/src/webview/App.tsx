@@ -9,8 +9,11 @@ import type { AppView, OrderedAssociationViewDetail, RecordPageDetail } from "..
 import { standaloneRecordUrl } from "../shared/types";
 import {
   anchorFromLocation,
+  metadataExpandedFromLocation,
   navigateStandaloneRecord,
   resolveGraphExplorerAnchor,
+  stripMetadataParamFromUrl,
+  syncMetadataExpandedParam,
   standaloneViewUrl,
 } from "./record-links";
 import { resolvePageTitleAndContent } from "./markdown-body";
@@ -79,6 +82,9 @@ export function App() {
   const [record, setRecord] = useState<RecordPageDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>("idle");
+  const [metadataExpanded, setMetadataExpanded] = useState(() =>
+    api.host === "standalone" ? metadataExpandedFromLocation() : false,
+  );
   const [showGraphNodeLabels, setShowGraphNodeLabels] = useState(readGraphShowNodeLabels);
   const [showGraphRelevanceDiagnostics, setShowGraphRelevanceDiagnostics] = useState(
     readGraphShowRelevanceDiagnostics,
@@ -183,6 +189,8 @@ export function App() {
       if (options?.scope) url.searchParams.set("scope", options.scope);
       else url.searchParams.delete("scope");
       if (options?.view) url.searchParams.set("dbView", options.view);
+      else url.searchParams.delete("dbView");
+      stripMetadataParamFromUrl(url);
       if (nextView === "graph-explorer") {
         url.searchParams.set("anchor", explorerAnchorId);
       } else {
@@ -215,6 +223,7 @@ export function App() {
         };
         recordIdRef.current = recordId;
         setRecord(normalizedRecord);
+        setMetadataExpanded(false);
         pendingBody.current = content;
         pendingTitle.current = title;
         savedBody.current = content;
@@ -504,6 +513,11 @@ export function App() {
             api={api}
             record={record}
             saveState={saveState}
+            metadataExpanded={metadataExpanded}
+            onMetadataExpandedChange={(expanded) => {
+              setMetadataExpanded(expanded);
+              if (api.host === "standalone") syncMetadataExpandedParam(expanded);
+            }}
             onBodyChange={scheduleSave}
             onEditorBaseline={syncEditorBaseline}
             onTitleChange={scheduleSaveTitle}

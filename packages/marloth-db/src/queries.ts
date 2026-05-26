@@ -82,10 +82,24 @@ export function listRecentRecords(db: GraphDatabase, limit = 20): RecordSummary[
     .filter((row): row is RecordSummary => row !== null);
 }
 
+function touchRecordTimestamps(
+  db: GraphDatabase,
+  id: string,
+  existing: Record<string, unknown>,
+): void {
+  const now = new Date().toISOString();
+  const patch: Record<string, string> = { modified_at: now };
+  if (typeof existing.created_at !== "string" || !existing.created_at.trim()) {
+    patch.created_at = now;
+  }
+  db.mergeVertexProperties(id, patch);
+}
+
 export function updateRecordBody(db: GraphDatabase, id: string, body: string): boolean {
   const vertex = db.getVertex(id);
   if (!vertex) return false;
   db.mergeVertexProperties(id, { body });
+  touchRecordTimestamps(db, id, vertex.properties);
   return true;
 }
 
@@ -97,6 +111,7 @@ export function updateRecordTitle(db: GraphDatabase, id: string, title: string):
   const body = bodyFromProperties(vertex.properties);
   const content = stripLeadingTitleHeadingIfMatches(body, oldTitle);
   db.mergeVertexProperties(id, { title: trimmed, body: content });
+  touchRecordTimestamps(db, id, vertex.properties);
   return true;
 }
 

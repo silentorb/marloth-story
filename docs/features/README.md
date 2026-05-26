@@ -17,6 +17,7 @@ Each file in this directory is the **authoritative design spec** for one major w
 | --- | --- |
 | SQLite property graph (`data/`) | [marloth-db.md](./marloth-db.md) |
 | Notion export → graph import (**legacy**) | [notion-import.md](./notion-import.md) |
+| Notion API metadata sync (read-only) | [notion-metadata-sync.md](./notion-metadata-sync.md) |
 | Web markdown editor (VS Code + graph) | [marloth-editor.md](./marloth-editor.md) |
 | Graph Explorer (LOD graph visualization) | [graph-explorer.md](./graph-explorer.md) |
 | Ordered associations (scene order, DnD) | [ordered-associations.md](./ordered-associations.md) |

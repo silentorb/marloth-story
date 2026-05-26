@@ -1,6 +1,11 @@
 import { describe, expect, test } from "bun:test";
-import { resolveRecordLinkTarget, standaloneViewUrl } from "./record-links";
-import { marlothHref } from "../shared/types";
+import {
+  metadataExpandedFromLocation,
+  resolveRecordLinkTarget,
+  standaloneViewUrl,
+  syncMetadataExpandedParam,
+} from "./record-links";
+import { marlothHref, standaloneRecordUrl } from "../shared/types";
 
 describe("record-links", () => {
   test("resolveRecordLinkTarget accepts marloth and legacy notion hrefs", () => {
@@ -21,6 +26,21 @@ describe("record-links", () => {
     );
     expect(
       standaloneViewUrl("record", "72b6fb455b824b78962b0e509cc091c9", "http://127.0.0.1:5173/"),
+    ).toBe("http://127.0.0.1:5173/?record=72b6fb455b824b78962b0e509cc091c9");
+  });
+
+  test("metadataExpandedFromLocation reads meta query param", () => {
+    const original = window.location.href;
+    window.history.replaceState({}, "", "http://127.0.0.1:5173/?record=aaa&meta=1");
+    expect(metadataExpandedFromLocation()).toBe(true);
+    syncMetadataExpandedParam(false);
+    expect(metadataExpandedFromLocation()).toBe(false);
+    window.history.replaceState({}, "", original);
+  });
+
+  test("standaloneRecordUrl strips meta param", () => {
+    expect(
+      standaloneRecordUrl("72b6fb455b824b78962b0e509cc091c9", "http://127.0.0.1:5173/?meta=1"),
     ).toBe("http://127.0.0.1:5173/?record=72b6fb455b824b78962b0e509cc091c9");
   });
 });

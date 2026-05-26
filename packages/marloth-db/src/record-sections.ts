@@ -7,6 +7,7 @@ import {
   type OrderedAssociationViewDetail,
 } from "./ordered-associations";
 import { getRecordDetail, type RecordDetail } from "./queries";
+import { getRecordPageMetadata, type RecordPageMetadata } from "./record-metadata";
 
 const RELATION_META_KEYS = new Set([
   "ordinal",
@@ -53,8 +54,11 @@ export interface RelationTableSection {
 export type RecordSection = MarkdownSection | DatabaseTableSection | OrderedAssociationSection | RelationTableSection;
 
 export interface RecordPageDetail extends RecordDetail {
+  metadata: RecordPageMetadata;
   sections: RecordSection[];
 }
+
+export type { RecordBacklink, RecordPageMetadata } from "./record-metadata";
 
 function titleFromProperties(properties: Record<string, unknown>): string {
   const title = properties.title;
@@ -250,5 +254,7 @@ export function getRecordPageDetail(
 
   sections.push(...buildRelationSections(db, id));
 
-  return { ...record, sections };
+  const metadata = getRecordPageMetadata(db, id)!;
+
+  return { ...record, metadata, sections };
 }

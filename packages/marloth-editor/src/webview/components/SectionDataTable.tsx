@@ -11,6 +11,8 @@ interface SectionDataTableProps {
   rows: SectionDataTableRow[];
   renderNameCell: (row: SectionDataTableRow) => ReactNode;
   sortable?: boolean;
+  columnLabels?: Record<string, string>;
+  renderCell?: (column: string, value: string, row: SectionDataTableRow) => ReactNode;
 }
 
 function formatColumnLabel(key: string): string {
@@ -32,6 +34,8 @@ export function SectionDataTable({
   rows,
   renderNameCell,
   sortable = true,
+  columnLabels,
+  renderCell,
 }: SectionDataTableProps) {
   const { getTableSort, toggleTableSortColumn } = useUserSettings();
   const sortSpec = getTableSort(tableKey);
@@ -81,7 +85,7 @@ export function SectionDataTable({
         <thead>
           <tr>
             {renderHeaderCell("name", formatColumnLabel("name"))}
-            {columns.map((column) => renderHeaderCell(column, formatColumnLabel(column)))}
+            {columns.map((column) => renderHeaderCell(column, columnLabels?.[column] ?? formatColumnLabel(column)))}
           </tr>
         </thead>
         <tbody>
@@ -89,7 +93,11 @@ export function SectionDataTable({
             <tr key={row.id}>
               <th scope="row">{renderNameCell(row)}</th>
               {columns.map((column) => (
-                <td key={column}>{row.cells[column] ?? ""}</td>
+                <td key={column}>
+                  {renderCell
+                    ? renderCell(column, row.cells[column] ?? "", row)
+                    : (row.cells[column] ?? "")}
+                </td>
               ))}
             </tr>
           ))}

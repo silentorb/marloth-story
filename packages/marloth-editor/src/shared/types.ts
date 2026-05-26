@@ -25,7 +25,9 @@ export type {
   DatabaseTableSection,
   MarkdownSection,
   OrderedAssociationSection,
+  RecordBacklink,
   RecordPageDetail,
+  RecordPageMetadata,
   RecordSection,
   RelationRow,
   RelationTableSection,
@@ -84,7 +86,8 @@ export function standaloneRecordUrl(recordId: string, base?: string | URL): stri
   const url = base instanceof URL ? new URL(base.href) : new URL(base ?? defaultBase);
   url.searchParams.set("record", recordId);
   url.searchParams.delete("view");
+  url.searchParams.delete("meta");
   return url.toString();
 }
 
-export type { GraphLink, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseRow, DatabaseViewDetail } from "marloth-db";
+export type { GraphLink, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseColumnDef, DatabaseRow, DatabaseViewDetail } from "marloth-db";
