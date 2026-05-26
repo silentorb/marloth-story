@@ -21,8 +21,19 @@ import {
 } from "./editor-save";
 import { SIDEBAR_RECORD_LINKS } from "./sidebar-nav";
 import {
+  readGraphExplorerLayerDepth,
+  readGraphExplorerMode,
+  readGraphExplorerRelativeDetail,
   readGraphShowNodeLabels,
+  readGraphShowRelevanceDiagnostics,
+  writeGraphExplorerLayerDepth,
+  writeGraphExplorerMode,
+  writeGraphExplorerRelativeDetail,
   writeGraphShowNodeLabels,
+  writeGraphShowRelevanceDiagnostics,
+  normalizeGraphExplorerLayerDepth,
+  normalizeGraphExplorerRelativeDetail,
+  type GraphExplorerMode,
 } from "./graph-preferences";
 import { syncDocumentTitle } from "./document-title";
 import { syncDocumentIcon } from "./document-icon";
@@ -69,6 +80,15 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [showGraphNodeLabels, setShowGraphNodeLabels] = useState(readGraphShowNodeLabels);
+  const [showGraphRelevanceDiagnostics, setShowGraphRelevanceDiagnostics] = useState(
+    readGraphShowRelevanceDiagnostics,
+  );
+  const [graphExplorerMode, setGraphExplorerMode] = useState(readGraphExplorerMode);
+  const [graphExplorerLayerDepth, setGraphExplorerLayerDepth] = useState(readGraphExplorerLayerDepth);
+  const [graphExplorerRelativeDetail, setGraphExplorerRelativeDetail] = useState(() =>
+    readGraphExplorerRelativeDetail(readGraphExplorerLayerDepth()),
+  );
+  const [explorerAnchorStack, setExplorerAnchorStack] = useState<string[]>([]);
   const [homeId, setHomeId] = useState<string | null>(null);
   const [explorerAnchorId, setExplorerAnchorId] = useState(() =>
     resolveGraphExplorerAnchor(anchorFromLocation()),
@@ -79,6 +99,65 @@ export function App() {
   const savedTitle = useRef<string | null>(null);
   const recordIdRef = useRef<string | null>(null);
   const saveTimer = useRef<number | null>(null);
+
+  const syncExplorerAnchorUrl = useCallback(
+    (anchorId: string) => {
+      if (api.host !== "standalone" || view !== "graph-explorer") return;
+      const url = new URL(window.location.href);
+      url.searchParams.set("anchor", anchorId);
+      window.history.replaceState({}, "", url.toString());
+    },
+    [api.host, view],
+  );
+
+  const changeExplorerAnchor = useCallback(
+    (nextAnchorId: string) => {
+      const resolved = resolveGraphExplorerAnchor(nextAnchorId);
+      setExplorerAnchorStack((current) => [...current, explorerAnchorId]);
+      setExplorerAnchorId(resolved);
+      syncExplorerAnchorUrl(resolved);
+    },
+    [explorerAnchorId, syncExplorerAnchorUrl],
+  );
+
+  const navigateExplorerAnchorBack = useCallback(() => {
+    setExplorerAnchorStack((current) => {
+      if (current.length === 0) return current;
+      const nextStack = [...current];
+      const previousAnchor = nextStack.pop()!;
+      setExplorerAnchorId(previousAnchor);
+      syncExplorerAnchorUrl(previousAnchor);
+      return nextStack;
+    });
+  }, [syncExplorerAnchorUrl]);
+
+  const setGraphExplorerModePersisted = useCallback((value: GraphExplorerMode) => {
+    setGraphExplorerMode(value);
+    writeGraphExplorerMode(value);
+    if (value === "layers") {
+      setExplorerAnchorStack([]);
+    }
+  }, []);
+
+  const setGraphExplorerLayerDepthPersisted = useCallback((value: number) => {
+    const normalized = normalizeGraphExplorerLayerDepth(value);
+    setGraphExplorerLayerDepth(normalized);
+    writeGraphExplorerLayerDepth(normalized);
+    setGraphExplorerRelativeDetail((current) => {
+      const clamped = normalizeGraphExplorerRelativeDetail(current, normalized);
+      if (clamped !== current) writeGraphExplorerRelativeDetail(clamped, normalized);
+      return clamped;
+    });
+  }, []);
+
+  const setGraphExplorerRelativeDetailPersisted = useCallback(
+    (value: number) => {
+      const normalized = normalizeGraphExplorerRelativeDetail(value, graphExplorerLayerDepth);
+      setGraphExplorerRelativeDetail(normalized);
+      writeGraphExplorerRelativeDetail(normalized, graphExplorerLayerDepth);
+    },
+    [graphExplorerLayerDepth],
+  );
 
   const standaloneUrls = useMemo(() => {
     if (api.host !== "standalone" || !homeId) return undefined;
@@ -336,6 +415,11 @@ export function App() {
     writeGraphShowNodeLabels(value);
   }, []);
 
+  const setShowGraphRelevanceDiagnosticsPersisted = useCallback((value: boolean) => {
+    setShowGraphRelevanceDiagnostics(value);
+    writeGraphShowRelevanceDiagnostics(value);
+  }, []);
+
   const updateOrderedAssociationView = useCallback((view: OrderedAssociationViewDetail) => {
     setRecord((prev) => {
       if (!prev) return prev;
@@ -391,13 +475,24 @@ export function App() {
         onOpenRecord={(recordId) => openLinkedRecord(recordId)}
         standaloneUrls={standaloneUrls}
       />
-      <div className="marloth-main">
+      <div className={`marloth-main${view === "graph-explorer" ? " marloth-main-graph" : ""}`}>
         {view === "graph-explorer" ? (
           <GraphView
             api={api}
             anchorId={explorerAnchorId}
+            explorerMode={graphExplorerMode}
+            onExplorerModeChange={setGraphExplorerModePersisted}
+            layerDepth={graphExplorerLayerDepth}
+            onLayerDepthChange={setGraphExplorerLayerDepthPersisted}
+            relativeDetail={graphExplorerRelativeDetail}
+            onRelativeDetailChange={setGraphExplorerRelativeDetailPersisted}
+            canNavigateAnchorBack={explorerAnchorStack.length > 0}
+            onNavigateAnchorBack={navigateExplorerAnchorBack}
+            onAnchorChange={changeExplorerAnchor}
             showNodeLabels={showGraphNodeLabels}
             onShowNodeLabelsChange={setShowGraphNodeLabelsPersisted}
+            showRelevanceDiagnostics={showGraphRelevanceDiagnostics}
+            onShowRelevanceDiagnosticsChange={setShowGraphRelevanceDiagnosticsPersisted}
             onOpenRecord={openRecordFromGraph}
           />
         ) : error ? (

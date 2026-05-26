@@ -36,7 +36,7 @@ export interface EditorDatabase {
   deleteRecord(id: string): RecordLifecycleError | null;
   archiveRecord(id: string): RecordLifecycleError | null;
   getGraphFull(): GraphSnapshot;
-  getGraphExplorerLod(anchorId?: string): GraphLodSnapshot;
+  getGraphExplorerLod(options?: { anchorId?: string; layerCount?: number }): GraphLodSnapshot;
   close(): void;
 }
 
@@ -101,8 +101,8 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
     getGraphFull(): GraphSnapshot {
       return exportFullGraph(currentDb());
     },
-    getGraphExplorerLod(anchorId?: string): GraphLodSnapshot {
-      return exportExplorerLodGraph(currentDb(), { anchorId });
+    getGraphExplorerLod(options?: { anchorId?: string; layerCount?: number }): GraphLodSnapshot {
+      return exportExplorerLodGraph(currentDb(), options);
     },
     close(): void {
       db.close();

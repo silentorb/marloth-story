@@ -19,6 +19,11 @@ export interface GetRecordOptions {
   scope?: string;
 }
 
+export interface GraphExplorerLodOptions {
+  anchorId?: string;
+  layerCount?: number;
+}
+
 export interface EditorApiClient {
   getHomeId(): Promise<string>;
   getRecord(id: string, options?: GetRecordOptions | string): Promise<RecordPageDetail>;
@@ -33,7 +38,7 @@ export interface EditorApiClient {
   deleteRecord(id: string): Promise<void>;
   archiveRecord(id: string): Promise<void>;
   getGraphFull(): Promise<GraphSnapshot>;
-  getGraphExplorerLod(anchorId?: string): Promise<GraphLodSnapshot>;
+  getGraphExplorerLod(options?: GraphExplorerLodOptions): Promise<GraphLodSnapshot>;
   getUserSettings(): Promise<UserSettings>;
   patchUserSettings(patch: UserSettingsPatch): Promise<UserSettings>;
 }
@@ -129,9 +134,14 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/full");
       return data.graph;
     },
-    async getGraphExplorerLod(anchorId?: string): Promise<GraphLodSnapshot> {
-      const params = anchorId ? `?anchor=${encodeURIComponent(anchorId)}` : "";
-      const data = await fetchJson<{ graph: GraphLodSnapshot }>(`/api/graph/explorer-lod${params}`);
+    async getGraphExplorerLod(options?: GraphExplorerLodOptions): Promise<GraphLodSnapshot> {
+      const params = new URLSearchParams();
+      if (options?.anchorId) params.set("anchor", options.anchorId);
+      if (options?.layerCount !== undefined) params.set("layers", String(options.layerCount));
+      const query = params.toString();
+      const data = await fetchJson<{ graph: GraphLodSnapshot }>(
+        `/api/graph/explorer-lod${query ? `?${query}` : ""}`,
+      );
       return data.graph;
     },
     async getUserSettings(): Promise<UserSettings> {

@@ -42,6 +42,88 @@
   accent-color: var(--marloth-link);
 }
 
+.marloth-graph-settings {
+  position: relative;
+}
+
+.marloth-graph-settings-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 0.85rem;
+  color: var(--marloth-muted);
+  background: transparent;
+  border: 1px solid var(--marloth-border);
+  border-radius: 4px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.marloth-graph-settings-trigger:hover {
+  color: var(--marloth-text);
+  border-color: var(--marloth-muted);
+}
+
+.marloth-graph-settings-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.marloth-graph-settings-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 10;
+  min-width: 220px;
+  padding: 8px;
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  background: var(--marloth-surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.marloth-graph-settings-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  font-size: 0.85rem;
+  color: var(--marloth-text);
+  cursor: pointer;
+  user-select: none;
+}
+
+.marloth-graph-settings-item input {
+  margin: 0;
+  accent-color: var(--marloth-link);
+}
+
+.marloth-graph-settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 4px;
+  font-size: 0.85rem;
+  color: var(--marloth-text);
+}
+
+.marloth-graph-settings-field-label {
+  color: var(--marloth-muted);
+  font-size: 0.8rem;
+}
+
+.marloth-graph-settings-select {
+  width: 100%;
+  font-size: 0.85rem;
+  color: var(--marloth-text);
+  background: var(--marloth-bg);
+  border: 1px solid var(--marloth-border);
+  border-radius: 4px;
+  padding: 4px 6px;
+}
+
 .marloth-graph-toolbar-stats {
   font-size: 0.85rem;
   color: var(--marloth-muted);
@@ -53,15 +135,91 @@
   opacity: 0.85;
 }
 
+.marloth-graph-layer-nav {
+  font-size: 0.85rem;
+  color: var(--marloth-muted);
+  background: transparent;
+  border: 1px solid var(--marloth-border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.marloth-graph-layer-nav:hover {
+  color: var(--marloth-text);
+  border-color: var(--marloth-muted);
+}
+
+.marloth-graph-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-graph-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.marloth-graph-legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
 .marloth-graph-canvas {
   flex: 1;
-  min-height: 0;
+  min-height: 240px;
   position: relative;
   background: var(--marloth-bg);
 }
 
+.marloth-graph-canvas-pending {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+}
+
 .marloth-graph-canvas canvas {
   display: block;
+}
+
+.marloth-graph-tooltip {
+  position: absolute;
+  z-index: 12;
+  pointer-events: none;
+  transform: translate(-50%, 0);
+  max-width: 280px;
+  padding: 6px 10px;
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  background: var(--marloth-surface);
+  color: var(--marloth-text);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.marloth-graph-tooltip-title {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.marloth-graph-tooltip-diagnostics .marloth-graph-tooltip-title {
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--marloth-border);
+}
+
+.marloth-graph-tooltip-line {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  color: var(--marloth-muted);
+  white-space: nowrap;
 }
 
 .marloth-graph-loading,

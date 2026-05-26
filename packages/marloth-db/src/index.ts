@@ -15,8 +15,17 @@ export {
   buildHeuristicLodLevelsFromCounts,
   DEFAULT_EXPLORER_LOD_LAYER_COUNT,
   layerTargetClusterCounts,
+  layerTargetVisibleCounts,
+  computeRelevanceComponents,
 } from "./graph-lod-cluster";
-export type { GraphLink, GraphNode, GraphSnapshot, GraphLodSnapshot } from "./graph-export";
+export type {
+  GraphLink,
+  GraphNode,
+  GraphNodeBundle,
+  GraphNodeRelevance,
+  GraphSnapshot,
+  GraphLodSnapshot,
+} from "./graph-export";
 export {
   DEFAULT_HOME_RECORD_ID,
   getRecordDetail,

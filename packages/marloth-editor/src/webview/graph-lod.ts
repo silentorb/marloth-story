@@ -1,61 +1,45 @@
 import type { GraphLodSnapshot } from "marloth-db";
+import type { GraphExplorerMode } from "./graph-preferences";
 
-export const GRAPH_LOD_ZOOM_MIN = 0.3;
-export const GRAPH_LOD_ZOOM_MAX = 2.0;
-export const GRAPH_LOD_ZOOM_HYSTERESIS = 0.08;
-
-/** Zoom scale boundaries between adjacent layers (length = layerCount - 1). */
-export function buildLayerZoomBoundaries(layerCount: number): number[] {
-  if (layerCount <= 1) return [];
-
-  const boundaries: number[] = [];
-  const logMin = Math.log(GRAPH_LOD_ZOOM_MIN);
-  const logMax = Math.log(GRAPH_LOD_ZOOM_MAX);
-
-  for (let i = 1; i < layerCount; i++) {
-    const t = i / layerCount;
-    boundaries.push(Math.exp(logMin + t * (logMax - logMin)));
-  }
-
-  return boundaries;
+export function defaultExplorerLayerIndex(_layerCount: number): number {
+  return 0;
 }
 
-function targetLayerIndex(zoomK: number, layerCount: number, boundaries: number[]): number {
-  let index = 0;
-  for (let i = 0; i < boundaries.length; i++) {
-    if (zoomK >= boundaries[i]!) index = i + 1;
-  }
-  return Math.min(layerCount - 1, Math.max(0, index));
+export function clusterGatewayId(node: {
+  isCluster?: boolean;
+  bundle?: { gatewayId: string };
+}): string | null {
+  if (!node.isCluster || !node.bundle?.gatewayId) return null;
+  return node.bundle.gatewayId;
 }
 
-export function defaultExplorerLayerIndex(layerCount: number): number {
-  return Math.floor((layerCount - 1) / 2);
-}
-
-export function resolveGraphLodLayerIndex(
-  zoomK: number,
-  currentIndex: number,
+export function relativeExplorerLayerIndex(
   layerCount: number,
+  relativeDetailLevel: number,
 ): number {
   if (layerCount <= 1) return 0;
+  const clampedLevel = Math.min(layerCount, Math.max(1, Math.round(relativeDetailLevel)));
+  return clampedLevel - 1;
+}
 
-  const boundaries = buildLayerZoomBoundaries(layerCount);
-  const target = targetLayerIndex(zoomK, layerCount, boundaries);
-  if (target === currentIndex) return currentIndex;
+export function isDrillableClusterNode(node: { isCluster?: boolean }): boolean {
+  return Boolean(node.isCluster);
+}
 
-  if (target > currentIndex) {
-    const boundary = boundaries[currentIndex];
-    if (boundary !== undefined && zoomK >= boundary * (1 + GRAPH_LOD_ZOOM_HYSTERESIS)) {
-      return Math.min(layerCount - 1, currentIndex + 1);
-    }
-    return currentIndex;
-  }
+export function canDrillDownLayer(layerIndex: number, layerCount: number): boolean {
+  return layerIndex < layerCount - 1;
+}
 
-  const boundary = boundaries[target];
-  if (boundary !== undefined && zoomK < boundary * (1 - GRAPH_LOD_ZOOM_HYSTERESIS)) {
-    return target;
-  }
-  return currentIndex;
+export function canDrillUpLayer(layerIndex: number): boolean {
+  return layerIndex > 0;
+}
+
+export function nextExplorerLayerIndex(currentIndex: number, layerCount: number): number {
+  return Math.min(layerCount - 1, currentIndex + 1);
+}
+
+export function previousExplorerLayerIndex(currentIndex: number): number {
+  return Math.max(0, currentIndex - 1);
 }
 
 export function graphLodLayerLabel(layerIndex: number, layerCount: number): string {
@@ -90,6 +74,52 @@ export function layerForceSettings(layerIndex: number, layerCount: number): {
   return {
     charge: -220 + t * 180,
     linkDistance: 90 - t * 60,
-    cooldownTicks: Math.round(120 - t * 40),
+    cooldownTicks: Math.round(140 - t * 40),
   };
+}
+
+export function explorerToolbarTitle(
+  mode: GraphExplorerMode,
+  options: {
+    anchorTitle?: string;
+    layerIndex?: number;
+    layerCount?: number;
+  },
+): string {
+  if (mode === "relative") {
+    const base = options.anchorTitle
+      ? `Graph Explorer · ${options.anchorTitle}`
+      : "Graph Explorer";
+    if (options.layerIndex !== undefined && options.layerCount !== undefined && options.layerCount > 1) {
+      return `${base} · ${graphLodLayerLabel(options.layerIndex, options.layerCount)}`;
+    }
+    return base;
+  }
+  if (options.layerIndex === undefined || options.layerCount === undefined) {
+    return "Graph Explorer";
+  }
+  return `Graph Explorer · ${graphLodLayerLabel(options.layerIndex, options.layerCount)}`;
+}
+
+export function explorerInteractionHint(
+  mode: GraphExplorerMode,
+  layerIndex: number,
+  layerCount: number,
+): string {
+  if (mode === "relative") return "Click clusters to explore branches";
+  if (canDrillDownLayer(layerIndex, layerCount)) {
+    return "Click cluster nodes to drill down";
+  }
+  return "Click nodes to open records";
+}
+
+export function resolveAnchorTitleFromSnapshot(
+  snapshot: GraphLodSnapshot["levels"][number] | null,
+  anchorId?: string,
+): string | undefined {
+  if (!snapshot || !anchorId) return undefined;
+  const direct = snapshot.nodes.find((node) => node.id === anchorId);
+  if (direct) return direct.title;
+  const cluster = snapshot.nodes.find((node) => node.bundle?.gatewayId === anchorId);
+  return cluster?.title;
 }

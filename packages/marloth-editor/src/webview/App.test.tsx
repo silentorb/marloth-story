@@ -1,5 +1,5 @@
 import { mock, describe, expect, test } from "bun:test";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { makeRecordPageDetail } from "./test-fixtures/record-page";
 import { makeMockEditorApi } from "./test-fixtures/mock-api";
 
@@ -7,8 +7,8 @@ mock.module("./components/MarlothEditor", () => ({
   MarlothEditor: () => <div data-testid="marloth-editor-stub" />,
 }));
 
-mock.module("./components/GraphView", () => ({
-  GraphView: () => <div data-testid="graph-view-stub" />,
+mock.module("react-force-graph-2d", () => ({
+  default: () => <div data-testid="force-graph-stub" />,
 }));
 
 const record = makeRecordPageDetail({
@@ -33,12 +33,12 @@ describe("App", () => {
       "/?scope=e028aa0786f5449984a4f497c1d746fa&record=ebeb0a7ab2ef479a80e96ccb25e9d7b5",
     );
 
-    render(<App />);
+    const { container } = render(<App />);
 
     await waitFor(() => {
-      expect(screen.getByRole("textbox", { name: "Page title" })).toBeTruthy();
+      expect(container.querySelector('[data-testid="marloth-editor-stub"]')).toBeTruthy();
     });
-    expect(screen.getByTestId("marloth-editor-stub")).toBeTruthy();
-    expect(screen.queryByText("Loading…")).toBeNull();
+    expect(container.querySelector('[name="Page title"], textarea[aria-label="Page title"]')).toBeTruthy();
+    expect(container.textContent).not.toContain("Loading…");
   });
 });

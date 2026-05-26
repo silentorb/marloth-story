@@ -85,7 +85,7 @@ describe("graph export", () => {
     expect(isArchivedNotionPath(null)).toBe(false);
   });
 
-  test("exportExplorerLodGraph builds five heuristic layers", () => {
+  test("exportExplorerLodGraph builds heuristic layers", () => {
     tempDir = mkdtempSync(join(tmpdir(), "marloth-graph-export-"));
     dbPath = join(tempDir, "lod.sqlite");
     const db = new GraphDatabase(dbPath);

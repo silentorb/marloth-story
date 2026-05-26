@@ -3,7 +3,28 @@ import { isArchivedNotionPath } from "./archive-path";
 import {
   buildHeuristicLodLevels,
   DEFAULT_EXPLORER_LOD_LAYER_COUNT,
+  normalizeExplorerLayerCount,
 } from "./graph-lod-cluster";
+
+export interface GraphNodeRelevance {
+  score: number;
+  hop: number;
+  degree: number;
+  directNeighbor: boolean;
+  hopContribution: number;
+  degreeContribution: number;
+  directBonus: number;
+  rank: number;
+  promoted: boolean;
+}
+
+export interface GraphNodeBundle {
+  memberCount: number;
+  gatewayId: string;
+  gatewayTitle: string;
+  layer: number;
+  layerCount: number;
+}
 
 export interface GraphNode {
   id: string;
@@ -13,6 +34,8 @@ export interface GraphNode {
   group?: string;
   val?: number;
   isCluster?: boolean;
+  relevance?: GraphNodeRelevance;
+  bundle?: GraphNodeBundle;
 }
 
 export interface GraphLink {
@@ -152,13 +175,13 @@ export function exportExplorerLodGraph(
     anchorId?: string;
   },
 ): GraphLodSnapshot {
-  const layerCount = options?.layerCount ?? DEFAULT_EXPLORER_LOD_LAYER_COUNT;
+  const layerCount = normalizeExplorerLayerCount(options?.layerCount);
   let { vertices, edges } = collectActiveGraphData(db);
   const anchorId = options?.anchorId ?? DEFAULT_GRAPH_EXPLORER_ANCHOR_ID;
   if (anchorId) {
     ({ vertices, edges } = filterActiveGraphByAnchor(vertices, edges, anchorId));
   }
-  const levels = buildHeuristicLodLevels(vertices, edges, layerCount);
+  const levels = buildHeuristicLodLevels(vertices, edges, layerCount, anchorId);
 
   return {
     layerCount: levels.length,

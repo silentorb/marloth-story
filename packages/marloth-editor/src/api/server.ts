@@ -66,7 +66,14 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
 
       if (path === "/api/graph/explorer-lod") {
         const anchor = url.searchParams.get("anchor") ?? undefined;
-        return json({ graph: db.getGraphExplorerLod(anchor) });
+        const layersRaw = url.searchParams.get("layers");
+        const layerCount = layersRaw ? Number.parseInt(layersRaw, 10) : undefined;
+        return json({
+          graph: db.getGraphExplorerLod({
+            anchorId: anchor,
+            layerCount: Number.isFinite(layerCount) ? layerCount : undefined,
+          }),
+        });
       }
 
       if (path === "/api/records/search") {
