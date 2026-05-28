@@ -22,14 +22,15 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 ### Editing model
 
 - The editor **must** read and write the `body` property of graph vertices via `marloth-db`.
-- Every record **must** render as a **universal page**: markdown (Milkdown) as the first section, followed by optional relationship and database table sections derived from graph edges.
+- Every record **must** render as a **universal page** with this block order: **page title** (standalone textarea) → collapsible **metadata** panel → optional **Properties** section → **markdown body** (Milkdown) → optional relationship and database table sections derived from graph edges.
+- Instance pages (`NotionPage` with `(page)-[:IS_A]->(type)`) **must** show a **Properties** section when the type defines one or more stored scalar fields and/or dynamic computed fields for that database. Stored scalars (e.g. Priority) are editable; computed dynamic fields are read-only. When Properties is shown, the redundant `IS_A` relationship table section **must** be omitted.
 - Relationship tables **must** group outgoing edges by label; edge properties (except import metadata like `ordinal`, `via_database`) **must** appear as table columns.
-- Database table sections **must** appear on `NotionDatabase` records, built from incoming `IS_A` edges (row scalars on edges; Name from linked pages).
+- Database table sections **must** appear on `NotionDatabase` records, built from incoming `IS_A` edges (Name from linked pages; scalar columns from `IS_A` properties; relation columns from linked targets on outgoing graph edges — see [marloth-db.md](./marloth-db.md) `getDatabaseViewDetail`).
 - The canonical database path **must** follow `MARLOTH_DB_PATH` / `data/marloth.sqlite` conventions (see marloth-db).
 - Autosave **should** debounce writes (default ~800ms after last edit).
 - Local UI preferences (table sort order, etc.) **must** persist in a gitignored user settings file (`.marloth/user-settings.json` by default), storing sparse overrides only—not full copies of graph data.
 - Section tables **must** support sortable columns; default sort is Name ascending. Sort preferences **must** persist per section table across sessions.
-- Each record page **must** include a collapsible **metadata** panel (created/modified timestamps, connection count, backlinks). Collapsed by default; standalone mode supports `?meta=1` to expand (not persisted in user settings).
+- Each record page **must** include a collapsible **metadata** panel below the page title and above Properties (when present). Collapsed by default; standalone mode supports `?meta=1` to expand (not persisted in user settings).
 - **Connections** — total incident graph edges (in + out). **Backlinks** — prose-only discovery: other pages whose markdown `body` links here (inline `marloth:` or export-style links). Backlinks are a gap-filler for references not already visible in relation/database sections; graph property edges are excluded.
 - Database tables **should** use synced Notion view definitions (`notion_views` on `NotionDatabase` vertices) for view tabs, filters, sorts, and typed columns when present; see [notion-metadata-sync.md](./notion-metadata-sync.md).
 
@@ -64,7 +65,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 ### Out of scope (v0.1)
 
 - Creating new graph records from the UI
-- Editing relationship edges or database row cells from the UI (except ordered-association reorder/part moves; see [ordered-associations.md](./ordered-associations.md))
+- Editing relationship edges from the UI (except ordered-association reorder/part moves; see [ordered-associations.md](./ordered-associations.md), and stored type-membership scalars in the Properties section)
 - Weighted edges or typed link metadata in the editor
 
 ## Design rationale
@@ -150,10 +151,12 @@ bun run editor:dev
 | `packages/marloth-editor/src/shared/user-settings.ts` | User settings types and table sort helpers |
 | `packages/marloth-editor/src/webview/` | React + Milkdown Crepe UI |
 | `packages/marloth-editor/src/extension/` | VS Code custom editor provider |
-| `packages/marloth-editor/src/webview/components/RecordPageView.tsx` | Universal page layout (markdown + sections) |
+| `packages/marloth-editor/src/webview/components/RecordPageView.tsx` | Universal page layout (title, metadata, properties, markdown, sections) |
+| `packages/marloth-editor/src/webview/components/PropertiesSectionView.tsx` | Instance-page Properties form (stored + computed fields) |
 | `packages/marloth-editor/src/webview/components/RelationSectionView.tsx` | Outgoing relationship table section |
 | `packages/marloth-db/src/queries.ts` | Record get/search/save helpers |
 | `packages/marloth-db/src/record-sections.ts` | Section assembly for record API |
+| `packages/marloth-db/src/page-properties.ts` | Instance-page Properties section (`buildPropertiesSection`) |
 
 ## See also
 

@@ -35,6 +35,19 @@ export interface EditorApiClient {
   search(query: string, limit?: number): Promise<RecordSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
   saveTitle(id: string, title: string): Promise<void>;
+  updateDatabaseRowProperty(
+    databaseId: string,
+    pageId: string,
+    propertyKey: string,
+    value: string | null,
+  ): Promise<void>;
+  updateRelationEdgeProperty(
+    recordId: string,
+    label: string,
+    targetId: string,
+    propertyKey: string,
+    value: string | null,
+  ): Promise<void>;
   deleteRecord(id: string): Promise<void>;
   archiveRecord(id: string): Promise<void>;
   getGraphFull(): Promise<GraphSnapshot>;
@@ -123,6 +136,34 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title }),
       });
+    },
+    async updateDatabaseRowProperty(
+      databaseId: string,
+      pageId: string,
+      propertyKey: string,
+      value: string | null,
+    ): Promise<void> {
+      await fetchJson(`/api/databases/${databaseId}/rows/${pageId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ property: propertyKey, value }),
+      });
+    },
+    async updateRelationEdgeProperty(
+      recordId: string,
+      label: string,
+      targetId: string,
+      propertyKey: string,
+      value: string | null,
+    ): Promise<void> {
+      await fetchJson(
+        `/api/records/${recordId}/relations/${encodeURIComponent(label)}/${targetId}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ property: propertyKey, value }),
+        },
+      );
     },
     async deleteRecord(id: string): Promise<void> {
       await fetchJson(`/api/records/${id}`, { method: "DELETE" });

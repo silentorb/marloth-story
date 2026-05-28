@@ -527,6 +527,7 @@ export function App() {
             onOpenRecord={openLinkedRecord}
             onArchiveRecord={archiveCurrentRecord}
             onDeleteRecord={deleteCurrentRecord}
+            onTableCellUpdated={() => void loadRecord(record.id, { view: databaseViewFromLocation(), scope: scopeFromLocation() })}
           />
         )}
       </div>

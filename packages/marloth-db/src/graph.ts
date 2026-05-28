@@ -1,7 +1,7 @@
 import { Database } from "bun:sqlite";
 import { mkdirSync, rmSync } from "node:fs";
 import { dirname } from "node:path";
-import { DDL, SCHEMA_VERSION } from "./schema";
+import { DDL, DYNAMIC_FIELDS_DDL, SCHEMA_VERSION } from "./schema";
 
 export type PropertyValue = string | number | boolean | null | PropertyValue[] | { [key: string]: PropertyValue };
 export type Properties = Record<string, PropertyValue>;
@@ -72,6 +72,7 @@ export class GraphDatabase {
     this.db.exec("PRAGMA foreign_keys = ON");
     this.db.exec("PRAGMA journal_mode = DELETE");
     this.db.exec(DDL);
+    this.db.exec(DYNAMIC_FIELDS_DDL);
     this.prepareStatements();
     this.setMeta("schema_version", String(SCHEMA_VERSION));
   }
@@ -393,6 +394,16 @@ export class GraphDatabase {
       )
       .get(vertexId, vertexId) as { c: number };
     return row.c;
+  }
+
+  /** Run a read query (used by overlay / dynamic-field modules). */
+  queryAll<T extends Record<string, unknown>>(sql: string, ...params: unknown[]): T[] {
+    return this.db.prepare(sql).all(...params) as T[];
+  }
+
+  /** Run a write statement (used by overlay seed / migration scripts). */
+  runExec(sql: string, ...params: unknown[]): void {
+    this.db.prepare(sql).run(...params);
   }
 
   /** Compact and optimize for deterministic, git-friendly storage. */

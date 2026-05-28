@@ -5,6 +5,7 @@ import { relationTableSortKey } from "../../shared/user-settings";
 import { standaloneRecordUrl } from "../../shared/types";
 import { SectionTitle } from "./RecordNameLink";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
+import { renderTableCell } from "./table-cell-render";
 import "./relation-section-view.css";
 
 interface RelationSectionViewProps {
@@ -12,6 +13,7 @@ interface RelationSectionViewProps {
   recordId: string;
   section: RelationTableSection;
   onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
+  onCellUpdated?: () => void;
 }
 
 export function RelationSectionView({
@@ -19,8 +21,39 @@ export function RelationSectionView({
   recordId,
   section,
   onOpenRecord,
+  onCellUpdated,
 }: RelationSectionViewProps) {
   const tableKey = relationTableSortKey(recordId, section.label);
+
+  const columnLabels = useMemo(() => {
+    if (!section.columnDefs?.length) return undefined;
+    return Object.fromEntries(section.columnDefs.map((col) => [col.key, col.name]));
+  }, [section.columnDefs]);
+
+  const renderCell = useCallback(
+    (column: string, value: string, row: SectionDataTableRow) => {
+      const def = section.columnDefs?.find((col) => col.key === column);
+      return renderTableCell({
+        column,
+        value,
+        columnDef: def,
+        onEnumChange:
+          def?.type === "enum"
+            ? async (next) => {
+                await api.updateRelationEdgeProperty(
+                  recordId,
+                  section.label,
+                  row.id,
+                  column,
+                  next,
+                );
+                onCellUpdated?.();
+              }
+            : undefined,
+      });
+    },
+    [api, onCellUpdated, recordId, section.columnDefs, section.label],
+  );
 
   const rows = useMemo(
     () =>
@@ -85,6 +118,8 @@ export function RelationSectionView({
         columns={section.columns}
         rows={rows}
         renderNameCell={renderNameCell}
+        columnLabels={columnLabels}
+        renderCell={renderCell}
       />
     </section>
   );

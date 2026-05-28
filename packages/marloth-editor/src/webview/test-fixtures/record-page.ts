@@ -13,6 +13,16 @@ export function makeRelationSection(
     title: "Related items",
     typeRecordId: FIXTURE_TYPE_ID,
     columns: ["priority"],
+    columnDefs: [
+      {
+        key: "priority",
+        name: "Priority",
+        type: "enum",
+        enumId: "priority",
+        options: ["Low", "Medium", "High", "Ultimate", "Consideration", "Cancelled"],
+        defaultValue: "Low",
+      },
+    ],
     rows: [
       {
         targetId: FIXTURE_TARGET_ID,
@@ -39,6 +49,7 @@ export function makeRecordPageDetail(
     path: "Folder/Example page",
     body: "# Example page\n\nBody text.",
     labels: ["NotionPage"],
+    properties: null,
     metadata: {
       createdAt: null,
       modifiedAt: null,

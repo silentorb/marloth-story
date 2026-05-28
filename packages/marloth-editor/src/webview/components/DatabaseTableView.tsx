@@ -4,6 +4,7 @@ import type { DatabaseViewDetail } from "../../shared/types";
 import { databaseTableSortKey } from "../../shared/user-settings";
 import { standaloneRecordUrl } from "../../shared/types";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
+import { renderTableCell } from "./table-cell-render";
 import "./database-table-view.css";
 
 interface DatabaseTableViewProps {
@@ -13,6 +14,7 @@ interface DatabaseTableViewProps {
   embedded?: boolean;
   onViewChange: (view: string) => void;
   onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
+  onCellUpdated?: () => void;
 }
 
 export function DatabaseTableView({
@@ -22,6 +24,7 @@ export function DatabaseTableView({
   embedded = false,
   onViewChange,
   onOpenRecord,
+  onCellUpdated,
 }: DatabaseTableViewProps) {
   const tableKey = databaseTableSortKey(recordId, databaseView.id, databaseView.view);
 
@@ -30,17 +33,30 @@ export function DatabaseTableView({
     return Object.fromEntries(databaseView.columnDefs.map((col) => [col.key, col.name]));
   }, [databaseView.columnDefs]);
 
-  const renderCell = useCallback((column: string, value: string) => {
-    const def = databaseView.columnDefs?.find((col) => col.key === column);
-    if (!def || !value) return value;
-    if (def.type === "checkbox") {
-      return value === "true" ? "☑" : value === "false" ? "☐" : value;
-    }
-    if (def.type === "select" || def.type === "status" || def.type === "multi_select") {
-      return <span className="marloth-database-cell-badge">{value}</span>;
-    }
-    return value;
-  }, [databaseView.columnDefs]);
+  const renderCell = useCallback(
+    (column: string, value: string, row: SectionDataTableRow) => {
+      const def = databaseView.columnDefs?.find((col) => col.key === column);
+      const pageId = row.id.split(":")[0]!;
+      return renderTableCell({
+        column,
+        value,
+        columnDef: def,
+        onEnumChange:
+          def?.type === "enum"
+            ? async (next) => {
+                await api.updateDatabaseRowProperty(
+                  databaseView.id,
+                  pageId,
+                  column,
+                  next,
+                );
+                onCellUpdated?.();
+              }
+            : undefined,
+      });
+    },
+    [api, databaseView.columnDefs, databaseView.id, onCellUpdated],
+  );
 
   const rows = useMemo(
     () =>

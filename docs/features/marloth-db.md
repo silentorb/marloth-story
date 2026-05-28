@@ -89,7 +89,7 @@ The database **must** model a **labeled property graph**:
 - `upsertVertex(id, labels, properties)` — create or merge vertex
 - `upsertEdge(sourceId, targetId, label, properties)` — create or merge edge
 - `getRecordDetail` / `getRecordPageDetail` — inspection; the latter adds **metadata** (timestamps, connection count, markdown backlinks) and ordered **sections** (markdown, database table, relation tables)
-- `getDatabaseViewDetail` — database row table for a `NotionDatabase` vertex; uses synced `notion_views` / `notion_schema` when present (see [notion-metadata-sync.md](./notion-metadata-sync.md))
+- `getDatabaseViewDetail` — database row table for a `NotionDatabase` vertex; uses synced `notion_views` / `notion_schema` when present (see [notion-metadata-sync.md](./notion-metadata-sync.md)). **Scalar** columns (select, number, formula snapshots, etc.) come from `IS_A` edge properties; **relation** columns are hydrated at read time from outgoing edges whose label matches the property (prefer `via_database` = this database, else unscoped edges on that label). Bulk CSV re-import is legacy — see [notion-import.md](./notion-import.md).
 - `finalize()` — `PRAGMA optimize` + `VACUUM` for compact storage
 - Constructor `{ clean: true }` — delete existing file before open
 
@@ -143,6 +143,8 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 | `packages/marloth-db/src/notion-database-schema.ts` | Parsed Notion database schema/view JSON on vertices |
 | `packages/marloth-db/src/notion-view-eval.ts` | Notion view filter/sort evaluation for database tables |
 | `packages/marloth-db/src/database-view.ts` | Type instance table reconstruction from incoming `IS_A` edges |
+| `packages/marloth-db/src/database-view-relations.ts` | Relation-column hydration for database table views |
+| `packages/marloth-db/src/relation-label.ts` | Notion relation property name → graph edge label |
 | `packages/marloth-db/src/ordered-associations.ts` | Ordered association config, view query, move mutation |
 | `packages/notion-importer/src/graph-pipeline.ts` | Notion → graph import |
 | `packages/notion-importer/src/relations.ts` | Parse Notion relation link syntax |

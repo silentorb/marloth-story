@@ -1,5 +1,6 @@
 import type { GraphDatabase, EdgeRecord } from "./graph";
-import { getDatabaseViewDetail, type DatabaseViewDetail } from "./database-view";
+import { getDatabaseViewDetail, type DatabaseColumnDef, type DatabaseViewDetail } from "./database-view";
+import { coalescePriorityValue, enrichColumnDefs, isPriorityColumnKey } from "./property-enums";
 import { IS_A_LABEL, isTypeMembershipLabel, LEGACY_IN_DATABASE_LABEL } from "./labels";
 import {
   getOrderedAssociationConfigForDatabase,
@@ -8,6 +9,7 @@ import {
 } from "./ordered-associations";
 import { getRecordDetail, type RecordDetail } from "./queries";
 import { getRecordPageMetadata, type RecordPageMetadata } from "./record-metadata";
+import { buildPropertiesSection, type PropertiesSection } from "./page-properties";
 
 const RELATION_META_KEYS = new Set([
   "ordinal",
@@ -48,6 +50,7 @@ export interface RelationTableSection {
   /** When set, the section title links to this type (NotionDatabase) record. */
   typeRecordId: string | null;
   columns: string[];
+  columnDefs?: DatabaseColumnDef[];
   rows: RelationRow[];
 }
 
@@ -55,8 +58,11 @@ export type RecordSection = MarkdownSection | DatabaseTableSection | OrderedAsso
 
 export interface RecordPageDetail extends RecordDetail {
   metadata: RecordPageMetadata;
+  properties: PropertiesSection | null;
   sections: RecordSection[];
 }
+
+export type { PropertiesSection } from "./page-properties";
 
 export type { RecordBacklink, RecordPageMetadata } from "./record-metadata";
 
@@ -208,13 +214,33 @@ function buildRelationSections(db: GraphDatabase, recordId: string): RelationTab
     });
 
     const typeRecordId = resolveTypeRecordId(db, label, edges);
+    const columns = [...columnSet].sort((a, b) => a.localeCompare(b));
+    if (columns.includes("priority")) {
+      for (const row of rows) {
+        row.cells.priority = coalescePriorityValue(row.cells.priority);
+      }
+    }
+    const columnDefs = enrichColumnDefs(
+      columns.map((key) => ({
+        key,
+        name: isPriorityColumnKey(key)
+          ? "Priority"
+          : key
+              .split("_")
+              .filter(Boolean)
+              .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+              .join(" "),
+        type: "text",
+      })),
+    );
 
     sections.push({
       type: "relations",
       label,
       title: sectionTitleForType(db, label, typeRecordId),
       typeRecordId,
-      columns: [...columnSet].sort((a, b) => a.localeCompare(b)),
+      columns,
+      columnDefs,
       rows,
     });
   }
@@ -254,7 +280,16 @@ export function getRecordPageDetail(
 
   sections.push(...buildRelationSections(db, id));
 
+  const properties =
+    record.labels.includes("NotionDatabase") ? null : buildPropertiesSection(db, id);
+
   const metadata = getRecordPageMetadata(db, id)!;
 
-  return { ...record, metadata, sections };
+  const finalSections = properties
+    ? sections.filter(
+        (section) => !(section.type === "relations" && section.label === IS_A_LABEL),
+      )
+    : sections;
+
+  return { ...record, metadata, properties, sections: finalSections };
 }

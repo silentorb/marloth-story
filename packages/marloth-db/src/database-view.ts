@@ -3,12 +3,17 @@ import { TYPE_MEMBERSHIP_LABELS } from "./labels";
 import {
   parseNotionSchema,
   parseNotionViews,
+  propertyNameForId,
   propertyNamesById,
   resolveViewByKey,
   slugifyPropertyKey,
+  visiblePropertyIdsForView,
   type NotionViewDefinition,
 } from "./notion-database-schema";
 import { filterEvalRows, sortEvalRows, type EvalRow } from "./notion-view-eval";
+import { applyDynamicFields } from "./dynamic-fields";
+import { hydrateRelationCellsForRows } from "./database-view-relations";
+import { coalescePriorityValue, enrichColumnDef, enrichColumnDefs, isPriorityColumnKey } from "./property-enums";
 
 const ROW_META_KEYS = new Set(["view", "row_index", "row_name", "order"]);
 
@@ -23,6 +28,13 @@ export interface DatabaseColumnDef {
   key: string;
   name: string;
   type: string;
+  source?: "stored" | "dynamic";
+  /** Workspace enum id when type is `enum` (e.g. priority). */
+  enumId?: string;
+  /** Allowed enum labels for dropdowns (stored values, not weights). */
+  options?: string[];
+  /** Default enum label when the stored value is unset. */
+  defaultValue?: string;
 }
 
 export interface DatabaseViewDetail {
@@ -88,6 +100,32 @@ function rowSort(a: DatabaseRow, b: DatabaseRow): number {
   return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
 }
 
+function mergeDynamicColumnDefs(
+  columnDefs: DatabaseColumnDef[],
+  dynamicColumnDefs: DatabaseColumnDef[],
+  hiddenColumnKeys: Set<string>,
+): DatabaseColumnDef[] {
+  const dynamicByKey = new Map(dynamicColumnDefs.map((c) => [c.key, c]));
+  const merged: DatabaseColumnDef[] = [];
+
+  for (const col of columnDefs) {
+    if (hiddenColumnKeys.has(col.key)) continue;
+    const dynamic = dynamicByKey.get(col.key);
+    if (dynamic) {
+      merged.push(dynamic);
+      dynamicByKey.delete(col.key);
+    } else {
+      merged.push(col);
+    }
+  }
+
+  for (const col of dynamicByKey.values()) {
+    merged.push(col);
+  }
+
+  return merged;
+}
+
 function buildNotionViewDetail(
   db: GraphDatabase,
   databaseId: string,
@@ -119,38 +157,56 @@ function buildNotionViewDetail(
     });
   }
 
-  const filtered = filterEvalRows(evalRows, selected.filter);
+  const { rows: enrichedRows, dynamicColumnDefs, hiddenColumnKeys } = applyDynamicFields(
+    db,
+    databaseId,
+    selected.name,
+    evalRows,
+  );
+
+  const filtered = filterEvalRows(enrichedRows, selected.filter);
   const sorted = sortEvalRows(filtered, selected.sorts);
 
   const columnDefs: DatabaseColumnDef[] = [];
+  const visiblePropertyIds = visiblePropertyIdsForView(selected);
   if (schema) {
-    if (selected.visiblePropertyIds.length > 0) {
-      for (const propId of selected.visiblePropertyIds) {
-        const name = idToName.get(propId);
+    if (visiblePropertyIds.length > 0) {
+      for (const propId of visiblePropertyIds) {
+        const name = propertyNameForId(idToName, propId);
         if (!name || name === "Name") continue;
         const def = schema.properties[name];
         if (!def) continue;
-        columnDefs.push({
-          key: slugifyPropertyKey(name),
-          name,
-          type: def.type,
-        });
+        columnDefs.push(
+          enrichColumnDef({
+            key: slugifyPropertyKey(name),
+            name,
+            type: def.type,
+          }),
+        );
       }
     } else {
       for (const [name, def] of Object.entries(schema.properties)) {
         if (name === "Name" || def.type === "title") continue;
-        columnDefs.push({
-          key: slugifyPropertyKey(name),
-          name,
-          type: def.type,
-        });
+        columnDefs.push(
+          enrichColumnDef({
+            key: slugifyPropertyKey(name),
+            name,
+            type: def.type,
+          }),
+        );
       }
     }
   }
 
+  const mergedColumnDefs = enrichColumnDefs(
+    mergeDynamicColumnDefs(columnDefs, dynamicColumnDefs, hiddenColumnKeys),
+  );
+
+  hydrateRelationCellsForRows(db, databaseId, schema, mergedColumnDefs, sorted);
+
   const columns =
-    columnDefs.length > 0
-      ? columnDefs.map((c) => c.key)
+    mergedColumnDefs.length > 0
+      ? mergedColumnDefs.map((c) => c.key)
       : [...new Set(sorted.flatMap((r) => Object.keys(r.cells)))].sort((a, b) =>
           a.localeCompare(b),
         );
@@ -159,7 +215,7 @@ function buildNotionViewDetail(
     rowIndex: index,
     pageId: row.pageId,
     name: row.name,
-    cells: normalizeRowCells(row.cells, columnDefs),
+    cells: normalizeRowCells(row.cells, mergedColumnDefs),
   }));
 
   return {
@@ -169,7 +225,7 @@ function buildNotionViewDetail(
     view: selected.name,
     columns,
     rows,
-    columnDefs: columnDefs.length > 0 ? columnDefs : undefined,
+    columnDefs: mergedColumnDefs.length > 0 ? mergedColumnDefs : undefined,
   };
 }
 
@@ -186,7 +242,11 @@ function normalizeRowCells(
       Object.entries(cells).find(
         ([k]) => k.toLowerCase() === col.name.toLowerCase(),
       )?.[1];
-    if (value !== undefined) out[col.key] = value;
+    if (value !== undefined) {
+      out[col.key] = value;
+    } else if (isPriorityColumnKey(col.key) || col.enumId === "priority") {
+      out[col.key] = coalescePriorityValue(undefined);
+    }
   }
   return out;
 }
@@ -209,7 +269,6 @@ function buildLegacyViewDetail(
       : pickDefaultLegacyView(views);
 
   const rowsByPageId = new Map<string, DatabaseRow>();
-  const columnSet = new Set<string>();
 
   for (const edge of incoming) {
     const edgeView = stringProperty(edge.properties.view) ?? "default";
@@ -226,7 +285,6 @@ function buildLegacyViewDetail(
     const name = page ? titleFromProperties(page.properties) : "Untitled";
 
     const cells = cellsFromProperties(edge.properties);
-    for (const key of Object.keys(cells)) columnSet.add(key);
 
     rowsByPageId.set(edge.sourceId, {
       rowIndex: safeRowIndex,
@@ -236,7 +294,43 @@ function buildLegacyViewDetail(
     });
   }
 
-  const columns = [...columnSet].sort((a, b) => a.localeCompare(b));
+  const evalRows: EvalRow[] = [...rowsByPageId.values()].map((row) => ({
+    pageId: row.pageId,
+    name: row.name,
+    cells: row.cells,
+    rowIndex: row.rowIndex,
+    createdAt: null,
+    modifiedAt: null,
+  }));
+
+  const { rows: enrichedEvalRows, dynamicColumnDefs, hiddenColumnKeys } = applyDynamicFields(
+    db,
+    databaseId,
+    view,
+    evalRows,
+  );
+
+  const enrichedByPageId = new Map(enrichedEvalRows.map((r) => [r.pageId, r]));
+  for (const [pageId, row] of rowsByPageId) {
+    const enriched = enrichedByPageId.get(pageId);
+    if (enriched) row.cells = enriched.cells;
+  }
+
+  const columnSet = new Set<string>();
+  for (const row of rowsByPageId.values()) {
+    for (const key of Object.keys(row.cells)) columnSet.add(key);
+  }
+  for (const col of dynamicColumnDefs) columnSet.add(col.key);
+  for (const key of hiddenColumnKeys) columnSet.delete(key);
+
+  const legacyColumnDefs: DatabaseColumnDef[] = enrichColumnDefs(
+    [...columnSet].sort((a, b) => a.localeCompare(b)).map((key) => {
+      const dynamic = dynamicColumnDefs.find((c) => c.key === key);
+      return dynamic ?? { key, name: key, type: "text" };
+    }),
+  );
+
+  const columns = legacyColumnDefs.map((c) => c.key);
   const rows = [...rowsByPageId.values()].sort(rowSort);
 
   return {
@@ -246,6 +340,7 @@ function buildLegacyViewDetail(
     view,
     columns,
     rows,
+    columnDefs: legacyColumnDefs.length > 0 ? legacyColumnDefs : undefined,
   };
 }
 

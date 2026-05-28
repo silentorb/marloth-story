@@ -21,6 +21,7 @@ Each file in this directory is the **authoritative design spec** for one major w
 | Web markdown editor (VS Code + graph) | [marloth-editor.md](./marloth-editor.md) |
 | Graph Explorer (LOD graph visualization) | [graph-explorer.md](./graph-explorer.md) |
 | Ordered associations (scene order, DnD) | [ordered-associations.md](./ordered-associations.md) |
+| Dynamic table fields (computed columns) | [dynamic-table-fields.md](./dynamic-table-fields.md) |
 
 ## Split of concerns
 

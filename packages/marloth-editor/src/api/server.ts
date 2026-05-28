@@ -136,12 +136,64 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
       }
 
       const databaseMatch = /^\/api\/databases\/([a-f0-9]{32})$/i.exec(path);
-      if (databaseMatch && req.method === "GET") {
+      if (databaseMatch) {
         const id = databaseMatch[1]!.toLowerCase();
-        const view = url.searchParams.get("view") ?? undefined;
-        const databaseView = db.getDatabaseView(id, view);
-        if (!databaseView) return json({ error: "not found" }, 404);
-        return json({ databaseView });
+        if (req.method === "GET") {
+          const view = url.searchParams.get("view") ?? undefined;
+          const databaseView = db.getDatabaseView(id, view);
+          if (!databaseView) return json({ error: "not found" }, 404);
+          return json({ databaseView });
+        }
+      }
+
+      const databaseRowMatch =
+        /^\/api\/databases\/([a-f0-9]{32})\/rows\/([a-f0-9]{32})$/i.exec(path);
+      if (databaseRowMatch && req.method === "PATCH") {
+        const databaseId = databaseRowMatch[1]!.toLowerCase();
+        const pageId = databaseRowMatch[2]!.toLowerCase();
+        const payload = (await req.json()) as { property?: string; value?: string | null };
+        if (typeof payload.property !== "string") {
+          return json({ error: "property required" }, 400);
+        }
+        const value =
+          payload.value === null || payload.value === undefined
+            ? null
+            : String(payload.value);
+        const error = db.updateDatabaseRowProperty(
+          databaseId,
+          pageId,
+          payload.property,
+          value,
+        );
+        if (error === "not_found") return json({ error: "not found" }, 404);
+        if (error === "invalid_value") return json({ error: "invalid value" }, 400);
+        return json({ ok: true });
+      }
+
+      const relationEdgeMatch =
+        /^\/api\/records\/([a-f0-9]{32})\/relations\/([^/]+)\/([a-f0-9]{32})$/i.exec(path);
+      if (relationEdgeMatch && req.method === "PATCH") {
+        const recordId = relationEdgeMatch[1]!.toLowerCase();
+        const label = decodeURIComponent(relationEdgeMatch[2]!);
+        const targetId = relationEdgeMatch[3]!.toLowerCase();
+        const payload = (await req.json()) as { property?: string; value?: string | null };
+        if (typeof payload.property !== "string") {
+          return json({ error: "property required" }, 400);
+        }
+        const value =
+          payload.value === null || payload.value === undefined
+            ? null
+            : String(payload.value);
+        const error = db.updateRelationEdgeProperty(
+          recordId,
+          label,
+          targetId,
+          payload.property,
+          value,
+        );
+        if (error === "not_found") return json({ error: "not found" }, 404);
+        if (error === "invalid_value") return json({ error: "invalid value" }, 400);
+        return json({ ok: true });
       }
 
       const moveMatch = /^\/api\/ordered-associations\/([a-z0-9-]+)\/move$/i.exec(path);

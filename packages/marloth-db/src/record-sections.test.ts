@@ -66,6 +66,7 @@ describe("record-sections", () => {
     });
 
     const detail = getRecordPageDetail(db, databaseId);
+    expect(detail?.properties).toBeNull();
     expect(detail?.sections.map((section) => section.type)).toEqual(["markdown", "database"]);
     expect(detail?.sections[1]).toMatchObject({
       type: "database",
@@ -76,7 +77,13 @@ describe("record-sections", () => {
     });
   });
 
-  test("shows IS_A type links on page records with edge scalars", () => {
+  test("returns null properties when page has no type membership", () => {
+    db.upsertVertex("page-no-type", ["NotionPage"], { title: "Orphan", body: "" });
+    const detail = getRecordPageDetail(db, "page-no-type");
+    expect(detail?.properties).toBeNull();
+  });
+
+  test("shows Properties section for IS_A edge scalars and hides IS_A relation section", () => {
     const databaseId = "db52345678901234567890123456789012";
     db.upsertVertex("page5", ["NotionPage"], { title: "Scene A", body: "Prose" });
     db.upsertVertex(databaseId, ["NotionDatabase"], { title: "Scene Archive" });
@@ -91,21 +98,25 @@ describe("record-sections", () => {
       (section) => section.type === "relations" && section.label === IS_A_LABEL,
     );
 
-    expect(membership).toMatchObject({
-      title: "Scene Archive",
-      typeRecordId: databaseId,
+    expect(membership).toBeUndefined();
+    expect(detail?.properties).toMatchObject({
+      type: "properties",
+      databaseId,
+      typeTitle: "Scene Archive",
       columns: ["priority"],
-      rows: [
+      columnDefs: [
         {
-          targetId: databaseId,
-          name: "Scene Archive",
-          cells: { priority: "High" },
+          key: "priority",
+          name: "Priority",
+          type: "enum",
+          enumId: "priority",
         },
       ],
+      cells: { priority: "High" },
     });
   });
 
-  test("normalizes legacy IN_DATABASE edges into IS_A relation sections", () => {
+  test("normalizes legacy IN_DATABASE edges into Properties section", () => {
     const databaseId = "db62345678901234567890123456789012";
     db.upsertVertex("page6", ["NotionPage"], { title: "Legacy row" });
     db.upsertVertex(databaseId, ["NotionDatabase"], { title: "Legacy Features" });
@@ -116,16 +127,12 @@ describe("record-sections", () => {
       (section) => section.type === "relations" && section.label === IS_A_LABEL,
     );
 
-    expect(membership?.rows).toEqual([
-      {
-        targetId: databaseId,
-        name: "Legacy Features",
-        path: null,
-        cells: { status: "Draft" },
-      },
-    ]);
-    expect(membership?.typeRecordId).toBe(databaseId);
-    expect(membership?.title).toBe("Legacy Features");
+    expect(membership).toBeUndefined();
+    expect(detail?.properties).toMatchObject({
+      databaseId,
+      typeTitle: "Legacy Features",
+      cells: { status: "Draft" },
+    });
   });
 
   test("resolves typeRecordId by matching FEATURES label to NotionDatabase title", () => {

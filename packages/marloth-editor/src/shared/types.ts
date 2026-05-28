@@ -25,6 +25,7 @@ export type {
   DatabaseTableSection,
   MarkdownSection,
   OrderedAssociationSection,
+  PropertiesSection,
   RecordBacklink,
   RecordPageDetail,
   RecordPageMetadata,

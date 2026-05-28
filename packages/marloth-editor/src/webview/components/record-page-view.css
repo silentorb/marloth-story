@@ -36,6 +36,14 @@
   padding: 8px 32px 32px;
 }
 
+.marloth-page-title-section {
+  padding-bottom: 0;
+}
+
+.marloth-record-page .marloth-record-metadata-panel {
+  margin: -16px 0 0;
+}
+
 .marloth-markdown-section {
   flex: 0 0 auto;
 }

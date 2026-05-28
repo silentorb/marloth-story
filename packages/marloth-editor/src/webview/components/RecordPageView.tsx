@@ -3,6 +3,7 @@ import { MarlothEditor } from "./MarlothEditor";
 import { OrderedAssociationView } from "./OrderedAssociationView";
 import { PageActionsMenu } from "./PageActionsMenu";
 import { PageTitle } from "./PageTitle";
+import { PropertiesSectionView } from "./PropertiesSectionView";
 import { RecordMetadataPanel } from "./RecordMetadataPanel";
 import { RelationSectionView } from "./RelationSectionView";
 import type { EditorApi } from "../api/client";
@@ -28,6 +29,7 @@ interface RecordPageViewProps {
   onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
   onArchiveRecord: (recordId: string) => Promise<void>;
   onDeleteRecord: (recordId: string) => Promise<void>;
+  onTableCellUpdated?: () => void;
 }
 
 export function RecordPageView({
@@ -45,6 +47,7 @@ export function RecordPageView({
   onOpenRecord,
   onArchiveRecord,
   onDeleteRecord,
+  onTableCellUpdated,
 }: RecordPageViewProps) {
   const { content } = resolvePageTitleAndContent(record.body, record.title);
   const emptyMarkdown = isEffectivelyEmptyMarkdown(record.body, record.title);
@@ -81,19 +84,32 @@ export function RecordPageView({
         </div>
       </div>
 
-      <RecordMetadataPanel
-        api={api}
-        metadata={record.metadata}
-        expanded={metadataExpanded}
-        onExpandedChange={onMetadataExpandedChange}
-        onOpenRecord={onOpenRecord}
-      />
-
       <div className="marloth-record-sections">
+        <section className="marloth-record-section marloth-page-title-section">
+          <PageTitle value={record.title} onChange={onTitleChange} />
+        </section>
+
+        <RecordMetadataPanel
+          api={api}
+          metadata={record.metadata}
+          expanded={metadataExpanded}
+          onExpandedChange={onMetadataExpandedChange}
+          onOpenRecord={onOpenRecord}
+        />
+
+        {record.properties ? (
+          <PropertiesSectionView
+            api={api}
+            recordId={record.id}
+            section={record.properties}
+            onOpenRecord={onOpenRecord}
+            onCellUpdated={onTableCellUpdated}
+          />
+        ) : null}
+
         <section
           className={`marloth-record-section marloth-markdown-section${emptyMarkdown ? " is-empty" : ""}`}
         >
-          <PageTitle value={record.title} onChange={onTitleChange} />
           <MarlothEditor
             key={record.id}
             api={api}
@@ -125,6 +141,7 @@ export function RecordPageView({
                   embedded
                   onViewChange={onDatabaseViewChange}
                   onOpenRecord={onOpenRecord}
+                  onCellUpdated={onTableCellUpdated}
                 />
               </section>
             );
@@ -161,6 +178,7 @@ export function RecordPageView({
               recordId={record.id}
               section={section}
               onOpenRecord={onOpenRecord}
+              onCellUpdated={onTableCellUpdated}
             />
           );
         })}

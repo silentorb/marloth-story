@@ -8,6 +8,8 @@ import {
   searchRecords,
   updateRecordBody,
   updateRecordTitle,
+  updateDatabaseRowProperty,
+  updateOutgoingEdgeProperty,
   applyOrderedAssociationMove,
   archiveRecord as archiveRecordInDb,
   deleteRecord as deleteRecordInDb,
@@ -33,6 +35,19 @@ export interface EditorDatabase {
   search(query: string, limit?: number): RecordSummary[];
   saveBody(id: string, body: string): boolean;
   saveTitle(id: string, title: string): boolean;
+  updateDatabaseRowProperty(
+    databaseId: string,
+    pageId: string,
+    propertyKey: string,
+    value: string | null,
+  ): import("marloth-db").EdgePropertyUpdateError | null;
+  updateRelationEdgeProperty(
+    recordId: string,
+    label: string,
+    targetId: string,
+    propertyKey: string,
+    value: string | null,
+  ): import("marloth-db").EdgePropertyUpdateError | null;
   deleteRecord(id: string): RecordLifecycleError | null;
   archiveRecord(id: string): RecordLifecycleError | null;
   getGraphFull(): GraphSnapshot;
@@ -91,6 +106,23 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
     },
     saveTitle(id: string, title: string): boolean {
       return updateRecordTitle(currentDb(), id, title);
+    },
+    updateDatabaseRowProperty(
+      databaseId: string,
+      pageId: string,
+      propertyKey: string,
+      value: string | null,
+    ) {
+      return updateDatabaseRowProperty(currentDb(), databaseId, pageId, propertyKey, value);
+    },
+    updateRelationEdgeProperty(
+      recordId: string,
+      label: string,
+      targetId: string,
+      propertyKey: string,
+      value: string | null,
+    ) {
+      return updateOutgoingEdgeProperty(currentDb(), recordId, targetId, label, propertyKey, value);
     },
     deleteRecord(id: string): RecordLifecycleError | null {
       return deleteRecordInDb(currentDb(), id);

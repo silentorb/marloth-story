@@ -26,7 +26,8 @@ describe("RelationSectionView", () => {
     const link = screen.getByRole("link", { name: "Linked record" });
     expect(link.getAttribute("href")).toContain(`record=${FIXTURE_TARGET_ID}`);
     expect(screen.getByRole("columnheader", { name: /Priority/ })).toBeTruthy();
-    expect(screen.getByText("High")).toBeTruthy();
+    const prioritySelect = screen.getByRole("combobox", { name: "Priority" });
+    expect((prioritySelect as HTMLSelectElement).value).toBe("High");
   });
 
   test("renders vscode row controls as buttons", () => {

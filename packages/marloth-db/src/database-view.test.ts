@@ -33,6 +33,16 @@ describe("database-view", () => {
       views: ["all"],
       view: "all",
       columns: ["priority"],
+      columnDefs: [
+        {
+          key: "priority",
+          name: "priority",
+          type: "enum",
+          enumId: "priority",
+          options: ["Low", "Medium", "High", "Ultimate", "Consideration", "Cancelled"],
+          defaultValue: "Low",
+        },
+      ],
       rows: [
         {
           rowIndex: 0,
@@ -56,6 +66,46 @@ describe("database-view", () => {
 
     const detail = getDatabaseViewDetail(db, databaseId);
     expect(detail?.rows[0]?.name).toBe("Peace in the eye of the storm");
+  });
+
+  test("hydrates relation columns from outgoing via_database edges", () => {
+    const databaseId = "db42345678901234567890123456789012";
+    const parentId = "parent123456789012345678901234567890";
+    db.upsertVertex(databaseId, ["NotionDatabase"], {
+      title: "Features",
+      notion_schema: JSON.stringify({
+        syncedAt: "2024-01-01T00:00:00.000Z",
+        properties: {
+          Name: { id: "title", name: "Name", type: "title", config: {} },
+          Parents: { id: "HRux", name: "Parents", type: "relation", config: {} },
+        },
+      }),
+      notion_views: JSON.stringify({
+        syncedAt: "2024-01-01T00:00:00.000Z",
+        views: [
+          {
+            id: "view1",
+            name: "All",
+            type: "table",
+            filter: null,
+            sorts: [],
+            visiblePropertyIds: ["HRux"],
+            configuration: null,
+          },
+        ],
+      }),
+    });
+    db.upsertVertex("page3", ["NotionPage"], { title: "Child feature" });
+    db.upsertVertex(parentId, ["NotionPage"], { title: "Parent feature" });
+    db.upsertEdge("page3", databaseId, IS_A_LABEL, { row_index: 0 });
+    db.upsertEdge("page3", parentId, "PARENTS", {
+      ordinal: 0,
+      via_database: databaseId,
+    });
+
+    const detail = getDatabaseViewDetail(db, databaseId);
+    expect(detail?.rows[0]?.cells.parents).toBe("Parent feature");
+    expect(detail?.columnDefs?.[0]?.type).toBe("relation");
   });
 
   test("ignores orphan_row properties on the database vertex", () => {

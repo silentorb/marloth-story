@@ -75,6 +75,7 @@ For **design data** (what records mean, how they relate conceptually), read [`do
 | Editing story/design content in the graph | [`docs/ontology.md`](./docs/ontology.md) + [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) (direct DB edits; see **Graph data workflow** above) |
 | Legacy Notion import / mining `./exports/` | [`docs/features/notion-import.md`](./docs/features/notion-import.md) |
 | Ordered associations, scene order, drag-and-drop reorder | [`docs/features/ordered-associations.md`](./docs/features/ordered-associations.md) |
+| Dynamic table view fields, computed columns | [`docs/features/dynamic-table-fields.md`](./docs/features/dynamic-table-fields.md) + [`docs/dynamic-fields/`](./docs/dynamic-fields/) |
 
 See also [`docs/features/README.md`](./docs/features/README.md) for the feature-doc template and how to add new features.
 
