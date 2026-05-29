@@ -33,39 +33,39 @@ For graph schema, storage, and query API, see [marloth-db.md](./marloth-db.md).
 ### Output
 
 - The pipeline **must** write the property graph to `data/marloth.sqlite` by default (`--db` / `MARLOTH_DB_PATH` to override).
-- Stable row identity **must** be the **32-hex Notion id** as the vertex id for pages.
-- Export archives under `./exports/` **must** keep Notion exporter names; vertex `source_export` records the repo-relative path.
+- Stable row identity **must** be the **32-hex Notion id** as the node id for pages.
+- Export archives under `./exports/` **must** keep Notion exporter names; node `source_export` records the repo-relative path.
 
 ### Page import
 
-Each Notion page (`.md`) **must** become a vertex labeled `NotionPage` with properties including at minimum:
+Each Notion page (`.md`) **must** become a node labeled `NotionPage` with properties including at minimum:
 
 - `title` — from first `#` heading
 - `notion_id` — 32-hex id from source filename
 - `source_export` — repo-relative path to exported `.md`
 - `inferred_notion_path` — parent path inside export, when under `exports/`
-- `body` — markdown body (relation property lines removed; converted to edges)
+- `body` — markdown body (relation property lines removed; converted to connections)
 - `alias` — short title without trailing id suffix
 - Scalar `Key: value` lines before the body **must** be stored as slugified, emoji-stripped property keys
 
 ### Relations
 
-- Notion relation properties (`Label (path.md)` lists) **must** become directed edges to target page vertices.
-- Edge labels **must** be uppercase slug forms of the property name (emoji stripped).
-- Ordered relation lists **should** store `ordinal` on the edge.
+- Notion relation properties (`Label (path.md)` lists) **must** become directed connections to target page nodes.
+- Connection labels **must** be uppercase slug forms of the property name (emoji stripped).
+- Ordered relation lists **should** store `ordinal` on the connection.
 
 ### Database CSV import
 
 For each `*.csv` matching Notion database export naming (`Name {database_id}.csv`, `Name {id}_all.csv`, etc.):
 
-- Emit a `NotionDatabase` vertex keyed by `database_id`.
-- Each row with a linked Name **must** create an `IS_A` edge from the page to the type (database), carrying scalar column values as edge properties (not on the page vertex).
-- Rows without a resolvable page **must** create a stub `NotionPage` and an `IS_A` edge (deterministic orphan id); do not store row payloads on the database vertex.
-- Relation columns **must** become edges from the row's page to targets.
+- Emit a `NotionDatabase` node keyed by `database_id`.
+- Each row with a linked Name **must** create an `IS_A` connection from the page to the type (database), carrying scalar column values as connection properties (not on the page node).
+- Rows without a resolvable page **must** create a stub `NotionPage` and an `IS_A` connection (deterministic orphan id); do not store row payloads on the database node.
+- Relation columns **must** become connections from the row's page to targets.
 
 ### Manifest and reports
 
-- The pipeline **must** write `docs/notion-import-manifest.json` with vertex index, database views, and counts.
+- The pipeline **must** write `docs/notion-import-manifest.json` with node index, database views, and counts.
 - The pipeline **must** write `docs/notion-link-report.txt` for unresolved relation paths.
 - The pipeline **must** be **idempotent**: the same export tree yields the same logical graph.
 
@@ -79,8 +79,8 @@ When required data exists only under `./exports/`:
 
 1. Locate the page `.md` or database `.csv` in the archive (see **Source resolution** and mapping tables in [marloth-db.md](./marloth-db.md)).
 2. Parse with existing `packages/notion-importer` helpers (`parse`, `relations`, `indexes`, etc.) or equivalent logic in a one-off script.
-3. **Upsert** only the affected vertices/edges into the current `data/marloth.sqlite` via `GraphDatabase` — no `{ clean: true }`, no whole-tree import.
-4. Spot-check with `getRecordDetail` or SQL; commit the updated sqlite file.
+3. **Upsert** only the affected nodes/connections into the current `data/marloth.sqlite` via `GraphDatabase` — no `{ clean: true }`, no whole-tree import.
+4. Spot-check with `getNodeDetail` or SQL; commit the updated sqlite file.
 
 ## Design rationale
 
@@ -88,13 +88,13 @@ When required data exists only under `./exports/`:
 
 - **Goal:** support richer data modeling (relations, databases, future world-building entities) beyond what Notion or a flat markdown vault could express cleanly.
 - **Rejected:** continuing flat `content/*.md` as the primary store — relation-heavy corpus was outgrowing file-based navigation.
-- **Trade-off:** no longer optimized for Obsidian-style markdown vault browsing; markdown body remains on vertices for reading/export.
+- **Trade-off:** no longer optimized for Obsidian-style markdown vault browsing; markdown body remains on nodes for reading/export.
 
 See [marloth-db.md](./marloth-db.md) for graph storage rationale.
 
 ### Emoji stripping on names only
 
-- Property **names** (YAML keys, edge labels) **must** have emojis stripped.
+- Property **names** (YAML keys, connection labels) **must** have emojis stripped.
 - Property **values** **must not** be altered unless they are clearly property labels.
 
 ## Behavior / pipeline
@@ -103,9 +103,9 @@ High-level stages (see `packages/notion-importer/src/graph-pipeline.ts`):
 
 1. **Resolve source** — pick export dir/zip; extract zips recursively.
 2. **Open database** — create schema; optional clean rebuild.
-3. **Import pages** — parse each `.md`; upsert `NotionPage` vertices.
-4. **Import relations** — parse relation properties; upsert edges (stub targets if needed).
-5. **Import CSVs** — upsert `NotionDatabase` vertices; row membership and relation edges.
+3. **Import pages** — parse each `.md`; upsert `NotionPage` nodes.
+4. **Import relations** — parse relation properties; upsert connections (stub targets if needed).
+5. **Import CSVs** — upsert `NotionDatabase` nodes; row membership and relation connections.
 6. **Write artifacts** — manifest JSON, link report; vacuum database.
 
 ## Inputs / outputs / artifacts
@@ -147,7 +147,7 @@ See `bun run notion:import -- --help` for full flag list.
 ## Verification
 
 - **Unit tests:** `bun test` from `packages/notion-importer/`.
-- **Manifest:** after import, `docs/notion-import-manifest.json` lists expected vertex count.
+- **Manifest:** after import, `docs/notion-import-manifest.json` lists expected node count.
 - **Link report:** inspect `docs/notion-link-report.txt` for broken relation targets.
 - **Idempotency:** re-run on the same export; logical graph should not change except for intentional parser updates.
 

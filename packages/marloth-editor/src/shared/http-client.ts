@@ -1,20 +1,20 @@
 import type {
   GraphSnapshot,
   GraphLodSnapshot,
-  RecordPageDetail,
-  RecordSummary,
+  NodePageDetail,
+  NodeSummary,
   DatabaseViewDetail,
   OrderedAssociationViewDetail,
 } from "./types";
 import type { UserSettings, UserSettingsPatch } from "./user-settings";
 import type { OrderedAssociationMoveParams } from "marloth-db";
 
-export type { GraphLink, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseViewDetail } from "marloth-db";
+export type { GraphConnection, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseViewDetail } from "marloth-db";
 export type { OrderedAssociationViewDetail } from "marloth-db";
 
 export const DEFAULT_API_BASE_URL = "http://127.0.0.1:3847";
 
-export interface GetRecordOptions {
+export interface GetNodeOptions {
   view?: string;
   scope?: string;
 }
@@ -26,30 +26,30 @@ export interface GraphExplorerLodOptions {
 
 export interface EditorApiClient {
   getHomeId(): Promise<string>;
-  getRecord(id: string, options?: GetRecordOptions | string): Promise<RecordPageDetail>;
+  getNode(id: string, options?: GetNodeOptions | string): Promise<NodePageDetail>;
   getDatabaseView(id: string, view?: string): Promise<DatabaseViewDetail>;
   moveOrderedAssociation(
     configId: string,
     params: OrderedAssociationMoveParams,
   ): Promise<OrderedAssociationViewDetail>;
-  search(query: string, limit?: number): Promise<RecordSummary[]>;
+  search(query: string, limit?: number): Promise<NodeSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
   saveTitle(id: string, title: string): Promise<void>;
   updateDatabaseRowProperty(
     databaseId: string,
-    pageId: string,
+    nodeId: string,
     propertyKey: string,
     value: string | null,
   ): Promise<void>;
-  updateRelationEdgeProperty(
-    recordId: string,
+  updateOutgoingConnectionProperty(
+    nodeId: string,
     label: string,
     targetId: string,
     propertyKey: string,
     value: string | null,
   ): Promise<void>;
-  deleteRecord(id: string): Promise<void>;
-  archiveRecord(id: string): Promise<void>;
+  deleteNode(id: string): Promise<void>;
+  archiveNode(id: string): Promise<void>;
   getGraphFull(): Promise<GraphSnapshot>;
   getGraphExplorerLod(options?: GraphExplorerLodOptions): Promise<GraphLodSnapshot>;
   getUserSettings(): Promise<UserSettings>;
@@ -83,17 +83,17 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       const data = await fetchJson<{ id: string }>("/api/home");
       return data.id;
     },
-    async getRecord(id: string, options?: GetRecordOptions | string): Promise<RecordPageDetail> {
+    async getNode(id: string, options?: GetNodeOptions | string): Promise<NodePageDetail> {
       const normalized =
         typeof options === "string" ? { view: options } : (options ?? {});
       const params = new URLSearchParams();
       if (normalized.view) params.set("view", normalized.view);
       if (normalized.scope) params.set("scope", normalized.scope);
       const query = params.toString();
-      const data = await fetchJson<{ record: RecordPageDetail }>(
-        `/api/records/${id}${query ? `?${query}` : ""}`,
+      const data = await fetchJson<{ node: NodePageDetail }>(
+        `/api/nodes/${id}${query ? `?${query}` : ""}`,
       );
-      return data.record;
+      return data.node;
     },
     async getDatabaseView(id: string, view?: string): Promise<DatabaseViewDetail> {
       const params = view ? `?view=${encodeURIComponent(view)}` : "";
@@ -116,22 +116,22 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       );
       return data.view;
     },
-    async search(query: string, limit = 20): Promise<RecordSummary[]> {
+    async search(query: string, limit = 20): Promise<NodeSummary[]> {
       const params = new URLSearchParams({ q: query, limit: String(limit) });
-      const data = await fetchJson<{ results: RecordSummary[] }>(
-        `/api/records/search?${params}`,
+      const data = await fetchJson<{ results: NodeSummary[] }>(
+        `/api/nodes/search?${params}`,
       );
       return data.results;
     },
     async saveBody(id: string, body: string): Promise<void> {
-      await fetchJson(`/api/records/${id}`, {
+      await fetchJson(`/api/nodes/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ body }),
       });
     },
     async saveTitle(id: string, title: string): Promise<void> {
-      await fetchJson(`/api/records/${id}`, {
+      await fetchJson(`/api/nodes/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title }),
@@ -139,25 +139,25 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     },
     async updateDatabaseRowProperty(
       databaseId: string,
-      pageId: string,
+      nodeId: string,
       propertyKey: string,
       value: string | null,
     ): Promise<void> {
-      await fetchJson(`/api/databases/${databaseId}/rows/${pageId}`, {
+      await fetchJson(`/api/databases/${databaseId}/rows/${nodeId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ property: propertyKey, value }),
       });
     },
-    async updateRelationEdgeProperty(
-      recordId: string,
+    async updateOutgoingConnectionProperty(
+      nodeId: string,
       label: string,
       targetId: string,
       propertyKey: string,
       value: string | null,
     ): Promise<void> {
       await fetchJson(
-        `/api/records/${recordId}/relations/${encodeURIComponent(label)}/${targetId}`,
+        `/api/nodes/${nodeId}/connections/${encodeURIComponent(label)}/${targetId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -165,11 +165,11 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         },
       );
     },
-    async deleteRecord(id: string): Promise<void> {
-      await fetchJson(`/api/records/${id}`, { method: "DELETE" });
+    async deleteNode(id: string): Promise<void> {
+      await fetchJson(`/api/nodes/${id}`, { method: "DELETE" });
     },
-    async archiveRecord(id: string): Promise<void> {
-      await fetchJson(`/api/records/${id}/archive`, { method: "POST" });
+    async archiveNode(id: string): Promise<void> {
+      await fetchJson(`/api/nodes/${id}/archive`, { method: "POST" });
     },
     async getGraphFull(): Promise<GraphSnapshot> {
       const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/full");

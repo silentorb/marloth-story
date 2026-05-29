@@ -27,23 +27,23 @@ describe("graph export", () => {
     dbPath = join(tempDir, "test.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertVertex("page1", ["NotionPage"], {
+    db.upsertNode("page1", ["NotionPage"], {
       title: "Scene A",
       inferred_notion_path: "Marloth/Scenes",
     });
-    db.upsertVertex("page2", ["NotionPage"], {
+    db.upsertNode("page2", ["NotionPage"], {
       title: "Feature B",
       inferred_notion_path: "Marloth/Features",
     });
-    db.upsertEdge("page1", "page2", "FEATURES");
+    db.upsertConnection("page1", "page2", "FEATURES");
 
     const snapshot = exportFullGraph(db);
     db.close();
 
     expect(snapshot.nodes).toHaveLength(2);
-    expect(snapshot.links).toHaveLength(1);
+    expect(snapshot.connections).toHaveLength(1);
     expect(snapshot.nodes.find((node) => node.id === "page1")?.title).toBe("Scene A");
-    expect(snapshot.links[0]).toMatchObject({
+    expect(snapshot.connections[0]).toMatchObject({
       source: "page1",
       target: "page2",
       label: "FEATURES",
@@ -55,27 +55,27 @@ describe("graph export", () => {
     dbPath = join(tempDir, "archive.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertVertex("active", ["NotionPage"], {
+    db.upsertNode("active", ["NotionPage"], {
       title: "Active scene",
       inferred_notion_path: "Marloth/Scenes/active",
     });
-    db.upsertVertex("archived", ["NotionPage"], {
+    db.upsertNode("archived", ["NotionPage"], {
       title: "Old foil",
       inferred_notion_path: "Marloth/Archive/Foils/old",
     });
-    db.upsertVertex("archive-root", ["NotionPage"], {
+    db.upsertNode("archive-root", ["NotionPage"], {
       title: "Archive",
       inferred_notion_path: "Marloth/Archive",
     });
-    db.upsertEdge("active", "archived", "INSPIRATIONS");
-    db.upsertEdge("archived", "archive-root", "PART");
+    db.upsertConnection("active", "archived", "INSPIRATIONS");
+    db.upsertConnection("archived", "archive-root", "PART");
 
     const snapshot = exportFullGraph(db);
     db.close();
 
     expect(snapshot.nodes).toHaveLength(1);
     expect(snapshot.nodes[0]?.id).toBe("active");
-    expect(snapshot.links).toHaveLength(0);
+    expect(snapshot.connections).toHaveLength(0);
   });
 
   test("isArchivedNotionPath matches archive root and nested pages", () => {
@@ -90,11 +90,11 @@ describe("graph export", () => {
     dbPath = join(tempDir, "lod.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertVertex("page1", ["NotionPage"], { title: "Scene 1" });
-    db.upsertVertex("page2", ["NotionPage"], { title: "Scene 2" });
-    db.upsertVertex("page3", ["NotionPage"], { title: "Feature 1" });
-    db.upsertEdge("page1", "page2", "BLOCKS");
-    db.upsertEdge("page2", "page3", "FEATURES");
+    db.upsertNode("page1", ["NotionPage"], { title: "Scene 1" });
+    db.upsertNode("page2", ["NotionPage"], { title: "Scene 2" });
+    db.upsertNode("page3", ["NotionPage"], { title: "Feature 1" });
+    db.upsertConnection("page1", "page2", "BLOCKS");
+    db.upsertConnection("page2", "page3", "FEATURES");
 
     const lod = exportExplorerLodGraph(db);
     db.close();
@@ -110,10 +110,10 @@ describe("graph export", () => {
     dbPath = join(tempDir, "anchor.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertVertex("anchor", ["NotionPage"], { title: "Anchor" });
-    db.upsertVertex("near", ["NotionPage"], { title: "Near" });
-    db.upsertVertex("far", ["NotionPage"], { title: "Far" });
-    db.upsertEdge("anchor", "near", "RELATES");
+    db.upsertNode("anchor", ["NotionPage"], { title: "Anchor" });
+    db.upsertNode("near", ["NotionPage"], { title: "Near" });
+    db.upsertNode("far", ["NotionPage"], { title: "Far" });
+    db.upsertConnection("anchor", "near", "RELATES");
 
     const lod = exportExplorerLodGraph(db, { anchorId: "anchor" });
     db.close();

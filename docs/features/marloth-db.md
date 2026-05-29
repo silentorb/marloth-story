@@ -10,21 +10,32 @@ Read this doc when your task involves:
 
 - `data/marloth.sqlite` or the `./data/` directory
 - `packages/marloth-db/` schema, graph API, or queries
-- Modeling vertices, edges, labels, or properties
+- Modeling nodes, connections, labels, or properties
 - Editing or migrating graph data in place (not via full re-import)
 - Extending the graph schema or API
 
-For **what design records mean** (features, inspirations, products, traceability), read [`../ontology.md`](../ontology.md) alongside this doc.
+For **what design nodes mean** (features, inspirations, products, traceability), read [`../ontology.md`](../ontology.md) alongside this doc.
+
+## Terminology (post-migration)
+
+| Term | Meaning |
+| --- | --- |
+| **Node** | Entity in `nodes` / `node_labels` (replaces *vertex* / *record* in API and docs). |
+| **Connection** | Directed labeled link in `connections` (replaces *edge*). |
+| **Page** | Editor-facing node view (`getNodePageDetail`, `NodePageView`)—not a Notion export file. |
+| **NotionPage** / **NotionDatabase** | Legacy **import labels**; keep when describing Notion mapping or stored label values. |
+
+API names: `upsertNode`, `upsertConnection`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. SQLite core tables: `nodes`, `node_labels`, `connections` (`SCHEMA_VERSION` **3**).
 
 ## Editing the graph (agent workflow)
 
 **Default:** change `data/marloth.sqlite` in place.
 
-- Use `GraphDatabase` (`upsertVertex`, `upsertEdge`, ordered-association helpers, etc.), the marloth editor, or a **focused** Bun script/SQL migration that opens the existing file (no `{ clean: true }` unless intentionally replacing an empty dev copy).
+- Use `GraphDatabase` (`upsertNode`, `upsertConnection`, ordered-association helpers, etc.), the marloth editor, or a **focused** Bun script/SQL migration that opens the existing file (no `{ clean: true }` unless intentionally replacing an empty dev copy).
 - Commit the updated `marloth.sqlite` with related code/docs changes.
 - **Do not** modify `packages/notion-importer` and run `bun run notion:import` / `--clean` to apply routine data or schema work.
 
-**When data exists only in `./exports/`:** read the relevant Notion `.md` or `.csv` from the archival export and apply **targeted** upserts using the same mapping rules as the legacy importer (page → `NotionPage`, relations → edges, CSV rows → `IS_A`, etc.). Reuse importer parsing helpers if helpful; do not run a full-graph rebuild.
+**When data exists only in `./exports/`:** read the relevant Notion `.md` or `.csv` from the archival export and apply **targeted** upserts using the same mapping rules as the legacy importer (page → `NotionPage`, relations → connections, CSV rows → `IS_A`, etc.). Reuse importer parsing helpers if helpful; do not run a full-graph rebuild.
 
 **Schema changes:** bump `SCHEMA_VERSION` in `schema.ts`, migrate existing rows in place, document steps here or in commit notes. Re-import is not a migration strategy.
 
@@ -42,25 +53,25 @@ The database **must** model a **labeled property graph**:
 
 | Element | Table(s) | Semantics |
 | --- | --- | --- |
-| Vertex | `vertices`, `vertex_labels` | Entity with one or more labels and a JSON property bag |
-| Edge | `edges` | Directed relationship with a label and JSON properties |
+| Node | `nodes`, `node_labels` | Entity with one or more labels and a JSON property bag |
+| Connection | `connections` | Directed relationship with a label and JSON properties |
 | Metadata | `meta` | Schema version, import timestamps, etc. |
 
-- Vertex ids **must** be stable text keys (Notion pages use 32-hex ids).
-- Edge ids **must** be deterministic: `{source_id}:{label}:{target_id}`.
-- Edge labels **must** be uppercase slug forms derived from Notion relation property names (e.g. `Scenes` → `SCENES`).
+- Node ids **must** be stable text keys (Notion pages use 32-hex ids).
+- Connection ids **must** be deterministic: `{source_id}:{label}:{target_id}`.
+- Connection labels **must** be uppercase slug forms derived from Notion relation property names (e.g. `Scenes` → `SCENES`).
 
 ### Notion mapping (legacy initial import)
 
 | Notion concept | Graph representation |
 | --- | --- |
-| Page (`.md`) | Vertex labeled `NotionPage`; scalar properties in JSON; markdown body in `body` |
-| Page relation property | Edge from page to related page; label from property name |
-| Database (CSV export) | Vertex labeled `NotionDatabase` |
-| Database row / type instance | Edge `(page)-[:IS_A {view, row_index, …columns}]->(type)`; Name/title lives on the page vertex only |
-| CSV relation column | Edge from row's page to target page |
+| Page (`.md`) | Node labeled `NotionPage`; scalar properties in JSON; markdown body in `body` |
+| Page relation property | Connection from page to related page; label from property name |
+| Database (CSV export) | Node labeled `NotionDatabase` |
+| Database row / type instance | Connection `(page)-[:IS_A {view, row_index, …columns}]->(type)`; Name/title lives on the page node only |
+| CSV relation column | Connection from row's page to targets |
 
-- Relation targets missing from the export **may** be created as stub `NotionPage` vertices (title only) so the graph stays connected.
+- Relation targets missing from the export **may** be created as stub `NotionPage` nodes (title only) so the graph stays connected.
 - Unresolved relation paths **must** be reported in `docs/notion-link-report.txt`.
 
 ### Schema versioning
@@ -86,10 +97,10 @@ The database **must** model a **labeled property graph**:
 
 `GraphDatabase` (`packages/marloth-db/src/graph.ts`):
 
-- `upsertVertex(id, labels, properties)` — create or merge vertex
-- `upsertEdge(sourceId, targetId, label, properties)` — create or merge edge
-- `getRecordDetail` / `getRecordPageDetail` — inspection; the latter adds **metadata** (timestamps, connection count, markdown backlinks) and ordered **sections** (markdown, database table, relation tables)
-- `getDatabaseViewDetail` — database row table for a `NotionDatabase` vertex; uses synced `notion_views` / `notion_schema` when present (see [notion-metadata-sync.md](./notion-metadata-sync.md)). **Scalar** columns (select, number, formula snapshots, etc.) come from `IS_A` edge properties; **relation** columns are hydrated at read time from outgoing edges whose label matches the property (prefer `via_database` = this database, else unscoped edges on that label). Bulk CSV re-import is legacy — see [notion-import.md](./notion-import.md).
+- `upsertNode(id, labels, properties)` — create or merge node
+- `upsertConnection(sourceId, targetId, label, properties)` — create or merge connection
+- `getNodeDetail` / `getNodePageDetail` — inspection; the latter adds **metadata** (timestamps, connection count, markdown backlinks) and ordered **sections** (markdown, database table, relation tables)
+- `getDatabaseViewDetail` — database row table for a `NotionDatabase` node; uses synced `notion_views` / `notion_schema` when present (see [notion-metadata-sync.md](./notion-metadata-sync.md)). **Scalar** columns (select, number, formula snapshots, etc.) come from `IS_A` connection properties; **relation** columns are hydrated at read time from outgoing connections whose label matches the property (prefer `via_database` = this database, else unscoped connections on that label). Bulk CSV re-import is legacy — see [notion-import.md](./notion-import.md).
 - `finalize()` — `PRAGMA optimize` + `VACUUM` for compact storage
 - Constructor `{ clean: true }` — delete existing file before open
 
@@ -98,7 +109,7 @@ The database **must** model a **labeled property graph**:
 | Path | Role |
 | --- | --- |
 | `data/marloth.sqlite` | Canonical property graph |
-| `docs/notion-import-manifest.json` | Import summary (vertices, databases, counts) |
+| `docs/notion-import-manifest.json` | Import summary (nodes, databases, counts) |
 | `docs/notion-link-report.txt` | Unresolved relation paths |
 
 ## Quick start
@@ -126,7 +137,7 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 ## Verification
 
 - **Unit tests:** `bun test` in `packages/marloth-db/`.
-- **After direct edits:** spot-check affected records via `getRecordDetail` / SQL; run `finalize()` when preparing a compact commit.
+- **After direct edits:** spot-check affected nodes via `getNodeDetail` / SQL; run `finalize()` when preparing a compact commit.
 - **Legacy import only:** `docs/notion-import-manifest.json` and `docs/notion-link-report.txt` (importer tests in `packages/notion-importer/`).
 
 ## Implementation pointers
@@ -137,14 +148,14 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 | `packages/marloth-db/src/graph.ts` | GraphDatabase API |
 | `packages/marloth-db/src/graph-export.ts` | Full graph and Graph Explorer LOD export |
 | `packages/marloth-db/src/graph-lod-cluster.ts` | Graph Explorer layer subdivision |
-| `packages/marloth-db/src/record-sections.ts` | Universal page sections (markdown + relation/database tables) |
+| `packages/marloth-db/src/node-page-sections.ts` | Universal page sections (markdown + relation/database tables) |
 | `packages/marloth-db/src/markdown-links.ts` | Parse inline markdown links in bodies (backlink source) |
-| `packages/marloth-db/src/record-metadata.ts` | Page metadata (timestamps, connections, markdown backlinks) |
-| `packages/marloth-db/src/notion-database-schema.ts` | Parsed Notion database schema/view JSON on vertices |
+| `packages/marloth-db/src/node-metadata.ts` | Page metadata (timestamps, connections, markdown backlinks) |
+| `packages/marloth-db/src/notion-database-schema.ts` | Parsed Notion database schema/view JSON on nodes |
 | `packages/marloth-db/src/notion-view-eval.ts` | Notion view filter/sort evaluation for database tables |
-| `packages/marloth-db/src/database-view.ts` | Type instance table reconstruction from incoming `IS_A` edges |
+| `packages/marloth-db/src/database-view.ts` | Type instance table reconstruction from incoming `IS_A` connections |
 | `packages/marloth-db/src/database-view-relations.ts` | Relation-column hydration for database table views |
-| `packages/marloth-db/src/relation-label.ts` | Notion relation property name → graph edge label |
+| `packages/marloth-db/src/relation-label.ts` | Notion relation property name → connection label |
 | `packages/marloth-db/src/ordered-associations.ts` | Ordered association config, view query, move mutation |
 | `packages/notion-importer/src/graph-pipeline.ts` | Notion → graph import |
 | `packages/notion-importer/src/relations.ts` | Parse Notion relation link syntax |
@@ -161,5 +172,5 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 
 ## Future expansion
 
-- **Multi-dimensional slicing** — product is one axis today; expect additional dimensions (arc, medium, audience, etc.) as labels, properties, or edges.
-- **Weighted relationships** — e.g. feature↔inspiration strength as a numeric edge property rather than a boolean link. Not implemented yet; current import creates unweighted edges only.
+- **Multi-dimensional slicing** — product is one axis today; expect additional dimensions (arc, medium, audience, etc.) as labels, properties, or connections.
+- **Weighted relationships** — e.g. feature↔inspiration strength as a numeric connection property rather than a boolean link. Not implemented yet; current import creates unweighted connections only.

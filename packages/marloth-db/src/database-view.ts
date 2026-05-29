@@ -19,7 +19,7 @@ const ROW_META_KEYS = new Set(["view", "row_index", "row_name", "order"]);
 
 export interface DatabaseRow {
   rowIndex: number;
-  pageId: string;
+  nodeId: string;
   name: string;
   cells: Record<string, string>;
 }
@@ -74,9 +74,9 @@ function cellsFromProperties(properties: Record<string, unknown>): Record<string
   return cells;
 }
 
-function collectLegacyViews(edgeViews: string[]): string[] {
+function collectLegacyViews(connectionViews: string[]): string[] {
   const views = new Set<string>();
-  for (const view of edgeViews) {
+  for (const view of connectionViews) {
     if (view) views.add(view);
   }
   if (views.size === 0) views.add("default");
@@ -130,27 +130,27 @@ function buildNotionViewDetail(
   db: GraphDatabase,
   databaseId: string,
   databaseTitle: string,
-  incoming: ReturnType<GraphDatabase["listEdgesToTarget"]>,
+  incoming: ReturnType<GraphDatabase["listConnectionsToTarget"]>,
   notionViews: NotionViewDefinition[],
   requestedView?: string,
 ): DatabaseViewDetail {
-  const schema = parseNotionSchema(db.getVertex(databaseId)?.properties.notion_schema);
+  const schema = parseNotionSchema(db.getNode(databaseId)?.properties.notion_schema);
   const selected = resolveViewByKey(notionViews, requestedView) ?? notionViews[0]!;
   const idToName = schema ? propertyNamesById(schema) : new Map<string, string>();
 
   const evalRows: EvalRow[] = [];
-  for (const edge of incoming) {
-    const rowIndexRaw = edge.properties.row_index;
+  for (const connection of incoming) {
+    const rowIndexRaw = connection.properties.row_index;
     const rowIndex =
       typeof rowIndexRaw === "number"
         ? rowIndexRaw
         : Number.parseInt(String(rowIndexRaw ?? ""), 10);
-    const page = db.getVertex(edge.sourceId);
+    const page = db.getNode(connection.sourceNodeId);
     const name = page ? titleFromProperties(page.properties) : "Untitled";
     evalRows.push({
-      pageId: edge.sourceId,
+      nodeId: connection.sourceNodeId,
       name,
-      cells: cellsFromProperties(edge.properties),
+      cells: cellsFromProperties(connection.properties),
       rowIndex: Number.isFinite(rowIndex) ? rowIndex : evalRows.length,
       createdAt: page ? isoFromProperties(page.properties, "created_at") : null,
       modifiedAt: page ? isoFromProperties(page.properties, "modified_at") : null,
@@ -213,7 +213,7 @@ function buildNotionViewDetail(
 
   const rows: DatabaseRow[] = sorted.map((row, index) => ({
     rowIndex: index,
-    pageId: row.pageId,
+    nodeId: row.nodeId,
     name: row.name,
     cells: normalizeRowCells(row.cells, mergedColumnDefs),
   }));
@@ -255,47 +255,47 @@ function buildLegacyViewDetail(
   db: GraphDatabase,
   databaseId: string,
   databaseTitle: string,
-  incoming: ReturnType<GraphDatabase["listEdgesToTarget"]>,
+  incoming: ReturnType<GraphDatabase["listConnectionsToTarget"]>,
   requestedView?: string,
 ): DatabaseViewDetail {
-  const edgeViews = incoming
-    .map((edge) => stringProperty(edge.properties.view))
+  const connectionViews = incoming
+    .map((connection) => stringProperty(connection.properties.view))
     .filter((view): view is string => view !== null);
 
-  const views = collectLegacyViews(edgeViews);
+  const views = collectLegacyViews(connectionViews);
   const view =
     requestedView && views.includes(requestedView)
       ? requestedView
       : pickDefaultLegacyView(views);
 
-  const rowsByPageId = new Map<string, DatabaseRow>();
+  const rowsByNodeId = new Map<string, DatabaseRow>();
 
-  for (const edge of incoming) {
-    const edgeView = stringProperty(edge.properties.view) ?? "default";
-    if (edgeView !== view) continue;
+  for (const connection of incoming) {
+    const connectionView = stringProperty(connection.properties.view) ?? "default";
+    if (connectionView !== view) continue;
 
-    const rowIndexRaw = edge.properties.row_index;
+    const rowIndexRaw = connection.properties.row_index;
     const rowIndex =
       typeof rowIndexRaw === "number"
         ? rowIndexRaw
         : Number.parseInt(String(rowIndexRaw ?? ""), 10);
-    const safeRowIndex = Number.isFinite(rowIndex) ? rowIndex : rowsByPageId.size;
+    const safeRowIndex = Number.isFinite(rowIndex) ? rowIndex : rowsByNodeId.size;
 
-    const page = db.getVertex(edge.sourceId);
+    const page = db.getNode(connection.sourceNodeId);
     const name = page ? titleFromProperties(page.properties) : "Untitled";
 
-    const cells = cellsFromProperties(edge.properties);
+    const cells = cellsFromProperties(connection.properties);
 
-    rowsByPageId.set(edge.sourceId, {
+    rowsByNodeId.set(connection.sourceNodeId, {
       rowIndex: safeRowIndex,
-      pageId: edge.sourceId,
+      nodeId: connection.sourceNodeId,
       name,
       cells,
     });
   }
 
-  const evalRows: EvalRow[] = [...rowsByPageId.values()].map((row) => ({
-    pageId: row.pageId,
+  const evalRows: EvalRow[] = [...rowsByNodeId.values()].map((row) => ({
+    nodeId: row.nodeId,
     name: row.name,
     cells: row.cells,
     rowIndex: row.rowIndex,
@@ -310,14 +310,14 @@ function buildLegacyViewDetail(
     evalRows,
   );
 
-  const enrichedByPageId = new Map(enrichedEvalRows.map((r) => [r.pageId, r]));
-  for (const [pageId, row] of rowsByPageId) {
-    const enriched = enrichedByPageId.get(pageId);
+  const enrichedByNodeId = new Map(enrichedEvalRows.map((r) => [r.nodeId, r]));
+  for (const [nodeId, row] of rowsByNodeId) {
+    const enriched = enrichedByNodeId.get(nodeId);
     if (enriched) row.cells = enriched.cells;
   }
 
   const columnSet = new Set<string>();
-  for (const row of rowsByPageId.values()) {
+  for (const row of rowsByNodeId.values()) {
     for (const key of Object.keys(row.cells)) columnSet.add(key);
   }
   for (const col of dynamicColumnDefs) columnSet.add(col.key);
@@ -331,7 +331,7 @@ function buildLegacyViewDetail(
   );
 
   const columns = legacyColumnDefs.map((c) => c.key);
-  const rows = [...rowsByPageId.values()].sort(rowSort);
+  const rows = [...rowsByNodeId.values()].sort(rowSort);
 
   return {
     id: databaseId,
@@ -344,17 +344,17 @@ function buildLegacyViewDetail(
   };
 }
 
-/** Build a database table view from incoming IS_A (type instance) edges and linked page titles. */
+/** Build a database table view from incoming IS_A (type instance) connections and linked page titles. */
 export function getDatabaseViewDetail(
   db: GraphDatabase,
   databaseId: string,
   requestedView?: string,
 ): DatabaseViewDetail | null {
-  const database = db.getVertex(databaseId);
+  const database = db.getNode(databaseId);
   if (!database || !database.labels.includes("NotionDatabase")) return null;
 
   const incoming = TYPE_MEMBERSHIP_LABELS.flatMap((label) =>
-    db.listEdgesToTarget(databaseId, label),
+    db.listConnectionsToTarget(databaseId, label),
   );
 
   const title = titleFromProperties(database.properties);

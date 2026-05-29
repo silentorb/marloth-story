@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { HOME_RECORD_ID } from "../shared/types";
+import { HOME_NODE_ID } from "../shared/types";
 import { iconToFaviconHref, resolveDocumentIcon } from "./document-icon";
 
 describe("resolveDocumentIcon", () => {
@@ -7,12 +7,12 @@ describe("resolveDocumentIcon", () => {
     expect(resolveDocumentIcon({ view: "graph-explorer" })).toBe("⊕");
   });
 
-  test("uses home icon for the home record", () => {
+  test("uses home icon for the home node", () => {
     expect(
       resolveDocumentIcon({
-        view: "record",
-        recordId: HOME_RECORD_ID,
-        homeId: HOME_RECORD_ID,
+        view: "node-page",
+        nodeId: HOME_NODE_ID,
+        homeId: HOME_NODE_ID,
       }),
     ).toBe("⌂");
   });
@@ -20,7 +20,7 @@ describe("resolveDocumentIcon", () => {
   test("prefers page emoji over path-based database icon", () => {
     expect(
       resolveDocumentIcon({
-        view: "record",
+        view: "node-page",
         recordPath: "Marloth/Scenes/Opening",
         recordBody: "💡\n\n# Opening scene",
       }),
@@ -30,32 +30,32 @@ describe("resolveDocumentIcon", () => {
   test("uses path-based icon for database member pages", () => {
     expect(
       resolveDocumentIcon({
-        view: "record",
+        view: "node-page",
         recordPath: "Marloth/Features/Desperation.md",
       }),
     ).toBe("★");
   });
 
-  test("uses sidebar icon for database hub records", () => {
+  test("uses sidebar icon for database hub nodes", () => {
     expect(
       resolveDocumentIcon({
-        view: "record",
-        recordId: "204dba198db74611b0b49a98dd53e8f5",
+        view: "node-page",
+        nodeId: "204dba198db74611b0b49a98dd53e8f5",
       }),
     ).toBe("▶");
   });
 
-  test("uses database icon for NotionDatabase records", () => {
+  test("uses database icon for NotionDatabase nodes", () => {
     expect(
       resolveDocumentIcon({
-        view: "record",
+        view: "node-page",
         recordLabels: ["NotionDatabase"],
       }),
     ).toBe("▦");
   });
 
   test("falls back to default Marloth icon", () => {
-    expect(resolveDocumentIcon({ view: "record" })).toBe("M");
+    expect(resolveDocumentIcon({ view: "node-page" })).toBe("M");
   });
 });
 

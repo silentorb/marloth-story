@@ -1,5 +1,5 @@
-export { GraphDatabase, edgeId } from "./graph";
-export type { EdgeRecord, GraphCounts, Properties, PropertyValue, VertexRecord } from "./graph";
+export { GraphDatabase, connectionId } from "./graph";
+export type { Connection, GraphCounts, Node, Properties, PropertyValue } from "./graph";
 export {
   ARCHIVE_NOTION_PATH_PREFIX,
   isArchivedNotionPath,
@@ -19,30 +19,31 @@ export {
   computeRelevanceComponents,
 } from "./graph-lod-cluster";
 export type {
-  GraphLink,
+  GraphConnection,
   GraphNode,
   GraphNodeBundle,
   GraphNodeRelevance,
   GraphSnapshot,
   GraphLodSnapshot,
 } from "./graph-export";
+export type { LodClusterConnection, LodClusterNode } from "./graph-lod-cluster";
 export {
-  DEFAULT_HOME_RECORD_ID,
-  getRecordDetail,
-  listRecentRecords,
-  searchRecords,
-  updateRecordBody,
-  updateRecordTitle,
+  DEFAULT_HOME_NODE_ID,
+  getNodeDetail,
+  listRecentNodes,
+  searchNodes,
+  updateNodeBody,
+  updateNodeTitle,
 } from "./queries";
+export type { NodeDetail, NodeSummary } from "./queries";
 export {
-  archivePathForRecord,
-  archiveRecord,
-  DEFAULT_ARCHIVE_RECORD_ID,
-  deleteRecord,
-  isProtectedRecordId,
-} from "./record-lifecycle";
-export type { RecordLifecycleError } from "./record-lifecycle";
-export type { RecordDetail, RecordSummary } from "./queries";
+  archivePathForNode,
+  archiveNode,
+  DEFAULT_ARCHIVE_NODE_ID,
+  deleteNode,
+  isProtectedNodeId,
+} from "./node-lifecycle";
+export type { NodeLifecycleError } from "./node-lifecycle";
 export { getDatabaseViewDetail } from "./database-view";
 export { hydrateRelationCellsForRows } from "./database-view-relations";
 export { relationLabel, stripEmojis } from "./relation-label";
@@ -64,9 +65,9 @@ export {
 export type { PriorityValue } from "./property-enums";
 export {
   updateDatabaseRowProperty,
-  updateOutgoingEdgeProperty,
-} from "./edge-property-update";
-export type { EdgePropertyUpdateError } from "./edge-property-update";
+  updateOutgoingConnectionProperty,
+} from "./connection-property-update";
+export type { ConnectionPropertyUpdateError } from "./connection-property-update";
 export {
   parseNotionSchema,
   parseNotionViews,
@@ -86,33 +87,33 @@ export {
   resolveMarkdownHrefTarget,
 } from "./markdown-links";
 export type { MarkdownLinkMatch } from "./markdown-links";
-export { getRecordPageMetadata } from "./record-metadata";
-export type { RecordBacklink, RecordPageMetadata } from "./record-metadata";
-export { buildPropertiesSection } from "./page-properties";
-export type { PropertiesSection } from "./page-properties";
+export { getNodePageMetadata } from "./node-metadata";
+export type { NodeBacklink, NodePageMetadata } from "./node-metadata";
+export { buildPropertiesSection } from "./node-type-properties";
+export type { PropertiesSection } from "./node-type-properties";
 export {
-  findMissingTypeMembershipEdges,
+  findMissingTypeMembershipConnections,
   findNotionDatabaseByTitle,
-  findSpuriousTypeMembershipEdges,
-  findVertexScalarsOnTypedPages,
+  findSpuriousTypeMembershipConnections,
+  findNodeScalarsOnTypedNodes,
   typeDatabaseTitleFromPath,
   typeFolderFromPath,
 } from "./type-membership-audit";
 export type {
   MissingTypeMembership,
+  NodeScalarOnTypedNode,
   SpuriousTypeMembership,
-  VertexScalarOnTypedPage,
 } from "./type-membership-audit";
-export { getRecordPageDetail } from "./record-sections";
+export { getNodePageDetail } from "./node-page-sections";
 export type {
   DatabaseTableSection,
   MarkdownSection,
   OrderedAssociationSection,
-  RecordPageDetail,
-  RecordSection,
+  NodePageDetail,
+  NodeSection,
   RelationRow,
   RelationTableSection,
-} from "./record-sections";
+} from "./node-page-sections";
 export {
   applyOrderedAssociationMove,
   getOrderedAssociationConfigForDatabase,

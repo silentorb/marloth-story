@@ -74,7 +74,7 @@ export function propertyNameForId(
   );
 }
 
-/** Notion property types stored on IS_A edges (editable instance scalars). */
+/** Notion property types stored on IS_A connections (editable instance scalars). */
 const STORED_SCALAR_PROPERTY_TYPES = new Set([
   "checkbox",
   "date",
@@ -90,7 +90,7 @@ const STORED_SCALAR_PROPERTY_TYPES = new Set([
   "url",
 ]);
 
-/** Notion types that are computed or not stored on membership edges. */
+/** Notion types that are computed or not stored on membership connections. */
 const NON_STORED_SCALAR_PROPERTY_TYPES = new Set([
   "created_by",
   "created_time",

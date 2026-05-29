@@ -1,5 +1,5 @@
 export interface EvalRow {
-  pageId: string;
+  nodeId: string;
   name: string;
   cells: Record<string, string>;
   rowIndex: number;

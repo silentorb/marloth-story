@@ -25,14 +25,18 @@ The git-tracked property graph in `./data/` is the canonical store for this desi
 
 | Term | Meaning |
 | --- | --- |
-| **Project feature** | A workspace capability documented in `./docs/features/` (e.g. notion import, marloth-db). Use this phrase when discussing tooling or agent specs—not graph records. |
-| **Feature** (unqualified) | A **design record** in the property graph (story/game feature ideas), unless context clearly means a project feature. |
+| **Project feature** | A workspace capability documented in `./docs/features/` (e.g. notion import, marloth-db). Use this phrase when discussing tooling or agent specs—not graph nodes. |
+| **Node** | Any entity in the design graph (SQLite `nodes` table). Replaces legacy *record* / *vertex* in docs and API. |
+| **Connection** | A directed, labeled relationship between two nodes (SQLite `connections` table). Replaces legacy *edge*. |
+| **Page** | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a Notion export file. |
+| **Feature** (unqualified) | A **design node** (story/game feature idea), usually under `Marloth/Features/`, unless context clearly means a project feature. |
+| **NotionPage** / **NotionDatabase** | Legacy **import labels** on nodes (`node_labels`). Keep these names when referring to stored label values or Notion mapping—not for general “page” UI wording. |
 
 ## Data modeling direction
 
-Imported Notion data already separates records somewhat by **product** (books, game design, and related work share inspirations and structure). Expect the graph to be sliced along **multiple dimensions** over time—not only product.
+Imported Notion data already separates nodes somewhat by **product** (books, game design, and related work share inspirations and structure). Expect the graph to be sliced along **multiple dimensions** over time—not only product.
 
-**Future (not yet implemented):** some relationships should be **weighted**, not boolean. Example: a feature–inspiration link might be strong for one inspiration and weak for another. Current edges are all-or-nothing; weighted associations will likely live as numeric properties on edges (e.g. `weight`) when implemented.
+**Future (not yet implemented):** some relationships should be **weighted**, not boolean. Example: a feature–inspiration link might be strong for one inspiration and weak for another. Current connections are all-or-nothing; weighted associations will likely live as numeric properties on connections (e.g. `weight`) when implemented.
 
 ## Graph data workflow
 
@@ -40,7 +44,7 @@ The graph in `data/marloth.sqlite` is **authoritative and git-tracked**. Notion 
 
 | Task | Do | Do not |
 | --- | --- | --- |
-| Add or edit records, relations, properties, order | Use `GraphDatabase` (`packages/marloth-db`), the marloth editor, or a focused migration/script that writes **directly** to `data/marloth.sqlite` | Change `packages/notion-importer` and run `bun run notion:import` / `--clean` to refresh data |
+| Add or edit nodes, connections, properties, order | Use `GraphDatabase` (`packages/marloth-db`), the marloth editor, or a focused migration/script that writes **directly** to `data/marloth.sqlite` | Change `packages/notion-importer` and run `bun run notion:import` / `--clean` to refresh data |
 | Schema / DDL changes | Bump `SCHEMA_VERSION`, migrate the existing database in place (script or API), commit the updated `marloth.sqlite` | Expect a full re-import to apply schema or content fixes |
 | Data that exists only in `./exports/` | Read the relevant `.md` / `.csv` from the archive and apply **targeted** upserts to the graph (same mapping rules as import, but surgical) | Run a full clean re-import over the whole export |
 
@@ -64,11 +68,11 @@ Authoritative design specs for **project features** live in `./docs/features/` (
 
 **Do not read all feature docs by default.** When your task matches a row, read only that file (and the package `AGENTS.md` if editing that package). Treat the feature doc as the source of truth over implementation when they disagree—update code or the doc explicitly.
 
-For **design data** (what records mean, how they relate conceptually), read [`docs/ontology.md`](./docs/ontology.md) **in addition to** schema-specific docs below.
+For **design data** (what nodes mean, how they relate conceptually), read [`docs/ontology.md`](./docs/ontology.md) **in addition to** schema-specific docs below.
 
 | If your task involves… | Read |
 | --- | --- |
-| Design domain model, record types, relationships, traceability | [`docs/ontology.md`](./docs/ontology.md) |
+| Design domain model, node types, connections, traceability | [`docs/ontology.md`](./docs/ontology.md) |
 | SQLite property graph, `data/marloth.sqlite`, `packages/marloth-db/` | [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) (+ ontology when interpreting data) |
 | Web markdown editor, `packages/marloth-editor/`, VS Code graph editing | [`docs/features/marloth-editor.md`](./docs/features/marloth-editor.md) |
 | Graph Explorer, LOD layers, anchor-scoped graph viz | [`docs/features/graph-explorer.md`](./docs/features/graph-explorer.md) |

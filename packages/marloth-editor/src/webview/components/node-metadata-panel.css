@@ -1,0 +1,118 @@
+.marloth-record-metadata-panel {
+  border-bottom: 1px solid var(--marloth-border);
+  background: var(--marloth-surface);
+}
+
+.marloth-record-metadata-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 32px;
+  font-size: 0.85rem;
+  color: var(--marloth-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.marloth-record-metadata-toggle:hover {
+  color: var(--marloth-fg);
+}
+
+.marloth-record-metadata-chevron {
+  display: inline-block;
+  width: 1em;
+  transition: transform 0.15s ease;
+}
+
+.marloth-record-metadata-panel.is-expanded .marloth-record-metadata-chevron {
+  transform: rotate(90deg);
+}
+
+.marloth-record-metadata-summary {
+  color: var(--marloth-muted);
+  font-size: 0.8rem;
+}
+
+.marloth-record-metadata-body {
+  padding: 0 32px 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.marloth-record-metadata-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+
+.marloth-record-metadata-label {
+  flex: 0 0 7rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-record-metadata-value {
+  flex: 1;
+  min-width: 0;
+}
+
+.marloth-record-metadata-backlinks {
+  position: relative;
+}
+
+.marloth-record-metadata-backlinks-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  font: inherit;
+  color: var(--marloth-link);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.marloth-record-metadata-backlinks-trigger:hover {
+  text-decoration: underline;
+}
+
+.marloth-record-metadata-backlinks-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 240px;
+  max-width: min(420px, 90vw);
+  max-height: 240px;
+  overflow: auto;
+  padding: 4px 0;
+  background: var(--marloth-bg);
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+}
+
+.marloth-record-metadata-backlink-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 12px;
+}
+
+.marloth-record-metadata-backlink-item:hover {
+  background: var(--marloth-surface);
+}
+
+.marloth-record-metadata-backlink-label {
+  font-size: 0.75rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-record-metadata-backlink-empty {
+  padding: 8px 12px;
+  color: var(--marloth-muted);
+  font-size: 0.85rem;
+}

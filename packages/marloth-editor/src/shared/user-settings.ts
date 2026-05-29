@@ -32,16 +32,16 @@ export function emptyUserSettings(): UserSettings {
   return { version: USER_SETTINGS_VERSION };
 }
 
-export function relationTableSortKey(recordId: string, relationLabel: string): string {
-  return `records/${recordId}/relations/${relationLabel}`;
+export function relationTableSortKey(nodeId: string, relationLabel: string): string {
+  return `records/${nodeId}/relations/${relationLabel}`;
 }
 
 export function databaseTableSortKey(
-  recordId: string,
+  nodeId: string,
   databaseId: string,
   viewName: string,
 ): string {
-  return `records/${recordId}/database/${databaseId}/${viewName}`;
+  return `records/${nodeId}/database/${databaseId}/${viewName}`;
 }
 
 export function isDefaultTableSort(spec: TableSortSpec): boolean {

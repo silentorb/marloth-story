@@ -31,8 +31,8 @@ export function getDefaultResolverRegistry(): ResolverRegistry {
 }
 
 function registerStarterResolvers(registry: ResolverRegistry): void {
-  registerFixedResolver(registry, "characters.allSceneCount", (ctx, params, pageId, prefetch) =>
-    resolveAllSceneCount(ctx, params, pageId, prefetch ?? buildAllSceneCountPrefetch(ctx)),
+  registerFixedResolver(registry, "characters.allSceneCount", (ctx, params, nodeId, prefetch) =>
+    resolveAllSceneCount(ctx, params, nodeId, prefetch ?? buildAllSceneCountPrefetch(ctx)),
   );
 
   registerColumnSetResolver(registry, "characters.sceneCountByProduct", {
@@ -41,12 +41,12 @@ function registerStarterResolvers(registry: ResolverRegistry): void {
     resolveCell: resolveSceneCountByProduct,
   });
 
-  registerFixedResolver(registry, "inspirations.weightedUse", (ctx, params, pageId, prefetch) =>
-    resolveWeightedUse(ctx, params, pageId, prefetch ?? buildWeightedUsePrefetch(ctx, params)),
+  registerFixedResolver(registry, "inspirations.weightedUse", (ctx, params, nodeId, prefetch) =>
+    resolveWeightedUse(ctx, params, nodeId, prefetch ?? buildWeightedUsePrefetch(ctx, params)),
   );
 
-  registerFixedResolver(registry, "inspirations.wonder", (ctx, params, pageId, prefetch) =>
-    resolveWonder(ctx, params, pageId, prefetch ?? buildWonderPrefetch(ctx, params)),
+  registerFixedResolver(registry, "inspirations.wonder", (ctx, params, nodeId, prefetch) =>
+    resolveWonder(ctx, params, nodeId, prefetch ?? buildWonderPrefetch(ctx, params)),
   );
 }
 

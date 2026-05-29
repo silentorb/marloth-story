@@ -1,23 +1,23 @@
 import { useCallback } from "react";
 import type { EditorApi } from "../api/client";
 import type { PropertiesSection } from "../../shared/types";
-import { SectionTitle } from "./RecordNameLink";
+import { SectionTitle } from "./NodeNameLink";
 import { renderTableCell } from "./table-cell-render";
 import "./properties-section-view.css";
 
 interface PropertiesSectionViewProps {
   api: EditorApi;
-  recordId: string;
+  nodeId: string;
   section: PropertiesSection;
-  onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
+  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
 }
 
 export function PropertiesSectionView({
   api,
-  recordId,
+  nodeId,
   section,
-  onOpenRecord,
+  onOpenNode,
   onCellUpdated,
 }: PropertiesSectionViewProps) {
   const renderField = useCallback(
@@ -35,7 +35,7 @@ export function PropertiesSectionView({
             ? async (next) => {
                 await api.updateDatabaseRowProperty(
                   section.databaseId,
-                  recordId,
+                  nodeId,
                   columnKey,
                   next,
                 );
@@ -44,7 +44,7 @@ export function PropertiesSectionView({
             : undefined,
       });
     },
-    [api, onCellUpdated, recordId, section.cells, section.columnDefs, section.databaseId],
+    [api, onCellUpdated, nodeId, section.cells, section.columnDefs, section.databaseId],
   );
 
   return (
@@ -52,8 +52,8 @@ export function PropertiesSectionView({
       <SectionTitle
         api={api}
         title="Properties"
-        typeRecordId={section.databaseId}
-        onOpenRecord={onOpenRecord}
+        typeNodeId={section.databaseId}
+        onOpenNode={onOpenNode}
       />
       <dl className="marloth-properties-form">
         {section.columns.map((columnKey) => {

@@ -2,7 +2,14 @@
 
 ## What it is
 
-VS Code extension + React webview for editing Marloth design records stored in `data/marloth.sqlite`. Uses **Milkdown Crepe** for a Notion-like markdown experience with `@` cross-link autocomplete.
+VS Code extension + React webview for editing Marloth design nodes stored in `data/marloth.sqlite`. Uses **Milkdown Crepe** for a Notion-like markdown experience with `@` cross-link autocomplete.
+
+## Terminology
+
+- **Node** — graph entity; API `GET/PUT /api/nodes/:id`, search `GET /api/nodes/search`.
+- **Page** — `NodePageView` UI for one node (title, metadata, sections).
+- **Connection** — graph relationship; connection property edits via `/api/nodes/:id/connections/...`.
+- Navigation: `marloth://node/{id}`, standalone `?node=`, commands `marloth.openHome` / `marloth.openNode`.
 
 ## Theme
 
@@ -21,7 +28,7 @@ The extension host **does not** open SQLite directly. It spawns (or connects to)
 
 **Data transport:** webview → REST (`src/shared/http-client.ts`) in all modes. **Navigation transport:** webview → postMessage → extension host (VS Code only).
 
-**Link/navigation convention:** prefer real URLs and native browser behavior in standalone mode (`src/webview/record-links.ts`). Stored markdown still uses `marloth:{id}`; the standalone UI rewrites rendered anchors to `?record=` query URLs. Only intercept clicks when no native URL exists (VS Code `marloth:` links). Canvas/graph clicks are an exception.
+**Link/navigation convention:** prefer real URLs and native browser behavior in standalone mode (`src/webview/node-links.ts`). Stored markdown still uses `marloth:{id}`; the standalone UI rewrites rendered anchors to `?node=` query URLs. Only intercept clicks when no native URL exists (VS Code `marloth:` links). Canvas/graph clicks are an exception.
 
 ## Run
 
@@ -43,8 +50,8 @@ VS Code extension: F5 → **Marloth Editor: Extension** (requires `editor:dev` r
 
 ## Commands
 
-- `marloth.openHome` — open home record (Marloth root page)
-- `marloth.openRecord` — open by 32-char record id
+- `marloth.openHome` — open home node (Marloth root page)
+- `marloth.openNode` — open by 32-char node id
 
 ## Tests
 

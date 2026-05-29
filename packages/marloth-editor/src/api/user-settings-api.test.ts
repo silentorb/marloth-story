@@ -13,7 +13,7 @@ describe("user-settings API", () => {
     const settingsPath = join(dir, "user-settings.json");
 
     const db = new GraphDatabase(dbPath);
-    db.upsertVertex("page1", ["NotionPage"], { title: "Alpha" });
+    db.upsertNode("page1", ["NotionPage"], { title: "Alpha" });
     db.close();
 
     const store = new UserSettingsStore(settingsPath);

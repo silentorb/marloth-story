@@ -55,7 +55,7 @@ export async function syncPages(
 
   for (const id of ids) {
     summary.scanned += 1;
-    const vertex = db.getVertex(id);
+    const vertex = db.getNode(id);
     if (!vertex) {
       summary.skipped += 1;
       continue;
@@ -70,7 +70,7 @@ export async function syncPages(
         summary.updated += 1;
         console.log(`[dry-run] would update ${id}: ${Object.keys(patch).join(", ")}`);
       } else {
-        db.mergeVertexProperties(id, patch);
+        db.mergeNodeProperties(id, patch);
         summary.updated += 1;
       }
     } catch (err) {

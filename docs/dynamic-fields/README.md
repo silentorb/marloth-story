@@ -1,6 +1,6 @@
 # Dynamic field specifications
 
-Authoritative logic for **dynamic table view columns** — computed at read time from the property graph, not stored on `IS_A` edges.
+Authoritative logic for **dynamic table view columns** — computed at read time from the property graph, not stored on `IS_A` connection properties.
 
 When adding or changing a dynamic field:
 
@@ -41,15 +41,15 @@ Copy when authoring a new field:
 
 ## Graph paths
 
-(Edge labels, anchor vertex ids, membership databases.)
+(Connection labels, anchor node ids, membership databases.)
 
 ## Replaces legacy field
 
-(If any — Notion formula/rollup key on IS_A edges.)
+(If any — Notion formula/rollup key on `IS_A` connection properties.)
 
 ## Worked example
 
-(Real record ids and expected values from the graph.)
+(Real node ids and expected values from the graph.)
 
 ## Resolver and overlay
 

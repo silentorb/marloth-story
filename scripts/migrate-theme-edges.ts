@@ -24,10 +24,10 @@ export function migrateThemeEdges(db: GraphDatabase): { created: number; scanned
   let scanned = 0;
 
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    for (const edge of db.listEdgesToTarget(FEATURES_DB, label)) {
+    for (const connection of db.listConnectionsToTarget(FEATURES_DB, label)) {
       scanned++;
-      if (!hasWonderlandTag(edge.properties)) continue;
-      db.upsertEdge(edge.sourceId, WONDERLAND_PAGE, THEME_LABEL, {});
+      if (!hasWonderlandTag(connection.properties)) continue;
+      db.upsertConnection(connection.sourceNodeId, WONDERLAND_PAGE, THEME_LABEL, {});
       created++;
     }
   }
@@ -39,5 +39,5 @@ if (import.meta.main) {
   const db = new GraphDatabase(dbPath());
   const result = migrateThemeEdges(db);
   db.finalize();
-  console.log(`Created/merged ${result.created} THEME edges (scanned ${result.scanned} feature rows).`);
+  console.log(`Created/merged ${result.created} THEME connections (scanned ${result.scanned} feature rows).`);
 }

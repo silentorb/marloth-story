@@ -84,7 +84,7 @@ describe("graph LOD navigation", () => {
           path: null,
         },
       ],
-      links: [],
+      connections: [],
     };
     expect(resolveAnchorTitleFromSnapshot(snapshot, "abc")).toBe("James");
   });

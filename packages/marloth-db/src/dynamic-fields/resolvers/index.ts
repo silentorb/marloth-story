@@ -1,37 +1,37 @@
-import type { GraphDatabase } from "../graph";
+import type { GraphDatabase } from "../../graph";
 import { TYPE_MEMBERSHIP_LABELS } from "../../labels";
 import { priorityWeight } from "../../property-enums";
-import type { DynamicResolverContext } from "./registry";
+import type { DynamicResolverContext } from "../registry";
 
 export { priorityWeight, PRIORITY_WEIGHT } from "../../property-enums";
 
-function titleFromVertex(db: GraphDatabase, id: string): string {
-  const vertex = db.getVertex(id);
-  const title = vertex?.properties.title;
+function titleFromNode(db: GraphDatabase, id: string): string {
+  const node = db.getNode(id);
+  const title = node?.properties.title;
   return typeof title === "string" && title.trim() ? title.trim() : "Untitled";
 }
 
-/** Prefetch: pageId -> count of SCENES edges */
+/** Prefetch: nodeId -> count of SCENES connections */
 export function buildAllSceneCountPrefetch(ctx: DynamicResolverContext): Map<string, number> {
   const counts = new Map<string, number>();
-  for (const pageId of ctx.rowPageIds) {
-    counts.set(pageId, dbCountEdges(ctx.db, pageId, "SCENES"));
+  for (const nodeId of ctx.rowNodeIds) {
+    counts.set(nodeId, dbCountConnections(ctx.db, nodeId, "SCENES"));
   }
   return counts;
 }
 
-function dbCountEdges(db: GraphDatabase, sourceId: string, label: string): number {
-  return db.listEdgesFromSource(sourceId, label).length;
+function dbCountConnections(db: GraphDatabase, sourceNodeId: string, label: string): number {
+  return db.listConnectionsFromSource(sourceNodeId, label).length;
 }
 
 export function resolveAllSceneCount(
   _ctx: DynamicResolverContext,
   _params: Record<string, unknown>,
-  pageId: string,
+  nodeId: string,
   prefetch: unknown,
 ): string {
   const counts = prefetch as Map<string, number>;
-  return String(counts.get(pageId) ?? 0);
+  return String(counts.get(nodeId) ?? 0);
 }
 
 export interface SceneCountByProductPrefetch {
@@ -50,22 +50,22 @@ export function buildSceneCountByProductPrefetch(
   const characterSceneProducts = new Map<string, Map<string, string[]>>();
   const productIds = new Set<string>();
 
-  for (const pageId of ctx.rowPageIds) {
+  for (const nodeId of ctx.rowNodeIds) {
     const sceneMap = new Map<string, string[]>();
-    for (const sceneEdge of ctx.db.listEdgesFromSource(pageId, scenesLabel)) {
+    for (const sceneConnection of ctx.db.listConnectionsFromSource(nodeId, scenesLabel)) {
       const products = ctx.db
-        .listEdgesFromSource(sceneEdge.targetId, productLabel)
-        .map((e) => e.targetId);
+        .listConnectionsFromSource(sceneConnection.targetNodeId, productLabel)
+        .map((c) => c.targetNodeId);
       if (products.length > 0) {
-        sceneMap.set(sceneEdge.targetId, products);
+        sceneMap.set(sceneConnection.targetNodeId, products);
         for (const pid of products) productIds.add(pid);
       }
     }
-    characterSceneProducts.set(pageId, sceneMap);
+    characterSceneProducts.set(nodeId, sceneMap);
   }
 
   const dimensions = [...productIds]
-    .map((id) => ({ id, title: titleFromVertex(ctx.db, id) }))
+    .map((id) => ({ id, title: titleFromNode(ctx.db, id) }))
     .sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
 
   return { characterSceneProducts, dimensions };
@@ -81,12 +81,12 @@ export function discoverSceneCountByProductDimensions(
 export function resolveSceneCountByProduct(
   _ctx: DynamicResolverContext,
   _params: Record<string, unknown>,
-  pageId: string,
+  nodeId: string,
   productId: string,
   prefetch: unknown,
 ): string {
   const data = prefetch as SceneCountByProductPrefetch;
-  const sceneMap = data.characterSceneProducts.get(pageId);
+  const sceneMap = data.characterSceneProducts.get(nodeId);
   if (!sceneMap) return "0";
   let count = 0;
   for (const products of sceneMap.values()) {
@@ -110,19 +110,19 @@ export function buildWeightedUsePrefetch(
   const priorityByFeature = new Map<string, number>();
   if (featuresDbId) {
     for (const label of TYPE_MEMBERSHIP_LABELS) {
-      for (const edge of ctx.db.listEdgesToTarget(featuresDbId, label)) {
-        priorityByFeature.set(edge.sourceId, priorityWeight(edge.properties.priority));
+      for (const connection of ctx.db.listConnectionsToTarget(featuresDbId, label)) {
+        priorityByFeature.set(connection.sourceNodeId, priorityWeight(connection.properties.priority));
       }
     }
   }
 
   const sums = new Map<string, number>();
-  for (const pageId of ctx.rowPageIds) {
+  for (const nodeId of ctx.rowNodeIds) {
     let sum = 0;
-    for (const featEdge of ctx.db.listEdgesFromSource(pageId, featuresLabel)) {
-      sum += priorityByFeature.get(featEdge.targetId) ?? 0;
+    for (const featConnection of ctx.db.listConnectionsFromSource(nodeId, featuresLabel)) {
+      sum += priorityByFeature.get(featConnection.targetNodeId) ?? 0;
     }
-    sums.set(pageId, sum);
+    sums.set(nodeId, sum);
   }
   return { sums };
 }
@@ -130,11 +130,11 @@ export function buildWeightedUsePrefetch(
 export function resolveWeightedUse(
   _ctx: DynamicResolverContext,
   _params: Record<string, unknown>,
-  pageId: string,
+  nodeId: string,
   prefetch: unknown,
 ): string {
   const data = prefetch as WeightedUsePrefetch;
-  return String(data.sums.get(pageId) ?? 0);
+  return String(data.sums.get(nodeId) ?? 0);
 }
 
 export interface WonderPrefetch {
@@ -152,18 +152,18 @@ export function buildWonderPrefetch(
 
   const themedFeatures = new Set<string>();
   if (themeTargetId) {
-    for (const edge of ctx.db.listEdgesToTarget(themeTargetId)) {
-      if (edge.label === themeLabel) themedFeatures.add(edge.sourceId);
+    for (const connection of ctx.db.listConnectionsToTarget(themeTargetId)) {
+      if (connection.label === themeLabel) themedFeatures.add(connection.sourceNodeId);
     }
   }
 
   const counts = new Map<string, number>();
-  for (const pageId of ctx.rowPageIds) {
+  for (const nodeId of ctx.rowNodeIds) {
     let count = 0;
-    for (const featEdge of ctx.db.listEdgesFromSource(pageId, featuresLabel)) {
-      if (themedFeatures.has(featEdge.targetId)) count++;
+    for (const featConnection of ctx.db.listConnectionsFromSource(nodeId, featuresLabel)) {
+      if (themedFeatures.has(featConnection.targetNodeId)) count++;
     }
-    counts.set(pageId, count);
+    counts.set(nodeId, count);
   }
   return { counts };
 }
@@ -171,9 +171,9 @@ export function buildWonderPrefetch(
 export function resolveWonder(
   _ctx: DynamicResolverContext,
   _params: Record<string, unknown>,
-  pageId: string,
+  nodeId: string,
   prefetch: unknown,
 ): string {
   const data = prefetch as WonderPrefetch;
-  return String(data.counts.get(pageId) ?? 0);
+  return String(data.counts.get(nodeId) ?? 0);
 }

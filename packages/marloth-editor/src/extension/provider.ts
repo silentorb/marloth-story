@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { existsSync } from "node:fs";
 import { ensureApiServer, resolveApiBaseUrl } from "./api-bridge";
-import { recordIdFromUri, recordUri } from "../shared/types";
+import { nodeIdFromUri, nodeUri } from "../shared/types";
 import type { EditorApiClient } from "../shared/http-client";
 
 async function isDevWebviewReachable(baseUrl: string): Promise<boolean> {
@@ -15,11 +15,11 @@ async function isDevWebviewReachable(baseUrl: string): Promise<boolean> {
 }
 
 export class MarlothDocument implements vscode.CustomDocument {
-  static async create(recordId: string): Promise<MarlothDocument> {
-    return new MarlothDocument(recordId);
+  static async create(nodeId: string): Promise<MarlothDocument> {
+    return new MarlothDocument(nodeId);
   }
 
-  private constructor(readonly recordId: string) {}
+  private constructor(readonly nodeId: string) {}
 
   dispose(): void {
     /* no resources */
@@ -48,11 +48,11 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
     _openContext: vscode.CustomDocumentOpenContext,
     _token: vscode.CancellationToken,
   ): Promise<MarlothDocument> {
-    const recordId = recordIdFromUri(uri.toString());
-    if (!recordId) {
+    const nodeId = nodeIdFromUri(uri.toString());
+    if (!nodeId) {
       throw new Error(`Invalid Marloth URI: ${uri.toString()}`);
     }
-    return MarlothDocument.create(recordId);
+    return MarlothDocument.create(nodeId);
   }
 
   async resolveCustomEditor(
@@ -74,7 +74,7 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
       await this.handleMessage(message, webviewPanel);
     });
 
-    webviewPanel.webview.postMessage({ type: "init", recordId: document.recordId });
+    webviewPanel.webview.postMessage({ type: "init", nodeId: document.nodeId });
   }
 
   private async buildHtml(webview: vscode.Webview): Promise<string> {
@@ -150,23 +150,23 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
   }
 
   private async handleMessage(
-    message: { type?: string; recordId?: string; openInNewTab?: boolean },
+    message: { type?: string; nodeId?: string; openInNewTab?: boolean },
     panel: vscode.WebviewPanel,
   ): Promise<void> {
     if (message.type !== "navigate") return;
 
-    const targetId = message.recordId;
+    const targetId = message.nodeId;
     if (!targetId) return;
 
     if (message.openInNewTab) {
-      await vscode.commands.executeCommand("marloth.openRecord", targetId, { preview: false });
+      await vscode.commands.executeCommand("marloth.openNode", targetId, { preview: false });
       return;
     }
 
-    panel.webview.postMessage({ type: "navigate", recordId: targetId });
+    panel.webview.postMessage({ type: "navigate", nodeId: targetId });
     try {
       const api = await this.client();
-      const record = await api.getRecord(targetId);
+      const record = await api.getNode(targetId);
       panel.title = record.title;
     } catch {
       panel.title = targetId;
@@ -174,8 +174,8 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
   }
 }
 
-export async function openRecord(recordId: string, options?: { preview?: boolean }): Promise<void> {
-  const uri = vscode.Uri.parse(recordUri(recordId));
+export async function openNode(nodeId: string, options?: { preview?: boolean }): Promise<void> {
+  const uri = vscode.Uri.parse(nodeUri(nodeId));
   await vscode.commands.executeCommand(
     "vscode.openWith",
     uri,
@@ -187,5 +187,5 @@ export async function openRecord(recordId: string, options?: { preview?: boolean
 export async function openHome(context: vscode.ExtensionContext): Promise<void> {
   const api = await ensureApiServer(context.extensionPath);
   const homeId = await api.getHomeId();
-  await openRecord(homeId, { preview: false });
+  await openNode(homeId, { preview: false });
 }

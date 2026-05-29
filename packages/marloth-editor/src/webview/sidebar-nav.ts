@@ -1,6 +1,6 @@
 import type { AppView } from "../shared/types";
 
-export interface SidebarRecordLink {
+export interface SidebarNodeLink {
   id: string;
   label: string;
   icon: string;
@@ -8,12 +8,12 @@ export interface SidebarRecordLink {
 
 export const HOME_ICON = "⌂";
 
-export const VIEW_ICONS: Record<Exclude<AppView, "record">, string> = {
+export const VIEW_ICONS: Record<Exclude<AppView, "node-page">, string> = {
   "graph-explorer": "⊕",
 };
 
 /** Quick navigation targets in the side panel (Notion database / page ids). */
-export const SIDEBAR_RECORD_LINKS: readonly SidebarRecordLink[] = [
+export const SIDEBAR_NODE_LINKS: readonly SidebarNodeLink[] = [
   { id: "dd0de9867cc345b898929306bdf9fc83", label: "Features", icon: "★" },
   { id: "528384943746443a9c89699b57e3bbec", label: "Solutions", icon: "✓" },
   { id: "204dba198db74611b0b49a98dd53e8f5", label: "Scenes", icon: "▶" },
@@ -23,10 +23,10 @@ export const SIDEBAR_RECORD_LINKS: readonly SidebarRecordLink[] = [
   { id: "df096ab26e8347e6992e95698345aad0", label: "Locations", icon: "⌖" },
 ];
 
-export const SIDEBAR_ICON_BY_RECORD_ID: Readonly<Record<string, string>> = Object.fromEntries(
-  SIDEBAR_RECORD_LINKS.map(({ id, icon }) => [id, icon]),
+export const SIDEBAR_ICON_BY_NODE_ID: Readonly<Record<string, string>> = Object.fromEntries(
+  SIDEBAR_NODE_LINKS.map(({ id, icon }) => [id, icon]),
 );
 
 export const SIDEBAR_ICON_BY_LABEL: Readonly<Record<string, string>> = Object.fromEntries(
-  SIDEBAR_RECORD_LINKS.map(({ label, icon }) => [label, icon]),
+  SIDEBAR_NODE_LINKS.map(({ label, icon }) => [label, icon]),
 );

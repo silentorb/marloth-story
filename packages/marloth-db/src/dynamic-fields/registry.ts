@@ -7,7 +7,7 @@ export interface DynamicResolverContext {
   db: GraphDatabase;
   databaseId: string;
   viewName: string;
-  rowPageIds: string[];
+  rowNodeIds: string[];
 }
 
 export interface ColumnSetDimension {
@@ -20,7 +20,7 @@ export interface ColumnSetResolver {
   resolveCell(
     ctx: DynamicResolverContext,
     params: DynamicFieldParams,
-    pageId: string,
+    nodeId: string,
     dimensionId: string,
     prefetch: unknown,
   ): string;
@@ -30,7 +30,7 @@ export interface ColumnSetResolver {
 export type FixedFieldResolver = (
   ctx: DynamicResolverContext,
   params: DynamicFieldParams,
-  pageId: string,
+  nodeId: string,
   prefetch: unknown,
 ) => string;
 

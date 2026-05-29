@@ -20,4 +20,4 @@ Read before making changes:
 
 **Archival exports:** if data exists only in `./exports/`, mine the relevant files and upsert surgically — see [`docs/features/notion-import.md`](../../docs/features/notion-import.md) (legacy).
 
-For design record semantics: [`docs/ontology.md`](../../docs/ontology.md).
+For design node semantics: [`docs/ontology.md`](../../docs/ontology.md). Terminology: **node**, **connection**, **page** (see root [`AGENTS.md`](../../AGENTS.md)).

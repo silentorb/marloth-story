@@ -41,36 +41,36 @@ describe("dynamic-fields resolvers", () => {
   const featurePlain = "fpffffffffffffffffffffffffffffff";
 
   beforeAll(() => {
-    db.upsertVertex(CHAR_DB, ["NotionDatabase"], { title: "Characters" });
-    db.upsertVertex(INSP_DB, ["NotionDatabase"], { title: "Inspirations" });
-    db.upsertVertex(FEAT_DB, ["NotionDatabase"], { title: "Features" });
-    db.upsertVertex(TWOLD, ["NotionPage"], { title: "TWOLD" });
-    db.upsertVertex(OTHER_PRODUCT, ["NotionPage"], { title: "Other Book" });
-    db.upsertVertex(WONDERLAND, ["NotionPage"], { title: "Wonderland" });
+    db.upsertNode(CHAR_DB, ["NotionDatabase"], { title: "Characters" });
+    db.upsertNode(INSP_DB, ["NotionDatabase"], { title: "Inspirations" });
+    db.upsertNode(FEAT_DB, ["NotionDatabase"], { title: "Features" });
+    db.upsertNode(TWOLD, ["NotionPage"], { title: "TWOLD" });
+    db.upsertNode(OTHER_PRODUCT, ["NotionPage"], { title: "Other Book" });
+    db.upsertNode(WONDERLAND, ["NotionPage"], { title: "Wonderland" });
 
-    db.upsertVertex(character, ["NotionPage"], { title: "James" });
-    db.upsertEdge(character, CHAR_DB, IS_A_LABEL, { row_index: 0 });
+    db.upsertNode(character, ["NotionPage"], { title: "James" });
+    db.upsertConnection(character, CHAR_DB, IS_A_LABEL, { row_index: 0 });
 
-    db.upsertVertex(scene1, ["NotionPage"], { title: "Scene A" });
-    db.upsertVertex(scene2, ["NotionPage"], { title: "Scene B" });
-    db.upsertVertex(scene3, ["NotionPage"], { title: "Scene C" });
-    db.upsertEdge(character, scene1, "SCENES", {});
-    db.upsertEdge(character, scene2, "SCENES", {});
-    db.upsertEdge(character, scene3, "SCENES", {});
-    db.upsertEdge(scene1, TWOLD, "PRODUCT", {});
-    db.upsertEdge(scene2, TWOLD, "PRODUCT", {});
-    db.upsertEdge(scene3, OTHER_PRODUCT, "PRODUCT", {});
+    db.upsertNode(scene1, ["NotionPage"], { title: "Scene A" });
+    db.upsertNode(scene2, ["NotionPage"], { title: "Scene B" });
+    db.upsertNode(scene3, ["NotionPage"], { title: "Scene C" });
+    db.upsertConnection(character, scene1, "SCENES", {});
+    db.upsertConnection(character, scene2, "SCENES", {});
+    db.upsertConnection(character, scene3, "SCENES", {});
+    db.upsertConnection(scene1, TWOLD, "PRODUCT", {});
+    db.upsertConnection(scene2, TWOLD, "PRODUCT", {});
+    db.upsertConnection(scene3, OTHER_PRODUCT, "PRODUCT", {});
 
-    db.upsertVertex(inspiration, ["NotionPage"], { title: "Test Inspiration" });
-    db.upsertEdge(inspiration, INSP_DB, IS_A_LABEL, { row_index: 0 });
+    db.upsertNode(inspiration, ["NotionPage"], { title: "Test Inspiration" });
+    db.upsertConnection(inspiration, INSP_DB, IS_A_LABEL, { row_index: 0 });
 
-    db.upsertVertex(featureWonder, ["NotionPage"], { title: "Adventure" });
-    db.upsertVertex(featurePlain, ["NotionPage"], { title: "Plain" });
-    db.upsertEdge(featureWonder, FEAT_DB, IS_A_LABEL, { priority: "Medium" });
-    db.upsertEdge(featurePlain, FEAT_DB, IS_A_LABEL, { priority: "High" });
-    db.upsertEdge(inspiration, featureWonder, "FEATURES", {});
-    db.upsertEdge(inspiration, featurePlain, "FEATURES", {});
-    db.upsertEdge(featureWonder, WONDERLAND, "THEME", {});
+    db.upsertNode(featureWonder, ["NotionPage"], { title: "Adventure" });
+    db.upsertNode(featurePlain, ["NotionPage"], { title: "Plain" });
+    db.upsertConnection(featureWonder, FEAT_DB, IS_A_LABEL, { priority: "Medium" });
+    db.upsertConnection(featurePlain, FEAT_DB, IS_A_LABEL, { priority: "High" });
+    db.upsertConnection(inspiration, featureWonder, "FEATURES", {});
+    db.upsertConnection(inspiration, featurePlain, "FEATURES", {});
+    db.upsertConnection(featureWonder, WONDERLAND, "THEME", {});
 
     seedDynamicField(db, {
       id: "test-all-scene",
@@ -110,33 +110,33 @@ describe("dynamic-fields resolvers", () => {
   });
 
   test("all scene count", () => {
-    const ctx = { db, databaseId: CHAR_DB, viewName: "All", rowPageIds: [character] };
+    const ctx = { db, databaseId: CHAR_DB, viewName: "All", rowNodeIds: [character] };
     const prefetch = buildAllSceneCountPrefetch(ctx);
     expect(resolveAllSceneCount(ctx, {}, character, prefetch)).toBe("3");
   });
 
   test("scene count by product", () => {
-    const ctx = { db, databaseId: CHAR_DB, viewName: "All", rowPageIds: [character] };
+    const ctx = { db, databaseId: CHAR_DB, viewName: "All", rowNodeIds: [character] };
     const prefetch = buildSceneCountByProductPrefetch(ctx, {});
     expect(resolveSceneCountByProduct(ctx, {}, character, TWOLD, prefetch)).toBe("2");
     expect(resolveSceneCountByProduct(ctx, {}, character, OTHER_PRODUCT, prefetch)).toBe("1");
   });
 
   test("weighted use", () => {
-    const ctx = { db, databaseId: INSP_DB, viewName: "Weighted", rowPageIds: [inspiration] };
+    const ctx = { db, databaseId: INSP_DB, viewName: "Weighted", rowNodeIds: [inspiration] };
     const prefetch = buildWeightedUsePrefetch(ctx, { features_database_id: FEAT_DB });
     expect(resolveWeightedUse(ctx, {}, inspiration, prefetch)).toBe("6");
   });
 
   test("wonder count", () => {
-    const ctx = { db, databaseId: INSP_DB, viewName: "Wonder", rowPageIds: [inspiration] };
+    const ctx = { db, databaseId: INSP_DB, viewName: "Wonder", rowNodeIds: [inspiration] };
     const prefetch = buildWonderPrefetch(ctx, { theme_target_id: WONDERLAND });
     expect(resolveWonder(ctx, {}, inspiration, prefetch)).toBe("1");
   });
 
   test("database view integration for characters", () => {
     const detail = getDatabaseViewDetail(db, CHAR_DB);
-    const james = detail?.rows.find((r) => r.pageId === character);
+    const james = detail?.rows.find((r) => r.nodeId === character);
     expect(james?.cells.all_scene_count).toBe("3");
     expect(james?.cells[`scene_count__${TWOLD}`]).toBe("2");
     expect(james?.cells[`scene_count__${OTHER_PRODUCT}`]).toBe("1");
@@ -145,7 +145,7 @@ describe("dynamic-fields resolvers", () => {
 
   test("database view integration for inspirations", () => {
     const detail = getDatabaseViewDetail(db, INSP_DB);
-    const row = detail?.rows.find((r) => r.pageId === inspiration);
+    const row = detail?.rows.find((r) => r.nodeId === inspiration);
     expect(row?.cells.weighted_use).toBe("6");
     expect(row?.cells.wonder).toBe("1");
   });

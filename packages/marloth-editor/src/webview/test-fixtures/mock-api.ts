@@ -6,7 +6,7 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
   return {
     host,
     getHomeId: async () => "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    getRecord: async () => {
+    getNode: async () => {
       throw new Error("not implemented in mock");
     },
     getDatabaseView: async () => {
@@ -16,10 +16,10 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     saveBody: async () => {},
     saveTitle: async () => {},
     updateDatabaseRowProperty: async () => {},
-    updateRelationEdgeProperty: async () => {},
-    deleteRecord: async () => {},
-    archiveRecord: async () => {},
-    getGraphFull: async () => ({ nodes: [], links: [] }),
+    updateOutgoingConnectionProperty: async () => {},
+    deleteNode: async () => {},
+    archiveNode: async () => {},
+    getGraphFull: async () => ({ nodes: [], connections: [] }),
     getGraphExplorerLod: async () => makeGraphLodSnapshot(),
     getUserSettings: async () => emptyUserSettings(),
     patchUserSettings: async () => emptyUserSettings(),

@@ -1,5 +1,5 @@
 /**
- * Maps Notion database property names to graph edge labels for relation columns.
+ * Maps Notion database property names to graph connection labels for relation columns.
  * Parity with legacy CSV import rules (see docs/features/notion-import.md); not imported from notion-importer.
  */
 
@@ -39,7 +39,7 @@ function slugifyPropertySlug(label: string): string {
   return s;
 }
 
-/** Graph edge label for a Notion relation property (e.g. "Bible passages" → "BIBLE_PASSAGES"). */
+/** Graph connection label for a Notion relation property (e.g. "Bible passages" → "BIBLE_PASSAGES"). */
 export function relationLabel(propertyName: string): string {
   return slugifyPropertySlug(propertyName).toUpperCase().replace(/-/g, "_");
 }

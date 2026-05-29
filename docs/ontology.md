@@ -4,15 +4,15 @@
 
 This document describes the **domain model** of the Marloth design corpus in human-friendly terms: what kinds of things exist, what they mean, and how they relate. It is **storage-agnostic**—agents should treat it as the conceptual source of truth for *what the data is about*, independent of SQLite tables or Notion export quirks.
 
-For how records are stored, queried, and imported, see [`docs/features/marloth-db.md`](./features/marloth-db.md) and [`docs/features/notion-import.md`](./features/notion-import.md).
+For how nodes are stored, queried, and imported, see [`docs/features/marloth-db.md`](./features/marloth-db.md) and [`docs/features/notion-import.md`](./features/notion-import.md).
 
 ## When to read this
 
 Read this doc when your task involves:
 
-- Understanding or editing **design records** in the graph (scenes, features, inspirations, products, etc.)
-- Reasoning about **relationships** between creative, design, and finished-work artifacts
-- Deciding how new records should be categorized or linked
+- Understanding or editing **design nodes** in the graph (scenes, features, inspirations, products, etc.)
+- Reasoning about **connections** between creative, design, and finished-work artifacts
+- Deciding how new nodes should be categorized or linked
 - Traceability questions (why does this scene exist? what principle does it serve?)
 
 **Read both** this ontology and the schema-specific docs when interacting with data: ontology for *meaning*, schema docs for *mechanics*.
@@ -22,10 +22,10 @@ Read this doc when your task involves:
 | Question | Start here | Then consult |
 | --- | --- | --- |
 | What is a “feature” in this project? | [Terminology](#terminology) | — |
-| What kinds of records exist? | [Entity types](#entity-types) | `inferred_notion_path` on vertices (legacy grouping) |
-| What does a link *mean*? | [Relationship types](#relationship-types) | Edge `label` in SQLite |
-| How is work scoped to a book vs game? | [Dimensions](#dimensions) | `PRODUCTS` / `PRODUCT` edges |
-| How does design connect to finished prose? | [Traceability](#traceability) | Vertex `body`, scene records |
+| What kinds of nodes exist? | [Entity types](#entity-types) | `inferred_notion_path` on nodes (legacy grouping) |
+| What does a connection *mean*? | [Relationship types](#relationship-types) | Connection `label` in SQLite |
+| How is work scoped to a book vs game? | [Dimensions](#dimensions) | `PRODUCTS` / `PRODUCT` connections |
+| How does design connect to finished prose? | [Traceability](#traceability) | Node property `body`, scene nodes |
 
 When ontology and storage disagree, **update one explicitly**—usually the ontology first (intent), then schema or import mapping.
 
@@ -34,15 +34,18 @@ When ontology and storage disagree, **update one explicitly**—usually the onto
 | Term | Meaning |
 | --- | --- |
 | **Project feature** | Workspace tooling documented in `./docs/features/` (import pipeline, database package, etc.). Never use “feature” alone for this. |
-| **Feature** | A **design record**: a story, world, or craft idea the author may implement (e.g. *Desperation*, *Guest consultant*, *Dark forest*). Lives in the graph under `Marloth/Features/` and related paths. |
+| **Node** | Any entity in the design graph unless context specifies otherwise. |
+| **Connection** | Directed labeled relationship between nodes (e.g. `INSPIRATIONS`, `IS_A`). |
+| **Page** | Editor UI for a node (`NodePageView`, page title, sections)—not a raw Notion export file. |
+| **Feature** | A **design node**: a story, world, or craft idea the author may implement (e.g. *Desperation*, *Guest consultant*, *Dark forest*). Lives in the graph under `Marloth/Features/` and related paths. |
 | **Product** | A **deliverable umbrella**: a book, game, or related work that consumes and organizes design (e.g. *TWOLD*, *A Child's Fairytale World*, *The Shadowhood*). Products share inspirations and structural patterns. |
 | **Inspiration** | An external or reference work that informs design (novel, film, game, trope cluster). |
 | **Scene** | A unit of story action—often the bridge between high-level design and eventual prose. |
-| **Record** | Any vertex in the design graph unless context specifies otherwise. |
+| **NotionPage** / **NotionDatabase** | Legacy **import labels** on nodes; use when referring to stored label values or Notion mapping. |
 
 ## Entity types
 
-Types below are **semantic**. In the current import most records are stored as generic `NotionPage` vertices; type is inferred from Notion folder path (`inferred_notion_path`), title, and relation patterns. Future work may add explicit ontology labels on vertices.
+Types below are **semantic**. In the current import most nodes are stored with the `NotionPage` label; type is inferred from Notion folder path (`inferred_notion_path`), title, and connection patterns. Future work may add explicit ontology labels on nodes.
 
 ### Creative outputs and scope
 
@@ -62,7 +65,7 @@ Types below are **semantic**. In the current import most records are stored as g
 | **Tension** | Paired or opposing forces in the design space (e.g. wonderland vs responsibility). | `Marloth/Data/Tensions/` |
 | **Problem** | Open design question or gap. | `Marloth/Data/Problems/` |
 | **Solution** | Proposed answer to a problem or way to resolve a tension. | `Marloth/Solutions/` |
-| **Motivation** | Rationale for a choice—why something should exist or matter narratively. | Often linked via `MOTIVATIONS` edges |
+| **Motivation** | Rationale for a choice—why something should exist or matter narratively. | Often linked via `MOTIVATIONS` connections |
 | **Foil** | Contrasting pattern or anti-pattern (what *not* to do, or a deliberately opposed approach). | `Marloth/Archive/Foils/` |
 
 ### World and cast
@@ -81,9 +84,9 @@ Types below are **semantic**. In the current import most records are stored as g
 | --- | --- | --- |
 | **Article** | Longer-form design essay, exploration, or general writing idea (may outlive a single product). | `Marloth/Articles/` |
 | **Pacing type** | Temporal rhythm model (days, weeks, etc.) linked to inspirations. | `Marloth/Inspirations/Pacing types/` |
-| **Traversal type / reason** | How and why movement or progression through space/time works in the design. | Linked via `TRAVERSAL_*` edges |
+| **Traversal type / reason** | How and why movement or progression through space/time works in the design. | Linked via `TRAVERSAL_*` connections |
 | **Restriction** | Constraint on what the work may do. | `Marloth/Data/Restrictions/` |
-| **Prop type** | Category of story object or symbolic item. | Linked via `PROP_TYPE` edges |
+| **Prop type** | Category of story object or symbolic item. | Linked via `PROP_TYPE` connections |
 
 ### Meta and archive
 
@@ -92,11 +95,11 @@ Types below are **semantic**. In the current import most records are stored as g
 | **Task** | Action item from planning; may reference features or arcs. | `Task List/` |
 | **Archive** | Superseded or experimental material kept for reference. | `Marloth/Archive/` |
 
-Not every record fits one type cleanly. Composite and cross-linked records are expected—use **relationships** and **dimensions** rather than forcing a single label.
+Not every node fits one type cleanly. Composite and cross-linked nodes are expected—use **connections** and **dimensions** rather than forcing a single label.
 
 ## Relationship types
 
-Relationships express **meaning**, not just connectivity. Imported Notion relation properties become directed edges; labels are uppercase slug forms of the property name (e.g. `Inspirations` → `INSPIRATIONS`).
+Connections express **meaning**, not just connectivity. Imported Notion relation properties become directed connections; labels are uppercase slug forms of the property name (e.g. `Inspirations` → `INSPIRATIONS`).
 
 ### Common semantic relationships
 
@@ -105,22 +108,22 @@ Relationships express **meaning**, not just connectivity. Imported Notion relati
 | **IS_A** | Page is an instance of a type (imported from Notion database membership) | Scene → *Scene Archive* type |
 | **INSPIRATIONS** | B is influenced by or references external work A | Arc ← inspiration from *Pride and Prejudice* |
 | **FEATURES** | B implements, requires, or engages design feature A | Scene uses *Desperation* |
-| **MOTIVATIONS** | A explains why B exists | Motivation record → scene |
+| **MOTIVATIONS** | A explains why B exists | Motivation node → scene |
 | **SCENES** | Parent contains or orders child scenes | Part → scenes in sequence |
 | **PART** / **ARCS** | Structural containment or membership | Scene belongs to arc / part |
 | **PRODUCTS** / **PRODUCT** | Scoped to deliverable | Part → *A Child's Fairytale World* |
-| **CHARACTERS**, **LOCATIONS**, **MONSTERS** | World elements present in or relevant to record | Scene → characters |
+| **CHARACTERS**, **LOCATIONS**, **MONSTERS** | World elements present in or relevant to node | Scene → characters |
 | **SOLUTIONS** | Proposed resolution linked to problem or tension | Solution → tension |
 | **BLOCKING** / **BLOCKED_BY** | Dependency or sequencing constraint | Task A blocks task B |
 | **PARENTS** / **CHILDREN** | Hierarchical decomposition | Design tree |
 
 ### Relationship strength (future)
 
-Today, edges are **boolean**: linked or not. The author intends **weighted** associations for many pairs—especially **feature ↔ inspiration**, where some inspirations strongly shape a feature and others only weakly apply. Weights are not implemented yet; when added they will be numeric edge properties (e.g. `weight`) without changing the underlying ontology.
+Today, connections are **boolean**: linked or not. The author intends **weighted** associations for many pairs—especially **feature ↔ inspiration**, where some inspirations strongly shape a feature and others only weakly apply. Weights are not implemented yet; when added they will be numeric connection properties (e.g. `weight`) without changing the underlying ontology.
 
 ## Dimensions
 
-Records are organized along several **dimensions**. Only some are explicit today; others are implied by paths and edges.
+Nodes are organized along several **dimensions**. Only some are explicit today; others are implied by paths and connections.
 
 | Dimension | Role today | Notes |
 | --- | --- | --- |
@@ -131,7 +134,7 @@ Records are organized along several **dimensions**. Only some are explicit today
 | **World layer** | Character, location, monster, group | Shared or product-specific |
 | **Craft layer** | Pacing, traversal, articles | Techniques portable to other writers |
 
-Expect **additional dimensions** over time. The ontology should evolve; storage may use vertex labels, properties, or edge metadata to make dimensions queryable.
+Expect **additional dimensions** over time. The ontology should evolve; storage may use node labels, properties, or connection metadata to make dimensions queryable.
 
 ## Traceability
 
@@ -145,7 +148,7 @@ Inspiration → Feature → Motivation → Scene → (future) Prose
              Product / Part / Arc (scope)
 ```
 
-Agents helping with design or writing should preserve and strengthen these links—not treat records as isolated notes. When adding or editing records, ask:
+Agents helping with design or writing should preserve and strengthen these links—not treat nodes as isolated notes. When adding or editing nodes, ask:
 
 1. **What product(s)** does this serve?
 2. **What design ideas (features)** does it implement or test?
@@ -161,25 +164,25 @@ Agents helping with design or writing should preserve and strengthen these links
 
 This section is a **hint**, not the authoritative schema spec.
 
-| Ontology | Current storage |
+| Ontology | Current storage (SCHEMA_VERSION 3) |
 | --- | --- |
-| Record | `vertices` row (`NotionPage` or `NotionDatabase`) |
-| Record type (semantic) | `inferred_notion_path`, title, body; future explicit labels |
-| Relationship | `edges` row with `label` + JSON `properties` |
-| Prose / notes | Vertex property `body` (markdown) — **first section** on every page |
-| Database row scalars | Edge properties on `(page)-[:IS_A]->(type)` — not on the page vertex |
-| Relation metadata | Edge properties on labeled relationship edges (e.g. `ordinal`, future `weight`) |
+| Node | `nodes` row; labels in `node_labels` (`NotionPage` or `NotionDatabase`) |
+| Node type (semantic) | `inferred_notion_path`, title, body; future explicit labels |
+| Connection | `connections` row with `label` + JSON `properties` |
+| Prose / notes | Node property `body` (markdown) — **first section** on every page |
+| Database row scalars | Connection properties on `(page)-[:IS_A]->(type)` — not on the page node |
+| Relation metadata | Connection properties on labeled relationships (e.g. `ordinal`, future `weight`) |
 | Stable identity | 32-hex Notion id (pages) or database id (CSVs) |
 
 ### Universal pages (direction)
 
-The corpus is moving away from Notion’s split between “database rows” and “markdown pages.” **Every record is a page** that may combine:
+The corpus is moving away from Notion’s split between “database rows” and “markdown pages.” **Every design node has a page in the editor** that may combine:
 
-1. **Markdown section** — primary prose and notes (`body` on the vertex).
-2. **Relationship sections** — one table per outgoing relationship type (edge label), listing linked records plus any properties stored on those edges.
-3. **Database table section** — for `NotionDatabase` vertices (types), incoming `IS_A` instances rendered as a table (Name from the linked page; other columns from edge properties).
+1. **Markdown section** — primary prose and notes (`body` on the node).
+2. **Relationship sections** — one table per outgoing connection label, listing linked nodes plus any properties stored on those connections.
+3. **Database table section** — for `NotionDatabase` nodes (types), incoming `IS_A` instances rendered as a table (Name from the linked page; other columns from connection properties).
 
-Scalar values that belonged to a database row in Notion (except Name/title) **belong on the relationship edge**, not duplicated on the page vertex, unless the value is clearly intrinsic to the referenced node itself.
+Scalar values that belonged to a database row in Notion (except Name/title) **belong on the `IS_A` connection**, not duplicated on the page node, unless the value is clearly intrinsic to the referenced node itself.
 
 Full DDL and import rules: [`docs/features/marloth-db.md`](./features/marloth-db.md).
 
@@ -189,7 +192,7 @@ This ontology will grow with the trilogy and game work. When adding entity or re
 
 1. Document them here in plain language.
 2. Align import tooling or manual conventions if needed.
-3. Prefer explicit vertex labels or properties over folder-path inference over time.
+3. Prefer explicit node labels or properties over folder-path inference over time.
 
 ## See also
 

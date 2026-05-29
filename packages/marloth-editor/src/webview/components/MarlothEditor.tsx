@@ -8,9 +8,9 @@ import {
   formatMarlothLink,
   marlothHref,
 } from "../../shared/types";
-import type { RecordSummary } from "../../shared/types";
+import type { NodeSummary } from "../../shared/types";
 import { installCalloutDecoration } from "../callout-decoration";
-import { resolveRecordLinkTarget } from "../record-links";
+import { resolveNodeLinkTarget } from "../node-links";
 import { preprocessStandaloneMarkdown } from "../standalone-markdown";
 import "./editor.css";
 
@@ -23,18 +23,18 @@ interface MentionState {
 
 interface MarlothEditorProps {
   api: EditorApi;
-  recordId: string;
+  nodeId: string;
   initialBody: string;
   title?: string;
   hideTitle?: boolean;
   onEditorBaseline?: (body: string) => void;
   onBodyChange?: (body: string) => void;
-  onNavigate?: (recordId: string, openInNewTab?: boolean) => void;
+  onNavigate?: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
 export function MarlothEditor({
   api,
-  recordId,
+  nodeId,
   initialBody,
   title = "",
   hideTitle = true,
@@ -45,10 +45,10 @@ export function MarlothEditor({
   const rootRef = useRef<HTMLDivElement>(null);
   const crepeRef = useRef<Crepe | null>(null);
   const [mention, setMention] = useState<MentionState | null>(null);
-  const [results, setResults] = useState<RecordSummary[]>([]);
+  const [results, setResults] = useState<NodeSummary[]>([]);
   const [initError, setInitError] = useState<string | null>(null);
   const mentionRef = useRef<MentionState | null>(null);
-  const resultsRef = useRef<RecordSummary[]>([]);
+  const resultsRef = useRef<NodeSummary[]>([]);
   mentionRef.current = mention;
   resultsRef.current = results;
 
@@ -58,7 +58,7 @@ export function MarlothEditor({
   }, []);
 
   const insertMention = useCallback(
-    (item: RecordSummary) => {
+    (item: NodeSummary) => {
       const editor = crepeRef.current?.editor;
       if (!editor) return;
       editor.action((ctx) => {
@@ -207,7 +207,7 @@ export function MarlothEditor({
       const target = event.target as HTMLElement | null;
       const anchor = target?.closest("a") as HTMLAnchorElement | null;
       if (!anchor) return;
-      const recordTarget = resolveRecordLinkTarget(anchor.getAttribute("href") ?? "");
+      const recordTarget = resolveNodeLinkTarget(anchor.getAttribute("href") ?? "");
       if (!recordTarget) return;
       event.preventDefault();
       event.stopPropagation();
@@ -223,7 +223,7 @@ export function MarlothEditor({
       const anchor = target?.closest("a") as HTMLAnchorElement | null;
       if (!anchor) return;
       const href = anchor.getAttribute("href") ?? "";
-      const recordTarget = resolveRecordLinkTarget(href);
+      const recordTarget = resolveNodeLinkTarget(href);
       if (!recordTarget) return;
       event.preventDefault();
       const action = window.prompt(
@@ -258,7 +258,7 @@ export function MarlothEditor({
     onEditorBaseline,
     onBodyChange,
     onNavigate,
-    recordId,
+    nodeId,
     title,
   ]);
 

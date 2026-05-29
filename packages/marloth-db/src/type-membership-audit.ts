@@ -1,8 +1,8 @@
-import type { GraphDatabase, EdgeRecord, Properties } from "./graph";
+import type { GraphDatabase, Connection, Properties } from "./graph";
 import { IS_A_LABEL, TYPE_MEMBERSHIP_LABELS } from "./labels";
 
-/** Vertex properties that are not database row scalars. */
-export const VERTEX_META_KEYS = new Set([
+/** Node properties that are not database row scalars. */
+export const NODE_META_KEYS = new Set([
   "title",
   "body",
   "alias",
@@ -16,15 +16,15 @@ export const VERTEX_META_KEYS = new Set([
 ]);
 
 export interface MissingTypeMembership {
-  pageId: string;
+  nodeId: string;
   title: string;
   path: string;
   expectedDatabaseId: string;
   expectedDatabaseTitle: string;
 }
 
-export interface VertexScalarOnTypedPage {
-  pageId: string;
+export interface NodeScalarOnTypedNode {
+  nodeId: string;
   title: string;
   path: string;
   databaseId: string;
@@ -32,14 +32,14 @@ export interface VertexScalarOnTypedPage {
 }
 
 export interface SpuriousTypeMembership {
-  pageId: string;
+  nodeId: string;
   title: string;
   path: string;
   expectedDatabaseId: string;
   expectedDatabaseTitle: string;
   spuriousDatabaseId: string;
   spuriousDatabaseTitle: string;
-  edgeLabel: string;
+  connectionLabel: string;
 }
 
 function titleFromProperties(properties: Record<string, unknown>): string {
@@ -86,18 +86,18 @@ export function findNotionDatabaseByTitle(db: GraphDatabase, title: string): str
   const normalized = title.trim().toLowerCase();
   if (!normalized) return null;
 
-  for (const vertex of db.listVerticesForGraphExport()) {
-    if (!vertex.labels.includes("NotionDatabase")) continue;
-    if (vertex.title.trim().toLowerCase() === normalized) return vertex.id;
+  for (const node of db.listNodesForGraphExport()) {
+    if (!node.labels.includes("NotionDatabase")) continue;
+    if (node.title.trim().toLowerCase() === normalized) return node.id;
   }
   return null;
 }
 
 export function expectedTypeDatabaseForPage(
   db: GraphDatabase,
-  pageId: string,
+  nodeId: string,
 ): { databaseId: string; databaseTitle: string; path: string } | null {
-  const page = db.getVertex(pageId);
+  const page = db.getNode(nodeId);
   if (!page?.labels.includes("NotionPage")) return null;
 
   const path =
@@ -112,70 +112,70 @@ export function expectedTypeDatabaseForPage(
   const databaseId = findNotionDatabaseByTitle(db, databaseTitle);
   if (!databaseId) return null;
 
-  const database = db.getVertex(databaseId);
-
   return { databaseId, databaseTitle, path };
 }
 
-export function findTypeMembershipEdge(
+export function findTypeMembershipConnection(
   db: GraphDatabase,
-  pageId: string,
+  nodeId: string,
   databaseId: string,
-): EdgeRecord | null {
+): Connection | null {
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    const edge = db.listEdgesFromSource(pageId, label).find((e) => e.targetId === databaseId);
-    if (edge) return edge;
+    const connection = db
+      .listConnectionsFromSource(nodeId, label)
+      .find((c) => c.targetNodeId === databaseId);
+    if (connection) return connection;
   }
   return null;
 }
 
-export function vertexScalarKeys(properties: Record<string, unknown>): string[] {
+export function nodeScalarKeys(properties: Record<string, unknown>): string[] {
   const keys: string[] = [];
   for (const [key, value] of Object.entries(properties)) {
-    if (VERTEX_META_KEYS.has(key)) continue;
+    if (NODE_META_KEYS.has(key)) continue;
     if (stringProperty(value) !== null) keys.push(key);
   }
   return keys.sort((a, b) => a.localeCompare(b));
 }
 
-export function scalarPropertiesFromVertex(
+export function scalarPropertiesFromNode(
   properties: Record<string, unknown>,
 ): Record<string, string> {
   const scalars: Record<string, string> = {};
-  for (const key of vertexScalarKeys(properties)) {
+  for (const key of nodeScalarKeys(properties)) {
     const text = stringProperty(properties[key]);
     if (text !== null) scalars[key] = text;
   }
   return scalars;
 }
 
-export function findSpuriousTypeMembershipEdges(db: GraphDatabase): SpuriousTypeMembership[] {
+export function findSpuriousTypeMembershipConnections(db: GraphDatabase): SpuriousTypeMembership[] {
   const spurious: SpuriousTypeMembership[] = [];
 
-  for (const vertex of db.listVerticesForGraphExport()) {
-    if (!vertex.labels.includes("NotionPage")) continue;
+  for (const node of db.listNodesForGraphExport()) {
+    if (!node.labels.includes("NotionPage")) continue;
 
-    const expected = expectedTypeDatabaseForPage(db, vertex.id);
+    const expected = expectedTypeDatabaseForPage(db, node.id);
     if (!expected) continue;
 
     for (const label of TYPE_MEMBERSHIP_LABELS) {
-      for (const edge of db.listEdgesFromSource(vertex.id, label)) {
-        if (edge.targetId === expected.databaseId) continue;
+      for (const connection of db.listConnectionsFromSource(node.id, label)) {
+        if (connection.targetNodeId === expected.databaseId) continue;
 
-        const spuriousDatabase = db.getVertex(edge.targetId);
+        const spuriousDatabase = db.getNode(connection.targetNodeId);
         const spuriousDatabaseTitle = spuriousDatabase
           ? titleFromProperties(spuriousDatabase.properties)
-          : edge.targetId;
+          : connection.targetNodeId;
 
         spurious.push({
-          pageId: vertex.id,
-          title: vertex.title,
+          nodeId: node.id,
+          title: node.title,
           path: expected.path,
           expectedDatabaseId: expected.databaseId,
           expectedDatabaseTitle: expected.databaseTitle,
-          spuriousDatabaseId: edge.targetId,
+          spuriousDatabaseId: connection.targetNodeId,
           spuriousDatabaseTitle,
-          edgeLabel: label,
+          connectionLabel: label,
         });
       }
     }
@@ -184,20 +184,20 @@ export function findSpuriousTypeMembershipEdges(db: GraphDatabase): SpuriousType
   return spurious.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
 }
 
-export function findMissingTypeMembershipEdges(db: GraphDatabase): MissingTypeMembership[] {
+export function findMissingTypeMembershipConnections(db: GraphDatabase): MissingTypeMembership[] {
   const missing: MissingTypeMembership[] = [];
 
-  for (const vertex of db.listVerticesForGraphExport()) {
-    if (!vertex.labels.includes("NotionPage")) continue;
+  for (const node of db.listNodesForGraphExport()) {
+    if (!node.labels.includes("NotionPage")) continue;
 
-    const expected = expectedTypeDatabaseForPage(db, vertex.id);
+    const expected = expectedTypeDatabaseForPage(db, node.id);
     if (!expected) continue;
 
-    if (findTypeMembershipEdge(db, vertex.id, expected.databaseId)) continue;
+    if (findTypeMembershipConnection(db, node.id, expected.databaseId)) continue;
 
     missing.push({
-      pageId: vertex.id,
-      title: vertex.title,
+      nodeId: node.id,
+      title: node.title,
       path: expected.path,
       expectedDatabaseId: expected.databaseId,
       expectedDatabaseTitle: expected.databaseTitle,
@@ -207,26 +207,26 @@ export function findMissingTypeMembershipEdges(db: GraphDatabase): MissingTypeMe
   return missing.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
 }
 
-export function findVertexScalarsOnTypedPages(db: GraphDatabase): VertexScalarOnTypedPage[] {
-  const violations: VertexScalarOnTypedPage[] = [];
+export function findNodeScalarsOnTypedNodes(db: GraphDatabase): NodeScalarOnTypedNode[] {
+  const violations: NodeScalarOnTypedNode[] = [];
 
-  for (const vertex of db.listVerticesForGraphExport()) {
-    if (!vertex.labels.includes("NotionPage")) continue;
+  for (const node of db.listNodesForGraphExport()) {
+    if (!node.labels.includes("NotionPage")) continue;
 
-    const expected = expectedTypeDatabaseForPage(db, vertex.id);
+    const expected = expectedTypeDatabaseForPage(db, node.id);
     if (!expected) continue;
 
-    if (!findTypeMembershipEdge(db, vertex.id, expected.databaseId)) continue;
+    if (!findTypeMembershipConnection(db, node.id, expected.databaseId)) continue;
 
-    const page = db.getVertex(vertex.id);
+    const page = db.getNode(node.id);
     if (!page) continue;
 
-    const scalarKeys = vertexScalarKeys(page.properties);
+    const scalarKeys = nodeScalarKeys(page.properties);
     if (scalarKeys.length === 0) continue;
 
     violations.push({
-      pageId: vertex.id,
-      title: vertex.title,
+      nodeId: node.id,
+      title: node.title,
       path: expected.path,
       databaseId: expected.databaseId,
       scalarKeys,
@@ -239,8 +239,8 @@ export function findVertexScalarsOnTypedPages(db: GraphDatabase): VertexScalarOn
 export function maxRowIndexForDatabase(db: GraphDatabase, databaseId: string): number {
   let max = -1;
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    for (const edge of db.listEdgesToTarget(databaseId, label)) {
-      const raw = edge.properties.row_index;
+    for (const connection of db.listConnectionsToTarget(databaseId, label)) {
+      const raw = connection.properties.row_index;
       const index =
         typeof raw === "number" ? raw : Number.parseInt(String(raw ?? ""), 10);
       if (Number.isFinite(index) && index > max) max = index;
@@ -249,27 +249,27 @@ export function maxRowIndexForDatabase(db: GraphDatabase, databaseId: string): n
   return max;
 }
 
-export function mergeVertexScalarsOntoEdgeProperties(
-  edgeProperties: Properties,
-  vertexScalars: Record<string, string>,
+export function mergeNodeScalarsOntoConnectionProperties(
+  connectionProperties: Properties,
+  nodeScalars: Record<string, string>,
 ): Properties {
-  const merged: Properties = { ...edgeProperties };
-  for (const [key, value] of Object.entries(vertexScalars)) {
+  const merged: Properties = { ...connectionProperties };
+  for (const [key, value] of Object.entries(nodeScalars)) {
     if (merged[key] === undefined) merged[key] = value;
   }
   return merged;
 }
 
-export function vertexPropertiesWithoutScalars(properties: Properties): Properties {
+export function nodePropertiesWithoutScalars(properties: Properties): Properties {
   const next: Properties = { ...properties };
-  for (const key of vertexScalarKeys(properties as Record<string, unknown>)) {
+  for (const key of nodeScalarKeys(properties as Record<string, unknown>)) {
     delete next[key];
   }
   return next;
 }
 
-export function setVertexProperties(db: GraphDatabase, pageId: string, properties: Properties): void {
-  db.runExec("UPDATE vertices SET properties = ? WHERE id = ?", JSON.stringify(properties), pageId);
+export function setNodeProperties(db: GraphDatabase, nodeId: string, properties: Properties): void {
+  db.runExec("UPDATE nodes SET properties = ? WHERE id = ?", JSON.stringify(properties), nodeId);
 }
 
 export { IS_A_LABEL };

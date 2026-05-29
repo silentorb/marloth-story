@@ -5,78 +5,78 @@ import {
   buildHeuristicLodLevelsFromCounts,
   DEFAULT_EXPLORER_LOD_LAYER_COUNT,
   layerTargetVisibleCounts,
-  type LodClusterEdge,
-  type LodClusterVertex,
+  type LodClusterConnection,
+  type LodClusterNode,
 } from "./graph-lod-cluster";
 
 function makeTriangleGraph(anchorId = "aaaa0001"): {
-  vertices: LodClusterVertex[];
-  edges: LodClusterEdge[];
+  vertices: LodClusterNode[];
+  edges: LodClusterConnection[];
   anchorId: string;
 } {
-  const vertices: LodClusterVertex[] = [
+  const vertices: LodClusterNode[] = [
     { id: "aaaa0001", title: "Alpha", path: null, labels: ["NotionPage"] },
     { id: "aaaa0002", title: "Beta", path: null, labels: ["NotionPage"] },
     { id: "aaaa0003", title: "Gamma", path: null, labels: ["NotionPage"] },
   ];
-  const edges: LodClusterEdge[] = [
-    { id: "e1", sourceId: "aaaa0001", targetId: "aaaa0002", label: "LINKS" },
-    { id: "e2", sourceId: "aaaa0002", targetId: "aaaa0003", label: "LINKS" },
-    { id: "e3", sourceId: "aaaa0001", targetId: "aaaa0003", label: "LINKS" },
+  const edges: LodClusterConnection[] = [
+    { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
+    { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", label: "LINKS" },
+    { id: "e3", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0003", label: "LINKS" },
   ];
   return { vertices, edges, anchorId };
 }
 
 function makeStarGraph(): {
-  vertices: LodClusterVertex[];
-  edges: LodClusterEdge[];
+  vertices: LodClusterNode[];
+  edges: LodClusterConnection[];
   anchorId: string;
 } {
   const anchorId = "anchor01";
-  const vertices: LodClusterVertex[] = [
+  const vertices: LodClusterNode[] = [
     { id: anchorId, title: "Anchor", path: null, labels: ["NotionPage"] },
     { id: "hub00001", title: "Hub", path: null, labels: ["NotionPage"] },
     { id: "leaf0001", title: "Leaf", path: null, labels: ["NotionPage"] },
     { id: "leaf0002", title: "Leaf2", path: null, labels: ["NotionPage"] },
     { id: "leaf0003", title: "Leaf3", path: null, labels: ["NotionPage"] },
   ];
-  const edges: LodClusterEdge[] = [
-    { id: "e1", sourceId: anchorId, targetId: "hub00001", label: "LINKS" },
-    { id: "e2", sourceId: "hub00001", targetId: "leaf0001", label: "LINKS" },
-    { id: "e3", sourceId: "hub00001", targetId: "leaf0002", label: "LINKS" },
-    { id: "e4", sourceId: "hub00001", targetId: "leaf0003", label: "LINKS" },
-    { id: "e5", sourceId: anchorId, targetId: "leaf0001", label: "LINKS" },
+  const edges: LodClusterConnection[] = [
+    { id: "e1", sourceNodeId: anchorId, targetNodeId: "hub00001", label: "LINKS" },
+    { id: "e2", sourceNodeId: "hub00001", targetNodeId: "leaf0001", label: "LINKS" },
+    { id: "e3", sourceNodeId: "hub00001", targetNodeId: "leaf0002", label: "LINKS" },
+    { id: "e4", sourceNodeId: "hub00001", targetNodeId: "leaf0003", label: "LINKS" },
+    { id: "e5", sourceNodeId: anchorId, targetNodeId: "leaf0001", label: "LINKS" },
   ];
   return { vertices, edges, anchorId };
 }
 
 function makeChainGraph(): {
-  vertices: LodClusterVertex[];
-  edges: LodClusterEdge[];
+  vertices: LodClusterNode[];
+  edges: LodClusterConnection[];
   anchorId: string;
 } {
   const anchorId = "aaaa0001";
-  const vertices: LodClusterVertex[] = [
+  const vertices: LodClusterNode[] = [
     { id: "aaaa0001", title: "A", path: null, labels: ["NotionPage"] },
     { id: "aaaa0002", title: "B", path: null, labels: ["NotionPage"] },
     { id: "aaaa0003", title: "C", path: null, labels: ["NotionPage"] },
     { id: "aaaa0004", title: "D", path: null, labels: ["NotionPage"] },
   ];
-  const edges: LodClusterEdge[] = [
-    { id: "e1", sourceId: "aaaa0001", targetId: "aaaa0002", label: "LINKS" },
-    { id: "e2", sourceId: "aaaa0002", targetId: "aaaa0003", label: "LINKS" },
-    { id: "e3", sourceId: "aaaa0003", targetId: "aaaa0004", label: "LINKS" },
+  const edges: LodClusterConnection[] = [
+    { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
+    { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", label: "LINKS" },
+    { id: "e3", sourceNodeId: "aaaa0003", targetNodeId: "aaaa0004", label: "LINKS" },
   ];
   return { vertices, edges, anchorId };
 }
 
 function makeLongChainGraph(): {
-  vertices: LodClusterVertex[];
-  edges: LodClusterEdge[];
+  vertices: LodClusterNode[];
+  edges: LodClusterConnection[];
   anchorId: string;
 } {
   const anchorId = "aaaa0001";
-  const vertices: LodClusterVertex[] = [
+  const vertices: LodClusterNode[] = [
     { id: "aaaa0001", title: "A", path: null, labels: ["NotionPage"] },
     { id: "aaaa0002", title: "B", path: null, labels: ["NotionPage"] },
     { id: "aaaa0003", title: "C", path: null, labels: ["NotionPage"] },
@@ -84,12 +84,12 @@ function makeLongChainGraph(): {
     { id: "aaaa0005", title: "E", path: null, labels: ["NotionPage"] },
     { id: "aaaa0006", title: "F", path: null, labels: ["NotionPage"] },
   ];
-  const edges: LodClusterEdge[] = [
-    { id: "e1", sourceId: "aaaa0001", targetId: "aaaa0002", label: "LINKS" },
-    { id: "e2", sourceId: "aaaa0002", targetId: "aaaa0003", label: "LINKS" },
-    { id: "e3", sourceId: "aaaa0003", targetId: "aaaa0004", label: "LINKS" },
-    { id: "e4", sourceId: "aaaa0004", targetId: "aaaa0005", label: "LINKS" },
-    { id: "e5", sourceId: "aaaa0005", targetId: "aaaa0006", label: "LINKS" },
+  const edges: LodClusterConnection[] = [
+    { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
+    { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", label: "LINKS" },
+    { id: "e3", sourceNodeId: "aaaa0003", targetNodeId: "aaaa0004", label: "LINKS" },
+    { id: "e4", sourceNodeId: "aaaa0004", targetNodeId: "aaaa0005", label: "LINKS" },
+    { id: "e5", sourceNodeId: "aaaa0005", targetNodeId: "aaaa0006", label: "LINKS" },
   ];
   return { vertices, edges, anchorId };
 }

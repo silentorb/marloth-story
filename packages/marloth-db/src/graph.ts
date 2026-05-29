@@ -1,4 +1,4 @@
-import { Database } from "bun:sqlite";
+import { Database, type SQLQueryBindings } from "bun:sqlite";
 import { mkdirSync, rmSync } from "node:fs";
 import { dirname } from "node:path";
 import { DDL, DYNAMIC_FIELDS_DDL, SCHEMA_VERSION } from "./schema";
@@ -6,23 +6,23 @@ import { DDL, DYNAMIC_FIELDS_DDL, SCHEMA_VERSION } from "./schema";
 export type PropertyValue = string | number | boolean | null | PropertyValue[] | { [key: string]: PropertyValue };
 export type Properties = Record<string, PropertyValue>;
 
-export interface VertexRecord {
+export interface Node {
   id: string;
   labels: string[];
   properties: Properties;
 }
 
-export interface EdgeRecord {
+export interface Connection {
   id: string;
-  sourceId: string;
-  targetId: string;
+  sourceNodeId: string;
+  targetNodeId: string;
   label: string;
   properties: Properties;
 }
 
 export interface GraphCounts {
-  vertices: number;
-  edges: number;
+  nodes: number;
+  connections: number;
 }
 
 function parseJsonObject(raw: string): Properties {
@@ -44,19 +44,19 @@ function mergeProperties(base: Properties, patch: Properties): Properties {
   return out;
 }
 
-export function edgeId(sourceId: string, label: string, targetId: string): string {
-  return `${sourceId}:${label}:${targetId}`;
+export function connectionId(sourceNodeId: string, label: string, targetNodeId: string): string {
+  return `${sourceNodeId}:${label}:${targetNodeId}`;
 }
 
 export class GraphDatabase {
   readonly path: string;
   private db: Database;
 
-  private insertVertex!: ReturnType<Database["prepare"]>;
-  private updateVertexProps!: ReturnType<Database["prepare"]>;
+  private insertNode!: ReturnType<Database["prepare"]>;
+  private updateNodeProps!: ReturnType<Database["prepare"]>;
   private insertLabel!: ReturnType<Database["prepare"]>;
-  private insertEdge!: ReturnType<Database["prepare"]>;
-  private updateEdgeProps!: ReturnType<Database["prepare"]>;
+  private insertConnection!: ReturnType<Database["prepare"]>;
+  private updateConnectionProps!: ReturnType<Database["prepare"]>;
 
   constructor(path: string, options?: { clean?: boolean }) {
     this.path = path;
@@ -78,20 +78,20 @@ export class GraphDatabase {
   }
 
   private prepareStatements(): void {
-    this.insertVertex = this.db.prepare(
-      "INSERT INTO vertices (id, properties) VALUES (?, ?) ON CONFLICT(id) DO NOTHING",
+    this.insertNode = this.db.prepare(
+      "INSERT INTO nodes (id, properties) VALUES (?, ?) ON CONFLICT(id) DO NOTHING",
     );
-    this.updateVertexProps = this.db.prepare(
-      "UPDATE vertices SET properties = ? WHERE id = ?",
+    this.updateNodeProps = this.db.prepare(
+      "UPDATE nodes SET properties = ? WHERE id = ?",
     );
     this.insertLabel = this.db.prepare(
-      "INSERT OR IGNORE INTO vertex_labels (vertex_id, label) VALUES (?, ?)",
+      "INSERT OR IGNORE INTO node_labels (node_id, label) VALUES (?, ?)",
     );
-    this.insertEdge = this.db.prepare(
-      "INSERT INTO edges (id, source_id, target_id, label, properties) VALUES (?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING",
+    this.insertConnection = this.db.prepare(
+      "INSERT INTO connections (id, source_node_id, target_node_id, label, properties) VALUES (?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING",
     );
-    this.updateEdgeProps = this.db.prepare(
-      "UPDATE edges SET properties = ? WHERE id = ?",
+    this.updateConnectionProps = this.db.prepare(
+      "UPDATE connections SET properties = ? WHERE id = ?",
     );
   }
 
@@ -110,72 +110,72 @@ export class GraphDatabase {
     return row?.value ?? null;
   }
 
-  upsertVertex(id: string, labels: string[], properties: Properties = {}): void {
-    this.insertVertex.run(id, JSON.stringify(properties));
+  upsertNode(id: string, labels: string[], properties: Properties = {}): void {
+    this.insertNode.run(id, JSON.stringify(properties));
     for (const label of labels) {
       this.insertLabel.run(id, label);
     }
-    const existing = this.getVertex(id);
+    const existing = this.getNode(id);
     if (existing && Object.keys(properties).length > 0) {
       const merged = mergeProperties(existing.properties, properties);
-      this.updateVertexProps.run(JSON.stringify(merged), id);
+      this.updateNodeProps.run(JSON.stringify(merged), id);
     }
   }
 
-  mergeVertexProperties(id: string, properties: Properties): void {
-    const existing = this.getVertex(id);
+  mergeNodeProperties(id: string, properties: Properties): void {
+    const existing = this.getNode(id);
     if (!existing) {
-      this.upsertVertex(id, [], properties);
+      this.upsertNode(id, [], properties);
       return;
     }
     const merged = mergeProperties(existing.properties, properties);
-    this.updateVertexProps.run(JSON.stringify(merged), id);
+    this.updateNodeProps.run(JSON.stringify(merged), id);
   }
 
-  mergeEdgeProperties(id: string, properties: Properties): void {
-    const existing = this.getEdge(id);
+  mergeConnectionProperties(id: string, properties: Properties): void {
+    const existing = this.getConnection(id);
     if (!existing) return;
     const merged = mergeProperties(existing.properties, properties);
-    this.updateEdgeProps.run(JSON.stringify(merged), id);
+    this.updateConnectionProps.run(JSON.stringify(merged), id);
   }
 
-  addVertexLabel(id: string, label: string): void {
+  addNodeLabel(id: string, label: string): void {
     this.insertLabel.run(id, label);
   }
 
-  upsertEdge(
-    sourceId: string,
-    targetId: string,
+  upsertConnection(
+    sourceNodeId: string,
+    targetNodeId: string,
     label: string,
     properties: Properties = {},
   ): void {
-    const id = edgeId(sourceId, label, targetId);
-    this.insertEdge.run(id, sourceId, targetId, label, JSON.stringify(properties));
-    const existing = this.getEdge(id);
+    const id = connectionId(sourceNodeId, label, targetNodeId);
+    this.insertConnection.run(id, sourceNodeId, targetNodeId, label, JSON.stringify(properties));
+    const existing = this.getConnection(id);
     if (existing && Object.keys(properties).length > 0) {
       const merged = mergeProperties(existing.properties, properties);
-      this.updateEdgeProps.run(JSON.stringify(merged), id);
+      this.updateConnectionProps.run(JSON.stringify(merged), id);
     }
   }
 
-  deleteEdge(sourceId: string, targetId: string, label: string): boolean {
-    const id = edgeId(sourceId, label, targetId);
-    const result = this.db.prepare("DELETE FROM edges WHERE id = ?").run(id);
+  deleteConnection(sourceNodeId: string, targetNodeId: string, label: string): boolean {
+    const id = connectionId(sourceNodeId, label, targetNodeId);
+    const result = this.db.prepare("DELETE FROM connections WHERE id = ?").run(id);
     return result.changes > 0;
   }
 
-  deleteVertex(id: string): boolean {
-    const result = this.db.prepare("DELETE FROM vertices WHERE id = ?").run(id);
+  deleteNode(id: string): boolean {
+    const result = this.db.prepare("DELETE FROM nodes WHERE id = ?").run(id);
     return result.changes > 0;
   }
 
-  getVertex(id: string): VertexRecord | null {
-    const row = this.db.prepare("SELECT id, properties FROM vertices WHERE id = ?").get(id) as
+  getNode(id: string): Node | null {
+    const row = this.db.prepare("SELECT id, properties FROM nodes WHERE id = ?").get(id) as
       | { id: string; properties: string }
       | undefined;
     if (!row) return null;
     const labels = this.db
-      .prepare("SELECT label FROM vertex_labels WHERE vertex_id = ? ORDER BY label")
+      .prepare("SELECT label FROM node_labels WHERE node_id = ? ORDER BY label")
       .all(id) as { label: string }[];
     return {
       id: row.id,
@@ -184,29 +184,37 @@ export class GraphDatabase {
     };
   }
 
-  getEdge(id: string): EdgeRecord | null {
+  getConnection(id: string): Connection | null {
     const row = this.db
-      .prepare("SELECT id, source_id, target_id, label, properties FROM edges WHERE id = ?")
+      .prepare(
+        "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE id = ?",
+      )
       .get(id) as
-      | { id: string; source_id: string; target_id: string; label: string; properties: string }
+      | {
+          id: string;
+          source_node_id: string;
+          target_node_id: string;
+          label: string;
+          properties: string;
+        }
       | undefined;
     if (!row) return null;
     return {
       id: row.id,
-      sourceId: row.source_id,
-      targetId: row.target_id,
+      sourceNodeId: row.source_node_id,
+      targetNodeId: row.target_node_id,
       label: row.label,
       properties: parseJsonObject(row.properties),
     };
   }
 
   counts(): GraphCounts {
-    const v = this.db.prepare("SELECT COUNT(*) AS c FROM vertices").get() as { c: number };
-    const e = this.db.prepare("SELECT COUNT(*) AS c FROM edges").get() as { c: number };
-    return { vertices: v.c, edges: e.c };
+    const n = this.db.prepare("SELECT COUNT(*) AS c FROM nodes").get() as { c: number };
+    const c = this.db.prepare("SELECT COUNT(*) AS c FROM connections").get() as { c: number };
+    return { nodes: n.c, connections: c.c };
   }
 
-  searchVerticesByTitle(
+  searchNodesByTitle(
     pattern: string,
     limit: number,
   ): { id: string; title: string; path: string | null }[] {
@@ -219,7 +227,7 @@ export class GraphDatabase {
                   'Untitled'
                 ) AS title,
                 json_extract(properties, '$.inferred_notion_path') AS path
-         FROM vertices
+         FROM nodes
          WHERE COALESCE(json_extract(properties, '$.title'), json_extract(properties, '$.alias'), '') LIKE ? ESCAPE '\\'
          ORDER BY title COLLATE NOCASE
          LIMIT ?`,
@@ -227,7 +235,7 @@ export class GraphDatabase {
       .all(pattern, limit) as { id: string; title: string; path: string | null }[];
   }
 
-  listVerticesByTitle(limit: number): { id: string; title: string; path: string | null }[] {
+  listNodesByTitle(limit: number): { id: string; title: string; path: string | null }[] {
     return this.db
       .prepare(
         `SELECT id,
@@ -237,7 +245,7 @@ export class GraphDatabase {
                   'Untitled'
                 ) AS title,
                 json_extract(properties, '$.inferred_notion_path') AS path
-         FROM vertices
+         FROM nodes
          WHERE json_extract(properties, '$.title') IS NOT NULL
             OR json_extract(properties, '$.alias') IS NOT NULL
          ORDER BY title COLLATE NOCASE
@@ -246,17 +254,17 @@ export class GraphDatabase {
       .all(limit) as { id: string; title: string; path: string | null }[];
   }
 
-  listVerticesWithBodyLike(pattern: string): { id: string; body: string }[] {
+  listNodesWithBodyLike(pattern: string): { id: string; body: string }[] {
     return this.db
       .prepare(
         `SELECT id, json_extract(properties, '$.body') AS body
-         FROM vertices
+         FROM nodes
          WHERE json_extract(properties, '$.body') LIKE ?`,
       )
       .all(pattern) as { id: string; body: string }[];
   }
 
-  listVerticesForGraphExport(): {
+  listNodesForGraphExport(): {
     id: string;
     title: string;
     path: string | null;
@@ -271,138 +279,138 @@ export class GraphDatabase {
                   'Untitled'
                 ) AS title,
                 json_extract(properties, '$.inferred_notion_path') AS path
-         FROM vertices`,
+         FROM nodes`,
       )
       .all() as { id: string; title: string; path: string | null }[];
 
     const labelRows = this.db
-      .prepare("SELECT vertex_id, label FROM vertex_labels ORDER BY vertex_id, label")
-      .all() as { vertex_id: string; label: string }[];
+      .prepare("SELECT node_id, label FROM node_labels ORDER BY node_id, label")
+      .all() as { node_id: string; label: string }[];
 
-    const labelsByVertex = new Map<string, string[]>();
+    const labelsByNode = new Map<string, string[]>();
     for (const row of labelRows) {
-      const labels = labelsByVertex.get(row.vertex_id) ?? [];
+      const labels = labelsByNode.get(row.node_id) ?? [];
       labels.push(row.label);
-      labelsByVertex.set(row.vertex_id, labels);
+      labelsByNode.set(row.node_id, labels);
     }
 
     return rows.map((row) => ({
       id: row.id,
       title: row.title,
       path: row.path,
-      labels: labelsByVertex.get(row.id) ?? [],
+      labels: labelsByNode.get(row.id) ?? [],
     }));
   }
 
-  listEdgesForGraphExport(): {
+  listConnectionsForGraphExport(): {
     id: string;
-    sourceId: string;
-    targetId: string;
+    sourceNodeId: string;
+    targetNodeId: string;
     label: string;
   }[] {
     return this.db
-      .prepare("SELECT id, source_id, target_id, label FROM edges")
+      .prepare("SELECT id, source_node_id, target_node_id, label FROM connections")
       .all()
       .map((row) => {
         const r = row as {
           id: string;
-          source_id: string;
-          target_id: string;
+          source_node_id: string;
+          target_node_id: string;
           label: string;
         };
         return {
           id: r.id,
-          sourceId: r.source_id,
-          targetId: r.target_id,
+          sourceNodeId: r.source_node_id,
+          targetNodeId: r.target_node_id,
           label: r.label,
         };
       });
   }
 
-  listEdgesFromSource(sourceId: string, label?: string): EdgeRecord[] {
+  listConnectionsFromSource(sourceNodeId: string, label?: string): Connection[] {
     const rows = label
       ? (this.db
           .prepare(
-            "SELECT id, source_id, target_id, label, properties FROM edges WHERE source_id = ? AND label = ? ORDER BY id",
+            "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE source_node_id = ? AND label = ? ORDER BY id",
           )
-          .all(sourceId, label) as {
+          .all(sourceNodeId, label) as {
           id: string;
-          source_id: string;
-          target_id: string;
+          source_node_id: string;
+          target_node_id: string;
           label: string;
           properties: string;
         }[])
       : (this.db
           .prepare(
-            "SELECT id, source_id, target_id, label, properties FROM edges WHERE source_id = ? ORDER BY label, id",
+            "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE source_node_id = ? ORDER BY label, id",
           )
-          .all(sourceId) as {
+          .all(sourceNodeId) as {
           id: string;
-          source_id: string;
-          target_id: string;
+          source_node_id: string;
+          target_node_id: string;
           label: string;
           properties: string;
         }[]);
 
     return rows.map((row) => ({
       id: row.id,
-      sourceId: row.source_id,
-      targetId: row.target_id,
+      sourceNodeId: row.source_node_id,
+      targetNodeId: row.target_node_id,
       label: row.label,
       properties: parseJsonObject(row.properties),
     }));
   }
 
-  listEdgesToTarget(targetId: string, label?: string): EdgeRecord[] {
+  listConnectionsToTarget(targetNodeId: string, label?: string): Connection[] {
     const rows = label
       ? (this.db
           .prepare(
-            "SELECT id, source_id, target_id, label, properties FROM edges WHERE target_id = ? AND label = ? ORDER BY id",
+            "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE target_node_id = ? AND label = ? ORDER BY id",
           )
-          .all(targetId, label) as {
+          .all(targetNodeId, label) as {
           id: string;
-          source_id: string;
-          target_id: string;
+          source_node_id: string;
+          target_node_id: string;
           label: string;
           properties: string;
         }[])
       : (this.db
           .prepare(
-            "SELECT id, source_id, target_id, label, properties FROM edges WHERE target_id = ? ORDER BY id",
+            "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE target_node_id = ? ORDER BY id",
           )
-          .all(targetId) as {
+          .all(targetNodeId) as {
           id: string;
-          source_id: string;
-          target_id: string;
+          source_node_id: string;
+          target_node_id: string;
           label: string;
           properties: string;
         }[]);
 
     return rows.map((row) => ({
       id: row.id,
-      sourceId: row.source_id,
-      targetId: row.target_id,
+      sourceNodeId: row.source_node_id,
+      targetNodeId: row.target_node_id,
       label: row.label,
       properties: parseJsonObject(row.properties),
     }));
   }
 
-  countIncidentEdges(vertexId: string): number {
+  countIncidentConnections(nodeId: string): number {
     const row = this.db
       .prepare(
-        "SELECT COUNT(*) AS c FROM edges WHERE source_id = ? OR target_id = ?",
+        "SELECT COUNT(*) AS c FROM connections WHERE source_node_id = ? OR target_node_id = ?",
       )
-      .get(vertexId, vertexId) as { c: number };
+      .get(nodeId, nodeId) as { c: number };
     return row.c;
   }
 
   /** Run a read query (used by overlay / dynamic-field modules). */
-  queryAll<T extends Record<string, unknown>>(sql: string, ...params: unknown[]): T[] {
+  queryAll<T extends Record<string, unknown>>(sql: string, ...params: SQLQueryBindings[]): T[] {
     return this.db.prepare(sql).all(...params) as T[];
   }
 
   /** Run a write statement (used by overlay seed / migration scripts). */
-  runExec(sql: string, ...params: unknown[]): void {
+  runExec(sql: string, ...params: SQLQueryBindings[]): void {
     this.db.prepare(sql).run(...params);
   }
 

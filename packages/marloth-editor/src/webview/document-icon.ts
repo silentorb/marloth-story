@@ -2,7 +2,7 @@ import { extractPageIconFromMarkdown } from "./callout-decoration";
 import {
   HOME_ICON,
   SIDEBAR_ICON_BY_LABEL,
-  SIDEBAR_ICON_BY_RECORD_ID,
+  SIDEBAR_ICON_BY_NODE_ID,
   VIEW_ICONS,
 } from "./sidebar-nav";
 import type { AppView } from "../shared/types";
@@ -14,7 +14,7 @@ const FAVICON_SIZE = 32;
 
 export interface DocumentIconContext {
   view: AppView;
-  recordId?: string | null;
+  nodeId?: string | null;
   recordPath?: string | null;
   recordBody?: string | null;
   recordLabels?: string[] | null;
@@ -24,14 +24,14 @@ export interface DocumentIconContext {
 export function resolveDocumentIcon(ctx: DocumentIconContext): string {
   if (ctx.view === "graph-explorer") return VIEW_ICONS["graph-explorer"];
 
-  const recordId = ctx.recordId?.toLowerCase();
-  if (recordId && ctx.homeId && recordId === ctx.homeId.toLowerCase()) return HOME_ICON;
+  const nodeId = ctx.nodeId?.toLowerCase();
+  if (nodeId && ctx.homeId && nodeId === ctx.homeId.toLowerCase()) return HOME_ICON;
 
   const bodyIcon = ctx.recordBody ? extractPageIconFromMarkdown(ctx.recordBody) : null;
   if (bodyIcon) return bodyIcon;
 
-  if (recordId && SIDEBAR_ICON_BY_RECORD_ID[recordId]) {
-    return SIDEBAR_ICON_BY_RECORD_ID[recordId]!;
+  if (nodeId && SIDEBAR_ICON_BY_NODE_ID[nodeId]) {
+    return SIDEBAR_ICON_BY_NODE_ID[nodeId]!;
   }
 
   const pathIcon = iconFromPath(ctx.recordPath);

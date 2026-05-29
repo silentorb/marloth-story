@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = 2;
+export const SCHEMA_VERSION = 3;
 
 export const DDL = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -6,31 +6,31 @@ CREATE TABLE IF NOT EXISTS meta (
   value TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS vertices (
+CREATE TABLE IF NOT EXISTS nodes (
   id TEXT PRIMARY KEY NOT NULL,
   properties TEXT NOT NULL DEFAULT '{}'
 );
 
-CREATE TABLE IF NOT EXISTS vertex_labels (
-  vertex_id TEXT NOT NULL REFERENCES vertices(id) ON DELETE CASCADE,
+CREATE TABLE IF NOT EXISTS node_labels (
+  node_id TEXT NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
   label TEXT NOT NULL,
-  PRIMARY KEY (vertex_id, label)
+  PRIMARY KEY (node_id, label)
 );
 
-CREATE INDEX IF NOT EXISTS idx_vertex_labels_label ON vertex_labels(label);
+CREATE INDEX IF NOT EXISTS idx_node_labels_label ON node_labels(label);
 
-CREATE TABLE IF NOT EXISTS edges (
+CREATE TABLE IF NOT EXISTS connections (
   id TEXT PRIMARY KEY NOT NULL,
-  source_id TEXT NOT NULL REFERENCES vertices(id) ON DELETE CASCADE,
-  target_id TEXT NOT NULL REFERENCES vertices(id) ON DELETE CASCADE,
+  source_node_id TEXT NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
+  target_node_id TEXT NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
   label TEXT NOT NULL,
   properties TEXT NOT NULL DEFAULT '{}'
 );
 
-CREATE INDEX IF NOT EXISTS idx_edges_source ON edges(source_id);
-CREATE INDEX IF NOT EXISTS idx_edges_target ON edges(target_id);
-CREATE INDEX IF NOT EXISTS idx_edges_label ON edges(label);
-CREATE UNIQUE INDEX IF NOT EXISTS idx_edges_endpoint_label ON edges(source_id, target_id, label);
+CREATE INDEX IF NOT EXISTS idx_connections_source ON connections(source_node_id);
+CREATE INDEX IF NOT EXISTS idx_connections_target ON connections(target_node_id);
+CREATE INDEX IF NOT EXISTS idx_connections_label ON connections(label);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_connections_endpoint_label ON connections(source_node_id, target_node_id, label);
 `;
 
 /** Overlay tables for dynamic table field configuration (separate from core graph). */

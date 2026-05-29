@@ -49,7 +49,7 @@ export function graphLodLayerLabel(layerIndex: number, layerCount: number): stri
 
 export function pickExplorerSnapshot(lod: GraphLodSnapshot, layerIndex: number): GraphLodSnapshot["levels"][number] {
   const clamped = Math.min(lod.levels.length - 1, Math.max(0, layerIndex));
-  return lod.levels[clamped] ?? { nodes: [], links: [] };
+  return lod.levels[clamped] ?? { nodes: [], connections: [] };
 }
 
 export function isOpenableGraphNode(node: { id: string; isCluster?: boolean }): boolean {

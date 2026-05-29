@@ -1,0 +1,78 @@
+.marloth-record-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.marloth-record-page .marloth-app-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 32px 0;
+}
+
+.marloth-record-page-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.marloth-record-page-path {
+  color: var(--marloth-muted);
+  font-size: 0.85rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.marloth-record-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 8px 32px 32px;
+}
+
+.marloth-page-title-section {
+  padding-bottom: 0;
+}
+
+.marloth-record-page .marloth-record-metadata-panel {
+  margin: -16px 0 0;
+}
+
+.marloth-markdown-section {
+  flex: 0 0 auto;
+}
+
+.marloth-record-page .marloth-editor-shell {
+  min-height: 0;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.marloth-record-page .marloth-editor-body {
+  min-height: 1.5em;
+  min-height: 1lh;
+}
+
+.marloth-record-page .marloth-database-view {
+  padding: 0;
+  gap: 12px;
+}
+
+.marloth-record-page .marloth-database-header {
+  margin: 0;
+}
+
+.marloth-record-page .marloth-database-title {
+  display: none;
+}
+
+.marloth-record-page .marloth-database-table-wrap {
+  max-height: none;
+}

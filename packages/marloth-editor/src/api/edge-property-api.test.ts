@@ -12,16 +12,16 @@ describe("edge property API", () => {
   const handler = createApiHandler(dbPath);
 
   const databaseId = "dddddddddddddddddddddddddddddddd";
-  const pageId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+  const nodeId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-  db.upsertVertex(databaseId, ["NotionDatabase"], { title: "Features" });
-  db.upsertVertex(pageId, ["NotionPage"], { title: "Feature" });
-  db.upsertEdge(pageId, databaseId, IS_A_LABEL, { priority: "Low" });
+  db.upsertNode(databaseId, ["NotionDatabase"], { title: "Features" });
+  db.upsertNode(nodeId, ["NotionPage"], { title: "Feature" });
+  db.upsertConnection(nodeId, databaseId, IS_A_LABEL, { priority: "Low" });
   db.close();
 
   test("PATCH database row priority", async () => {
     const res = await handler(
-      new Request(`http://127.0.0.1/api/databases/${databaseId}/rows/${pageId}`, {
+      new Request(`http://127.0.0.1/api/databases/${databaseId}/rows/${nodeId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ property: "priority", value: "High" }),
@@ -30,14 +30,14 @@ describe("edge property API", () => {
     expect(res.status).toBe(200);
 
     const verifyDb = new GraphDatabase(dbPath);
-    const edge = verifyDb.listEdgesFromSource(pageId, IS_A_LABEL)[0];
+    const edge = verifyDb.listConnectionsFromSource(nodeId, IS_A_LABEL)[0];
     expect(edge?.properties.priority).toBe("High");
     verifyDb.close();
   });
 
   test("PATCH rejects numeric priority", async () => {
     const res = await handler(
-      new Request(`http://127.0.0.1/api/databases/${databaseId}/rows/${pageId}`, {
+      new Request(`http://127.0.0.1/api/databases/${databaseId}/rows/${nodeId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ property: "priority", value: "4" }),

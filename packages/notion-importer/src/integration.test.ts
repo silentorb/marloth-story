@@ -38,14 +38,14 @@ describe("integration", () => {
     expect(statSync(dbPath).isFile()).toBe(true);
 
     const db = new GraphDatabase(dbPath);
-    const page = db.getVertex("0123456789abcdef0123456789abcdef");
+    const page = db.getNode("0123456789abcdef0123456789abcdef");
     expect(page?.properties.title).toBe("Test Page");
-    const rel = db.getVertex("0123456789abcdef0123456789abcdee");
+    const rel = db.getNode("0123456789abcdef0123456789abcdee");
     expect(rel?.properties.body).toContain("Body text");
-    const edge = db.getEdge(
+    const connection = db.getConnection(
       "0123456789abcdef0123456789abcdef:LINKS:0123456789abcdef0123456789abcdee",
     );
-    expect(edge?.label).toBe("LINKS");
+    expect(connection?.label).toBe("LINKS");
     db.close();
   });
 });

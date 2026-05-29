@@ -15,9 +15,9 @@ Dimension-expanded columns: one scene-count column per Product that appears on a
 
 ### Column discovery (view-wide)
 
-- **Must** consider all character rows in the Characters database (all `IS_A` incoming edges to the database).
-- For each character, collect scenes via outgoing `SCENES` edges.
-- For each scene, read its outgoing `PRODUCT` edge target (product page id).
+- **Must** consider all character rows in the Characters database (all `IS_A` incoming connections to the database).
+- For each character, collect scenes via outgoing `SCENES` connections.
+- For each scene, read its outgoing `PRODUCT` connection target (product page id).
 - **Must** emit one column for each distinct product id that appears on at least one scene linked to **any** character.
 - Products with no scenes linked to any character **must not** produce a column.
 
@@ -64,8 +64,8 @@ James has 113 total scenes; 28 of those scenes have `PRODUCT → TWOLD`.
 
 - **resolver_id:** `characters.sceneCountByProduct`
 - **Overlay params:**
-  - `scenes_edge_label`: `"SCENES"` (default)
-  - `product_edge_label`: `"PRODUCT"` (default)
+  - `scenes_edge_label`: `"SCENES"` (connection label; param name unchanged)
+  - `product_edge_label`: `"PRODUCT"` (connection label; param name unchanged)
 
 Registered as a **dynamic column set** in overlay table `dynamic_column_sets`.
 

@@ -51,7 +51,7 @@ function renderGraphView(
       onShowNodeLabelsChange={() => {}}
       showRelevanceDiagnostics={false}
       onShowRelevanceDiagnosticsChange={() => {}}
-      onOpenRecord={() => {}}
+      onOpenNode={() => {}}
       {...overrides}
     />,
   );
@@ -64,7 +64,7 @@ describe("GraphView", () => {
     const { container } = renderGraphView();
 
     await waitFor(() => {
-      expect(container.textContent).toMatch(/\d+ nodes · \d+ links/);
+      expect(container.textContent).toMatch(/\d+ nodes · \d+ connections/);
     });
 
     expect(container.querySelector(".marloth-graph-canvas")).toBeTruthy();
@@ -123,7 +123,7 @@ describe("GraphView", () => {
         onShowNodeLabelsChange={() => {}}
         showRelevanceDiagnostics={false}
         onShowRelevanceDiagnosticsChange={() => {}}
-        onOpenRecord={() => {}}
+        onOpenNode={() => {}}
       />,
     );
 

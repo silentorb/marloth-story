@@ -2,28 +2,28 @@ import { useCallback, useMemo } from "react";
 import type { EditorApi } from "../api/client";
 import type { RelationTableSection } from "../../shared/types";
 import { relationTableSortKey } from "../../shared/user-settings";
-import { standaloneRecordUrl } from "../../shared/types";
-import { SectionTitle } from "./RecordNameLink";
+import { standaloneNodeUrl } from "../../shared/types";
+import { SectionTitle } from "./NodeNameLink";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
 import { renderTableCell } from "./table-cell-render";
 import "./relation-section-view.css";
 
 interface RelationSectionViewProps {
   api: EditorApi;
-  recordId: string;
+  nodeId: string;
   section: RelationTableSection;
-  onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
+  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
 }
 
 export function RelationSectionView({
   api,
-  recordId,
+  nodeId,
   section,
-  onOpenRecord,
+  onOpenNode,
   onCellUpdated,
 }: RelationSectionViewProps) {
-  const tableKey = relationTableSortKey(recordId, section.label);
+  const tableKey = relationTableSortKey(nodeId, section.label);
 
   const columnLabels = useMemo(() => {
     if (!section.columnDefs?.length) return undefined;
@@ -40,8 +40,8 @@ export function RelationSectionView({
         onEnumChange:
           def?.type === "enum"
             ? async (next) => {
-                await api.updateRelationEdgeProperty(
-                  recordId,
+                await api.updateOutgoingConnectionProperty(
+                  nodeId,
                   section.label,
                   row.id,
                   column,
@@ -52,7 +52,7 @@ export function RelationSectionView({
             : undefined,
       });
     },
-    [api, onCellUpdated, recordId, section.columnDefs, section.label],
+    [api, onCellUpdated, nodeId, section.columnDefs, section.label],
   );
 
   const rows = useMemo(
@@ -68,9 +68,9 @@ export function RelationSectionView({
 
   const openTarget = useCallback(
     (targetId: string, event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
-      onOpenRecord(targetId, event.metaKey || event.ctrlKey || event.button === 1);
+      onOpenNode(targetId, event.metaKey || event.ctrlKey || event.button === 1);
     },
-    [onOpenRecord],
+    [onOpenNode],
   );
 
   const renderNameCell = useCallback(
@@ -79,7 +79,7 @@ export function RelationSectionView({
       if (api.host === "standalone") {
         return (
           <a
-            href={standaloneRecordUrl(targetId, window.location.href)}
+            href={standaloneNodeUrl(targetId, window.location.href)}
             className="marloth-database-name-link"
             onClick={(event) => openTarget(targetId, event)}
             onAuxClick={(event) => openTarget(targetId, event)}
@@ -110,8 +110,8 @@ export function RelationSectionView({
       <SectionTitle
         api={api}
         title={section.title}
-        typeRecordId={section.typeRecordId}
-        onOpenRecord={onOpenRecord}
+        typeNodeId={section.typeNodeId}
+        onOpenNode={onOpenNode}
       />
       <SectionDataTable
         tableKey={tableKey}

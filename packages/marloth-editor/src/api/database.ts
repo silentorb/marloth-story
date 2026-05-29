@@ -1,55 +1,55 @@
 import {
-  DEFAULT_HOME_RECORD_ID,
+  DEFAULT_HOME_NODE_ID,
   exportExplorerLodGraph,
   exportFullGraph,
   getDatabaseViewDetail,
-  getRecordPageDetail,
+  getNodePageDetail,
   GraphDatabase,
-  searchRecords,
-  updateRecordBody,
-  updateRecordTitle,
+  searchNodes,
+  updateNodeBody,
+  updateNodeTitle,
   updateDatabaseRowProperty,
-  updateOutgoingEdgeProperty,
+  updateOutgoingConnectionProperty,
   applyOrderedAssociationMove,
-  archiveRecord as archiveRecordInDb,
-  deleteRecord as deleteRecordInDb,
+  archiveNode as archiveNodeInDb,
+  deleteNode as deleteNodeInDb,
   type GraphLodSnapshot,
   type GraphSnapshot,
   type OrderedAssociationMoveParams,
   type OrderedAssociationViewDetail,
-  type RecordLifecycleError,
-  type RecordPageDetail,
+  type NodeLifecycleError,
+  type NodePageDetail,
   type DatabaseViewDetail,
 } from "marloth-db";
 import { statSync } from "node:fs";
-import type { RecordSummary } from "../shared/types";
+import type { NodeSummary } from "../shared/types";
 
 export interface EditorDatabase {
   getHomeId(): string;
-  getRecord(id: string, options?: { databaseView?: string; scopeId?: string }): RecordPageDetail | null;
+  getNode(id: string, options?: { databaseView?: string; scopeId?: string }): NodePageDetail | null;
   getDatabaseView(id: string, view?: string): DatabaseViewDetail | null;
   moveOrderedAssociation(
     configId: string,
     params: OrderedAssociationMoveParams,
   ): OrderedAssociationViewDetail | null;
-  search(query: string, limit?: number): RecordSummary[];
+  search(query: string, limit?: number): NodeSummary[];
   saveBody(id: string, body: string): boolean;
   saveTitle(id: string, title: string): boolean;
   updateDatabaseRowProperty(
     databaseId: string,
-    pageId: string,
+    nodeId: string,
     propertyKey: string,
     value: string | null,
-  ): import("marloth-db").EdgePropertyUpdateError | null;
-  updateRelationEdgeProperty(
-    recordId: string,
+  ): import("marloth-db").ConnectionPropertyUpdateError | null;
+  updateOutgoingConnectionProperty(
+    nodeId: string,
     label: string,
     targetId: string,
     propertyKey: string,
     value: string | null,
-  ): import("marloth-db").EdgePropertyUpdateError | null;
-  deleteRecord(id: string): RecordLifecycleError | null;
-  archiveRecord(id: string): RecordLifecycleError | null;
+  ): import("marloth-db").ConnectionPropertyUpdateError | null;
+  deleteNode(id: string): NodeLifecycleError | null;
+  archiveNode(id: string): NodeLifecycleError | null;
   getGraphFull(): GraphSnapshot;
   getGraphExplorerLod(options?: { anchorId?: string; layerCount?: number }): GraphLodSnapshot;
   close(): void;
@@ -81,13 +81,13 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
   return {
     getHomeId(): string {
       const active = currentDb();
-      const home = getRecordPageDetail(active, DEFAULT_HOME_RECORD_ID);
-      if (home) return DEFAULT_HOME_RECORD_ID;
-      const recent = searchRecords(active, "", 1);
-      return recent[0]?.id ?? DEFAULT_HOME_RECORD_ID;
+      const home = getNodePageDetail(active, DEFAULT_HOME_NODE_ID);
+      if (home) return DEFAULT_HOME_NODE_ID;
+      const recent = searchNodes(active, "", 1);
+      return recent[0]?.id ?? DEFAULT_HOME_NODE_ID;
     },
-    getRecord(id: string, options?: { databaseView?: string; scopeId?: string }): RecordPageDetail | null {
-      return getRecordPageDetail(currentDb(), id, options);
+    getNode(id: string, options?: { databaseView?: string; scopeId?: string }): NodePageDetail | null {
+      return getNodePageDetail(currentDb(), id, options);
     },
     getDatabaseView(id: string, view?: string) {
       return getDatabaseViewDetail(currentDb(), id, view);
@@ -98,37 +98,37 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
     ): OrderedAssociationViewDetail | null {
       return applyOrderedAssociationMove(currentDb(), configId, params);
     },
-    search(query: string, limit?: number): RecordSummary[] {
-      return searchRecords(currentDb(), query, limit);
+    search(query: string, limit?: number): NodeSummary[] {
+      return searchNodes(currentDb(), query, limit);
     },
     saveBody(id: string, body: string): boolean {
-      return updateRecordBody(currentDb(), id, body);
+      return updateNodeBody(currentDb(), id, body);
     },
     saveTitle(id: string, title: string): boolean {
-      return updateRecordTitle(currentDb(), id, title);
+      return updateNodeTitle(currentDb(), id, title);
     },
     updateDatabaseRowProperty(
       databaseId: string,
-      pageId: string,
+      nodeId: string,
       propertyKey: string,
       value: string | null,
     ) {
-      return updateDatabaseRowProperty(currentDb(), databaseId, pageId, propertyKey, value);
+      return updateDatabaseRowProperty(currentDb(), databaseId, nodeId, propertyKey, value);
     },
-    updateRelationEdgeProperty(
-      recordId: string,
+    updateOutgoingConnectionProperty(
+      nodeId: string,
       label: string,
       targetId: string,
       propertyKey: string,
       value: string | null,
     ) {
-      return updateOutgoingEdgeProperty(currentDb(), recordId, targetId, label, propertyKey, value);
+      return updateOutgoingConnectionProperty(currentDb(), nodeId, targetId, label, propertyKey, value);
     },
-    deleteRecord(id: string): RecordLifecycleError | null {
-      return deleteRecordInDb(currentDb(), id);
+    deleteNode(id: string): NodeLifecycleError | null {
+      return deleteNodeInDb(currentDb(), id);
     },
-    archiveRecord(id: string): RecordLifecycleError | null {
-      return archiveRecordInDb(currentDb(), id);
+    archiveNode(id: string): NodeLifecycleError | null {
+      return archiveNodeInDb(currentDb(), id);
     },
     getGraphFull(): GraphSnapshot {
       return exportFullGraph(currentDb());

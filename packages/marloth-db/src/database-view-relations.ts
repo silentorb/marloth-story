@@ -1,4 +1,4 @@
-import type { GraphDatabase, EdgeRecord } from "./graph";
+import type { GraphDatabase, Connection } from "./graph";
 import type { DatabaseColumnDef } from "./database-view";
 import type { NotionDatabaseSchema } from "./notion-database-schema";
 import { relationLabel } from "./relation-label";
@@ -22,25 +22,25 @@ function viaDatabaseId(properties: Record<string, unknown>): string | null {
   return typeof raw === "string" && raw.trim() ? raw.trim() : null;
 }
 
-function relationEdgesForRow(
+function relationConnectionsForRow(
   db: GraphDatabase,
-  pageId: string,
-  edgeLabel: string,
+  nodeId: string,
+  connectionLabel: string,
   databaseId: string,
-): EdgeRecord[] {
-  const outgoing = db.listEdgesFromSource(pageId, edgeLabel);
-  const scoped = outgoing.filter((e) => viaDatabaseId(e.properties) === databaseId);
+): Connection[] {
+  const outgoing = db.listConnectionsFromSource(nodeId, connectionLabel);
+  const scoped = outgoing.filter((c) => viaDatabaseId(c.properties) === databaseId);
   if (scoped.length > 0) return scoped;
-  return outgoing.filter((e) => viaDatabaseId(e.properties) === null);
+  return outgoing.filter((c) => viaDatabaseId(c.properties) === null);
 }
 
-function formatRelationCell(db: GraphDatabase, edges: EdgeRecord[]): string {
-  const sorted = [...edges].sort(
+function formatRelationCell(db: GraphDatabase, connections: Connection[]): string {
+  const sorted = [...connections].sort(
     (a, b) => ordinalFromProperties(a.properties) - ordinalFromProperties(b.properties),
   );
   const titles: string[] = [];
-  for (const edge of sorted) {
-    const target = db.getVertex(edge.targetId);
+  for (const connection of sorted) {
+    const target = db.getNode(connection.targetNodeId);
     const title = target ? titleFromProperties(target.properties) : "Untitled";
     titles.push(title);
   }
@@ -48,7 +48,7 @@ function formatRelationCell(db: GraphDatabase, edges: EdgeRecord[]): string {
 }
 
 /**
- * Fill relation-type table cells from outgoing graph edges (not IS_A properties).
+ * Fill relation-type table cells from outgoing graph connections (not IS_A properties).
  */
 export function hydrateRelationCellsForRows(
   db: GraphDatabase,
@@ -68,8 +68,8 @@ export function hydrateRelationCellsForRows(
   for (const row of rows) {
     for (const col of relationColumns) {
       const label = relationLabel(col.name);
-      const edges = relationEdgesForRow(db, row.pageId, label, databaseId);
-      const text = formatRelationCell(db, edges);
+      const connections = relationConnectionsForRow(db, row.nodeId, label, databaseId);
+      const text = formatRelationCell(db, connections);
       if (text) row.cells[col.key] = text;
     }
   }

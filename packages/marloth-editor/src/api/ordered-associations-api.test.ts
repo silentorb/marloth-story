@@ -19,35 +19,35 @@ describe("ordered-associations API", () => {
   const scene1 = "scene111111111111111111111111111";
   const scene2 = "scene222222222222222222222222222";
 
-  db.upsertVertex(PRODUCTS_DB, ["NotionDatabase"], { title: "Products" });
-  db.upsertVertex(PARTS_DB, ["NotionDatabase"], { title: "Parts database" });
-  db.upsertVertex(SCENES_DB, ["NotionDatabase"], { title: "Scenes", body: "" });
-  db.upsertVertex(book, ["NotionPage"], { title: "TWOLD" });
-  db.upsertVertex(part, ["NotionPage"], { title: "Part 1" });
-  db.upsertVertex(scene1, ["NotionPage"], { title: "Scene One" });
-  db.upsertVertex(scene2, ["NotionPage"], { title: "Scene Two" });
-  db.upsertEdge(book, PRODUCTS_DB, IS_A_LABEL, { order: "1", row_index: 0 });
-  db.upsertEdge(part, PARTS_DB, IS_A_LABEL, { row_index: 0 });
-  db.upsertEdge(part, book, "PRODUCTS", { ordinal: 0 });
-  db.upsertEdge(scene1, SCENES_DB, IS_A_LABEL, { order: "10" });
-  db.upsertEdge(scene2, SCENES_DB, IS_A_LABEL, { order: "20" });
-  db.upsertEdge(scene1, book, "PRODUCT", { ordinal: 0 });
-  db.upsertEdge(scene2, book, "PRODUCT", { ordinal: 0 });
-  db.upsertEdge(scene1, part, "PART", { ordinal: 0 });
-  db.upsertEdge(scene2, part, "PART", { ordinal: 1 });
+  db.upsertNode(PRODUCTS_DB, ["NotionDatabase"], { title: "Products" });
+  db.upsertNode(PARTS_DB, ["NotionDatabase"], { title: "Parts database" });
+  db.upsertNode(SCENES_DB, ["NotionDatabase"], { title: "Scenes", body: "" });
+  db.upsertNode(book, ["NotionPage"], { title: "TWOLD" });
+  db.upsertNode(part, ["NotionPage"], { title: "Part 1" });
+  db.upsertNode(scene1, ["NotionPage"], { title: "Scene One" });
+  db.upsertNode(scene2, ["NotionPage"], { title: "Scene Two" });
+  db.upsertConnection(book, PRODUCTS_DB, IS_A_LABEL, { order: "1", row_index: 0 });
+  db.upsertConnection(part, PARTS_DB, IS_A_LABEL, { row_index: 0 });
+  db.upsertConnection(part, book, "PRODUCTS", { ordinal: 0 });
+  db.upsertConnection(scene1, SCENES_DB, IS_A_LABEL, { order: "10" });
+  db.upsertConnection(scene2, SCENES_DB, IS_A_LABEL, { order: "20" });
+  db.upsertConnection(scene1, book, "PRODUCT", { ordinal: 0 });
+  db.upsertConnection(scene2, book, "PRODUCT", { ordinal: 0 });
+  db.upsertConnection(scene1, part, "PART", { ordinal: 0 });
+  db.upsertConnection(scene2, part, "PART", { ordinal: 1 });
   db.close();
 
   const handler = createApiHandler(dbPath);
 
-  test("GET record with scope returns ordered-association section", async () => {
+  test("GET node with scope returns ordered-association section", async () => {
     const res = await handler(
-      new Request(`http://127.0.0.1/api/records/${SCENES_DB}?scope=${book}`),
+      new Request(`http://127.0.0.1/api/nodes/${SCENES_DB}?scope=${book}`),
     );
     expect(res.status).toBe(200);
     const payload = (await res.json()) as {
-      record: { sections: Array<{ type: string; configId?: string }> };
+      node: { sections: Array<{ type: string; configId?: string }> };
     };
-    const section = payload.record.sections.find((entry) => entry.type === "ordered-association");
+    const section = payload.node.sections.find((entry) => entry.type === "ordered-association");
     expect(section?.configId).toBe("scenes-by-book");
   });
 

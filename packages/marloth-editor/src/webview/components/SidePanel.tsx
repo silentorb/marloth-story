@@ -1,20 +1,20 @@
 import { useState } from "react";
 import type { AppView } from "../../shared/types";
-import { SIDEBAR_RECORD_LINKS } from "../sidebar-nav";
+import { SIDEBAR_NODE_LINKS } from "../sidebar-nav";
 import "./side-panel.css";
 
 export interface SidePanelStandaloneUrls {
   home: string;
   explorer: string;
-  records: Record<string, string>;
+  nodes: Record<string, string>;
 }
 
 interface SidePanelProps {
   activeView: AppView;
-  activeRecordId?: string | null;
+  activeNodeId?: string | null;
   onHome: () => void;
   onViewChange: (view: AppView) => void;
-  onOpenRecord: (recordId: string) => void;
+  onOpenNode: (nodeId: string) => void;
   standaloneUrls?: SidePanelStandaloneUrls;
 }
 
@@ -56,10 +56,10 @@ function NavItem({
 
 export function SidePanel({
   activeView,
-  activeRecordId,
+  activeNodeId,
   onHome,
   onViewChange,
-  onOpenRecord,
+  onOpenNode,
   standaloneUrls,
 }: SidePanelProps) {
   const [collapsed, setCollapsed] = useState(false);
@@ -85,7 +85,7 @@ export function SidePanel({
       </div>
       <nav className="marloth-side-panel-nav">
         <NavItem
-          active={activeView === "record"}
+          active={activeView === "node-page"}
           title="Home"
           icon="⌂"
           label="Home"
@@ -101,15 +101,15 @@ export function SidePanel({
           onClick={standaloneUrls ? undefined : () => onViewChange("graph-explorer")}
         />
         <div className="marloth-side-panel-divider" role="presentation" />
-        {SIDEBAR_RECORD_LINKS.map(({ id, label, icon }) => (
+        {SIDEBAR_NODE_LINKS.map(({ id, label, icon }) => (
           <NavItem
             key={id}
-            active={activeView === "record" && activeRecordId === id}
+            active={activeView === "node-page" && activeNodeId === id}
             title={label}
             icon={icon}
             label={label}
-            href={standaloneUrls?.records[id]}
-            onClick={standaloneUrls ? undefined : () => onOpenRecord(id)}
+            href={standaloneUrls?.nodes[id]}
+            onClick={standaloneUrls ? undefined : () => onOpenNode(id)}
           />
         ))}
       </nav>

@@ -27,10 +27,10 @@ const dryRun = process.argv.includes("--dry-run");
 const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";
 const db = new GraphDatabase(dbPath);
 
-const vertex = db.getVertex(FEATURES_DB);
-if (!vertex) throw new Error(`Features database not found: ${FEATURES_DB}`);
+const node = db.getNode(FEATURES_DB);
+if (!node) throw new Error(`Features database not found: ${FEATURES_DB}`);
 
-const stored = JSON.parse(String(vertex.properties.notion_views)) as NotionDatabaseViews;
+const stored = JSON.parse(String(node.properties.notion_views)) as NotionDatabaseViews;
 
 for (const view of stored.views) {
   const config = view.configuration as { properties?: { property_id?: string; property_name?: string; visible?: boolean }[] } | null;
@@ -56,7 +56,7 @@ if (dryRun) {
   }
   console.log("Dry run — no changes written");
 } else {
-  db.mergeVertexProperties(FEATURES_DB, {
+  db.mergeNodeProperties(FEATURES_DB, {
     notion_views: JSON.stringify(stored),
   });
   db.finalize();

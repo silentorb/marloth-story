@@ -41,7 +41,7 @@ export async function syncDatabases(
     ids = [options.id];
   } else {
     ids = db
-      .listVerticesForGraphExport()
+      .listNodesForGraphExport()
       .filter((v) => v.labels.includes("NotionDatabase"))
       .map((v) => v.id);
     if (options.limit !== undefined && Number.isFinite(options.limit)) {
@@ -51,8 +51,8 @@ export async function syncDatabases(
 
   for (const id of ids) {
     summary.scanned += 1;
-    const vertex = db.getVertex(id);
-    if (!vertex?.labels.includes("NotionDatabase")) {
+    const node = db.getNode(id);
+    if (!node?.labels.includes("NotionDatabase")) {
       summary.skipped += 1;
       continue;
     }
@@ -75,7 +75,7 @@ export async function syncDatabases(
       }
 
       const patch: Record<string, string> = {
-        ...databaseMetadataPatch(database, vertex.properties, options.force),
+        ...databaseMetadataPatch(database, node.properties, options.force),
         notion_schema: JSON.stringify(schema),
         notion_views: JSON.stringify({
           syncedAt: new Date().toISOString(),
@@ -89,7 +89,7 @@ export async function syncDatabases(
           `[dry-run] would update database ${id}: ${views.length} views, ${Object.keys(schema.properties).length} properties`,
         );
       } else {
-        db.mergeVertexProperties(id, patch);
+        db.mergeNodeProperties(id, patch);
         if (options.enrichRows) {
           await enrichDatabaseRows(db, client, id, schema, views[0] ?? null, options.dryRun);
         }
@@ -143,14 +143,14 @@ async function enrichDatabaseRows(
 
       if (Object.keys(cellPatch).length === 0) continue;
 
-      const edges = TYPE_MEMBERSHIP_LABELS.flatMap((label) =>
-        db.listEdgesFromSource(pageHex, label),
-      ).filter((e) => e.targetId === databaseId);
+      const connections = TYPE_MEMBERSHIP_LABELS.flatMap((label) =>
+        db.listConnectionsFromSource(pageHex, label),
+      ).filter((c) => c.targetNodeId === databaseId);
 
       if (dryRun) continue;
 
-      for (const edge of edges) {
-        db.mergeEdgeProperties(edge.id, cellPatch);
+      for (const connection of connections) {
+        db.mergeConnectionProperties(connection.id, cellPatch);
       }
     }
 

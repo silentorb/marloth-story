@@ -10,8 +10,8 @@ function dbPath(): string {
 }
 
 export function migrateAsides(db: GraphDatabase): { updated: number; scanned: number } {
-  const rows = db.listVerticesWithBodyLike("%<aside>%");
-  const blockquoted = db.listVerticesWithBodyLike("%> <aside>%");
+  const rows = db.listNodesWithBodyLike("%<aside>%");
+  const blockquoted = db.listNodesWithBodyLike("%> <aside>%");
   const byId = new Map<string, string>();
   for (const row of [...rows, ...blockquoted]) byId.set(row.id, row.body);
   let updated = 0;
@@ -24,7 +24,7 @@ export function migrateAsides(db: GraphDatabase): { updated: number; scanned: nu
 }
 
 export function migrateCalloutLayout(db: GraphDatabase): { updated: number; scanned: number } {
-  const rows = db.listVerticesWithBodyLike("%> %");
+  const rows = db.listNodesWithBodyLike("%> %");
   let updated = 0;
   for (const row of rows) {
     const next = normalizeCalloutBlockquotes(row.body);

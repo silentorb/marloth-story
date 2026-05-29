@@ -2,7 +2,7 @@ import { openEditorDatabase } from "./database";
 import { UserSettingsStore } from "./user-settings-store";
 import { resolveApiPort, resolveDbPath } from "./paths";
 import type { UserSettingsPatch } from "../shared/user-settings";
-import type { RecordLifecycleError } from "marloth-db";
+import type { NodeLifecycleError } from "marloth-db";
 
 export { pickExistingDbPath, resolveApiPort, resolveDbPath } from "./paths";
 
@@ -29,15 +29,15 @@ function corsPreflight(): Response {
   });
 }
 
-function lifecycleStatus(error: RecordLifecycleError): number {
+function lifecycleStatus(error: NodeLifecycleError): number {
   if (error === "not_found") return 404;
   if (error === "protected") return 403;
   return 409;
 }
 
-function lifecycleMessage(error: RecordLifecycleError): string {
+function lifecycleMessage(error: NodeLifecycleError): string {
   if (error === "not_found") return "not found";
-  if (error === "protected") return "protected record";
+  if (error === "protected") return "protected node";
   return "already archived";
 }
 
@@ -76,7 +76,7 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
         });
       }
 
-      if (path === "/api/records/search") {
+      if (path === "/api/nodes/search") {
         const q = url.searchParams.get("q") ?? "";
         const limit = Number.parseInt(url.searchParams.get("limit") ?? "20", 10);
         return json({ results: db.search(q, limit) });
@@ -93,15 +93,15 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
         }
       }
 
-      const recordMatch = /^\/api\/records\/([a-f0-9]{32})$/i.exec(path);
-      if (recordMatch) {
-        const id = recordMatch[1]!.toLowerCase();
+      const nodeMatch = /^\/api\/nodes\/([a-f0-9]{32})$/i.exec(path);
+      if (nodeMatch) {
+        const id = nodeMatch[1]!.toLowerCase();
         if (req.method === "GET") {
           const view = url.searchParams.get("view") ?? undefined;
           const scopeId = url.searchParams.get("scope") ?? undefined;
-          const record = db.getRecord(id, { databaseView: view, scopeId });
-          if (!record) return json({ error: "not found" }, 404);
-          return json({ record });
+          const node = db.getNode(id, { databaseView: view, scopeId });
+          if (!node) return json({ error: "not found" }, 404);
+          return json({ node });
         }
         if (req.method === "PUT") {
           const payload = (await req.json()) as { body?: string; title?: string };
@@ -121,16 +121,16 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
           return json({ ok: true });
         }
         if (req.method === "DELETE") {
-          const error = db.deleteRecord(id);
+          const error = db.deleteNode(id);
           if (error) return json({ error: lifecycleMessage(error) }, lifecycleStatus(error));
           return json({ ok: true });
         }
       }
 
-      const archiveMatch = /^\/api\/records\/([a-f0-9]{32})\/archive$/i.exec(path);
+      const archiveMatch = /^\/api\/nodes\/([a-f0-9]{32})\/archive$/i.exec(path);
       if (archiveMatch && req.method === "POST") {
         const id = archiveMatch[1]!.toLowerCase();
-        const error = db.archiveRecord(id);
+        const error = db.archiveNode(id);
         if (error) return json({ error: lifecycleMessage(error) }, lifecycleStatus(error));
         return json({ ok: true });
       }
@@ -150,7 +150,7 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
         /^\/api\/databases\/([a-f0-9]{32})\/rows\/([a-f0-9]{32})$/i.exec(path);
       if (databaseRowMatch && req.method === "PATCH") {
         const databaseId = databaseRowMatch[1]!.toLowerCase();
-        const pageId = databaseRowMatch[2]!.toLowerCase();
+        const nodeId = databaseRowMatch[2]!.toLowerCase();
         const payload = (await req.json()) as { property?: string; value?: string | null };
         if (typeof payload.property !== "string") {
           return json({ error: "property required" }, 400);
@@ -161,7 +161,7 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
             : String(payload.value);
         const error = db.updateDatabaseRowProperty(
           databaseId,
-          pageId,
+          nodeId,
           payload.property,
           value,
         );
@@ -170,12 +170,12 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
         return json({ ok: true });
       }
 
-      const relationEdgeMatch =
-        /^\/api\/records\/([a-f0-9]{32})\/relations\/([^/]+)\/([a-f0-9]{32})$/i.exec(path);
-      if (relationEdgeMatch && req.method === "PATCH") {
-        const recordId = relationEdgeMatch[1]!.toLowerCase();
-        const label = decodeURIComponent(relationEdgeMatch[2]!);
-        const targetId = relationEdgeMatch[3]!.toLowerCase();
+      const connectionMatch =
+        /^\/api\/nodes\/([a-f0-9]{32})\/connections\/([^/]+)\/([a-f0-9]{32})$/i.exec(path);
+      if (connectionMatch && req.method === "PATCH") {
+        const nodeId = connectionMatch[1]!.toLowerCase();
+        const label = decodeURIComponent(connectionMatch[2]!);
+        const targetId = connectionMatch[3]!.toLowerCase();
         const payload = (await req.json()) as { property?: string; value?: string | null };
         if (typeof payload.property !== "string") {
           return json({ error: "property required" }, 400);
@@ -184,8 +184,8 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
           payload.value === null || payload.value === undefined
             ? null
             : String(payload.value);
-        const error = db.updateRelationEdgeProperty(
-          recordId,
+        const error = db.updateOutgoingConnectionProperty(
+          nodeId,
           label,
           targetId,
           payload.property,

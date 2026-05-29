@@ -8,7 +8,7 @@ function normalizeRecordId(id: string): string {
   return id.toLowerCase();
 }
 
-/** Resolve a markdown href to a 32-hex record id, if it references a graph vertex. */
+/** Resolve a markdown href to a 32-hex record id, if it references a graph node. */
 export function resolveMarkdownHrefTarget(href: string): string | null {
   const trimmed = href.trim();
   if (!trimmed) return null;

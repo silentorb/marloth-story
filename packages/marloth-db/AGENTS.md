@@ -5,6 +5,15 @@
 - Uses Bun's built-in `bun:sqlite` (no extra native deps).
 - Database file default: `data/marloth.sqlite` at repo root.
 
+## Terminology
+
+- **Node** — entity in `nodes` / `node_labels` (`upsertNode`, `getNodeDetail`).
+- **Connection** — directed labeled link in `connections` (`upsertConnection`).
+- **Page** — editor view of a node (`getNodePageDetail`, `node-page-sections.ts`).
+- **NotionPage** / **NotionDatabase** — legacy import labels on nodes.
+
+Core tables: `nodes`, `node_labels`, `connections` (`SCHEMA_VERSION` 3).
+
 ## Run
 - Tests: `bun test` (from this directory).
 - Schema and graph API: import from `marloth-db` workspace package.

@@ -5,13 +5,13 @@ import {
 } from "../../shared/http-client";
 import type { EditorHost } from "../../shared/types";
 import {
-  navigateStandaloneRecord,
-  openStandaloneRecordInNewTab,
-} from "../record-links";
+  navigateStandaloneNode,
+  openStandaloneNodeInNewTab,
+} from "../node-links";
 
 export interface EditorApi extends EditorApiClient {
   host: EditorHost;
-  navigate(recordId: string, openInNewTab?: boolean): void;
+  navigate(nodeId: string, openInNewTab?: boolean): void;
 }
 
 function resolveWebviewApiBaseUrl(): string {
@@ -36,22 +36,22 @@ export function createEditorApi(): EditorApi {
     return {
       host: "vscode",
       getHomeId: rest.getHomeId.bind(rest),
-      getRecord: rest.getRecord.bind(rest),
+      getNode: rest.getNode.bind(rest),
       getDatabaseView: rest.getDatabaseView.bind(rest),
       search: rest.search.bind(rest),
       saveBody: rest.saveBody.bind(rest),
       saveTitle: rest.saveTitle.bind(rest),
       updateDatabaseRowProperty: rest.updateDatabaseRowProperty.bind(rest),
-      updateRelationEdgeProperty: rest.updateRelationEdgeProperty.bind(rest),
-      deleteRecord: rest.deleteRecord.bind(rest),
-      archiveRecord: rest.archiveRecord.bind(rest),
+      updateOutgoingConnectionProperty: rest.updateOutgoingConnectionProperty.bind(rest),
+      deleteNode: rest.deleteNode.bind(rest),
+      archiveNode: rest.archiveNode.bind(rest),
       getGraphFull: rest.getGraphFull.bind(rest),
       getGraphExplorerLod: rest.getGraphExplorerLod.bind(rest),
       getUserSettings: rest.getUserSettings.bind(rest),
       patchUserSettings: rest.patchUserSettings.bind(rest),
       moveOrderedAssociation: rest.moveOrderedAssociation.bind(rest),
-      navigate(recordId: string, openInNewTab = false): void {
-        vscode.postMessage({ type: "navigate", recordId, openInNewTab });
+      navigate(nodeId: string, openInNewTab = false): void {
+        vscode.postMessage({ type: "navigate", nodeId, openInNewTab });
       },
     };
   }
@@ -59,26 +59,26 @@ export function createEditorApi(): EditorApi {
   return {
     host: "standalone",
     getHomeId: rest.getHomeId.bind(rest),
-    getRecord: rest.getRecord.bind(rest),
+    getNode: rest.getNode.bind(rest),
     getDatabaseView: rest.getDatabaseView.bind(rest),
     search: rest.search.bind(rest),
     saveBody: rest.saveBody.bind(rest),
     saveTitle: rest.saveTitle.bind(rest),
     updateDatabaseRowProperty: rest.updateDatabaseRowProperty.bind(rest),
-    updateRelationEdgeProperty: rest.updateRelationEdgeProperty.bind(rest),
-    deleteRecord: rest.deleteRecord.bind(rest),
-    archiveRecord: rest.archiveRecord.bind(rest),
+    updateOutgoingConnectionProperty: rest.updateOutgoingConnectionProperty.bind(rest),
+    deleteNode: rest.deleteNode.bind(rest),
+    archiveNode: rest.archiveNode.bind(rest),
     getGraphFull: rest.getGraphFull.bind(rest),
     getGraphExplorerLod: rest.getGraphExplorerLod.bind(rest),
     getUserSettings: rest.getUserSettings.bind(rest),
     patchUserSettings: rest.patchUserSettings.bind(rest),
     moveOrderedAssociation: rest.moveOrderedAssociation.bind(rest),
-    navigate(recordId: string, openInNewTab = false): void {
+    navigate(nodeId: string, openInNewTab = false): void {
       if (openInNewTab) {
-        openStandaloneRecordInNewTab(recordId);
+        openStandaloneNodeInNewTab(nodeId);
         return;
       }
-      navigateStandaloneRecord(recordId);
+      navigateStandaloneNode(nodeId);
     },
   };
 }

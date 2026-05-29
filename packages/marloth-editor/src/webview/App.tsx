@@ -1,28 +1,28 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GraphView } from "./components/GraphView";
-import { RecordPageView } from "./components/RecordPageView";
+import { NodePageView } from "./components/NodePageView";
 import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
 import { UserSettingsProvider } from "./hooks/useUserSettings";
-import type { GetRecordOptions } from "../shared/http-client";
-import type { AppView, OrderedAssociationViewDetail, RecordPageDetail } from "../shared/types";
-import { standaloneRecordUrl } from "../shared/types";
+import type { GetNodeOptions } from "../shared/http-client";
+import type { AppView, OrderedAssociationViewDetail, NodePageDetail } from "../shared/types";
+import { standaloneNodeUrl } from "../shared/types";
 import {
   anchorFromLocation,
   metadataExpandedFromLocation,
-  navigateStandaloneRecord,
+  navigateStandaloneNode,
   resolveGraphExplorerAnchor,
   stripMetadataParamFromUrl,
   syncMetadataExpandedParam,
   standaloneViewUrl,
-} from "./record-links";
+} from "./node-links";
 import { resolvePageTitleAndContent } from "./markdown-body";
 import {
   bodyNeedsSave,
   normalizeEditorBody,
   titleNeedsSave,
 } from "./editor-save";
-import { SIDEBAR_RECORD_LINKS } from "./sidebar-nav";
+import { SIDEBAR_NODE_LINKS } from "./sidebar-nav";
 import {
   readGraphExplorerLayerDepth,
   readGraphExplorerMode,
@@ -45,16 +45,16 @@ export type { AppView };
 
 type SaveState = "idle" | "dirty" | "saving" | "saved" | "error";
 
-function recordFromLocation(): string | null {
+function nodeFromLocation(): string | null {
   const params = new URLSearchParams(window.location.search);
-  return params.get("record");
+  return params.get("node");
 }
 
 function viewFromLocation(): AppView {
   const params = new URLSearchParams(window.location.search);
   const view = params.get("view");
   if (view === "overview" || view === "explorer") return "graph-explorer";
-  return "record";
+  return "node-page";
 }
 
 function databaseViewFromLocation(): string | undefined {
@@ -77,9 +77,9 @@ function viewToQueryParam(view: AppView): string | null {
 export function App() {
   const api = useMemo(() => createEditorApi(), []);
   const [view, setView] = useState<AppView>(() =>
-    api.host === "standalone" ? viewFromLocation() : "record",
+    api.host === "standalone" ? viewFromLocation() : "node-page",
   );
-  const [record, setRecord] = useState<RecordPageDetail | null>(null);
+  const [node, setNode] = useState<NodePageDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [metadataExpanded, setMetadataExpanded] = useState(() =>
@@ -103,7 +103,7 @@ export function App() {
   const pendingTitle = useRef<string | null>(null);
   const savedBody = useRef<string | null>(null);
   const savedTitle = useRef<string | null>(null);
-  const recordIdRef = useRef<string | null>(null);
+  const nodeIdRef = useRef<string | null>(null);
   const saveTimer = useRef<number | null>(null);
 
   const syncExplorerAnchorUrl = useCallback(
@@ -167,25 +167,25 @@ export function App() {
 
   const standaloneUrls = useMemo(() => {
     if (api.host !== "standalone" || !homeId) return undefined;
-    const records = Object.fromEntries(
-      SIDEBAR_RECORD_LINKS.map(({ id }) => [id, standaloneRecordUrl(id)]),
+    const nodes = Object.fromEntries(
+      SIDEBAR_NODE_LINKS.map(({ id }) => [id, standaloneNodeUrl(id)]),
     );
     return {
-      home: standaloneRecordUrl(homeId),
+      home: standaloneNodeUrl(homeId),
       explorer: standaloneViewUrl("graph-explorer", null, undefined, explorerAnchorId),
-      records,
+      nodes,
     };
   }, [api.host, explorerAnchorId, homeId]);
 
   const syncStandaloneUrl = useCallback(
-    (nextView: AppView, recordId?: string | null, options?: GetRecordOptions) => {
+    (nextView: AppView, nodeId?: string | null, options?: GetNodeOptions) => {
       if (api.host !== "standalone") return;
       const url = new URL(window.location.href);
       const viewParam = viewToQueryParam(nextView);
       if (viewParam) url.searchParams.set("view", viewParam);
       else url.searchParams.delete("view");
-      if (recordId) url.searchParams.set("record", recordId);
-      else url.searchParams.delete("record");
+      if (nodeId) url.searchParams.set("node", nodeId);
+      else url.searchParams.delete("node");
       if (options?.scope) url.searchParams.set("scope", options.scope);
       else url.searchParams.delete("scope");
       if (options?.view) url.searchParams.set("dbView", options.view);
@@ -201,8 +201,8 @@ export function App() {
     [api.host, explorerAnchorId],
   );
 
-  const loadRecord = useCallback(
-    async (recordId: string, options?: GetRecordOptions | string) => {
+  const loadNode = useCallback(
+    async (nodeId: string, options?: GetNodeOptions | string) => {
       setError(null);
       if (saveTimer.current) {
         window.clearTimeout(saveTimer.current);
@@ -211,9 +211,9 @@ export function App() {
       try {
         const normalized =
           typeof options === "string" ? { view: options } : (options ?? {});
-        const detail = await api.getRecord(recordId, normalized);
+        const detail = await api.getNode(nodeId, normalized);
         const { title, content } = resolvePageTitleAndContent(detail.body, detail.title);
-        const normalizedRecord = {
+        const normalizedNode = {
           ...detail,
           title,
           body: content,
@@ -221,15 +221,15 @@ export function App() {
             section.type === "markdown" ? { ...section, body: content } : section,
           ),
         };
-        recordIdRef.current = recordId;
-        setRecord(normalizedRecord);
+        nodeIdRef.current = nodeId;
+        setNode(normalizedNode);
         setMetadataExpanded(false);
         pendingBody.current = content;
         pendingTitle.current = title;
         savedBody.current = content;
         savedTitle.current = title;
         setSaveState("idle");
-        syncStandaloneUrl("record", recordId, normalized);
+        syncStandaloneUrl("node-page", nodeId, normalized);
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       }
@@ -244,46 +244,46 @@ export function App() {
     const initialView = viewFromLocation();
     setView(initialView);
     setExplorerAnchorId(resolveGraphExplorerAnchor(anchorFromLocation()));
-    if (initialView !== "record") return;
+    if (initialView !== "node-page") return;
 
-    const fromUrl = recordFromLocation();
+    const fromUrl = nodeFromLocation();
     if (fromUrl) {
-      await loadRecord(fromUrl, {
+      await loadNode(fromUrl, {
         view: databaseViewFromLocation(),
         scope: scopeFromLocation(),
       });
       return;
     }
-    await loadRecord(home);
-  }, [api, loadRecord]);
+    await loadNode(home);
+  }, [api, loadNode]);
 
   useEffect(() => {
     void bootstrap();
   }, [bootstrap]);
 
   useEffect(() => {
-    syncDocumentTitle(view, record?.title);
+    syncDocumentTitle(view, node?.title);
     if (api.host === "standalone") {
-      const urlRecordId = recordFromLocation();
+      const urlNodeId = nodeFromLocation();
       syncDocumentIcon({
         view,
-        recordId: record?.id ?? urlRecordId,
-        recordPath: record?.path,
-        recordBody: record?.body,
-        recordLabels: record?.labels,
+        nodeId: node?.id ?? urlNodeId,
+        recordPath: node?.path,
+        recordBody: node?.body,
+        recordLabels: node?.labels,
         homeId,
       });
     }
-  }, [api.host, view, record?.id, record?.title, record?.path, record?.body, record?.labels, homeId]);
+  }, [api.host, view, node?.id, node?.title, node?.path, node?.body, node?.labels, homeId]);
 
   useEffect(() => {
     if (api.host !== "vscode") return;
     const onMessage = (event: MessageEvent) => {
-      const msg = event.data as { type?: string; recordId?: string; error?: string };
+      const msg = event.data as { type?: string; nodeId?: string; error?: string };
       if (msg.type === "init" || msg.type === "navigate") {
-        if (msg.recordId) {
-          setView("record");
-          void loadRecord(msg.recordId);
+        if (msg.nodeId) {
+          setView("node-page");
+          void loadNode(msg.nodeId);
         }
       }
       if (msg.type === "error") {
@@ -292,29 +292,29 @@ export function App() {
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [api.host, loadRecord]);
+  }, [api.host, loadNode]);
 
   const syncEditorBaseline = useCallback(
     (markdown: string) => {
-      if (!record) return;
-      const normalized = normalizeEditorBody(markdown, record.title);
+      if (!node) return;
+      const normalized = normalizeEditorBody(markdown, node.title);
       savedBody.current = normalized;
       pendingBody.current = normalized;
     },
-    [record],
+    [node],
   );
 
   const scheduleSave = useCallback(
     (body: string) => {
-      if (!record) return;
-      const normalizedBody = normalizeEditorBody(body, record.title);
-      if (!bodyNeedsSave(body, savedBody.current, record.title)) return;
+      if (!node) return;
+      const normalizedBody = normalizeEditorBody(body, node.title);
+      if (!bodyNeedsSave(body, savedBody.current, node.title)) return;
       pendingBody.current = normalizedBody;
       setSaveState("dirty");
       if (saveTimer.current) window.clearTimeout(saveTimer.current);
       saveTimer.current = window.setTimeout(() => {
         void (async () => {
-          const id = recordIdRef.current;
+          const id = nodeIdRef.current;
           const nextBody = pendingBody.current;
           if (!id || nextBody === null) return;
           setSaveState("saving");
@@ -328,21 +328,21 @@ export function App() {
         })();
       }, 800);
     },
-    [api, record],
+    [api, node],
   );
 
   const scheduleSaveTitle = useCallback(
     (title: string) => {
-      if (!record) return;
+      if (!node) return;
       const trimmed = title.trim() || "Untitled";
       if (!titleNeedsSave(title, savedTitle.current)) return;
       pendingTitle.current = trimmed;
-      setRecord((prev) => (prev ? { ...prev, title: trimmed } : prev));
+      setNode((prev) => (prev ? { ...prev, title: trimmed } : prev));
       setSaveState("dirty");
       if (saveTimer.current) window.clearTimeout(saveTimer.current);
       saveTimer.current = window.setTimeout(() => {
         void (async () => {
-          const id = recordIdRef.current;
+          const id = nodeIdRef.current;
           const nextTitle = pendingTitle.current;
           if (!id || nextTitle === null) return;
           setSaveState("saving");
@@ -356,19 +356,19 @@ export function App() {
         })();
       }, 800);
     },
-    [api, record],
+    [api, node],
   );
 
   const goHome = useCallback(async () => {
     const nextHomeId = homeId ?? (await api.getHomeId());
     if (api.host === "standalone") {
-      navigateStandaloneRecord(nextHomeId);
+      navigateStandaloneNode(nextHomeId);
       return;
     }
-    setView("record");
-    syncStandaloneUrl("record", nextHomeId);
-    void loadRecord(nextHomeId);
-  }, [api, homeId, loadRecord, syncStandaloneUrl]);
+    setView("node-page");
+    syncStandaloneUrl("node-page", nextHomeId);
+    void loadNode(nextHomeId);
+  }, [api, homeId, loadNode, syncStandaloneUrl]);
 
   const changeView = useCallback(
     (nextView: AppView) => {
@@ -376,7 +376,7 @@ export function App() {
         window.location.assign(
           standaloneViewUrl(
             nextView,
-            record?.id ?? recordFromLocation(),
+            node?.id ?? nodeFromLocation(),
             undefined,
             nextView === "graph-explorer" ? explorerAnchorId : undefined,
           ),
@@ -384,39 +384,39 @@ export function App() {
         return;
       }
       setView(nextView);
-      syncStandaloneUrl(nextView, record?.id ?? recordFromLocation());
+      syncStandaloneUrl(nextView, node?.id ?? nodeFromLocation());
     },
-    [api.host, explorerAnchorId, record?.id, syncStandaloneUrl],
+    [api.host, explorerAnchorId, node?.id, syncStandaloneUrl],
   );
 
-  const openRecordFromGraph = useCallback(
-    (recordId: string, openInNewTab = false) => {
+  const openNodeFromGraph = useCallback(
+    (nodeId: string, openInNewTab = false) => {
       if (openInNewTab) {
-        api.navigate(recordId, true);
+        api.navigate(nodeId, true);
         return;
       }
       if (api.host === "standalone") {
-        navigateStandaloneRecord(recordId);
+        navigateStandaloneNode(nodeId);
         return;
       }
-      setView("record");
-      syncStandaloneUrl("record", recordId);
-      void loadRecord(recordId);
+      setView("node-page");
+      syncStandaloneUrl("node-page", nodeId);
+      void loadNode(nodeId);
     },
-    [api, loadRecord, syncStandaloneUrl],
+    [api, loadNode, syncStandaloneUrl],
   );
 
-  const openLinkedRecord = useCallback(
-    (recordId: string, openInNewTab = false) => {
+  const openLinkedNode = useCallback(
+    (nodeId: string, openInNewTab = false) => {
       if (openInNewTab) {
-        api.navigate(recordId, true);
+        api.navigate(nodeId, true);
         return;
       }
-      setView("record");
-      syncStandaloneUrl("record", recordId);
-      void loadRecord(recordId);
+      setView("node-page");
+      syncStandaloneUrl("node-page", nodeId);
+      void loadNode(nodeId);
     },
-    [api, loadRecord, syncStandaloneUrl],
+    [api, loadNode, syncStandaloneUrl],
   );
 
   const setShowGraphNodeLabelsPersisted = useCallback((value: boolean) => {
@@ -430,7 +430,7 @@ export function App() {
   }, []);
 
   const updateOrderedAssociationView = useCallback((view: OrderedAssociationViewDetail) => {
-    setRecord((prev) => {
+    setNode((prev) => {
       if (!prev) return prev;
       return {
         ...prev,
@@ -441,14 +441,14 @@ export function App() {
     });
   }, []);
 
-  const archiveCurrentRecord = useCallback(
-    async (recordId: string) => {
+  const archiveCurrentNode = useCallback(
+    async (nodeId: string) => {
       if (saveTimer.current) {
         window.clearTimeout(saveTimer.current);
         saveTimer.current = null;
       }
       try {
-        await api.archiveRecord(recordId);
+        await api.archiveNode(nodeId);
         await goHome();
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
@@ -457,14 +457,14 @@ export function App() {
     [api, goHome],
   );
 
-  const deleteCurrentRecord = useCallback(
-    async (recordId: string) => {
+  const deleteCurrentNode = useCallback(
+    async (nodeId: string) => {
       if (saveTimer.current) {
         window.clearTimeout(saveTimer.current);
         saveTimer.current = null;
       }
       try {
-        await api.deleteRecord(recordId);
+        await api.deleteNode(nodeId);
         await goHome();
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
@@ -478,10 +478,10 @@ export function App() {
       <div className="marloth-layout">
       <SidePanel
         activeView={view}
-        activeRecordId={view === "record" ? (record?.id ?? recordFromLocation()) : null}
+        activeNodeId={view === "node-page" ? (node?.id ?? nodeFromLocation()) : null}
         onHome={() => void goHome()}
         onViewChange={changeView}
-        onOpenRecord={(recordId) => openLinkedRecord(recordId)}
+        onOpenNode={(nodeId) => openLinkedNode(nodeId)}
         standaloneUrls={standaloneUrls}
       />
       <div className={`marloth-main${view === "graph-explorer" ? " marloth-main-graph" : ""}`}>
@@ -502,16 +502,16 @@ export function App() {
             onShowNodeLabelsChange={setShowGraphNodeLabelsPersisted}
             showRelevanceDiagnostics={showGraphRelevanceDiagnostics}
             onShowRelevanceDiagnosticsChange={setShowGraphRelevanceDiagnosticsPersisted}
-            onOpenRecord={openRecordFromGraph}
+            onOpenNode={openNodeFromGraph}
           />
         ) : error ? (
           <div className="marloth-error">{error}</div>
-        ) : !record ? (
+        ) : !node ? (
           <div className="marloth-loading">Loading…</div>
         ) : (
-          <RecordPageView
+          <NodePageView
             api={api}
-            record={record}
+            node={node}
             saveState={saveState}
             metadataExpanded={metadataExpanded}
             onMetadataExpandedChange={(expanded) => {
@@ -521,13 +521,13 @@ export function App() {
             onBodyChange={scheduleSave}
             onEditorBaseline={syncEditorBaseline}
             onTitleChange={scheduleSaveTitle}
-            onDatabaseViewChange={(dbView) => void loadRecord(record.id, { view: dbView, scope: scopeFromLocation() })}
-            onScopeChange={(scopeId) => void loadRecord(record.id, { scope: scopeId })}
+            onDatabaseViewChange={(dbView) => void loadNode(node.id, { view: dbView, scope: scopeFromLocation() })}
+            onScopeChange={(scopeId) => void loadNode(node.id, { scope: scopeId })}
             onOrderedAssociationViewChange={updateOrderedAssociationView}
-            onOpenRecord={openLinkedRecord}
-            onArchiveRecord={archiveCurrentRecord}
-            onDeleteRecord={deleteCurrentRecord}
-            onTableCellUpdated={() => void loadRecord(record.id, { view: databaseViewFromLocation(), scope: scopeFromLocation() })}
+            onOpenNode={openLinkedNode}
+            onArchiveNode={archiveCurrentNode}
+            onDeleteNode={deleteCurrentNode}
+            onTableCellUpdated={() => void loadNode(node.id, { view: databaseViewFromLocation(), scope: scopeFromLocation() })}
           />
         )}
       </div>

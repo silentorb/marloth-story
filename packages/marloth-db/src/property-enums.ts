@@ -3,7 +3,7 @@ import type { DatabaseColumnDef } from "./database-view";
 /** Workspace-wide priority enum id (shared across table views). */
 export const PRIORITY_ENUM_ID = "priority";
 
-/** Canonical priority labels stored on edges; not numeric weights. */
+/** Canonical priority labels stored on connections; not numeric weights. */
 export const PRIORITY_OPTIONS = [
   "Low",
   "Medium",

@@ -22,8 +22,8 @@
         "icon": "$(home)"
       },
       {
-        "command": "marloth.openRecord",
-        "title": "Marloth: Open Record"
+        "command": "marloth.openNode",
+        "title": "Marloth: Open Node"
       }
     ],
     "customEditors": [
@@ -44,7 +44,7 @@
           "command": "marloth.openHome"
         },
         {
-          "command": "marloth.openRecord"
+          "command": "marloth.openNode"
         }
       ]
     }

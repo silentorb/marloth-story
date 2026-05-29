@@ -26,10 +26,10 @@ function dbPathCandidates(): string[] {
   });
 }
 
-function vertexCount(dbPath: string): number {
+function nodeCount(dbPath: string): number {
   try {
     const db = new Database(dbPath, { readonly: true });
-    const row = db.prepare("SELECT COUNT(*) AS c FROM vertices").get() as { c: number };
+    const row = db.prepare("SELECT COUNT(*) AS c FROM nodes").get() as { c: number };
     db.close();
     return row.c;
   } catch {
@@ -43,7 +43,7 @@ export function pickExistingDbPath(candidates: string[], fallback: string): stri
 
   for (const candidate of candidates) {
     if (!existsSync(candidate)) continue;
-    const count = vertexCount(candidate);
+    const count = nodeCount(candidate);
     if (count > bestCount) {
       bestCount = count;
       bestPath = candidate;

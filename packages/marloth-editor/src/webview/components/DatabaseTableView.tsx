@@ -2,31 +2,31 @@ import { useCallback, useMemo } from "react";
 import type { EditorApi } from "../api/client";
 import type { DatabaseViewDetail } from "../../shared/types";
 import { databaseTableSortKey } from "../../shared/user-settings";
-import { standaloneRecordUrl } from "../../shared/types";
+import { standaloneNodeUrl } from "../../shared/types";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
 import { renderTableCell } from "./table-cell-render";
 import "./database-table-view.css";
 
 interface DatabaseTableViewProps {
   api: EditorApi;
-  recordId: string;
+  nodeId: string;
   databaseView: DatabaseViewDetail;
   embedded?: boolean;
   onViewChange: (view: string) => void;
-  onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
+  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
 }
 
 export function DatabaseTableView({
   api,
-  recordId,
+  nodeId,
   databaseView,
   embedded = false,
   onViewChange,
-  onOpenRecord,
+  onOpenNode,
   onCellUpdated,
 }: DatabaseTableViewProps) {
-  const tableKey = databaseTableSortKey(recordId, databaseView.id, databaseView.view);
+  const tableKey = databaseTableSortKey(nodeId, databaseView.id, databaseView.view);
 
   const columnLabels = useMemo(() => {
     if (!databaseView.columnDefs?.length) return undefined;
@@ -36,7 +36,7 @@ export function DatabaseTableView({
   const renderCell = useCallback(
     (column: string, value: string, row: SectionDataTableRow) => {
       const def = databaseView.columnDefs?.find((col) => col.key === column);
-      const pageId = row.id.split(":")[0]!;
+      const nodeId = row.id.split(":")[0]!;
       return renderTableCell({
         column,
         value,
@@ -46,7 +46,7 @@ export function DatabaseTableView({
             ? async (next) => {
                 await api.updateDatabaseRowProperty(
                   databaseView.id,
-                  pageId,
+                  nodeId,
                   column,
                   next,
                 );
@@ -61,7 +61,7 @@ export function DatabaseTableView({
   const rows = useMemo(
     () =>
       databaseView.rows.map((row) => ({
-        id: `${row.pageId}:${row.rowIndex}`,
+        id: `${row.nodeId}:${row.rowIndex}`,
         name: row.name,
         cells: row.cells,
       })),
@@ -69,19 +69,19 @@ export function DatabaseTableView({
   );
 
   const openRowInEditor = useCallback(
-    (pageId: string, event: React.MouseEvent<HTMLButtonElement>) => {
-      onOpenRecord(pageId, event.metaKey || event.ctrlKey || event.button === 1);
+    (nodeId: string, event: React.MouseEvent<HTMLButtonElement>) => {
+      onOpenNode(nodeId, event.metaKey || event.ctrlKey || event.button === 1);
     },
-    [onOpenRecord],
+    [onOpenNode],
   );
 
   const renderNameCell = useCallback(
     (row: SectionDataTableRow) => {
-      const pageId = row.id.split(":")[0]!;
+      const nodeId = row.id.split(":")[0]!;
       if (api.host === "standalone") {
         return (
           <a
-            href={standaloneRecordUrl(pageId, window.location.href)}
+            href={standaloneNodeUrl(nodeId, window.location.href)}
             className="marloth-database-name-link"
           >
             {row.name}
@@ -93,8 +93,8 @@ export function DatabaseTableView({
         <button
           type="button"
           className="marloth-database-name-link"
-          onClick={(event) => openRowInEditor(pageId, event)}
-          onAuxClick={(event) => openRowInEditor(pageId, event)}
+          onClick={(event) => openRowInEditor(nodeId, event)}
+          onAuxClick={(event) => openRowInEditor(nodeId, event)}
         >
           {row.name}
         </button>

@@ -13,34 +13,34 @@ export function makeGraphLodSnapshot(
         nodes: [
           {
             id: anchorId,
-            title: "Anchor record",
+            title: "Anchor node",
             path: "Marloth/Anchor",
             group: "NotionPage",
             labels: ["NotionPage"],
           },
         ],
-        links: [],
+        connections: [],
       },
       {
         nodes: [
           {
             id: anchorId,
-            title: "Anchor record",
+            title: "Anchor node",
             path: "Marloth/Anchor",
             group: "NotionPage",
             labels: ["NotionPage"],
           },
           {
             id: neighborId,
-            title: "Neighbor record",
+            title: "Neighbor node",
             path: "Marloth/Neighbor",
             group: "NotionPage",
             labels: ["NotionPage"],
           },
         ],
-        links: [
+        connections: [
           {
-            id: "link-anchor-neighbor",
+            id: "connection-anchor-neighbor",
             source: anchorId,
             target: neighborId,
             label: "related",

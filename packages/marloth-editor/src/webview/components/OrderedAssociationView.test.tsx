@@ -41,7 +41,7 @@ describe("OrderedAssociationView", () => {
         view={view}
         onScopeChange={() => {}}
         onViewChange={() => {}}
-        onOpenRecord={() => {}}
+        onOpenNode={() => {}}
       />,
     );
 

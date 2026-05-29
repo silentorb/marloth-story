@@ -14,7 +14,7 @@ Read-only sync from the Notion web API into `data/marloth.sqlite`. Writes **neve
 # Page timestamps (created_at, modified_at, notion_url)
 bun run notion:sync-metadata -- pages
 
-# Database schema, views, and timestamps (NotionDatabase vertices)
+# Database schema, views, and timestamps (NotionDatabase nodes)
 bun run notion:sync-metadata -- databases
 
 # Options
@@ -38,6 +38,6 @@ No create/update/delete Notion endpoints are used.
 
 **Pages:** `created_at`, `modified_at`, `notion_url`, optional `notion_archived`
 
-**NotionDatabase vertices:** `created_at`, `modified_at`, `notion_schema`, `notion_views`, optional `notion_url`
+**NotionDatabase nodes:** `created_at`, `modified_at`, `notion_schema`, `notion_views`, optional `notion_url`
 
 The editor uses synced database views for filter/sort-aware table rendering when `notion_views` is present; legacy CSV view keys remain the fallback.

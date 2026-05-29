@@ -1,5 +1,5 @@
-import type { GraphDatabase, EdgeRecord, Properties } from "./graph";
-import { edgeId } from "./graph";
+import type { GraphDatabase, Connection, Properties } from "./graph";
+import { connectionId } from "./graph";
 import { TYPE_MEMBERSHIP_LABELS } from "./labels";
 
 /** Synthetic group id for scenes with no Part association. */
@@ -82,7 +82,7 @@ interface MemberInfo {
   name: string;
   order: number;
   partId: string | null;
-  membershipEdge: EdgeRecord;
+  membershipConnection: Connection;
   cells: Record<string, string>;
 }
 
@@ -106,7 +106,7 @@ function numericSortKey(raw: unknown, fallback: number): number {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
-function cellsFromMembershipEdge(
+function cellsFromMembershipConnection(
   config: OrderedAssociationConfig,
   properties: Record<string, unknown>,
 ): Record<string, string> {
@@ -130,23 +130,23 @@ export function getOrderedAssociationConfigForDatabase(
   return CONFIGS.find((config) => config.typeDatabaseId === databaseId) ?? null;
 }
 
-function scopeEdgeTarget(db: GraphDatabase, sceneId: string, label: string): string | null {
-  const edges = db.listEdgesFromSource(sceneId, label);
-  return edges[0]?.targetId ?? null;
+function scopeConnectionTarget(db: GraphDatabase, sceneId: string, label: string): string | null {
+  const edges = db.listConnectionsFromSource(sceneId, label);
+  return edges[0]?.targetNodeId ?? null;
 }
 
-function groupEdgeTarget(db: GraphDatabase, sceneId: string, label: string): string | null {
-  const edges = db.listEdgesFromSource(sceneId, label);
-  return edges[0]?.targetId ?? null;
+function groupConnectionTarget(db: GraphDatabase, sceneId: string, label: string): string | null {
+  const edges = db.listConnectionsFromSource(sceneId, label);
+  return edges[0]?.targetNodeId ?? null;
 }
 
-function membershipEdges(db: GraphDatabase, config: OrderedAssociationConfig): EdgeRecord[] {
-  return db.listEdgesToTarget(config.typeDatabaseId, config.membershipLabel);
+function membershipConnections(db: GraphDatabase, config: OrderedAssociationConfig): Connection[] {
+  return db.listConnectionsToTarget(config.typeDatabaseId, config.membershipLabel);
 }
 
 function productSortKey(db: GraphDatabase, productId: string): number {
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    const edge = db.getEdge(edgeId(productId, label, PRODUCTS_DATABASE_ID));
+    const edge = db.getConnection(connectionId(productId, label, PRODUCTS_DATABASE_ID));
     if (edge) {
       return numericSortKey(edge.properties.order, numericSortKey(edge.properties.row_index, 999));
     }
@@ -156,7 +156,7 @@ function productSortKey(db: GraphDatabase, productId: string): number {
 
 function partSortKey(db: GraphDatabase, partId: string, config: OrderedAssociationConfig): number {
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    const edge = db.getEdge(edgeId(partId, label, config.groupTypeDatabaseId));
+    const edge = db.getConnection(connectionId(partId, label, config.groupTypeDatabaseId));
     if (edge) {
       return numericSortKey(edge.properties.row_index, numericSortKey(edge.properties.order, 999));
     }
@@ -172,12 +172,12 @@ function partsForScope(
   const parts: { id: string; title: string; sortKey: number }[] = [];
 
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    for (const edge of db.listEdgesToTarget(config.groupTypeDatabaseId, label)) {
-      const partId = edge.sourceId;
-      const productEdges = db.listEdgesFromSource(partId, "PRODUCTS");
-      if (!productEdges.some((productEdge) => productEdge.targetId === scopeId)) continue;
+    for (const connection of db.listConnectionsToTarget(config.groupTypeDatabaseId, label)) {
+      const partId = connection.sourceNodeId;
+      const productConnections = db.listConnectionsFromSource(partId, "PRODUCTS");
+      if (!productConnections.some((productConnection) => productConnection.targetNodeId === scopeId)) continue;
 
-      const vertex = db.getVertex(partId);
+      const vertex = db.getNode(partId);
       parts.push({
         id: partId,
         title: vertex ? titleFromProperties(vertex.properties) : "Untitled",
@@ -212,12 +212,12 @@ function resolveScenePartId(
   scopeParts: { id: string; title: string }[],
 ): string | null {
   const scopePartIds = new Set(scopeParts.map((part) => part.id));
-  const partEdgeTarget = groupEdgeTarget(db, sceneId, config.groupEdgeLabel);
+  const partConnectionTarget = groupConnectionTarget(db, sceneId, config.groupEdgeLabel);
 
-  if (partEdgeTarget) {
-    if (scopePartIds.has(partEdgeTarget)) return partEdgeTarget;
+  if (partConnectionTarget) {
+    if (scopePartIds.has(partConnectionTarget)) return partConnectionTarget;
 
-    const partVertex = db.getVertex(partEdgeTarget);
+    const partVertex = db.getNode(partConnectionTarget);
     if (partVertex) {
       const canonicalId = canonicalPartIdForTitle(
         scopeParts,
@@ -230,8 +230,8 @@ function resolveScenePartId(
   if (config.inverseGroupEdgeLabel) {
     for (const part of scopeParts) {
       const containsScene = db
-        .listEdgesFromSource(part.id, config.inverseGroupEdgeLabel)
-        .some((edge) => edge.targetId === sceneId);
+        .listConnectionsFromSource(part.id, config.inverseGroupEdgeLabel)
+        .some((edge) => edge.targetNodeId === sceneId);
       if (containsScene) return part.id;
     }
   }
@@ -248,22 +248,22 @@ function collectMembersInScope(
   const members: MemberInfo[] = [];
   let fallbackOrder = 0;
 
-  for (const edge of membershipEdges(db, config)) {
-    const sceneId = edge.sourceId;
-    const productId = scopeEdgeTarget(db, sceneId, config.scopeEdgeLabel);
+  for (const connection of membershipConnections(db, config)) {
+    const sceneId = connection.sourceNodeId;
+    const productId = scopeConnectionTarget(db, sceneId, config.scopeEdgeLabel);
     if (productId !== scopeId) continue;
 
-    const vertex = db.getVertex(sceneId);
+    const vertex = db.getNode(sceneId);
     const partId = resolveScenePartId(db, config, sceneId, scopeParts);
     fallbackOrder += 10;
 
     members.push({
       sceneId,
       name: vertex ? titleFromProperties(vertex.properties) : "Untitled",
-      order: numericSortKey(edge.properties[config.orderProperty], fallbackOrder),
+      order: numericSortKey(connection.properties[config.orderProperty], fallbackOrder),
       partId,
-      membershipEdge: edge,
-      cells: cellsFromMembershipEdge(config, edge.properties),
+      membershipConnection: connection,
+      cells: cellsFromMembershipConnection(config, connection.properties),
     });
   }
 
@@ -333,14 +333,14 @@ function discoverScopes(
 ): OrderedAssociationScope[] {
   const scopeIds = new Set<string>();
 
-  for (const edge of membershipEdges(db, config)) {
-    const productId = scopeEdgeTarget(db, edge.sourceId, config.scopeEdgeLabel);
+  for (const connection of membershipConnections(db, config)) {
+    const productId = scopeConnectionTarget(db, connection.sourceNodeId, config.scopeEdgeLabel);
     if (productId) scopeIds.add(productId);
   }
 
   const scopes: OrderedAssociationScope[] = [];
   for (const id of scopeIds) {
-    const vertex = db.getVertex(id);
+    const vertex = db.getNode(id);
     scopes.push({
       id,
       name: vertex ? titleFromProperties(vertex.properties) : "Untitled",
@@ -365,7 +365,7 @@ export function getOrderedAssociationView(
   const config = getConfig(configId);
   if (!config) return null;
 
-  const database = db.getVertex(config.typeDatabaseId);
+  const database = db.getNode(config.typeDatabaseId);
   if (!database) return null;
 
   const scopes = discoverScopes(db, config);
@@ -470,13 +470,13 @@ export function applyOrderedAssociationMove(
 
     const newOrder = (index + 1) * 10;
     const membershipProps = {
-      ...member.membershipEdge.properties,
+      ...member.membershipConnection.properties,
       [config.orderProperty]: String(newOrder),
     };
-    db.upsertEdge(
-      member.membershipEdge.sourceId,
-      member.membershipEdge.targetId,
-      member.membershipEdge.label,
+    db.upsertConnection(
+      member.membershipConnection.sourceNodeId,
+      member.membershipConnection.targetNodeId,
+      member.membershipConnection.label,
       membershipProps,
     );
   }
@@ -491,19 +491,19 @@ export function applyOrderedAssociationMove(
     params.targetGroupId === UNASSIGNED_GROUP_ID ? null : params.targetGroupId;
 
   if (currentPartId !== targetPartId) {
-    const existingPartEdges = db.listEdgesFromSource(params.sceneId, config.groupEdgeLabel);
-    for (const edge of existingPartEdges) {
-      db.deleteEdge(edge.sourceId, edge.targetId, edge.label);
+    const existingPartConnections = db.listConnectionsFromSource(params.sceneId, config.groupEdgeLabel);
+    for (const connection of existingPartConnections) {
+      db.deleteConnection(connection.sourceNodeId, connection.targetNodeId, connection.label);
     }
 
     if (targetPartId) {
-      const templateProps = existingPartEdges[0]?.properties ?? {};
+      const templateProps = existingPartConnections[0]?.properties ?? {};
       const partProps: Properties = {};
       for (const [key, value] of Object.entries(templateProps)) {
         if (key === "ordinal") continue;
         partProps[key] = value;
       }
-      db.upsertEdge(params.sceneId, targetPartId, config.groupEdgeLabel, partProps);
+      db.upsertConnection(params.sceneId, targetPartId, config.groupEdgeLabel, partProps);
     }
   }
 

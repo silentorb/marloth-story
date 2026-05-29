@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import ForceGraph2D, { type ForceGraphMethods, type LinkObject, type NodeObject } from "react-force-graph-2d";
 import type { EditorApi } from "../api/client";
-import type { GraphLink, GraphLodSnapshot, GraphNode } from "../../shared/types";
+import type { GraphConnection, GraphLodSnapshot, GraphNode } from "../../shared/types";
 import {
   canDrillDownLayer,
   canDrillUpLayer,
@@ -63,11 +63,11 @@ interface GraphViewProps {
   onShowNodeLabelsChange: (value: boolean) => void;
   showRelevanceDiagnostics: boolean;
   onShowRelevanceDiagnosticsChange: (value: boolean) => void;
-  onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
+  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
 type ForceNode = GraphNode & NodeObject;
-type ForceLink = GraphLink & LinkObject;
+type ForceLink = GraphConnection & LinkObject;
 
 type GraphForceRef = ForceGraphMethods<ForceNode, ForceLink> & {
   zoomToFit(durationMs?: number, padding?: number): unknown;
@@ -283,7 +283,7 @@ export function GraphView({
   onShowNodeLabelsChange,
   showRelevanceDiagnostics,
   onShowRelevanceDiagnosticsChange,
-  onOpenRecord,
+  onOpenNode,
 }: GraphViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const graphRef = useRef<GraphForceRef | undefined>(undefined);
@@ -322,7 +322,7 @@ export function GraphView({
     if (!snapshot) return { nodes: [] as ForceNode[], links: [] as ForceLink[] };
     return {
       nodes: snapshot.nodes.map((node) => ({ ...node })),
-      links: snapshot.links.map((link) => ({ ...link })),
+      links: snapshot.connections.map((connection) => ({ ...connection })),
     };
   }, [snapshot]);
 
@@ -510,9 +510,9 @@ export function GraphView({
       const openInNewTab = Boolean(
         event && (event.metaKey || event.ctrlKey || event.button === 1),
       );
-      onOpenRecord(node.id, openInNewTab);
+      onOpenNode(node.id, openInNewTab);
     },
-    [drillDown, explorerMode, onAnchorChange, onOpenRecord],
+    [drillDown, explorerMode, onAnchorChange, onOpenNode],
   );
 
   if (loading) {
@@ -591,7 +591,7 @@ export function GraphView({
             onRelativeDetailChange={onRelativeDetailChange}
           />
           <span className="marloth-graph-toolbar-stats">
-            {snapshot.nodes.length} nodes · {snapshot.links.length} links
+            {snapshot.nodes.length} nodes · {snapshot.connections.length} connections
           </span>
         </div>
       </div>

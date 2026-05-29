@@ -13,7 +13,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import type { OrderedAssociationGroup, OrderedAssociationViewDetail } from "../../shared/types";
 import type { EditorApi } from "../api/client";
-import { standaloneRecordUrl } from "../../shared/types";
+import { standaloneNodeUrl } from "../../shared/types";
 import "./ordered-association-view.css";
 
 interface OrderedAssociationViewProps {
@@ -22,7 +22,7 @@ interface OrderedAssociationViewProps {
   view: OrderedAssociationViewDetail;
   onScopeChange: (scopeId: string) => void;
   onViewChange: (view: OrderedAssociationViewDetail) => void;
-  onOpenRecord: (recordId: string, openInNewTab?: boolean) => void;
+  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
 interface SortableSceneRowProps {
@@ -165,7 +165,7 @@ export function OrderedAssociationView({
   view,
   onScopeChange,
   onViewChange,
-  onOpenRecord,
+  onOpenNode,
 }: OrderedAssociationViewProps) {
   const [activeSceneId, setActiveSceneId] = useState<string | null>(null);
   const [moveError, setMoveError] = useState<string | null>(null);
@@ -188,9 +188,9 @@ export function OrderedAssociationView({
 
   const openRowInEditor = useCallback(
     (sceneId: string, event: React.MouseEvent<HTMLButtonElement>) => {
-      onOpenRecord(sceneId, event.metaKey || event.ctrlKey || event.button === 1);
+      onOpenNode(sceneId, event.metaKey || event.ctrlKey || event.button === 1);
     },
-    [onOpenRecord],
+    [onOpenNode],
   );
 
   const renderNameCell = useCallback(
@@ -198,7 +198,7 @@ export function OrderedAssociationView({
       if (api.host === "standalone") {
         return (
           <a
-            href={standaloneRecordUrl(sceneId, window.location.href)}
+            href={standaloneNodeUrl(sceneId, window.location.href)}
             className="marloth-database-name-link"
           >
             {name}

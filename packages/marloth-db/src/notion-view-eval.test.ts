@@ -5,8 +5,8 @@ import { filterEvalRows, sortEvalRows, type EvalRow } from "./notion-view-eval";
 
 describe("notion-view-eval", () => {
   const rows: EvalRow[] = [
-    { pageId: "a", name: "Alpha", cells: { status: "Done" }, rowIndex: 0, createdAt: null, modifiedAt: null },
-    { pageId: "b", name: "Beta", cells: { status: "Todo" }, rowIndex: 1, createdAt: null, modifiedAt: null },
+    { nodeId: "a", name: "Alpha", cells: { status: "Done" }, rowIndex: 0, createdAt: null, modifiedAt: null },
+    { nodeId: "b", name: "Beta", cells: { status: "Todo" }, rowIndex: 1, createdAt: null, modifiedAt: null },
   ];
 
   test("filters select equals", () => {
@@ -14,12 +14,12 @@ describe("notion-view-eval", () => {
       property: "status",
       select: { equals: "Done" },
     });
-    expect(filtered.map((r) => r.pageId)).toEqual(["a"]);
+    expect(filtered.map((r) => r.nodeId)).toEqual(["a"]);
   });
 
   test("sorts by property ascending", () => {
     const sorted = sortEvalRows(rows, [{ property: "status", direction: "ascending" }]);
-    expect(sorted.map((r) => r.pageId)).toEqual(["a", "b"]);
+    expect(sorted.map((r) => r.nodeId)).toEqual(["a", "b"]);
   });
 });
 
@@ -27,7 +27,7 @@ describe("getDatabaseViewDetail with notion views", () => {
   test("uses notion view filters and names", () => {
     const db = new GraphDatabase(":memory:", { clean: true });
     const databaseId = "dddddddddddddddddddddddddddddddd";
-    db.upsertVertex(databaseId, ["NotionDatabase"], {
+    db.upsertNode(databaseId, ["NotionDatabase"], {
       title: "Tasks",
       notion_schema: JSON.stringify({
         syncedAt: "2024-01-01T00:00:00.000Z",
@@ -51,10 +51,10 @@ describe("getDatabaseViewDetail with notion views", () => {
         ],
       }),
     });
-    db.upsertVertex("page1", ["NotionPage"], { title: "One" });
-    db.upsertVertex("page2", ["NotionPage"], { title: "Two" });
-    db.upsertEdge("page1", databaseId, "IS_A", { status: "Done", row_index: 0 });
-    db.upsertEdge("page2", databaseId, "IS_A", { status: "Todo", row_index: 1 });
+    db.upsertNode("page1", ["NotionPage"], { title: "One" });
+    db.upsertNode("page2", ["NotionPage"], { title: "Two" });
+    db.upsertConnection("page1", databaseId, "IS_A", { status: "Done", row_index: 0 });
+    db.upsertConnection("page2", databaseId, "IS_A", { status: "Todo", row_index: 1 });
 
     const view = getDatabaseViewDetail(db, databaseId);
     expect(view?.views).toEqual(["Done only"]);

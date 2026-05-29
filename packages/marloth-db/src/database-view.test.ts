@@ -12,15 +12,15 @@ describe("database-view", () => {
   const db = new GraphDatabase(dbPath);
 
   test("returns null for non-database vertices", () => {
-    db.upsertVertex("page1", ["NotionPage"], { title: "Alpha" });
+    db.upsertNode("page1", ["NotionPage"], { title: "Alpha" });
     expect(getDatabaseViewDetail(db, "page1")).toBeNull();
   });
 
   test("reads IS_A edges for a view", () => {
     const databaseId = "db12345678901234567890123456789012";
-    db.upsertVertex(databaseId, ["NotionDatabase"], { title: "Features" });
-    db.upsertVertex("page1", ["NotionPage"], { title: "Desperation" });
-    db.upsertEdge("page1", databaseId, IS_A_LABEL, {
+    db.upsertNode(databaseId, ["NotionDatabase"], { title: "Features" });
+    db.upsertNode("page1", ["NotionPage"], { title: "Desperation" });
+    db.upsertConnection("page1", databaseId, IS_A_LABEL, {
       view: "all",
       row_index: 0,
       priority: "High",
@@ -46,7 +46,7 @@ describe("database-view", () => {
       rows: [
         {
           rowIndex: 0,
-          pageId: "page1",
+          nodeId: "page1",
           name: "Desperation",
           cells: { priority: "High" },
         },
@@ -56,9 +56,9 @@ describe("database-view", () => {
 
   test("derives row name from linked page title, not edge row_name", () => {
     const databaseId = "db22345678901234567890123456789012";
-    db.upsertVertex(databaseId, ["NotionDatabase"], { title: "Features" });
-    db.upsertVertex("page2", ["NotionPage"], { title: "Peace in the eye of the storm" });
-    db.upsertEdge("page2", databaseId, IS_A_LABEL, {
+    db.upsertNode(databaseId, ["NotionDatabase"], { title: "Features" });
+    db.upsertNode("page2", ["NotionPage"], { title: "Peace in the eye of the storm" });
+    db.upsertConnection("page2", databaseId, IS_A_LABEL, {
       view: "default",
       row_index: 0,
       row_name: "Stale CSV label",
@@ -71,7 +71,7 @@ describe("database-view", () => {
   test("hydrates relation columns from outgoing via_database edges", () => {
     const databaseId = "db42345678901234567890123456789012";
     const parentId = "parent123456789012345678901234567890";
-    db.upsertVertex(databaseId, ["NotionDatabase"], {
+    db.upsertNode(databaseId, ["NotionDatabase"], {
       title: "Features",
       notion_schema: JSON.stringify({
         syncedAt: "2024-01-01T00:00:00.000Z",
@@ -95,10 +95,10 @@ describe("database-view", () => {
         ],
       }),
     });
-    db.upsertVertex("page3", ["NotionPage"], { title: "Child feature" });
-    db.upsertVertex(parentId, ["NotionPage"], { title: "Parent feature" });
-    db.upsertEdge("page3", databaseId, IS_A_LABEL, { row_index: 0 });
-    db.upsertEdge("page3", parentId, "PARENTS", {
+    db.upsertNode("page3", ["NotionPage"], { title: "Child feature" });
+    db.upsertNode(parentId, ["NotionPage"], { title: "Parent feature" });
+    db.upsertConnection("page3", databaseId, IS_A_LABEL, { row_index: 0 });
+    db.upsertConnection("page3", parentId, "PARENTS", {
       ordinal: 0,
       via_database: databaseId,
     });
@@ -110,8 +110,8 @@ describe("database-view", () => {
 
   test("ignores orphan_row properties on the database vertex", () => {
     const databaseId = "db32345678901234567890123456789012";
-    db.upsertVertex(databaseId, ["NotionDatabase"], { title: "Tasks" });
-    db.mergeVertexProperties(databaseId, {
+    db.upsertNode(databaseId, ["NotionDatabase"], { title: "Tasks" });
+    db.mergeNodeProperties(databaseId, {
       orphan_row_default_0: JSON.stringify({
         row_name: "Fix import",
         status: "Open",

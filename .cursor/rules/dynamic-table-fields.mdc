@@ -16,4 +16,4 @@ Read the authoritative feature spec before making changes:
 
 Per-field logic specs: [`docs/dynamic-fields/`](../../docs/dynamic-fields/)
 
-For graph record semantics: [`docs/ontology.md`](../../docs/ontology.md) and [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md).
+For graph node semantics: [`docs/ontology.md`](../../docs/ontology.md) and [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md). Core tables: `nodes`, `connections`.

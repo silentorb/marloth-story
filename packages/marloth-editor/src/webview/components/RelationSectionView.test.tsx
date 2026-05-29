@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { render, screen } from "@testing-library/react";
 import { UserSettingsProvider } from "../hooks/useUserSettings";
 import { RelationSectionView } from "./RelationSectionView";
-import { FIXTURE_PAGE_ID, FIXTURE_TARGET_ID, makeRelationSection } from "../test-fixtures/record-page";
+import { FIXTURE_PAGE_ID, FIXTURE_TARGET_ID, makeRelationSection } from "../test-fixtures/node-page";
 import { makeMockEditorApi } from "../test-fixtures/mock-api";
 
 function renderRelationSection(host: "standalone" | "vscode" = "standalone") {
@@ -11,20 +11,20 @@ function renderRelationSection(host: "standalone" | "vscode" = "standalone") {
     <UserSettingsProvider api={api}>
       <RelationSectionView
         api={api}
-        recordId={FIXTURE_PAGE_ID}
+        nodeId={FIXTURE_PAGE_ID}
         section={makeRelationSection()}
-        onOpenRecord={() => {}}
+        onOpenNode={() => {}}
       />
     </UserSettingsProvider>,
   );
 }
 
 describe("RelationSectionView", () => {
-  test("renders standalone row links with record query URLs", () => {
+  test("renders standalone row links with node query URLs", () => {
     renderRelationSection("standalone");
 
     const link = screen.getByRole("link", { name: "Linked record" });
-    expect(link.getAttribute("href")).toContain(`record=${FIXTURE_TARGET_ID}`);
+    expect(link.getAttribute("href")).toContain(`node=${FIXTURE_TARGET_ID}`);
     expect(screen.getByRole("columnheader", { name: /Priority/ })).toBeTruthy();
     const prioritySelect = screen.getByRole("combobox", { name: "Priority" });
     expect((prioritySelect as HTMLSelectElement).value).toBe("High");

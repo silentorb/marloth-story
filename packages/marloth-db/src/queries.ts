@@ -1,13 +1,13 @@
 import type { GraphDatabase } from "./graph";
 import { isArchivedNotionPath } from "./archive-path";
 
-export interface RecordSummary {
+export interface NodeSummary {
   id: string;
   title: string;
   path: string | null;
 }
 
-export interface RecordDetail extends RecordSummary {
+export interface NodeDetail extends NodeSummary {
   body: string;
   labels: string[];
 }
@@ -30,25 +30,25 @@ function bodyFromProperties(properties: Record<string, unknown>): string {
   return typeof body === "string" ? body : "";
 }
 
-export const DEFAULT_HOME_RECORD_ID = "13458e628ba28073850dea0edb9acde1";
+export const DEFAULT_HOME_NODE_ID = "13458e628ba28073850dea0edb9acde1";
 
-export function getRecordDetail(db: GraphDatabase, id: string): RecordDetail | null {
-  const vertex = db.getVertex(id);
-  if (!vertex) return null;
+export function getNodeDetail(db: GraphDatabase, id: string): NodeDetail | null {
+  const node = db.getNode(id);
+  if (!node) return null;
   return {
-    id: vertex.id,
-    title: titleFromProperties(vertex.properties),
-    path: pathFromProperties(vertex.properties),
-    body: bodyFromProperties(vertex.properties),
-    labels: vertex.labels,
+    id: node.id,
+    title: titleFromProperties(node.properties),
+    path: pathFromProperties(node.properties),
+    body: bodyFromProperties(node.properties),
+    labels: node.labels,
   };
 }
 
-function toActiveRecordSummary(row: {
+function toActiveNodeSummary(row: {
   id: string;
   title: string;
   path: string | null;
-}): RecordSummary | null {
+}): NodeSummary | null {
   if (isArchivedNotionPath(row.path)) return null;
   return {
     id: row.id,
@@ -57,32 +57,32 @@ function toActiveRecordSummary(row: {
   };
 }
 
-export function searchRecords(
+export function searchNodes(
   db: GraphDatabase,
   query: string,
   limit = 20,
-): RecordSummary[] {
+): NodeSummary[] {
   const trimmed = query.trim();
   const cap = Math.max(1, Math.min(limit, 100));
   if (!trimmed) {
-    return listRecentRecords(db, cap);
+    return listRecentNodes(db, cap);
   }
   const pattern = `%${trimmed.replace(/[%_\\]/g, "\\$&")}%`;
   return db
-    .searchVerticesByTitle(pattern, cap)
-    .map(toActiveRecordSummary)
-    .filter((row): row is RecordSummary => row !== null);
+    .searchNodesByTitle(pattern, cap)
+    .map(toActiveNodeSummary)
+    .filter((row): row is NodeSummary => row !== null);
 }
 
-export function listRecentRecords(db: GraphDatabase, limit = 20): RecordSummary[] {
+export function listRecentNodes(db: GraphDatabase, limit = 20): NodeSummary[] {
   const cap = Math.max(1, Math.min(limit, 100));
   return db
-    .listVerticesByTitle(cap)
-    .map(toActiveRecordSummary)
-    .filter((row): row is RecordSummary => row !== null);
+    .listNodesByTitle(cap)
+    .map(toActiveNodeSummary)
+    .filter((row): row is NodeSummary => row !== null);
 }
 
-function touchRecordTimestamps(
+function touchNodeTimestamps(
   db: GraphDatabase,
   id: string,
   existing: Record<string, unknown>,
@@ -92,26 +92,26 @@ function touchRecordTimestamps(
   if (typeof existing.created_at !== "string" || !existing.created_at.trim()) {
     patch.created_at = now;
   }
-  db.mergeVertexProperties(id, patch);
+  db.mergeNodeProperties(id, patch);
 }
 
-export function updateRecordBody(db: GraphDatabase, id: string, body: string): boolean {
-  const vertex = db.getVertex(id);
-  if (!vertex) return false;
-  db.mergeVertexProperties(id, { body });
-  touchRecordTimestamps(db, id, vertex.properties);
+export function updateNodeBody(db: GraphDatabase, id: string, body: string): boolean {
+  const node = db.getNode(id);
+  if (!node) return false;
+  db.mergeNodeProperties(id, { body });
+  touchNodeTimestamps(db, id, node.properties);
   return true;
 }
 
-export function updateRecordTitle(db: GraphDatabase, id: string, title: string): boolean {
-  const vertex = db.getVertex(id);
-  if (!vertex) return false;
+export function updateNodeTitle(db: GraphDatabase, id: string, title: string): boolean {
+  const node = db.getNode(id);
+  if (!node) return false;
   const trimmed = title.trim() || "Untitled";
-  const oldTitle = titleFromProperties(vertex.properties);
-  const body = bodyFromProperties(vertex.properties);
+  const oldTitle = titleFromProperties(node.properties);
+  const body = bodyFromProperties(node.properties);
   const content = stripLeadingTitleHeadingIfMatches(body, oldTitle);
-  db.mergeVertexProperties(id, { title: trimmed, body: content });
-  touchRecordTimestamps(db, id, vertex.properties);
+  db.mergeNodeProperties(id, { title: trimmed, body: content });
+  touchNodeTimestamps(db, id, node.properties);
   return true;
 }
 

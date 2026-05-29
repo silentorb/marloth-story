@@ -38,7 +38,7 @@ function fieldVisible(
 
 function buildFixedPrefetch(
   resolverId: string,
-  ctx: { db: GraphDatabase; databaseId: string; viewName: string; rowPageIds: string[] },
+  ctx: { db: GraphDatabase; databaseId: string; viewName: string; rowNodeIds: string[] },
   params: Record<string, unknown>,
 ): unknown {
   switch (resolverId) {
@@ -68,8 +68,8 @@ export function applyDynamicFields(
   const hiddenColumnKeys = new Set<string>();
   const materializedSetColumns: MaterializedColumnSetColumn[] = [];
 
-  const rowPageIds = evalRows.map((r) => r.pageId);
-  const ctx = { db, databaseId, viewName, rowPageIds };
+  const rowNodeIds = evalRows.map((r) => r.nodeId);
+  const ctx = { db, databaseId, viewName, rowNodeIds };
 
   const setPrefetches = new Map<string, unknown>();
   const fixedPrefetches = new Map<string, unknown>();
@@ -138,7 +138,7 @@ export function applyDynamicFields(
       const resolver = registry.fixed.get(field.resolverId);
       if (!resolver) continue;
       const prefetch = fixedPrefetches.get(field.resolverId);
-      cells[field.columnKey] = resolver(ctx, field.params, row.pageId, prefetch);
+      cells[field.columnKey] = resolver(ctx, field.params, row.nodeId, prefetch);
     }
 
     for (const col of materializedSetColumns) {
@@ -148,7 +148,7 @@ export function applyDynamicFields(
       cells[col.key] = resolver.resolveCell(
         ctx,
         col.params,
-        row.pageId,
+        row.nodeId,
         col.dimensionId,
         prefetch,
       );

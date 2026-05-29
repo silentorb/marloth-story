@@ -38,7 +38,7 @@ export interface GraphNode {
   bundle?: GraphNodeBundle;
 }
 
-export interface GraphLink {
+export interface GraphConnection {
   id: string;
   source: string;
   target: string;
@@ -48,7 +48,7 @@ export interface GraphLink {
 
 export interface GraphSnapshot {
   nodes: GraphNode[];
-  links: GraphLink[];
+  connections: GraphConnection[];
 }
 
 export interface GraphLodSnapshot {
@@ -68,52 +68,53 @@ export function isGraphClusterNode(node: Pick<GraphNode, "id" | "isCluster">): b
   return node.isCluster === true || node.id.startsWith(GRAPH_CLUSTER_PREFIX);
 }
 
-interface ActiveGraphVertex {
+interface ActiveGraphNode {
   id: string;
   title: string;
   path: string | null;
   labels: string[];
 }
 
-interface ActiveGraphEdge {
+interface ActiveGraphConnection {
   id: string;
-  sourceId: string;
-  targetId: string;
+  sourceNodeId: string;
+  targetNodeId: string;
   label: string;
 }
 
 function collectActiveGraphData(db: GraphDatabase): {
-  vertices: ActiveGraphVertex[];
-  edges: ActiveGraphEdge[];
+  nodes: ActiveGraphNode[];
+  connections: ActiveGraphConnection[];
 } {
-  const allVertices = db.listVerticesForGraphExport();
+  const allNodes = db.listNodesForGraphExport();
   const excludedIds = new Set<string>();
 
-  for (const vertex of allVertices) {
-    if (isArchivedNotionPath(vertex.path)) excludedIds.add(vertex.id);
+  for (const node of allNodes) {
+    if (isArchivedNotionPath(node.path)) excludedIds.add(node.id);
   }
 
-  const vertices = allVertices.filter((vertex) => !excludedIds.has(vertex.id));
-  const edges = db.listEdgesForGraphExport().filter(
-    (edge) => !excludedIds.has(edge.sourceId) && !excludedIds.has(edge.targetId),
+  const nodes = allNodes.filter((node) => !excludedIds.has(node.id));
+  const connections = db.listConnectionsForGraphExport().filter(
+    (connection) =>
+      !excludedIds.has(connection.sourceNodeId) && !excludedIds.has(connection.targetNodeId),
   );
 
-  return { vertices, edges };
+  return { nodes, connections };
 }
 
-function reachableVertexIds(
-  vertices: ActiveGraphVertex[],
-  edges: ActiveGraphEdge[],
+function reachableNodeIds(
+  nodes: ActiveGraphNode[],
+  connections: ActiveGraphConnection[],
   anchorId: string,
 ): Set<string> | null {
-  const vertexIds = new Set(vertices.map((vertex) => vertex.id));
-  if (!vertexIds.has(anchorId)) return null;
+  const nodeIds = new Set(nodes.map((node) => node.id));
+  if (!nodeIds.has(anchorId)) return null;
 
   const adjacency = new Map<string, Set<string>>();
-  for (const vertex of vertices) adjacency.set(vertex.id, new Set());
-  for (const edge of edges) {
-    adjacency.get(edge.sourceId)?.add(edge.targetId);
-    adjacency.get(edge.targetId)?.add(edge.sourceId);
+  for (const node of nodes) adjacency.set(node.id, new Set());
+  for (const connection of connections) {
+    adjacency.get(connection.sourceNodeId)?.add(connection.targetNodeId);
+    adjacency.get(connection.targetNodeId)?.add(connection.sourceNodeId);
   }
 
   const reachable = new Set<string>();
@@ -132,40 +133,41 @@ function reachableVertexIds(
 }
 
 function filterActiveGraphByAnchor(
-  vertices: ActiveGraphVertex[],
-  edges: ActiveGraphEdge[],
+  nodes: ActiveGraphNode[],
+  connections: ActiveGraphConnection[],
   anchorId: string,
-): { vertices: ActiveGraphVertex[]; edges: ActiveGraphEdge[] } {
-  const reachable = reachableVertexIds(vertices, edges, anchorId);
-  if (!reachable) return { vertices, edges };
+): { nodes: ActiveGraphNode[]; connections: ActiveGraphConnection[] } {
+  const reachable = reachableNodeIds(nodes, connections, anchorId);
+  if (!reachable) return { nodes, connections };
 
   return {
-    vertices: vertices.filter((vertex) => reachable.has(vertex.id)),
-    edges: edges.filter(
-      (edge) => reachable.has(edge.sourceId) && reachable.has(edge.targetId),
+    nodes: nodes.filter((node) => reachable.has(node.id)),
+    connections: connections.filter(
+      (connection) =>
+        reachable.has(connection.sourceNodeId) && reachable.has(connection.targetNodeId),
     ),
   };
 }
 
 export function exportFullGraph(db: GraphDatabase): GraphSnapshot {
-  const { vertices, edges } = collectActiveGraphData(db);
+  const { nodes, connections } = collectActiveGraphData(db);
 
-  const nodes: GraphNode[] = vertices.map((vertex) => ({
-    id: vertex.id,
-    title: vertex.title,
-    path: vertex.path,
-    labels: vertex.labels,
-    group: vertex.labels[0] ?? "Unknown",
+  const graphNodes: GraphNode[] = nodes.map((node) => ({
+    id: node.id,
+    title: node.title,
+    path: node.path,
+    labels: node.labels,
+    group: node.labels[0] ?? "Unknown",
   }));
 
-  const links: GraphLink[] = edges.map((edge) => ({
-    id: edge.id,
-    source: edge.sourceId,
-    target: edge.targetId,
-    label: edge.label,
+  const graphConnections: GraphConnection[] = connections.map((connection) => ({
+    id: connection.id,
+    source: connection.sourceNodeId,
+    target: connection.targetNodeId,
+    label: connection.label,
   }));
 
-  return { nodes, links };
+  return { nodes: graphNodes, connections: graphConnections };
 }
 
 export function exportExplorerLodGraph(
@@ -176,12 +178,12 @@ export function exportExplorerLodGraph(
   },
 ): GraphLodSnapshot {
   const layerCount = normalizeExplorerLayerCount(options?.layerCount);
-  let { vertices, edges } = collectActiveGraphData(db);
+  let { nodes, connections } = collectActiveGraphData(db);
   const anchorId = options?.anchorId ?? DEFAULT_GRAPH_EXPLORER_ANCHOR_ID;
   if (anchorId) {
-    ({ vertices, edges } = filterActiveGraphByAnchor(vertices, edges, anchorId));
+    ({ nodes, connections } = filterActiveGraphByAnchor(nodes, connections, anchorId));
   }
-  const levels = buildHeuristicLodLevels(vertices, edges, layerCount, anchorId);
+  const levels = buildHeuristicLodLevels(nodes, connections, layerCount, anchorId);
 
   return {
     layerCount: levels.length,
