@@ -1,45 +1,53 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
-import { join } from "node:path";
-import { tmpdir } from "node:os";
-import { GraphDatabase } from "./graph";
 import { getNodeDetail, searchNodes, updateNodeBody } from "./queries";
+import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestNode,
+} from "./content/test-helpers";
 
 describe("queries", () => {
-  const dir = mkdtempSync(join(tmpdir(), "marloth-db-queries-"));
-  const dbPath = join(dir, "test.sqlite");
-  const db = new GraphDatabase(dbPath);
+  const fixture = createTestContentFixture("marloth-db-queries-");
 
   test("getNodeDetail returns title, body, and path", () => {
-    db.upsertNode("page1", ["NotionPage"], {
-      title: "Alpha",
-      body: "# Hello",
-      inferred_notion_path: "Marloth/Features/Alpha.md",
-    });
-    const detail = getNodeDetail(db, "page1");
-    expect(detail).toEqual({
-      id: "page1",
-      title: "Alpha",
-      path: "Marloth/Features/Alpha.md",
-      body: "# Hello",
+    seedTestNode(fixture, {
+      id: "0123456789abcdef0123456789abcdef",
       labels: ["NotionPage"],
+      properties: {
+        title: "Alpha",
+        body: "# Hello",
+        inferred_notion_path: "Marloth/Features/Alpha.md",
+      },
     });
+    const detail = getNodeDetail(fixture.ctx.db, "0123456789abcdef0123456789abcdef");
+    expect(detail?.id).toBe("0123456789abcdef0123456789abcdef");
+    expect(detail?.title).toBe("Alpha");
+    expect(detail?.body.trimEnd()).toBe("# Hello");
   });
 
   test("searchNodes matches title prefix", () => {
-    db.upsertNode("page2", ["NotionPage"], { title: "Beta Record" });
-    const hits = searchNodes(db, "Beta", 10);
-    expect(hits.some((h) => h.id === "page2")).toBe(true);
+    seedTestNode(fixture, {
+      id: "123456789abcdef0123456789abcdef0",
+      labels: ["NotionPage"],
+      properties: { title: "Beta Record" },
+    });
+    const hits = searchNodes(fixture.ctx.db, "Beta", 10);
+    expect(hits.some((h) => h.id === "123456789abcdef0123456789abcdef0")).toBe(true);
   });
 
   test("updateNodeBody persists markdown", () => {
-    db.upsertNode("page3", ["NotionPage"], { title: "Gamma", body: "old" });
-    expect(updateNodeBody(db, "page3", "new body")).toBe(true);
-    expect(getNodeDetail(db, "page3")?.body).toBe("new body");
+    seedTestNode(fixture, {
+      id: "23456789abcdef0123456789abcdef01",
+      labels: ["NotionPage"],
+      properties: { title: "Gamma", body: "old" },
+    });
+    expect(updateNodeBody(fixture.ctx, "23456789abcdef0123456789abcdef01", "new body")).toBe(true);
+    expect(getNodeDetail(fixture.ctx.db, "23456789abcdef0123456789abcdef01")?.body.trimEnd()).toBe(
+      "new body",
+    );
   });
 
   afterAll(() => {
-    db.close();
-    rmSync(dir, { recursive: true, force: true });
+    destroyTestContentFixture(fixture);
   });
 });

@@ -1,7 +1,7 @@
 import { Database, type SQLQueryBindings } from "bun:sqlite";
 import { mkdirSync, rmSync } from "node:fs";
 import { dirname } from "node:path";
-import { DDL, DYNAMIC_FIELDS_DDL, SCHEMA_VERSION } from "./schema";
+import { DDL, SCHEMA_VERSION } from "./schema";
 
 export type PropertyValue = string | number | boolean | null | PropertyValue[] | { [key: string]: PropertyValue };
 export type Properties = Record<string, PropertyValue>;
@@ -72,7 +72,6 @@ export class GraphDatabase {
     this.db.exec("PRAGMA foreign_keys = ON");
     this.db.exec("PRAGMA journal_mode = DELETE");
     this.db.exec(DDL);
-    this.db.exec(DYNAMIC_FIELDS_DDL);
     this.prepareStatements();
     this.setMeta("schema_version", String(SCHEMA_VERSION));
   }

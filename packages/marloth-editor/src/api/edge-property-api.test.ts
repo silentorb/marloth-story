@@ -1,26 +1,29 @@
 import { afterAll, describe, expect, test } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
-import { join } from "node:path";
-import { tmpdir } from "node:os";
 import { GraphDatabase, IS_A_LABEL } from "marloth-db";
-import { createApiHandler } from "./server";
+import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestConnections,
+  seedTestNode,
+} from "marloth-db/content/test-helpers";
+import { createTestApiFromContent } from "./test-api-setup";
 
 describe("edge property API", () => {
-  const dir = mkdtempSync(join(tmpdir(), "marloth-editor-edge-"));
-  const dbPath = join(dir, "test.sqlite");
-  const db = new GraphDatabase(dbPath, { clean: true });
-  const handler = createApiHandler(dbPath);
+  const fixture = createTestContentFixture("marloth-editor-edge-");
 
   const databaseId = "dddddddddddddddddddddddddddddddd";
   const nodeId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-  db.upsertNode(databaseId, ["NotionDatabase"], { title: "Features" });
-  db.upsertNode(nodeId, ["NotionPage"], { title: "Feature" });
-  db.upsertConnection(nodeId, databaseId, IS_A_LABEL, { priority: "Low" });
-  db.close();
+  seedTestNode(fixture, { id: databaseId, labels: ["NotionDatabase"], properties: { title: "Features" } });
+  seedTestNode(fixture, { id: nodeId, labels: ["NotionPage"], properties: { title: "Feature" } });
+  seedTestConnections(fixture, [
+    { source: nodeId, target: databaseId, label: IS_A_LABEL, properties: { priority: "Low" } },
+  ]);
+
+  const api = createTestApiFromContent(fixture);
 
   test("PATCH database row priority", async () => {
-    const res = await handler(
+    const res = await api.handler(
       new Request(`http://127.0.0.1/api/databases/${databaseId}/rows/${nodeId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -29,14 +32,14 @@ describe("edge property API", () => {
     );
     expect(res.status).toBe(200);
 
-    const verifyDb = new GraphDatabase(dbPath);
+    const verifyDb = new GraphDatabase(api.dbPath);
     const edge = verifyDb.listConnectionsFromSource(nodeId, IS_A_LABEL)[0];
     expect(edge?.properties.priority).toBe("High");
     verifyDb.close();
   });
 
   test("PATCH rejects numeric priority", async () => {
-    const res = await handler(
+    const res = await api.handler(
       new Request(`http://127.0.0.1/api/databases/${databaseId}/rows/${nodeId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -47,6 +50,7 @@ describe("edge property API", () => {
   });
 
   afterAll(() => {
-    rmSync(dir, { recursive: true, force: true });
+    api.handler.close();
+    destroyTestContentFixture(fixture);
   });
 });

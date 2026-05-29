@@ -1,14 +1,13 @@
 import { describe, expect, test, afterAll, beforeAll } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { ContentStore } from "../content/store";
+import { fileFromSeedInputs } from "../content/dynamic-fields-file";
+import { invalidateDynamicFieldsCache } from "../content/sync";
 import { GraphDatabase } from "../graph";
 import { IS_A_LABEL } from "../labels";
 import { getDatabaseViewDetail } from "../database-view";
-import {
-  seedDynamicColumnSet,
-  seedDynamicField,
-} from "./overlay";
 import {
   buildAllSceneCountPrefetch,
   buildSceneCountByProductPrefetch,
@@ -33,14 +32,62 @@ describe("dynamic-fields resolvers", () => {
   const WONDERLAND = "3cbc40d2ba2a4c76b4b9dc370452fcfe";
 
   const character = "cccccccccccccccccccccccccccccccc";
-  const scene1 = "s1111111111111111111111111111111";
-  const scene2 = "s2222222222222222222222222222222";
-  const scene3 = "s3333333333333333333333333333333";
-  const inspiration = "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii";
-  const featureWonder = "fwffffffffffffffffffffffffffffff";
-  const featurePlain = "fpffffffffffffffffffffffffffffff";
+  const scene1 = "11111111111111111111111111111111";
+  const scene2 = "22222222222222222222222222222222";
+  const scene3 = "33333333333333333333333333333333";
+  const inspiration = "44444444444444444444444444444444";
+  const featureWonder = "55555555555555555555555555555555";
+  const featurePlain = "66666666666666666666666666666666";
 
   beforeAll(() => {
+    const contentDir = join(dir, "content");
+    mkdirSync(contentDir, { recursive: true });
+    process.env.MARLOTH_CONTENT_PATH = contentDir;
+    const store = new ContentStore(contentDir);
+    store.writeDynamicFieldsFile(
+      fileFromSeedInputs(
+        [
+          {
+            id: "test-all-scene",
+            databaseId: CHAR_DB,
+            columnKey: "all_scene_count",
+            columnName: "All Scene count",
+            resolverId: "characters.allSceneCount",
+            docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
+          },
+          {
+            id: "test-weighted-use",
+            databaseId: INSP_DB,
+            columnKey: "weighted_use",
+            columnName: "Weighted Use",
+            resolverId: "inspirations.weightedUse",
+            docsPath: "docs/dynamic-fields/inspirations.weighted-use.md",
+            params: { features_database_id: FEAT_DB },
+          },
+          {
+            id: "test-wonder",
+            databaseId: INSP_DB,
+            columnKey: "wonder",
+            columnName: "Wonder",
+            resolverId: "inspirations.wonder",
+            docsPath: "docs/dynamic-fields/inspirations.wonder.md",
+            params: { theme_target_id: WONDERLAND },
+          },
+        ],
+        [
+          {
+            id: "test-scene-by-product",
+            databaseId: CHAR_DB,
+            columnKeyPattern: "scene_count__{productId}",
+            columnNamePattern: "{productTitle} Scene count",
+            resolverId: "characters.sceneCountByProduct",
+            docsPath: "docs/dynamic-fields/characters.scene-count-by-product.md",
+            params: { hide_legacy_keys: ["twold_scene_count"] },
+          },
+        ],
+      ),
+    );
+    invalidateDynamicFieldsCache();
     db.upsertNode(CHAR_DB, ["NotionDatabase"], { title: "Characters" });
     db.upsertNode(INSP_DB, ["NotionDatabase"], { title: "Inspirations" });
     db.upsertNode(FEAT_DB, ["NotionDatabase"], { title: "Features" });
@@ -72,41 +119,6 @@ describe("dynamic-fields resolvers", () => {
     db.upsertConnection(inspiration, featurePlain, "FEATURES", {});
     db.upsertConnection(featureWonder, WONDERLAND, "THEME", {});
 
-    seedDynamicField(db, {
-      id: "test-all-scene",
-      databaseId: CHAR_DB,
-      columnKey: "all_scene_count",
-      columnName: "All Scene count",
-      resolverId: "characters.allSceneCount",
-      docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
-    });
-    seedDynamicColumnSet(db, {
-      id: "test-scene-by-product",
-      databaseId: CHAR_DB,
-      columnKeyPattern: "scene_count__{productId}",
-      columnNamePattern: "{productTitle} Scene count",
-      resolverId: "characters.sceneCountByProduct",
-      docsPath: "docs/dynamic-fields/characters.scene-count-by-product.md",
-      params: { hide_legacy_keys: ["twold_scene_count"] },
-    });
-    seedDynamicField(db, {
-      id: "test-weighted-use",
-      databaseId: INSP_DB,
-      columnKey: "weighted_use",
-      columnName: "Weighted Use",
-      resolverId: "inspirations.weightedUse",
-      docsPath: "docs/dynamic-fields/inspirations.weighted-use.md",
-      params: { features_database_id: FEAT_DB },
-    });
-    seedDynamicField(db, {
-      id: "test-wonder",
-      databaseId: INSP_DB,
-      columnKey: "wonder",
-      columnName: "Wonder",
-      resolverId: "inspirations.wonder",
-      docsPath: "docs/dynamic-fields/inspirations.wonder.md",
-      params: { theme_target_id: WONDERLAND },
-    });
   });
 
   test("all scene count", () => {
@@ -151,6 +163,8 @@ describe("dynamic-fields resolvers", () => {
   });
 
   afterAll(() => {
+    delete process.env.MARLOTH_CONTENT_PATH;
+    invalidateDynamicFieldsCache();
     db.close();
     rmSync(dir, { recursive: true, force: true });
   });

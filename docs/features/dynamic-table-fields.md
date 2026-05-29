@@ -2,14 +2,14 @@
 
 ## Summary
 
-**Dynamic table fields** are database view columns computed at read time from graph traversals. Logic is documented authoritatively in [`docs/dynamic-fields/`](../dynamic-fields/); runtime bindings live in dedicated overlay SQLite tables that can be dropped and rebuilt without affecting core graph tables (`nodes`, `connections`, `node_labels`, `meta`).
+**Dynamic table fields** are database view columns computed at read time from graph traversals. Logic is documented authoritatively in [`docs/dynamic-fields/`](../dynamic-fields/); runtime bindings live in [`content/dynamic-fields.json`](../../content/dynamic-fields.json) and are loaded into memory at read time (legacy SQLite `dynamic_*` overlay tables were removed in schema v4).
 
 ## When to read this
 
 Read this doc when your task involves:
 
 - Computed/formula/rollup columns in database table views
-- Overlay tables `dynamic_fields`, `dynamic_column_sets`, etc.
+- `content/dynamic-fields.json` bindings
 - `packages/marloth-db/src/dynamic-fields/`
 - Adding or changing dynamic field resolvers
 
@@ -21,22 +21,21 @@ For per-field logic, read the spec in [`docs/dynamic-fields/`](../dynamic-fields
 
 - Dynamic values **must** be computed in `marloth-db` when building `DatabaseViewDetail`, before Notion view filter/sort evaluation.
 - Dynamic values **must** override stale `IS_A` connection properties when column keys match.
-- Core graph tables **must not** store dynamic field configuration; overlay tables only.
+- Core graph files **must not** store dynamic field configuration; `dynamic-fields.json` only.
 - Each dynamic field **must** have an authoritative spec under `docs/dynamic-fields/`.
 - Resolvers **must** be registered in TypeScript (`resolver_id` → function); overlay rows reference resolver ids and params only.
 
-### Overlay tables
+### Configuration file
 
-- Overlay DDL **must** live in `packages/marloth-db/src/schema.ts` (SCHEMA_VERSION ≥ 2).
-- Tables: `dynamic_fields`, `dynamic_field_params`, `dynamic_field_view_bindings`, `dynamic_column_sets`, `dynamic_column_set_params`.
-- Dropping all `dynamic_*` tables **must** leave the property graph intact.
+- Bindings **must** live in `content/dynamic-fields.json` (`fields[]` and `columnSets[]`).
+- Seed starter bindings: `bun scripts/seed-dynamic-fields.ts`.
 
 ### Column kinds
 
-| Kind | Overlay table | Behavior |
+| Kind | JSON section | Behavior |
 | --- | --- | --- |
-| Fixed | `dynamic_fields` | One column key per field (e.g. `all_scene_count`) |
-| Dimension-expanded | `dynamic_column_sets` | Pattern generates columns per dimension value (e.g. per Product) |
+| Fixed | `fields` | One column key per field (e.g. `all_scene_count`) |
+| Dimension-expanded | `columnSets` | Pattern generates columns per dimension value (e.g. per Product) |
 
 ### Editor integration
 
@@ -51,7 +50,7 @@ For per-field logic, read the spec in [`docs/dynamic-fields/`](../dynamic-fields
 1. Write/update `docs/dynamic-fields/<field>.md`.
 2. Implement resolver in `packages/marloth-db/src/dynamic-fields/resolvers/`.
 3. Register resolver id in `registry.ts`.
-4. Seed overlay via `scripts/seed-dynamic-fields.ts`.
+4. Update bindings in `content/dynamic-fields.json` (or `bun scripts/seed-dynamic-fields.ts`).
 5. Add tests in `packages/marloth-db/src/dynamic-fields/`.
 6. Run graph migration scripts if new connections are required (e.g. `scripts/migrate-theme-edges.ts`).
 
@@ -91,9 +90,9 @@ getDatabaseViewDetail(db, databaseId, view)
 | Path | Role |
 | --- | --- |
 | `docs/dynamic-fields/*.md` | Authoritative field logic |
-| `data/marloth.sqlite` (`dynamic_*` tables) | Runtime bindings |
+| `content/dynamic-fields.json` | Runtime bindings |
 | `packages/marloth-db/src/dynamic-fields/` | Resolver registry and enrichment |
-| `scripts/seed-dynamic-fields.ts` | Seed overlay configuration |
+| `scripts/seed-dynamic-fields.ts` | Write starter bindings to content |
 | `scripts/migrate-theme-edges.ts` | Create THEME connections from legacy tags |
 
 ## Quick start

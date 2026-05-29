@@ -2,7 +2,7 @@
 
 ## Summary
 
-Web-based markdown editor for Marloth design nodes in the SQLite property graph. Delivered as a **VS Code extension** with a React + Milkdown (Crepe) webview, plus a **standalone browser dev mode** for fast iteration.
+Web-based markdown editor for Marloth design nodes backed by flat `content/` files and a local SQLite query cache. Delivered as a **VS Code extension** with a React + Milkdown (Crepe) webview, plus a **standalone browser dev mode** for fast iteration.
 
 ## When to read this
 
@@ -21,12 +21,12 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 ### Editing model
 
-- The editor **must** read and write the `body` property of graph nodes via `marloth-db`.
+- The editor **must** read and write node bodies via `marloth-db` (`ContentStore` → `content/{id}.md`).
 - Every node **must** render as a **universal page** with this block order: **page title** (standalone textarea) → collapsible **metadata** panel → optional **Properties** section → **markdown body** (Milkdown) → optional relationship and database table sections derived from graph connections.
 - Instance pages (`NotionPage` with `(page)-[:IS_A]->(type)`) **must** show a **Properties** section when the type defines one or more stored scalar fields and/or dynamic computed fields for that database. Stored scalars (e.g. Priority) are editable; computed dynamic fields are read-only. When Properties is shown, the redundant `IS_A` relationship table section **must** be omitted.
 - Relationship tables **must** group outgoing connections by label; connection properties (except import metadata like `ordinal`, `via_database`) **must** appear as table columns.
 - Database table sections **must** appear on `NotionDatabase` nodes, built from incoming `IS_A` connections (Name from linked pages; scalar columns from `IS_A` properties; relation columns from linked targets on outgoing graph connections — see [marloth-db.md](./marloth-db.md) `getDatabaseViewDetail`).
-- The canonical database path **must** follow `MARLOTH_DB_PATH` / `data/marloth.sqlite` conventions (see marloth-db).
+- The API **must** load `content/` on startup (full cache rebuild if stale), watch the flat content directory for changes, and sync into `MARLOTH_DB_PATH` (see marloth-db).
 - Autosave **should** debounce writes (default ~800ms after last edit).
 - Local UI preferences (table sort order, etc.) **must** persist in a gitignored user settings file (`.marloth/user-settings.json` by default), storing sparse overrides only—not full copies of graph data.
 - Section tables **must** support sortable columns; default sort is Name ascending. Sort preferences **must** persist per section table across sessions.
@@ -72,7 +72,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 ### Notion-like UX on graph data
 
-Design work in Marloth is relational and markdown-heavy. A web editor with `@` linking matches author mental models from Notion while preserving git-tracked SQLite as source of truth.
+Design work in Marloth is relational and markdown-heavy. A web editor with `@` linking matches author mental models from Notion while preserving git-tracked `content/` files as source of truth and a SQLite cache for fast graph queries.
 
 ### HTTP API between extension and graph
 

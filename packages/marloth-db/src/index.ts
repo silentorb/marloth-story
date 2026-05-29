@@ -129,6 +129,13 @@ export type {
   OrderedAssociationViewDetail,
 } from "./ordered-associations";
 export { DDL, DYNAMIC_FIELDS_DDL, SCHEMA_VERSION } from "./schema";
+export type { MarlothWriteContext } from "./content/write-context";
+export {
+  mergeNodePropertiesOnContent,
+  openMarlothWriteContext,
+  syncAfterConnectionsWrite,
+  syncAfterNodeWrite,
+} from "./content/write-context";
 export {
   applyDynamicFields,
   getDefaultResolverRegistry,

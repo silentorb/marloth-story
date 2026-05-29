@@ -1,4 +1,5 @@
-import type { GraphDatabase } from "marloth-db";
+import type { GraphDatabase, MarlothWriteContext } from "marloth-db";
+import { mergeNodePropertiesOnContent } from "marloth-db";
 import type { NotionReadClient } from "./notion-client";
 import { pageMetadataPatch } from "./notion-client";
 import { isNotionHexId } from "./notion-ids";
@@ -16,11 +17,12 @@ function sleep(ms: number): Promise<void> {
 }
 
 export async function syncPages(
-  db: GraphDatabase,
+  ctx: MarlothWriteContext,
   client: NotionReadClient,
   rootPageId: string,
   options: SyncOptions,
 ): Promise<PageSyncSummary> {
+  const db = ctx.db;
   const summary: PageSyncSummary = {
     scanned: 0,
     updated: 0,
@@ -45,7 +47,7 @@ export async function syncPages(
     ids = [options.id];
   } else {
     ids = db
-      .listVerticesForGraphExport()
+      .listNodesForGraphExport()
       .map((v) => v.id)
       .filter((id) => isNotionHexId(id));
     if (options.limit !== undefined && Number.isFinite(options.limit)) {
@@ -70,7 +72,7 @@ export async function syncPages(
         summary.updated += 1;
         console.log(`[dry-run] would update ${id}: ${Object.keys(patch).join(", ")}`);
       } else {
-        db.mergeNodeProperties(id, patch);
+        mergeNodePropertiesOnContent(ctx, id, patch);
         summary.updated += 1;
       }
     } catch (err) {
@@ -80,10 +82,6 @@ export async function syncPages(
     }
 
     await sleep(350);
-  }
-
-  if (!options.dryRun && summary.updated > 0) {
-    db.finalize();
   }
 
   return summary;

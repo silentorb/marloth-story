@@ -1,29 +1,29 @@
 # Marloth-db — agent notes
 
 ## What it is
-- TypeScript + **Bun**: local SQLite property-graph storage for Marloth story data.
+- TypeScript + **Bun**: flat `content/` files (source of truth) + SQLite cache for queries.
 - Uses Bun's built-in `bun:sqlite` (no extra native deps).
-- Database file default: `data/marloth.sqlite` at repo root.
+- Content default: `content/` at repo root. Cache default: `data/marloth.sqlite` (gitignored).
 
 ## Terminology
 
-- **Node** — entity in `nodes` / `node_labels` (`upsertNode`, `getNodeDetail`).
-- **Connection** — directed labeled link in `connections` (`upsertConnection`).
+- **Node** — entity in `content/{id}.md` and cache `nodes` / `node_labels`.
+- **Connection** — directed labeled link in `content/connections.json` and cache `connections`.
 - **Page** — editor view of a node (`getNodePageDetail`, `node-page-sections.ts`).
 - **NotionPage** / **NotionDatabase** — legacy import labels on nodes.
 
-Core tables: `nodes`, `node_labels`, `connections` (`SCHEMA_VERSION` 3).
+Cache tables: `nodes`, `node_labels`, `connections` (`SCHEMA_VERSION` 4).
 
 ## Run
 - Tests: `bun test` (from this directory).
-- Schema and graph API: import from `marloth-db` workspace package.
+- Content API: `marloth-db/content`; writes: `openMarlothWriteContext`.
 
 ## Editing data
 
-- **Canonical file:** `data/marloth.sqlite` at repo root — commit changes directly.
-- Use `GraphDatabase` without `{ clean: true }` unless intentionally wiping a dev copy.
-- **Do not** run `bun run notion:import` / `--clean` to apply routine graph or schema updates.
-- Missing data in `./exports/` only: mine the relevant `.md`/`.csv` and upsert surgically (see [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) **Editing the graph**).
+- **Canonical store:** `content/` — commit markdown + JSON changes.
+- Use `ContentStore` / `MarlothWriteContext` for mutations.
+- Rebuild cache: `bun run content:sync` from repo root.
+- **Do not** edit `data/marloth.sqlite` directly or run `notion:import` / `--clean` for routine updates.
 
 ## Repo-wide context
 - **Feature spec:** [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)

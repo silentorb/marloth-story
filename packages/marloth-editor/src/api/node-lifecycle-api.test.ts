@@ -1,61 +1,69 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
-import { join } from "node:path";
-import { tmpdir } from "node:os";
+import { DEFAULT_ARCHIVE_NODE_ID, DEFAULT_HOME_NODE_ID } from "marloth-db";
 import {
-  DEFAULT_ARCHIVE_NODE_ID,
-  DEFAULT_HOME_NODE_ID,
-  GraphDatabase,
-} from "marloth-db";
-import { createApiHandler } from "./server";
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestNode,
+} from "marloth-db/content/test-helpers";
+import { createTestApiFromContent } from "./test-api-setup";
+
+const nodeId = "d1111111111111111111111111111111";
 
 describe("node lifecycle API", () => {
-  const dir = mkdtempSync(join(tmpdir(), "marloth-lifecycle-api-"));
-  const dbPath = join(dir, "graph.sqlite");
-  const db = new GraphDatabase(dbPath);
+  const fixture = createTestContentFixture("marloth-lifecycle-api-");
 
-  const nodeId = "d1111111111111111111111111111111";
-
-  db.upsertNode(DEFAULT_HOME_NODE_ID, ["NotionPage"], { title: "Home" });
-  db.upsertNode(DEFAULT_ARCHIVE_NODE_ID, ["NotionPage"], { title: "Archive" });
-  db.upsertNode(nodeId, ["NotionPage"], {
-    title: "Draft",
-    inferred_notion_path: "Marloth/Features/Draft",
+  seedTestNode(fixture, {
+    id: DEFAULT_HOME_NODE_ID,
+    labels: ["NotionPage"],
+    properties: { title: "Home" },
   });
-  db.close();
+  seedTestNode(fixture, {
+    id: DEFAULT_ARCHIVE_NODE_ID,
+    labels: ["NotionPage"],
+    properties: { title: "Archive" },
+  });
+  seedTestNode(fixture, {
+    id: nodeId,
+    labels: ["NotionPage"],
+    properties: {
+      title: "Draft",
+      inferred_notion_path: "Marloth/Features/Draft",
+    },
+  });
 
-  const handler = createApiHandler(dbPath);
+  const api = createTestApiFromContent(fixture);
 
   test("POST archive moves node under Archive", async () => {
-    const res = await handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}/archive`, { method: "POST" }));
+    const res = await api.handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}/archive`, { method: "POST" }));
     expect(res.status).toBe(200);
 
-    const nodeRes = await handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}`));
+    const nodeRes = await api.handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}`));
     const payload = (await nodeRes.json()) as { node: { path: string | null } };
     expect(payload.node.path).toBe("Marloth/Archive/Draft");
   });
 
   test("POST archive rejects already archived node", async () => {
-    const res = await handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}/archive`, { method: "POST" }));
+    const res = await api.handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}/archive`, { method: "POST" }));
     expect(res.status).toBe(409);
   });
 
   test("DELETE removes node", async () => {
-    const res = await handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}`, { method: "DELETE" }));
+    const res = await api.handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}`, { method: "DELETE" }));
     expect(res.status).toBe(200);
 
-    const nodeRes = await handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}`));
+    const nodeRes = await api.handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}`));
     expect(nodeRes.status).toBe(404);
   });
 
   test("DELETE rejects protected node", async () => {
-    const res = await handler(
+    const res = await api.handler(
       new Request(`http://127.0.0.1/api/nodes/${DEFAULT_HOME_NODE_ID}`, { method: "DELETE" }),
     );
     expect(res.status).toBe(403);
   });
 
   afterAll(() => {
-    rmSync(dir, { recursive: true, force: true });
+    api.handler.close();
+    destroyTestContentFixture(fixture);
   });
 });

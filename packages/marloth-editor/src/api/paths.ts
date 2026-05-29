@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Database } from "bun:sqlite";
+import { resolveContentPath as resolveContentPathFromDb } from "marloth-db/content";
 
 const DEFAULT_PORT = 3847;
 const moduleDir = dirname(fileURLToPath(import.meta.url));
@@ -53,6 +54,13 @@ export function pickExistingDbPath(candidates: string[], fallback: string): stri
   return bestCount >= 0 ? bestPath : fallback;
 }
 
+export function resolveContentPath(): string {
+  if (process.env.MARLOTH_CONTENT_PATH) {
+    return resolve(process.env.MARLOTH_CONTENT_PATH);
+  }
+  return resolveContentPathFromDb(process.cwd());
+}
+
 export function resolveDbPath(): string {
   if (process.env.MARLOTH_DB_PATH) {
     return resolve(process.env.MARLOTH_DB_PATH);
@@ -74,7 +82,9 @@ export function resolveUserSettingsPath(): string {
     return resolve(process.env.MARLOTH_USER_SETTINGS_PATH);
   }
 
-  const dbPath = resolveDbPath();
-  const repoRoot = resolve(dbPath, "..", "..");
+  const contentPath = resolveContentPath();
+  const repoRoot = resolve(contentPath, "..");
   return resolve(repoRoot, ".marloth/user-settings.json");
 }
+
+export { resolveContentPathFromDb };

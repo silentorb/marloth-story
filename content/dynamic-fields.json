@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "fields": [
+    {
+      "id": "inspirations-weighted-use",
+      "databaseId": "2eea538996934ce8abafc27132e576c1",
+      "columnKey": "weighted_use",
+      "columnName": "Weighted Use",
+      "columnType": "number",
+      "resolverId": "inspirations.weightedUse",
+      "docsPath": "docs/dynamic-fields/inspirations.weighted-use.md",
+      "enabled": true,
+      "params": {
+        "features_edge_label": "FEATURES",
+        "features_database_id": "dd0de9867cc345b898929306bdf9fc83"
+      },
+      "viewNames": []
+    },
+    {
+      "id": "inspirations-wonder",
+      "databaseId": "2eea538996934ce8abafc27132e576c1",
+      "columnKey": "wonder",
+      "columnName": "Wonder",
+      "columnType": "number",
+      "resolverId": "inspirations.wonder",
+      "docsPath": "docs/dynamic-fields/inspirations.wonder.md",
+      "enabled": true,
+      "params": {
+        "features_edge_label": "FEATURES",
+        "theme_edge_label": "THEME",
+        "theme_target_id": "3cbc40d2ba2a4c76b4b9dc370452fcfe"
+      },
+      "viewNames": []
+    },
+    {
+      "id": "characters-all-scene-count",
+      "databaseId": "f984a934ad644f8480b0f8f51449569f",
+      "columnKey": "all_scene_count",
+      "columnName": "All Scene count",
+      "columnType": "number",
+      "resolverId": "characters.allSceneCount",
+      "docsPath": "docs/dynamic-fields/characters.all-scene-count.md",
+      "enabled": true,
+      "params": {},
+      "viewNames": []
+    }
+  ],
+  "columnSets": [
+    {
+      "id": "characters-scene-count-by-product",
+      "databaseId": "f984a934ad644f8480b0f8f51449569f",
+      "columnKeyPattern": "scene_count__{productId}",
+      "columnNamePattern": "{productTitle} Scene count",
+      "columnType": "number",
+      "resolverId": "characters.sceneCountByProduct",
+      "docsPath": "docs/dynamic-fields/characters.scene-count-by-product.md",
+      "enabled": true,
+      "params": {
+        "scenes_edge_label": "SCENES",
+        "product_edge_label": "PRODUCT",
+        "hide_legacy_keys": [
+          "twold_scene_count"
+        ]
+      },
+      "viewNames": []
+    }
+  ]
+}

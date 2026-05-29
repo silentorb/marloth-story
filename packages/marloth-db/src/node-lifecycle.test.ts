@@ -1,8 +1,4 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
-import { join } from "node:path";
-import { tmpdir } from "node:os";
-import { GraphDatabase } from "./graph";
 import {
   archivePathForNode,
   archiveNode,
@@ -10,27 +6,44 @@ import {
   deleteNode,
 } from "./node-lifecycle";
 import { DEFAULT_HOME_NODE_ID, getNodeDetail, searchNodes } from "./queries";
+import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestNode,
+} from "./content/test-helpers";
+
+const PAGE_ACTIVE = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+const PAGE_ARCHIVED = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+const PAGE_DELETE = "cccccccccccccccccccccccccccccccc";
 
 describe("record lifecycle", () => {
-  const dir = mkdtempSync(join(tmpdir(), "marloth-db-lifecycle-"));
-  const dbPath = join(dir, "test.sqlite");
-  const db = new GraphDatabase(dbPath);
+  const fixture = createTestContentFixture("marloth-db-lifecycle-");
 
-  db.upsertNode(DEFAULT_HOME_NODE_ID, ["NotionPage"], {
-    title: "Marloth",
-    inferred_notion_path: "Marloth",
+  seedTestNode(fixture, {
+    id: DEFAULT_HOME_NODE_ID,
+    labels: ["NotionPage"],
+    properties: { title: "Marloth", inferred_notion_path: "Marloth" },
   });
-  db.upsertNode(DEFAULT_ARCHIVE_NODE_ID, ["NotionPage"], {
-    title: "Archive",
-    inferred_notion_path: "Marloth",
+  seedTestNode(fixture, {
+    id: DEFAULT_ARCHIVE_NODE_ID,
+    labels: ["NotionPage"],
+    properties: { title: "Archive", inferred_notion_path: "Marloth" },
   });
-  db.upsertNode("page-active", ["NotionPage"], {
-    title: "Active Scene",
-    inferred_notion_path: "Marloth/Scenes/Active Scene",
+  seedTestNode(fixture, {
+    id: PAGE_ACTIVE,
+    labels: ["NotionPage"],
+    properties: {
+      title: "Active Scene",
+      inferred_notion_path: "Marloth/Scenes/Active Scene",
+    },
   });
-  db.upsertNode("page-archived", ["NotionPage"], {
-    title: "Old Scene",
-    inferred_notion_path: "Marloth/Archive/Old Scene",
+  seedTestNode(fixture, {
+    id: PAGE_ARCHIVED,
+    labels: ["NotionPage"],
+    properties: {
+      title: "Old Scene",
+      inferred_notion_path: "Marloth/Archive/Old Scene",
+    },
   });
 
   test("archivePathForNode preserves leaf segment under Archive", () => {
@@ -39,32 +52,37 @@ describe("record lifecycle", () => {
   });
 
   test("archiveNode moves page under Archive and links to Archive node", () => {
-    expect(archiveNode(db, "page-active")).toBeNull();
-    const detail = getNodeDetail(db, "page-active");
+    expect(archiveNode(fixture.ctx, PAGE_ACTIVE)).toBeNull();
+    const detail = getNodeDetail(fixture.ctx.db, PAGE_ACTIVE);
     expect(detail?.path).toBe("Marloth/Archive/Active Scene");
-    expect(db.listConnectionsFromSource("page-active", "PART")[0]?.targetNodeId).toBe(DEFAULT_ARCHIVE_NODE_ID);
+    expect(
+      fixture.ctx.db.listConnectionsFromSource(PAGE_ACTIVE, "PART")[0]?.targetNodeId,
+    ).toBe(DEFAULT_ARCHIVE_NODE_ID);
   });
 
   test("archiveNode rejects protected and already archived pages", () => {
-    expect(archiveNode(db, DEFAULT_HOME_NODE_ID)).toBe("protected");
-    expect(archiveNode(db, "page-archived")).toBe("already_archived");
+    expect(archiveNode(fixture.ctx, DEFAULT_HOME_NODE_ID)).toBe("protected");
+    expect(archiveNode(fixture.ctx, PAGE_ARCHIVED)).toBe("already_archived");
   });
 
   test("deleteNode removes vertex and rejects protected pages", () => {
-    db.upsertNode("page-delete", ["NotionPage"], { title: "Disposable" });
-    expect(deleteNode(db, "page-delete")).toBeNull();
-    expect(getNodeDetail(db, "page-delete")).toBeNull();
-    expect(deleteNode(db, DEFAULT_HOME_NODE_ID)).toBe("protected");
+    seedTestNode(fixture, {
+      id: PAGE_DELETE,
+      labels: ["NotionPage"],
+      properties: { title: "Disposable" },
+    });
+    expect(deleteNode(fixture.ctx, PAGE_DELETE)).toBeNull();
+    expect(getNodeDetail(fixture.ctx.db, PAGE_DELETE)).toBeNull();
+    expect(deleteNode(fixture.ctx, DEFAULT_HOME_NODE_ID)).toBe("protected");
   });
 
   test("searchNodes excludes archived pages", () => {
-    const hits = searchNodes(db, "Scene", 20);
-    expect(hits.some((hit) => hit.id === "page-active")).toBe(false);
-    expect(hits.some((hit) => hit.id === "page-archived")).toBe(false);
+    const hits = searchNodes(fixture.ctx.db, "Scene", 20);
+    expect(hits.some((hit) => hit.id === PAGE_ACTIVE)).toBe(false);
+    expect(hits.some((hit) => hit.id === PAGE_ARCHIVED)).toBe(false);
   });
 
   afterAll(() => {
-    db.close();
-    rmSync(dir, { recursive: true, force: true });
+    destroyTestContentFixture(fixture);
   });
 });

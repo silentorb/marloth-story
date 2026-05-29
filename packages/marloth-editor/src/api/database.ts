@@ -4,7 +4,6 @@ import {
   exportFullGraph,
   getDatabaseViewDetail,
   getNodePageDetail,
-  GraphDatabase,
   searchNodes,
   updateNodeBody,
   updateNodeTitle,
@@ -20,9 +19,14 @@ import {
   type NodeLifecycleError,
   type NodePageDetail,
   type DatabaseViewDetail,
+  type MarlothWriteContext,
 } from "marloth-db";
-import { statSync } from "node:fs";
+import {
+  ContentWatcher,
+  openMarlothWriteContext,
+} from "marloth-db/content";
 import type { NodeSummary } from "../shared/types";
+import { resolveContentPath, resolveDbPath } from "./paths";
 
 export interface EditorDatabase {
   getHomeId(): string;
@@ -55,57 +59,43 @@ export interface EditorDatabase {
   close(): void;
 }
 
-function fileIdentity(path: string): string | null {
-  try {
-    const stat = statSync(path);
-    return `${stat.dev}:${stat.ino}`;
-  } catch {
-    return null;
-  }
-}
-
-export function openEditorDatabase(dbPath: string): EditorDatabase {
-  let db = new GraphDatabase(dbPath);
-  let identity = fileIdentity(dbPath);
-
-  const currentDb = (): GraphDatabase => {
-    const nextIdentity = fileIdentity(dbPath);
-    if (nextIdentity !== identity) {
-      db.close();
-      db = new GraphDatabase(dbPath);
-      identity = nextIdentity;
-    }
-    return db;
-  };
+export function openEditorDatabase(
+  dbPath = resolveDbPath(),
+  contentPath = resolveContentPath(),
+): EditorDatabase {
+  const writeCtx: MarlothWriteContext = openMarlothWriteContext(contentPath, dbPath);
+  const watcher = new ContentWatcher(writeCtx.sync, (err) => {
+    console.error("[marloth-content] sync error:", err.message);
+  });
+  watcher.start();
 
   return {
     getHomeId(): string {
-      const active = currentDb();
-      const home = getNodePageDetail(active, DEFAULT_HOME_NODE_ID);
+      const home = getNodePageDetail(writeCtx.db, DEFAULT_HOME_NODE_ID);
       if (home) return DEFAULT_HOME_NODE_ID;
-      const recent = searchNodes(active, "", 1);
+      const recent = searchNodes(writeCtx.db, "", 1);
       return recent[0]?.id ?? DEFAULT_HOME_NODE_ID;
     },
     getNode(id: string, options?: { databaseView?: string; scopeId?: string }): NodePageDetail | null {
-      return getNodePageDetail(currentDb(), id, options);
+      return getNodePageDetail(writeCtx.db, id, options);
     },
     getDatabaseView(id: string, view?: string) {
-      return getDatabaseViewDetail(currentDb(), id, view);
+      return getDatabaseViewDetail(writeCtx.db, id, view);
     },
     moveOrderedAssociation(
       configId: string,
       params: OrderedAssociationMoveParams,
     ): OrderedAssociationViewDetail | null {
-      return applyOrderedAssociationMove(currentDb(), configId, params);
+      return applyOrderedAssociationMove(writeCtx, configId, params);
     },
     search(query: string, limit?: number): NodeSummary[] {
-      return searchNodes(currentDb(), query, limit);
+      return searchNodes(writeCtx.db, query, limit);
     },
     saveBody(id: string, body: string): boolean {
-      return updateNodeBody(currentDb(), id, body);
+      return updateNodeBody(writeCtx, id, body);
     },
     saveTitle(id: string, title: string): boolean {
-      return updateNodeTitle(currentDb(), id, title);
+      return updateNodeTitle(writeCtx, id, title);
     },
     updateDatabaseRowProperty(
       databaseId: string,
@@ -113,7 +103,7 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
       propertyKey: string,
       value: string | null,
     ) {
-      return updateDatabaseRowProperty(currentDb(), databaseId, nodeId, propertyKey, value);
+      return updateDatabaseRowProperty(writeCtx, databaseId, nodeId, propertyKey, value);
     },
     updateOutgoingConnectionProperty(
       nodeId: string,
@@ -122,22 +112,30 @@ export function openEditorDatabase(dbPath: string): EditorDatabase {
       propertyKey: string,
       value: string | null,
     ) {
-      return updateOutgoingConnectionProperty(currentDb(), nodeId, targetId, label, propertyKey, value);
+      return updateOutgoingConnectionProperty(
+        writeCtx,
+        nodeId,
+        targetId,
+        label,
+        propertyKey,
+        value,
+      );
     },
     deleteNode(id: string): NodeLifecycleError | null {
-      return deleteNodeInDb(currentDb(), id);
+      return deleteNodeInDb(writeCtx, id);
     },
     archiveNode(id: string): NodeLifecycleError | null {
-      return archiveNodeInDb(currentDb(), id);
+      return archiveNodeInDb(writeCtx, id);
     },
     getGraphFull(): GraphSnapshot {
-      return exportFullGraph(currentDb());
+      return exportFullGraph(writeCtx.db);
     },
     getGraphExplorerLod(options?: { anchorId?: string; layerCount?: number }): GraphLodSnapshot {
-      return exportExplorerLodGraph(currentDb(), options);
+      return exportExplorerLodGraph(writeCtx.db, options);
     },
     close(): void {
-      db.close();
+      watcher.close();
+      writeCtx.db.close();
     },
   };
 }

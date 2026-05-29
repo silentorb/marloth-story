@@ -3,6 +3,11 @@ import { GraphDatabase } from "./graph";
 import { getNodePageMetadata } from "./node-metadata";
 import { getNodePageDetail } from "./node-page-sections";
 import { updateNodeBody } from "./queries";
+import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestNode,
+} from "./content/test-helpers";
 
 const PAGE_A = "0123456789abcdef0123456789abcdef";
 const PAGE_B = "11111111111111111111111111111111";
@@ -71,14 +76,18 @@ describe("node-metadata", () => {
   });
 
   test("updateNodeBody sets modified_at and bootstraps created_at", () => {
-    const db = new GraphDatabase(":memory:", { clean: true });
-    db.upsertNode(PAGE_A, ["NotionPage"], { title: "Page A", body: "Old" });
+    const fixture = createTestContentFixture("marloth-db-meta-write-");
+    seedTestNode(fixture, {
+      id: PAGE_A,
+      labels: ["NotionPage"],
+      properties: { title: "Page A", body: "Old" },
+    });
 
-    updateNodeBody(db, PAGE_A, "New");
-    const vertex = db.getNode(PAGE_A);
+    updateNodeBody(fixture.ctx, PAGE_A, "New");
+    const vertex = fixture.ctx.db.getNode(PAGE_A);
     expect(typeof vertex?.properties.modified_at).toBe("string");
     expect(typeof vertex?.properties.created_at).toBe("string");
 
-    db.close();
+    destroyTestContentFixture(fixture);
   });
 });

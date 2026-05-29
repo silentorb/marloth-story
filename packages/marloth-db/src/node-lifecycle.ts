@@ -1,4 +1,5 @@
-import type { GraphDatabase } from "./graph";
+import type { MarlothWriteContext } from "./content/write-context";
+import { syncAfterConnectionsWrite, syncAfterNodeWrite } from "./content/write-context";
 import { ARCHIVE_NOTION_PATH_PREFIX, isArchivedNotionPath } from "./archive-path";
 import { DEFAULT_HOME_NODE_ID } from "./queries";
 
@@ -35,16 +36,20 @@ export function archivePathForNode(currentPath: string | null, title: string): s
   return `${ARCHIVE_NOTION_PATH_PREFIX}/${leaf}`;
 }
 
-export function deleteNode(db: GraphDatabase, id: string): NodeLifecycleError | null {
+export function deleteNode(ctx: MarlothWriteContext, id: string): NodeLifecycleError | null {
   if (isProtectedNodeId(id)) return "protected";
-  if (!db.getNode(id)) return "not_found";
-  db.deleteNode(id);
+  if (!ctx.store.readNode(id)) return "not_found";
+  ctx.store.deleteNodeFile(id);
+  ctx.store.removeIncidentConnections(id);
+  syncAfterNodeWrite(ctx, id);
+  syncAfterConnectionsWrite(ctx);
+  ctx.sync.syncNode(id);
   return null;
 }
 
-export function archiveNode(db: GraphDatabase, id: string): NodeLifecycleError | null {
+export function archiveNode(ctx: MarlothWriteContext, id: string): NodeLifecycleError | null {
   if (isProtectedNodeId(id)) return "protected";
-  const node = db.getNode(id);
+  const node = ctx.store.readNode(id);
   if (!node) return "not_found";
 
   const currentPath = pathFromProperties(node.properties);
@@ -52,7 +57,9 @@ export function archiveNode(db: GraphDatabase, id: string): NodeLifecycleError |
 
   const title = titleFromProperties(node.properties);
   const archivePath = archivePathForNode(currentPath, title);
-  db.mergeNodeProperties(id, { inferred_notion_path: archivePath });
-  db.upsertConnection(id, DEFAULT_ARCHIVE_NODE_ID, "PART");
+  ctx.store.mergeNodeProperties(id, { inferred_notion_path: archivePath });
+  ctx.store.upsertConnection(id, DEFAULT_ARCHIVE_NODE_ID, "PART");
+  syncAfterNodeWrite(ctx, id);
+  syncAfterConnectionsWrite(ctx);
   return null;
 }

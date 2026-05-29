@@ -5,10 +5,15 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./archive-path": "./src/archive-path.ts"
+    "./archive-path": "./src/archive-path.ts",
+    "./content": "./src/content/index.ts",
+    "./content/test-helpers": "./src/content/test-helpers.ts"
   },
   "scripts": {
     "test": "bun test"
+  },
+  "dependencies": {
+    "yaml": "2.8.0"
   },
   "devDependencies": {
     "@types/bun": "1.2.23",

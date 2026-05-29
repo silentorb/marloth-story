@@ -1,4 +1,10 @@
+import { existsSync } from "node:fs";
 import type { GraphDatabase } from "../graph";
+import {
+  loadDynamicColumnSetsFromContent,
+  loadDynamicFieldsFromContent,
+} from "../content/sync";
+import { dynamicFieldsFilePath, resolveContentPath } from "../content/paths";
 
 export interface DynamicFieldRecord {
   id: string;
@@ -40,7 +46,22 @@ function parseParams(rows: { param_key: string; param_value: string }[]): Record
   return out;
 }
 
-export function loadDynamicFields(db: GraphDatabase, databaseId: string): DynamicFieldRecord[] {
+function contentDirForDynamicFields(explicit?: string): string | null {
+  const dir = explicit ?? process.env.MARLOTH_CONTENT_PATH ?? resolveContentPath();
+  if (existsSync(dynamicFieldsFilePath(dir))) return dir;
+  return null;
+}
+
+export function loadDynamicFields(
+  db: GraphDatabase,
+  databaseId: string,
+  contentDir?: string,
+): DynamicFieldRecord[] {
+  const fromContent = contentDirForDynamicFields(contentDir);
+  if (fromContent) {
+    return loadDynamicFieldsFromContent(fromContent, databaseId);
+  }
+
   const fields = db.queryAll<{
     id: string;
     database_id: string;
@@ -88,7 +109,13 @@ export function loadDynamicFields(db: GraphDatabase, databaseId: string): Dynami
 export function loadDynamicColumnSets(
   db: GraphDatabase,
   databaseId: string,
+  contentDir?: string,
 ): DynamicColumnSetRecord[] {
+  const fromContent = contentDirForDynamicFields(contentDir);
+  if (fromContent) {
+    return loadDynamicColumnSetsFromContent(fromContent, databaseId);
+  }
+
   const sets = db.queryAll<{
     id: string;
     database_id: string;

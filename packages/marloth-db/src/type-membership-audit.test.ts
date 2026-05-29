@@ -1,6 +1,7 @@
 import { describe, expect, test, afterAll } from "bun:test";
 import { resolve } from "node:path";
 import { GraphDatabase } from "./graph";
+import { openMarlothWriteContext } from "./content/write-context";
 import {
   expectedTypeDatabaseForPage,
   findMissingTypeMembershipConnections,
@@ -41,9 +42,12 @@ describe("type-membership-audit path matching", () => {
   });
 });
 
-describe("type-membership-audit (production graph)", () => {
-  const dbPath = resolve(import.meta.dir, "../../../data/marloth.sqlite");
-  const db = new GraphDatabase(dbPath);
+const productionContentDir = resolve(import.meta.dir, "../../../content");
+const productionDbPath = resolve(import.meta.dir, "../../../data/marloth.sqlite");
+/** Run manually: `bun test src/type-membership-audit.test.ts` with production block un-skipped after `bun run content:sync`. */
+describe.skip("type-membership-audit (production graph)", () => {
+  const ctx = openMarlothWriteContext(productionContentDir, productionDbPath);
+  const db = ctx.db;
 
   test("every typed page has an IS_A edge to its expected database", () => {
     const missing = findMissingTypeMembershipConnections(db);
@@ -61,6 +65,6 @@ describe("type-membership-audit (production graph)", () => {
   });
 
   afterAll(() => {
-    db.close();
+    ctx.db.close();
   });
 });

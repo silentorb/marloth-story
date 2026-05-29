@@ -11,6 +11,8 @@
     "editor:dev": "bun run --cwd packages/marloth-editor dev:standalone",
     "editor:api": "bun run --cwd packages/marloth-editor dev:api",
     "editor:build": "bun run --cwd packages/marloth-editor build",
+    "content:export": "bun scripts/export-graph-to-content.ts",
+    "content:sync": "bun -e \"import { openMarlothWriteContext, resolveContentPath, defaultDbPathForContent } from 'marloth-db/content'; const c=resolveContentPath(); const ctx=openMarlothWriteContext(c, defaultDbPathForContent(c)); ctx.sync.fullRebuild(); ctx.db.close(); console.log('Synced', c);\"",
     "test": "bun test packages/marloth-db/src && bun test packages/notion-metadata-sync/src && bun run --cwd packages/marloth-editor test"
   },
   "devDependencies": {}

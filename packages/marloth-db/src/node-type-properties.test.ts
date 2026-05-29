@@ -1,8 +1,10 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { seedDynamicField } from "./dynamic-fields/overlay";
+import { ContentStore } from "./content/store";
+import { fileFromSeedInputs } from "./content/dynamic-fields-file";
+import { invalidateDynamicFieldsCache } from "./content/sync";
 import { GraphDatabase } from "./graph";
 import { IS_A_LABEL } from "./labels";
 import { buildPropertiesSection } from "./node-type-properties";
@@ -12,13 +14,30 @@ describe("node-type-properties", () => {
   const dir = mkdtempSync(join(tmpdir(), "marloth-page-props-"));
   const dbPath = join(dir, "test.sqlite");
   const db = new GraphDatabase(dbPath);
+  const contentDir = join(dir, "content");
+  mkdirSync(contentDir, { recursive: true });
+  process.env.MARLOTH_CONTENT_PATH = contentDir;
 
   const CHAR_DB = "f984a934ad644f8480b0f8f51449569f";
   const character = "cccccccccccccccccccccccccccccccc";
-  const scene1 = "s1111111111111111111111111111111";
-  const scene2 = "s2222222222222222222222222222222";
+  const scene1 = "11111111111111111111111111111111";
+  const scene2 = "22222222222222222222222222222222";
 
   test("includes computed dynamic fields with allViews", () => {
+    new ContentStore(contentDir).writeDynamicFieldsFile(
+      fileFromSeedInputs([
+        {
+          id: "props-all-scene",
+          databaseId: CHAR_DB,
+          columnKey: "all_scene_count",
+          columnName: "All Scene count",
+          resolverId: "characters.allSceneCount",
+          docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
+          viewNames: ["Hidden View"],
+        },
+      ]),
+    );
+    invalidateDynamicFieldsCache();
     db.upsertNode(CHAR_DB, ["NotionDatabase"], { title: "Characters" });
     db.upsertNode(character, ["NotionPage"], { title: "James" });
     db.upsertConnection(character, CHAR_DB, IS_A_LABEL, { row_index: 0, priority: "High" });
@@ -27,16 +46,6 @@ describe("node-type-properties", () => {
     db.upsertNode(scene2, ["NotionPage"], { title: "Scene B" });
     db.upsertConnection(character, scene1, "SCENES", {});
     db.upsertConnection(character, scene2, "SCENES", {});
-
-    seedDynamicField(db, {
-      id: "props-all-scene",
-      databaseId: CHAR_DB,
-      columnKey: "all_scene_count",
-      columnName: "All Scene count",
-      resolverId: "characters.allSceneCount",
-      docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
-      viewNames: ["Hidden View"],
-    });
 
     const properties = buildPropertiesSection(db, character);
     expect(properties).toMatchObject({
@@ -54,6 +63,19 @@ describe("node-type-properties", () => {
   });
 
   test("getNodePageDetail exposes properties and omits IS_A relation section", () => {
+    new ContentStore(contentDir).writeDynamicFieldsFile(
+      fileFromSeedInputs([
+        {
+          id: "props-all-scene-2",
+          databaseId: CHAR_DB,
+          columnKey: "all_scene_count",
+          columnName: "All Scene count",
+          resolverId: "characters.allSceneCount",
+          docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
+        },
+      ]),
+    );
+    invalidateDynamicFieldsCache();
     const detail = getNodePageDetail(db, character);
     expect(detail?.properties?.cells.all_scene_count).toBe("2");
     expect(
@@ -64,6 +86,8 @@ describe("node-type-properties", () => {
   });
 
   afterAll(() => {
+    delete process.env.MARLOTH_CONTENT_PATH;
+    invalidateDynamicFieldsCache();
     db.close();
     rmSync(dir, { recursive: true, force: true });
   });

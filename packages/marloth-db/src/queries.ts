@@ -1,5 +1,8 @@
 import type { GraphDatabase } from "./graph";
 import { isArchivedNotionPath } from "./archive-path";
+import type { MarlothWriteContext } from "./content/write-context";
+import { syncAfterNodeWrite } from "./content/write-context";
+import { bodyFromNode } from "./content/node-file";
 
 export interface NodeSummary {
   id: string;
@@ -83,7 +86,7 @@ export function listRecentNodes(db: GraphDatabase, limit = 20): NodeSummary[] {
 }
 
 function touchNodeTimestamps(
-  db: GraphDatabase,
+  ctx: MarlothWriteContext,
   id: string,
   existing: Record<string, unknown>,
 ): void {
@@ -92,26 +95,30 @@ function touchNodeTimestamps(
   if (typeof existing.created_at !== "string" || !existing.created_at.trim()) {
     patch.created_at = now;
   }
-  db.mergeNodeProperties(id, patch);
+  ctx.store.mergeNodeProperties(id, patch);
+  syncAfterNodeWrite(ctx, id);
 }
 
-export function updateNodeBody(db: GraphDatabase, id: string, body: string): boolean {
-  const node = db.getNode(id);
+export function updateNodeBody(ctx: MarlothWriteContext, id: string, body: string): boolean {
+  const node = ctx.store.readNode(id);
   if (!node) return false;
-  db.mergeNodeProperties(id, { body });
-  touchNodeTimestamps(db, id, node.properties);
+  const { body: _removed, ...props } = node.properties;
+  ctx.store.writeNode({ id: node.id, labels: node.labels, properties: props }, body);
+  touchNodeTimestamps(ctx, id, node.properties);
   return true;
 }
 
-export function updateNodeTitle(db: GraphDatabase, id: string, title: string): boolean {
-  const node = db.getNode(id);
+export function updateNodeTitle(ctx: MarlothWriteContext, id: string, title: string): boolean {
+  const node = ctx.store.readNode(id);
   if (!node) return false;
   const trimmed = title.trim() || "Untitled";
   const oldTitle = titleFromProperties(node.properties);
-  const body = bodyFromProperties(node.properties);
+  const body = bodyFromNode(node);
   const content = stripLeadingTitleHeadingIfMatches(body, oldTitle);
-  db.mergeNodeProperties(id, { title: trimmed, body: content });
-  touchNodeTimestamps(db, id, node.properties);
+  const { body: _removed, ...rest } = node.properties;
+  const props = { ...rest, title: trimmed };
+  ctx.store.writeNode({ id: node.id, labels: node.labels, properties: props }, content);
+  touchNodeTimestamps(ctx, id, node.properties);
   return true;
 }
 

@@ -1,4 +1,5 @@
-import type { GraphDatabase } from "marloth-db";
+import type { GraphDatabase, MarlothWriteContext } from "marloth-db";
+import { mergeNodePropertiesOnContent, syncAfterConnectionsWrite } from "marloth-db";
 import { TYPE_MEMBERSHIP_LABELS, slugifyPropertyKey } from "marloth-db";
 import { databaseMetadataPatch, type NotionReadClient } from "./notion-client";
 import { isNotionHexId, notionIdToHex } from "./notion-ids";
@@ -22,10 +23,11 @@ function sleep(ms: number): Promise<void> {
 }
 
 export async function syncDatabases(
-  db: GraphDatabase,
+  ctx: MarlothWriteContext,
   client: NotionReadClient,
   options: SyncOptions,
 ): Promise<DatabaseSyncSummary> {
+  const db = ctx.db;
   const summary: DatabaseSyncSummary = {
     scanned: 0,
     updated: 0,
@@ -89,9 +91,9 @@ export async function syncDatabases(
           `[dry-run] would update database ${id}: ${views.length} views, ${Object.keys(schema.properties).length} properties`,
         );
       } else {
-        db.mergeNodeProperties(id, patch);
+        mergeNodePropertiesOnContent(ctx, id, patch);
         if (options.enrichRows) {
-          await enrichDatabaseRows(db, client, id, schema, views[0] ?? null, options.dryRun);
+          await enrichDatabaseRows(ctx, client, id, schema, views[0] ?? null, options.dryRun);
         }
         summary.updated += 1;
       }
@@ -104,21 +106,18 @@ export async function syncDatabases(
     await sleep(350);
   }
 
-  if (!options.dryRun && summary.updated > 0) {
-    db.finalize();
-  }
-
   return summary;
 }
 
 async function enrichDatabaseRows(
-  db: GraphDatabase,
+  ctx: MarlothWriteContext,
   client: NotionReadClient,
   databaseId: string,
   schema: NotionDatabaseSchema,
   primaryView: { filter?: unknown | null; sorts?: unknown[] } | null,
   dryRun: boolean,
 ): Promise<void> {
+  const db = ctx.db;
   let cursor: string | undefined;
   do {
     const query = await client.queryDatabase(databaseId, {
@@ -150,11 +149,20 @@ async function enrichDatabaseRows(
       if (dryRun) continue;
 
       for (const connection of connections) {
-        db.mergeConnectionProperties(connection.id, cellPatch);
+        ctx.store.mergeConnectionProperties(
+          connection.sourceNodeId,
+          connection.targetNodeId,
+          connection.label,
+          { ...connection.properties, ...cellPatch },
+        );
       }
     }
 
     cursor = query.has_more && query.next_cursor ? query.next_cursor : undefined;
     await sleep(350);
   } while (cursor);
+
+  if (!dryRun) {
+    syncAfterConnectionsWrite(ctx);
+  }
 }

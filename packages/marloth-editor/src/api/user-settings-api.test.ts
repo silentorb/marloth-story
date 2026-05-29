@@ -2,34 +2,42 @@ import { describe, expect, test } from "bun:test";
 import { mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import { GraphDatabase } from "marloth-db";
+import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestNode,
+} from "marloth-db/content/test-helpers";
 import { createApiHandler } from "./server";
 import { UserSettingsStore } from "./user-settings-store";
 
 describe("user-settings API", () => {
   test("GET and PATCH /api/user-settings", async () => {
     const dir = mkdtempSync(join(tmpdir(), "marloth-user-settings-api-"));
-    const dbPath = join(dir, "graph.sqlite");
     const settingsPath = join(dir, "user-settings.json");
+    const dbPath = join(dir, "api.sqlite");
 
-    const db = new GraphDatabase(dbPath);
-    db.upsertNode("page1", ["NotionPage"], { title: "Alpha" });
-    db.close();
+    const fixture = createTestContentFixture("marloth-user-settings-content-");
+    seedTestNode(fixture, {
+      id: "0123456789abcdef0123456789abcdef",
+      labels: ["NotionPage"],
+      properties: { title: "Alpha" },
+    });
 
+    fixture.ctx.sync.fullRebuild();
     const store = new UserSettingsStore(settingsPath);
-    const handler = createApiHandler(dbPath, store);
+    const apiHandler = createApiHandler(dbPath, store, fixture.ctx.store.contentDir);
 
-    const initial = await handler(new Request("http://127.0.0.1/api/user-settings"));
+    const initial = await apiHandler(new Request("http://127.0.0.1/api/user-settings"));
     expect(initial.status).toBe(200);
     expect((await initial.json()).settings).toEqual({ version: 1 });
 
-    const patched = await handler(
+    const patched = await apiHandler(
       new Request("http://127.0.0.1/api/user-settings", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           tableSorts: {
-            "records/page1/relations/RELATED": {
+            "records/0123456789abcdef0123456789abcdef/relations/RELATED": {
               orderBy: [{ column: "priority", direction: "desc" }],
             },
           },
@@ -40,10 +48,14 @@ describe("user-settings API", () => {
     const payload = (await patched.json()) as {
       settings: { tableSorts?: Record<string, unknown> };
     };
-    expect(payload.settings.tableSorts?.["records/page1/relations/RELATED"]).toEqual({
+    expect(
+      payload.settings.tableSorts?.["records/0123456789abcdef0123456789abcdef/relations/RELATED"],
+    ).toEqual({
       orderBy: [{ column: "priority", direction: "desc" }],
     });
 
+    apiHandler.close();
+    destroyTestContentFixture(fixture);
     rmSync(dir, { recursive: true, force: true });
   });
 });

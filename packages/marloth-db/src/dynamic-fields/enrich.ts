@@ -25,6 +25,8 @@ export interface DynamicEnrichmentResult {
 export interface ApplyDynamicFieldsOptions {
   /** When true, include all overlay-bound fields regardless of view-tab bindings. */
   allViews?: boolean;
+  /** Content directory for dynamic-fields.json (defaults to MARLOTH_CONTENT_PATH / repo content/). */
+  contentDir?: string;
 }
 
 function fieldVisible(
@@ -61,8 +63,8 @@ export function applyDynamicFields(
   registry: ResolverRegistry,
   options?: ApplyDynamicFieldsOptions,
 ): DynamicEnrichmentResult {
-  const fields = loadDynamicFields(db, databaseId);
-  const columnSets = loadDynamicColumnSets(db, databaseId);
+  const fields = loadDynamicFields(db, databaseId, options?.contentDir);
+  const columnSets = loadDynamicColumnSets(db, databaseId, options?.contentDir);
 
   const dynamicColumnDefs: DatabaseColumnDef[] = [];
   const hiddenColumnKeys = new Set<string>();

@@ -28,7 +28,8 @@ htmlcov/
 content/.obsidian/
 .marloth/
 
-# SQLite WAL sidecars (main db file under data/ is tracked)
+# SQLite cache (source of truth is content/)
+data/marloth.sqlite
 data/*.sqlite-wal
 data/*.sqlite-shm
 packages/**/data/*.sqlite

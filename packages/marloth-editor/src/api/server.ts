@@ -1,10 +1,10 @@
 import { openEditorDatabase } from "./database";
 import { UserSettingsStore } from "./user-settings-store";
-import { resolveApiPort, resolveDbPath } from "./paths";
+import { resolveApiPort, resolveContentPath, resolveDbPath } from "./paths";
 import type { UserSettingsPatch } from "../shared/user-settings";
 import type { NodeLifecycleError } from "marloth-db";
 
-export { pickExistingDbPath, resolveApiPort, resolveDbPath } from "./paths";
+export { pickExistingDbPath, resolveApiPort, resolveContentPath, resolveDbPath } from "./paths";
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
@@ -41,11 +41,15 @@ function lifecycleMessage(error: NodeLifecycleError): string {
   return "already archived";
 }
 
-export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: UserSettingsStore) {
-  const db = openEditorDatabase(dbPath);
+export function createApiHandler(
+  dbPath = resolveDbPath(),
+  userSettingsStore?: UserSettingsStore,
+  contentPath = resolveContentPath(),
+) {
+  const db = openEditorDatabase(dbPath, contentPath);
   const settingsStore = userSettingsStore ?? new UserSettingsStore();
 
-  return async (req: Request): Promise<Response> => {
+  const fetchHandler = async (req: Request): Promise<Response> => {
     if (req.method === "OPTIONS") return corsPreflight();
 
     const url = new URL(req.url);
@@ -229,6 +233,9 @@ export function createApiHandler(dbPath = resolveDbPath(), userSettingsStore?: U
       return json({ error: message }, 500);
     }
   };
+
+  fetchHandler.close = () => db.close();
+  return fetchHandler;
 }
 
 export function startApiServer(options?: {

@@ -1,46 +1,48 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
-import { join } from "node:path";
-import { tmpdir } from "node:os";
-import { GraphDatabase, IS_A_LABEL } from "marloth-db";
-import { createApiHandler } from "./server";
+import { IS_A_LABEL } from "marloth-db";
+import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestConnections,
+  seedTestNode,
+} from "marloth-db/content/test-helpers";
+import { createTestApiFromContent } from "./test-api-setup";
 
 const SCENES_DB = "204dba198db74611b0b49a98dd53e8f5";
 const PARTS_DB = "5e45eefc69a14f45b988ad1f3c9d1ef5";
 const PRODUCTS_DB = "4e973268d3474f71bd7992094fb39663";
 
+const book = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+const part = "11111111111111111111111111111111";
+const scene1 = "33333333333333333333333333333333";
+const scene2 = "44444444444444444444444444444444";
+
 describe("ordered-associations API", () => {
-  const dir = mkdtempSync(join(tmpdir(), "marloth-ordered-api-"));
-  const dbPath = join(dir, "graph.sqlite");
-  const db = new GraphDatabase(dbPath);
+  const fixture = createTestContentFixture("marloth-ordered-api-");
 
-  const book = "bookaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-  const part = "part1111111111111111111111111111";
-  const scene1 = "scene111111111111111111111111111";
-  const scene2 = "scene222222222222222222222222222";
+  seedTestNode(fixture, { id: PRODUCTS_DB, labels: ["NotionDatabase"], properties: { title: "Products" } });
+  seedTestNode(fixture, { id: PARTS_DB, labels: ["NotionDatabase"], properties: { title: "Parts database" } });
+  seedTestNode(fixture, { id: SCENES_DB, labels: ["NotionDatabase"], properties: { title: "Scenes" } });
+  seedTestNode(fixture, { id: book, labels: ["NotionPage"], properties: { title: "TWOLD" } });
+  seedTestNode(fixture, { id: part, labels: ["NotionPage"], properties: { title: "Part 1" } });
+  seedTestNode(fixture, { id: scene1, labels: ["NotionPage"], properties: { title: "Scene One" } });
+  seedTestNode(fixture, { id: scene2, labels: ["NotionPage"], properties: { title: "Scene Two" } });
+  seedTestConnections(fixture, [
+    { source: book, target: PRODUCTS_DB, label: IS_A_LABEL, properties: { order: "1", row_index: 0 } },
+    { source: part, target: PARTS_DB, label: IS_A_LABEL, properties: { row_index: 0 } },
+    { source: part, target: book, label: "PRODUCTS", properties: { ordinal: 0 } },
+    { source: scene1, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "10" } },
+    { source: scene2, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "20" } },
+    { source: scene1, target: book, label: "PRODUCT", properties: { ordinal: 0 } },
+    { source: scene2, target: book, label: "PRODUCT", properties: { ordinal: 0 } },
+    { source: scene1, target: part, label: "PART", properties: { ordinal: 0 } },
+    { source: scene2, target: part, label: "PART", properties: { ordinal: 1 } },
+  ]);
 
-  db.upsertNode(PRODUCTS_DB, ["NotionDatabase"], { title: "Products" });
-  db.upsertNode(PARTS_DB, ["NotionDatabase"], { title: "Parts database" });
-  db.upsertNode(SCENES_DB, ["NotionDatabase"], { title: "Scenes", body: "" });
-  db.upsertNode(book, ["NotionPage"], { title: "TWOLD" });
-  db.upsertNode(part, ["NotionPage"], { title: "Part 1" });
-  db.upsertNode(scene1, ["NotionPage"], { title: "Scene One" });
-  db.upsertNode(scene2, ["NotionPage"], { title: "Scene Two" });
-  db.upsertConnection(book, PRODUCTS_DB, IS_A_LABEL, { order: "1", row_index: 0 });
-  db.upsertConnection(part, PARTS_DB, IS_A_LABEL, { row_index: 0 });
-  db.upsertConnection(part, book, "PRODUCTS", { ordinal: 0 });
-  db.upsertConnection(scene1, SCENES_DB, IS_A_LABEL, { order: "10" });
-  db.upsertConnection(scene2, SCENES_DB, IS_A_LABEL, { order: "20" });
-  db.upsertConnection(scene1, book, "PRODUCT", { ordinal: 0 });
-  db.upsertConnection(scene2, book, "PRODUCT", { ordinal: 0 });
-  db.upsertConnection(scene1, part, "PART", { ordinal: 0 });
-  db.upsertConnection(scene2, part, "PART", { ordinal: 1 });
-  db.close();
-
-  const handler = createApiHandler(dbPath);
+  const api = createTestApiFromContent(fixture);
 
   test("GET node with scope returns ordered-association section", async () => {
-    const res = await handler(
+    const res = await api.handler(
       new Request(`http://127.0.0.1/api/nodes/${SCENES_DB}?scope=${book}`),
     );
     expect(res.status).toBe(200);
@@ -52,7 +54,7 @@ describe("ordered-associations API", () => {
   });
 
   test("PATCH move reorders scenes", async () => {
-    const res = await handler(
+    const res = await api.handler(
       new Request("http://127.0.0.1/api/ordered-associations/scenes-by-book/move", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -72,7 +74,7 @@ describe("ordered-associations API", () => {
   });
 
   test("PATCH move rejects invalid payload", async () => {
-    const res = await handler(
+    const res = await api.handler(
       new Request("http://127.0.0.1/api/ordered-associations/scenes-by-book/move", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -83,6 +85,7 @@ describe("ordered-associations API", () => {
   });
 
   afterAll(() => {
-    rmSync(dir, { recursive: true, force: true });
+    api.handler.close();
+    destroyTestContentFixture(fixture);
   });
 });

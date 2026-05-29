@@ -2,11 +2,11 @@
 
 ## Status
 
-**Legacy / archival.** This pipeline was used to build the initial `data/marloth.sqlite` from Notion exports. **Ongoing work must not rely on full re-imports.** Edit the graph directly ([marloth-db.md](./marloth-db.md)); use `./exports/` only to **mine** missing data into the existing database.
+**Legacy / archival.** This pipeline was used to build the initial graph from Notion exports. **Ongoing work must not rely on full re-imports.** Edit `content/` directly ([marloth-db.md](./marloth-db.md)); use `./exports/` only to **mine** missing data into content files. To migrate an old SQLite file: `bun run content:export`.
 
 ## Summary
 
-The Notion import feature transforms narrative and database content from a Notion export into a **SQLite property graph** at `data/marloth.sqlite`, plus machine-readable metadata under `docs/`. Implementation lives in `packages/notion-importer`; graph storage in `packages/marloth-db`.
+The Notion import feature transforms narrative and database content from a Notion export into a property graph (today: flat `content/` files; historically `data/marloth.sqlite`), plus machine-readable metadata under `docs/`. Implementation lives in `packages/notion-importer`; graph storage in `packages/marloth-db`.
 
 ## When to read this
 

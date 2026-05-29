@@ -1,4 +1,6 @@
 import type { GraphDatabase, Connection, Properties } from "./graph";
+import type { MarlothWriteContext } from "./content/write-context";
+import { syncAfterConnectionsWrite } from "./content/write-context";
 import { connectionId } from "./graph";
 import { TYPE_MEMBERSHIP_LABELS } from "./labels";
 
@@ -442,10 +444,11 @@ function applyMoveToGroups(
 }
 
 export function applyOrderedAssociationMove(
-  db: GraphDatabase,
+  ctx: MarlothWriteContext,
   configId: string,
   params: OrderedAssociationMoveParams,
 ): OrderedAssociationViewDetail | null {
+  const db = ctx.db;
   const config = getConfig(configId);
   if (!config) return null;
 
@@ -473,7 +476,7 @@ export function applyOrderedAssociationMove(
       ...member.membershipConnection.properties,
       [config.orderProperty]: String(newOrder),
     };
-    db.upsertConnection(
+    ctx.store.mergeConnectionProperties(
       member.membershipConnection.sourceNodeId,
       member.membershipConnection.targetNodeId,
       member.membershipConnection.label,
@@ -493,7 +496,11 @@ export function applyOrderedAssociationMove(
   if (currentPartId !== targetPartId) {
     const existingPartConnections = db.listConnectionsFromSource(params.sceneId, config.groupEdgeLabel);
     for (const connection of existingPartConnections) {
-      db.deleteConnection(connection.sourceNodeId, connection.targetNodeId, connection.label);
+      ctx.store.deleteConnection(
+        connection.sourceNodeId,
+        connection.targetNodeId,
+        connection.label,
+      );
     }
 
     if (targetPartId) {
@@ -503,9 +510,10 @@ export function applyOrderedAssociationMove(
         if (key === "ordinal") continue;
         partProps[key] = value;
       }
-      db.upsertConnection(params.sceneId, targetPartId, config.groupEdgeLabel, partProps);
+      ctx.store.upsertConnection(params.sceneId, targetPartId, config.groupEdgeLabel, partProps);
     }
   }
 
+  syncAfterConnectionsWrite(ctx);
   return getOrderedAssociationView(db, configId, params.scopeId);
 }
