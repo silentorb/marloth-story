@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+export PATH="${HOME}/.bun/bin:/usr/local/bin:${PATH}"
+if ! command -v bun >/dev/null 2>&1; then
+  echo "seed-dynamic-fields: bun not found. Install from https://bun.sh" >&2
+  exit 1
+fi
+exec bun run "${ROOT}/scripts/seed-dynamic-fields.ts" "$@"

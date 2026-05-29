@@ -1,7 +1,7 @@
 /** Canonical internal link scheme stored in markdown bodies. */
 export const MARLOTH_LINK_SCHEME = "marloth:";
 
-export const HOME_RECORD_ID = "72b6fb455b824b78962b0e509cc091c9";
+export const HOME_RECORD_ID = "13458e628ba28073850dea0edb9acde1";
 export const ARCHIVE_RECORD_ID = "0f558a609a56485185beed4d1fd1cd9f";
 
 export function isProtectedEditorRecord(id: string): boolean {

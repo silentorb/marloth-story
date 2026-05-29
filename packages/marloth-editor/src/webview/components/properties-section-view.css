@@ -1,0 +1,40 @@
+.marloth-properties-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.marloth-properties-form {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.marloth-properties-row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 12rem) minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+  margin: 0;
+}
+
+.marloth-properties-label {
+  margin: 0;
+  color: var(--marloth-muted);
+  font-size: 0.85rem;
+}
+
+.marloth-properties-value {
+  margin: 0;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.marloth-properties-row.is-computed .marloth-properties-value {
+  color: var(--marloth-muted);
+}
+
+.marloth-properties-computed-hint {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}

@@ -30,7 +30,7 @@ function bodyFromProperties(properties: Record<string, unknown>): string {
   return typeof body === "string" ? body : "";
 }
 
-export const DEFAULT_HOME_RECORD_ID = "72b6fb455b824b78962b0e509cc091c9";
+export const DEFAULT_HOME_RECORD_ID = "13458e628ba28073850dea0edb9acde1";
 
 export function getRecordDetail(db: GraphDatabase, id: string): RecordDetail | null {
   const vertex = db.getVertex(id);

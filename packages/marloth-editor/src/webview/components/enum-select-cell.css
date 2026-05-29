@@ -1,0 +1,14 @@
+.marloth-enum-select {
+  width: 100%;
+  max-width: 12rem;
+  padding: 0.2rem 0.35rem;
+  border: 1px solid var(--marloth-border, #333);
+  border-radius: 4px;
+  background: var(--marloth-surface-raised, #1e1e1e);
+  color: var(--marloth-text, #e6e6e6);
+  font: inherit;
+}
+
+.marloth-enum-select:disabled {
+  opacity: 0.6;
+}
