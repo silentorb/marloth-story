@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Feature 2
 notion_id: 6de06aed24974d9bacfef7ea5a7574fe
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Archive/Lab/Features test/Feature 2 6de06aed24974d9bacfef7ea5a7574fe.md

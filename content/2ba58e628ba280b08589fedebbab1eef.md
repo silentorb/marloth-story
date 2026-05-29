@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Visiting the Toye Shoppe
 created_at: 2025-11-29T19:16:00.000Z
 modified_at: 2025-11-30T02:53:00.000Z

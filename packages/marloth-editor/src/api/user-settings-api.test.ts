@@ -19,7 +19,6 @@ describe("user-settings API", () => {
     const fixture = createTestContentFixture("marloth-user-settings-content-");
     seedTestNode(fixture, {
       id: "0123456789abcdef0123456789abcdef",
-      labels: ["NotionPage"],
       properties: { title: "Alpha" },
     });
 

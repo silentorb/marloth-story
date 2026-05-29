@@ -20,7 +20,6 @@ describe("node-file", () => {
   test("round-trips frontmatter and body", () => {
     const node: Node = {
       id,
-      labels: ["NotionPage"],
       properties: {
         title: "Test Page",
         alias: "TP",
@@ -30,12 +29,11 @@ describe("node-file", () => {
     const body = "# Hello\n\nParagraph.";
     const raw = serializeNodeFile(node, body);
     const parsed = parseNodeFile(id, raw);
-    expect(parsed.labels).toEqual(["NotionPage"]);
     expect(parsed.properties.title).toBe("Test Page");
     expect(parsed.body.trimEnd()).toBe(body.trimEnd());
 
     const roundTrip = nodeFromFile(id, serializeNodeFile(
-      { id, labels: parsed.labels, properties: parsed.properties },
+      { id, properties: parsed.properties },
       parsed.body,
     ));
     expect(roundTrip.properties.title).toBe("Test Page");

@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Character saying everyone worships something
 notion_id: fe07b96639ea4fffab2d3eddca702e04
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/TWOLD Plot/Arcs/Character saying everyone worships something fe07b96639ea4fffab2d3eddca702e04.md

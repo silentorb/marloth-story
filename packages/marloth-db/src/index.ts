@@ -95,12 +95,20 @@ export { buildPropertiesSection } from "./node-type-properties";
 export type { PropertiesSection } from "./node-type-properties";
 export {
   findMissingTypeMembershipRelationships,
-  findNotionDatabaseByTitle,
   findSpuriousTypeMembershipRelationships,
   findNodeScalarsOnTypedNodes,
   typeDatabaseTitleFromPath,
   typeFolderFromPath,
 } from "./type-membership-audit";
+export {
+  findNotionDatabaseByTitle,
+  findTypeNodeByTitle,
+  graphGroupForNode,
+  graphLabelsForNode,
+  hasTypeTableSchema,
+  isTypeTableNode,
+  typeTableMarkerProperties,
+} from "./node-capabilities";
 export type {
   MissingTypeMembership,
   NodeScalarOnTypedNode,
@@ -148,3 +156,18 @@ export {
 } from "./dynamic-fields";
 export type { DynamicColumnSetRecord, DynamicFieldRecord } from "./dynamic-fields";
 export { IS_A_LABEL, LEGACY_IN_DATABASE_LABEL, TYPE_MEMBERSHIP_LABELS, isTypeMembershipLabel } from "./labels";
+export { loadSchemaFromContent, invalidateSchemaCache } from "./schema-rules/load";
+export {
+  allowedTargetTypeIdsForRule,
+  relationshipRuleContextForLabel,
+  resolveRelationshipRule,
+  resolveRelationshipRulesForSource,
+} from "./schema-rules/resolve";
+export type { RelationshipRuleContext } from "./schema-rules/resolve";
+export {
+  emptySchemaFile,
+  parseSchemaFile,
+  serializeSchemaFile,
+  SCHEMA_FILE_VERSION,
+} from "./schema-rules/schema-file";
+export type { RelationshipRuleEntry, SchemaFile } from "./schema-rules/schema-file";

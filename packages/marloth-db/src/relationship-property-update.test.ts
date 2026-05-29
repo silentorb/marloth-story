@@ -1,5 +1,6 @@
 import { describe, expect, test, afterAll } from "bun:test";
 import { IS_A_LABEL } from "./labels";
+import { typeTableMarkerProperties } from "./node-capabilities";
 import { updateDatabaseRowProperty, updateOutgoingRelationshipProperty } from "./relationship-property-update";
 import {
   createTestContentFixture,
@@ -16,12 +17,10 @@ describe("relationship-property-update", () => {
     const pageId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     seedTestNode(fixture, {
       id: databaseId,
-      labels: ["NotionDatabase"],
-      properties: { title: "Features" },
+      properties: typeTableMarkerProperties("Features"),
     });
     seedTestNode(fixture, {
       id: pageId,
-      labels: ["NotionPage"],
       properties: { title: "Feature A" },
     });
     seedTestRelationships(fixture, [
@@ -39,8 +38,8 @@ describe("relationship-property-update", () => {
   test("coerces empty priority to Low", () => {
     const pageId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     const targetId = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-    seedTestNode(fixture, { id: pageId, labels: ["NotionPage"], properties: { title: "A" } });
-    seedTestNode(fixture, { id: targetId, labels: ["NotionPage"], properties: { title: "B" } });
+    seedTestNode(fixture, { id: pageId, properties: { title: "A" } });
+    seedTestNode(fixture, { id: targetId, properties: { title: "B" } });
     seedTestRelationships(fixture, [
       { source: pageId, target: targetId, label: "RELATED", properties: { priority: "High" } },
     ]);
@@ -55,8 +54,8 @@ describe("relationship-property-update", () => {
   test("rejects invalid priority values", () => {
     const pageId = "cccccccccccccccccccccccccccccccc";
     const targetId = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-    seedTestNode(fixture, { id: pageId, labels: ["NotionPage"], properties: { title: "A" } });
-    seedTestNode(fixture, { id: targetId, labels: ["NotionPage"], properties: { title: "B" } });
+    seedTestNode(fixture, { id: pageId, properties: { title: "A" } });
+    seedTestNode(fixture, { id: targetId, properties: { title: "B" } });
     seedTestRelationships(fixture, [{ source: pageId, target: targetId, label: "RELATED", properties: {} }]);
 
     expect(

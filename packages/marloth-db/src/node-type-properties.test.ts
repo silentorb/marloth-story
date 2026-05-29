@@ -7,6 +7,7 @@ import { fileFromSeedInputs } from "./content/dynamic-fields-file";
 import { invalidateDynamicFieldsCache } from "./content/sync";
 import { GraphDatabase } from "./graph";
 import { IS_A_LABEL } from "./labels";
+import { typeTableMarkerProperties } from "./node-capabilities";
 import { buildPropertiesSection } from "./node-type-properties";
 import { getNodePageDetail } from "./node-page-sections";
 
@@ -38,12 +39,12 @@ describe("node-type-properties", () => {
       ]),
     );
     invalidateDynamicFieldsCache();
-    db.upsertNode(CHAR_DB, ["NotionDatabase"], { title: "Characters" });
-    db.upsertNode(character, ["NotionPage"], { title: "James" });
+    db.upsertNode(CHAR_DB, { ...typeTableMarkerProperties("Characters") });
+    db.upsertNode(character, { title: "James" });
     db.upsertRelationship(character, CHAR_DB, IS_A_LABEL, { row_index: 0, priority: "High" });
 
-    db.upsertNode(scene1, ["NotionPage"], { title: "Scene A" });
-    db.upsertNode(scene2, ["NotionPage"], { title: "Scene B" });
+    db.upsertNode(scene1, { title: "Scene A" });
+    db.upsertNode(scene2, { title: "Scene B" });
     db.upsertRelationship(character, scene1, "SCENES", {});
     db.upsertRelationship(character, scene2, "SCENES", {});
 

@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = 5;
+export const SCHEMA_VERSION = 6;
 
 export const DDL = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -10,14 +10,6 @@ CREATE TABLE IF NOT EXISTS nodes (
   id TEXT PRIMARY KEY NOT NULL,
   properties TEXT NOT NULL DEFAULT '{}'
 );
-
-CREATE TABLE IF NOT EXISTS node_labels (
-  node_id TEXT NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
-  label TEXT NOT NULL,
-  PRIMARY KEY (node_id, label)
-);
-
-CREATE INDEX IF NOT EXISTS idx_node_labels_label ON node_labels(label);
 
 CREATE TABLE IF NOT EXISTS relationships (
   id TEXT PRIMARY KEY NOT NULL,

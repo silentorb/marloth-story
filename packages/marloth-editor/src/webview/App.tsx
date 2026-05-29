@@ -283,11 +283,11 @@ export function App() {
         nodeId: node?.id ?? urlNodeId,
         recordPath: node?.path,
         recordBody: node?.body,
-        recordLabels: node?.labels,
+        isTypeTable: node?.isTypeTable,
         homeId,
       });
     }
-  }, [api.host, view, node?.id, node?.title, node?.path, node?.body, node?.labels, homeId]);
+  }, [api.host, view, node?.id, node?.title, node?.path, node?.body, node?.isTypeTable, homeId]);
 
   useEffect(() => {
     if (api.host !== "vscode") return;

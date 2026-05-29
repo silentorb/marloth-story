@@ -80,17 +80,24 @@ export function createApiHandler(
         });
       }
 
+      if (path === "/api/schema") {
+        return json({ schema: db.getSchema() });
+      }
+
       if (path === "/api/nodes/search") {
         const q = url.searchParams.get("q") ?? "";
         const limit = Number.parseInt(url.searchParams.get("limit") ?? "20", 10);
-        return json({ results: db.search(q, limit) });
+        const allowedRaw = url.searchParams.get("allowedTypeIds");
+        const allowedTypeIds = allowedRaw
+          ? allowedRaw.split(",").map((id) => id.trim().toLowerCase()).filter(Boolean)
+          : undefined;
+        return json({ results: db.search(q, limit, allowedTypeIds) });
       }
 
       if (path === "/api/nodes" && req.method === "POST") {
         const payload = (await req.json()) as {
           title?: string;
           body?: string;
-          labels?: string[];
         };
         if (typeof payload.title !== "string") {
           return json({ error: "title required" }, 400);
@@ -98,7 +105,6 @@ export function createApiHandler(
         const result = db.createNode({
           title: payload.title,
           body: typeof payload.body === "string" ? payload.body : undefined,
-          labels: Array.isArray(payload.labels) ? payload.labels : undefined,
         });
         if (result === "invalid_title") return json({ error: "invalid title" }, 400);
         return json({ node: result });
@@ -161,14 +167,10 @@ export function createApiHandler(
         if (typeof payload.label !== "string" || typeof payload.title !== "string") {
           return json({ error: "label and title required" }, 400);
         }
-        const result = db.createNode({
+        const result = db.createRelationRow(sourceId, {
+          label: payload.label,
           title: payload.title,
-          link: {
-            kind: "outgoing",
-            sourceId,
-            label: payload.label,
-            properties: payload.properties,
-          },
+          properties: payload.properties,
         });
         if (result === "invalid_title") return json({ error: "invalid title" }, 400);
         if (result === "source_not_found") return json({ error: "not found" }, 404);

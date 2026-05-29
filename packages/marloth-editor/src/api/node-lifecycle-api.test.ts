@@ -14,17 +14,14 @@ describe("node lifecycle API", () => {
 
   seedTestNode(fixture, {
     id: DEFAULT_HOME_NODE_ID,
-    labels: ["NotionPage"],
     properties: { title: "Home" },
   });
   seedTestNode(fixture, {
     id: DEFAULT_ARCHIVE_NODE_ID,
-    labels: ["NotionPage"],
     properties: { title: "Archive" },
   });
   seedTestNode(fixture, {
     id: nodeId,
-    labels: ["NotionPage"],
     properties: {
       title: "Draft",
       inferred_notion_path: "Marloth/Features/Draft",

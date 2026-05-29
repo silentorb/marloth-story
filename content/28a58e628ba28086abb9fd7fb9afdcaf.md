@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Cozy horror wilderness
 notion_id: 28a58e628ba28086abb9fd7fb9afdcaf
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Features/Cozy horror/Cozy horror wilderness 28a58e628ba28086abb9fd7fb9afdcaf.md

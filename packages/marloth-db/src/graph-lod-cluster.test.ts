@@ -15,9 +15,9 @@ function makeTriangleGraph(anchorId = "aaaa0001"): {
   anchorId: string;
 } {
   const vertices: LodClusterNode[] = [
-    { id: "aaaa0001", title: "Alpha", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0002", title: "Beta", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0003", title: "Gamma", path: null, labels: ["NotionPage"] },
+    { id: "aaaa0001", title: "Alpha", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0002", title: "Beta", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0003", title: "Gamma", path: null, group: "Node", labels: ["Node"] },
   ];
   const edges: LodClusterRelationship[] = [
     { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
@@ -34,11 +34,11 @@ function makeStarGraph(): {
 } {
   const anchorId = "anchor01";
   const vertices: LodClusterNode[] = [
-    { id: anchorId, title: "Anchor", path: null, labels: ["NotionPage"] },
-    { id: "hub00001", title: "Hub", path: null, labels: ["NotionPage"] },
-    { id: "leaf0001", title: "Leaf", path: null, labels: ["NotionPage"] },
-    { id: "leaf0002", title: "Leaf2", path: null, labels: ["NotionPage"] },
-    { id: "leaf0003", title: "Leaf3", path: null, labels: ["NotionPage"] },
+    { id: anchorId, title: "Anchor", path: null, group: "Node", labels: ["Node"] },
+    { id: "hub00001", title: "Hub", path: null, group: "Node", labels: ["Node"] },
+    { id: "leaf0001", title: "Leaf", path: null, group: "Node", labels: ["Node"] },
+    { id: "leaf0002", title: "Leaf2", path: null, group: "Node", labels: ["Node"] },
+    { id: "leaf0003", title: "Leaf3", path: null, group: "Node", labels: ["Node"] },
   ];
   const edges: LodClusterRelationship[] = [
     { id: "e1", sourceNodeId: anchorId, targetNodeId: "hub00001", label: "LINKS" },
@@ -57,10 +57,10 @@ function makeChainGraph(): {
 } {
   const anchorId = "aaaa0001";
   const vertices: LodClusterNode[] = [
-    { id: "aaaa0001", title: "A", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0002", title: "B", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0003", title: "C", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0004", title: "D", path: null, labels: ["NotionPage"] },
+    { id: "aaaa0001", title: "A", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0002", title: "B", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0003", title: "C", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0004", title: "D", path: null, group: "Node", labels: ["Node"] },
   ];
   const edges: LodClusterRelationship[] = [
     { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
@@ -77,12 +77,12 @@ function makeLongChainGraph(): {
 } {
   const anchorId = "aaaa0001";
   const vertices: LodClusterNode[] = [
-    { id: "aaaa0001", title: "A", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0002", title: "B", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0003", title: "C", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0004", title: "D", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0005", title: "E", path: null, labels: ["NotionPage"] },
-    { id: "aaaa0006", title: "F", path: null, labels: ["NotionPage"] },
+    { id: "aaaa0001", title: "A", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0002", title: "B", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0003", title: "C", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0004", title: "D", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0005", title: "E", path: null, group: "Node", labels: ["Node"] },
+    { id: "aaaa0006", title: "F", path: null, group: "Node", labels: ["Node"] },
   ];
   const edges: LodClusterRelationship[] = [
     { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },

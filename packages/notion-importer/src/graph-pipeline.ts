@@ -202,7 +202,7 @@ function ensurePageVertex(
   for (const [k, v] of Object.entries(extra)) {
     if (v !== undefined) props[k] = v;
   }
-  db.upsertNode(notionId, ["NotionPage"], props);
+  db.upsertNode(notionId, props);
 }
 
 function plainNameFromCell(nameVal: string, nameLinks: ReturnType<typeof parseRelationLinks>): string {
@@ -269,7 +269,7 @@ function importMarkdownPage(
     properties[key] = val;
   }
 
-  db.upsertNode(notionId, ["NotionPage"], properties);
+  db.upsertNode(notionId, properties);
   return { notionId, sourceReposix, relations };
 }
 
@@ -312,10 +312,11 @@ function importCsvFile(
   if (!parsed) return null;
 
   const databaseId = parsed.databaseId;
-  db.upsertNode(databaseId, ["NotionDatabase"], {
+  db.upsertNode(databaseId, {
     title: parsed.displayName,
     notion_database: databaseId,
     source_export: sourceReposix,
+    notion_views: '{"views":[]}',
   });
 
   const [headers, rows] = indexes.readCsvRows(csvPath, exportRoot);
@@ -435,7 +436,6 @@ export async function runGraphImport(opts: GraphRunOptions): Promise<void> {
       notion_id: plan.notionId,
       source_export: relposix,
       inferred_notion_path: inferredNotionPath(relposix),
-      labels: ["NotionPage"],
     };
   }
 

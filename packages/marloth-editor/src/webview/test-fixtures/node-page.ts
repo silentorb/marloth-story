@@ -48,7 +48,7 @@ export function makeNodePageDetail(
     title: "Example page",
     path: "Folder/Example page",
     body: "# Example page\n\nBody text.",
-    labels: ["NotionPage"],
+    isTypeTable: false,
     properties: null,
     metadata: {
       createdAt: null,

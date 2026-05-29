@@ -6,6 +6,7 @@ import { ContentStore } from "../content/store";
 import { fileFromSeedInputs } from "../content/dynamic-fields-file";
 import { invalidateDynamicFieldsCache } from "../content/sync";
 import { GraphDatabase } from "../graph";
+import { typeTableMarkerProperties } from "../node-capabilities";
 import { IS_A_LABEL } from "../labels";
 import { getDatabaseViewDetail } from "../database-view";
 import {
@@ -88,19 +89,19 @@ describe("dynamic-fields resolvers", () => {
       ),
     );
     invalidateDynamicFieldsCache();
-    db.upsertNode(CHAR_DB, ["NotionDatabase"], { title: "Characters" });
-    db.upsertNode(INSP_DB, ["NotionDatabase"], { title: "Inspirations" });
-    db.upsertNode(FEAT_DB, ["NotionDatabase"], { title: "Features" });
-    db.upsertNode(TWOLD, ["NotionPage"], { title: "TWOLD" });
-    db.upsertNode(OTHER_PRODUCT, ["NotionPage"], { title: "Other Book" });
-    db.upsertNode(WONDERLAND, ["NotionPage"], { title: "Wonderland" });
+    db.upsertNode(CHAR_DB, { ...typeTableMarkerProperties("Characters") });
+    db.upsertNode(INSP_DB, { ...typeTableMarkerProperties("Inspirations") });
+    db.upsertNode(FEAT_DB, { ...typeTableMarkerProperties("Features") });
+    db.upsertNode(TWOLD, { title: "TWOLD" });
+    db.upsertNode(OTHER_PRODUCT, { title: "Other Book" });
+    db.upsertNode(WONDERLAND, { title: "Wonderland" });
 
-    db.upsertNode(character, ["NotionPage"], { title: "James" });
+    db.upsertNode(character, { title: "James" });
     db.upsertRelationship(character, CHAR_DB, IS_A_LABEL, { row_index: 0 });
 
-    db.upsertNode(scene1, ["NotionPage"], { title: "Scene A" });
-    db.upsertNode(scene2, ["NotionPage"], { title: "Scene B" });
-    db.upsertNode(scene3, ["NotionPage"], { title: "Scene C" });
+    db.upsertNode(scene1, { title: "Scene A" });
+    db.upsertNode(scene2, { title: "Scene B" });
+    db.upsertNode(scene3, { title: "Scene C" });
     db.upsertRelationship(character, scene1, "SCENES", {});
     db.upsertRelationship(character, scene2, "SCENES", {});
     db.upsertRelationship(character, scene3, "SCENES", {});
@@ -108,11 +109,11 @@ describe("dynamic-fields resolvers", () => {
     db.upsertRelationship(scene2, TWOLD, "PRODUCT", {});
     db.upsertRelationship(scene3, OTHER_PRODUCT, "PRODUCT", {});
 
-    db.upsertNode(inspiration, ["NotionPage"], { title: "Test Inspiration" });
+    db.upsertNode(inspiration, { title: "Test Inspiration" });
     db.upsertRelationship(inspiration, INSP_DB, IS_A_LABEL, { row_index: 0 });
 
-    db.upsertNode(featureWonder, ["NotionPage"], { title: "Adventure" });
-    db.upsertNode(featurePlain, ["NotionPage"], { title: "Plain" });
+    db.upsertNode(featureWonder, { title: "Adventure" });
+    db.upsertNode(featurePlain, { title: "Plain" });
     db.upsertRelationship(featureWonder, FEAT_DB, IS_A_LABEL, { priority: "Medium" });
     db.upsertRelationship(featurePlain, FEAT_DB, IS_A_LABEL, { priority: "High" });
     db.upsertRelationship(inspiration, featureWonder, "FEATURES", {});

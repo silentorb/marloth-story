@@ -16,19 +16,18 @@ describe("GraphDatabase", () => {
     }
   });
 
-  test("upserts vertices, labels, and edges", () => {
+  test("upserts nodes and relationships", () => {
     tempDir = mkdtempSync(join(tmpdir(), "marloth-db-test-"));
     dbPath = join(tempDir, "test.sqlite");
     const db = new GraphDatabase(dbPath);
-    db.upsertNode("abc123", ["Page"], { title: "Hello" });
-    db.upsertNode("def456", ["Page"], { title: "World" });
+    db.upsertNode("abc123", { title: "Hello" });
+    db.upsertNode("def456", { title: "World" });
     db.upsertRelationship("abc123", "def456", "LINKS_TO", { ordinal: 0 });
     db.finalize();
     db.close();
 
     const db2 = new GraphDatabase(dbPath);
     const v = db2.getNode("abc123");
-    expect(v?.labels).toEqual(["Page"]);
     expect(v?.properties.title).toBe("Hello");
     const e = db2.getRelationship("abc123:LINKS_TO:def456");
     expect(e?.targetNodeId).toBe("def456");
@@ -36,14 +35,13 @@ describe("GraphDatabase", () => {
     db2.close();
   });
 
-  test("merges vertex properties on upsert", () => {
+  test("merges node properties on upsert", () => {
     tempDir = mkdtempSync(join(tmpdir(), "marloth-db-test-"));
     dbPath = join(tempDir, "merge.sqlite");
     const db = new GraphDatabase(dbPath);
-    db.upsertNode("page1", ["Page"], { title: "A" });
-    db.upsertNode("page1", ["Page", "NotionPage"], { body: "text" });
+    db.upsertNode("page1", { title: "A" });
+    db.upsertNode("page1", { body: "text" });
     const v = db.getNode("page1");
-    expect(v?.labels.sort()).toEqual(["NotionPage", "Page"]);
     expect(v?.properties).toEqual({ title: "A", body: "text" });
     db.close();
   });
@@ -52,8 +50,8 @@ describe("GraphDatabase", () => {
     tempDir = mkdtempSync(join(tmpdir(), "marloth-db-test-"));
     dbPath = join(tempDir, "delete.sqlite");
     const db = new GraphDatabase(dbPath);
-    db.upsertNode("a", ["Page"], { title: "A" });
-    db.upsertNode("b", ["Page"], { title: "B" });
+    db.upsertNode("a", { title: "A" });
+    db.upsertNode("b", { title: "B" });
     db.upsertRelationship("a", "b", "RELATED", { ordinal: 0 });
     expect(db.getRelationship("a:RELATED:b")).not.toBeNull();
     expect(db.deleteRelationship("a", "b", "RELATED")).toBe(true);
@@ -65,8 +63,8 @@ describe("GraphDatabase", () => {
     tempDir = mkdtempSync(join(tmpdir(), "marloth-db-test-"));
     dbPath = join(tempDir, "delete-vertex.sqlite");
     const db = new GraphDatabase(dbPath);
-    db.upsertNode("a", ["Page"], { title: "A" });
-    db.upsertNode("b", ["Page"], { title: "B" });
+    db.upsertNode("a", { title: "A" });
+    db.upsertNode("b", { title: "B" });
     db.upsertRelationship("a", "b", "RELATED", { ordinal: 0 });
     expect(db.deleteNode("a")).toBe(true);
     expect(db.getNode("a")).toBeNull();

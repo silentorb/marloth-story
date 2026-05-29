@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Custom symbolism
 notion_id: 21a32bf8277a47d9ab0eb6d7cda2fcbf
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Features/Custom symbolism 21a32bf8277a47d9ab0eb6d7cda2fcbf.md

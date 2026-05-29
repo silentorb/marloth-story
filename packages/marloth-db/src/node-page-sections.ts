@@ -10,6 +10,9 @@ import {
 import { getNodeDetail, type NodeDetail } from "./queries";
 import { getNodePageMetadata, type NodePageMetadata } from "./node-metadata";
 import { buildPropertiesSection, type PropertiesSection } from "./node-type-properties";
+import { findTypeNodeByTitle, isTypeTableNode } from "./node-capabilities";
+import { relationshipRuleContextForLabel } from "./schema-rules/resolve";
+import type { SchemaFile } from "./schema-rules/schema-file";
 
 const RELATION_META_KEYS = new Set([
   "ordinal",
@@ -47,8 +50,10 @@ export interface RelationTableSection {
   type: "relations";
   label: string;
   title: string;
-  /** When set, the section title links to this type (NotionDatabase) node. */
+  /** When set, the section title links to this type node. */
   typeNodeId: string | null;
+  /** UI hint: allowed IS_A target type ids for new linked nodes (from schema.json). */
+  allowedTargetTypeIds?: string[];
   columns: string[];
   columnDefs?: DatabaseColumnDef[];
   rows: RelationRow[];
@@ -121,17 +126,6 @@ function normalizeRelationGroupLabel(label: string): string {
   return label;
 }
 
-function findNotionDatabaseByTitle(db: GraphDatabase, title: string): string | null {
-  const normalized = title.trim().toLowerCase();
-  if (!normalized) return null;
-
-  for (const node of db.listNodesForGraphExport()) {
-    if (!node.labels.includes("NotionDatabase")) continue;
-    if (node.title.trim().toLowerCase() === normalized) return node.id;
-  }
-  return null;
-}
-
 function resolveViaDatabase(connections: Relationship[]): string | null {
   const ids = connections
     .map((connection) => stringProperty(connection.properties.via_database))
@@ -149,14 +143,13 @@ function resolveTypeNodeId(
   if (label === IS_A_LABEL) {
     const viaDatabase = resolveViaDatabase(connections);
     if (viaDatabase) {
-      const node = db.getNode(viaDatabase);
-      if (node?.labels.includes("NotionDatabase")) return viaDatabase;
+      if (isTypeTableNode(db, viaDatabase)) return viaDatabase;
     }
     const targetIds = [...new Set(connections.map((connection) => connection.targetNodeId))];
     if (targetIds.length === 1) return targetIds[0]!;
   }
 
-  return findNotionDatabaseByTitle(db, labelToSectionTitle(label));
+  return findTypeNodeByTitle(db, labelToSectionTitle(label));
 }
 
 function sectionTitleForType(
@@ -171,7 +164,11 @@ function sectionTitleForType(
   return labelToSectionTitle(label);
 }
 
-function buildRelationSections(db: GraphDatabase, nodeId: string): RelationTableSection[] {
+function buildRelationSections(
+  db: GraphDatabase,
+  nodeId: string,
+  schema?: SchemaFile,
+): RelationTableSection[] {
   const outgoing = db.listRelationshipsFromSource(nodeId);
   const byLabel = new Map<string, typeof outgoing>();
 
@@ -214,6 +211,10 @@ function buildRelationSections(db: GraphDatabase, nodeId: string): RelationTable
     });
 
     const typeNodeId = resolveTypeNodeId(db, label, connections);
+    const ruleContext =
+      schema && !isTypeMembershipLabel(label)
+        ? relationshipRuleContextForLabel(schema, db, nodeId, label)
+        : null;
     const columns = [...columnSet].sort((a, b) => a.localeCompare(b));
     if (columns.includes("priority")) {
       for (const row of rows) {
@@ -239,6 +240,7 @@ function buildRelationSections(db: GraphDatabase, nodeId: string): RelationTable
       label,
       title: sectionTitleForType(db, label, typeNodeId),
       typeNodeId,
+      allowedTargetTypeIds: ruleContext?.allowedTargetTypeIds,
       columns,
       columnDefs,
       rows,
@@ -252,14 +254,14 @@ function buildRelationSections(db: GraphDatabase, nodeId: string): RelationTable
 export function getNodePageDetail(
   db: GraphDatabase,
   id: string,
-  options?: { databaseView?: string; scopeId?: string },
+  options?: { databaseView?: string; scopeId?: string; schema?: SchemaFile },
 ): NodePageDetail | null {
   const node = getNodeDetail(db, id);
   if (!node) return null;
 
   const sections: NodeSection[] = [{ type: "markdown", body: node.body }];
 
-  if (node.labels.includes("NotionDatabase")) {
+  if (node.isTypeTable) {
     const orderedConfig = getOrderedAssociationConfigForDatabase(id);
     if (orderedConfig) {
       const orderedView = getOrderedAssociationView(db, orderedConfig.id, options?.scopeId);
@@ -278,10 +280,9 @@ export function getNodePageDetail(
     }
   }
 
-  sections.push(...buildRelationSections(db, id));
+  sections.push(...buildRelationSections(db, id, options?.schema));
 
-  const properties =
-    node.labels.includes("NotionDatabase") ? null : buildPropertiesSection(db, id);
+  const properties = node.isTypeTable ? null : buildPropertiesSection(db, id);
 
   const metadata = getNodePageMetadata(db, id)!;
 

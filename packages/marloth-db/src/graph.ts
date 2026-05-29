@@ -1,7 +1,7 @@
 import { Database, type SQLQueryBindings } from "bun:sqlite";
 import { mkdirSync, rmSync } from "node:fs";
 import { dirname } from "node:path";
-import { migrateSchemaToV5 } from "./schema-migrate";
+import { migrateSchema } from "./schema-migrate";
 import { DDL, SCHEMA_VERSION } from "./schema";
 
 export type PropertyValue = string | number | boolean | null | PropertyValue[] | { [key: string]: PropertyValue };
@@ -9,7 +9,6 @@ export type Properties = Record<string, PropertyValue>;
 
 export interface Node {
   id: string;
-  labels: string[];
   properties: Properties;
 }
 
@@ -55,7 +54,6 @@ export class GraphDatabase {
 
   private insertNode!: ReturnType<Database["prepare"]>;
   private updateNodeProps!: ReturnType<Database["prepare"]>;
-  private insertLabel!: ReturnType<Database["prepare"]>;
   private insertRelationship!: ReturnType<Database["prepare"]>;
   private updateRelationshipProps!: ReturnType<Database["prepare"]>;
 
@@ -73,7 +71,7 @@ export class GraphDatabase {
     this.db.exec("PRAGMA foreign_keys = ON");
     this.db.exec("PRAGMA journal_mode = DELETE");
     this.db.exec(DDL);
-    migrateSchemaToV5(this.db);
+    migrateSchema(this.db);
     this.prepareStatements();
     this.setMeta("schema_version", String(SCHEMA_VERSION));
   }
@@ -84,9 +82,6 @@ export class GraphDatabase {
     );
     this.updateNodeProps = this.db.prepare(
       "UPDATE nodes SET properties = ? WHERE id = ?",
-    );
-    this.insertLabel = this.db.prepare(
-      "INSERT OR IGNORE INTO node_labels (node_id, label) VALUES (?, ?)",
     );
     this.insertRelationship = this.db.prepare(
       "INSERT INTO relationships (id, source_node_id, target_node_id, label, properties) VALUES (?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING",
@@ -111,11 +106,8 @@ export class GraphDatabase {
     return row?.value ?? null;
   }
 
-  upsertNode(id: string, labels: string[], properties: Properties = {}): void {
+  upsertNode(id: string, properties: Properties = {}): void {
     this.insertNode.run(id, JSON.stringify(properties));
-    for (const label of labels) {
-      this.insertLabel.run(id, label);
-    }
     const existing = this.getNode(id);
     if (existing && Object.keys(properties).length > 0) {
       const merged = mergeProperties(existing.properties, properties);
@@ -126,7 +118,7 @@ export class GraphDatabase {
   mergeNodeProperties(id: string, properties: Properties): void {
     const existing = this.getNode(id);
     if (!existing) {
-      this.upsertNode(id, [], properties);
+      this.upsertNode(id, properties);
       return;
     }
     const merged = mergeProperties(existing.properties, properties);
@@ -138,10 +130,6 @@ export class GraphDatabase {
     if (!existing) return;
     const merged = mergeProperties(existing.properties, properties);
     this.updateRelationshipProps.run(JSON.stringify(merged), id);
-  }
-
-  addNodeLabel(id: string, label: string): void {
-    this.insertLabel.run(id, label);
   }
 
   upsertRelationship(
@@ -175,12 +163,8 @@ export class GraphDatabase {
       | { id: string; properties: string }
       | undefined;
     if (!row) return null;
-    const labels = this.db
-      .prepare("SELECT label FROM node_labels WHERE node_id = ? ORDER BY label")
-      .all(id) as { label: string }[];
     return {
       id: row.id,
-      labels: labels.map((l) => l.label),
       properties: parseJsonObject(row.properties),
     };
   }
@@ -218,8 +202,9 @@ export class GraphDatabase {
   searchNodesByTitle(
     pattern: string,
     limit: number,
+    allowedTypeIds?: readonly string[],
   ): { id: string; title: string; path: string | null }[] {
-    return this.db
+    const rows = this.db
       .prepare(
         `SELECT id,
                 COALESCE(
@@ -234,10 +219,17 @@ export class GraphDatabase {
          LIMIT ?`,
       )
       .all(pattern, limit) as { id: string; title: string; path: string | null }[];
+
+    if (!allowedTypeIds || allowedTypeIds.length === 0) return rows;
+
+    return rows.filter((row) => this.nodeMatchesAnyAllowedType(row.id, allowedTypeIds));
   }
 
-  listNodesByTitle(limit: number): { id: string; title: string; path: string | null }[] {
-    return this.db
+  listNodesByTitle(
+    limit: number,
+    allowedTypeIds?: readonly string[],
+  ): { id: string; title: string; path: string | null }[] {
+    const rows = this.db
       .prepare(
         `SELECT id,
                 COALESCE(
@@ -253,6 +245,19 @@ export class GraphDatabase {
          LIMIT ?`,
       )
       .all(limit) as { id: string; title: string; path: string | null }[];
+
+    if (!allowedTypeIds || allowedTypeIds.length === 0) return rows;
+
+    return rows.filter((row) => this.nodeMatchesAnyAllowedType(row.id, allowedTypeIds));
+  }
+
+  private nodeMatchesAnyAllowedType(nodeId: string, allowedTypeIds: readonly string[]): boolean {
+    for (const label of ["IS_A", "IN_DATABASE"] as const) {
+      for (const connection of this.listRelationshipsFromSource(nodeId, label)) {
+        if (allowedTypeIds.includes(connection.targetNodeId)) return true;
+      }
+    }
+    return false;
   }
 
   listNodesWithBodyLike(pattern: string): { id: string; body: string }[] {
@@ -269,9 +274,8 @@ export class GraphDatabase {
     id: string;
     title: string;
     path: string | null;
-    labels: string[];
   }[] {
-    const rows = this.db
+    return this.db
       .prepare(
         `SELECT id,
                 COALESCE(
@@ -283,24 +287,6 @@ export class GraphDatabase {
          FROM nodes`,
       )
       .all() as { id: string; title: string; path: string | null }[];
-
-    const labelRows = this.db
-      .prepare("SELECT node_id, label FROM node_labels ORDER BY node_id, label")
-      .all() as { node_id: string; label: string }[];
-
-    const labelsByNode = new Map<string, string[]>();
-    for (const row of labelRows) {
-      const labels = labelsByNode.get(row.node_id) ?? [];
-      labels.push(row.label);
-      labelsByNode.set(row.node_id, labels);
-    }
-
-    return rows.map((row) => ({
-      id: row.id,
-      title: row.title,
-      path: row.path,
-      labels: labelsByNode.get(row.id) ?? [],
-    }));
   }
 
   listRelationshipsForGraphExport(): {

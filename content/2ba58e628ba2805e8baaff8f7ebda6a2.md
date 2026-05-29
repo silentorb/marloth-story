@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Convergence upon Adelle’s room
 created_at: 2025-11-29T19:45:00.000Z
 modified_at: 2025-11-30T02:58:00.000Z

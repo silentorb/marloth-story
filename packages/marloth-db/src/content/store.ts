@@ -218,7 +218,7 @@ export class ContentStore {
     const merged = { ...node.properties, ...patch };
     const body = bodyFromNode(node);
     delete merged.body;
-    this.writeNode({ id, labels: node.labels, properties: merged }, body);
+    this.writeNode({ id, properties: merged }, body);
     return true;
   }
 }

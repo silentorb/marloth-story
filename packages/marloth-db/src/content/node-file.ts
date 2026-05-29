@@ -5,25 +5,18 @@ const FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/;
 
 export interface ParsedNodeFile {
   id: string;
-  labels: string[];
   properties: Properties;
   body: string;
 }
 
-function normalizeLabels(raw: unknown): string[] {
-  if (!Array.isArray(raw)) return [];
-  return raw.filter((v): v is string => typeof v === "string" && v.trim().length > 0);
-}
-
-function frontmatterToProperties(data: Record<string, unknown>): { labels: string[]; properties: Properties } {
-  const { labels: rawLabels, ...rest } = data;
-  const labels = normalizeLabels(rawLabels);
+function frontmatterToProperties(data: Record<string, unknown>): Properties {
   const properties: Properties = {};
-  for (const [key, value] of Object.entries(rest)) {
+  for (const [key, value] of Object.entries(data)) {
+    if (key === "labels") continue;
     if (value === undefined) continue;
     properties[key] = value as PropertyValue;
   }
-  return { labels, properties };
+  return properties;
 }
 
 export function parseNodeFile(id: string, raw: string): ParsedNodeFile {
@@ -40,18 +33,13 @@ export function parseNodeFile(id: string, raw: string): ParsedNodeFile {
     throw new Error(`Node file ${id}.md: frontmatter must be a mapping`);
   }
 
-  const { labels, properties } = frontmatterToProperties(data as Record<string, unknown>);
-  if (labels.length === 0) {
-    throw new Error(`Node file ${id}.md: labels are required in frontmatter`);
-  }
-
-  return { id, labels, properties, body };
+  const properties = frontmatterToProperties(data as Record<string, unknown>);
+  return { id, properties, body };
 }
 
 export function serializeNodeFile(node: Node, body: string): string {
-  const { labels, properties } = node;
-  const frontmatter: Record<string, unknown> = { labels: [...labels].sort() };
-  for (const [key, value] of Object.entries(properties)) {
+  const frontmatter: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(node.properties)) {
     if (key === "body") continue;
     if (value === undefined) continue;
     frontmatter[key] = value;
@@ -67,7 +55,6 @@ export function nodeFromFile(id: string, raw: string): Node {
   const parsed = parseNodeFile(id, raw);
   return {
     id: parsed.id,
-    labels: parsed.labels,
     properties: { ...parsed.properties, body: parsed.body },
   };
 }

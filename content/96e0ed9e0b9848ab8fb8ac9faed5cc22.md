@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Comic
 notion_id: 96e0ed9e0b9848ab8fb8ac9faed5cc22
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Inspirations/Inspiration types/Comic 96e0ed9e0b9848ab8fb8ac9faed5cc22.md

@@ -1,5 +1,6 @@
 import type { GraphDatabase } from "./graph";
 import { TYPE_MEMBERSHIP_LABELS } from "./labels";
+import { isTypeTableNode } from "./node-capabilities";
 import {
   parseNotionSchema,
   parseNotionViews,
@@ -351,7 +352,7 @@ export function getDatabaseViewDetail(
   requestedView?: string,
 ): DatabaseViewDetail | null {
   const database = db.getNode(databaseId);
-  if (!database || !database.labels.includes("NotionDatabase")) return null;
+  if (!database || !isTypeTableNode(db, databaseId)) return null;
 
   const incoming = TYPE_MEMBERSHIP_LABELS.flatMap((label) =>
     db.listRelationshipsToTarget(databaseId, label),

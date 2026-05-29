@@ -38,7 +38,7 @@ For graph schema, storage, and query API, see [marloth-db.md](./marloth-db.md).
 
 ### Page import
 
-Each Notion page (`.md`) **must** become a node labeled `NotionPage` with properties including at minimum:
+Each Notion page (`.md`) **must** become a graph node with properties including at minimum:
 
 - `title` — from first `#` heading
 - `notion_id` — 32-hex id from source filename
@@ -47,6 +47,8 @@ Each Notion page (`.md`) **must** become a node labeled `NotionPage` with proper
 - `body` — markdown body (relation property lines removed; converted to relationships)
 - `alias` — short title without trailing id suffix
 - Scalar `Key: value` lines before the body **must** be stored as slugified, emoji-stripped property keys
+
+**Historical:** early imports also wrote a `NotionPage` label on each page node via the `node_labels` table. That label layer was removed in SQLite schema v6; page nodes are identified by properties and graph usage, not import labels.
 
 ### Relations
 
@@ -58,10 +60,12 @@ Each Notion page (`.md`) **must** become a node labeled `NotionPage` with proper
 
 For each `*.csv` matching Notion database export naming (`Name {database_id}.csv`, `Name {id}_all.csv`, etc.):
 
-- Emit a `NotionDatabase` node keyed by `database_id`.
+- Emit a type-table node keyed by `database_id` (with `notion_schema` / `notion_database` metadata when synced).
 - Each row with a linked Name **must** create an `IS_A` relationship from the page to the type (database), carrying scalar column values as relationship properties (not on the page node).
-- Rows without a resolvable page **must** create a stub `NotionPage` and an `IS_A` relationship (deterministic orphan id); do not store row payloads on the database node.
+- Rows without a resolvable page **must** create a stub page node and an `IS_A` relationship (deterministic orphan id); do not store row payloads on the database node.
 - Relation columns **must** become relationships from the row's page to targets.
+
+**Historical:** early imports also wrote a `NotionDatabase` label on database/type nodes via `node_labels`. Removed in schema v6; type tables are detected by incoming `IS_A` and/or schema metadata (`isTypeTableNode`).
 
 ### Manifest and reports
 
@@ -103,9 +107,9 @@ High-level stages (see `packages/notion-importer/src/graph-pipeline.ts`):
 
 1. **Resolve source** — pick export dir/zip; extract zips recursively.
 2. **Open database** — create schema; optional clean rebuild.
-3. **Import pages** — parse each `.md`; upsert `NotionPage` nodes.
+3. **Import pages** — parse each `.md`; upsert page nodes.
 4. **Import relations** — parse relation properties; upsert relationships (stub targets if needed).
-5. **Import CSVs** — upsert `NotionDatabase` nodes; row membership and relation relationships.
+5. **Import CSVs** — upsert type-table nodes; row membership and relation relationships.
 6. **Write artifacts** — manifest JSON, link report; vacuum database.
 
 ## Inputs / outputs / artifacts

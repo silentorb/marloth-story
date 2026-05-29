@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Spectacular climax
 notion_id: 8ad5c0d9bf0b48a6bec8ff3af7a74d08
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Features/Spectacular climax 8ad5c0d9bf0b48a6bec8ff3af7a74d08.md

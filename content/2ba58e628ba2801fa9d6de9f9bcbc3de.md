@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Adelle and Miss Bethany
 created_at: 2025-11-29T19:24:00.000Z
 modified_at: 2025-11-30T02:39:00.000Z

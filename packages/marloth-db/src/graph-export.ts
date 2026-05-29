@@ -1,5 +1,6 @@
 import { type GraphDatabase } from "./graph";
 import { isArchivedNotionPath } from "./archive-path";
+import { graphGroupForNode, graphLabelsForNode } from "./node-capabilities";
 import {
   buildHeuristicLodLevels,
   DEFAULT_EXPLORER_LOD_LAYER_COUNT,
@@ -72,6 +73,7 @@ interface ActiveGraphNode {
   id: string;
   title: string;
   path: string | null;
+  group: string;
   labels: string[];
 }
 
@@ -93,7 +95,13 @@ function collectActiveGraphData(db: GraphDatabase): {
     if (isArchivedNotionPath(node.path)) excludedIds.add(node.id);
   }
 
-  const nodes = allNodes.filter((node) => !excludedIds.has(node.id));
+  const nodes = allNodes
+    .filter((node) => !excludedIds.has(node.id))
+    .map((node) => ({
+      ...node,
+      group: graphGroupForNode(db, node.id),
+      labels: graphLabelsForNode(db, node.id),
+    }));
   const relationships = db.listRelationshipsForGraphExport().filter(
     (relationship) =>
       !excludedIds.has(relationship.sourceNodeId) && !excludedIds.has(relationship.targetNodeId),
@@ -157,7 +165,7 @@ export function exportFullGraph(db: GraphDatabase): GraphSnapshot {
     title: node.title,
     path: node.path,
     labels: node.labels,
-    group: node.labels[0] ?? "Unknown",
+    group: node.group,
   }));
 
   const graphRelationships: GraphRelationship[] = relationships.map((relationship) => ({

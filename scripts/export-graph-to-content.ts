@@ -110,7 +110,7 @@ export function exportGraphToContent(
     if (!node) continue;
     const body = bodyFromNode(node);
     const { body: _b, ...properties } = node.properties;
-    store.writeNode({ id: node.id, labels: node.labels, properties }, body);
+    store.writeNode({ id: node.id, properties }, body);
   }
 
   const relationships = db

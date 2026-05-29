@@ -1,5 +1,6 @@
 import { describe, expect, test, afterAll } from "bun:test";
 import { IS_A_LABEL } from "./labels";
+import { typeTableMarkerProperties } from "./node-capabilities";
 import {
   applyOrderedAssociationMove,
   getOrderedAssociationView,
@@ -29,16 +30,16 @@ const scene3 = "55555555555555555555555555555555";
 describe("ordered-associations", () => {
   const fixture = createTestContentFixture("marloth-ordered-");
 
-  seedTestNode(fixture, { id: PRODUCTS_DB, labels: ["NotionDatabase"], properties: { title: "Products" } });
-  seedTestNode(fixture, { id: PARTS_DB, labels: ["NotionDatabase"], properties: { title: "Parts database" } });
-  seedTestNode(fixture, { id: SCENES_DB, labels: ["NotionDatabase"], properties: { title: "Scenes" } });
-  seedTestNode(fixture, { id: bookA, labels: ["NotionPage"], properties: { title: "Book A" } });
-  seedTestNode(fixture, { id: bookB, labels: ["NotionPage"], properties: { title: "Book B" } });
-  seedTestNode(fixture, { id: part1, labels: ["NotionPage"], properties: { title: "Part 1" } });
-  seedTestNode(fixture, { id: part2, labels: ["NotionPage"], properties: { title: "Part 2" } });
-  seedTestNode(fixture, { id: scene1, labels: ["NotionPage"], properties: { title: "Scene One" } });
-  seedTestNode(fixture, { id: scene2, labels: ["NotionPage"], properties: { title: "Scene Two" } });
-  seedTestNode(fixture, { id: scene3, labels: ["NotionPage"], properties: { title: "Scene Three" } });
+  seedTestNode(fixture, { id: PRODUCTS_DB, properties: typeTableMarkerProperties("Products") });
+  seedTestNode(fixture, { id: PARTS_DB, properties: typeTableMarkerProperties("Parts database") });
+  seedTestNode(fixture, { id: SCENES_DB, properties: typeTableMarkerProperties("Scenes") });
+  seedTestNode(fixture, { id: bookA, properties: { title: "Book A" } });
+  seedTestNode(fixture, { id: bookB, properties: { title: "Book B" } });
+  seedTestNode(fixture, { id: part1, properties: { title: "Part 1" } });
+  seedTestNode(fixture, { id: part2, properties: { title: "Part 2" } });
+  seedTestNode(fixture, { id: scene1, properties: { title: "Scene One" } });
+  seedTestNode(fixture, { id: scene2, properties: { title: "Scene Two" } });
+  seedTestNode(fixture, { id: scene3, properties: { title: "Scene Three" } });
 
   seedTestRelationships(fixture, [
     { source: bookA, target: PRODUCTS_DB, label: IS_A_LABEL, properties: { order: "1", row_index: 0 } },
@@ -79,7 +80,7 @@ describe("ordered-associations", () => {
 
   test("places scenes without part in Unassigned group", () => {
     const unassigned = "66666666666666666666666666666666";
-    seedTestNode(fixture, { id: unassigned, labels: ["NotionPage"], properties: { title: "Loose Scene" } });
+    seedTestNode(fixture, { id: unassigned, properties: { title: "Loose Scene" } });
     seedTestRelationships(fixture, [
       { source: unassigned, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "40" } },
       { source: unassigned, target: bookA, label: "PRODUCT", properties: { ordinal: 0 } },

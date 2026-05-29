@@ -3,6 +3,7 @@ import { isArchivedNotionPath } from "./archive-path";
 import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterNodeWrite } from "./content/write-context";
 import { bodyFromNode } from "./content/node-file";
+import { isTypeTableNode } from "./node-capabilities";
 
 export interface NodeSummary {
   id: string;
@@ -12,7 +13,7 @@ export interface NodeSummary {
 
 export interface NodeDetail extends NodeSummary {
   body: string;
-  labels: string[];
+  isTypeTable: boolean;
 }
 
 function titleFromProperties(properties: Record<string, unknown>): string {
@@ -43,7 +44,7 @@ export function getNodeDetail(db: GraphDatabase, id: string): NodeDetail | null 
     title: titleFromProperties(node.properties),
     path: pathFromProperties(node.properties),
     body: bodyFromProperties(node.properties),
-    labels: node.labels,
+    isTypeTable: isTypeTableNode(db, id),
   };
 }
 
@@ -64,23 +65,28 @@ export function searchNodes(
   db: GraphDatabase,
   query: string,
   limit = 20,
+  allowedTypeIds?: readonly string[],
 ): NodeSummary[] {
   const trimmed = query.trim();
   const cap = Math.max(1, Math.min(limit, 100));
   if (!trimmed) {
-    return listRecentNodes(db, cap);
+    return listRecentNodes(db, cap, allowedTypeIds);
   }
   const pattern = `%${trimmed.replace(/[%_\\]/g, "\\$&")}%`;
   return db
-    .searchNodesByTitle(pattern, cap)
+    .searchNodesByTitle(pattern, cap, allowedTypeIds)
     .map(toActiveNodeSummary)
     .filter((row): row is NodeSummary => row !== null);
 }
 
-export function listRecentNodes(db: GraphDatabase, limit = 20): NodeSummary[] {
+export function listRecentNodes(
+  db: GraphDatabase,
+  limit = 20,
+  allowedTypeIds?: readonly string[],
+): NodeSummary[] {
   const cap = Math.max(1, Math.min(limit, 100));
   return db
-    .listNodesByTitle(cap)
+    .listNodesByTitle(cap, allowedTypeIds)
     .map(toActiveNodeSummary)
     .filter((row): row is NodeSummary => row !== null);
 }
@@ -103,7 +109,7 @@ export function updateNodeBody(ctx: MarlothWriteContext, id: string, body: strin
   const node = ctx.store.readNode(id);
   if (!node) return false;
   const { body: _removed, ...props } = node.properties;
-  ctx.store.writeNode({ id: node.id, labels: node.labels, properties: props }, body);
+  ctx.store.writeNode({ id: node.id, properties: props }, body);
   touchNodeTimestamps(ctx, id, node.properties);
   return true;
 }
@@ -117,7 +123,7 @@ export function updateNodeTitle(ctx: MarlothWriteContext, id: string, title: str
   const content = stripLeadingTitleHeadingIfMatches(body, oldTitle);
   const { body: _removed, ...rest } = node.properties;
   const props = { ...rest, title: trimmed };
-  ctx.store.writeNode({ id: node.id, labels: node.labels, properties: props }, content);
+  ctx.store.writeNode({ id: node.id, properties: props }, content);
   touchNodeTimestamps(ctx, id, node.properties);
   return true;
 }

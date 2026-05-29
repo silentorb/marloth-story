@@ -1,5 +1,6 @@
 import type { GraphDatabase, Relationship, Properties } from "./graph";
 import { IS_A_LABEL, TYPE_MEMBERSHIP_LABELS } from "./labels";
+import { findTypeNodeByTitle, isTypeTableNode } from "./node-capabilities";
 
 /** Node properties that are not database row scalars. */
 export const NODE_META_KEYS = new Set([
@@ -77,20 +78,9 @@ export function typeDatabaseTitleFromPath(
   let match: string | null = null;
   for (let i = 1; i < segments.length; i++) {
     const segment = segments[i]!;
-    if (findNotionDatabaseByTitle(db, segment)) match = segment;
+    if (findTypeNodeByTitle(db, segment)) match = segment;
   }
   return match;
-}
-
-export function findNotionDatabaseByTitle(db: GraphDatabase, title: string): string | null {
-  const normalized = title.trim().toLowerCase();
-  if (!normalized) return null;
-
-  for (const node of db.listNodesForGraphExport()) {
-    if (!node.labels.includes("NotionDatabase")) continue;
-    if (node.title.trim().toLowerCase() === normalized) return node.id;
-  }
-  return null;
 }
 
 export function expectedTypeDatabaseForPage(
@@ -98,7 +88,7 @@ export function expectedTypeDatabaseForPage(
   nodeId: string,
 ): { databaseId: string; databaseTitle: string; path: string } | null {
   const page = db.getNode(nodeId);
-  if (!page?.labels.includes("NotionPage")) return null;
+  if (!page || isTypeTableNode(db, nodeId)) return null;
 
   const path =
     typeof page.properties.inferred_notion_path === "string"
@@ -109,7 +99,7 @@ export function expectedTypeDatabaseForPage(
   const databaseTitle = typeDatabaseTitleFromPath(db, path);
   if (!databaseTitle) return null;
 
-  const databaseId = findNotionDatabaseByTitle(db, databaseTitle);
+  const databaseId = findTypeNodeByTitle(db, databaseTitle);
   if (!databaseId) return null;
 
   return { databaseId, databaseTitle, path };
@@ -153,7 +143,7 @@ export function findSpuriousTypeMembershipRelationships(db: GraphDatabase): Spur
   const spurious: SpuriousTypeMembership[] = [];
 
   for (const node of db.listNodesForGraphExport()) {
-    if (!node.labels.includes("NotionPage")) continue;
+    if (isTypeTableNode(db, node.id)) continue;
 
     const expected = expectedTypeDatabaseForPage(db, node.id);
     if (!expected) continue;
@@ -188,7 +178,7 @@ export function findMissingTypeMembershipRelationships(db: GraphDatabase): Missi
   const missing: MissingTypeMembership[] = [];
 
   for (const node of db.listNodesForGraphExport()) {
-    if (!node.labels.includes("NotionPage")) continue;
+    if (isTypeTableNode(db, node.id)) continue;
 
     const expected = expectedTypeDatabaseForPage(db, node.id);
     if (!expected) continue;
@@ -211,7 +201,7 @@ export function findNodeScalarsOnTypedNodes(db: GraphDatabase): NodeScalarOnType
   const violations: NodeScalarOnTypedNode[] = [];
 
   for (const node of db.listNodesForGraphExport()) {
-    if (!node.labels.includes("NotionPage")) continue;
+    if (isTypeTableNode(db, node.id)) continue;
 
     const expected = expectedTypeDatabaseForPage(db, node.id);
     if (!expected) continue;

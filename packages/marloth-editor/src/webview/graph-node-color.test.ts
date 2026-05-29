@@ -15,7 +15,7 @@ describe("graph node color", () => {
   test("resolveGraphNodeColor uses anchor color for anchor record", () => {
     expect(
       resolveGraphNodeColor(
-        { id: "anchor-id", group: "NotionPage" },
+        { id: "anchor-id", group: "Node" },
         { anchorId: "anchor-id", anchorColor: "#0f0", clusterColor: "#abc" },
       ),
     ).toBe("#0f0");
@@ -51,18 +51,18 @@ describe("graph node color", () => {
   test("buildGraphLegendEntries lists anchor, cluster, and record groups in view", () => {
     const entries = buildGraphLegendEntries(
       [
-        { id: "anchor", group: "NotionPage" },
-        { id: "branch:other", isCluster: true, bundle: { gatewayId: "other" }, group: "NotionPage" },
-        { id: "scene-1", group: "NotionPage" },
+        { id: "anchor", group: "Node" },
+        { id: "branch:other", isCluster: true, bundle: { gatewayId: "other" }, group: "Node" },
+        { id: "scene-1", group: "Node" },
         { id: "scene-2", group: "Scene" },
       ],
       { anchorId: "anchor", clusterColor: "#c1", anchorColor: "#a1" },
     );
 
-    expect(entries.map((entry) => entry.label)).toEqual(["Anchor", "Cluster", "NotionPage", "Scene"]);
+    expect(entries.map((entry) => entry.label)).toEqual(["Anchor", "Cluster", "Node", "Scene"]);
     expect(entries[0]?.color).toBe("#a1");
     expect(entries[1]?.color).toBe("#c1");
-    expect(entries[2]?.color).toBe(recordGroupColor("NotionPage"));
+    expect(entries[2]?.color).toBe(recordGroupColor("Node"));
   });
 
   test("anchor color fallback is distinct from cluster fallback", () => {

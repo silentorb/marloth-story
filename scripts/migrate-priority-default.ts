@@ -4,6 +4,7 @@
  * Usage: bun run scripts/migrate-priority-default.ts [--dry-run]
  */
 import { GraphDatabase } from "../packages/marloth-db/src/graph";
+import { hasTypeTableSchema } from "../packages/marloth-db/src/node-capabilities";
 import { TYPE_MEMBERSHIP_LABELS } from "../packages/marloth-db/src/labels";
 import { parseNotionSchema } from "../packages/marloth-db/src/notion-database-schema";
 import { isUnsetPriority, PRIORITY_DEFAULT } from "../packages/marloth-db/src/property-enums";
@@ -14,8 +15,8 @@ const db = new GraphDatabase(dbPath);
 
 const databaseIdsWithPriority = new Set<string>();
 for (const n of db.listNodesForGraphExport()) {
-  if (!n.labels.includes("NotionDatabase")) continue;
   const node = db.getNode(n.id);
+  if (!hasTypeTableSchema(node?.properties)) continue;
   const schema = parseNotionSchema(node?.properties.notion_schema);
   if (schema?.properties?.Priority) databaseIdsWithPriority.add(n.id);
 }

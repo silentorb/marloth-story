@@ -31,6 +31,7 @@ export interface LodClusterNode {
   id: string;
   title: string;
   path: string | null;
+  group: string;
   labels: string[];
 }
 
@@ -393,7 +394,7 @@ function snapshotFromPartition(
         title: representative.title,
         path: representative.path,
         labels: ["GraphCluster", ...representative.labels],
-        group: representative.labels[0] ?? "Unknown",
+        group: representative.group,
         val: memberCount,
         isCluster: true,
         bundle,
@@ -407,7 +408,7 @@ function snapshotFromPartition(
       title: representative.title,
       path: representative.path,
       labels: representative.labels,
-      group: representative.labels[0] ?? "Unknown",
+      group: representative.group,
       relevance: entry ? toGraphNodeRelevance(entry, promoted.has(clusterId)) : undefined,
     });
   }

@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Friend-enemies
 notion_id: 5d025ab51ffa4a3a8a44bffdd2bde933
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Archive/Requirements Old/Friend-enemies 5d025ab51ffa4a3a8a44bffdd2bde933.md

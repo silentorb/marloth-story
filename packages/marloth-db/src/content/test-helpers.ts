@@ -38,7 +38,7 @@ export function seedTestNode(fixture: TestContentFixture, node: Node, body?: str
   const { body: _b, ...properties } = node.properties;
   writeFileSync(
     nodeFilePath(fixture.ctx.store.contentDir, node.id),
-    serializeNodeFile({ id: node.id, labels: node.labels, properties }, markdownBody),
+    serializeNodeFile({ id: node.id, properties }, markdownBody),
     "utf-8",
   );
   fixture.ctx.sync.syncNode(node.id);

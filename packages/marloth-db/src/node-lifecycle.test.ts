@@ -21,17 +21,14 @@ describe("record lifecycle", () => {
 
   seedTestNode(fixture, {
     id: DEFAULT_HOME_NODE_ID,
-    labels: ["NotionPage"],
     properties: { title: "Marloth", inferred_notion_path: "Marloth" },
   });
   seedTestNode(fixture, {
     id: DEFAULT_ARCHIVE_NODE_ID,
-    labels: ["NotionPage"],
     properties: { title: "Archive", inferred_notion_path: "Marloth" },
   });
   seedTestNode(fixture, {
     id: PAGE_ACTIVE,
-    labels: ["NotionPage"],
     properties: {
       title: "Active Scene",
       inferred_notion_path: "Marloth/Scenes/Active Scene",
@@ -39,7 +36,6 @@ describe("record lifecycle", () => {
   });
   seedTestNode(fixture, {
     id: PAGE_ARCHIVED,
-    labels: ["NotionPage"],
     properties: {
       title: "Old Scene",
       inferred_notion_path: "Marloth/Archive/Old Scene",
@@ -68,7 +64,6 @@ describe("record lifecycle", () => {
   test("deleteNode removes vertex and rejects protected pages", () => {
     seedTestNode(fixture, {
       id: PAGE_DELETE,
-      labels: ["NotionPage"],
       properties: { title: "Disposable" },
     });
     expect(deleteNode(fixture.ctx, PAGE_DELETE)).toBeNull();

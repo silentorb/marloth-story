@@ -1,5 +1,6 @@
 import { describe, expect, test, afterEach } from "bun:test";
 import { IS_A_LABEL } from "./labels";
+import { typeTableMarkerProperties } from "./node-capabilities";
 import { getNodeDetail } from "./queries";
 import { createNode } from "./node-create";
 import {
@@ -16,7 +17,7 @@ describe("createNode", () => {
     if (fixture) destroyTestContentFixture(fixture);
   });
 
-  test("creates standalone node with default NotionPage label", () => {
+  test("creates standalone node", () => {
     fixture = createTestContentFixture("marloth-create-");
     const result = createNode(fixture.ctx, { title: "New idea", body: "Notes here" });
     expect(result).toEqual({ id: expect.any(String), title: "New idea" });
@@ -25,7 +26,7 @@ describe("createNode", () => {
     const detail = getNodeDetail(fixture.ctx.db, result.id);
     expect(detail?.title).toBe("New idea");
     expect(detail?.body).toBe("Notes here\n");
-    expect(detail?.labels).toContain("NotionPage");
+    expect(detail?.isTypeTable).toBe(false);
     expect(fixture.ctx.store.readNode(result.id)).not.toBeNull();
   });
 
@@ -39,12 +40,10 @@ describe("createNode", () => {
     const sourceId = "a1111111111111111111111111111111";
     seedTestNode(fixture, {
       id: sourceId,
-      labels: ["NotionPage"],
       properties: { title: "Scene" },
     });
     seedTestNode(fixture, {
       id: "b1111111111111111111111111111111",
-      labels: ["NotionPage"],
       properties: { title: "Existing feat" },
     });
     fixture.ctx.store.upsertRelationship(sourceId, "b1111111111111111111111111111111", "FEATURES", {
@@ -68,12 +67,10 @@ describe("createNode", () => {
     const databaseId = "c1111111111111111111111111111111";
     seedTestNode(fixture, {
       id: databaseId,
-      labels: ["NotionDatabase"],
-      properties: { title: "Features" },
+      properties: typeTableMarkerProperties("Features"),
     });
     seedTestNode(fixture, {
       id: "d1111111111111111111111111111111",
-      labels: ["NotionPage"],
       properties: { title: "Old row" },
     });
     fixture.ctx.store.upsertRelationship("d1111111111111111111111111111111", databaseId, IS_A_LABEL, {

@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionDatabase
 title: Inspiration types
 notion_database: 819dc2fea6cc4cddb5fce9cc4efd0e85
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Inspirations/Inspiration types 819dc2fea6cc4cddb5fce9cc4efd0e85_all.csv

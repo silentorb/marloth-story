@@ -10,11 +10,6 @@ function tableExists(db: Database, name: string): boolean {
 
 /** Rename legacy `connections` table and indexes to `relationships` (schema v4 → v5). */
 export function migrateSchemaToV5(db: Database): void {
-  const versionRow = db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get() as
-    | { value: string }
-    | undefined;
-  const version = versionRow ? Number.parseInt(versionRow.value, 10) : 0;
-
   if (tableExists(db, "connections") && !tableExists(db, "relationships")) {
     db.exec("ALTER TABLE connections RENAME TO relationships");
     db.exec("DROP INDEX IF EXISTS idx_connections_source");
@@ -29,6 +24,24 @@ export function migrateSchemaToV5(db: Database): void {
       ON relationships(source_node_id, target_node_id, label)
     `);
   }
+}
+
+/** Drop legacy `node_labels` table (schema v5 → v6). */
+export function migrateSchemaToV6(db: Database): void {
+  if (tableExists(db, "node_labels")) {
+    db.exec("DROP INDEX IF EXISTS idx_node_labels_label");
+    db.exec("DROP TABLE node_labels");
+  }
+}
+
+export function migrateSchema(db: Database): void {
+  migrateSchemaToV5(db);
+  migrateSchemaToV6(db);
+
+  const versionRow = db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get() as
+    | { value: string }
+    | undefined;
+  const version = versionRow ? Number.parseInt(versionRow.value, 10) : 0;
 
   if (version < SCHEMA_VERSION) {
     db.prepare(
@@ -36,3 +49,6 @@ export function migrateSchemaToV5(db: Database): void {
     ).run(String(SCHEMA_VERSION));
   }
 }
+
+/** @deprecated Use migrateSchema */
+export const migrateSchemaToLatest = migrateSchema;

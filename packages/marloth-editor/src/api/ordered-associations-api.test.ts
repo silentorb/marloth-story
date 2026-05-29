@@ -1,5 +1,5 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { IS_A_LABEL } from "marloth-db";
+import { IS_A_LABEL, typeTableMarkerProperties } from "marloth-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
@@ -20,13 +20,13 @@ const scene2 = "44444444444444444444444444444444";
 describe("ordered-associations API", () => {
   const fixture = createTestContentFixture("marloth-ordered-api-");
 
-  seedTestNode(fixture, { id: PRODUCTS_DB, labels: ["NotionDatabase"], properties: { title: "Products" } });
-  seedTestNode(fixture, { id: PARTS_DB, labels: ["NotionDatabase"], properties: { title: "Parts database" } });
-  seedTestNode(fixture, { id: SCENES_DB, labels: ["NotionDatabase"], properties: { title: "Scenes" } });
-  seedTestNode(fixture, { id: book, labels: ["NotionPage"], properties: { title: "TWOLD" } });
-  seedTestNode(fixture, { id: part, labels: ["NotionPage"], properties: { title: "Part 1" } });
-  seedTestNode(fixture, { id: scene1, labels: ["NotionPage"], properties: { title: "Scene One" } });
-  seedTestNode(fixture, { id: scene2, labels: ["NotionPage"], properties: { title: "Scene Two" } });
+  seedTestNode(fixture, { id: PRODUCTS_DB, properties: typeTableMarkerProperties("Products") });
+  seedTestNode(fixture, { id: PARTS_DB, properties: typeTableMarkerProperties("Parts database") });
+  seedTestNode(fixture, { id: SCENES_DB, properties: typeTableMarkerProperties("Scenes") });
+  seedTestNode(fixture, { id: book, properties: { title: "TWOLD" } });
+  seedTestNode(fixture, { id: part, properties: { title: "Part 1" } });
+  seedTestNode(fixture, { id: scene1, properties: { title: "Scene One" } });
+  seedTestNode(fixture, { id: scene2, properties: { title: "Scene Two" } });
   seedTestRelationships(fixture, [
     { source: book, target: PRODUCTS_DB, label: IS_A_LABEL, properties: { order: "1", row_index: 0 } },
     { source: part, target: PARTS_DB, label: IS_A_LABEL, properties: { row_index: 0 } },

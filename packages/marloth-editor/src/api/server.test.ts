@@ -13,7 +13,7 @@ describe("pickExistingDbPath", () => {
 
     new GraphDatabase(emptyPath);
     const repoDb = new GraphDatabase(repoPath);
-    repoDb.upsertNode("page1", ["NotionPage"], { title: "Alpha" });
+    repoDb.upsertNode("page1", { title: "Alpha" });
     repoDb.close();
 
     expect(pickExistingDbPath([emptyPath, repoPath], emptyPath)).toBe(repoPath);

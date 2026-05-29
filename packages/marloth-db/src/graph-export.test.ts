@@ -27,11 +27,11 @@ describe("graph export", () => {
     dbPath = join(tempDir, "test.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertNode("page1", ["NotionPage"], {
+    db.upsertNode("page1", {
       title: "Scene A",
       inferred_notion_path: "Marloth/Scenes",
     });
-    db.upsertNode("page2", ["NotionPage"], {
+    db.upsertNode("page2", {
       title: "Feature B",
       inferred_notion_path: "Marloth/Features",
     });
@@ -55,15 +55,15 @@ describe("graph export", () => {
     dbPath = join(tempDir, "archive.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertNode("active", ["NotionPage"], {
+    db.upsertNode("active", {
       title: "Active scene",
       inferred_notion_path: "Marloth/Scenes/active",
     });
-    db.upsertNode("archived", ["NotionPage"], {
+    db.upsertNode("archived", {
       title: "Old foil",
       inferred_notion_path: "Marloth/Archive/Foils/old",
     });
-    db.upsertNode("archive-root", ["NotionPage"], {
+    db.upsertNode("archive-root", {
       title: "Archive",
       inferred_notion_path: "Marloth/Archive",
     });
@@ -90,9 +90,9 @@ describe("graph export", () => {
     dbPath = join(tempDir, "lod.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertNode("page1", ["NotionPage"], { title: "Scene 1" });
-    db.upsertNode("page2", ["NotionPage"], { title: "Scene 2" });
-    db.upsertNode("page3", ["NotionPage"], { title: "Feature 1" });
+    db.upsertNode("page1", { title: "Scene 1" });
+    db.upsertNode("page2", { title: "Scene 2" });
+    db.upsertNode("page3", { title: "Feature 1" });
     db.upsertRelationship("page1", "page2", "BLOCKS");
     db.upsertRelationship("page2", "page3", "FEATURES");
 
@@ -110,9 +110,9 @@ describe("graph export", () => {
     dbPath = join(tempDir, "anchor.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertNode("anchor", ["NotionPage"], { title: "Anchor" });
-    db.upsertNode("near", ["NotionPage"], { title: "Near" });
-    db.upsertNode("far", ["NotionPage"], { title: "Far" });
+    db.upsertNode("anchor", { title: "Anchor" });
+    db.upsertNode("near", { title: "Near" });
+    db.upsertNode("far", { title: "Far" });
     db.upsertRelationship("anchor", "near", "RELATES");
 
     const lod = exportExplorerLodGraph(db, { anchorId: "anchor" });

@@ -31,7 +31,7 @@ export interface CreateNodeResponse {
 
 export interface EditorApiClient {
   getHomeId(): Promise<string>;
-  createNode(input: { title: string; body?: string; labels?: string[] }): Promise<CreateNodeResponse>;
+  createNode(input: { title: string; body?: string }): Promise<CreateNodeResponse>;
   createRelationRow(
     sourceId: string,
     input: { label: string; title: string; properties?: Record<string, string> },
@@ -46,7 +46,7 @@ export interface EditorApiClient {
     configId: string,
     params: OrderedAssociationMoveParams,
   ): Promise<OrderedAssociationViewDetail>;
-  search(query: string, limit?: number): Promise<NodeSummary[]>;
+  search(query: string, limit?: number, allowedTypeIds?: string[]): Promise<NodeSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
   saveTitle(id: string, title: string): Promise<void>;
   updateDatabaseRowProperty(
@@ -100,7 +100,6 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     async createNode(input: {
       title: string;
       body?: string;
-      labels?: string[];
     }): Promise<CreateNodeResponse> {
       const data = await fetchJson<{ node: CreateNodeResponse }>("/api/nodes", {
         method: "POST",
@@ -170,8 +169,11 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       );
       return data.view;
     },
-    async search(query: string, limit = 20): Promise<NodeSummary[]> {
+    async search(query: string, limit = 20, allowedTypeIds?: string[]): Promise<NodeSummary[]> {
       const params = new URLSearchParams({ q: query, limit: String(limit) });
+      if (allowedTypeIds?.length) {
+        params.set("allowedTypeIds", allowedTypeIds.join(","));
+      }
       const data = await fetchJson<{ results: NodeSummary[] }>(
         `/api/nodes/search?${params}`,
       );

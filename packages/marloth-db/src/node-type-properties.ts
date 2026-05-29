@@ -2,6 +2,7 @@ import type { DatabaseColumnDef } from "./database-view";
 import { applyDynamicFields } from "./dynamic-fields";
 import type { GraphDatabase } from "./graph";
 import { TYPE_MEMBERSHIP_LABELS } from "./labels";
+import { isTypeTableNode } from "./node-capabilities";
 import type { EvalRow } from "./notion-view-eval";
 import {
   parseNotionSchema,
@@ -121,7 +122,7 @@ export function buildPropertiesSection(
 
   const databaseId = membershipRelationship.targetNodeId;
   const database = db.getNode(databaseId);
-  if (!database?.labels.includes("NotionDatabase")) return null;
+  if (!database || !isTypeTableNode(db, databaseId)) return null;
 
   const typeTitle = titleFromProperties(database.properties);
   const schema = parseNotionSchema(database.properties.notion_schema);

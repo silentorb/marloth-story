@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Nivana and Miles
 notion_id: 50346db4f6454fcbabde34d98decbab0
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/TWOLD Plot/Arcs/Nivana and Miles 50346db4f6454fcbabde34d98decbab0.md

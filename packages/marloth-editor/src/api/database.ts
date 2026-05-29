@@ -1,18 +1,20 @@
 import {
   DEFAULT_HOME_NODE_ID,
+  applyOrderedAssociationMove,
+  archiveNode as archiveNodeInDb,
+  createNode as createNodeInDb,
+  deleteNode as deleteNodeInDb,
   exportExplorerLodGraph,
   exportFullGraph,
   getDatabaseViewDetail,
   getNodePageDetail,
+  loadSchemaFromContent,
+  relationshipRuleContextForLabel,
   searchNodes,
   updateNodeBody,
   updateNodeTitle,
   updateDatabaseRowProperty,
   updateOutgoingRelationshipProperty,
-  applyOrderedAssociationMove,
-  archiveNode as archiveNodeInDb,
-  createNode as createNodeInDb,
-  deleteNode as deleteNodeInDb,
   type CreateNodeError,
   type CreateNodeInput,
   type CreateNodeResult,
@@ -24,6 +26,7 @@ import {
   type NodePageDetail,
   type DatabaseViewDetail,
   type MarlothWriteContext,
+  type SchemaFile,
 } from "marloth-db";
 import {
   ContentWatcher,
@@ -36,11 +39,12 @@ export interface EditorDatabase {
   getHomeId(): string;
   getNode(id: string, options?: { databaseView?: string; scopeId?: string }): NodePageDetail | null;
   getDatabaseView(id: string, view?: string): DatabaseViewDetail | null;
+  getSchema(): SchemaFile;
   moveOrderedAssociation(
     configId: string,
     params: OrderedAssociationMoveParams,
   ): OrderedAssociationViewDetail | null;
-  search(query: string, limit?: number): NodeSummary[];
+  search(query: string, limit?: number, allowedTypeIds?: string[]): NodeSummary[];
   saveBody(id: string, body: string): boolean;
   saveTitle(id: string, title: string): boolean;
   updateDatabaseRowProperty(
@@ -59,6 +63,10 @@ export interface EditorDatabase {
   deleteNode(id: string): NodeLifecycleError | null;
   archiveNode(id: string): NodeLifecycleError | null;
   createNode(input: CreateNodeInput): CreateNodeResult | CreateNodeError;
+  createRelationRow(
+    sourceId: string,
+    input: { label: string; title: string; properties?: Record<string, string> },
+  ): CreateNodeResult | CreateNodeError;
   getGraphFull(): GraphSnapshot;
   getGraphExplorerLod(options?: { anchorId?: string; layerCount?: number }): GraphLodSnapshot;
   close(): void;
@@ -74,18 +82,23 @@ export function openEditorDatabase(
   });
   watcher.start();
 
+  const schema = () => loadSchemaFromContent(contentPath);
+
   return {
     getHomeId(): string {
-      const home = getNodePageDetail(writeCtx.db, DEFAULT_HOME_NODE_ID);
+      const home = getNodePageDetail(writeCtx.db, DEFAULT_HOME_NODE_ID, { schema: schema() });
       if (home) return DEFAULT_HOME_NODE_ID;
       const recent = searchNodes(writeCtx.db, "", 1);
       return recent[0]?.id ?? DEFAULT_HOME_NODE_ID;
     },
     getNode(id: string, options?: { databaseView?: string; scopeId?: string }): NodePageDetail | null {
-      return getNodePageDetail(writeCtx.db, id, options);
+      return getNodePageDetail(writeCtx.db, id, { ...options, schema: schema() });
     },
     getDatabaseView(id: string, view?: string) {
       return getDatabaseViewDetail(writeCtx.db, id, view);
+    },
+    getSchema(): SchemaFile {
+      return schema();
     },
     moveOrderedAssociation(
       configId: string,
@@ -93,8 +106,8 @@ export function openEditorDatabase(
     ): OrderedAssociationViewDetail | null {
       return applyOrderedAssociationMove(writeCtx, configId, params);
     },
-    search(query: string, limit?: number): NodeSummary[] {
-      return searchNodes(writeCtx.db, query, limit);
+    search(query: string, limit?: number, allowedTypeIds?: string[]): NodeSummary[] {
+      return searchNodes(writeCtx.db, query, limit, allowedTypeIds);
     },
     saveBody(id: string, body: string): boolean {
       return updateNodeBody(writeCtx, id, body);
@@ -134,6 +147,26 @@ export function openEditorDatabase(
     },
     createNode(input: CreateNodeInput): CreateNodeResult | CreateNodeError {
       return createNodeInDb(writeCtx, input);
+    },
+    createRelationRow(
+      sourceId: string,
+      input: { label: string; title: string; properties?: Record<string, string> },
+    ): CreateNodeResult | CreateNodeError {
+      const rule = relationshipRuleContextForLabel(schema(), writeCtx.db, sourceId, input.label);
+      const membershipTypeId =
+        rule && rule.allowedTargetTypeIds.length === 1
+          ? rule.allowedTargetTypeIds[0]
+          : undefined;
+      return createNodeInDb(writeCtx, {
+        title: input.title,
+        link: {
+          kind: "outgoing",
+          sourceId,
+          label: input.label,
+          properties: input.properties,
+          membershipTypeId,
+        },
+      });
     },
     getGraphFull(): GraphSnapshot {
       return exportFullGraph(writeCtx.db);

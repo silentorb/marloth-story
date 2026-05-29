@@ -9,9 +9,11 @@ import {
   parseDynamicFieldsFile,
 } from "./dynamic-fields-file";
 import { bodyFromNode } from "./node-file";
+import { invalidateSchemaCache } from "../schema-rules/load";
 import {
   RELATIONSHIPS_FILENAME,
   DYNAMIC_FIELDS_FILENAME,
+  SCHEMA_FILENAME,
   dynamicFieldsFilePath,
   NODE_FILE_PATTERN,
 } from "./paths";
@@ -117,6 +119,7 @@ export class CacheSync {
     };
     scan(RELATIONSHIPS_FILENAME);
     scan(DYNAMIC_FIELDS_FILENAME);
+    scan(SCHEMA_FILENAME);
     try {
       for (const name of readdirSync(this.contentDir)) {
         if (NODE_FILE_PATTERN.test(name)) {
@@ -140,7 +143,6 @@ export class CacheSync {
     this.applying = true;
     try {
       this.db.runExec("DELETE FROM relationships");
-      this.db.runExec("DELETE FROM node_labels");
       this.db.runExec("DELETE FROM nodes");
 
       for (const id of this.store.listNodeIds()) {
@@ -148,7 +150,7 @@ export class CacheSync {
         if (!node) continue;
         const body = bodyFromNode(node);
         const props = { ...node.properties, body };
-        this.db.upsertNode(node.id, node.labels, props);
+        this.db.upsertNode(node.id, props);
       }
 
       for (const connection of this.store.readRelationships()) {
@@ -183,7 +185,7 @@ export class CacheSync {
         return;
       }
       const body = bodyFromNode(node);
-      this.db.upsertNode(node.id, node.labels, { ...node.properties, body });
+      this.db.upsertNode(node.id, { ...node.properties, body });
     } finally {
       this.applying = false;
     }
@@ -218,6 +220,12 @@ export class CacheSync {
 
     if (relativeName === DYNAMIC_FIELDS_FILENAME) {
       invalidateDynamicFieldsCache();
+      this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
+      return;
+    }
+
+    if (relativeName === SCHEMA_FILENAME) {
+      invalidateSchemaCache();
       this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
       return;
     }

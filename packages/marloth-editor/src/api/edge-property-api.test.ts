@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, test } from "bun:test";
-import { GraphDatabase, IS_A_LABEL } from "marloth-db";
+import { GraphDatabase, IS_A_LABEL, typeTableMarkerProperties } from "marloth-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
@@ -14,8 +14,8 @@ describe("edge property API", () => {
   const databaseId = "dddddddddddddddddddddddddddddddd";
   const nodeId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
-  seedTestNode(fixture, { id: databaseId, labels: ["NotionDatabase"], properties: { title: "Features" } });
-  seedTestNode(fixture, { id: nodeId, labels: ["NotionPage"], properties: { title: "Feature" } });
+  seedTestNode(fixture, { id: databaseId, properties: typeTableMarkerProperties("Features") });
+  seedTestNode(fixture, { id: nodeId, properties: { title: "Feature" } });
   seedTestRelationships(fixture, [
     { source: nodeId, target: databaseId, label: IS_A_LABEL, properties: { priority: "Low" } },
   ]);

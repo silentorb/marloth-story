@@ -1,5 +1,5 @@
 import type { GraphDatabase, MarlothWriteContext } from "marloth-db";
-import { mergeNodePropertiesOnContent, syncAfterRelationshipsWrite } from "marloth-db";
+import { hasTypeTableSchema, mergeNodePropertiesOnContent, syncAfterRelationshipsWrite } from "marloth-db";
 import { TYPE_MEMBERSHIP_LABELS, slugifyPropertyKey } from "marloth-db";
 import { databaseMetadataPatch, type NotionReadClient } from "./notion-client";
 import { isNotionHexId, notionIdToHex } from "./notion-ids";
@@ -44,7 +44,7 @@ export async function syncDatabases(
   } else {
     ids = db
       .listNodesForGraphExport()
-      .filter((v) => v.labels.includes("NotionDatabase"))
+      .filter((v) => hasTypeTableSchema(db.getNode(v.id)?.properties))
       .map((v) => v.id);
     if (options.limit !== undefined && Number.isFinite(options.limit)) {
       ids = ids.slice(0, Math.max(0, options.limit));
@@ -54,7 +54,7 @@ export async function syncDatabases(
   for (const id of ids) {
     summary.scanned += 1;
     const node = db.getNode(id);
-    if (!node?.labels.includes("NotionDatabase")) {
+    if (!node || !hasTypeTableSchema(node.properties)) {
       summary.skipped += 1;
       continue;
     }

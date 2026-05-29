@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: James finds the inn burning
 created_at: 2025-11-30T02:19:00.000Z
 modified_at: 2025-11-30T05:04:00.000Z

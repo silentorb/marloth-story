@@ -3,17 +3,24 @@ import type { Properties } from "./graph";
 import { IS_A_LABEL } from "./labels";
 import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterNodeWrite, syncAfterRelationshipsWrite } from "./content/write-context";
+import { isTypeTableNode } from "./node-capabilities";
 
 export type CreateNodeError = "invalid_title" | "source_not_found" | "database_not_found";
 
 export type CreateNodeLink =
-  | { kind: "outgoing"; sourceId: string; label: string; properties?: Properties }
+  | {
+      kind: "outgoing";
+      sourceId: string;
+      label: string;
+      properties?: Properties;
+      /** When set, also create IS_A membership on the new node to this type. */
+      membershipTypeId?: string;
+    }
   | { kind: "database-row"; databaseId: string; view?: string; properties?: Properties };
 
 export interface CreateNodeInput {
   title: string;
   body?: string;
-  labels?: string[];
   link?: CreateNodeLink;
 }
 
@@ -21,8 +28,6 @@ export interface CreateNodeResult {
   id: string;
   title: string;
 }
-
-const DEFAULT_LABELS = ["NotionPage"];
 
 function nowIso(): string {
   return new Date().toISOString();
@@ -83,18 +88,16 @@ export function createNode(
   }
   if (input.link?.kind === "database-row") {
     const database = ctx.store.readNode(input.link.databaseId);
-    if (!database?.labels.includes("NotionDatabase")) return "database_not_found";
+    if (!database || !isTypeTableNode(ctx.db, input.link.databaseId)) return "database_not_found";
   }
 
   const id = allocateNodeId(ctx);
-  const labels = input.labels?.length ? [...input.labels] : [...DEFAULT_LABELS];
   const timestamp = nowIso();
   const body = input.body ?? "";
 
   ctx.store.writeNode(
     {
       id,
-      labels,
       properties: {
         title,
         created_at: timestamp,
@@ -106,11 +109,14 @@ export function createNode(
   syncAfterNodeWrite(ctx, id);
 
   if (input.link?.kind === "outgoing") {
-    const { sourceId, label, properties = {} } = input.link;
+    const { sourceId, label, properties = {}, membershipTypeId } = input.link;
     const relProps: Properties = { ...properties };
     const nextOrdinal = nextOutgoingOrdinal(ctx, sourceId, label);
     if (nextOrdinal !== undefined) relProps.ordinal = nextOrdinal;
     ctx.store.upsertRelationship(sourceId, id, label, relProps);
+    if (membershipTypeId) {
+      ctx.store.upsertRelationship(id, membershipTypeId, IS_A_LABEL, {});
+    }
     syncAfterRelationshipsWrite(ctx);
   }
 

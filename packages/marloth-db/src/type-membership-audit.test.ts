@@ -1,6 +1,7 @@
 import { describe, expect, test, afterAll } from "bun:test";
 import { resolve } from "node:path";
 import { GraphDatabase } from "./graph";
+import { typeTableMarkerProperties } from "./node-capabilities";
 import { openMarlothWriteContext } from "./content/write-context";
 import {
   expectedTypeDatabaseForPage,
@@ -14,9 +15,9 @@ describe("type-membership-audit path matching", () => {
   const db = new GraphDatabase(":memory:");
 
   test("typeDatabaseTitleFromPath prefers deepest matching database segment", () => {
-    db.upsertNode("insp-db", ["NotionDatabase"], { title: "Inspirations" });
-    db.upsertNode("tr-db", ["NotionDatabase"], { title: "Traversal reasons" });
-    db.upsertNode("feat-db", ["NotionDatabase"], { title: "Features" });
+    db.upsertNode("insp-db", { ...typeTableMarkerProperties("Inspirations") });
+    db.upsertNode("tr-db", { ...typeTableMarkerProperties("Traversal reasons") });
+    db.upsertNode("feat-db", { ...typeTableMarkerProperties("Features") });
 
     expect(typeDatabaseTitleFromPath(db, "Marloth/Inspirations")).toBe("Inspirations");
     expect(typeDatabaseTitleFromPath(db, "Marloth/Inspirations/Traversal reasons")).toBe(
@@ -27,14 +28,10 @@ describe("type-membership-audit path matching", () => {
   });
 
   test("expectedTypeDatabaseForPage resolves nested related databases", () => {
-    db.upsertNode(
-      "missions",
-      ["NotionPage"],
-      {
-        title: "Missions",
-        inferred_notion_path: "Marloth/Inspirations/Traversal reasons",
-      },
-    );
+    db.upsertNode("missions", {
+      title: "Missions",
+      inferred_notion_path: "Marloth/Inspirations/Traversal reasons",
+    });
 
     const expected = expectedTypeDatabaseForPage(db, "missions");
     expect(expected?.databaseId).toBe("tr-db");

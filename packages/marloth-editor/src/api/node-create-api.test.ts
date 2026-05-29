@@ -1,5 +1,5 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { DEFAULT_HOME_NODE_ID } from "marloth-db";
+import { DEFAULT_HOME_NODE_ID, typeTableMarkerProperties } from "marloth-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
@@ -15,18 +15,15 @@ describe("node create API", () => {
 
   seedTestNode(fixture, {
     id: DEFAULT_HOME_NODE_ID,
-    labels: ["NotionPage"],
     properties: { title: "Home" },
   });
   seedTestNode(fixture, {
     id: sourceId,
-    labels: ["NotionPage"],
     properties: { title: "Parent page" },
   });
   seedTestNode(fixture, {
     id: databaseId,
-    labels: ["NotionDatabase"],
-    properties: { title: "Features DB" },
+    properties: typeTableMarkerProperties("Features DB"),
   });
 
   const api = createTestApiFromContent(fixture);

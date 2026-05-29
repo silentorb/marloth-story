@@ -7,12 +7,13 @@
 
 ## Terminology
 
-- **Node** — entity in `content/{id}.md` and cache `nodes` / `node_labels`.
+- **Node** — entity in `content/{id}.md` and cache `nodes`.
 - **Relationship** — directed labeled link in `content/relationships.json` and cache `relationships`.
 - **Page** — editor view of a node (`getNodePageDetail`, `node-page-sections.ts`).
-- **NotionPage** / **NotionDatabase** — legacy import labels on nodes.
+- **Type table** — node with incoming `IS_A` and/or `notion_schema` metadata (`isTypeTableNode`).
+- **Schema** — relationship rules in `content/schema.json` ([`docs/features/schema.md`](../../docs/features/schema.md)).
 
-Cache tables: `nodes`, `node_labels`, `relationships` (`SCHEMA_VERSION` 5).
+Cache tables: `nodes`, `relationships` (`SCHEMA_VERSION` 6).
 
 ## Run
 - Tests: `bun test` (from this directory).
@@ -27,6 +28,7 @@ Cache tables: `nodes`, `node_labels`, `relationships` (`SCHEMA_VERSION` 5).
 
 ## Repo-wide context
 - **Feature spec:** [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)
+- **Schema rules:** [`docs/features/schema.md`](../../docs/features/schema.md)
 - **Dynamic table fields:** [`docs/features/dynamic-table-fields.md`](../../docs/features/dynamic-table-fields.md)
 - Graph Explorer LOD export: [`docs/features/graph-explorer.md`](../../docs/features/graph-explorer.md)
 - Legacy Notion import / export mining: [`docs/features/notion-import.md`](../../docs/features/notion-import.md)

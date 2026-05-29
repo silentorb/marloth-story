@@ -41,11 +41,11 @@ When ontology and storage disagree, **update one explicitly**—usually the onto
 | **Product** | A **deliverable umbrella**: a book, game, or related work that consumes and organizes design (e.g. *TWOLD*, *A Child's Fairytale World*, *The Shadowhood*). Products share inspirations and structural patterns. |
 | **Inspiration** | An external or reference work that informs design (novel, film, game, trope cluster). |
 | **Scene** | A unit of story action—often the bridge between high-level design and eventual prose. |
-| **NotionPage** / **NotionDatabase** | Legacy **import labels** on nodes; use when referring to stored label values or Notion mapping. |
+| **NotionPage** / **NotionDatabase** | Removed import labels. Historical Notion mapping only; see [notion-import.md](./features/notion-import.md). |
 
 ## Entity types
 
-Types below are **semantic**. In the current import most nodes are stored with the `NotionPage` label; type is inferred from Notion folder path (`inferred_notion_path`), title, and relationship patterns. Future work may add explicit ontology labels on nodes.
+Types below are **semantic**. In the graph, type is inferred from `inferred_notion_path`, title, `IS_A` membership, and relationship patterns. Any node may serve as a type when used as an `IS_A` target. Relationship rules live in [`content/schema.json`](./features/schema.md).
 
 ### Creative outputs and scope
 
@@ -164,10 +164,12 @@ Agents helping with design or writing should preserve and strengthen these links
 
 This section is a **hint**, not the authoritative schema spec.
 
-| Ontology | Current storage (SCHEMA_VERSION 5) |
+| Ontology | Current storage (SCHEMA_VERSION 6) |
 | --- | --- |
-| Node | `nodes` row; labels in `node_labels` (`NotionPage` or `NotionDatabase`) |
-| Node type (semantic) | `inferred_notion_path`, title, body; future explicit labels |
+| Node | `nodes` row; JSON `properties` |
+| Node type (semantic) | `inferred_notion_path`, title, body; `IS_A` targets |
+| Type table | `IS_A` target and/or `notion_schema` metadata (`isTypeTableNode`) |
+| Relationship rules | `content/schema.json` |
 | Relationship | `relationships` row with `label` + JSON `properties` |
 | Prose / notes | Node property `body` (markdown) — **first section** on every page |
 | Database row scalars | Relationship properties on `(page)-[:IS_A]->(type)` — not on the page node |
@@ -180,7 +182,7 @@ The corpus is moving away from Notion’s split between “database rows” and 
 
 1. **Markdown section** — primary prose and notes (`body` on the node).
 2. **Relationship sections** — one table per outgoing relationship label, listing linked nodes plus any properties stored on those relationships.
-3. **Database table section** — for `NotionDatabase` nodes (types), incoming `IS_A` instances rendered as a table (Name from the linked page; other columns from relationship properties).
+3. **Database table section** — for type-table nodes, incoming `IS_A` instances rendered as a table (Name from the linked page; other columns from relationship properties).
 
 Scalar values that belonged to a database row in Notion (except Name/title) **belong on the `IS_A` relationship**, not duplicated on the page node, unless the value is clearly intrinsic to the referenced node itself.
 
@@ -192,7 +194,7 @@ This ontology will grow with the trilogy and game work. When adding entity or re
 
 1. Document them here in plain language.
 2. Align import tooling or manual conventions if needed.
-3. Prefer explicit node labels or properties over folder-path inference over time.
+3. Prefer explicit schema rules or properties over folder-path inference over time.
 
 ## See also
 

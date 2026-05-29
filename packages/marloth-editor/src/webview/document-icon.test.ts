@@ -45,11 +45,11 @@ describe("resolveDocumentIcon", () => {
     ).toBe("▶");
   });
 
-  test("uses database icon for NotionDatabase nodes", () => {
+  test("uses database icon for type table nodes", () => {
     expect(
       resolveDocumentIcon({
         view: "node-page",
-        recordLabels: ["NotionDatabase"],
+        isTypeTable: true,
       }),
     ).toBe("▦");
   });

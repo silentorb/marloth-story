@@ -20,12 +20,13 @@ For **what design nodes mean** (features, inspirations, products, traceability),
 
 | Term | Meaning |
 | --- | --- |
-| **Node** | Entity in `nodes` / `node_labels` (replaces *vertex* / *record* in API and docs). |
+| **Node** | Entity in `nodes` (replaces *vertex* / *record* in API and docs). |
 | **Relationship** | Directed labeled link in `relationships` (replaces *edge*). |
 | **Page** | Editor-facing node view (`getNodePageDetail`, `NodePageView`)—not a Notion export file. |
-| **NotionPage** / **NotionDatabase** | Legacy **import labels**; keep when describing Notion mapping or stored label values. |
+| **Type table** | Node that receives `IS_A` rows and/or carries table schema metadata (`notion_schema`, etc.). Any node may act as a type when the graph uses it that way. |
+| **Schema** | Relationship rules in `content/schema.json` — see [schema.md](./schema.md). |
 
-API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. Cache tables: `nodes`, `node_labels`, `relationships` (`SCHEMA_VERSION` **5**).
+API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. Cache tables: `nodes`, `relationships` (`SCHEMA_VERSION` **6**).
 
 ## Editing the graph (agent workflow)
 
@@ -36,7 +37,7 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 - Run `bun run content:sync` after bulk file edits if the editor API is not running (otherwise the file watcher syncs automatically).
 - **Do not** modify `packages/notion-importer` and run `bun run notion:import` / `--clean` for routine work.
 
-**When data exists only in `./exports/`:** read the relevant Notion `.md` or `.csv` from the archival export and apply **targeted** upserts using the same mapping rules as the legacy importer (page → `NotionPage`, relations → relationships, CSV rows → `IS_A`, etc.). Reuse importer parsing helpers if helpful; do not run a full-graph rebuild.
+**When data exists only in `./exports/`:** read the relevant Notion `.md` or `.csv` from the archival export and apply **targeted** upserts using the same mapping rules as the legacy importer (pages → nodes, relations → relationships, CSV rows → `IS_A`, etc.). Reuse importer parsing helpers if helpful; do not run a full-graph rebuild.
 
 **Schema changes:** bump `SCHEMA_VERSION` in `schema.ts`, migrate existing rows in place, document steps here or in commit notes. Re-import is not a migration strategy.
 
@@ -49,6 +50,7 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 | `content/{nodeId}.md` | Canonical node (YAML frontmatter + markdown body) |
 | `content/relationships.json` | Canonical directed relationships |
 | `content/dynamic-fields.json` | Dynamic table field bindings |
+| `content/schema.json` | Relationship rules (allowed target types) |
 | `data/marloth.sqlite` | Local query cache (gitignored; default path via `MARLOTH_DB_PATH`) |
 
 - `content/` **must** remain a **flat** directory (only files, no subfolders).
@@ -57,13 +59,15 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 
 ### Property graph model
 
-The database **must** model a **labeled property graph**:
+The database **must** model a **property graph**:
 
 | Element | Table(s) | Semantics |
 | --- | --- | --- |
-| Node | `nodes`, `node_labels` | Entity with one or more labels and a JSON property bag |
+| Node | `nodes` | Entity with a JSON property bag |
 | Relationship | `relationships` | Directed relationship with a label and JSON properties |
 | Metadata | `meta` | Schema version, import timestamps, etc. |
+
+Type-table behavior is inferred from `IS_A` usage and schema metadata (`isTypeTableNode` in `node-capabilities.ts`), not node labels.
 
 - Node ids **must** be stable text keys (Notion pages use 32-hex ids).
 - Relationship ids **must** be deterministic: `{source_id}:{label}:{target_id}`.
@@ -73,13 +77,13 @@ The database **must** model a **labeled property graph**:
 
 | Notion concept | Graph representation |
 | --- | --- |
-| Page (`.md`) | Node labeled `NotionPage`; scalar properties in JSON; markdown body in `body` |
+| Page (`.md`) | Node with scalar properties in JSON; markdown body in `body` |
 | Page relation property | Relationship from page to related page; label from property name |
-| Database (CSV export) | Node labeled `NotionDatabase` |
+| Database (CSV export) | Node with `notion_database` / synced `notion_schema` |
 | Database row / type instance | Relationship `(page)-[:IS_A {view, row_index, …columns}]->(type)`; Name/title lives on the page node only |
 | CSV relation column | Relationship from row's page to targets |
 
-- Relation targets missing from the export **may** be created as stub `NotionPage` nodes (title only) so the graph stays connected.
+- Relation targets missing from the export **may** be created as stub page nodes (title only) so the graph stays connected.
 - Unresolved relation paths **must** be reported in `docs/notion-link-report.txt`.
 
 ### Schema versioning
@@ -105,10 +109,10 @@ The database **must** model a **labeled property graph**:
 
 `GraphDatabase` (`packages/marloth-db/src/graph.ts`):
 
-- `upsertNode(id, labels, properties)` — create or merge node
+- `upsertNode(id, properties)` — create or merge node
 - `upsertRelationship(sourceId, targetId, label, properties)` — create or merge relationship
 - `getNodeDetail` / `getNodePageDetail` — inspection; the latter adds **metadata** (timestamps, relationship count, markdown backlinks) and ordered **sections** (markdown, database table, relation tables)
-- `getDatabaseViewDetail` — database row table for a `NotionDatabase` node; uses synced `notion_views` / `notion_schema` when present (see [notion-metadata-sync.md](./notion-metadata-sync.md)). **Scalar** columns (select, number, formula snapshots, etc.) come from `IS_A` relationship properties; **relation** columns are hydrated at read time from outgoing relationships whose label matches the property (prefer `via_database` = this database, else unscoped relationships on that label). Bulk CSV re-import is legacy — see [notion-import.md](./notion-import.md).
+- `getDatabaseViewDetail` — database row table for a type-table node; uses synced `notion_views` / `notion_schema` when present (see [notion-metadata-sync.md](./notion-metadata-sync.md)). **Scalar** columns (select, number, formula snapshots, etc.) come from `IS_A` relationship properties; **relation** columns are hydrated at read time from outgoing relationships whose label matches the property (prefer `via_database` = this database, else unscoped relationships on that label). Bulk CSV re-import is legacy — see [notion-import.md](./notion-import.md).
 - `finalize()` — `PRAGMA optimize` + `VACUUM` for compact storage
 - Constructor `{ clean: true }` — delete existing file before open
 
@@ -165,13 +169,15 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 | `packages/marloth-db/src/notion-view-eval.ts` | Notion view filter/sort evaluation for database tables |
 | `packages/marloth-db/src/database-view.ts` | Type instance table reconstruction from incoming `IS_A` relationships |
 | `packages/marloth-db/src/database-view-relations.ts` | Relation-column hydration for database table views |
-| `packages/marloth-db/src/relation-label.ts` | Notion relation property name → relationship label |
+| `packages/marloth-db/src/node-capabilities.ts` | Type-table detection, graph groups, type lookup |
+| `packages/marloth-db/src/schema-rules/` | Load and resolve `content/schema.json` |
 | `packages/marloth-db/src/ordered-associations.ts` | Ordered association config, view query, move mutation |
 | `packages/notion-importer/src/graph-pipeline.ts` | Notion → graph import |
 | `packages/notion-importer/src/relations.ts` | Parse Notion relation link syntax |
 
 ## See also
 
+- [schema.md](./schema.md) — relationship rules in `content/schema.json`
 - [graph-explorer.md](./graph-explorer.md) — anchor-scoped LOD graph visualization
 - [notion-metadata-sync.md](./notion-metadata-sync.md) — read-only Notion API sync for timestamps and database views
 - [notion-import.md](./notion-import.md) — export resolution and import pipeline

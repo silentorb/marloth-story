@@ -17,7 +17,7 @@ export interface DocumentIconContext {
   nodeId?: string | null;
   recordPath?: string | null;
   recordBody?: string | null;
-  recordLabels?: string[] | null;
+  isTypeTable?: boolean | null;
   homeId?: string | null;
 }
 
@@ -37,7 +37,7 @@ export function resolveDocumentIcon(ctx: DocumentIconContext): string {
   const pathIcon = iconFromPath(ctx.recordPath);
   if (pathIcon) return pathIcon;
 
-  if (ctx.recordLabels?.includes("NotionDatabase")) return DATABASE_ICON;
+  if (ctx.isTypeTable) return DATABASE_ICON;
 
   return DEFAULT_ICON;
 }

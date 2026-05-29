@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Marriage is cool
 notion_id: b3cbcd8d58084c2fbaebd0d76127ebfe
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Archive/Requirements Old/Marriage is cool b3cbcd8d58084c2fbaebd0d76127ebfe.md

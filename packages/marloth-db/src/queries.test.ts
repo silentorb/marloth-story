@@ -12,7 +12,6 @@ describe("queries", () => {
   test("getNodeDetail returns title, body, and path", () => {
     seedTestNode(fixture, {
       id: "0123456789abcdef0123456789abcdef",
-      labels: ["NotionPage"],
       properties: {
         title: "Alpha",
         body: "# Hello",
@@ -28,7 +27,6 @@ describe("queries", () => {
   test("searchNodes matches title prefix", () => {
     seedTestNode(fixture, {
       id: "123456789abcdef0123456789abcdef0",
-      labels: ["NotionPage"],
       properties: { title: "Beta Record" },
     });
     const hits = searchNodes(fixture.ctx.db, "Beta", 10);
@@ -38,7 +36,6 @@ describe("queries", () => {
   test("updateNodeBody persists markdown", () => {
     seedTestNode(fixture, {
       id: "23456789abcdef0123456789abcdef01",
-      labels: ["NotionPage"],
       properties: { title: "Gamma", body: "old" },
     });
     expect(updateNodeBody(fixture.ctx, "23456789abcdef0123456789abcdef01", "new body")).toBe(true);

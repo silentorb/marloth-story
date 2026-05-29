@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import { GraphDatabase } from "./graph";
+import { typeTableMarkerProperties } from "./node-capabilities";
 import { getDatabaseViewDetail } from "./database-view";
 import { filterEvalRows, sortEvalRows, type EvalRow } from "./notion-view-eval";
 
@@ -27,8 +28,8 @@ describe("getDatabaseViewDetail with notion views", () => {
   test("uses notion view filters and names", () => {
     const db = new GraphDatabase(":memory:", { clean: true });
     const databaseId = "dddddddddddddddddddddddddddddddd";
-    db.upsertNode(databaseId, ["NotionDatabase"], {
-      title: "Tasks",
+    db.upsertNode(databaseId, {
+      ...typeTableMarkerProperties("Tasks"),
       notion_schema: JSON.stringify({
         syncedAt: "2024-01-01T00:00:00.000Z",
         properties: {
@@ -51,8 +52,8 @@ describe("getDatabaseViewDetail with notion views", () => {
         ],
       }),
     });
-    db.upsertNode("page1", ["NotionPage"], { title: "One" });
-    db.upsertNode("page2", ["NotionPage"], { title: "Two" });
+    db.upsertNode("page1", { title: "One" });
+    db.upsertNode("page2", { title: "Two" });
     db.upsertRelationship("page1", databaseId, "IS_A", { status: "Done", row_index: 0 });
     db.upsertRelationship("page2", databaseId, "IS_A", { status: "Todo", row_index: 1 });
 

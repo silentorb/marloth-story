@@ -5,6 +5,7 @@ export const RELATIONSHIPS_FILENAME = "relationships.json";
 /** @deprecated Use RELATIONSHIPS_FILENAME. Legacy content file name (pre–relationship terminology). */
 export const CONNECTIONS_FILENAME = "connections.json";
 export const DYNAMIC_FIELDS_FILENAME = "dynamic-fields.json";
+export const SCHEMA_FILENAME = "schema.json";
 export const NODE_ID_PATTERN = /^[0-9a-f]{32}$/;
 export const NODE_FILE_PATTERN = /^[0-9a-f]{32}\.md$/;
 
@@ -32,6 +33,10 @@ export function connectionsFilePath(contentDir: string): string {
 
 export function dynamicFieldsFilePath(contentDir: string): string {
   return resolve(contentDir, DYNAMIC_FIELDS_FILENAME);
+}
+
+export function schemaFilePath(contentDir: string): string {
+  return resolve(contentDir, SCHEMA_FILENAME);
 }
 
 export function resolveContentPath(cwd = process.cwd()): string {

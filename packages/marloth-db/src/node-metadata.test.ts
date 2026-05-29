@@ -16,9 +16,9 @@ const PAGE_C = "22222222222222222222222222222222";
 describe("node-metadata", () => {
   test("counts incident edges but ignores them for backlinks", () => {
     const db = new GraphDatabase(":memory:", { clean: true });
-    db.upsertNode(PAGE_A, ["NotionPage"], { title: "Page A" });
-    db.upsertNode(PAGE_B, ["NotionPage"], { title: "Page B" });
-    db.upsertNode(PAGE_C, ["NotionPage"], { title: "Page C" });
+    db.upsertNode(PAGE_A, { title: "Page A" });
+    db.upsertNode(PAGE_B, { title: "Page B" });
+    db.upsertNode(PAGE_C, { title: "Page C" });
     db.upsertRelationship(PAGE_B, PAGE_A, "LINKS");
     db.upsertRelationship(PAGE_C, PAGE_A, "REFERENCES");
 
@@ -31,12 +31,12 @@ describe("node-metadata", () => {
 
   test("lists markdown body backlinks only", () => {
     const db = new GraphDatabase(":memory:", { clean: true });
-    db.upsertNode(PAGE_A, ["NotionPage"], { title: "Page A" });
-    db.upsertNode(PAGE_B, ["NotionPage"], {
+    db.upsertNode(PAGE_A, { title: "Page A" });
+    db.upsertNode(PAGE_B, {
       title: "Page B",
       body: `# Page B\n\nSee [Page A](marloth:${PAGE_A}).`,
     });
-    db.upsertNode(PAGE_C, ["NotionPage"], {
+    db.upsertNode(PAGE_C, {
       title: "Page C",
       body: `# Page C\n\nRelated (${PAGE_A}.md)`,
     });
@@ -51,7 +51,7 @@ describe("node-metadata", () => {
 
   test("reads created_at and modified_at from vertex properties", () => {
     const db = new GraphDatabase(":memory:", { clean: true });
-    db.upsertNode(PAGE_A, ["NotionPage"], {
+    db.upsertNode(PAGE_A, {
       title: "Page A",
       created_at: "2024-01-15T10:00:00.000Z",
       modified_at: "2024-06-01T12:30:00.000Z",
@@ -66,7 +66,7 @@ describe("node-metadata", () => {
 
   test("getNodePageDetail includes metadata", () => {
     const db = new GraphDatabase(":memory:", { clean: true });
-    db.upsertNode(PAGE_A, ["NotionPage"], { title: "Page A", body: "Hello" });
+    db.upsertNode(PAGE_A, { title: "Page A", body: "Hello" });
 
     const detail = getNodePageDetail(db, PAGE_A);
     expect(detail?.metadata.relationshipCount).toBe(0);
@@ -79,7 +79,6 @@ describe("node-metadata", () => {
     const fixture = createTestContentFixture("marloth-db-meta-write-");
     seedTestNode(fixture, {
       id: PAGE_A,
-      labels: ["NotionPage"],
       properties: { title: "Page A", body: "Old" },
     });
 

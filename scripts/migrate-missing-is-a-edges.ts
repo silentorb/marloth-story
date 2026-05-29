@@ -6,6 +6,7 @@
  *   bun run scripts/migrate-missing-is-a-edges.ts
  */
 import { GraphDatabase } from "../packages/marloth-db/src/graph";
+import { isTypeTableNode } from "../packages/marloth-db/src/node-capabilities";
 import {
   expectedTypeDatabaseForPage,
   findMissingTypeMembershipRelationships,
@@ -57,7 +58,7 @@ let connectionsUpdated = 0;
 let nodesCleaned = 0;
 
 for (const node of db.listNodesForGraphExport()) {
-  if (!node.labels.includes("NotionPage")) continue;
+  if (isTypeTableNode(db, node.id)) continue;
 
   const expected = expectedTypeDatabaseForPage(db, node.id);
   if (!expected) continue;

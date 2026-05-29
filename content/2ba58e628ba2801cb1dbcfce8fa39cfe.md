@@ -1,6 +1,4 @@
 ---
-labels:
-  - NotionPage
 title: Adelle arrives at the City of Orphans
 created_at: 2025-11-29T19:59:00.000Z
 modified_at: 2025-11-30T02:39:00.000Z
