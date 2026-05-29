@@ -40,7 +40,7 @@ export function RelationSectionView({
         onEnumChange:
           def?.type === "enum"
             ? async (next) => {
-                await api.updateOutgoingConnectionProperty(
+                await api.updateOutgoingRelationshipProperty(
                   nodeId,
                   section.label,
                   row.id,

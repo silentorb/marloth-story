@@ -1,6 +1,6 @@
-import { connectionId } from "./graph";
+import { relationshipId } from "./graph";
 import type {
-  GraphConnection,
+  GraphRelationship,
   GraphNode,
   GraphNodeBundle,
   GraphNodeRelevance,
@@ -34,7 +34,7 @@ export interface LodClusterNode {
   labels: string[];
 }
 
-export interface LodClusterConnection {
+export interface LodClusterRelationship {
   id: string;
   sourceNodeId: string;
   targetNodeId: string;
@@ -89,24 +89,24 @@ export function gatewayIdFromBranchCluster(clusterId: string): string | null {
 
 function buildAdjacency(
   nodeIds: Set<string>,
-  connections: LodClusterConnection[],
+  relationships: LodClusterRelationship[],
 ): Map<string, Set<string>> {
   const adjacency = new Map<string, Set<string>>();
   for (const id of nodeIds) adjacency.set(id, new Set());
-  for (const connection of connections) {
-    if (!nodeIds.has(connection.sourceNodeId) || !nodeIds.has(connection.targetNodeId)) continue;
-    adjacency.get(connection.sourceNodeId)?.add(connection.targetNodeId);
-    adjacency.get(connection.targetNodeId)?.add(connection.sourceNodeId);
+  for (const relationship of relationships) {
+    if (!nodeIds.has(relationship.sourceNodeId) || !nodeIds.has(relationship.targetNodeId)) continue;
+    adjacency.get(relationship.sourceNodeId)?.add(relationship.targetNodeId);
+    adjacency.get(relationship.targetNodeId)?.add(relationship.sourceNodeId);
   }
   return adjacency;
 }
 
-function nodeDegrees(nodeIds: Set<string>, connections: LodClusterConnection[]): Map<string, number> {
+function nodeDegrees(nodeIds: Set<string>, relationships: LodClusterRelationship[]): Map<string, number> {
   const degrees = new Map<string, number>();
   for (const id of nodeIds) degrees.set(id, 0);
-  for (const connection of connections) {
-    if (nodeIds.has(connection.sourceNodeId)) degrees.set(connection.sourceNodeId, (degrees.get(connection.sourceNodeId) ?? 0) + 1);
-    if (nodeIds.has(connection.targetNodeId)) degrees.set(connection.targetNodeId, (degrees.get(connection.targetNodeId) ?? 0) + 1);
+  for (const relationship of relationships) {
+    if (nodeIds.has(relationship.sourceNodeId)) degrees.set(relationship.sourceNodeId, (degrees.get(relationship.sourceNodeId) ?? 0) + 1);
+    if (nodeIds.has(relationship.targetNodeId)) degrees.set(relationship.targetNodeId, (degrees.get(relationship.targetNodeId) ?? 0) + 1);
   }
   return degrees;
 }
@@ -297,21 +297,21 @@ function mergePromotedGatewaysIntoBranchBundles(
   }
 }
 
-function aggregateConnections(
-  connections: LodClusterConnection[],
+function aggregateRelationships(
+  relationships: LodClusterRelationship[],
   nodeToCluster: Map<string, string>,
-): GraphConnection[] {
+): GraphRelationship[] {
   const linkCounts = new Map<
     string,
     { source: string; target: string; label: string; weight: number }
   >();
 
-  for (const connection of connections) {
-    const source = nodeToCluster.get(connection.sourceNodeId);
-    const target = nodeToCluster.get(connection.targetNodeId);
+  for (const relationship of relationships) {
+    const source = nodeToCluster.get(relationship.sourceNodeId);
+    const target = nodeToCluster.get(relationship.targetNodeId);
     if (!source || !target || source === target) continue;
 
-    const key = `${source}:${connection.label}:${target}`;
+    const key = `${source}:${relationship.label}:${target}`;
     const existing = linkCounts.get(key);
     if (existing) {
       existing.weight += 1;
@@ -319,14 +319,14 @@ function aggregateConnections(
       linkCounts.set(key, {
         source,
         target,
-        label: connection.label,
+        label: relationship.label,
         weight: 1,
       });
     }
   }
 
   return [...linkCounts.values()].map((link) => ({
-    id: connectionId(link.source, link.label, link.target),
+    id: relationshipId(link.source, link.label, link.target),
     source: link.source,
     target: link.target,
     label: link.label,
@@ -353,7 +353,7 @@ function toGraphNodeRelevance(
 
 function snapshotFromPartition(
   nodes: LodClusterNode[],
-  connections: LodClusterConnection[],
+  relationships: LodClusterRelationship[],
   nodeToCluster: Map<string, string>,
   finest: boolean,
   relevance: Map<string, RelevanceEntry>,
@@ -414,30 +414,30 @@ function snapshotFromPartition(
 
   graphNodes.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
 
-  const graphConnections: GraphConnection[] = finest
-    ? connections.map((connection) => ({
-        id: connection.id,
-        source: connection.sourceNodeId,
-        target: connection.targetNodeId,
-        label: connection.label,
+  const graphRelationships: GraphRelationship[] = finest
+    ? relationships.map((relationship) => ({
+        id: relationship.id,
+        source: relationship.sourceNodeId,
+        target: relationship.targetNodeId,
+        label: relationship.label,
       }))
-    : aggregateConnections(connections, nodeToCluster);
+    : aggregateRelationships(relationships, nodeToCluster);
 
-  return { nodes: graphNodes, connections: graphConnections };
+  return { nodes: graphNodes, relationships: graphRelationships };
 }
 
 function buildAnchorCentricPartitions(
   anchorId: string,
   nodes: LodClusterNode[],
-  connections: LodClusterConnection[],
+  relationships: LodClusterRelationship[],
   layerCount: number,
 ): Map<string, string>[] {
   if (nodes.length === 0) return [];
 
   const nodeIds = new Set(nodes.map((node) => node.id));
-  const adjacency = buildAdjacency(nodeIds, connections);
+  const adjacency = buildAdjacency(nodeIds, relationships);
   const hops = hopDistancesFromAnchor(anchorId, adjacency);
-  const degrees = nodeDegrees(nodeIds, connections);
+  const degrees = nodeDegrees(nodeIds, relationships);
   const bfsParent = buildBfsParents(anchorId, adjacency);
   const relevance = computeRelevanceRanking(anchorId, nodes, adjacency, hops, degrees);
   const budgets = layerTargetVisibleCounts(nodes.length, layerCount);
@@ -450,7 +450,7 @@ function buildAnchorCentricPartitions(
 
 export function buildHeuristicLodLevels(
   nodes: LodClusterNode[],
-  connections: LodClusterConnection[],
+  relationships: LodClusterRelationship[],
   layerCount = DEFAULT_EXPLORER_LOD_LAYER_COUNT,
   anchorId?: string,
 ): GraphSnapshot[] {
@@ -458,19 +458,19 @@ export function buildHeuristicLodLevels(
 
   const resolvedAnchor = anchorId ?? nodes[0]!.id;
   const nodeIds = new Set(nodes.map((node) => node.id));
-  const adjacency = buildAdjacency(nodeIds, connections);
+  const adjacency = buildAdjacency(nodeIds, relationships);
   const hops = hopDistancesFromAnchor(resolvedAnchor, adjacency);
-  const degrees = nodeDegrees(nodeIds, connections);
+  const degrees = nodeDegrees(nodeIds, relationships);
   const bfsParent = buildBfsParents(resolvedAnchor, adjacency);
   const relevance = computeRelevanceRanking(resolvedAnchor, nodes, adjacency, hops, degrees);
   const budgets = layerTargetVisibleCounts(nodes.length, layerCount);
-  const partitions = buildAnchorCentricPartitions(resolvedAnchor, nodes, connections, layerCount);
+  const partitions = buildAnchorCentricPartitions(resolvedAnchor, nodes, relationships, layerCount);
 
   return partitions.map((partition, index) => {
     const promoted = promotedSetForBudget(resolvedAnchor, nodes, relevance, budgets[index]!);
     return snapshotFromPartition(
       nodes,
-      connections,
+      relationships,
       partition,
       index === partitions.length - 1,
       relevance,
@@ -483,11 +483,11 @@ export function buildHeuristicLodLevels(
 
 export function buildHeuristicLodLevelsFromCounts(
   nodes: LodClusterNode[],
-  connections: LodClusterConnection[],
+  relationships: LodClusterRelationship[],
   layerCount: number,
   anchorId?: string,
 ): { targets: number[]; levels: GraphSnapshot[] } {
   const targets = layerTargetVisibleCounts(nodes.length, layerCount);
-  const levels = buildHeuristicLodLevels(nodes, connections, layerCount, anchorId);
+  const levels = buildHeuristicLodLevels(nodes, relationships, layerCount, anchorId);
   return { targets, levels };
 }

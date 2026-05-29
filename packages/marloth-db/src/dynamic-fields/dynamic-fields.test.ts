@@ -96,28 +96,28 @@ describe("dynamic-fields resolvers", () => {
     db.upsertNode(WONDERLAND, ["NotionPage"], { title: "Wonderland" });
 
     db.upsertNode(character, ["NotionPage"], { title: "James" });
-    db.upsertConnection(character, CHAR_DB, IS_A_LABEL, { row_index: 0 });
+    db.upsertRelationship(character, CHAR_DB, IS_A_LABEL, { row_index: 0 });
 
     db.upsertNode(scene1, ["NotionPage"], { title: "Scene A" });
     db.upsertNode(scene2, ["NotionPage"], { title: "Scene B" });
     db.upsertNode(scene3, ["NotionPage"], { title: "Scene C" });
-    db.upsertConnection(character, scene1, "SCENES", {});
-    db.upsertConnection(character, scene2, "SCENES", {});
-    db.upsertConnection(character, scene3, "SCENES", {});
-    db.upsertConnection(scene1, TWOLD, "PRODUCT", {});
-    db.upsertConnection(scene2, TWOLD, "PRODUCT", {});
-    db.upsertConnection(scene3, OTHER_PRODUCT, "PRODUCT", {});
+    db.upsertRelationship(character, scene1, "SCENES", {});
+    db.upsertRelationship(character, scene2, "SCENES", {});
+    db.upsertRelationship(character, scene3, "SCENES", {});
+    db.upsertRelationship(scene1, TWOLD, "PRODUCT", {});
+    db.upsertRelationship(scene2, TWOLD, "PRODUCT", {});
+    db.upsertRelationship(scene3, OTHER_PRODUCT, "PRODUCT", {});
 
     db.upsertNode(inspiration, ["NotionPage"], { title: "Test Inspiration" });
-    db.upsertConnection(inspiration, INSP_DB, IS_A_LABEL, { row_index: 0 });
+    db.upsertRelationship(inspiration, INSP_DB, IS_A_LABEL, { row_index: 0 });
 
     db.upsertNode(featureWonder, ["NotionPage"], { title: "Adventure" });
     db.upsertNode(featurePlain, ["NotionPage"], { title: "Plain" });
-    db.upsertConnection(featureWonder, FEAT_DB, IS_A_LABEL, { priority: "Medium" });
-    db.upsertConnection(featurePlain, FEAT_DB, IS_A_LABEL, { priority: "High" });
-    db.upsertConnection(inspiration, featureWonder, "FEATURES", {});
-    db.upsertConnection(inspiration, featurePlain, "FEATURES", {});
-    db.upsertConnection(featureWonder, WONDERLAND, "THEME", {});
+    db.upsertRelationship(featureWonder, FEAT_DB, IS_A_LABEL, { priority: "Medium" });
+    db.upsertRelationship(featurePlain, FEAT_DB, IS_A_LABEL, { priority: "High" });
+    db.upsertRelationship(inspiration, featureWonder, "FEATURES", {});
+    db.upsertRelationship(inspiration, featurePlain, "FEATURES", {});
+    db.upsertRelationship(featureWonder, WONDERLAND, "THEME", {});
 
   });
 

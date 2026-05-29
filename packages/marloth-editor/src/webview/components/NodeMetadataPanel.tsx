@@ -46,7 +46,7 @@ export function NodeMetadataPanel({
     return () => window.removeEventListener("mousedown", onPointerDown);
   }, [backlinksOpen]);
 
-  const summary = `${metadata.connectionCount} connection${metadata.connectionCount === 1 ? "" : "s"} · ${metadata.backlinks.length} backlink${metadata.backlinks.length === 1 ? "" : "s"}`;
+  const summary = `${metadata.relationshipCount} relationship${metadata.relationshipCount === 1 ? "" : "s"} · ${metadata.backlinks.length} backlink${metadata.backlinks.length === 1 ? "" : "s"}`;
 
   return (
     <section
@@ -81,8 +81,8 @@ export function NodeMetadataPanel({
             </span>
           </div>
           <div className="marloth-record-metadata-row">
-            <span className="marloth-record-metadata-label">Connections</span>
-            <span className="marloth-record-metadata-value">{metadata.connectionCount}</span>
+            <span className="marloth-record-metadata-label">Relationships</span>
+            <span className="marloth-record-metadata-value">{metadata.relationshipCount}</span>
           </div>
           <div className="marloth-record-metadata-row">
             <span className="marloth-record-metadata-label">Backlinks</span>

@@ -1,6 +1,7 @@
 import { Database, type SQLQueryBindings } from "bun:sqlite";
 import { mkdirSync, rmSync } from "node:fs";
 import { dirname } from "node:path";
+import { migrateSchemaToV5 } from "./schema-migrate";
 import { DDL, SCHEMA_VERSION } from "./schema";
 
 export type PropertyValue = string | number | boolean | null | PropertyValue[] | { [key: string]: PropertyValue };
@@ -12,7 +13,7 @@ export interface Node {
   properties: Properties;
 }
 
-export interface Connection {
+export interface Relationship {
   id: string;
   sourceNodeId: string;
   targetNodeId: string;
@@ -22,7 +23,7 @@ export interface Connection {
 
 export interface GraphCounts {
   nodes: number;
-  connections: number;
+  relationships: number;
 }
 
 function parseJsonObject(raw: string): Properties {
@@ -44,7 +45,7 @@ function mergeProperties(base: Properties, patch: Properties): Properties {
   return out;
 }
 
-export function connectionId(sourceNodeId: string, label: string, targetNodeId: string): string {
+export function relationshipId(sourceNodeId: string, label: string, targetNodeId: string): string {
   return `${sourceNodeId}:${label}:${targetNodeId}`;
 }
 
@@ -55,8 +56,8 @@ export class GraphDatabase {
   private insertNode!: ReturnType<Database["prepare"]>;
   private updateNodeProps!: ReturnType<Database["prepare"]>;
   private insertLabel!: ReturnType<Database["prepare"]>;
-  private insertConnection!: ReturnType<Database["prepare"]>;
-  private updateConnectionProps!: ReturnType<Database["prepare"]>;
+  private insertRelationship!: ReturnType<Database["prepare"]>;
+  private updateRelationshipProps!: ReturnType<Database["prepare"]>;
 
   constructor(path: string, options?: { clean?: boolean }) {
     this.path = path;
@@ -72,6 +73,7 @@ export class GraphDatabase {
     this.db.exec("PRAGMA foreign_keys = ON");
     this.db.exec("PRAGMA journal_mode = DELETE");
     this.db.exec(DDL);
+    migrateSchemaToV5(this.db);
     this.prepareStatements();
     this.setMeta("schema_version", String(SCHEMA_VERSION));
   }
@@ -86,11 +88,11 @@ export class GraphDatabase {
     this.insertLabel = this.db.prepare(
       "INSERT OR IGNORE INTO node_labels (node_id, label) VALUES (?, ?)",
     );
-    this.insertConnection = this.db.prepare(
-      "INSERT INTO connections (id, source_node_id, target_node_id, label, properties) VALUES (?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING",
+    this.insertRelationship = this.db.prepare(
+      "INSERT INTO relationships (id, source_node_id, target_node_id, label, properties) VALUES (?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING",
     );
-    this.updateConnectionProps = this.db.prepare(
-      "UPDATE connections SET properties = ? WHERE id = ?",
+    this.updateRelationshipProps = this.db.prepare(
+      "UPDATE relationships SET properties = ? WHERE id = ?",
     );
   }
 
@@ -131,35 +133,35 @@ export class GraphDatabase {
     this.updateNodeProps.run(JSON.stringify(merged), id);
   }
 
-  mergeConnectionProperties(id: string, properties: Properties): void {
-    const existing = this.getConnection(id);
+  mergeRelationshipProperties(id: string, properties: Properties): void {
+    const existing = this.getRelationship(id);
     if (!existing) return;
     const merged = mergeProperties(existing.properties, properties);
-    this.updateConnectionProps.run(JSON.stringify(merged), id);
+    this.updateRelationshipProps.run(JSON.stringify(merged), id);
   }
 
   addNodeLabel(id: string, label: string): void {
     this.insertLabel.run(id, label);
   }
 
-  upsertConnection(
+  upsertRelationship(
     sourceNodeId: string,
     targetNodeId: string,
     label: string,
     properties: Properties = {},
   ): void {
-    const id = connectionId(sourceNodeId, label, targetNodeId);
-    this.insertConnection.run(id, sourceNodeId, targetNodeId, label, JSON.stringify(properties));
-    const existing = this.getConnection(id);
+    const id = relationshipId(sourceNodeId, label, targetNodeId);
+    this.insertRelationship.run(id, sourceNodeId, targetNodeId, label, JSON.stringify(properties));
+    const existing = this.getRelationship(id);
     if (existing && Object.keys(properties).length > 0) {
       const merged = mergeProperties(existing.properties, properties);
-      this.updateConnectionProps.run(JSON.stringify(merged), id);
+      this.updateRelationshipProps.run(JSON.stringify(merged), id);
     }
   }
 
-  deleteConnection(sourceNodeId: string, targetNodeId: string, label: string): boolean {
-    const id = connectionId(sourceNodeId, label, targetNodeId);
-    const result = this.db.prepare("DELETE FROM connections WHERE id = ?").run(id);
+  deleteRelationship(sourceNodeId: string, targetNodeId: string, label: string): boolean {
+    const id = relationshipId(sourceNodeId, label, targetNodeId);
+    const result = this.db.prepare("DELETE FROM relationships WHERE id = ?").run(id);
     return result.changes > 0;
   }
 
@@ -183,10 +185,10 @@ export class GraphDatabase {
     };
   }
 
-  getConnection(id: string): Connection | null {
+  getRelationship(id: string): Relationship | null {
     const row = this.db
       .prepare(
-        "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE id = ?",
+        "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE id = ?",
       )
       .get(id) as
       | {
@@ -209,8 +211,8 @@ export class GraphDatabase {
 
   counts(): GraphCounts {
     const n = this.db.prepare("SELECT COUNT(*) AS c FROM nodes").get() as { c: number };
-    const c = this.db.prepare("SELECT COUNT(*) AS c FROM connections").get() as { c: number };
-    return { nodes: n.c, connections: c.c };
+    const r = this.db.prepare("SELECT COUNT(*) AS c FROM relationships").get() as { c: number };
+    return { nodes: n.c, relationships: r.c };
   }
 
   searchNodesByTitle(
@@ -301,14 +303,14 @@ export class GraphDatabase {
     }));
   }
 
-  listConnectionsForGraphExport(): {
+  listRelationshipsForGraphExport(): {
     id: string;
     sourceNodeId: string;
     targetNodeId: string;
     label: string;
   }[] {
     return this.db
-      .prepare("SELECT id, source_node_id, target_node_id, label FROM connections")
+      .prepare("SELECT id, source_node_id, target_node_id, label FROM relationships")
       .all()
       .map((row) => {
         const r = row as {
@@ -326,11 +328,11 @@ export class GraphDatabase {
       });
   }
 
-  listConnectionsFromSource(sourceNodeId: string, label?: string): Connection[] {
+  listRelationshipsFromSource(sourceNodeId: string, label?: string): Relationship[] {
     const rows = label
       ? (this.db
           .prepare(
-            "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE source_node_id = ? AND label = ? ORDER BY id",
+            "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE source_node_id = ? AND label = ? ORDER BY id",
           )
           .all(sourceNodeId, label) as {
           id: string;
@@ -341,7 +343,7 @@ export class GraphDatabase {
         }[])
       : (this.db
           .prepare(
-            "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE source_node_id = ? ORDER BY label, id",
+            "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE source_node_id = ? ORDER BY label, id",
           )
           .all(sourceNodeId) as {
           id: string;
@@ -360,11 +362,11 @@ export class GraphDatabase {
     }));
   }
 
-  listConnectionsToTarget(targetNodeId: string, label?: string): Connection[] {
+  listRelationshipsToTarget(targetNodeId: string, label?: string): Relationship[] {
     const rows = label
       ? (this.db
           .prepare(
-            "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE target_node_id = ? AND label = ? ORDER BY id",
+            "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE target_node_id = ? AND label = ? ORDER BY id",
           )
           .all(targetNodeId, label) as {
           id: string;
@@ -375,7 +377,7 @@ export class GraphDatabase {
         }[])
       : (this.db
           .prepare(
-            "SELECT id, source_node_id, target_node_id, label, properties FROM connections WHERE target_node_id = ? ORDER BY id",
+            "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE target_node_id = ? ORDER BY id",
           )
           .all(targetNodeId) as {
           id: string;
@@ -394,10 +396,10 @@ export class GraphDatabase {
     }));
   }
 
-  countIncidentConnections(nodeId: string): number {
+  countIncidentRelationships(nodeId: string): number {
     const row = this.db
       .prepare(
-        "SELECT COUNT(*) AS c FROM connections WHERE source_node_id = ? OR target_node_id = ?",
+        "SELECT COUNT(*) AS c FROM relationships WHERE source_node_id = ? OR target_node_id = ?",
       )
       .get(nodeId, nodeId) as { c: number };
     return row.c;

@@ -38,7 +38,7 @@ export interface GraphNode {
   bundle?: GraphNodeBundle;
 }
 
-export interface GraphConnection {
+export interface GraphRelationship {
   id: string;
   source: string;
   target: string;
@@ -48,7 +48,7 @@ export interface GraphConnection {
 
 export interface GraphSnapshot {
   nodes: GraphNode[];
-  connections: GraphConnection[];
+  relationships: GraphRelationship[];
 }
 
 export interface GraphLodSnapshot {
@@ -75,7 +75,7 @@ interface ActiveGraphNode {
   labels: string[];
 }
 
-interface ActiveGraphConnection {
+interface ActiveGraphRelationship {
   id: string;
   sourceNodeId: string;
   targetNodeId: string;
@@ -84,7 +84,7 @@ interface ActiveGraphConnection {
 
 function collectActiveGraphData(db: GraphDatabase): {
   nodes: ActiveGraphNode[];
-  connections: ActiveGraphConnection[];
+  relationships: ActiveGraphRelationship[];
 } {
   const allNodes = db.listNodesForGraphExport();
   const excludedIds = new Set<string>();
@@ -94,17 +94,17 @@ function collectActiveGraphData(db: GraphDatabase): {
   }
 
   const nodes = allNodes.filter((node) => !excludedIds.has(node.id));
-  const connections = db.listConnectionsForGraphExport().filter(
-    (connection) =>
-      !excludedIds.has(connection.sourceNodeId) && !excludedIds.has(connection.targetNodeId),
+  const relationships = db.listRelationshipsForGraphExport().filter(
+    (relationship) =>
+      !excludedIds.has(relationship.sourceNodeId) && !excludedIds.has(relationship.targetNodeId),
   );
 
-  return { nodes, connections };
+  return { nodes, relationships };
 }
 
 function reachableNodeIds(
   nodes: ActiveGraphNode[],
-  connections: ActiveGraphConnection[],
+  relationships: ActiveGraphRelationship[],
   anchorId: string,
 ): Set<string> | null {
   const nodeIds = new Set(nodes.map((node) => node.id));
@@ -112,9 +112,9 @@ function reachableNodeIds(
 
   const adjacency = new Map<string, Set<string>>();
   for (const node of nodes) adjacency.set(node.id, new Set());
-  for (const connection of connections) {
-    adjacency.get(connection.sourceNodeId)?.add(connection.targetNodeId);
-    adjacency.get(connection.targetNodeId)?.add(connection.sourceNodeId);
+  for (const relationship of relationships) {
+    adjacency.get(relationship.sourceNodeId)?.add(relationship.targetNodeId);
+    adjacency.get(relationship.targetNodeId)?.add(relationship.sourceNodeId);
   }
 
   const reachable = new Set<string>();
@@ -134,23 +134,23 @@ function reachableNodeIds(
 
 function filterActiveGraphByAnchor(
   nodes: ActiveGraphNode[],
-  connections: ActiveGraphConnection[],
+  relationships: ActiveGraphRelationship[],
   anchorId: string,
-): { nodes: ActiveGraphNode[]; connections: ActiveGraphConnection[] } {
-  const reachable = reachableNodeIds(nodes, connections, anchorId);
-  if (!reachable) return { nodes, connections };
+): { nodes: ActiveGraphNode[]; relationships: ActiveGraphRelationship[] } {
+  const reachable = reachableNodeIds(nodes, relationships, anchorId);
+  if (!reachable) return { nodes, relationships };
 
   return {
     nodes: nodes.filter((node) => reachable.has(node.id)),
-    connections: connections.filter(
-      (connection) =>
-        reachable.has(connection.sourceNodeId) && reachable.has(connection.targetNodeId),
+    relationships: relationships.filter(
+      (relationship) =>
+        reachable.has(relationship.sourceNodeId) && reachable.has(relationship.targetNodeId),
     ),
   };
 }
 
 export function exportFullGraph(db: GraphDatabase): GraphSnapshot {
-  const { nodes, connections } = collectActiveGraphData(db);
+  const { nodes, relationships } = collectActiveGraphData(db);
 
   const graphNodes: GraphNode[] = nodes.map((node) => ({
     id: node.id,
@@ -160,14 +160,14 @@ export function exportFullGraph(db: GraphDatabase): GraphSnapshot {
     group: node.labels[0] ?? "Unknown",
   }));
 
-  const graphConnections: GraphConnection[] = connections.map((connection) => ({
-    id: connection.id,
-    source: connection.sourceNodeId,
-    target: connection.targetNodeId,
-    label: connection.label,
+  const graphRelationships: GraphRelationship[] = relationships.map((relationship) => ({
+    id: relationship.id,
+    source: relationship.sourceNodeId,
+    target: relationship.targetNodeId,
+    label: relationship.label,
   }));
 
-  return { nodes: graphNodes, connections: graphConnections };
+  return { nodes: graphNodes, relationships: graphRelationships };
 }
 
 export function exportExplorerLodGraph(
@@ -178,12 +178,12 @@ export function exportExplorerLodGraph(
   },
 ): GraphLodSnapshot {
   const layerCount = normalizeExplorerLayerCount(options?.layerCount);
-  let { nodes, connections } = collectActiveGraphData(db);
+  let { nodes, relationships } = collectActiveGraphData(db);
   const anchorId = options?.anchorId ?? DEFAULT_GRAPH_EXPLORER_ANCHOR_ID;
   if (anchorId) {
-    ({ nodes, connections } = filterActiveGraphByAnchor(nodes, connections, anchorId));
+    ({ nodes, relationships } = filterActiveGraphByAnchor(nodes, relationships, anchorId));
   }
-  const levels = buildHeuristicLodLevels(nodes, connections, layerCount, anchorId);
+  const levels = buildHeuristicLodLevels(nodes, relationships, layerCount, anchorId);
 
   return {
     layerCount: levels.length,

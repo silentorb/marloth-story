@@ -83,7 +83,7 @@ export function standaloneNodeUrl(nodeId: string, base?: string | URL): string {
 }
 
 export type {
-  GraphConnection,
+  GraphRelationship,
   GraphNode,
   GraphSnapshot,
   GraphLodSnapshot,

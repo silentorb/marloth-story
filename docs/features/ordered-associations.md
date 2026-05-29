@@ -2,7 +2,7 @@
 
 ## Summary
 
-**Ordered associations** are graph connections whose sequence matters. The workspace manages order automatically through dedicated UI—users never edit an `order` field directly. The first configured instance is **Scenes** on the Scenes database node page: scenes are ordered within each book (Product), grouped by Part for display, and reordered via drag-and-drop.
+**Ordered associations** are graph relationships whose sequence matters. The workspace manages order automatically through dedicated UI—users never edit an `order` field directly. The first configured instance is **Scenes** on the Scenes database node page: scenes are ordered within each book (Product), grouped by Part for display, and reordered via drag-and-drop.
 
 ## When to read this
 
@@ -10,7 +10,7 @@ Read this doc when your task involves:
 
 - Scene ordering within a book
 - Drag-and-drop reordering of graph associations
-- The `order` connection property on `IS_A` membership connections
+- The `order` relationship property on `IS_A` membership relationships
 - Extending ordered-association configuration to new node types
 
 For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor UI, read [marloth-editor.md](./marloth-editor.md). For domain semantics (Scene, Part, Product), read [`../ontology.md`](../ontology.md).
@@ -19,11 +19,11 @@ For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor 
 
 ### Core model
 
-- Ordered associations **must** store sequence in a designated connection property (`order` by default) on the membership connection (e.g. `(scene)-[:IS_A {order}]->(Scenes database)`).
+- Ordered associations **must** store sequence in a designated relationship property (`order` by default) on the membership relationship (e.g. `(scene)-[:IS_A {order}]->(Scenes database)`).
 - The `order` property **must** be treated as import/metadata: hidden from all table columns and never exposed as an editable field in the UI.
 - Order **must** be scoped: for scenes, order applies within a **book** (Product), not globally across all scenes in the database.
 - **Grouping** (Part) is a display dimension only; all scenes in a book share one global sequence. Part subsections sort scenes by that book-wide order.
-- Part membership **must** resolve when import created duplicate part nodes: match Scene→`PART` to the canonical Parts-database row by title, then fall back to Part→`SCENES` containment connections.
+- Part membership **must** resolve when import created duplicate part nodes: match Scene→`PART` to the canonical Parts-database row by title, then fall back to Part→`SCENES` containment relationships.
 - Configurations **must** be registered in code (`packages/marloth-db/src/ordered-associations.ts`); v1 has no UI for adding new configs.
 
 ### Scenes configuration (`scenes-by-book`)
@@ -31,9 +31,9 @@ For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor 
 | Setting | Value |
 | --- | --- |
 | Type database | Scenes NotionDatabase (`204dba198db74611b0b49a98dd53e8f5`) |
-| Membership connection | `IS_A` with `order` property |
-| Scope (book tabs) | `PRODUCT` connection from scene → Product |
-| Group (part subsections) | `PART` connection from scene → Part |
+| Membership relationship | `IS_A` with `order` property |
+| Scope (book tabs) | `PRODUCT` relationship from scene → Product |
+| Group (part subsections) | `PART` relationship from scene → Part |
 | Unassigned | Scenes with a Product but no Part appear in an **Unassigned** group at the end |
 
 ### Editor UI (Scenes Items section)
@@ -49,12 +49,12 @@ For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor 
 ### Mutations
 
 - Reorder and part-change operations **must** update the graph via the editor REST API.
-- Only scenes whose `PRODUCT` connection matches the active book scope **may** be mutated.
+- Only scenes whose `PRODUCT` relationship matches the active book scope **may** be mutated.
 - On any move, the system **must** reassign sparse integer order values (`10, 20, 30, …`) to all scenes in the active scope.
 
 ### Import interaction
 
-- Full Notion re-import is **deprecated** for workflow (see [notion-import.md](./notion-import.md)). It would merge connection properties and **could overwrite** manually adjusted `order` values from CSV.
+- Full Notion re-import is **deprecated** for workflow (see [notion-import.md](./notion-import.md)). It would merge relationship properties and **could overwrite** manually adjusted `order` values from CSV.
 - **Authoritative:** graph `order` from ordered-association edits and direct DB updates. Preserve `order` when mining export data into existing rows.
 
 ## Design rationale
@@ -77,7 +77,7 @@ Scenes are the only known use case. A typed configuration registry keeps the fir
 User drag-drop (webview)
   → PATCH /api/ordered-associations/scenes-by-book/move
   → applyOrderedAssociationMove (marloth-db)
-  → upsert IS_A {order} + PART connection
+  → upsert IS_A {order} + PART relationship
   → SQLite data/marloth.sqlite
 ```
 
@@ -94,8 +94,8 @@ GET /api/nodes/:scenesDbId?scope=:productId
 
 - UI for registering new ordered-association configs
 - Creating scenes or parts from the editor
-- Inline editing of non-order connection scalars
-- Syncing Part→`SCENES` reverse connections after reorder
+- Inline editing of non-order relationship scalars
+- Syncing Part→`SCENES` reverse relationships after reorder
 - Per-part local order
 
 ## Verification

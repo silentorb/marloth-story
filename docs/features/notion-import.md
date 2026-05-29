@@ -44,24 +44,24 @@ Each Notion page (`.md`) **must** become a node labeled `NotionPage` with proper
 - `notion_id` — 32-hex id from source filename
 - `source_export` — repo-relative path to exported `.md`
 - `inferred_notion_path` — parent path inside export, when under `exports/`
-- `body` — markdown body (relation property lines removed; converted to connections)
+- `body` — markdown body (relation property lines removed; converted to relationships)
 - `alias` — short title without trailing id suffix
 - Scalar `Key: value` lines before the body **must** be stored as slugified, emoji-stripped property keys
 
 ### Relations
 
-- Notion relation properties (`Label (path.md)` lists) **must** become directed connections to target page nodes.
-- Connection labels **must** be uppercase slug forms of the property name (emoji stripped).
-- Ordered relation lists **should** store `ordinal` on the connection.
+- Notion relation properties (`Label (path.md)` lists) **must** become directed relationships to target page nodes.
+- Relationship labels **must** be uppercase slug forms of the property name (emoji stripped).
+- Ordered relation lists **should** store `ordinal` on the relationship.
 
 ### Database CSV import
 
 For each `*.csv` matching Notion database export naming (`Name {database_id}.csv`, `Name {id}_all.csv`, etc.):
 
 - Emit a `NotionDatabase` node keyed by `database_id`.
-- Each row with a linked Name **must** create an `IS_A` connection from the page to the type (database), carrying scalar column values as connection properties (not on the page node).
-- Rows without a resolvable page **must** create a stub `NotionPage` and an `IS_A` connection (deterministic orphan id); do not store row payloads on the database node.
-- Relation columns **must** become connections from the row's page to targets.
+- Each row with a linked Name **must** create an `IS_A` relationship from the page to the type (database), carrying scalar column values as relationship properties (not on the page node).
+- Rows without a resolvable page **must** create a stub `NotionPage` and an `IS_A` relationship (deterministic orphan id); do not store row payloads on the database node.
+- Relation columns **must** become relationships from the row's page to targets.
 
 ### Manifest and reports
 
@@ -79,7 +79,7 @@ When required data exists only under `./exports/`:
 
 1. Locate the page `.md` or database `.csv` in the archive (see **Source resolution** and mapping tables in [marloth-db.md](./marloth-db.md)).
 2. Parse with existing `packages/notion-importer` helpers (`parse`, `relations`, `indexes`, etc.) or equivalent logic in a one-off script.
-3. **Upsert** only the affected nodes/connections into the current `data/marloth.sqlite` via `GraphDatabase` — no `{ clean: true }`, no whole-tree import.
+3. **Upsert** only the affected nodes/relationships into the current `data/marloth.sqlite` via `GraphDatabase` — no `{ clean: true }`, no whole-tree import.
 4. Spot-check with `getNodeDetail` or SQL; commit the updated sqlite file.
 
 ## Design rationale
@@ -94,7 +94,7 @@ See [marloth-db.md](./marloth-db.md) for graph storage rationale.
 
 ### Emoji stripping on names only
 
-- Property **names** (YAML keys, connection labels) **must** have emojis stripped.
+- Property **names** (YAML keys, relationship labels) **must** have emojis stripped.
 - Property **values** **must not** be altered unless they are clearly property labels.
 
 ## Behavior / pipeline
@@ -104,8 +104,8 @@ High-level stages (see `packages/notion-importer/src/graph-pipeline.ts`):
 1. **Resolve source** — pick export dir/zip; extract zips recursively.
 2. **Open database** — create schema; optional clean rebuild.
 3. **Import pages** — parse each `.md`; upsert `NotionPage` nodes.
-4. **Import relations** — parse relation properties; upsert connections (stub targets if needed).
-5. **Import CSVs** — upsert `NotionDatabase` nodes; row membership and relation connections.
+4. **Import relations** — parse relation properties; upsert relationships (stub targets if needed).
+5. **Import CSVs** — upsert `NotionDatabase` nodes; row membership and relation relationships.
 6. **Write artifacts** — manifest JSON, link report; vacuum database.
 
 ## Inputs / outputs / artifacts

@@ -8,11 +8,11 @@
 ## Terminology
 
 - **Node** — entity in `content/{id}.md` and cache `nodes` / `node_labels`.
-- **Connection** — directed labeled link in `content/connections.json` and cache `connections`.
+- **Relationship** — directed labeled link in `content/relationships.json` and cache `relationships`.
 - **Page** — editor view of a node (`getNodePageDetail`, `node-page-sections.ts`).
 - **NotionPage** / **NotionDatabase** — legacy import labels on nodes.
 
-Cache tables: `nodes`, `node_labels`, `connections` (`SCHEMA_VERSION` 4).
+Cache tables: `nodes`, `node_labels`, `relationships` (`SCHEMA_VERSION` 5).
 
 ## Run
 - Tests: `bun test` (from this directory).

@@ -1,5 +1,5 @@
 import type { GraphDatabase, MarlothWriteContext } from "marloth-db";
-import { mergeNodePropertiesOnContent, syncAfterConnectionsWrite } from "marloth-db";
+import { mergeNodePropertiesOnContent, syncAfterRelationshipsWrite } from "marloth-db";
 import { TYPE_MEMBERSHIP_LABELS, slugifyPropertyKey } from "marloth-db";
 import { databaseMetadataPatch, type NotionReadClient } from "./notion-client";
 import { isNotionHexId, notionIdToHex } from "./notion-ids";
@@ -143,13 +143,13 @@ async function enrichDatabaseRows(
       if (Object.keys(cellPatch).length === 0) continue;
 
       const connections = TYPE_MEMBERSHIP_LABELS.flatMap((label) =>
-        db.listConnectionsFromSource(pageHex, label),
+        db.listRelationshipsFromSource(pageHex, label),
       ).filter((c) => c.targetNodeId === databaseId);
 
       if (dryRun) continue;
 
       for (const connection of connections) {
-        ctx.store.mergeConnectionProperties(
+        ctx.store.mergeRelationshipProperties(
           connection.sourceNodeId,
           connection.targetNodeId,
           connection.label,
@@ -163,6 +163,6 @@ async function enrichDatabaseRows(
   } while (cursor);
 
   if (!dryRun) {
-    syncAfterConnectionsWrite(ctx);
+    syncAfterRelationshipsWrite(ctx);
   }
 }

@@ -5,13 +5,13 @@ import {
   buildHeuristicLodLevelsFromCounts,
   DEFAULT_EXPLORER_LOD_LAYER_COUNT,
   layerTargetVisibleCounts,
-  type LodClusterConnection,
+  type LodClusterRelationship,
   type LodClusterNode,
 } from "./graph-lod-cluster";
 
 function makeTriangleGraph(anchorId = "aaaa0001"): {
   vertices: LodClusterNode[];
-  edges: LodClusterConnection[];
+  edges: LodClusterRelationship[];
   anchorId: string;
 } {
   const vertices: LodClusterNode[] = [
@@ -19,7 +19,7 @@ function makeTriangleGraph(anchorId = "aaaa0001"): {
     { id: "aaaa0002", title: "Beta", path: null, labels: ["NotionPage"] },
     { id: "aaaa0003", title: "Gamma", path: null, labels: ["NotionPage"] },
   ];
-  const edges: LodClusterConnection[] = [
+  const edges: LodClusterRelationship[] = [
     { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
     { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", label: "LINKS" },
     { id: "e3", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0003", label: "LINKS" },
@@ -29,7 +29,7 @@ function makeTriangleGraph(anchorId = "aaaa0001"): {
 
 function makeStarGraph(): {
   vertices: LodClusterNode[];
-  edges: LodClusterConnection[];
+  edges: LodClusterRelationship[];
   anchorId: string;
 } {
   const anchorId = "anchor01";
@@ -40,7 +40,7 @@ function makeStarGraph(): {
     { id: "leaf0002", title: "Leaf2", path: null, labels: ["NotionPage"] },
     { id: "leaf0003", title: "Leaf3", path: null, labels: ["NotionPage"] },
   ];
-  const edges: LodClusterConnection[] = [
+  const edges: LodClusterRelationship[] = [
     { id: "e1", sourceNodeId: anchorId, targetNodeId: "hub00001", label: "LINKS" },
     { id: "e2", sourceNodeId: "hub00001", targetNodeId: "leaf0001", label: "LINKS" },
     { id: "e3", sourceNodeId: "hub00001", targetNodeId: "leaf0002", label: "LINKS" },
@@ -52,7 +52,7 @@ function makeStarGraph(): {
 
 function makeChainGraph(): {
   vertices: LodClusterNode[];
-  edges: LodClusterConnection[];
+  edges: LodClusterRelationship[];
   anchorId: string;
 } {
   const anchorId = "aaaa0001";
@@ -62,7 +62,7 @@ function makeChainGraph(): {
     { id: "aaaa0003", title: "C", path: null, labels: ["NotionPage"] },
     { id: "aaaa0004", title: "D", path: null, labels: ["NotionPage"] },
   ];
-  const edges: LodClusterConnection[] = [
+  const edges: LodClusterRelationship[] = [
     { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
     { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", label: "LINKS" },
     { id: "e3", sourceNodeId: "aaaa0003", targetNodeId: "aaaa0004", label: "LINKS" },
@@ -72,7 +72,7 @@ function makeChainGraph(): {
 
 function makeLongChainGraph(): {
   vertices: LodClusterNode[];
-  edges: LodClusterConnection[];
+  edges: LodClusterRelationship[];
   anchorId: string;
 } {
   const anchorId = "aaaa0001";
@@ -84,7 +84,7 @@ function makeLongChainGraph(): {
     { id: "aaaa0005", title: "E", path: null, labels: ["NotionPage"] },
     { id: "aaaa0006", title: "F", path: null, labels: ["NotionPage"] },
   ];
-  const edges: LodClusterConnection[] = [
+  const edges: LodClusterRelationship[] = [
     { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
     { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", label: "LINKS" },
     { id: "e3", sourceNodeId: "aaaa0003", targetNodeId: "aaaa0004", label: "LINKS" },

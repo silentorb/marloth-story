@@ -42,7 +42,7 @@ describe("integration", () => {
     expect(page?.properties.title).toBe("Test Page");
     const rel = db.getNode("0123456789abcdef0123456789abcdee");
     expect(rel?.properties.body).toContain("Body text");
-    const connection = db.getConnection(
+    const connection = db.getRelationship(
       "0123456789abcdef0123456789abcdef:LINKS:0123456789abcdef0123456789abcdee",
     );
     expect(connection?.label).toBe("LINKS");

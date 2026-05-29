@@ -11,7 +11,7 @@ function titleFromNode(db: GraphDatabase, id: string): string {
   return typeof title === "string" && title.trim() ? title.trim() : "Untitled";
 }
 
-/** Prefetch: nodeId -> count of SCENES connections */
+/** Prefetch: nodeId -> count of SCENES relationships */
 export function buildAllSceneCountPrefetch(ctx: DynamicResolverContext): Map<string, number> {
   const counts = new Map<string, number>();
   for (const nodeId of ctx.rowNodeIds) {
@@ -21,7 +21,7 @@ export function buildAllSceneCountPrefetch(ctx: DynamicResolverContext): Map<str
 }
 
 function dbCountConnections(db: GraphDatabase, sourceNodeId: string, label: string): number {
-  return db.listConnectionsFromSource(sourceNodeId, label).length;
+  return db.listRelationshipsFromSource(sourceNodeId, label).length;
 }
 
 export function resolveAllSceneCount(
@@ -52,9 +52,9 @@ export function buildSceneCountByProductPrefetch(
 
   for (const nodeId of ctx.rowNodeIds) {
     const sceneMap = new Map<string, string[]>();
-    for (const sceneConnection of ctx.db.listConnectionsFromSource(nodeId, scenesLabel)) {
+    for (const sceneConnection of ctx.db.listRelationshipsFromSource(nodeId, scenesLabel)) {
       const products = ctx.db
-        .listConnectionsFromSource(sceneConnection.targetNodeId, productLabel)
+        .listRelationshipsFromSource(sceneConnection.targetNodeId, productLabel)
         .map((c) => c.targetNodeId);
       if (products.length > 0) {
         sceneMap.set(sceneConnection.targetNodeId, products);
@@ -110,7 +110,7 @@ export function buildWeightedUsePrefetch(
   const priorityByFeature = new Map<string, number>();
   if (featuresDbId) {
     for (const label of TYPE_MEMBERSHIP_LABELS) {
-      for (const connection of ctx.db.listConnectionsToTarget(featuresDbId, label)) {
+      for (const connection of ctx.db.listRelationshipsToTarget(featuresDbId, label)) {
         priorityByFeature.set(connection.sourceNodeId, priorityWeight(connection.properties.priority));
       }
     }
@@ -119,7 +119,7 @@ export function buildWeightedUsePrefetch(
   const sums = new Map<string, number>();
   for (const nodeId of ctx.rowNodeIds) {
     let sum = 0;
-    for (const featConnection of ctx.db.listConnectionsFromSource(nodeId, featuresLabel)) {
+    for (const featConnection of ctx.db.listRelationshipsFromSource(nodeId, featuresLabel)) {
       sum += priorityByFeature.get(featConnection.targetNodeId) ?? 0;
     }
     sums.set(nodeId, sum);
@@ -152,7 +152,7 @@ export function buildWonderPrefetch(
 
   const themedFeatures = new Set<string>();
   if (themeTargetId) {
-    for (const connection of ctx.db.listConnectionsToTarget(themeTargetId)) {
+    for (const connection of ctx.db.listRelationshipsToTarget(themeTargetId)) {
       if (connection.label === themeLabel) themedFeatures.add(connection.sourceNodeId);
     }
   }
@@ -160,7 +160,7 @@ export function buildWonderPrefetch(
   const counts = new Map<string, number>();
   for (const nodeId of ctx.rowNodeIds) {
     let count = 0;
-    for (const featConnection of ctx.db.listConnectionsFromSource(nodeId, featuresLabel)) {
+    for (const featConnection of ctx.db.listRelationshipsFromSource(nodeId, featuresLabel)) {
       if (themedFeatures.has(featConnection.targetNodeId)) count++;
     }
     counts.set(nodeId, count);

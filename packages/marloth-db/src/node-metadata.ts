@@ -12,7 +12,7 @@ export interface NodeBacklink {
 export interface NodePageMetadata {
   createdAt: string | null;
   modifiedAt: string | null;
-  connectionCount: number;
+  relationshipCount: number;
   backlinks: NodeBacklink[];
 }
 
@@ -59,7 +59,7 @@ export function getNodePageMetadata(db: GraphDatabase, id: string): NodePageMeta
   return {
     createdAt: isoTimestampFromProperties(node.properties, "created_at"),
     modifiedAt: isoTimestampFromProperties(node.properties, "modified_at"),
-    connectionCount: db.countIncidentConnections(id),
+    relationshipCount: db.countIncidentRelationships(id),
     backlinks,
   };
 }

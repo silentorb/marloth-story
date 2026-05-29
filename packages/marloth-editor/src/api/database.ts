@@ -8,7 +8,7 @@ import {
   updateNodeBody,
   updateNodeTitle,
   updateDatabaseRowProperty,
-  updateOutgoingConnectionProperty,
+  updateOutgoingRelationshipProperty,
   applyOrderedAssociationMove,
   archiveNode as archiveNodeInDb,
   deleteNode as deleteNodeInDb,
@@ -44,14 +44,14 @@ export interface EditorDatabase {
     nodeId: string,
     propertyKey: string,
     value: string | null,
-  ): import("marloth-db").ConnectionPropertyUpdateError | null;
-  updateOutgoingConnectionProperty(
+  ): import("marloth-db").RelationshipPropertyUpdateError | null;
+  updateOutgoingRelationshipProperty(
     nodeId: string,
     label: string,
     targetId: string,
     propertyKey: string,
     value: string | null,
-  ): import("marloth-db").ConnectionPropertyUpdateError | null;
+  ): import("marloth-db").RelationshipPropertyUpdateError | null;
   deleteNode(id: string): NodeLifecycleError | null;
   archiveNode(id: string): NodeLifecycleError | null;
   getGraphFull(): GraphSnapshot;
@@ -105,14 +105,14 @@ export function openEditorDatabase(
     ) {
       return updateDatabaseRowProperty(writeCtx, databaseId, nodeId, propertyKey, value);
     },
-    updateOutgoingConnectionProperty(
+    updateOutgoingRelationshipProperty(
       nodeId: string,
       label: string,
       targetId: string,
       propertyKey: string,
       value: string | null,
     ) {
-      return updateOutgoingConnectionProperty(
+      return updateOutgoingRelationshipProperty(
         writeCtx,
         nodeId,
         targetId,

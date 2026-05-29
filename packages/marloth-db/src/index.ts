@@ -1,5 +1,5 @@
-export { GraphDatabase, connectionId } from "./graph";
-export type { Connection, GraphCounts, Node, Properties, PropertyValue } from "./graph";
+export { GraphDatabase, relationshipId } from "./graph";
+export type { Relationship, GraphCounts, Node, Properties, PropertyValue } from "./graph";
 export {
   ARCHIVE_NOTION_PATH_PREFIX,
   isArchivedNotionPath,
@@ -19,14 +19,14 @@ export {
   computeRelevanceComponents,
 } from "./graph-lod-cluster";
 export type {
-  GraphConnection,
+  GraphRelationship,
   GraphNode,
   GraphNodeBundle,
   GraphNodeRelevance,
   GraphSnapshot,
   GraphLodSnapshot,
 } from "./graph-export";
-export type { LodClusterConnection, LodClusterNode } from "./graph-lod-cluster";
+export type { LodClusterRelationship, LodClusterNode } from "./graph-lod-cluster";
 export {
   DEFAULT_HOME_NODE_ID,
   getNodeDetail,
@@ -65,9 +65,9 @@ export {
 export type { PriorityValue } from "./property-enums";
 export {
   updateDatabaseRowProperty,
-  updateOutgoingConnectionProperty,
-} from "./connection-property-update";
-export type { ConnectionPropertyUpdateError } from "./connection-property-update";
+  updateOutgoingRelationshipProperty,
+} from "./relationship-property-update";
+export type { RelationshipPropertyUpdateError } from "./relationship-property-update";
 export {
   parseNotionSchema,
   parseNotionViews,
@@ -92,9 +92,9 @@ export type { NodeBacklink, NodePageMetadata } from "./node-metadata";
 export { buildPropertiesSection } from "./node-type-properties";
 export type { PropertiesSection } from "./node-type-properties";
 export {
-  findMissingTypeMembershipConnections,
+  findMissingTypeMembershipRelationships,
   findNotionDatabaseByTitle,
-  findSpuriousTypeMembershipConnections,
+  findSpuriousTypeMembershipRelationships,
   findNodeScalarsOnTypedNodes,
   typeDatabaseTitleFromPath,
   typeFolderFromPath,
@@ -133,7 +133,7 @@ export type { MarlothWriteContext } from "./content/write-context";
 export {
   mergeNodePropertiesOnContent,
   openMarlothWriteContext,
-  syncAfterConnectionsWrite,
+  syncAfterRelationshipsWrite,
   syncAfterNodeWrite,
 } from "./content/write-context";
 export {

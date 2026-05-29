@@ -1,5 +1,5 @@
 import type { MarlothWriteContext } from "./content/write-context";
-import { syncAfterConnectionsWrite, syncAfterNodeWrite } from "./content/write-context";
+import { syncAfterRelationshipsWrite, syncAfterNodeWrite } from "./content/write-context";
 import { ARCHIVE_NOTION_PATH_PREFIX, isArchivedNotionPath } from "./archive-path";
 import { DEFAULT_HOME_NODE_ID } from "./queries";
 
@@ -40,9 +40,9 @@ export function deleteNode(ctx: MarlothWriteContext, id: string): NodeLifecycleE
   if (isProtectedNodeId(id)) return "protected";
   if (!ctx.store.readNode(id)) return "not_found";
   ctx.store.deleteNodeFile(id);
-  ctx.store.removeIncidentConnections(id);
+  ctx.store.removeIncidentRelationships(id);
   syncAfterNodeWrite(ctx, id);
-  syncAfterConnectionsWrite(ctx);
+  syncAfterRelationshipsWrite(ctx);
   ctx.sync.syncNode(id);
   return null;
 }
@@ -58,8 +58,8 @@ export function archiveNode(ctx: MarlothWriteContext, id: string): NodeLifecycle
   const title = titleFromProperties(node.properties);
   const archivePath = archivePathForNode(currentPath, title);
   ctx.store.mergeNodeProperties(id, { inferred_notion_path: archivePath });
-  ctx.store.upsertConnection(id, DEFAULT_ARCHIVE_NODE_ID, "PART");
+  ctx.store.upsertRelationship(id, DEFAULT_ARCHIVE_NODE_ID, "PART");
   syncAfterNodeWrite(ctx, id);
-  syncAfterConnectionsWrite(ctx);
+  syncAfterRelationshipsWrite(ctx);
   return null;
 }

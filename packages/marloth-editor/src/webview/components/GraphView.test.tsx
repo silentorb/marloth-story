@@ -64,7 +64,7 @@ describe("GraphView", () => {
     const { container } = renderGraphView();
 
     await waitFor(() => {
-      expect(container.textContent).toMatch(/\d+ nodes · \d+ connections/);
+      expect(container.textContent).toMatch(/\d+ nodes · \d+ relationships/);
     });
 
     expect(container.querySelector(".marloth-graph-canvas")).toBeTruthy();

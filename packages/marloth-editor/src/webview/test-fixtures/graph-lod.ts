@@ -19,7 +19,7 @@ export function makeGraphLodSnapshot(
             labels: ["NotionPage"],
           },
         ],
-        connections: [],
+        relationships: [],
       },
       {
         nodes: [

@@ -130,7 +130,7 @@ function buildNotionViewDetail(
   db: GraphDatabase,
   databaseId: string,
   databaseTitle: string,
-  incoming: ReturnType<GraphDatabase["listConnectionsToTarget"]>,
+  incoming: ReturnType<GraphDatabase["listRelationshipsToTarget"]>,
   notionViews: NotionViewDefinition[],
   requestedView?: string,
 ): DatabaseViewDetail {
@@ -255,7 +255,7 @@ function buildLegacyViewDetail(
   db: GraphDatabase,
   databaseId: string,
   databaseTitle: string,
-  incoming: ReturnType<GraphDatabase["listConnectionsToTarget"]>,
+  incoming: ReturnType<GraphDatabase["listRelationshipsToTarget"]>,
   requestedView?: string,
 ): DatabaseViewDetail {
   const connectionViews = incoming
@@ -354,7 +354,7 @@ export function getDatabaseViewDetail(
   if (!database || !database.labels.includes("NotionDatabase")) return null;
 
   const incoming = TYPE_MEMBERSHIP_LABELS.flatMap((label) =>
-    db.listConnectionsToTarget(databaseId, label),
+    db.listRelationshipsToTarget(databaseId, label),
   );
 
   const title = titleFromProperties(database.properties);

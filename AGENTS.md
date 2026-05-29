@@ -9,13 +9,13 @@ This workspace supports a **design-heavy, highly traceable** writing process for
 3. Pioneer a composite of subgenres and writing techniques.
 4. Capture general writing and design ideas that may benefit others later.
 
-The git-tracked design corpus in `./content/` is a flat property graph (markdown nodes + JSON for connections and dynamic fields), with a local SQLite cache under `./data/` for fast queries.
+The git-tracked design corpus in `./content/` is a flat property graph (markdown nodes + JSON for relationships and dynamic fields), with a local SQLite cache under `./data/` for fast queries.
 
 ## Project Context
 - This repository contains the Marloth Story project, related to the Marloth series of fantasy novels and overlapping game-design work.
 - Keep updates aligned with the repository's current scope and documentation.
 - The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs live in `./docs/features/` (see Terminology below). The **design ontology** lives at [`docs/ontology.md`](./docs/ontology.md).
-- The `./content` directory is the **canonical store**: one `{nodeId}.md` per node (YAML frontmatter + markdown body), plus `connections.json` and `dynamic-fields.json`. The directory is **flat** (no subfolders).
+- The `./content` directory is the **canonical store**: one `{nodeId}.md` per node (YAML frontmatter + markdown body), plus `relationships.json` and `dynamic-fields.json`. The directory is **flat** (no subfolders).
 - The `./data/marloth.sqlite` file is a **local query cache** (gitignored). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
 - The `./exports/` directory holds **archival** Notion export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
@@ -27,7 +27,7 @@ The git-tracked design corpus in `./content/` is a flat property graph (markdown
 | --- | --- |
 | **Project feature** | A workspace capability documented in `./docs/features/` (e.g. notion import, marloth-db). Use this phrase when discussing tooling or agent specs—not graph nodes. |
 | **Node** | Any entity in the design graph (SQLite `nodes` table). Replaces legacy *record* / *vertex* in docs and API. |
-| **Connection** | A directed, labeled relationship between two nodes (SQLite `connections` table). Replaces legacy *edge*. |
+| **Relationship** | A directed, labeled relationship between two nodes (SQLite `relationships` table). Replaces legacy *edge*. |
 | **Page** | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a Notion export file. |
 | **Feature** (unqualified) | A **design node** (story/game feature idea), usually under `Marloth/Features/`, unless context clearly means a project feature. |
 | **NotionPage** / **NotionDatabase** | Legacy **import labels** on nodes (`node_labels`). Keep these names when referring to stored label values or Notion mapping—not for general “page” UI wording. |
@@ -36,7 +36,7 @@ The git-tracked design corpus in `./content/` is a flat property graph (markdown
 
 Imported Notion data already separates nodes somewhat by **product** (books, game design, and related work share inspirations and structure). Expect the graph to be sliced along **multiple dimensions** over time—not only product.
 
-**Future (not yet implemented):** some relationships should be **weighted**, not boolean. Example: a feature–inspiration link might be strong for one inspiration and weak for another. Current connections are all-or-nothing; weighted associations will likely live as numeric properties on connections (e.g. `weight`) when implemented.
+**Future (not yet implemented):** some relationships should be **weighted**, not boolean. Example: a feature–inspiration link might be strong for one inspiration and weak for another. Current relationships are all-or-nothing; weighted associations will likely live as numeric properties on relationships (e.g. `weight`) when implemented.
 
 ## Graph data workflow
 
@@ -45,7 +45,7 @@ The flat `./content/` tree is **authoritative and git-tracked**. Notion import w
 | Task | Do | Do not |
 | --- | --- | --- |
 | Add or edit nodes, bodies, titles | Edit `content/{nodeId}.md` or use the marloth editor / `ContentStore` (`packages/marloth-db`) | Edit `data/marloth.sqlite` directly |
-| Add or edit connections | Edit `content/connections.json` or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files |
+| Add or edit relationships | Edit `content/relationships.json` or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files |
 | Dynamic field bindings | Edit `content/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts` | Use removed `dynamic_*` SQLite overlay tables |
 | Refresh local cache | `bun run content:sync` or start `editor:api` (rebuilds cache + watches `./content`) | Commit `data/marloth.sqlite` |
 | One-time SQLite → content | `bun run content:export` (from existing `data/marloth.sqlite` if present) | — |
@@ -75,7 +75,7 @@ For **design data** (what nodes mean, how they relate conceptually), read [`docs
 
 | If your task involves… | Read |
 | --- | --- |
-| Design domain model, node types, connections, traceability | [`docs/ontology.md`](./docs/ontology.md) |
+| Design domain model, node types, relationships, traceability | [`docs/ontology.md`](./docs/ontology.md) |
 | SQLite property graph, `data/marloth.sqlite`, `packages/marloth-db/` | [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) (+ ontology when interpreting data) |
 | Web markdown editor, `packages/marloth-editor/`, VS Code graph editing | [`docs/features/marloth-editor.md`](./docs/features/marloth-editor.md) |
 | Graph Explorer, LOD layers, anchor-scoped graph viz | [`docs/features/graph-explorer.md`](./docs/features/graph-explorer.md) |

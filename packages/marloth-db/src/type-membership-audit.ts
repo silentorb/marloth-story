@@ -1,4 +1,4 @@
-import type { GraphDatabase, Connection, Properties } from "./graph";
+import type { GraphDatabase, Relationship, Properties } from "./graph";
 import { IS_A_LABEL, TYPE_MEMBERSHIP_LABELS } from "./labels";
 
 /** Node properties that are not database row scalars. */
@@ -115,14 +115,14 @@ export function expectedTypeDatabaseForPage(
   return { databaseId, databaseTitle, path };
 }
 
-export function findTypeMembershipConnection(
+export function findTypeMembershipRelationship(
   db: GraphDatabase,
   nodeId: string,
   databaseId: string,
-): Connection | null {
+): Relationship | null {
   for (const label of TYPE_MEMBERSHIP_LABELS) {
     const connection = db
-      .listConnectionsFromSource(nodeId, label)
+      .listRelationshipsFromSource(nodeId, label)
       .find((c) => c.targetNodeId === databaseId);
     if (connection) return connection;
   }
@@ -149,7 +149,7 @@ export function scalarPropertiesFromNode(
   return scalars;
 }
 
-export function findSpuriousTypeMembershipConnections(db: GraphDatabase): SpuriousTypeMembership[] {
+export function findSpuriousTypeMembershipRelationships(db: GraphDatabase): SpuriousTypeMembership[] {
   const spurious: SpuriousTypeMembership[] = [];
 
   for (const node of db.listNodesForGraphExport()) {
@@ -159,7 +159,7 @@ export function findSpuriousTypeMembershipConnections(db: GraphDatabase): Spurio
     if (!expected) continue;
 
     for (const label of TYPE_MEMBERSHIP_LABELS) {
-      for (const connection of db.listConnectionsFromSource(node.id, label)) {
+      for (const connection of db.listRelationshipsFromSource(node.id, label)) {
         if (connection.targetNodeId === expected.databaseId) continue;
 
         const spuriousDatabase = db.getNode(connection.targetNodeId);
@@ -184,7 +184,7 @@ export function findSpuriousTypeMembershipConnections(db: GraphDatabase): Spurio
   return spurious.sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: "base" }));
 }
 
-export function findMissingTypeMembershipConnections(db: GraphDatabase): MissingTypeMembership[] {
+export function findMissingTypeMembershipRelationships(db: GraphDatabase): MissingTypeMembership[] {
   const missing: MissingTypeMembership[] = [];
 
   for (const node of db.listNodesForGraphExport()) {
@@ -193,7 +193,7 @@ export function findMissingTypeMembershipConnections(db: GraphDatabase): Missing
     const expected = expectedTypeDatabaseForPage(db, node.id);
     if (!expected) continue;
 
-    if (findTypeMembershipConnection(db, node.id, expected.databaseId)) continue;
+    if (findTypeMembershipRelationship(db, node.id, expected.databaseId)) continue;
 
     missing.push({
       nodeId: node.id,
@@ -216,7 +216,7 @@ export function findNodeScalarsOnTypedNodes(db: GraphDatabase): NodeScalarOnType
     const expected = expectedTypeDatabaseForPage(db, node.id);
     if (!expected) continue;
 
-    if (!findTypeMembershipConnection(db, node.id, expected.databaseId)) continue;
+    if (!findTypeMembershipRelationship(db, node.id, expected.databaseId)) continue;
 
     const page = db.getNode(node.id);
     if (!page) continue;
@@ -239,7 +239,7 @@ export function findNodeScalarsOnTypedNodes(db: GraphDatabase): NodeScalarOnType
 export function maxRowIndexForDatabase(db: GraphDatabase, databaseId: string): number {
   let max = -1;
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    for (const connection of db.listConnectionsToTarget(databaseId, label)) {
+    for (const connection of db.listRelationshipsToTarget(databaseId, label)) {
       const raw = connection.properties.row_index;
       const index =
         typeof raw === "number" ? raw : Number.parseInt(String(raw ?? ""), 10);
@@ -249,7 +249,7 @@ export function maxRowIndexForDatabase(db: GraphDatabase, databaseId: string): n
   return max;
 }
 
-export function mergeNodeScalarsOntoConnectionProperties(
+export function mergeNodeScalarsOntoRelationshipProperties(
   connectionProperties: Properties,
   nodeScalars: Record<string, string>,
 ): Properties {

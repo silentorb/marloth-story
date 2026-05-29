@@ -40,12 +40,12 @@ describe("node-type-properties", () => {
     invalidateDynamicFieldsCache();
     db.upsertNode(CHAR_DB, ["NotionDatabase"], { title: "Characters" });
     db.upsertNode(character, ["NotionPage"], { title: "James" });
-    db.upsertConnection(character, CHAR_DB, IS_A_LABEL, { row_index: 0, priority: "High" });
+    db.upsertRelationship(character, CHAR_DB, IS_A_LABEL, { row_index: 0, priority: "High" });
 
     db.upsertNode(scene1, ["NotionPage"], { title: "Scene A" });
     db.upsertNode(scene2, ["NotionPage"], { title: "Scene B" });
-    db.upsertConnection(character, scene1, "SCENES", {});
-    db.upsertConnection(character, scene2, "SCENES", {});
+    db.upsertRelationship(character, scene1, "SCENES", {});
+    db.upsertRelationship(character, scene2, "SCENES", {});
 
     const properties = buildPropertiesSection(db, character);
     expect(properties).toMatchObject({

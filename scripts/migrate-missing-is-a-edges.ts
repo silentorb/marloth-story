@@ -8,13 +8,13 @@
 import { GraphDatabase } from "../packages/marloth-db/src/graph";
 import {
   expectedTypeDatabaseForPage,
-  findMissingTypeMembershipConnections,
-  findSpuriousTypeMembershipConnections,
-  findTypeMembershipConnection,
+  findMissingTypeMembershipRelationships,
+  findSpuriousTypeMembershipRelationships,
+  findTypeMembershipRelationship,
   findNodeScalarsOnTypedNodes,
   IS_A_LABEL,
   maxRowIndexForDatabase,
-  mergeNodeScalarsOntoConnectionProperties,
+  mergeNodeScalarsOntoRelationshipProperties,
   scalarPropertiesFromNode,
   setNodeProperties,
   nodePropertiesWithoutScalars,
@@ -25,8 +25,8 @@ const dryRun = process.argv.includes("--dry-run");
 const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";
 const db = new GraphDatabase(dbPath);
 
-const missingBefore = findMissingTypeMembershipConnections(db);
-const spuriousBefore = findSpuriousTypeMembershipConnections(db);
+const missingBefore = findMissingTypeMembershipRelationships(db);
+const spuriousBefore = findSpuriousTypeMembershipRelationships(db);
 const nodeScalarsBefore = findNodeScalarsOnTypedNodes(db);
 
 let connectionsRemoved = 0;
@@ -37,7 +37,7 @@ for (const row of spuriousBefore) {
       `[dry-run] remove ${row.connectionLabel} ${row.title} (${row.nodeId}) -> ${row.spuriousDatabaseTitle} (expected ${row.expectedDatabaseTitle})`,
     );
   } else {
-    db.deleteConnection(row.nodeId, row.spuriousDatabaseId, row.connectionLabel);
+    db.deleteRelationship(row.nodeId, row.spuriousDatabaseId, row.connectionLabel);
   }
 }
 
@@ -66,10 +66,10 @@ for (const node of db.listNodesForGraphExport()) {
   if (!typedNode) continue;
 
   const nodeScalars = scalarPropertiesFromNode(typedNode.properties);
-  let connection = findTypeMembershipConnection(db, node.id, expected.databaseId);
+  let connection = findTypeMembershipRelationship(db, node.id, expected.databaseId);
 
   if (!connection) {
-    const connectionProps = mergeNodeScalarsOntoConnectionProperties(
+    const connectionProps = mergeNodeScalarsOntoRelationshipProperties(
       {
         view: "all",
         row_index: allocateRowIndex(expected.databaseId),
@@ -86,11 +86,11 @@ for (const node of db.listNodesForGraphExport()) {
         `[dry-run] create IS_A ${node.title} (${node.id}) -> ${expected.databaseTitle}: ${JSON.stringify(connectionProps)}`,
       );
     } else {
-      db.upsertConnection(node.id, expected.databaseId, IS_A_LABEL, connectionProps);
-      connection = findTypeMembershipConnection(db, node.id, expected.databaseId);
+      db.upsertRelationship(node.id, expected.databaseId, IS_A_LABEL, connectionProps);
+      connection = findTypeMembershipRelationship(db, node.id, expected.databaseId);
     }
   } else if (Object.keys(nodeScalars).length > 0) {
-    const merged = mergeNodeScalarsOntoConnectionProperties(connection.properties, nodeScalars);
+    const merged = mergeNodeScalarsOntoRelationshipProperties(connection.properties, nodeScalars);
     if (merged.priority !== undefined || "priority" in merged) {
       merged.priority = coalescePriorityValue(merged.priority);
     }
@@ -102,7 +102,7 @@ for (const node of db.listNodesForGraphExport()) {
           `[dry-run] merge node scalars onto IS_A for ${node.title}: ${JSON.stringify(nodeScalars)}`,
         );
       } else {
-        db.mergeConnectionProperties(connection.id, merged);
+        db.mergeRelationshipProperties(connection.id, merged);
       }
     }
   }
@@ -132,8 +132,8 @@ console.log(
 );
 
 if (!dryRun) {
-  const spuriousAfter = findSpuriousTypeMembershipConnections(db);
-  const missingAfter = findMissingTypeMembershipConnections(db);
+  const spuriousAfter = findSpuriousTypeMembershipRelationships(db);
+  const missingAfter = findMissingTypeMembershipRelationships(db);
   const nodeScalarsAfter = findNodeScalarsOnTypedNodes(db);
   console.log(
     `After: ${spuriousAfter.length} spurious IS_A, ${missingAfter.length} missing IS_A, ${nodeScalarsAfter.length} nodes with node scalars`,

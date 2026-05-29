@@ -20,7 +20,7 @@ describe("database-view", () => {
     const databaseId = "db12345678901234567890123456789012";
     db.upsertNode(databaseId, ["NotionDatabase"], { title: "Features" });
     db.upsertNode("page1", ["NotionPage"], { title: "Desperation" });
-    db.upsertConnection("page1", databaseId, IS_A_LABEL, {
+    db.upsertRelationship("page1", databaseId, IS_A_LABEL, {
       view: "all",
       row_index: 0,
       priority: "High",
@@ -58,7 +58,7 @@ describe("database-view", () => {
     const databaseId = "db22345678901234567890123456789012";
     db.upsertNode(databaseId, ["NotionDatabase"], { title: "Features" });
     db.upsertNode("page2", ["NotionPage"], { title: "Peace in the eye of the storm" });
-    db.upsertConnection("page2", databaseId, IS_A_LABEL, {
+    db.upsertRelationship("page2", databaseId, IS_A_LABEL, {
       view: "default",
       row_index: 0,
       row_name: "Stale CSV label",
@@ -97,8 +97,8 @@ describe("database-view", () => {
     });
     db.upsertNode("page3", ["NotionPage"], { title: "Child feature" });
     db.upsertNode(parentId, ["NotionPage"], { title: "Parent feature" });
-    db.upsertConnection("page3", databaseId, IS_A_LABEL, { row_index: 0 });
-    db.upsertConnection("page3", parentId, "PARENTS", {
+    db.upsertRelationship("page3", databaseId, IS_A_LABEL, { row_index: 0 });
+    db.upsertRelationship("page3", parentId, "PARENTS", {
       ordinal: 0,
       via_database: databaseId,
     });

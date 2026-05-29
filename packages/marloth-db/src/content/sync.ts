@@ -10,7 +10,7 @@ import {
 } from "./dynamic-fields-file";
 import { bodyFromNode } from "./node-file";
 import {
-  CONNECTIONS_FILENAME,
+  RELATIONSHIPS_FILENAME,
   DYNAMIC_FIELDS_FILENAME,
   dynamicFieldsFilePath,
   NODE_FILE_PATTERN,
@@ -115,7 +115,7 @@ export class CacheSync {
       if (!existsSync(path)) return;
       max = Math.max(max, statSync(path).mtimeMs);
     };
-    scan(CONNECTIONS_FILENAME);
+    scan(RELATIONSHIPS_FILENAME);
     scan(DYNAMIC_FIELDS_FILENAME);
     try {
       for (const name of readdirSync(this.contentDir)) {
@@ -139,7 +139,7 @@ export class CacheSync {
   fullRebuild(): void {
     this.applying = true;
     try {
-      this.db.runExec("DELETE FROM connections");
+      this.db.runExec("DELETE FROM relationships");
       this.db.runExec("DELETE FROM node_labels");
       this.db.runExec("DELETE FROM nodes");
 
@@ -151,8 +151,8 @@ export class CacheSync {
         this.db.upsertNode(node.id, node.labels, props);
       }
 
-      for (const connection of this.store.readConnections()) {
-        this.db.upsertConnection(
+      for (const connection of this.store.readRelationships()) {
+        this.db.upsertRelationship(
           connection.sourceNodeId,
           connection.targetNodeId,
           connection.label,
@@ -189,13 +189,13 @@ export class CacheSync {
     }
   }
 
-  syncConnections(): void {
+  syncRelationships(): void {
     if (this.applying) return;
     this.applying = true;
     try {
-      this.db.runExec("DELETE FROM connections");
-      for (const connection of this.store.readConnections()) {
-        this.db.upsertConnection(
+      this.db.runExec("DELETE FROM relationships");
+      for (const connection of this.store.readRelationships()) {
+        this.db.upsertRelationship(
           connection.sourceNodeId,
           connection.targetNodeId,
           connection.label,
@@ -210,8 +210,8 @@ export class CacheSync {
   syncFile(relativeName: string): void {
     if (this.applying) return;
 
-    if (relativeName === CONNECTIONS_FILENAME) {
-      this.syncConnections();
+    if (relativeName === RELATIONSHIPS_FILENAME) {
+      this.syncRelationships();
       this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
       return;
     }

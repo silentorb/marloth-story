@@ -15,8 +15,8 @@ Sum of priority weights for all Features linked to an Inspiration.
 
 For each inspiration row:
 
-1. Follow outgoing `FEATURES` connections from the inspiration page to feature pages.
-2. For each feature page, read the Features database membership connection `(feature)-[:IS_A]->(Features DB)` and its `priority` property.
+1. Follow outgoing `FEATURES` relationships from the inspiration page to feature pages.
+2. For each feature page, read the Features database membership relationship `(feature)-[:IS_A]->(Features DB)` and its `priority` property.
 3. Map priority to weight:
 
 | Priority | Weight |
@@ -54,7 +54,7 @@ weighted_use(inspiration) =
 
 ## Replaces legacy field
 
-Notion rollup **Weighted Use** (`weighted_use` on `IS_A` connection properties). No longer depends on Features **Weight** formula snapshots.
+Notion rollup **Weighted Use** (`weighted_use` on `IS_A` relationship properties). No longer depends on Features **Weight** formula snapshots.
 
 ## Worked example
 
@@ -68,7 +68,7 @@ Sum of priority weights across all linked features for this inspiration equals 3
 
 - **resolver_id:** `inspirations.weightedUse`
 - **Overlay params:**
-  - `features_edge_label`: `"FEATURES"` (connection label; param name unchanged)
+  - `features_edge_label`: `"FEATURES"` (relationship label; param name unchanged)
   - `features_database_id`: `"dd0de9867cc345b898929306bdf9fc83"`
 
 ## Verification

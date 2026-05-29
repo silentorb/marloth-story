@@ -1,7 +1,7 @@
-import type { GraphDatabase, Connection, Properties } from "./graph";
+import type { GraphDatabase, Relationship, Properties } from "./graph";
 import type { MarlothWriteContext } from "./content/write-context";
-import { syncAfterConnectionsWrite } from "./content/write-context";
-import { connectionId } from "./graph";
+import { syncAfterRelationshipsWrite } from "./content/write-context";
+import { relationshipId } from "./graph";
 import { TYPE_MEMBERSHIP_LABELS } from "./labels";
 
 /** Synthetic group id for scenes with no Part association. */
@@ -84,7 +84,7 @@ interface MemberInfo {
   name: string;
   order: number;
   partId: string | null;
-  membershipConnection: Connection;
+  membershipRelationship: Relationship;
   cells: Record<string, string>;
 }
 
@@ -108,7 +108,7 @@ function numericSortKey(raw: unknown, fallback: number): number {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
-function cellsFromMembershipConnection(
+function cellsFromMembershipRelationship(
   config: OrderedAssociationConfig,
   properties: Record<string, unknown>,
 ): Record<string, string> {
@@ -132,23 +132,23 @@ export function getOrderedAssociationConfigForDatabase(
   return CONFIGS.find((config) => config.typeDatabaseId === databaseId) ?? null;
 }
 
-function scopeConnectionTarget(db: GraphDatabase, sceneId: string, label: string): string | null {
-  const edges = db.listConnectionsFromSource(sceneId, label);
+function scopeRelationshipTarget(db: GraphDatabase, sceneId: string, label: string): string | null {
+  const edges = db.listRelationshipsFromSource(sceneId, label);
   return edges[0]?.targetNodeId ?? null;
 }
 
 function groupConnectionTarget(db: GraphDatabase, sceneId: string, label: string): string | null {
-  const edges = db.listConnectionsFromSource(sceneId, label);
+  const edges = db.listRelationshipsFromSource(sceneId, label);
   return edges[0]?.targetNodeId ?? null;
 }
 
-function membershipConnections(db: GraphDatabase, config: OrderedAssociationConfig): Connection[] {
-  return db.listConnectionsToTarget(config.typeDatabaseId, config.membershipLabel);
+function membershipRelationships(db: GraphDatabase, config: OrderedAssociationConfig): Relationship[] {
+  return db.listRelationshipsToTarget(config.typeDatabaseId, config.membershipLabel);
 }
 
 function productSortKey(db: GraphDatabase, productId: string): number {
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    const edge = db.getConnection(connectionId(productId, label, PRODUCTS_DATABASE_ID));
+    const edge = db.getRelationship(relationshipId(productId, label, PRODUCTS_DATABASE_ID));
     if (edge) {
       return numericSortKey(edge.properties.order, numericSortKey(edge.properties.row_index, 999));
     }
@@ -158,7 +158,7 @@ function productSortKey(db: GraphDatabase, productId: string): number {
 
 function partSortKey(db: GraphDatabase, partId: string, config: OrderedAssociationConfig): number {
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    const edge = db.getConnection(connectionId(partId, label, config.groupTypeDatabaseId));
+    const edge = db.getRelationship(relationshipId(partId, label, config.groupTypeDatabaseId));
     if (edge) {
       return numericSortKey(edge.properties.row_index, numericSortKey(edge.properties.order, 999));
     }
@@ -174,9 +174,9 @@ function partsForScope(
   const parts: { id: string; title: string; sortKey: number }[] = [];
 
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    for (const connection of db.listConnectionsToTarget(config.groupTypeDatabaseId, label)) {
+    for (const connection of db.listRelationshipsToTarget(config.groupTypeDatabaseId, label)) {
       const partId = connection.sourceNodeId;
-      const productConnections = db.listConnectionsFromSource(partId, "PRODUCTS");
+      const productConnections = db.listRelationshipsFromSource(partId, "PRODUCTS");
       if (!productConnections.some((productConnection) => productConnection.targetNodeId === scopeId)) continue;
 
       const vertex = db.getNode(partId);
@@ -232,7 +232,7 @@ function resolveScenePartId(
   if (config.inverseGroupEdgeLabel) {
     for (const part of scopeParts) {
       const containsScene = db
-        .listConnectionsFromSource(part.id, config.inverseGroupEdgeLabel)
+        .listRelationshipsFromSource(part.id, config.inverseGroupEdgeLabel)
         .some((edge) => edge.targetNodeId === sceneId);
       if (containsScene) return part.id;
     }
@@ -250,9 +250,9 @@ function collectMembersInScope(
   const members: MemberInfo[] = [];
   let fallbackOrder = 0;
 
-  for (const connection of membershipConnections(db, config)) {
+  for (const connection of membershipRelationships(db, config)) {
     const sceneId = connection.sourceNodeId;
-    const productId = scopeConnectionTarget(db, sceneId, config.scopeEdgeLabel);
+    const productId = scopeRelationshipTarget(db, sceneId, config.scopeEdgeLabel);
     if (productId !== scopeId) continue;
 
     const vertex = db.getNode(sceneId);
@@ -264,8 +264,8 @@ function collectMembersInScope(
       name: vertex ? titleFromProperties(vertex.properties) : "Untitled",
       order: numericSortKey(connection.properties[config.orderProperty], fallbackOrder),
       partId,
-      membershipConnection: connection,
-      cells: cellsFromMembershipConnection(config, connection.properties),
+      membershipRelationship: connection,
+      cells: cellsFromMembershipRelationship(config, connection.properties),
     });
   }
 
@@ -335,8 +335,8 @@ function discoverScopes(
 ): OrderedAssociationScope[] {
   const scopeIds = new Set<string>();
 
-  for (const connection of membershipConnections(db, config)) {
-    const productId = scopeConnectionTarget(db, connection.sourceNodeId, config.scopeEdgeLabel);
+  for (const connection of membershipRelationships(db, config)) {
+    const productId = scopeRelationshipTarget(db, connection.sourceNodeId, config.scopeEdgeLabel);
     if (productId) scopeIds.add(productId);
   }
 
@@ -473,13 +473,13 @@ export function applyOrderedAssociationMove(
 
     const newOrder = (index + 1) * 10;
     const membershipProps = {
-      ...member.membershipConnection.properties,
+      ...member.membershipRelationship.properties,
       [config.orderProperty]: String(newOrder),
     };
-    ctx.store.mergeConnectionProperties(
-      member.membershipConnection.sourceNodeId,
-      member.membershipConnection.targetNodeId,
-      member.membershipConnection.label,
+    ctx.store.mergeRelationshipProperties(
+      member.membershipRelationship.sourceNodeId,
+      member.membershipRelationship.targetNodeId,
+      member.membershipRelationship.label,
       membershipProps,
     );
   }
@@ -494,9 +494,9 @@ export function applyOrderedAssociationMove(
     params.targetGroupId === UNASSIGNED_GROUP_ID ? null : params.targetGroupId;
 
   if (currentPartId !== targetPartId) {
-    const existingPartConnections = db.listConnectionsFromSource(params.sceneId, config.groupEdgeLabel);
+    const existingPartConnections = db.listRelationshipsFromSource(params.sceneId, config.groupEdgeLabel);
     for (const connection of existingPartConnections) {
-      ctx.store.deleteConnection(
+      ctx.store.deleteRelationship(
         connection.sourceNodeId,
         connection.targetNodeId,
         connection.label,
@@ -510,10 +510,10 @@ export function applyOrderedAssociationMove(
         if (key === "ordinal") continue;
         partProps[key] = value;
       }
-      ctx.store.upsertConnection(params.sceneId, targetPartId, config.groupEdgeLabel, partProps);
+      ctx.store.upsertRelationship(params.sceneId, targetPartId, config.groupEdgeLabel, partProps);
     }
   }
 
-  syncAfterConnectionsWrite(ctx);
+  syncAfterRelationshipsWrite(ctx);
   return getOrderedAssociationView(db, configId, params.scopeId);
 }

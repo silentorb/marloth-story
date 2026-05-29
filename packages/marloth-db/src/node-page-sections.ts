@@ -1,4 +1,4 @@
-import type { GraphDatabase, Connection } from "./graph";
+import type { GraphDatabase, Relationship } from "./graph";
 import { getDatabaseViewDetail, type DatabaseColumnDef, type DatabaseViewDetail } from "./database-view";
 import { coalescePriorityValue, enrichColumnDefs, isPriorityColumnKey } from "./property-enums";
 import { IS_A_LABEL, isTypeMembershipLabel, LEGACY_IN_DATABASE_LABEL } from "./labels";
@@ -132,7 +132,7 @@ function findNotionDatabaseByTitle(db: GraphDatabase, title: string): string | n
   return null;
 }
 
-function resolveViaDatabase(connections: Connection[]): string | null {
+function resolveViaDatabase(connections: Relationship[]): string | null {
   const ids = connections
     .map((connection) => stringProperty(connection.properties.via_database))
     .filter((id): id is string => id !== null);
@@ -144,7 +144,7 @@ function resolveViaDatabase(connections: Connection[]): string | null {
 function resolveTypeNodeId(
   db: GraphDatabase,
   label: string,
-  connections: Connection[],
+  connections: Relationship[],
 ): string | null {
   if (label === IS_A_LABEL) {
     const viaDatabase = resolveViaDatabase(connections);
@@ -172,7 +172,7 @@ function sectionTitleForType(
 }
 
 function buildRelationSections(db: GraphDatabase, nodeId: string): RelationTableSection[] {
-  const outgoing = db.listConnectionsFromSource(nodeId);
+  const outgoing = db.listRelationshipsFromSource(nodeId);
   const byLabel = new Map<string, typeof outgoing>();
 
   for (const connection of outgoing) {

@@ -1,4 +1,4 @@
-import type { GraphDatabase, Connection } from "./graph";
+import type { GraphDatabase, Relationship } from "./graph";
 import type { DatabaseColumnDef } from "./database-view";
 import type { NotionDatabaseSchema } from "./notion-database-schema";
 import { relationLabel } from "./relation-label";
@@ -27,20 +27,20 @@ function relationConnectionsForRow(
   nodeId: string,
   connectionLabel: string,
   databaseId: string,
-): Connection[] {
-  const outgoing = db.listConnectionsFromSource(nodeId, connectionLabel);
+): Relationship[] {
+  const outgoing = db.listRelationshipsFromSource(nodeId, connectionLabel);
   const scoped = outgoing.filter((c) => viaDatabaseId(c.properties) === databaseId);
   if (scoped.length > 0) return scoped;
   return outgoing.filter((c) => viaDatabaseId(c.properties) === null);
 }
 
-function formatRelationCell(db: GraphDatabase, connections: Connection[]): string {
-  const sorted = [...connections].sort(
+function formatRelationCell(db: GraphDatabase, relationships: Relationship[]): string {
+  const sorted = [...relationships].sort(
     (a, b) => ordinalFromProperties(a.properties) - ordinalFromProperties(b.properties),
   );
   const titles: string[] = [];
-  for (const connection of sorted) {
-    const target = db.getNode(connection.targetNodeId);
+  for (const relationship of sorted) {
+    const target = db.getNode(relationship.targetNodeId);
     const title = target ? titleFromProperties(target.properties) : "Untitled";
     titles.push(title);
   }
@@ -48,7 +48,7 @@ function formatRelationCell(db: GraphDatabase, connections: Connection[]): strin
 }
 
 /**
- * Fill relation-type table cells from outgoing graph connections (not IS_A properties).
+ * Fill relation-type table cells from outgoing graph relationships (not IS_A properties).
  */
 export function hydrateRelationCellsForRows(
   db: GraphDatabase,
@@ -68,8 +68,8 @@ export function hydrateRelationCellsForRows(
   for (const row of rows) {
     for (const col of relationColumns) {
       const label = relationLabel(col.name);
-      const connections = relationConnectionsForRow(db, row.nodeId, label, databaseId);
-      const text = formatRelationCell(db, connections);
+      const relationships = relationConnectionsForRow(db, row.nodeId, label, databaseId);
+      const text = formatRelationCell(db, relationships);
       if (text) row.cells[col.key] = text;
     }
   }

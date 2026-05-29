@@ -53,7 +53,7 @@ export function makeNodePageDetail(
     metadata: {
       createdAt: null,
       modifiedAt: null,
-      connectionCount: 1,
+      relationshipCount: 1,
       backlinks: [],
     },
     sections,

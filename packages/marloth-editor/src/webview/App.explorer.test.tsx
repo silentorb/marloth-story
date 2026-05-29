@@ -43,7 +43,7 @@ describe("App graph explorer route", () => {
     });
 
     expect(container.textContent).toContain("Graph Explorer");
-    expect(container.textContent).toMatch(/\d+ nodes · \d+ connections/);
+    expect(container.textContent).toMatch(/\d+ nodes · \d+ relationships/);
     expect(container.querySelector(".marloth-graph-canvas")).toBeTruthy();
   });
 });

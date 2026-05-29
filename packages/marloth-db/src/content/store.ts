@@ -6,17 +6,17 @@ import {
   rmSync,
   writeFileSync,
 } from "node:fs";
-import { dirname } from "node:path";
-import type { Connection, Node, Properties } from "../graph";
-import { connectionId } from "../graph";
+import { dirname, join } from "node:path";
+import type { Relationship, Node, Properties } from "../graph";
+import { relationshipId } from "../graph";
 import {
-  type ConnectionEntry,
-  type ConnectionsFile,
-  CONNECTIONS_FILE_VERSION,
-  entryFromConnection,
-  parseConnectionsFile,
-  serializeConnectionsFile,
-} from "./connections-file";
+  type RelationshipEntry,
+  type RelationshipsFile,
+  RELATIONSHIPS_FILE_VERSION,
+  entryFromRelationship,
+  parseRelationshipsFile,
+  serializeRelationshipsFile,
+} from "./relationships-file";
 import {
   type DynamicFieldsFile,
   emptyDynamicFieldsFile,
@@ -25,11 +25,12 @@ import {
 } from "./dynamic-fields-file";
 import { bodyFromNode, nodeFromFile, serializeNodeFile } from "./node-file";
 import {
-  connectionsFilePath,
+  relationshipsFilePath,
   dynamicFieldsFilePath,
   isNodeId,
   nodeFilePath,
   NODE_FILE_PATTERN,
+  CONNECTIONS_FILENAME,
 } from "./paths";
 
 function atomicWrite(filePath: string, content: string): void {
@@ -84,27 +85,35 @@ export class ContentStore {
     }
   }
 
-  readConnectionsFile(): ConnectionsFile {
-    const path = connectionsFilePath(this.contentDir);
+  readRelationshipsFile(): RelationshipsFile {
+    const path = relationshipsFilePath(this.contentDir);
     try {
-      return parseConnectionsFile(readFileSync(path, "utf-8"));
+      return parseRelationshipsFile(readFileSync(path, "utf-8"));
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code === "ENOENT") {
-        return { version: CONNECTIONS_FILE_VERSION, connections: [] };
+        const legacyFile = join(this.contentDir, CONNECTIONS_FILENAME);
+        try {
+          return parseRelationshipsFile(readFileSync(legacyFile, "utf-8"));
+        } catch (legacyErr) {
+          if ((legacyErr as NodeJS.ErrnoException).code === "ENOENT") {
+            return { version: RELATIONSHIPS_FILE_VERSION, relationships: [] };
+          }
+          throw legacyErr;
+        }
       }
       throw err;
     }
   }
 
-  writeConnectionsFile(file: ConnectionsFile): void {
-    atomicWrite(connectionsFilePath(this.contentDir), serializeConnectionsFile(file));
+  writeRelationshipsFile(file: RelationshipsFile): void {
+    atomicWrite(relationshipsFilePath(this.contentDir), serializeRelationshipsFile(file));
   }
 
-  readConnections(): Connection[] {
-    return this.readConnectionsFile().connections.map((entry) => {
+  readRelationships(): Relationship[] {
+    return this.readRelationshipsFile().relationships.map((entry) => {
       const properties = entry.properties ?? {};
       return {
-        id: connectionId(entry.source, entry.label, entry.target),
+        id: relationshipId(entry.source, entry.label, entry.target),
         sourceNodeId: entry.source,
         targetNodeId: entry.target,
         label: entry.label,
@@ -113,51 +122,51 @@ export class ContentStore {
     });
   }
 
-  writeConnections(connections: Connection[]): void {
-    const entries = connections.map(entryFromConnection);
-    this.writeConnectionsFile({ version: CONNECTIONS_FILE_VERSION, connections: entries });
+  writeRelationships(connections: Relationship[]): void {
+    const entries = connections.map(entryFromRelationship);
+    this.writeRelationshipsFile({ version: RELATIONSHIPS_FILE_VERSION, relationships: entries });
   }
 
-  findConnection(source: string, target: string, label: string): Connection | null {
+  findRelationship(source: string, target: string, label: string): Relationship | null {
     return (
-      this.readConnections().find(
+      this.readRelationships().find(
         (c) => c.sourceNodeId === source && c.targetNodeId === target && c.label === label,
       ) ?? null
     );
   }
 
-  upsertConnection(
+  upsertRelationship(
     source: string,
     target: string,
     label: string,
     properties: Properties = {},
   ): void {
-    const file = this.readConnectionsFile();
-    const index = file.connections.findIndex(
+    const file = this.readRelationshipsFile();
+    const index = file.relationships.findIndex(
       (c) => c.source === source && c.target === target && c.label === label,
     );
-    const entry: ConnectionEntry = { source, target, label, properties };
+    const entry: RelationshipEntry = { source, target, label, properties };
     if (index >= 0) {
-      const existing = file.connections[index]!;
-      file.connections[index] = {
+      const existing = file.relationships[index]!;
+      file.relationships[index] = {
         ...entry,
         properties: { ...(existing.properties ?? {}), ...properties },
       };
     } else {
-      file.connections.push(entry);
+      file.relationships.push(entry);
     }
-    this.writeConnectionsFile(file);
+    this.writeRelationshipsFile(file);
   }
 
-  mergeConnectionProperties(
+  mergeRelationshipProperties(
     source: string,
     target: string,
     label: string,
     patch: Properties,
   ): void {
-    const existing = this.findConnection(source, target, label);
+    const existing = this.findRelationship(source, target, label);
     if (!existing) {
-      this.upsertConnection(source, target, label, patch);
+      this.upsertRelationship(source, target, label, patch);
       return;
     }
     const merged = { ...existing.properties };
@@ -165,26 +174,26 @@ export class ContentStore {
       if (v === undefined) continue;
       merged[k] = v;
     }
-    this.upsertConnection(source, target, label, merged);
+    this.upsertRelationship(source, target, label, merged);
   }
 
-  deleteConnection(source: string, target: string, label: string): boolean {
-    const file = this.readConnectionsFile();
-    const before = file.connections.length;
-    file.connections = file.connections.filter(
+  deleteRelationship(source: string, target: string, label: string): boolean {
+    const file = this.readRelationshipsFile();
+    const before = file.relationships.length;
+    file.relationships = file.relationships.filter(
       (c) => !(c.source === source && c.target === target && c.label === label),
     );
-    if (file.connections.length === before) return false;
-    this.writeConnectionsFile(file);
+    if (file.relationships.length === before) return false;
+    this.writeRelationshipsFile(file);
     return true;
   }
 
-  removeIncidentConnections(nodeId: string): void {
-    const file = this.readConnectionsFile();
-    file.connections = file.connections.filter(
+  removeIncidentRelationships(nodeId: string): void {
+    const file = this.readRelationshipsFile();
+    file.relationships = file.relationships.filter(
       (c) => c.source !== nodeId && c.target !== nodeId,
     );
-    this.writeConnectionsFile(file);
+    this.writeRelationshipsFile(file);
   }
 
   readDynamicFieldsFile(): DynamicFieldsFile {

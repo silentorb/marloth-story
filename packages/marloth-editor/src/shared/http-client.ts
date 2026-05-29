@@ -9,7 +9,7 @@ import type {
 import type { UserSettings, UserSettingsPatch } from "./user-settings";
 import type { OrderedAssociationMoveParams } from "marloth-db";
 
-export type { GraphConnection, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseViewDetail } from "marloth-db";
+export type { GraphRelationship, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseViewDetail } from "marloth-db";
 export type { OrderedAssociationViewDetail } from "marloth-db";
 
 export const DEFAULT_API_BASE_URL = "http://127.0.0.1:3847";
@@ -41,7 +41,7 @@ export interface EditorApiClient {
     propertyKey: string,
     value: string | null,
   ): Promise<void>;
-  updateOutgoingConnectionProperty(
+  updateOutgoingRelationshipProperty(
     nodeId: string,
     label: string,
     targetId: string,
@@ -149,7 +149,7 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         body: JSON.stringify({ property: propertyKey, value }),
       });
     },
-    async updateOutgoingConnectionProperty(
+    async updateOutgoingRelationshipProperty(
       nodeId: string,
       label: string,
       targetId: string,
@@ -157,7 +157,7 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       value: string | null,
     ): Promise<void> {
       await fetchJson(
-        `/api/nodes/${nodeId}/connections/${encodeURIComponent(label)}/${targetId}`,
+        `/api/nodes/${nodeId}/relationships/${encodeURIComponent(label)}/${targetId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

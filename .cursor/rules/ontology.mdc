@@ -17,4 +17,4 @@ Pair with schema docs when querying or editing the graph:
 - [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) — direct edits to `data/marloth.sqlite` (see root [`AGENTS.md`](../../AGENTS.md) **Graph data workflow**)
 - [`docs/features/notion-import.md`](../../docs/features/notion-import.md) — legacy export mining only
 
-**Terminology:** “project feature” = `./docs/features/` tooling; “feature” = graph design node; **node** / **connection** / **page** per root [`AGENTS.md`](../../AGENTS.md).
+**Terminology:** “project feature” = `./docs/features/` tooling; “feature” = graph design node; **node** / **relationship** / **page** per root [`AGENTS.md`](../../AGENTS.md).

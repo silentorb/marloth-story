@@ -2,7 +2,7 @@
 
 ## Summary
 
-Interactive, force-directed visualization of the Marloth design graph inside the Marloth editor. Shows design nodes and **connections** as a force-directed graph. Uses **precomputed multi-resolution layers** so authors can drill from coarse overview to full detail without overwhelming the canvas at once. Layers are **anchor-centric**: coarse views emphasize nodes most relevant to the anchor; finer views progressively explode the graph.
+Interactive, force-directed visualization of the Marloth design graph inside the Marloth editor. Shows design nodes and **relationships** as a force-directed graph. Uses **precomputed multi-resolution layers** so authors can drill from coarse overview to full detail without overwhelming the canvas at once. Layers are **anchor-centric**: coarse views emphasize nodes most relevant to the anchor; finer views progressively explode the graph.
 
 ## When to read this
 
@@ -20,9 +20,9 @@ Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth
 ### Scope and data
 
 - Graph Explorer **must** be a distinct editor view (`graph-explorer`), separate from the node page view.
-- The graph **must** be derived from active nodes and connections in `data/marloth.sqlite` (same export surface as full graph export).
-- Nodes under archived Notion paths (`Marloth/Archive` and descendants) **must** be excluded, along with any connections touching them.
-- By default, the graph **must** be scoped to the **connected component** reachable from an **anchor node** via undirected traversal (treat connections as bidirectional for reachability).
+- The graph **must** be derived from active nodes and relationships in `data/marloth.sqlite` (same export surface as full graph export).
+- Nodes under archived Notion paths (`Marloth/Archive` and descendants) **must** be excluded, along with any relationships touching them.
+- By default, the graph **must** be scoped to the **connected component** reachable from an **anchor node** via undirected traversal (treat relationships as bidirectional for reachability).
 - Default anchor **must** be the TWOLD product node (`e028aa0786f5449984a4f497c1d746fa`). Invalid or missing anchor IDs fall back to this default.
 - Standalone browser URLs **must** use `?view=explorer&anchor={32-hex-id}`; the `anchor` query param is cleared when leaving Graph Explorer.
 
@@ -30,7 +30,7 @@ Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth
 
 - The server **must** precompute a fixed stack of **detail layers** (coarsest → finest); default depth is **3**, configurable in Settings (2–10).
 - Layer subdivision **must** be **anchor-centric**: coarse layers show the anchor plus the highest-relevance nodes; non-promoted nodes **must** bundle under branch clusters tied to a promoted gateway.
-- The finest layer **must** show one canvas node per individual design node with unaggregated connections.
+- The finest layer **must** show one canvas node per individual design node with unaggregated relationships.
 - Each coarser layer **must** have no more visible nodes than the next finer layer (monotonic non-decreasing node counts).
 - Cluster nodes **must** be visually distinguishable (warm amber color; size reflects member count; labels show the gateway title only). They **must not** be openable as node pages.
 - The anchor node (or its branch cluster when merged) **must** use a distinct anchor color (green by default), separate from cluster amber and node-type colors.
@@ -42,7 +42,7 @@ Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth
 - Initial view **should** start at the **coarsest layer** for overview-first drill-down.
 - **Click cluster nodes** on aggregated layers **must** advance to the next finer layer (drill down) in Layers mode.
 - Toolbar **must** provide a control to return to a coarser layer when not on layer 1 (Layers mode only).
-- Toolbar **must** show current layer label (`Layer N/M`), node/connection counts, and a **Settings** dropdown. All explorer preferences **must** live in Settings—not in the top bar.
+- Toolbar **must** show current layer label (`Layer N/M`), node/relationship counts, and a **Settings** dropdown. All explorer preferences **must** live in Settings—not in the top bar.
 - Settings dropdown **must** include:
   - **Show labels** — persist canvas node labels (`localStorage` key `marloth.graph.showNodeLabels`).
   - **Show relevance diagnostics** — enrich node hover tooltips with relevance key/value lines (`localStorage` key `marloth.graph.showRelevanceDiagnostics`).
@@ -53,11 +53,11 @@ Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth
   - **Relative detail** — which precomputed layer Relative mode displays (1 = coarsest … N = finest; default **2**; `localStorage` key `marloth.graph.relativeDetail`). Clamped to layer depth.
 - All graph settings **must** persist in browser `localStorage` (global across Graph Explorer views, not the git-tracked user settings file).
 - With diagnostics enabled, hovering a **design node** **must** show a multiline tooltip: title plus `key: value` lines for score components; hovering a **cluster node** **must** show bundle summary (`members`, `gateway`, `layer`).
-- Aggregated layers **should** show combined connection weights (label + count) and thicker strokes proportional to weight.
+- Aggregated layers **should** show combined relationship weights (label + count) and thicker strokes proportional to weight.
 
 ### API
 
-- `GET /api/graph/explorer-lod?anchor={optional}&layers={optional}` **must** return `{ graph: { layerCount, levels[] } }` where each level is `{ nodes[], connections[] }` (`GraphConnection` objects). `layers` defaults to **3** when omitted.
+- `GET /api/graph/explorer-lod?anchor={optional}&layers={optional}` **must** return `{ graph: { layerCount, levels[] } }` where each level is `{ nodes[], relationships[] }` (`GraphRelationship` objects). `layers` defaults to **3** when omitted.
 - Design nodes carry: id, title, path, labels, optional group (primary label), optional `relevance` diagnostics.
 - Cluster nodes carry: id, title, labels, `isCluster`, member count (`val`), optional `bundle` diagnostics.
 - Connections carry: id, source, target, label; optional weight on aggregated layers.
@@ -68,7 +68,7 @@ Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth
 | --- | --- |
 | `score` | Total relevance score |
 | `hop` | Shortest-path hops from anchor |
-| `degree` | Incident connection count in scoped graph |
+| `degree` | Incident relationship count in scoped graph |
 | `directNeighbor` | Linked directly to anchor |
 | `hopContribution` | Proximity component of score |
 | `degreeContribution` | Hub component of score |
@@ -90,14 +90,14 @@ Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth
 - **Why layers:** The full design graph is too dense for a single force layout; pre-aggregated levels give a navigable overview that explicit drill-down can refine.
 - **Why anchor scoping:** Authors care about the subgraph connected to a product/book root (TWOLD), not every disconnected stub in the corpus.
 - **Why anchor-centric promotion:** Coarse views should read as “what matters from here,” not arbitrary global density clusters.
-- **Why server-side layering:** Layers are computed once per request from graph export data (`snapshot.connections`), keeping the webview simple and ensuring consistent snapshots across clients.
+- **Why server-side layering:** Layers are computed once per request from graph export data (`snapshot.relationships`), keeping the webview simple and ensuring consistent snapshots across clients.
 - **Why relevance diagnostics:** Debugging promotion decisions should not require reading implementation code.
 
 ## Behavior / pipeline
 
 ```
-Active nodes and connections
-  → exclude Marloth/Archive nodes and touching connections
+Active nodes and relationships
+  → exclude Marloth/Archive nodes and touching relationships
   → keep anchor connected component (undirected reachability)
   → score relevance from anchor (hop + hub degree + direct-neighbor bonus)
   → promote top-ranked nodes per layer; bundle remainder by branch gateway
@@ -110,7 +110,7 @@ Active nodes and connections
 ```mermaid
 flowchart LR
   subgraph db [Graph export]
-    Active["Active nodes and connections"]
+    Active["Active nodes and relationships"]
     ArchiveFilter["Exclude Marloth/Archive"]
     AnchorFilter["Keep anchor connected component"]
   end
@@ -132,13 +132,13 @@ flowchart LR
 
 The following describes how the server subdivides the scoped graph into detail layers. This section is code-independent.
 
-1. **Start from the scoped graph.** Take all non-archived nodes and connections in the anchor’s connected component.
+1. **Start from the scoped graph.** Take all non-archived nodes and relationships in the anchor’s connected component.
 
-2. **Measure distance from anchor.** Treat connections as undirected for reachability. Compute hop distance from anchor to each node (anchor = 0).
+2. **Measure distance from anchor.** Treat relationships as undirected for reachability. Compute hop distance from anchor to each node (anchor = 0).
 
 3. **Score relevance** for every node using a weighted combination:
    - **Proximity:** closer nodes score higher (inverse of hop distance).
-   - **Hub strength:** nodes with more incident connections score higher (log-scaled).
+   - **Hub strength:** nodes with more incident relationships score higher (log-scaled).
    - **Direct-link bonus:** immediate neighbors of the anchor get an extra boost.
    - The anchor always ranks first and is always visible at every layer.
 
@@ -148,7 +148,7 @@ The following describes how the server subdivides the scoped graph into detail l
 
 6. **Bundle the rest by branch.** Every non-promoted node is assigned to a bundle tied to the **nearest promoted gateway** on its path back toward the anchor (walk up the breadth-first tree from anchor). If that gateway also has bundled descendants, the gateway is **included in its own branch cluster** so the graph never shows the same node as both an individual node and a cluster with the same name. Each bundle becomes one cluster node, named after its gateway, with member count shown. Connections between bundles and promoted nodes are aggregated.
 
-7. **Finest layer:** all design nodes individual, all connections unaggregated; relevance metadata still attached.
+7. **Finest layer:** all design nodes individual, all relationships unaggregated; relevance metadata still attached.
 
 8. **Display layer selection (client).** The UI selects among the precomputed snapshots via cluster clicks (drill down) and a toolbar control (drill up). Canvas zoom is for panning and magnification only.
 
@@ -156,7 +156,7 @@ The following describes how the server subdivides the scoped graph into detail l
 
 | Artifact | Role |
 | --- | --- |
-| `GET /api/graph/explorer-lod` | LOD graph payload (`levels[].connections`) |
+| `GET /api/graph/explorer-lod` | LOD graph payload (`levels[].relationships`) |
 | `?view=explorer&anchor=` | Standalone deep link |
 | `localStorage` `marloth.graph.showNodeLabels` | Show canvas labels |
 | `localStorage` `marloth.graph.showRelevanceDiagnostics` | Show relevance hover diagnostics |
@@ -195,7 +195,7 @@ The following describes how the server subdivides the scoped graph into detail l
 
 | Module | Responsibility |
 | --- | --- |
-| `packages/marloth-db/src/graph-export.ts` | Export entry, anchor BFS, archive filter, `GraphConnection` |
+| `packages/marloth-db/src/graph-export.ts` | Export entry, anchor BFS, archive filter, `GraphRelationship` |
 | `packages/marloth-db/src/graph-lod-cluster.ts` | Anchor-centric layer subdivision + relevance metadata |
 | `packages/marloth-editor/src/api/server.ts` | `/api/graph/explorer-lod` route |
 | `packages/marloth-editor/src/webview/components/GraphView.tsx` | Force graph UI + settings dropdown |

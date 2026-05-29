@@ -15,8 +15,8 @@ Count of linked Features that are associated with the Wonderland theme page.
 
 For each inspiration row:
 
-1. Follow outgoing `FEATURES` connections to feature pages.
-2. **Must** count features that have an outgoing `THEME` connection to the Wonderland page.
+1. Follow outgoing `FEATURES` relationships to feature pages.
+2. **Must** count features that have an outgoing `THEME` relationship to the Wonderland page.
 3. **Must** return the count as a decimal string.
 
 ```text
@@ -39,11 +39,11 @@ This replaces the Notion rollup chain that summed Features **Wonderland count** 
 | Wonderland page id | `3cbc40d2ba2a4c76b4b9dc370452fcfe` |
 | Wonderland path | `Marloth/Articles/Wonderland` |
 
-Theme connections are created by `scripts/migrate-theme-edges.ts` from legacy `prop_tags` / `wonderland_count` on Features rows.
+Theme relationships are created by `scripts/migrate-theme-edges.ts` from legacy `prop_tags` / `wonderland_count` on Features rows.
 
 ## Replaces legacy field
 
-- Inspirations Notion rollup **Wonder** (`wonder` on `IS_A` connection properties)
+- Inspirations Notion rollup **Wonder** (`wonder` on `IS_A` relationship properties)
 - Features workaround **Wonderland count** (`wonderland_count`) — no longer needed for this calculation
 
 ## Worked example
@@ -52,14 +52,14 @@ Theme connections are created by `scripts/migrate-theme-edges.ts` from legacy `p
 | --- | --- |
 | Big Trouble in Little China | `7` |
 
-Seven linked features have `THEME → Wonderland` after theme-connection migration.
+Seven linked features have `THEME → Wonderland` after theme-relationship migration.
 
 ## Resolver and overlay
 
 - **resolver_id:** `inspirations.wonder`
 - **Overlay params:**
-  - `features_edge_label`: `"FEATURES"` (connection label; param name unchanged)
-  - `theme_edge_label`: `"THEME"` (connection label; param name unchanged)
+  - `features_edge_label`: `"FEATURES"` (relationship label; param name unchanged)
+  - `theme_edge_label`: `"THEME"` (relationship label; param name unchanged)
   - `theme_target_id`: `"3cbc40d2ba2a4c76b4b9dc370452fcfe"`
 
 ## Verification

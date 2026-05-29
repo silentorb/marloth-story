@@ -22,8 +22,8 @@ export function syncAfterNodeWrite(ctx: MarlothWriteContext, id: string): void {
   ctx.sync.syncAfterWrite(nodeFileName(id));
 }
 
-export function syncAfterConnectionsWrite(ctx: MarlothWriteContext): void {
-  ctx.sync.syncAfterWrite("connections.json");
+export function syncAfterRelationshipsWrite(ctx: MarlothWriteContext): void {
+  ctx.sync.syncAfterWrite("relationships.json");
 }
 
 export function mergeNodePropertiesOnContent(

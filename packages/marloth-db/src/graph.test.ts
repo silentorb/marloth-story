@@ -22,7 +22,7 @@ describe("GraphDatabase", () => {
     const db = new GraphDatabase(dbPath);
     db.upsertNode("abc123", ["Page"], { title: "Hello" });
     db.upsertNode("def456", ["Page"], { title: "World" });
-    db.upsertConnection("abc123", "def456", "LINKS_TO", { ordinal: 0 });
+    db.upsertRelationship("abc123", "def456", "LINKS_TO", { ordinal: 0 });
     db.finalize();
     db.close();
 
@@ -30,9 +30,9 @@ describe("GraphDatabase", () => {
     const v = db2.getNode("abc123");
     expect(v?.labels).toEqual(["Page"]);
     expect(v?.properties.title).toBe("Hello");
-    const e = db2.getConnection("abc123:LINKS_TO:def456");
+    const e = db2.getRelationship("abc123:LINKS_TO:def456");
     expect(e?.targetNodeId).toBe("def456");
-    expect(db2.counts()).toEqual({ nodes: 2, connections: 1 });
+    expect(db2.counts()).toEqual({ nodes: 2, relationships: 1 });
     db2.close();
   });
 
@@ -48,16 +48,16 @@ describe("GraphDatabase", () => {
     db.close();
   });
 
-  test("deleteConnection removes an edge", () => {
+  test("deleteRelationship removes an edge", () => {
     tempDir = mkdtempSync(join(tmpdir(), "marloth-db-test-"));
     dbPath = join(tempDir, "delete.sqlite");
     const db = new GraphDatabase(dbPath);
     db.upsertNode("a", ["Page"], { title: "A" });
     db.upsertNode("b", ["Page"], { title: "B" });
-    db.upsertConnection("a", "b", "RELATED", { ordinal: 0 });
-    expect(db.getConnection("a:RELATED:b")).not.toBeNull();
-    expect(db.deleteConnection("a", "b", "RELATED")).toBe(true);
-    expect(db.getConnection("a:RELATED:b")).toBeNull();
+    db.upsertRelationship("a", "b", "RELATED", { ordinal: 0 });
+    expect(db.getRelationship("a:RELATED:b")).not.toBeNull();
+    expect(db.deleteRelationship("a", "b", "RELATED")).toBe(true);
+    expect(db.getRelationship("a:RELATED:b")).toBeNull();
     db.close();
   });
 
@@ -67,10 +67,10 @@ describe("GraphDatabase", () => {
     const db = new GraphDatabase(dbPath);
     db.upsertNode("a", ["Page"], { title: "A" });
     db.upsertNode("b", ["Page"], { title: "B" });
-    db.upsertConnection("a", "b", "RELATED", { ordinal: 0 });
+    db.upsertRelationship("a", "b", "RELATED", { ordinal: 0 });
     expect(db.deleteNode("a")).toBe(true);
     expect(db.getNode("a")).toBeNull();
-    expect(db.getConnection("a:RELATED:b")).toBeNull();
+    expect(db.getRelationship("a:RELATED:b")).toBeNull();
     db.close();
   });
 });

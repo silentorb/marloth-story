@@ -188,7 +188,7 @@ export function createApiHandler(
           payload.value === null || payload.value === undefined
             ? null
             : String(payload.value);
-        const error = db.updateOutgoingConnectionProperty(
+        const error = db.updateOutgoingRelationshipProperty(
           nodeId,
           label,
           targetId,

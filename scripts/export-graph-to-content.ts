@@ -7,7 +7,7 @@ import {
 } from "marloth-db";
 import {
   ContentStore,
-  CONNECTIONS_FILE_VERSION,
+  RELATIONSHIPS_FILE_VERSION,
   DYNAMIC_FIELDS_FILE_VERSION,
   entryFromSeedColumnSet,
   entryFromSeedField,
@@ -91,7 +91,7 @@ export function exportGraphToContent(
   sourceDbPath: string,
   targetContentDir: string,
   options?: { clean?: boolean },
-): { nodes: number; connections: number } {
+): { nodes: number; relationships: number } {
   if (options?.clean) {
     try {
       rmSync(targetContentDir, { recursive: true, force: true });
@@ -113,13 +113,13 @@ export function exportGraphToContent(
     store.writeNode({ id: node.id, labels: node.labels, properties }, body);
   }
 
-  const connections = db
+  const relationships = db
     .queryAll<{
       source_node_id: string;
       target_node_id: string;
       label: string;
       properties: string;
-    }>("SELECT source_node_id, target_node_id, label, properties FROM connections ORDER BY id")
+    }>("SELECT source_node_id, target_node_id, label, properties FROM relationships ORDER BY id")
     .map((row) => ({
       source: row.source_node_id,
       target: row.target_node_id,
@@ -127,18 +127,18 @@ export function exportGraphToContent(
       properties: JSON.parse(row.properties) as Record<string, unknown>,
     }));
 
-  store.writeConnectionsFile({
-    version: CONNECTIONS_FILE_VERSION,
-    connections,
+  store.writeRelationshipsFile({
+    version: RELATIONSHIPS_FILE_VERSION,
+    relationships,
   });
 
   exportDynamicFields(db, store);
   db.close();
 
-  return { nodes: nodeRows.length, connections: connections.length };
+  return { nodes: nodeRows.length, relationships: relationships.length };
 }
 
 if (import.meta.main) {
   const counts = exportGraphToContent(dbPath(), contentPath(), { clean: true });
-  console.log(`Exported ${counts.nodes} nodes and ${counts.connections} connections to ${contentPath()}`);
+  console.log(`Exported ${counts.nodes} nodes and ${counts.relationships} relationships to ${contentPath()}`);
 }

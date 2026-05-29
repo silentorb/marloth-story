@@ -3,7 +3,7 @@ import { IS_A_LABEL } from "marloth-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
-  seedTestConnections,
+  seedTestRelationships,
   seedTestNode,
 } from "marloth-db/content/test-helpers";
 import { createTestApiFromContent } from "./test-api-setup";
@@ -27,7 +27,7 @@ describe("ordered-associations API", () => {
   seedTestNode(fixture, { id: part, labels: ["NotionPage"], properties: { title: "Part 1" } });
   seedTestNode(fixture, { id: scene1, labels: ["NotionPage"], properties: { title: "Scene One" } });
   seedTestNode(fixture, { id: scene2, labels: ["NotionPage"], properties: { title: "Scene Two" } });
-  seedTestConnections(fixture, [
+  seedTestRelationships(fixture, [
     { source: book, target: PRODUCTS_DB, label: IS_A_LABEL, properties: { order: "1", row_index: 0 } },
     { source: part, target: PARTS_DB, label: IS_A_LABEL, properties: { row_index: 0 } },
     { source: part, target: book, label: "PRODUCTS", properties: { ordinal: 0 } },

@@ -5,16 +5,16 @@
  */
 import { GraphDatabase } from "../packages/marloth-db/src/graph";
 import {
-  findMissingTypeMembershipConnections,
-  findSpuriousTypeMembershipConnections,
+  findMissingTypeMembershipRelationships,
+  findSpuriousTypeMembershipRelationships,
   findNodeScalarsOnTypedNodes,
 } from "../packages/marloth-db/src/type-membership-audit";
 
 const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";
 const db = new GraphDatabase(dbPath);
 
-const missing = findMissingTypeMembershipConnections(db);
-const spurious = findSpuriousTypeMembershipConnections(db);
+const missing = findMissingTypeMembershipRelationships(db);
+const spurious = findSpuriousTypeMembershipRelationships(db);
 const nodeScalars = findNodeScalarsOnTypedNodes(db);
 
 if (spurious.length > 0) {

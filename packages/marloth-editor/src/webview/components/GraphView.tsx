@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import ForceGraph2D, { type ForceGraphMethods, type LinkObject, type NodeObject } from "react-force-graph-2d";
 import type { EditorApi } from "../api/client";
-import type { GraphConnection, GraphLodSnapshot, GraphNode } from "../../shared/types";
+import type { GraphRelationship, GraphLodSnapshot, GraphNode } from "../../shared/types";
 import {
   canDrillDownLayer,
   canDrillUpLayer,
@@ -67,7 +67,7 @@ interface GraphViewProps {
 }
 
 type ForceNode = GraphNode & NodeObject;
-type ForceLink = GraphConnection & LinkObject;
+type ForceLink = GraphRelationship & LinkObject;
 
 type GraphForceRef = ForceGraphMethods<ForceNode, ForceLink> & {
   zoomToFit(durationMs?: number, padding?: number): unknown;
@@ -322,7 +322,7 @@ export function GraphView({
     if (!snapshot) return { nodes: [] as ForceNode[], links: [] as ForceLink[] };
     return {
       nodes: snapshot.nodes.map((node) => ({ ...node })),
-      links: snapshot.connections.map((connection) => ({ ...connection })),
+      links: snapshot.relationships.map((connection) => ({ ...connection })),
     };
   }, [snapshot]);
 
@@ -591,7 +591,7 @@ export function GraphView({
             onRelativeDetailChange={onRelativeDetailChange}
           />
           <span className="marloth-graph-toolbar-stats">
-            {snapshot.nodes.length} nodes · {snapshot.connections.length} connections
+            {snapshot.nodes.length} nodes · {snapshot.relationships.length} relationships
           </span>
         </div>
       </div>

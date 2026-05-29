@@ -24,10 +24,10 @@ export function migrateThemeEdges(db: GraphDatabase): { created: number; scanned
   let scanned = 0;
 
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    for (const connection of db.listConnectionsToTarget(FEATURES_DB, label)) {
+    for (const connection of db.listRelationshipsToTarget(FEATURES_DB, label)) {
       scanned++;
       if (!hasWonderlandTag(connection.properties)) continue;
-      db.upsertConnection(connection.sourceNodeId, WONDERLAND_PAGE, THEME_LABEL, {});
+      db.upsertRelationship(connection.sourceNodeId, WONDERLAND_PAGE, THEME_LABEL, {});
       created++;
     }
   }

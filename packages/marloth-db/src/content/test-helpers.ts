@@ -53,7 +53,7 @@ export function seedTestDynamicFields(
   invalidateDynamicFieldsCache();
 }
 
-export function seedTestConnections(
+export function seedTestRelationships(
   fixture: TestContentFixture,
   connections: Array<{
     source: string;
@@ -64,21 +64,21 @@ export function seedTestConnections(
   options?: { replace?: boolean },
 ): void {
   const file = options?.replace
-    ? { version: 1 as const, connections: [] }
-    : fixture.ctx.store.readConnectionsFile();
+    ? { version: 1 as const, relationships: [] }
+    : fixture.ctx.store.readRelationshipsFile();
   for (const connection of connections) {
-    const index = file.connections.findIndex(
+    const index = file.relationships.findIndex(
       (c) =>
         c.source === connection.source &&
         c.target === connection.target &&
         c.label === connection.label,
     );
     if (index >= 0) {
-      file.connections[index] = connection;
+      file.relationships[index] = connection;
     } else {
-      file.connections.push(connection);
+      file.relationships.push(connection);
     }
   }
-  fixture.ctx.store.writeConnectionsFile(file);
-  fixture.ctx.sync.syncConnections();
+  fixture.ctx.store.writeRelationshipsFile(file);
+  fixture.ctx.sync.syncRelationships();
 }

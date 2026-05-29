@@ -23,7 +23,7 @@ for (const n of db.listNodesForGraphExport()) {
 let updated = 0;
 for (const databaseId of databaseIdsWithPriority) {
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    for (const connection of db.listConnectionsToTarget(databaseId, label)) {
+    for (const connection of db.listRelationshipsToTarget(databaseId, label)) {
       if (!isUnsetPriority(connection.properties.priority)) continue;
       updated += 1;
       if (dryRun) {
@@ -31,7 +31,7 @@ for (const databaseId of databaseIdsWithPriority) {
           `[dry-run] ${connection.sourceNodeId} -[:${label}]-> ${databaseId}: priority -> ${PRIORITY_DEFAULT}`,
         );
       } else {
-        db.mergeConnectionProperties(connection.id, { ...connection.properties, priority: PRIORITY_DEFAULT });
+        db.mergeRelationshipProperties(connection.id, { ...connection.properties, priority: PRIORITY_DEFAULT });
       }
     }
   }

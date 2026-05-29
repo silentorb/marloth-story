@@ -3,7 +3,7 @@ import { GraphDatabase, IS_A_LABEL } from "marloth-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
-  seedTestConnections,
+  seedTestRelationships,
   seedTestNode,
 } from "marloth-db/content/test-helpers";
 import { createTestApiFromContent } from "./test-api-setup";
@@ -16,7 +16,7 @@ describe("edge property API", () => {
 
   seedTestNode(fixture, { id: databaseId, labels: ["NotionDatabase"], properties: { title: "Features" } });
   seedTestNode(fixture, { id: nodeId, labels: ["NotionPage"], properties: { title: "Feature" } });
-  seedTestConnections(fixture, [
+  seedTestRelationships(fixture, [
     { source: nodeId, target: databaseId, label: IS_A_LABEL, properties: { priority: "Low" } },
   ]);
 
@@ -33,7 +33,7 @@ describe("edge property API", () => {
     expect(res.status).toBe(200);
 
     const verifyDb = new GraphDatabase(api.dbPath);
-    const edge = verifyDb.listConnectionsFromSource(nodeId, IS_A_LABEL)[0];
+    const edge = verifyDb.listRelationshipsFromSource(nodeId, IS_A_LABEL)[0];
     expect(edge?.properties.priority).toBe("High");
     verifyDb.close();
   });

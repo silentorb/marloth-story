@@ -8,7 +8,7 @@ VS Code extension + React webview for editing Marloth design nodes stored in `da
 
 - **Node** — graph entity; API `GET/PUT /api/nodes/:id`, search `GET /api/nodes/search`.
 - **Page** — `NodePageView` UI for one node (title, metadata, sections).
-- **Connection** — graph relationship; connection property edits via `/api/nodes/:id/connections/...`.
+- **Relationship** — graph relationship; relationship property edits via `/api/nodes/:id/relationships/...`.
 - Navigation: `marloth://node/{id}`, standalone `?node=`, commands `marloth.openHome` / `marloth.openNode`.
 
 ## Theme

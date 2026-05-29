@@ -19,11 +19,11 @@ describe("node-metadata", () => {
     db.upsertNode(PAGE_A, ["NotionPage"], { title: "Page A" });
     db.upsertNode(PAGE_B, ["NotionPage"], { title: "Page B" });
     db.upsertNode(PAGE_C, ["NotionPage"], { title: "Page C" });
-    db.upsertConnection(PAGE_B, PAGE_A, "LINKS");
-    db.upsertConnection(PAGE_C, PAGE_A, "REFERENCES");
+    db.upsertRelationship(PAGE_B, PAGE_A, "LINKS");
+    db.upsertRelationship(PAGE_C, PAGE_A, "REFERENCES");
 
     const meta = getNodePageMetadata(db, PAGE_A);
-    expect(meta?.connectionCount).toBe(2);
+    expect(meta?.relationshipCount).toBe(2);
     expect(meta?.backlinks).toEqual([]);
 
     db.close();
@@ -69,7 +69,7 @@ describe("node-metadata", () => {
     db.upsertNode(PAGE_A, ["NotionPage"], { title: "Page A", body: "Hello" });
 
     const detail = getNodePageDetail(db, PAGE_A);
-    expect(detail?.metadata.connectionCount).toBe(0);
+    expect(detail?.metadata.relationshipCount).toBe(0);
     expect(detail?.metadata.backlinks).toEqual([]);
 
     db.close();

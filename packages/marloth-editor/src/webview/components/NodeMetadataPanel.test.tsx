@@ -7,7 +7,7 @@ import type { NodePageMetadata } from "../../shared/types";
 const metadata: NodePageMetadata = {
   createdAt: "2024-01-15T10:00:00.000Z",
   modifiedAt: "2024-06-01T12:30:00.000Z",
-  connectionCount: 3,
+  relationshipCount: 3,
   backlinks: [
     {
       sourceId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
@@ -30,7 +30,7 @@ describe("NodeMetadataPanel", () => {
         onOpenNode={() => {}}
       />,
     );
-    expect(screen.getByText(/3 connections · 1 backlink/)).toBeTruthy();
+    expect(screen.getByText(/3 relationships · 1 backlink/)).toBeTruthy();
   });
 
   test("shows metadata rows when expanded", () => {
@@ -46,7 +46,7 @@ describe("NodeMetadataPanel", () => {
     );
     expect(screen.getByText("Created")).toBeTruthy();
     expect(screen.getByText("Modified")).toBeTruthy();
-    expect(screen.getByText("Connections")).toBeTruthy();
+    expect(screen.getByText("Relationships")).toBeTruthy();
     expect(screen.getByText("3")).toBeTruthy();
   });
 });

@@ -109,23 +109,23 @@ export function buildPropertiesSection(
   nodeId: string,
 ): PropertiesSection | null {
   // v1: first type membership connection when a node belongs to multiple types.
-  let membershipConnection = null as ReturnType<GraphDatabase["listConnectionsFromSource"]>[number] | null;
+  let membershipRelationship = null as ReturnType<GraphDatabase["listRelationshipsFromSource"]>[number] | null;
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    const connections = db.listConnectionsFromSource(nodeId, label);
+    const connections = db.listRelationshipsFromSource(nodeId, label);
     if (connections.length > 0) {
-      membershipConnection = connections[0]!;
+      membershipRelationship = connections[0]!;
       break;
     }
   }
-  if (!membershipConnection) return null;
+  if (!membershipRelationship) return null;
 
-  const databaseId = membershipConnection.targetNodeId;
+  const databaseId = membershipRelationship.targetNodeId;
   const database = db.getNode(databaseId);
   if (!database?.labels.includes("NotionDatabase")) return null;
 
   const typeTitle = titleFromProperties(database.properties);
   const schema = parseNotionSchema(database.properties.notion_schema);
-  const storedCells = cellsFromConnectionProperties(membershipConnection.properties);
+  const storedCells = cellsFromConnectionProperties(membershipRelationship.properties);
 
   let storedColumnDefs: DatabaseColumnDef[];
   if (schema) {

@@ -103,7 +103,7 @@ export interface GraphManifest {
   database: string;
   nodes: Record<string, GraphManifestEntry>;
   databases: Record<string, { notion_database: string; source_export: string; view: string }>;
-  counts: { nodes: number; connections: number };
+  counts: { nodes: number; relationships: number };
 }
 
 interface PagePlan {
@@ -288,7 +288,7 @@ function importRelations(
           return;
         }
         ensurePageVertex(db, link.notionId, link.label);
-        db.upsertConnection(plan.notionId, link.notionId, label, { ordinal });
+        db.upsertRelationship(plan.notionId, link.notionId, label, { ordinal });
       });
     }
   }
@@ -350,11 +350,11 @@ function importCsvFile(
     const targetPageId = pageId;
     if (targetPageId) {
       ensurePageVertex(db, targetPageId, (nameLinks[0]?.label ?? rowName) || targetPageId);
-      db.upsertConnection(targetPageId, databaseId, IS_A_LABEL, rowProperties);
+      db.upsertRelationship(targetPageId, databaseId, IS_A_LABEL, rowProperties);
     } else if (rowName || Object.keys(rowScalars).length > 0) {
       const orphanId = orphanPageId(databaseId, parsed.viewKey, rowIndex);
       ensurePageVertex(db, orphanId, rowName || orphanId, { orphan_row: "true" });
-      db.upsertConnection(orphanId, databaseId, IS_A_LABEL, rowProperties);
+      db.upsertRelationship(orphanId, databaseId, IS_A_LABEL, rowProperties);
     }
 
     for (const [col, val] of Object.entries(cells)) {
@@ -369,7 +369,7 @@ function importCsvFile(
           return;
         }
         ensurePageVertex(db, link.notionId, link.label);
-        db.upsertConnection(targetPageId, link.notionId, label, {
+        db.upsertRelationship(targetPageId, link.notionId, label, {
           ordinal,
           via_database: databaseId,
           via_view: parsed.viewKey,
@@ -423,7 +423,7 @@ export async function runGraphImport(opts: GraphRunOptions): Promise<void> {
     database: relative(repoRoot, dbFile).split("\\").join("/"),
     nodes: {},
     databases: {},
-    counts: { nodes: 0, connections: 0 },
+    counts: { nodes: 0, relationships: 0 },
   };
 
   const pagePlans: PagePlan[] = [];
@@ -475,7 +475,7 @@ export async function runGraphImport(opts: GraphRunOptions): Promise<void> {
   if (tempdir) rmSync(tempdir, { recursive: true, force: true });
 
   console.log(
-    `imported ${manifest.counts.nodes} nodes, ${manifest.counts.connections} connections → ${manifest.database}`,
+    `imported ${manifest.counts.nodes} nodes, ${manifest.counts.relationships} relationships → ${manifest.database}`,
   );
   if (unresolved.length > 0) {
     console.log("unresolved relations:", unresolved.length);

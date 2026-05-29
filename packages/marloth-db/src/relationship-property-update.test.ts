@@ -1,14 +1,14 @@
 import { describe, expect, test, afterAll } from "bun:test";
 import { IS_A_LABEL } from "./labels";
-import { updateDatabaseRowProperty, updateOutgoingConnectionProperty } from "./connection-property-update";
+import { updateDatabaseRowProperty, updateOutgoingRelationshipProperty } from "./relationship-property-update";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
-  seedTestConnections,
+  seedTestRelationships,
   seedTestNode,
 } from "./content/test-helpers";
 
-describe("connection-property-update", () => {
+describe("relationship-property-update", () => {
   const fixture = createTestContentFixture("marloth-db-conn-prop-");
 
   test("updates priority on database membership edge", () => {
@@ -24,7 +24,7 @@ describe("connection-property-update", () => {
       labels: ["NotionPage"],
       properties: { title: "Feature A" },
     });
-    seedTestConnections(fixture, [
+    seedTestRelationships(fixture, [
       { source: pageId, target: databaseId, label: IS_A_LABEL, properties: { priority: "Low" } },
     ]);
 
@@ -32,7 +32,7 @@ describe("connection-property-update", () => {
       updateDatabaseRowProperty(fixture.ctx, databaseId, pageId, "priority", "High"),
     ).toBeNull();
 
-    const edge = fixture.ctx.db.listConnectionsFromSource(pageId, IS_A_LABEL)[0];
+    const edge = fixture.ctx.db.listRelationshipsFromSource(pageId, IS_A_LABEL)[0];
     expect(edge?.properties.priority).toBe("High");
   });
 
@@ -41,14 +41,14 @@ describe("connection-property-update", () => {
     const targetId = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
     seedTestNode(fixture, { id: pageId, labels: ["NotionPage"], properties: { title: "A" } });
     seedTestNode(fixture, { id: targetId, labels: ["NotionPage"], properties: { title: "B" } });
-    seedTestConnections(fixture, [
+    seedTestRelationships(fixture, [
       { source: pageId, target: targetId, label: "RELATED", properties: { priority: "High" } },
     ]);
 
     expect(
-      updateOutgoingConnectionProperty(fixture.ctx, pageId, targetId, "RELATED", "priority", ""),
+      updateOutgoingRelationshipProperty(fixture.ctx, pageId, targetId, "RELATED", "priority", ""),
     ).toBeNull();
-    const edge = fixture.ctx.db.listConnectionsFromSource(pageId, "RELATED")[0];
+    const edge = fixture.ctx.db.listRelationshipsFromSource(pageId, "RELATED")[0];
     expect(edge?.properties.priority).toBe("Low");
   });
 
@@ -57,10 +57,10 @@ describe("connection-property-update", () => {
     const targetId = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
     seedTestNode(fixture, { id: pageId, labels: ["NotionPage"], properties: { title: "A" } });
     seedTestNode(fixture, { id: targetId, labels: ["NotionPage"], properties: { title: "B" } });
-    seedTestConnections(fixture, [{ source: pageId, target: targetId, label: "RELATED", properties: {} }]);
+    seedTestRelationships(fixture, [{ source: pageId, target: targetId, label: "RELATED", properties: {} }]);
 
     expect(
-      updateOutgoingConnectionProperty(fixture.ctx, pageId, targetId, "RELATED", "priority", "4"),
+      updateOutgoingRelationshipProperty(fixture.ctx, pageId, targetId, "RELATED", "priority", "4"),
     ).toBe("invalid_value");
   });
 

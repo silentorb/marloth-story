@@ -22,16 +22,16 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 ### Editing model
 
 - The editor **must** read and write node bodies via `marloth-db` (`ContentStore` → `content/{id}.md`).
-- Every node **must** render as a **universal page** with this block order: **page title** (standalone textarea) → collapsible **metadata** panel → optional **Properties** section → **markdown body** (Milkdown) → optional relationship and database table sections derived from graph connections.
+- Every node **must** render as a **universal page** with this block order: **page title** (standalone textarea) → collapsible **metadata** panel → optional **Properties** section → **markdown body** (Milkdown) → optional relationship and database table sections derived from graph relationships.
 - Instance pages (`NotionPage` with `(page)-[:IS_A]->(type)`) **must** show a **Properties** section when the type defines one or more stored scalar fields and/or dynamic computed fields for that database. Stored scalars (e.g. Priority) are editable; computed dynamic fields are read-only. When Properties is shown, the redundant `IS_A` relationship table section **must** be omitted.
-- Relationship tables **must** group outgoing connections by label; connection properties (except import metadata like `ordinal`, `via_database`) **must** appear as table columns.
-- Database table sections **must** appear on `NotionDatabase` nodes, built from incoming `IS_A` connections (Name from linked pages; scalar columns from `IS_A` properties; relation columns from linked targets on outgoing graph connections — see [marloth-db.md](./marloth-db.md) `getDatabaseViewDetail`).
+- Relationship tables **must** group outgoing relationships by label; relationship properties (except import metadata like `ordinal`, `via_database`) **must** appear as table columns.
+- Database table sections **must** appear on `NotionDatabase` nodes, built from incoming `IS_A` relationships (Name from linked pages; scalar columns from `IS_A` properties; relation columns from linked targets on outgoing graph relationships — see [marloth-db.md](./marloth-db.md) `getDatabaseViewDetail`).
 - The API **must** load `content/` on startup (full cache rebuild if stale), watch the flat content directory for changes, and sync into `MARLOTH_DB_PATH` (see marloth-db).
 - Autosave **should** debounce writes (default ~800ms after last edit).
 - Local UI preferences (table sort order, etc.) **must** persist in a gitignored user settings file (`.marloth/user-settings.json` by default), storing sparse overrides only—not full copies of graph data.
 - Section tables **must** support sortable columns; default sort is Name ascending. Sort preferences **must** persist per section table across sessions.
 - Each node page **must** include a collapsible **metadata** panel below the page title and above Properties (when present). Collapsed by default; standalone mode supports `?meta=1` to expand (not persisted in user settings).
-- **Connections** — total incident graph connections (in + out). **Backlinks** — prose-only discovery: other pages whose markdown `body` links here (inline `marloth:` or export-style links). Backlinks are a gap-filler for references not already visible in relation/database sections; typed graph connections are excluded.
+- **Connections** — total incident graph relationships (in + out). **Backlinks** — prose-only discovery: other pages whose markdown `body` links here (inline `marloth:` or export-style links). Backlinks are a gap-filler for references not already visible in relation/database sections; typed graph relationships are excluded.
 - Database tables **should** use synced Notion view definitions (`notion_views` on `NotionDatabase` nodes) for view tabs, filters, sorts, and typed columns when present; see [notion-metadata-sync.md](./notion-metadata-sync.md).
 
 ### Cross-linking
@@ -65,8 +65,8 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 ### Out of scope (v0.1)
 
 - Creating new graph nodes from the UI
-- Editing relationship connections from the UI (except ordered-association reorder/part moves; see [ordered-associations.md](./ordered-associations.md), and stored type-membership scalars in the Properties section)
-- Weighted connections or typed link metadata in the editor
+- Editing relationships from the UI (except ordered-association reorder/part moves; see [ordered-associations.md](./ordered-associations.md), and stored type-membership scalars in the Properties section)
+- Weighted relationships or typed link metadata in the editor
 
 ## Design rationale
 

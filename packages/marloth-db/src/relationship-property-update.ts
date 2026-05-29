@@ -1,6 +1,6 @@
 import type { Properties } from "./graph";
 import type { MarlothWriteContext } from "./content/write-context";
-import { syncAfterConnectionsWrite } from "./content/write-context";
+import { syncAfterRelationshipsWrite } from "./content/write-context";
 import {
   PRIORITY_DEFAULT,
   isPriorityColumnKey,
@@ -9,27 +9,27 @@ import {
 } from "./property-enums";
 import { TYPE_MEMBERSHIP_LABELS } from "./labels";
 
-export type ConnectionPropertyUpdateError = "not_found" | "invalid_value";
+export type RelationshipPropertyUpdateError = "not_found" | "invalid_value";
 
-export function updateOutgoingConnectionProperty(
+export function updateOutgoingRelationshipProperty(
   ctx: MarlothWriteContext,
   sourceNodeId: string,
   targetNodeId: string,
   label: string,
   propertyKey: string,
   value: string | null,
-): ConnectionPropertyUpdateError | null {
-  const connection = ctx.store.findConnection(sourceNodeId, targetNodeId, label);
+): RelationshipPropertyUpdateError | null {
+  const connection = ctx.store.findRelationship(sourceNodeId, targetNodeId, label);
   if (!connection) return "not_found";
 
   if (isPriorityColumnKey(propertyKey)) {
     const resolved: string = isUnsetPriority(value) ? PRIORITY_DEFAULT : (value ?? PRIORITY_DEFAULT);
     if (!isPriorityValue(resolved)) return "invalid_value";
-    ctx.store.mergeConnectionProperties(sourceNodeId, targetNodeId, label, {
+    ctx.store.mergeRelationshipProperties(sourceNodeId, targetNodeId, label, {
       ...connection.properties,
       [propertyKey]: resolved,
     });
-    syncAfterConnectionsWrite(ctx);
+    syncAfterRelationshipsWrite(ctx);
     return null;
   }
 
@@ -40,8 +40,8 @@ export function updateOutgoingConnectionProperty(
     patch[propertyKey] = value;
   }
 
-  ctx.store.mergeConnectionProperties(sourceNodeId, targetNodeId, label, patch);
-  syncAfterConnectionsWrite(ctx);
+  ctx.store.mergeRelationshipProperties(sourceNodeId, targetNodeId, label, patch);
+  syncAfterRelationshipsWrite(ctx);
   return null;
 }
 
@@ -51,11 +51,11 @@ export function updateDatabaseRowProperty(
   nodeId: string,
   propertyKey: string,
   value: string | null,
-): ConnectionPropertyUpdateError | null {
+): RelationshipPropertyUpdateError | null {
   for (const label of TYPE_MEMBERSHIP_LABELS) {
-    const connection = ctx.store.findConnection(nodeId, databaseId, label);
+    const connection = ctx.store.findRelationship(nodeId, databaseId, label);
     if (connection) {
-      return updateOutgoingConnectionProperty(
+      return updateOutgoingRelationshipProperty(
         ctx,
         nodeId,
         databaseId,

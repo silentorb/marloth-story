@@ -35,15 +35,15 @@ describe("graph export", () => {
       title: "Feature B",
       inferred_notion_path: "Marloth/Features",
     });
-    db.upsertConnection("page1", "page2", "FEATURES");
+    db.upsertRelationship("page1", "page2", "FEATURES");
 
     const snapshot = exportFullGraph(db);
     db.close();
 
     expect(snapshot.nodes).toHaveLength(2);
-    expect(snapshot.connections).toHaveLength(1);
+    expect(snapshot.relationships).toHaveLength(1);
     expect(snapshot.nodes.find((node) => node.id === "page1")?.title).toBe("Scene A");
-    expect(snapshot.connections[0]).toMatchObject({
+    expect(snapshot.relationships[0]).toMatchObject({
       source: "page1",
       target: "page2",
       label: "FEATURES",
@@ -67,15 +67,15 @@ describe("graph export", () => {
       title: "Archive",
       inferred_notion_path: "Marloth/Archive",
     });
-    db.upsertConnection("active", "archived", "INSPIRATIONS");
-    db.upsertConnection("archived", "archive-root", "PART");
+    db.upsertRelationship("active", "archived", "INSPIRATIONS");
+    db.upsertRelationship("archived", "archive-root", "PART");
 
     const snapshot = exportFullGraph(db);
     db.close();
 
     expect(snapshot.nodes).toHaveLength(1);
     expect(snapshot.nodes[0]?.id).toBe("active");
-    expect(snapshot.connections).toHaveLength(0);
+    expect(snapshot.relationships).toHaveLength(0);
   });
 
   test("isArchivedNotionPath matches archive root and nested pages", () => {
@@ -93,8 +93,8 @@ describe("graph export", () => {
     db.upsertNode("page1", ["NotionPage"], { title: "Scene 1" });
     db.upsertNode("page2", ["NotionPage"], { title: "Scene 2" });
     db.upsertNode("page3", ["NotionPage"], { title: "Feature 1" });
-    db.upsertConnection("page1", "page2", "BLOCKS");
-    db.upsertConnection("page2", "page3", "FEATURES");
+    db.upsertRelationship("page1", "page2", "BLOCKS");
+    db.upsertRelationship("page2", "page3", "FEATURES");
 
     const lod = exportExplorerLodGraph(db);
     db.close();
@@ -113,7 +113,7 @@ describe("graph export", () => {
     db.upsertNode("anchor", ["NotionPage"], { title: "Anchor" });
     db.upsertNode("near", ["NotionPage"], { title: "Near" });
     db.upsertNode("far", ["NotionPage"], { title: "Far" });
-    db.upsertConnection("anchor", "near", "RELATES");
+    db.upsertRelationship("anchor", "near", "RELATES");
 
     const lod = exportExplorerLodGraph(db, { anchorId: "anchor" });
     db.close();

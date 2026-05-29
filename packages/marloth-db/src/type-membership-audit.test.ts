@@ -4,8 +4,8 @@ import { GraphDatabase } from "./graph";
 import { openMarlothWriteContext } from "./content/write-context";
 import {
   expectedTypeDatabaseForPage,
-  findMissingTypeMembershipConnections,
-  findSpuriousTypeMembershipConnections,
+  findMissingTypeMembershipRelationships,
+  findSpuriousTypeMembershipRelationships,
   findNodeScalarsOnTypedNodes,
   typeDatabaseTitleFromPath,
 } from "./type-membership-audit";
@@ -50,12 +50,12 @@ describe.skip("type-membership-audit (production graph)", () => {
   const db = ctx.db;
 
   test("every typed page has an IS_A edge to its expected database", () => {
-    const missing = findMissingTypeMembershipConnections(db);
+    const missing = findMissingTypeMembershipRelationships(db);
     expect(missing).toEqual([]);
   });
 
   test("typed pages do not have spurious IS_A edges to other databases", () => {
-    const spurious = findSpuriousTypeMembershipConnections(db);
+    const spurious = findSpuriousTypeMembershipRelationships(db);
     expect(spurious).toEqual([]);
   });
 

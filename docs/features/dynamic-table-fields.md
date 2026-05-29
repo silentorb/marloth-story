@@ -20,7 +20,7 @@ For per-field logic, read the spec in [`docs/dynamic-fields/`](../dynamic-fields
 ### Core model
 
 - Dynamic values **must** be computed in `marloth-db` when building `DatabaseViewDetail`, before Notion view filter/sort evaluation.
-- Dynamic values **must** override stale `IS_A` connection properties when column keys match.
+- Dynamic values **must** override stale `IS_A` relationship properties when column keys match.
 - Core graph files **must not** store dynamic field configuration; `dynamic-fields.json` only.
 - Each dynamic field **must** have an authoritative spec under `docs/dynamic-fields/`.
 - Resolvers **must** be registered in TypeScript (`resolver_id` → function); overlay rows reference resolver ids and params only.
@@ -52,7 +52,7 @@ For per-field logic, read the spec in [`docs/dynamic-fields/`](../dynamic-fields
 3. Register resolver id in `registry.ts`.
 4. Update bindings in `content/dynamic-fields.json` (or `bun scripts/seed-dynamic-fields.ts`).
 5. Add tests in `packages/marloth-db/src/dynamic-fields/`.
-6. Run graph migration scripts if new connections are required (e.g. `scripts/migrate-theme-edges.ts`).
+6. Run graph migration scripts if new relationships are required (e.g. `scripts/migrate-theme-edges.ts`).
 
 No manual UI for field configuration in v1.
 
@@ -64,7 +64,7 @@ Agents implement and reimplement resolvers from field specs. Overlay config is b
 
 ### Overlay vs core graph
 
-Separating configuration lets the overlay be rebuilt without touching imported design data. Theme associations (e.g. `THEME → Wonderland`) live in core connections because they are design relationships, not field config.
+Separating configuration lets the overlay be rebuilt without touching imported design data. Theme associations (e.g. `THEME → Wonderland`) live in core relationships because they are design relationships, not field config.
 
 ### Hybrid execution
 
@@ -74,7 +74,7 @@ Pure config DSLs are insufficient for graph traversals and dimension expansion. 
 
 ```
 getDatabaseViewDetail(db, databaseId, view)
-  → build EvalRow[] from IS_A connections
+  → build EvalRow[] from IS_A relationships
   → applyDynamicFields(db, databaseId, viewName, evalRows)
        load overlay rows for database
        expand dynamic_column_sets → concrete columns
@@ -93,12 +93,12 @@ getDatabaseViewDetail(db, databaseId, view)
 | `content/dynamic-fields.json` | Runtime bindings |
 | `packages/marloth-db/src/dynamic-fields/` | Resolver registry and enrichment |
 | `scripts/seed-dynamic-fields.ts` | Write starter bindings to content |
-| `scripts/migrate-theme-edges.ts` | Create THEME connections from legacy tags |
+| `scripts/migrate-theme-edges.ts` | Create THEME relationships from legacy tags |
 
 ## Quick start
 
 ```bash
-# Migrate theme connections (core graph, one-time)
+# Migrate theme relationships (core graph, one-time)
 bun run scripts/migrate-theme-edges.ts
 
 # Seed overlay configuration

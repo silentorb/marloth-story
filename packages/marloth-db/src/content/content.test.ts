@@ -1,11 +1,11 @@
 import { describe, expect, test } from "bun:test";
 import type { Node } from "../graph";
 import {
-  connectionFromEntry,
-  entryFromConnection,
-  parseConnectionsFile,
-  serializeConnectionsFile,
-} from "./connections-file";
+  relationshipFromEntry,
+  entryFromRelationship,
+  parseRelationshipsFile,
+  serializeRelationshipsFile,
+} from "./relationships-file";
 import {
   emptyDynamicFieldsFile,
   fieldRecordFromEntry,
@@ -43,11 +43,11 @@ describe("node-file", () => {
   });
 });
 
-describe("connections-file", () => {
-  test("round-trips connections", () => {
+describe("relationships-file", () => {
+  test("round-trips relationships", () => {
     const file = {
       version: 1,
-      connections: [
+      relationships: [
         {
           source: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
           target: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
@@ -56,12 +56,12 @@ describe("connections-file", () => {
         },
       ],
     };
-    const raw = serializeConnectionsFile(file);
-    const parsed = parseConnectionsFile(raw);
-    expect(parsed.connections).toHaveLength(1);
-    const conn = connectionFromEntry(parsed.connections[0]!);
+    const raw = serializeRelationshipsFile(file);
+    const parsed = parseRelationshipsFile(raw);
+    expect(parsed.relationships).toHaveLength(1);
+    const conn = relationshipFromEntry(parsed.relationships[0]!);
     expect(conn.id).toBe("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:SCENES:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-    expect(entryFromConnection(conn).label).toBe("SCENES");
+    expect(entryFromRelationship(conn).label).toBe("SCENES");
   });
 });
 

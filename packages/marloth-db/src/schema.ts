@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = 4;
+export const SCHEMA_VERSION = 5;
 
 export const DDL = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS node_labels (
 
 CREATE INDEX IF NOT EXISTS idx_node_labels_label ON node_labels(label);
 
-CREATE TABLE IF NOT EXISTS connections (
+CREATE TABLE IF NOT EXISTS relationships (
   id TEXT PRIMARY KEY NOT NULL,
   source_node_id TEXT NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
   target_node_id TEXT NOT NULL REFERENCES nodes(id) ON DELETE CASCADE,
@@ -27,10 +27,10 @@ CREATE TABLE IF NOT EXISTS connections (
   properties TEXT NOT NULL DEFAULT '{}'
 );
 
-CREATE INDEX IF NOT EXISTS idx_connections_source ON connections(source_node_id);
-CREATE INDEX IF NOT EXISTS idx_connections_target ON connections(target_node_id);
-CREATE INDEX IF NOT EXISTS idx_connections_label ON connections(label);
-CREATE UNIQUE INDEX IF NOT EXISTS idx_connections_endpoint_label ON connections(source_node_id, target_node_id, label);
+CREATE INDEX IF NOT EXISTS idx_relationships_source ON relationships(source_node_id);
+CREATE INDEX IF NOT EXISTS idx_relationships_target ON relationships(target_node_id);
+CREATE INDEX IF NOT EXISTS idx_relationships_label ON relationships(label);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_relationships_endpoint_label ON relationships(source_node_id, target_node_id, label);
 `;
 
 /** @deprecated Dynamic field configuration lives in content/dynamic-fields.json (schema v4+). */

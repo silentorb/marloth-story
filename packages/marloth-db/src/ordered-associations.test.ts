@@ -9,7 +9,7 @@ import { getNodePageDetail } from "./node-page-sections";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
-  seedTestConnections,
+  seedTestRelationships,
   seedTestNode,
 } from "./content/test-helpers";
 
@@ -40,7 +40,7 @@ describe("ordered-associations", () => {
   seedTestNode(fixture, { id: scene2, labels: ["NotionPage"], properties: { title: "Scene Two" } });
   seedTestNode(fixture, { id: scene3, labels: ["NotionPage"], properties: { title: "Scene Three" } });
 
-  seedTestConnections(fixture, [
+  seedTestRelationships(fixture, [
     { source: bookA, target: PRODUCTS_DB, label: IS_A_LABEL, properties: { order: "1", row_index: 0 } },
     { source: bookB, target: PRODUCTS_DB, label: IS_A_LABEL, properties: { order: "2", row_index: 1 } },
     { source: part1, target: PARTS_DB, label: IS_A_LABEL, properties: { row_index: 0 } },
@@ -80,7 +80,7 @@ describe("ordered-associations", () => {
   test("places scenes without part in Unassigned group", () => {
     const unassigned = "66666666666666666666666666666666";
     seedTestNode(fixture, { id: unassigned, labels: ["NotionPage"], properties: { title: "Loose Scene" } });
-    seedTestConnections(fixture, [
+    seedTestRelationships(fixture, [
       { source: unassigned, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "40" } },
       { source: unassigned, target: bookA, label: "PRODUCT", properties: { ordinal: 0 } },
     ]);
@@ -101,8 +101,8 @@ describe("ordered-associations", () => {
     const partGroup = updated?.groups.find((group) => group.groupId === part1);
     expect(partGroup?.rows.map((row) => row.sceneId)).toEqual([scene2, scene1]);
 
-    const edge1 = db().getConnection(`${scene1}:${IS_A_LABEL}:${SCENES_DB}`);
-    const edge2 = db().getConnection(`${scene2}:${IS_A_LABEL}:${SCENES_DB}`);
+    const edge1 = db().getRelationship(`${scene1}:${IS_A_LABEL}:${SCENES_DB}`);
+    const edge2 = db().getRelationship(`${scene2}:${IS_A_LABEL}:${SCENES_DB}`);
     expect(edge1?.properties.order).toBe("20");
     expect(edge2?.properties.order).toBe("10");
   });
@@ -117,7 +117,7 @@ describe("ordered-associations", () => {
 
     const part2Group = updated?.groups.find((group) => group.groupId === part2);
     expect(part2Group?.rows.some((row) => row.sceneId === scene1)).toBe(true);
-    expect(db().listConnectionsFromSource(scene1, "PART")[0]?.targetNodeId).toBe(part2);
+    expect(db().listRelationshipsFromSource(scene1, "PART")[0]?.targetNodeId).toBe(part2);
   });
 
   test("moving to Unassigned removes PART edge", () => {
@@ -128,7 +128,7 @@ describe("ordered-associations", () => {
       targetIndex: 0,
     });
 
-    expect(db().listConnectionsFromSource(scene2, "PART")).toHaveLength(0);
+    expect(db().listRelationshipsFromSource(scene2, "PART")).toHaveLength(0);
   });
 
   test("Scenes database record page emits ordered-association section", () => {
