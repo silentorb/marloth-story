@@ -6,6 +6,15 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
   return {
     host,
     getHomeId: async () => "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    createNode: async (input) => ({ id: "cccccccccccccccccccccccccccccccc", title: input.title }),
+    createRelationRow: async (_sourceId, input) => ({
+      id: "dddddddddddddddddddddddddddddddd",
+      title: input.title,
+    }),
+    createDatabaseRow: async (_databaseId, input) => ({
+      id: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      title: input.title,
+    }),
     getNode: async () => {
       throw new Error("not implemented in mock");
     },

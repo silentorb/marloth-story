@@ -23,5 +23,11 @@ export default defineConfig({
     strictPort: true,
     cors: true,
     host: "127.0.0.1",
+    proxy: {
+      "/api": {
+        target: `http://127.0.0.1:${process.env.MARLOTH_EDITOR_API_PORT ?? "3847"}`,
+        changeOrigin: true,
+      },
+    },
   },
 });

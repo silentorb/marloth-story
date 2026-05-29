@@ -27,6 +27,9 @@ describe("node-links", () => {
     expect(
       standaloneViewUrl("node-page", "72b6fb455b824b78962b0e509cc091c9", "http://127.0.0.1:5173/"),
     ).toBe("http://127.0.0.1:5173/?node=72b6fb455b824b78962b0e509cc091c9");
+    expect(standaloneViewUrl("create-node", null, "http://127.0.0.1:5173/")).toBe(
+      "http://127.0.0.1:5173/?view=create",
+    );
   });
 
   test("metadataExpandedFromLocation reads meta query param", () => {

@@ -6,6 +6,7 @@ import "./side-panel.css";
 export interface SidePanelStandaloneUrls {
   home: string;
   explorer: string;
+  create: string;
   nodes: Record<string, string>;
 }
 
@@ -99,6 +100,14 @@ export function SidePanel({
           label="Graph Explorer"
           href={standaloneUrls?.explorer}
           onClick={standaloneUrls ? undefined : () => onViewChange("graph-explorer")}
+        />
+        <NavItem
+          active={activeView === "create-node"}
+          title="New page"
+          icon="+"
+          label="New page"
+          href={standaloneUrls?.create}
+          onClick={standaloneUrls ? undefined : () => onViewChange("create-node")}
         />
         <div className="marloth-side-panel-divider" role="presentation" />
         {SIDEBAR_NODE_LINKS.map(({ id, label, icon }) => (

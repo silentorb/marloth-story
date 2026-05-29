@@ -43,4 +43,9 @@ describe("RelationSectionView", () => {
     expect(screen.getByRole("button", { name: /Name/ })).toBeTruthy();
     expect(screen.getByRole("button", { name: /Priority/ })).toBeTruthy();
   });
+
+  test("renders add row control", () => {
+    renderRelationSection();
+    expect(screen.getByRole("button", { name: /\+ New/ })).toBeTruthy();
+  });
 });

@@ -4,6 +4,7 @@ import type { DatabaseViewDetail } from "../../shared/types";
 import { databaseTableSortKey } from "../../shared/user-settings";
 import { standaloneNodeUrl } from "../../shared/types";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
+import { TableAddRowFooter } from "./TableAddRowFooter";
 import { renderTableCell } from "./table-cell-render";
 import "./database-table-view.css";
 
@@ -141,6 +142,16 @@ export function DatabaseTableView({
           renderCell={renderCell}
         />
       )}
+      <TableAddRowFooter
+        label="New row"
+        onSubmit={async (title) => {
+          await api.createDatabaseRow(databaseView.id, {
+            title,
+            view: databaseView.view,
+          });
+          onCellUpdated?.();
+        }}
+      />
     </div>
   );
 }

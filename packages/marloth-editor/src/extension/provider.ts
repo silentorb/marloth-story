@@ -30,6 +30,8 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
   private api: EditorApiClient | null = null;
   private readonly devMode: boolean;
   private readonly devWebviewUrl: string;
+  private readonly panels = new Map<string, vscode.WebviewPanel>();
+  private pendingCreateView = false;
 
   constructor(private readonly context: vscode.ExtensionContext) {
     this.devMode = context.extensionMode === vscode.ExtensionMode.Development;
@@ -74,7 +76,28 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
       await this.handleMessage(message, webviewPanel);
     });
 
-    webviewPanel.webview.postMessage({ type: "init", nodeId: document.nodeId });
+    this.panels.set(document.nodeId, webviewPanel);
+    webviewPanel.onDidDispose(() => {
+      this.panels.delete(document.nodeId);
+    });
+
+    if (this.pendingCreateView) {
+      this.pendingCreateView = false;
+      webviewPanel.webview.postMessage({ type: "navigate", view: "create-node" });
+      webviewPanel.title = "New page";
+    } else {
+      webviewPanel.webview.postMessage({ type: "init", nodeId: document.nodeId });
+    }
+  }
+
+  showCreateView(homeId: string): void {
+    const panel = this.panels.get(homeId);
+    if (panel) {
+      panel.webview.postMessage({ type: "navigate", view: "create-node" });
+      panel.title = "New page";
+      return;
+    }
+    this.pendingCreateView = true;
   }
 
   private async buildHtml(webview: vscode.Webview): Promise<string> {
@@ -150,10 +173,16 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
   }
 
   private async handleMessage(
-    message: { type?: string; nodeId?: string; openInNewTab?: boolean },
+    message: { type?: string; nodeId?: string; view?: string; openInNewTab?: boolean },
     panel: vscode.WebviewPanel,
   ): Promise<void> {
     if (message.type !== "navigate") return;
+
+    if (message.view === "create-node") {
+      panel.webview.postMessage({ type: "navigate", view: "create-node" });
+      panel.title = "New page";
+      return;
+    }
 
     const targetId = message.nodeId;
     if (!targetId) return;
@@ -188,4 +217,17 @@ export async function openHome(context: vscode.ExtensionContext): Promise<void> 
   const api = await ensureApiServer(context.extensionPath);
   const homeId = await api.getHomeId();
   await openNode(homeId, { preview: false });
+}
+
+let editorProvider: MarlothEditorProvider | null = null;
+
+export function registerEditorProvider(provider: MarlothEditorProvider): void {
+  editorProvider = provider;
+}
+
+export async function openCreate(context: vscode.ExtensionContext): Promise<void> {
+  const api = await ensureApiServer(context.extensionPath);
+  const homeId = await api.getHomeId();
+  await openNode(homeId, { preview: false });
+  editorProvider?.showCreateView(homeId);
 }

@@ -15,7 +15,11 @@ export interface EditorApi extends EditorApiClient {
 }
 
 function resolveWebviewApiBaseUrl(): string {
-  return import.meta.env.VITE_MARLOTH_API_URL ?? DEFAULT_API_BASE_URL;
+  const fromEnv = import.meta.env.VITE_MARLOTH_API_URL;
+  if (typeof fromEnv === "string" && fromEnv.trim()) return fromEnv.trim();
+  // Standalone browser: use the Vite origin so /api is proxied to the editor API (port 3847).
+  if (typeof window !== "undefined") return window.location.origin;
+  return DEFAULT_API_BASE_URL;
 }
 
 declare global {
@@ -36,6 +40,9 @@ export function createEditorApi(): EditorApi {
     return {
       host: "vscode",
       getHomeId: rest.getHomeId.bind(rest),
+      createNode: rest.createNode.bind(rest),
+      createRelationRow: rest.createRelationRow.bind(rest),
+      createDatabaseRow: rest.createDatabaseRow.bind(rest),
       getNode: rest.getNode.bind(rest),
       getDatabaseView: rest.getDatabaseView.bind(rest),
       search: rest.search.bind(rest),
@@ -59,6 +66,9 @@ export function createEditorApi(): EditorApi {
   return {
     host: "standalone",
     getHomeId: rest.getHomeId.bind(rest),
+    createNode: rest.createNode.bind(rest),
+    createRelationRow: rest.createRelationRow.bind(rest),
+    createDatabaseRow: rest.createDatabaseRow.bind(rest),
     getNode: rest.getNode.bind(rest),
     getDatabaseView: rest.getDatabaseView.bind(rest),
     search: rest.search.bind(rest),

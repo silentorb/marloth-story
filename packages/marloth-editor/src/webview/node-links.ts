@@ -82,6 +82,8 @@ export function standaloneViewUrl(
   if (view === "graph-explorer") {
     url.searchParams.set("view", "explorer");
     url.searchParams.set("anchor", resolveGraphExplorerAnchor(anchorId));
+  } else if (view === "create-node") {
+    url.searchParams.set("view", "create");
   } else url.searchParams.delete("view");
   if (nodeId) url.searchParams.set("node", nodeId);
   else url.searchParams.delete("node");

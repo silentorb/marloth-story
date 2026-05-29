@@ -24,6 +24,10 @@
       {
         "command": "marloth.openNode",
         "title": "Marloth: Open Node"
+      },
+      {
+        "command": "marloth.createNode",
+        "title": "Marloth: New Page"
       }
     ],
     "customEditors": [
@@ -45,6 +49,9 @@
         },
         {
           "command": "marloth.openNode"
+        },
+        {
+          "command": "marloth.createNode"
         }
       ]
     }

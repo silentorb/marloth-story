@@ -34,7 +34,7 @@ export type {
 
 export type EditorHost = "vscode" | "standalone";
 
-export type AppView = "node-page" | "graph-explorer";
+export type AppView = "node-page" | "graph-explorer" | "create-node";
 
 export function marlothHref(nodeId: string): string {
   return `${MARLOTH_LINK_SCHEME}${nodeId}`;

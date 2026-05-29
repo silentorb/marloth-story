@@ -86,6 +86,24 @@ export function createApiHandler(
         return json({ results: db.search(q, limit) });
       }
 
+      if (path === "/api/nodes" && req.method === "POST") {
+        const payload = (await req.json()) as {
+          title?: string;
+          body?: string;
+          labels?: string[];
+        };
+        if (typeof payload.title !== "string") {
+          return json({ error: "title required" }, 400);
+        }
+        const result = db.createNode({
+          title: payload.title,
+          body: typeof payload.body === "string" ? payload.body : undefined,
+          labels: Array.isArray(payload.labels) ? payload.labels : undefined,
+        });
+        if (result === "invalid_title") return json({ error: "invalid title" }, 400);
+        return json({ node: result });
+      }
+
       if (path === "/api/user-settings") {
         if (req.method === "GET") {
           return json({ settings: settingsStore.read() });
@@ -131,6 +149,32 @@ export function createApiHandler(
         }
       }
 
+      const relationRowMatch =
+        /^\/api\/nodes\/([a-f0-9]{32})\/relation-rows$/i.exec(path);
+      if (relationRowMatch && req.method === "POST") {
+        const sourceId = relationRowMatch[1]!.toLowerCase();
+        const payload = (await req.json()) as {
+          label?: string;
+          title?: string;
+          properties?: Record<string, string>;
+        };
+        if (typeof payload.label !== "string" || typeof payload.title !== "string") {
+          return json({ error: "label and title required" }, 400);
+        }
+        const result = db.createNode({
+          title: payload.title,
+          link: {
+            kind: "outgoing",
+            sourceId,
+            label: payload.label,
+            properties: payload.properties,
+          },
+        });
+        if (result === "invalid_title") return json({ error: "invalid title" }, 400);
+        if (result === "source_not_found") return json({ error: "not found" }, 404);
+        return json({ node: result });
+      }
+
       const archiveMatch = /^\/api\/nodes\/([a-f0-9]{32})\/archive$/i.exec(path);
       if (archiveMatch && req.method === "POST") {
         const id = archiveMatch[1]!.toLowerCase();
@@ -148,6 +192,31 @@ export function createApiHandler(
           if (!databaseView) return json({ error: "not found" }, 404);
           return json({ databaseView });
         }
+      }
+
+      const databaseRowsMatch = /^\/api\/databases\/([a-f0-9]{32})\/rows$/i.exec(path);
+      if (databaseRowsMatch && req.method === "POST") {
+        const databaseId = databaseRowsMatch[1]!.toLowerCase();
+        const payload = (await req.json()) as {
+          title?: string;
+          view?: string;
+          properties?: Record<string, string>;
+        };
+        if (typeof payload.title !== "string") {
+          return json({ error: "title required" }, 400);
+        }
+        const result = db.createNode({
+          title: payload.title,
+          link: {
+            kind: "database-row",
+            databaseId,
+            view: typeof payload.view === "string" ? payload.view : undefined,
+            properties: payload.properties,
+          },
+        });
+        if (result === "invalid_title") return json({ error: "invalid title" }, 400);
+        if (result === "database_not_found") return json({ error: "not found" }, 404);
+        return json({ node: result });
       }
 
       const databaseRowMatch =

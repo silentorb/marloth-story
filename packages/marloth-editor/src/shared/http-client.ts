@@ -24,8 +24,22 @@ export interface GraphExplorerLodOptions {
   layerCount?: number;
 }
 
+export interface CreateNodeResponse {
+  id: string;
+  title: string;
+}
+
 export interface EditorApiClient {
   getHomeId(): Promise<string>;
+  createNode(input: { title: string; body?: string; labels?: string[] }): Promise<CreateNodeResponse>;
+  createRelationRow(
+    sourceId: string,
+    input: { label: string; title: string; properties?: Record<string, string> },
+  ): Promise<CreateNodeResponse>;
+  createDatabaseRow(
+    databaseId: string,
+    input: { title: string; view?: string; properties?: Record<string, string> },
+  ): Promise<CreateNodeResponse>;
   getNode(id: string, options?: GetNodeOptions | string): Promise<NodePageDetail>;
   getDatabaseView(id: string, view?: string): Promise<DatabaseViewDetail>;
   moveOrderedAssociation(
@@ -82,6 +96,46 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     async getHomeId(): Promise<string> {
       const data = await fetchJson<{ id: string }>("/api/home");
       return data.id;
+    },
+    async createNode(input: {
+      title: string;
+      body?: string;
+      labels?: string[];
+    }): Promise<CreateNodeResponse> {
+      const data = await fetchJson<{ node: CreateNodeResponse }>("/api/nodes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      return data.node;
+    },
+    async createRelationRow(
+      sourceId: string,
+      input: { label: string; title: string; properties?: Record<string, string> },
+    ): Promise<CreateNodeResponse> {
+      const data = await fetchJson<{ node: CreateNodeResponse }>(
+        `/api/nodes/${sourceId}/relation-rows`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(input),
+        },
+      );
+      return data.node;
+    },
+    async createDatabaseRow(
+      databaseId: string,
+      input: { title: string; view?: string; properties?: Record<string, string> },
+    ): Promise<CreateNodeResponse> {
+      const data = await fetchJson<{ node: CreateNodeResponse }>(
+        `/api/databases/${databaseId}/rows`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(input),
+        },
+      );
+      return data.node;
     },
     async getNode(id: string, options?: GetNodeOptions | string): Promise<NodePageDetail> {
       const normalized =
@@ -157,7 +211,7 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       value: string | null,
     ): Promise<void> {
       await fetchJson(
-        `/api/nodes/${nodeId}/relationships/${encodeURIComponent(label)}/${targetId}`,
+        `/api/nodes/${nodeId}/connections/${encodeURIComponent(label)}/${targetId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GraphView } from "./components/GraphView";
+import { CreateNodeView } from "./components/CreateNodeView";
 import { NodePageView } from "./components/NodePageView";
 import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
@@ -54,6 +55,7 @@ function viewFromLocation(): AppView {
   const params = new URLSearchParams(window.location.search);
   const view = params.get("view");
   if (view === "overview" || view === "explorer") return "graph-explorer";
+  if (view === "create") return "create-node";
   return "node-page";
 }
 
@@ -71,6 +73,7 @@ function scopeFromLocation(): string | undefined {
 
 function viewToQueryParam(view: AppView): string | null {
   if (view === "graph-explorer") return "explorer";
+  if (view === "create-node") return "create";
   return null;
 }
 
@@ -173,6 +176,7 @@ export function App() {
     return {
       home: standaloneNodeUrl(homeId),
       explorer: standaloneViewUrl("graph-explorer", null, undefined, explorerAnchorId),
+      create: standaloneViewUrl("create-node", null),
       nodes,
     };
   }, [api.host, explorerAnchorId, homeId]);
@@ -239,22 +243,31 @@ export function App() {
 
   const bootstrap = useCallback(async () => {
     if (api.host === "vscode") return;
-    const home = await api.getHomeId();
-    setHomeId(home);
-    const initialView = viewFromLocation();
-    setView(initialView);
-    setExplorerAnchorId(resolveGraphExplorerAnchor(anchorFromLocation()));
-    if (initialView !== "node-page") return;
+    try {
+      const home = await api.getHomeId();
+      setHomeId(home);
+      const initialView = viewFromLocation();
+      setView(initialView);
+      setExplorerAnchorId(resolveGraphExplorerAnchor(anchorFromLocation()));
+      if (initialView === "create-node") return;
+      if (initialView !== "node-page") return;
 
-    const fromUrl = nodeFromLocation();
-    if (fromUrl) {
-      await loadNode(fromUrl, {
-        view: databaseViewFromLocation(),
-        scope: scopeFromLocation(),
-      });
-      return;
+      const fromUrl = nodeFromLocation();
+      if (fromUrl) {
+        await loadNode(fromUrl, {
+          view: databaseViewFromLocation(),
+          scope: scopeFromLocation(),
+        });
+        return;
+      }
+      await loadNode(home);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Could not reach the Marloth editor API. Start it with: bun run editor:dev",
+      );
     }
-    await loadNode(home);
   }, [api, loadNode]);
 
   useEffect(() => {
@@ -281,6 +294,13 @@ export function App() {
     const onMessage = (event: MessageEvent) => {
       const msg = event.data as { type?: string; nodeId?: string; error?: string };
       if (msg.type === "init" || msg.type === "navigate") {
+        const view = (msg as { view?: AppView }).view;
+        if (view === "create-node") {
+          setView("create-node");
+          setNode(null);
+          setError(null);
+          return;
+        }
         if (msg.nodeId) {
           setView("node-page");
           void loadNode(msg.nodeId);
@@ -485,7 +505,13 @@ export function App() {
         standaloneUrls={standaloneUrls}
       />
       <div className={`marloth-main${view === "graph-explorer" ? " marloth-main-graph" : ""}`}>
-        {view === "graph-explorer" ? (
+        {view === "create-node" ? (
+          <CreateNodeView
+            api={api}
+            onCancel={() => void goHome()}
+            onCreated={(nodeId) => openLinkedNode(nodeId)}
+          />
+        ) : view === "graph-explorer" ? (
           <GraphView
             api={api}
             anchorId={explorerAnchorId}

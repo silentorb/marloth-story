@@ -38,7 +38,7 @@ export function makeGraphLodSnapshot(
             labels: ["NotionPage"],
           },
         ],
-        connections: [
+        relationships: [
           {
             id: "connection-anchor-neighbor",
             source: anchorId,

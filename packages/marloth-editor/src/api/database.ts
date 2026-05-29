@@ -11,7 +11,11 @@ import {
   updateOutgoingRelationshipProperty,
   applyOrderedAssociationMove,
   archiveNode as archiveNodeInDb,
+  createNode as createNodeInDb,
   deleteNode as deleteNodeInDb,
+  type CreateNodeError,
+  type CreateNodeInput,
+  type CreateNodeResult,
   type GraphLodSnapshot,
   type GraphSnapshot,
   type OrderedAssociationMoveParams,
@@ -54,6 +58,7 @@ export interface EditorDatabase {
   ): import("marloth-db").RelationshipPropertyUpdateError | null;
   deleteNode(id: string): NodeLifecycleError | null;
   archiveNode(id: string): NodeLifecycleError | null;
+  createNode(input: CreateNodeInput): CreateNodeResult | CreateNodeError;
   getGraphFull(): GraphSnapshot;
   getGraphExplorerLod(options?: { anchorId?: string; layerCount?: number }): GraphLodSnapshot;
   close(): void;
@@ -126,6 +131,9 @@ export function openEditorDatabase(
     },
     archiveNode(id: string): NodeLifecycleError | null {
       return archiveNodeInDb(writeCtx, id);
+    },
+    createNode(input: CreateNodeInput): CreateNodeResult | CreateNodeError {
+      return createNodeInDb(writeCtx, input);
     },
     getGraphFull(): GraphSnapshot {
       return exportFullGraph(writeCtx.db);

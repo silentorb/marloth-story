@@ -4602,7 +4602,7 @@
         "row_index": 29,
         "priority": "Consideration",
         "layer": "Primary",
-        "date": "October 4, 2025 \u2192 October 31, 2025"
+        "date": "October 4, 2025 → October 31, 2025"
       }
     },
     {
@@ -4700,7 +4700,7 @@
         "row_index": 28,
         "priority": "Medium",
         "layer": "Primary",
-        "date": "September 24, 2025 \u2192 October 24, 2025"
+        "date": "September 24, 2025 → October 24, 2025"
       }
     },
     {
@@ -4765,7 +4765,7 @@
         "row_index": 27,
         "priority": "High",
         "layer": "Primary",
-        "date": "August 18, 2025 \u2192 September 23, 2025"
+        "date": "August 18, 2025 → September 23, 2025"
       }
     },
     {
@@ -5508,7 +5508,7 @@
         "row_index": 32,
         "priority": "Low",
         "layer": "Primary",
-        "date": "January 5, 2026 \u2192 February 1, 2026"
+        "date": "January 5, 2026 → February 1, 2026"
       }
     },
     {
@@ -5693,7 +5693,7 @@
         "row_index": 30,
         "priority": "High",
         "layer": "Primary",
-        "date": "November 7, 2025 \u2192 December 4, 2025"
+        "date": "November 7, 2025 → December 4, 2025"
       }
     },
     {
@@ -5725,7 +5725,7 @@
         "row_index": 31,
         "priority": "Medium",
         "layer": "Primary",
-        "date": "December 5, 2025 \u2192 January 1, 2026"
+        "date": "December 5, 2025 → January 1, 2026"
       }
     },
     {
@@ -5736,7 +5736,7 @@
         "view": "all",
         "row_index": 36,
         "layer": "Primary",
-        "date": "May 9, 2025 \u2192 June 5, 2025",
+        "date": "May 9, 2025 → June 5, 2025",
         "priority": "Low"
       }
     },
@@ -5759,7 +5759,7 @@
         "row_index": 34,
         "priority": "Consideration",
         "layer": "Secondary",
-        "date": "September 4, 2025 \u2192 October 1, 2025"
+        "date": "September 4, 2025 → October 1, 2025"
       }
     },
     {
@@ -5781,7 +5781,7 @@
         "row_index": 35,
         "priority": "Consideration",
         "layer": "Secondary",
-        "date": "October 9, 2025 \u2192 November 1, 2025"
+        "date": "October 9, 2025 → November 1, 2025"
       }
     },
     {
@@ -5813,7 +5813,7 @@
         "row_index": 33,
         "priority": "High",
         "layer": "Primary",
-        "date": "May 12, 2025 \u2192 June 7, 2025"
+        "date": "May 12, 2025 → June 7, 2025"
       }
     },
     {
@@ -5844,7 +5844,7 @@
         "view": "all",
         "row_index": 38,
         "layer": "Primary",
-        "date": "April 17, 2025 \u2192 May 14, 2025",
+        "date": "April 17, 2025 → May 14, 2025",
         "priority": "Low"
       }
     },
@@ -5956,7 +5956,7 @@
         "view": "all",
         "row_index": 37,
         "layer": "Primary",
-        "date": "June 3, 2025 \u2192 July 7, 2025",
+        "date": "June 3, 2025 → July 7, 2025",
         "priority": "Low"
       }
     },
@@ -6168,7 +6168,7 @@
         "view": "all",
         "row_index": 39,
         "layer": "Primary",
-        "date": "February 10, 2026 \u2192 March 9, 2026",
+        "date": "February 10, 2026 → March 9, 2026",
         "priority": "Low"
       }
     },
@@ -6405,7 +6405,7 @@
         "row_index": 40,
         "priority": "Consideration",
         "layer": "Primary",
-        "date": "August 3, 2025 \u2192 August 30, 2025"
+        "date": "August 3, 2025 → August 30, 2025"
       }
     },
     {
@@ -10207,7 +10207,7 @@
         "row_index": 21,
         "priority": "High",
         "layer": "Primary",
-        "date": "July 21, 2025 \u2192 September 7, 2025"
+        "date": "July 21, 2025 → September 7, 2025"
       }
     },
     {
@@ -11217,7 +11217,7 @@
         "row_index": 41,
         "priority": "High",
         "layer": "Secondary",
-        "date": "July 25, 2025 \u2192 September 5, 2025"
+        "date": "July 25, 2025 → September 5, 2025"
       }
     },
     {
@@ -12378,7 +12378,7 @@
         "row_index": 6,
         "priority": "Medium",
         "layer": "Primary",
-        "date": "February 6, 2025 \u2192 February 20, 2025"
+        "date": "February 6, 2025 → February 20, 2025"
       }
     },
     {
@@ -31317,7 +31317,7 @@
         "row_index": 24,
         "priority": "Consideration",
         "layer": "Primary",
-        "date": "July 23, 2025 \u2192 September 20, 2025"
+        "date": "July 23, 2025 → September 20, 2025"
       }
     },
     {
@@ -33220,7 +33220,7 @@
         "row_index": 8,
         "priority": "Medium",
         "layer": "Epic",
-        "date": "February 1, 2025 \u2192 November 26, 2025"
+        "date": "February 1, 2025 → November 26, 2025"
       }
     },
     {
@@ -38412,7 +38412,7 @@
         "row_index": 2,
         "traversal_types": "https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d",
         "story_scale": "https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc",
-        "notes": "Usually full story.  It is hard to maintain ad-hoc traversal indefinitely.  Extended stories need more of a template so the author isn\u2019t continually re-inventing the wheel.",
+        "notes": "Usually full story.  It is hard to maintain ad-hoc traversal indefinitely.  Extended stories need more of a template so the author isn’t continually re-inventing the wheel.",
         "inspiration_count": "13"
       }
     },
@@ -39167,7 +39167,7 @@
         "row_index": 20,
         "priority": "Low",
         "layer": "Primary",
-        "date": "June 5, 2025 \u2192 July 2, 2025"
+        "date": "June 5, 2025 → July 2, 2025"
       }
     },
     {
@@ -43706,7 +43706,7 @@
         "view": "all",
         "row_index": 3,
         "personality": "ISTJ",
-        "variants": "James\u2019 mother",
+        "variants": "James’ mother",
         "all_scene_count": "11",
         "twold_scene_count": "0"
       }
@@ -45060,7 +45060,7 @@
         "row_index": 2,
         "priority": "Medium",
         "layer": "Epic",
-        "date": "January 1, 2025 \u2192 December 16, 2025"
+        "date": "January 1, 2025 → December 16, 2025"
       }
     },
     {
@@ -46678,7 +46678,7 @@
         "row_index": 3,
         "priority": "High",
         "layer": "Primary",
-        "date": "February 26, 2025 \u2192 April 9, 2025"
+        "date": "February 26, 2025 → April 9, 2025"
       }
     },
     {
@@ -46961,7 +46961,7 @@
       "properties": {
         "view": "all",
         "row_index": 1,
-        "subtitle": "A Child\u2019s Fairytale World",
+        "subtitle": "A Child’s Fairytale World",
         "order": "1"
       }
     },
@@ -51649,7 +51649,7 @@
         "row_index": 25,
         "priority": "High",
         "layer": "Primary",
-        "date": "June 28, 2025 \u2192 August 3, 2025"
+        "date": "June 28, 2025 → August 3, 2025"
       }
     },
     {
@@ -56550,15 +56550,6 @@
       }
     },
     {
-      "source": "e7e3dc84952d4bb8b840f259bd33173b",
-      "target": "528384943746443a9c89699b57e3bbec",
-      "label": "IS_A",
-      "properties": {
-        "view": "all",
-        "row_index": 74
-      }
-    },
-    {
       "source": "ea10b131ad6d4d1dba6fd23443d3a5ba",
       "target": "1da58e628ba28070b129ce3e1c5ab0b3",
       "label": "IS_A",
@@ -57572,7 +57563,7 @@
         "row_index": 14,
         "priority": "Consideration",
         "layer": "Epic",
-        "date": "March 13, 2025 \u2192 December 17, 2025"
+        "date": "March 13, 2025 → December 17, 2025"
       }
     },
     {

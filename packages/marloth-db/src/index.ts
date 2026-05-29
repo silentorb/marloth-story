@@ -35,6 +35,8 @@ export {
   updateNodeBody,
   updateNodeTitle,
 } from "./queries";
+export { createNode } from "./node-create";
+export type { CreateNodeError, CreateNodeInput, CreateNodeLink, CreateNodeResult } from "./node-create";
 export type { NodeDetail, NodeSummary } from "./queries";
 export {
   archivePathForNode,

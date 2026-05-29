@@ -10,6 +10,7 @@ export const HOME_ICON = "⌂";
 
 export const VIEW_ICONS: Record<Exclude<AppView, "node-page">, string> = {
   "graph-explorer": "⊕",
+  "create-node": "+",
 };
 
 /** Quick navigation targets in the side panel (Notion database / page ids). */

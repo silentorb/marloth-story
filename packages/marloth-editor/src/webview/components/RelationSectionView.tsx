@@ -5,6 +5,7 @@ import { relationTableSortKey } from "../../shared/user-settings";
 import { standaloneNodeUrl } from "../../shared/types";
 import { SectionTitle } from "./NodeNameLink";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
+import { TableAddRowFooter } from "./TableAddRowFooter";
 import { renderTableCell } from "./table-cell-render";
 import "./relation-section-view.css";
 
@@ -120,6 +121,13 @@ export function RelationSectionView({
         renderNameCell={renderNameCell}
         columnLabels={columnLabels}
         renderCell={renderCell}
+      />
+      <TableAddRowFooter
+        label={`New ${section.title.replace(/s$/i, "") || "row"}`}
+        onSubmit={async (title) => {
+          await api.createRelationRow(nodeId, { label: section.label, title });
+          onCellUpdated?.();
+        }}
       />
     </section>
   );

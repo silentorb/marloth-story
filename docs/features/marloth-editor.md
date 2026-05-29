@@ -62,10 +62,15 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 - VS Code development **should** load the webview from the Vite dev server for HMR.
 - The extension host **must not** depend on `bun:sqlite`; it **must** use the HTTP API (spawn or connect).
 
+### Node creation
+
+- A **global create page** (`?view=create` in standalone; sidebar **New page** / command **Marloth: New Page**) **must** let users create a standalone `NotionPage` with title and optional markdown body (no relationships).
+- **Table section add row** — relation sections and database table sections **must** offer an inline add control that creates a new node and links it to the current page (`POST /api/nodes/:id/relation-rows` or `POST /api/databases/:id/rows`). The new row **must** appear after reload.
+- Relation sections only exist when the page already has at least one outgoing edge for that label; ordered-association tables are unchanged.
+
 ### Out of scope (v0.1)
 
-- Creating new graph nodes from the UI
-- Editing relationships from the UI (except ordered-association reorder/part moves; see [ordered-associations.md](./ordered-associations.md), and stored type-membership scalars in the Properties section)
+- Editing relationships from the UI (except ordered-association reorder/part moves; see [ordered-associations.md](./ordered-associations.md), stored type-membership scalars in the Properties section, and **create** flows above)
 - Weighted relationships or typed link metadata in the editor
 
 ## Design rationale
@@ -117,7 +122,8 @@ The editor API and Vite dev server **start automatically** when you attach to th
 ```bash
 # Standalone (browser) — best for rapid UI iteration
 bun run editor:dev
-# → API http://127.0.0.1:3847  ·  UI http://127.0.0.1:5173
+# → UI http://127.0.0.1:5173 (Vite proxies /api to the editor API on port 3847)
+# Open the UI URL in the browser; do not open the API port directly.
 
 # VS Code extension (F5 after dev:extension watch + editor:dev for webview HMR)
 # Command Palette → Marloth: Open Home
@@ -141,6 +147,8 @@ bun run editor:dev
 - Manual: `@` search inserts link; click navigates; Ctrl+click opens new tab
 - Manual: open any node with relation sections and confirm tables render
 - Manual: click a section table column header to sort; reload and confirm sort persists in `.marloth/user-settings.json`
+- Manual: sidebar **New page** or `?view=create` → create with title → lands on new node page; `content/{id}.md` exists
+- Manual: on a relation or database table section, **+ New …** / **+ New row** → new row appears after reload
 
 ## Implementation pointers
 
@@ -152,6 +160,8 @@ bun run editor:dev
 | `packages/marloth-editor/src/webview/` | React + Milkdown Crepe UI |
 | `packages/marloth-editor/src/extension/` | VS Code custom editor provider |
 | `packages/marloth-editor/src/webview/components/NodePageView.tsx` | Universal page layout (title, metadata, properties, markdown, sections) |
+| `packages/marloth-editor/src/webview/components/CreateNodeView.tsx` | Global new-page form |
+| `packages/marloth-db/src/node-create.ts` | Create node + optional relationship (`createNode`) |
 | `packages/marloth-editor/src/webview/components/PropertiesSectionView.tsx` | Instance-page Properties form (stored + computed fields) |
 | `packages/marloth-editor/src/webview/components/RelationSectionView.tsx` | Outgoing relationship table section |
 | `packages/marloth-db/src/queries.ts` | Node get/search/save helpers |
