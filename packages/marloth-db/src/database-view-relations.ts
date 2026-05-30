@@ -1,6 +1,7 @@
 import type { GraphDatabase, Relationship } from "./graph";
 import type { DatabaseColumnDef } from "./database-view";
 import type { NotionDatabaseSchema } from "./notion-database-schema";
+import type { RelationLink } from "./relation-link";
 import { relationLabel } from "./relation-label";
 import type { EvalRow } from "./notion-view-eval";
 
@@ -34,17 +35,24 @@ function relationConnectionsForRow(
   return outgoing.filter((c) => viaDatabaseId(c.properties) === null);
 }
 
-function formatRelationCell(db: GraphDatabase, relationships: Relationship[]): string {
+function linksFromRelationships(
+  db: GraphDatabase,
+  relationships: Relationship[],
+): RelationLink[] {
   const sorted = [...relationships].sort(
     (a, b) => ordinalFromProperties(a.properties) - ordinalFromProperties(b.properties),
   );
-  const titles: string[] = [];
+  const links: RelationLink[] = [];
   for (const relationship of sorted) {
     const target = db.getNode(relationship.targetNodeId);
     const title = target ? titleFromProperties(target.properties) : "Untitled";
-    titles.push(title);
+    links.push({ targetId: relationship.targetNodeId, title });
   }
-  return titles.join(", ");
+  return links;
+}
+
+function formatRelationCell(links: RelationLink[]): string {
+  return links.map((link) => link.title).join(", ");
 }
 
 /**
@@ -57,20 +65,19 @@ export function hydrateRelationCellsForRows(
   columnDefs: DatabaseColumnDef[],
   rows: EvalRow[],
 ): void {
-  if (!schema) return;
-
-  const relationColumns = columnDefs.filter((col) => {
-    const def = schema.properties[col.name];
-    return def?.type === "relation";
-  });
+  const relationColumns = columnDefs.filter((col) => col.type === "relation");
   if (relationColumns.length === 0) return;
 
   for (const row of rows) {
+    if (!row.relationCells) row.relationCells = {};
     for (const col of relationColumns) {
-      const label = relationLabel(col.name);
+      const label = col.relationLabel ?? relationLabel(col.name);
       const relationships = relationConnectionsForRow(db, row.nodeId, label, databaseId);
-      const text = formatRelationCell(db, relationships);
-      if (text) row.cells[col.key] = text;
+      const links = linksFromRelationships(db, relationships);
+      if (links.length > 0) {
+        row.cells[col.key] = formatRelationCell(links);
+        row.relationCells[col.key] = links;
+      }
     }
   }
 }

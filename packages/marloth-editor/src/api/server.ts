@@ -245,8 +245,46 @@ export function createApiHandler(
         return json({ ok: true });
       }
 
+      const connectionsPostMatch = /^\/api\/nodes\/([a-f0-9]{32})\/connections$/i.exec(path);
+      if (connectionsPostMatch && req.method === "POST") {
+        const sourceId = connectionsPostMatch[1]!.toLowerCase();
+        const payload = (await req.json()) as {
+          label?: string;
+          targetId?: string;
+          viaDatabase?: string;
+        };
+        if (typeof payload.label !== "string" || typeof payload.targetId !== "string") {
+          return json({ error: "label and targetId required" }, 400);
+        }
+        const error = db.linkOutgoingRelationship(sourceId, {
+          label: payload.label,
+          targetId: payload.targetId.toLowerCase(),
+          viaDatabase:
+            typeof payload.viaDatabase === "string"
+              ? payload.viaDatabase.toLowerCase()
+              : undefined,
+        });
+        if (error === "source_not_found" || error === "target_not_found") {
+          return json({ error: "not found" }, 404);
+        }
+        if (error === "duplicate") return json({ error: "duplicate" }, 409);
+        if (error === "target_type_not_allowed") {
+          return json({ error: "target type not allowed" }, 400);
+        }
+        return json({ ok: true });
+      }
+
       const connectionMatch =
         /^\/api\/nodes\/([a-f0-9]{32})\/connections\/([^/]+)\/([a-f0-9]{32})$/i.exec(path);
+      if (connectionMatch && req.method === "DELETE") {
+        const sourceId = connectionMatch[1]!.toLowerCase();
+        const label = decodeURIComponent(connectionMatch[2]!);
+        const targetId = connectionMatch[3]!.toLowerCase();
+        const error = db.unlinkOutgoingRelationship(sourceId, label, targetId);
+        if (error === "not_found") return json({ error: "not found" }, 404);
+        return json({ ok: true });
+      }
+
       if (connectionMatch && req.method === "PATCH") {
         const nodeId = connectionMatch[1]!.toLowerCase();
         const label = decodeURIComponent(connectionMatch[2]!);

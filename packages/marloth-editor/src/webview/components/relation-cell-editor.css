@@ -1,0 +1,219 @@
+.marloth-relation-cell {
+  position: relative;
+  max-width: 14rem;
+  padding-right: 24px;
+}
+
+.marloth-relation-cell.is-busy {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.marloth-relation-cell-body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  max-width: 14rem;
+  max-height: calc(1.35em * 6 + 4px * 5);
+  padding: 2px 0;
+  font: 0.85rem ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.35;
+  text-align: left;
+  overflow: hidden;
+}
+
+.marloth-relation-cell-link {
+  border: 0;
+  color: var(--marloth-link);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.marloth-relation-cell-link:hover {
+  text-decoration: underline;
+}
+
+.marloth-relation-cell-placeholder {
+  color: var(--marloth-muted);
+}
+
+.marloth-relation-cell-overflow {
+  color: var(--marloth-muted);
+  font-weight: 500;
+}
+
+.marloth-relation-cell-edit {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--marloth-muted);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.marloth-relation-cell-edit-icon {
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.marloth-relation-cell:hover .marloth-relation-cell-edit,
+.marloth-relation-cell:focus-within .marloth-relation-cell-edit,
+.marloth-relation-cell.is-popup-open .marloth-relation-cell-edit {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.marloth-relation-cell-edit:hover,
+.marloth-relation-cell-edit:focus-visible {
+  background: var(--marloth-hover);
+  color: var(--marloth-text);
+  outline: 1px solid var(--marloth-border);
+  outline-offset: 1px;
+}
+
+.marloth-relation-field-popup {
+  position: absolute;
+  z-index: 40;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  min-width: 280px;
+  max-width: 360px;
+  border: 1px solid var(--marloth-border);
+  border-radius: 8px;
+  background: var(--marloth-surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.marloth-relation-field-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--marloth-border);
+}
+
+.marloth-relation-field-popup-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.marloth-relation-field-popup-done {
+  border: 0;
+  background: transparent;
+  color: var(--marloth-link);
+  cursor: pointer;
+  font: inherit;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.marloth-relation-field-popup-done:hover {
+  background: var(--marloth-hover);
+}
+
+.marloth-relation-field-popup-links {
+  max-height: 200px;
+  overflow: auto;
+}
+
+.marloth-relation-field-popup-empty {
+  padding: 12px;
+  color: var(--marloth-muted);
+  font-size: 0.85rem;
+}
+
+.marloth-relation-field-popup-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.marloth-relation-field-popup-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+}
+
+.marloth-relation-field-popup-row:hover {
+  background: var(--marloth-hover);
+}
+
+.marloth-relation-field-popup-link {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--marloth-link);
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  padding: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.marloth-relation-field-popup-link:hover {
+  text-decoration: underline;
+}
+
+.marloth-relation-field-popup-remove {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--marloth-muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.marloth-relation-field-popup-remove:hover {
+  background: var(--marloth-hover);
+  color: var(--marloth-text);
+}
+
+.marloth-relation-field-popup-add {
+  border-top: 1px solid var(--marloth-border);
+  padding: 8px 0 0;
+}
+
+.marloth-relation-field-popup-add-label {
+  display: block;
+  padding: 0 12px 6px;
+  font-size: 0.75rem;
+  color: var(--marloth-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.marloth-relation-field-popup-add .marloth-record-link-picker.is-embedded {
+  position: static;
+  min-width: 0;
+  max-width: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}

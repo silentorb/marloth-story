@@ -33,6 +33,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 - Each node page **must** include a collapsible **metadata** panel below the page title and above Properties (when present). Collapsed by default; standalone mode supports `?meta=1` to expand (not persisted in user settings).
 - **Connections** — total incident graph relationships (in + out). **Backlinks** — prose-only discovery: other pages whose markdown `body` links here (inline `marloth:` or export-style links). Backlinks are a gap-filler for references not already visible in relation/database sections; typed graph relationships are excluded.
 - Database tables **should** use synced Notion view definitions (`notion_views` on `NotionDatabase` nodes) for view tabs, filters, sorts, and typed columns when present; see [notion-metadata-sync.md](./notion-metadata-sync.md).
+- Database table **relation columns** (`type: relation` in synced `notion_schema`) **must** be editable in the UI: the cell shows a compact summary (max width `14rem`, ~6 lines) of **navigable link labels** for visible records, with overflow as `N+` when more links exist. An **edit control** (top-right, shown on cell hover or focus) opens a popup listing all links (remove per row) plus a searchable add control (filtered by the relation property’s target database when `config.database_id` is present). Linking uses `POST /api/nodes/:rowId/connections`; unlinking uses `DELETE /api/nodes/:rowId/connections/:label/:targetId` (edges carry `via_database` scoped to the table).
 
 ### Cross-linking
 
@@ -70,7 +71,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 ### Out of scope (v0.1)
 
-- Editing relationships from the UI (except ordered-association reorder/part moves; see [ordered-associations.md](./ordered-associations.md), stored type-membership scalars in the Properties section, and **create** flows above)
+- Editing relationships from the UI beyond: ordered-association reorder/part moves (see [ordered-associations.md](./ordered-associations.md)), stored type-membership scalars in the Properties section, **create** flows (new relation/database rows), database **relation column** link/unlink, and enum/scalar patches on existing edges
 - Weighted relationships or typed link metadata in the editor
 
 ## Design rationale
@@ -149,6 +150,7 @@ bun run editor:dev
 - Manual: click a section table column header to sort; reload and confirm sort persists in `.marloth/user-settings.json`
 - Manual: sidebar **New page** or `?view=create` → create with title → lands on new node page; `content/{id}.md` exists
 - Manual: on a relation or database table section, **+ New …** / **+ New row** → new row appears after reload
+- Manual: on a database table with relation columns (e.g. Features → Parents), click link labels to navigate; hover the cell and use the edit control to open the popup for add/remove; confirm `content/relationships.json` updates
 
 ## Implementation pointers
 

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "relationshipRules": [
+    {
+      "id": "scene-features",
+      "sourceTypeId": "204dba198db74611b0b49a98dd53e8f5",
+      "label": "FEATURES",
+      "allowedTargetTypeIds": ["dd0de9867cc345b898929306bdf9fc83"]
+    },
+    {
+      "id": "scene-inspirations",
+      "sourceTypeId": "204dba198db74611b0b49a98dd53e8f5",
+      "label": "INSPIRATIONS",
+      "allowedTargetTypeIds": ["2eea538996934ce8abafc27132e576c1"]
+    },
+    {
+      "id": "feature-inspirations",
+      "sourceTypeId": "dd0de9867cc345b898929306bdf9fc83",
+      "label": "INSPIRATIONS",
+      "allowedTargetTypeIds": ["2eea538996934ce8abafc27132e576c1"]
+    }
+  ]
+}

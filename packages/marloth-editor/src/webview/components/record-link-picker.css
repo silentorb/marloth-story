@@ -1,0 +1,77 @@
+.marloth-record-link-picker {
+  position: absolute;
+  z-index: 30;
+  min-width: 260px;
+  max-width: 360px;
+  border: 1px solid var(--marloth-border);
+  border-radius: 8px;
+  background: var(--marloth-surface);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.marloth-record-link-picker-search {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 0;
+  border-bottom: 1px solid var(--marloth-border);
+  background: transparent;
+  color: var(--marloth-text);
+  font: inherit;
+  outline: none;
+}
+
+.marloth-record-link-picker-list {
+  max-height: 240px;
+  overflow: auto;
+}
+
+.marloth-record-link-picker-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.marloth-record-link-picker-item:hover:not(:disabled),
+.marloth-record-link-picker-item.is-active {
+  background: var(--marloth-hover);
+}
+
+.marloth-record-link-picker-item:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.marloth-record-link-picker-title {
+  font-weight: 600;
+}
+
+.marloth-record-link-picker-path {
+  font-size: 0.75rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-record-link-picker-empty,
+.marloth-record-link-picker-error {
+  padding: 10px 12px;
+  color: var(--marloth-muted);
+  font-size: 0.85rem;
+}
+
+.marloth-record-link-picker-error {
+  color: var(--marloth-danger, #e57373);
+}
+
+.marloth-record-link-picker.is-embedded {
+  position: static;
+  box-shadow: none;
+}

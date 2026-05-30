@@ -1,9 +1,12 @@
 import { useMemo, type ReactNode } from "react";
+import type { RelationLink } from "../../shared/types";
 import { sortTableRows, type SortableTableRow } from "../../shared/user-settings";
 import { useUserSettings } from "../hooks/useUserSettings";
 import "./section-data-table.css";
 
-export interface SectionDataTableRow extends SortableTableRow {}
+export interface SectionDataTableRow extends SortableTableRow {
+  relationCells?: Record<string, RelationLink[]>;
+}
 
 interface SectionDataTableProps {
   tableKey: string;

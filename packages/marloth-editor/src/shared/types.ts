@@ -90,4 +90,5 @@ export type {
   DatabaseColumnDef,
   DatabaseRow,
   DatabaseViewDetail,
+  RelationLink,
 } from "marloth-db";

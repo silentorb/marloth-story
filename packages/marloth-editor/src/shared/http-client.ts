@@ -62,6 +62,15 @@ export interface EditorApiClient {
     propertyKey: string,
     value: string | null,
   ): Promise<void>;
+  linkOutgoingRelationship(
+    sourceId: string,
+    input: { label: string; targetId: string; viaDatabase?: string },
+  ): Promise<void>;
+  unlinkOutgoingRelationship(
+    sourceId: string,
+    label: string,
+    targetId: string,
+  ): Promise<void>;
   deleteNode(id: string): Promise<void>;
   archiveNode(id: string): Promise<void>;
   getGraphFull(): Promise<GraphSnapshot>;
@@ -219,6 +228,26 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ property: propertyKey, value }),
         },
+      );
+    },
+    async linkOutgoingRelationship(
+      sourceId: string,
+      input: { label: string; targetId: string; viaDatabase?: string },
+    ): Promise<void> {
+      await fetchJson(`/api/nodes/${sourceId}/connections`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+    },
+    async unlinkOutgoingRelationship(
+      sourceId: string,
+      label: string,
+      targetId: string,
+    ): Promise<void> {
+      await fetchJson(
+        `/api/nodes/${sourceId}/connections/${encodeURIComponent(label)}/${targetId}`,
+        { method: "DELETE" },
       );
     },
     async deleteNode(id: string): Promise<void> {

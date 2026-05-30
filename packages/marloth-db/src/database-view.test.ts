@@ -106,7 +106,13 @@ describe("database-view", () => {
 
     const detail = getDatabaseViewDetail(db, databaseId);
     expect(detail?.rows[0]?.cells.parents).toBe("Parent feature");
-    expect(detail?.columnDefs?.[0]?.type).toBe("relation");
+    expect(detail?.columnDefs?.[0]).toMatchObject({
+      type: "relation",
+      relationLabel: "PARENTS",
+    });
+    expect(detail?.rows[0]?.relationCells?.parents).toEqual([
+      { targetId: parentId, title: "Parent feature" },
+    ]);
   });
 
   test("ignores orphan_row properties on the database vertex", () => {

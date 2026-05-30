@@ -5,6 +5,7 @@ import { databaseTableSortKey } from "../../shared/user-settings";
 import { standaloneNodeUrl } from "../../shared/types";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
 import { TableAddRowFooter } from "./TableAddRowFooter";
+import { RelationCellEditor } from "./RelationCellEditor";
 import { renderTableCell } from "./table-cell-render";
 import "./database-table-view.css";
 
@@ -37,7 +38,39 @@ export function DatabaseTableView({
   const renderCell = useCallback(
     (column: string, value: string, row: SectionDataTableRow) => {
       const def = databaseView.columnDefs?.find((col) => col.key === column);
-      const nodeId = row.id.split(":")[0]!;
+      const rowNodeId = row.id.split(":")[0]!;
+
+      if (def?.type === "relation" && def.relationLabel) {
+        const links = row.relationCells?.[column] ?? [];
+        return (
+          <RelationCellEditor
+            api={api}
+            links={links}
+            columnName={def.name}
+            allowedTypeIds={
+              def.targetDatabaseId ? [def.targetDatabaseId] : undefined
+            }
+            onAdd={async (targetId) => {
+              await api.linkOutgoingRelationship(rowNodeId, {
+                label: def.relationLabel!,
+                targetId,
+                viaDatabase: databaseView.id,
+              });
+              onCellUpdated?.();
+            }}
+            onRemove={async (targetId) => {
+              await api.unlinkOutgoingRelationship(
+                rowNodeId,
+                def.relationLabel!,
+                targetId,
+              );
+              onCellUpdated?.();
+            }}
+            onOpenNode={onOpenNode}
+          />
+        );
+      }
+
       return renderTableCell({
         column,
         value,
@@ -47,7 +80,7 @@ export function DatabaseTableView({
             ? async (next) => {
                 await api.updateDatabaseRowProperty(
                   databaseView.id,
-                  nodeId,
+                  rowNodeId,
                   column,
                   next,
                 );
@@ -56,7 +89,7 @@ export function DatabaseTableView({
             : undefined,
       });
     },
-    [api, databaseView.columnDefs, databaseView.id, onCellUpdated],
+    [api, databaseView.columnDefs, databaseView.id, onCellUpdated, onOpenNode],
   );
 
   const rows = useMemo(
@@ -65,6 +98,7 @@ export function DatabaseTableView({
         id: `${row.nodeId}:${row.rowIndex}`,
         name: row.name,
         cells: row.cells,
+        relationCells: row.relationCells,
       })),
     [databaseView.rows],
   );

@@ -134,3 +134,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.marloth-database-table td:has(.marloth-relation-cell) {
+  max-width: 14rem;
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+}

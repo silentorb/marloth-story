@@ -1,7 +1,10 @@
+import type { RelationLink } from "./relation-link";
+
 export interface EvalRow {
   nodeId: string;
   name: string;
   cells: Record<string, string>;
+  relationCells?: Record<string, RelationLink[]>;
   rowIndex: number;
   createdAt: string | null;
   modifiedAt: string | null;

@@ -15,7 +15,11 @@ import {
   updateNodeTitle,
   updateDatabaseRowProperty,
   updateOutgoingRelationshipProperty,
+  linkOutgoingRelationship,
+  unlinkOutgoingRelationship,
   type CreateNodeError,
+  type LinkOutgoingRelationshipError,
+  type UnlinkOutgoingRelationshipError,
   type CreateNodeInput,
   type CreateNodeResult,
   type GraphLodSnapshot,
@@ -67,6 +71,15 @@ export interface EditorDatabase {
     sourceId: string,
     input: { label: string; title: string; properties?: Record<string, string> },
   ): CreateNodeResult | CreateNodeError;
+  linkOutgoingRelationship(
+    sourceId: string,
+    input: { label: string; targetId: string; viaDatabase?: string },
+  ): LinkOutgoingRelationshipError | null;
+  unlinkOutgoingRelationship(
+    sourceId: string,
+    label: string,
+    targetId: string,
+  ): UnlinkOutgoingRelationshipError | null;
   getGraphFull(): GraphSnapshot;
   getGraphExplorerLod(options?: { anchorId?: string; layerCount?: number }): GraphLodSnapshot;
   close(): void;
@@ -167,6 +180,25 @@ export function openEditorDatabase(
           membershipTypeId,
         },
       });
+    },
+    linkOutgoingRelationship(
+      sourceId: string,
+      input: { label: string; targetId: string; viaDatabase?: string },
+    ): LinkOutgoingRelationshipError | null {
+      return linkOutgoingRelationship(writeCtx, {
+        sourceId,
+        targetId: input.targetId,
+        label: input.label,
+        viaDatabase: input.viaDatabase,
+        schema: schema(),
+      });
+    },
+    unlinkOutgoingRelationship(
+      sourceId: string,
+      label: string,
+      targetId: string,
+    ): UnlinkOutgoingRelationshipError | null {
+      return unlinkOutgoingRelationship(writeCtx, sourceId, targetId, label);
     },
     getGraphFull(): GraphSnapshot {
       return exportFullGraph(writeCtx.db);

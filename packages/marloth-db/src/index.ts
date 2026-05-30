@@ -49,7 +49,22 @@ export type { NodeLifecycleError } from "./node-lifecycle";
 export { getDatabaseViewDetail } from "./database-view";
 export { hydrateRelationCellsForRows } from "./database-view-relations";
 export { relationLabel, stripEmojis } from "./relation-label";
-export type { DatabaseColumnDef, DatabaseRow, DatabaseViewDetail } from "./database-view";
+export type {
+  DatabaseColumnDef,
+  DatabaseRow,
+  DatabaseViewDetail,
+  RelationLink,
+} from "./database-view";
+export { normalizeNotionId } from "./notion-ids";
+export {
+  linkOutgoingRelationship,
+  unlinkOutgoingRelationship,
+} from "./relationship-link-mutations";
+export type {
+  LinkOutgoingRelationshipError,
+  LinkOutgoingRelationshipInput,
+  UnlinkOutgoingRelationshipError,
+} from "./relationship-link-mutations";
 export {
   PRIORITY_DEFAULT,
   PRIORITY_ENUM_ID,

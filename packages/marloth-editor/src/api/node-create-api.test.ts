@@ -75,6 +75,51 @@ describe("node create API", () => {
     expect(rel).not.toBeNull();
   });
 
+
+  afterAll(() => {
+    api.handler.close();
+    destroyTestContentFixture(fixture);
+  });
+});
+
+describe("connections API", () => {
+  const linkSourceId = "f1111111111111111111111111111111";
+  const linkTargetId = "f2222222222222222222222222222222";
+  const fixture = createTestContentFixture("marloth-conn-api-");
+  seedTestNode(fixture, { id: linkSourceId, properties: { title: "Link source" } });
+  seedTestNode(fixture, { id: linkTargetId, properties: { title: "Link target" } });
+  const api = createTestApiFromContent(fixture);
+
+  test("POST and DELETE connections link and unlink existing nodes", async () => {
+    const linkRes = await api.handler(
+      new Request(`http://127.0.0.1/api/nodes/${linkSourceId}/connections`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ label: "FEATURES", targetId: linkTargetId }),
+      }),
+    );
+    expect(linkRes.status).toBe(200);
+    expect(fixture.ctx.store.findRelationship(linkSourceId, linkTargetId, "FEATURES")).not.toBeNull();
+
+    const dupRes = await api.handler(
+      new Request(`http://127.0.0.1/api/nodes/${linkSourceId}/connections`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ label: "FEATURES", targetId: linkTargetId }),
+      }),
+    );
+    expect(dupRes.status).toBe(409);
+
+    const unlinkRes = await api.handler(
+      new Request(
+        `http://127.0.0.1/api/nodes/${linkSourceId}/connections/${encodeURIComponent("FEATURES")}/${linkTargetId}`,
+        { method: "DELETE" },
+      ),
+    );
+    expect(unlinkRes.status).toBe(200);
+    expect(fixture.ctx.store.findRelationship(linkSourceId, linkTargetId, "FEATURES")).toBeNull();
+  });
+
   afterAll(() => {
     api.handler.close();
     destroyTestContentFixture(fixture);

@@ -14,15 +14,22 @@ import {
 import { filterEvalRows, sortEvalRows, type EvalRow } from "./notion-view-eval";
 import { applyDynamicFields } from "./dynamic-fields";
 import { hydrateRelationCellsForRows } from "./database-view-relations";
+import { normalizeNotionId } from "./notion-ids";
+import type { NotionPropertyDefinition } from "./notion-database-schema";
+import { relationLabel } from "./relation-label";
 import { coalescePriorityValue, enrichColumnDef, enrichColumnDefs, isPriorityColumnKey } from "./property-enums";
 
 const ROW_META_KEYS = new Set(["view", "row_index", "row_name", "order"]);
+
+import type { RelationLink } from "./relation-link";
+export type { RelationLink } from "./relation-link";
 
 export interface DatabaseRow {
   rowIndex: number;
   nodeId: string;
   name: string;
   cells: Record<string, string>;
+  relationCells?: Record<string, RelationLink[]>;
 }
 
 export interface DatabaseColumnDef {
@@ -36,6 +43,28 @@ export interface DatabaseColumnDef {
   options?: string[];
   /** Default enum label when the stored value is unset. */
   defaultValue?: string;
+  /** Graph relationship label when type is `relation`. */
+  relationLabel?: string;
+  /** Target type-table node id for search filtering when type is `relation`. */
+  targetDatabaseId?: string;
+}
+
+function enrichRelationColumnDef(
+  col: DatabaseColumnDef,
+  propDef?: NotionPropertyDefinition,
+): DatabaseColumnDef {
+  if (col.type !== "relation") return col;
+  let targetDatabaseId: string | undefined;
+  const rawDbId = propDef?.config?.database_id;
+  if (typeof rawDbId === "string") {
+    const normalized = normalizeNotionId(rawDbId);
+    if (normalized) targetDatabaseId = normalized;
+  }
+  return {
+    ...col,
+    relationLabel: relationLabel(col.name),
+    targetDatabaseId,
+  };
 }
 
 export interface DatabaseViewDetail {
@@ -178,22 +207,28 @@ function buildNotionViewDetail(
         const def = schema.properties[name];
         if (!def) continue;
         columnDefs.push(
-          enrichColumnDef({
-            key: slugifyPropertyKey(name),
-            name,
-            type: def.type,
-          }),
+          enrichRelationColumnDef(
+            enrichColumnDef({
+              key: slugifyPropertyKey(name),
+              name,
+              type: def.type,
+            }),
+            def,
+          ),
         );
       }
     } else {
       for (const [name, def] of Object.entries(schema.properties)) {
         if (name === "Name" || def.type === "title") continue;
         columnDefs.push(
-          enrichColumnDef({
-            key: slugifyPropertyKey(name),
-            name,
-            type: def.type,
-          }),
+          enrichRelationColumnDef(
+            enrichColumnDef({
+              key: slugifyPropertyKey(name),
+              name,
+              type: def.type,
+            }),
+            def,
+          ),
         );
       }
     }
@@ -217,6 +252,7 @@ function buildNotionViewDetail(
     nodeId: row.nodeId,
     name: row.name,
     cells: normalizeRowCells(row.cells, mergedColumnDefs),
+    relationCells: row.relationCells,
   }));
 
   return {
