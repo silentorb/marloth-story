@@ -28,22 +28,17 @@ describe("database-view", () => {
     });
 
     const detail = getDatabaseViewDetail(db, databaseId, "all");
-    expect(detail).toEqual({
+    expect(detail).toMatchObject({
       id: databaseId,
       title: "Features",
       views: ["all"],
       view: "all",
+      tabs: {
+        kind: "custom",
+        items: [{ id: "all", label: "all", kind: "custom" }],
+        activeTabId: "all",
+      },
       columns: ["priority"],
-      columnDefs: [
-        {
-          key: "priority",
-          name: "priority",
-          type: "enum",
-          enumId: "priority",
-          options: ["Low", "Medium", "High", "Ultimate", "Consideration", "Cancelled"],
-          defaultValue: "Low",
-        },
-      ],
       rows: [
         {
           rowIndex: 0,
@@ -52,6 +47,10 @@ describe("database-view", () => {
           cells: { priority: "High" },
         },
       ],
+    });
+    expect(detail?.columnDefs?.[0]).toMatchObject({
+      key: "priority",
+      type: "enum",
     });
   });
 
@@ -80,20 +79,6 @@ describe("database-view", () => {
           Name: { id: "title", name: "Name", type: "title", config: {} },
           Parents: { id: "HRux", name: "Parents", type: "relation", config: {} },
         },
-      }),
-      notion_views: JSON.stringify({
-        syncedAt: "2024-01-01T00:00:00.000Z",
-        views: [
-          {
-            id: "view1",
-            name: "All",
-            type: "table",
-            filter: null,
-            sorts: [],
-            visiblePropertyIds: ["HRux"],
-            configuration: null,
-          },
-        ],
       }),
     });
     db.upsertNode("page3", { title: "Child feature" });

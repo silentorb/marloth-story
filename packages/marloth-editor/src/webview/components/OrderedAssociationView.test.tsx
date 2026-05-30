@@ -8,11 +8,14 @@ const view: OrderedAssociationViewDetail = {
   configId: "scenes-by-book",
   typeDatabaseId: "204dba198db74611b0b49a98dd53e8f5",
   typeDatabaseTitle: "Scenes",
-  scopes: [
-    { id: "bookaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", name: "TWOLD" },
-    { id: "bookbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", name: "Fairytale" },
-  ],
-  activeScopeId: "bookaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  tabs: {
+    kind: "generated",
+    items: [
+      { id: "bookaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", label: "TWOLD", kind: "generated" },
+      { id: "bookbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", label: "Fairytale", kind: "generated" },
+    ],
+    activeTabId: "bookaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  },
   groups: [
     {
       groupId: "part1111111111111111111111111111",
@@ -51,7 +54,7 @@ describe("OrderedAssociationView", () => {
         api={api}
         configId="scenes-by-book"
         view={view}
-        onScopeChange={() => {}}
+        onTabSelect={() => {}}
         onViewChange={() => {}}
         onOpenNode={() => {}}
       />,

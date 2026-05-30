@@ -88,7 +88,16 @@ describe("node-sections", () => {
   test("shows Properties section for IS_A edge scalars and hides IS_A relation section", () => {
     const databaseId = "db52345678901234567890123456789012";
     db.upsertNode("page5", { title: "Scene A", body: "Prose" });
-    db.upsertNode(databaseId, { ...typeTableMarkerProperties("Scene Archive") });
+    db.upsertNode(databaseId, {
+      ...typeTableMarkerProperties("Scene Archive"),
+      notion_schema: JSON.stringify({
+        syncedAt: "test",
+        properties: {
+          Name: { id: "title", name: "Name", type: "title", config: {} },
+          Priority: { id: "Vpkf", name: "Priority", type: "select", config: {} },
+        },
+      }),
+    });
     db.upsertRelationship("page5", databaseId, IS_A_TYPE, {
       view: "default",
       row_index: 3,
@@ -121,7 +130,16 @@ describe("node-sections", () => {
   test("normalizes legacy IN_DATABASE edges into Properties section", () => {
     const databaseId = "db62345678901234567890123456789012";
     db.upsertNode("page6", { title: "Legacy row" });
-    db.upsertNode(databaseId, { ...typeTableMarkerProperties("Legacy Features") });
+    db.upsertNode(databaseId, {
+      ...typeTableMarkerProperties("Legacy Features"),
+      notion_schema: JSON.stringify({
+        syncedAt: "test",
+        properties: {
+          Name: { id: "title", name: "Name", type: "title", config: {} },
+          Status: { id: "status", name: "Status", type: "select", config: {} },
+        },
+      }),
+    });
     db.upsertRelationship("page6", databaseId, "in_database", { status: "Draft" });
 
     const detail = getNodePageDetail(db, "page6");

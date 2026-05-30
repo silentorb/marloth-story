@@ -13,7 +13,10 @@ import {
   seedTestCompositeRelationships,
   seedTestRelationships,
   seedTestNode,
+  seedTestViews,
+  seedTestDynamicFields,
 } from "./content/test-helpers";
+import { VIEWS_FILE_VERSION } from "./content/views-file";
 import { firstRelatedNodeId } from "./relationship-traverse";
 
 const SCENES_DB = "204dba198db74611b0b49a98dd53e8f5";
@@ -156,16 +159,31 @@ describe("ordered-associations", () => {
     },
   ]);
 
+  seedTestViews(fixture, {
+    version: VIEWS_FILE_VERSION,
+    nodes: {
+      [SCENES_DB]: {
+        sections: {
+          items: {
+            tabs: { kind: "generated", provider: CONFIG_ID },
+          },
+        },
+      },
+    },
+  });
+  seedTestDynamicFields(fixture, []);
+
   const db = () => fixture.ctx.db;
+  const contentDir = () => fixture.ctx.store.contentDir;
 
   test("builds scopes from products that have scenes", () => {
-    const view = getOrderedAssociationView(db(), CONFIG_ID);
-    expect(view?.scopes.map((scope) => scope.name)).toEqual(["Book A", "Book B"]);
-    expect(view?.activeScopeId).toBe(bookA);
+    const view = getOrderedAssociationView(db(), CONFIG_ID, undefined, contentDir());
+    expect(view?.tabs.items.map((tab) => tab.label)).toEqual(["Book A", "Book B"]);
+    expect(view?.tabs.activeTabId).toBe(bookA);
   });
 
   test("groups scenes by part within active scope", () => {
-    const view = getOrderedAssociationView(db(), CONFIG_ID, bookA);
+    const view = getOrderedAssociationView(db(), CONFIG_ID, bookA, contentDir());
     expect(view?.groups.map((group) => group.title)).toEqual([
       "Part 1",
       "Part 2",
@@ -182,7 +200,7 @@ describe("ordered-associations", () => {
   });
 
   test("sorts part subsections by number property, not row_index", () => {
-    const view = getOrderedAssociationView(db(), CONFIG_ID, bookA);
+    const view = getOrderedAssociationView(db(), CONFIG_ID, bookA, contentDir());
     const partGroups = view?.groups.filter((group) => group.groupId !== UNASSIGNED_GROUP_ID) ?? [];
     expect(partGroups.map((group) => group.title)).toEqual(["Part 1", "Part 2"]);
   });
@@ -197,7 +215,7 @@ describe("ordered-associations", () => {
       { a: unassigned, b: bookA, typeFromA: "scenes", typeFromB: "product", properties: { ordinal: 0 } },
     ]);
 
-    const view = getOrderedAssociationView(db(), CONFIG_ID, bookA);
+    const view = getOrderedAssociationView(db(), CONFIG_ID, bookA, contentDir());
     const group = view?.groups.find((entry) => entry.groupId === UNASSIGNED_GROUP_ID);
     expect(group?.rows.map((row) => row.name)).toEqual(["Loose Scene"]);
   });
@@ -244,7 +262,7 @@ describe("ordered-associations", () => {
   });
 
   test("Scenes database record page emits ordered-association section", () => {
-    const detail = getNodePageDetail(db(), SCENES_DB, { scopeId: bookA });
+    const detail = getNodePageDetail(db(), SCENES_DB, { tabId: bookA, contentDir: contentDir() });
     const section = detail?.sections.find((s) => s.type === "ordered-association");
     expect(section).toMatchObject({
       type: "ordered-association",

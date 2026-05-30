@@ -26,10 +26,34 @@
   cursor: default;
 }
 
+.marloth-page-actions[data-menu-align="left"] .marloth-page-actions-menu {
+  left: 0;
+  right: auto;
+}
+
+.marloth-page-actions[data-menu-align="right"] .marloth-page-actions-menu {
+  left: auto;
+  right: 0;
+}
+
+.marloth-page-actions-trigger.is-edit {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.marloth-page-actions-edit-icon {
+  line-height: 1;
+}
+
+.marloth-page-actions-menu.is-portal {
+  z-index: 200;
+}
+
 .marloth-page-actions-menu {
   position: absolute;
   top: calc(100% + 4px);
-  right: 0;
   z-index: 20;
   min-width: 140px;
   padding: 4px;

@@ -37,11 +37,18 @@ import {
   parseDynamicFieldsFile,
   serializeDynamicFieldsFile,
 } from "./dynamic-fields-file";
+import {
+  type ViewsFile,
+  emptyViewsFile,
+  parseViewsFile,
+  serializeViewsFile,
+} from "./views-file";
 import { bodyFromNode, nodeFromFile, serializeNodeFile } from "./node-file";
 import {
   relationshipsFilePath,
   relationshipTypesFilePath,
   dynamicFieldsFilePath,
+  viewsFilePath,
   isNodeId,
   nodeFilePath,
   NODE_FILE_PATTERN,
@@ -297,6 +304,22 @@ export class ContentStore {
 
   writeDynamicFieldsFile(file: DynamicFieldsFile): void {
     atomicWrite(dynamicFieldsFilePath(this.contentDir), serializeDynamicFieldsFile(file));
+  }
+
+  readViewsFile(): ViewsFile {
+    const path = viewsFilePath(this.contentDir);
+    try {
+      return parseViewsFile(readFileSync(path, "utf-8"));
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+        return emptyViewsFile();
+      }
+      throw err;
+    }
+  }
+
+  writeViewsFile(file: ViewsFile): void {
+    atomicWrite(viewsFilePath(this.contentDir), serializeViewsFile(file));
   }
 
   mergeNodeProperties(id: string, patch: Properties): boolean {

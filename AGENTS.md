@@ -15,7 +15,7 @@ The git-tracked design corpus in `./content/` is a flat property graph (markdown
 - This repository contains the Marloth Story project, related to the Marloth series of fantasy novels and overlapping game-design work.
 - Keep updates aligned with the repository's current scope and documentation.
 - The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs live in `./docs/features/` (see Terminology below). The **design ontology** lives at [`docs/ontology.md`](./docs/ontology.md).
-- The `./content` directory is the **canonical store**: one `{nodeId}.md` per node (YAML frontmatter + markdown body), plus `relationships.json`, `relationship-types.json`, `schema.json`, and `dynamic-fields.json`. The directory is **flat** (no subfolders).
+- The `./content` directory is the **canonical store**: one `{nodeId}.md` per node (YAML frontmatter + markdown body), plus `relationships.json`, `relationship-types.json`, `schema.json`, `views.json`, and `dynamic-fields.json`. The directory is **flat** (no subfolders).
 - The `./data/marloth.sqlite` file is a **local query cache** (gitignored). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
 - The `./exports/` directory holds **archival** Notion export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
@@ -31,7 +31,7 @@ The git-tracked design corpus in `./content/` is a flat property graph (markdown
 | **Page** | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a Notion export file. |
 | **Feature** (unqualified) | A **design node** (story/game feature idea), usually under `Marloth/Features/`, unless context clearly means a project feature. |
 | **Schema** | Git-tracked relationship rules in `content/schema.json` (allowed target types per relationship type). Not SQLite DDL. |
-| **Type table** | Any node used as an `IS_A` target and/or with `notion_schema` / `notion_views` / `notion_database` metadata—not a permanent import label. |
+| **Type table** | Any node used as an `IS_A` target and/or with `notion_schema` / `notion_database` metadata—not a permanent import label. |
 
 ## Data modeling direction
 
@@ -48,6 +48,7 @@ The flat `./content/` tree is **authoritative and git-tracked**. Notion import w
 | Add or edit nodes, bodies, titles | Edit `content/{nodeId}.md` or use the marloth editor / `ContentStore` (`packages/marloth-db`) | Edit `data/marloth.sqlite` directly |
 | Add or edit relationships | Edit `content/relationships.json`, `content/relationship-types.json`, or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files |
 | Dynamic field bindings | Edit `content/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts` | Use removed `dynamic_*` SQLite overlay tables |
+| Table view tabs (custom / generated) | Edit `content/views.json` or use editor tab CRUD | Edit `notion_views` on node frontmatter (legacy) |
 | Refresh local cache | `bun run content:sync` or start `editor:api` (rebuilds cache + watches `./content`) | Commit `data/marloth.sqlite` |
 | One-time SQLite → content | `bun run content:export` (from existing `data/marloth.sqlite` if present) | — |
 | Data only in `./exports/` | Mine archive and upsert into `./content` (same mapping rules as legacy import) | Run `bun run notion:import` / `--clean` |
@@ -85,6 +86,7 @@ For **design data** (what nodes mean, how they relate conceptually), read [`docs
 | Legacy Notion import / mining `./exports/` | [`docs/features/notion-import.md`](./docs/features/notion-import.md) |
 | Ordered associations, scene order, drag-and-drop reorder | [`docs/features/ordered-associations.md`](./docs/features/ordered-associations.md) |
 | Dynamic table view fields, computed columns | [`docs/features/dynamic-table-fields.md`](./docs/features/dynamic-table-fields.md) + [`docs/dynamic-fields/`](./docs/dynamic-fields/) |
+| Table view tabs, `views.json` | [`docs/features/views.md`](./docs/features/views.md) |
 
 See also [`docs/features/README.md`](./docs/features/README.md) for the feature-doc template and how to add new features.
 

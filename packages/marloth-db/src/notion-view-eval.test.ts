@@ -1,8 +1,15 @@
 import { describe, expect, test } from "bun:test";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
 import { GraphDatabase } from "./graph";
+import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { getDatabaseViewDetail } from "./database-view";
 import { filterEvalRows, sortEvalRows, type EvalRow } from "./notion-view-eval";
+import { serializeViewsFile, VIEWS_FILE_VERSION } from "./content/views-file";
+import { serializeDynamicFieldsFile, emptyDynamicFieldsFile } from "./content/dynamic-fields-file";
+import { viewsFilePath, dynamicFieldsFilePath } from "./content/paths";
 
 describe("notion-view-eval", () => {
   const rows: EvalRow[] = [
@@ -22,12 +29,54 @@ describe("notion-view-eval", () => {
     const sorted = sortEvalRows(rows, [{ property: "status", direction: "ascending" }]);
     expect(sorted.map((r) => r.nodeId)).toEqual(["a", "b"]);
   });
+
+  test("sorts by title using row name when rowIndex order differs", () => {
+    const unsorted: EvalRow[] = [
+      { nodeId: "z", name: "Zebra", cells: {}, rowIndex: 0, createdAt: null, modifiedAt: null },
+      { nodeId: "a", name: "Alpha", cells: {}, rowIndex: 1, createdAt: null, modifiedAt: null },
+    ];
+    const sorted = sortEvalRows(unsorted, [{ property: "title", direction: "ascending" }]);
+    expect(sorted.map((r) => r.name)).toEqual(["Alpha", "Zebra"]);
+  });
 });
 
-describe("getDatabaseViewDetail with notion views", () => {
-  test("uses notion view filters and names", () => {
-    const db = new GraphDatabase(":memory:", { clean: true });
+describe("getDatabaseViewDetail with custom tabs", () => {
+  test("uses views.json tab sorts and shows all schema columns", () => {
+    const dir = mkdtempSync(join(tmpdir(), "marloth-db-view-tabs-"));
+    const contentDir = join(dir, "content");
+    mkdirSync(contentDir, { recursive: true });
+    const db = new GraphDatabase(join(dir, "test.sqlite"), { clean: true });
     const databaseId = "dddddddddddddddddddddddddddddddd";
+
+    writeFileSync(
+      viewsFilePath(contentDir),
+      serializeViewsFile({
+        version: VIEWS_FILE_VERSION,
+        nodes: {
+          [databaseId]: {
+            sections: {
+              items: {
+                tabs: {
+                  kind: "custom",
+                  definitions: [
+                    {
+                      id: "done-only",
+                      name: "Done only",
+                      sorts: [{ column: "name", direction: "asc" }],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      }),
+    );
+    writeFileSync(
+      dynamicFieldsFilePath(contentDir),
+      serializeDynamicFieldsFile(emptyDynamicFieldsFile()),
+    );
+
     db.upsertNode(databaseId, {
       ...typeTableMarkerProperties("Tasks"),
       notion_schema: JSON.stringify({
@@ -37,32 +86,19 @@ describe("getDatabaseViewDetail with notion views", () => {
           Status: { id: "status", name: "Status", type: "select", config: {} },
         },
       }),
-      notion_views: JSON.stringify({
-        syncedAt: "2024-01-01T00:00:00.000Z",
-        views: [
-          {
-            id: "viewdone",
-            name: "Done only",
-            type: "table",
-            filter: { property: "Status", select: { equals: "Done" } },
-            sorts: [{ property: "Name", direction: "ascending" }],
-            visiblePropertyIds: ["status"],
-            configuration: null,
-          },
-        ],
-      }),
     });
-    db.upsertNode("page1", { title: "One" });
-    db.upsertNode("page2", { title: "Two" });
-    db.upsertRelationship("page1", databaseId, "is_a", { status: "Done", row_index: 0 });
-    db.upsertRelationship("page2", databaseId, "is_a", { status: "Todo", row_index: 1 });
+    db.upsertNode("page1", { title: "Zebra" });
+    db.upsertNode("page2", { title: "Alpha" });
+    db.upsertRelationship("page1", databaseId, IS_A_TYPE, { status: "Done", row_index: 0 });
+    db.upsertRelationship("page2", databaseId, IS_A_TYPE, { status: "Todo", row_index: 1 });
 
-    const view = getDatabaseViewDetail(db, databaseId);
-    expect(view?.views).toEqual(["Done only"]);
-    expect(view?.rows).toHaveLength(1);
-    expect(view?.rows[0]?.name).toBe("One");
-    expect(view?.columnDefs?.[0]?.type).toBe("select");
+    const view = getDatabaseViewDetail(db, databaseId, undefined, contentDir);
+    expect(view?.tabs.items.map((tab) => tab.label)).toEqual(["Done only"]);
+    expect(view?.rows).toHaveLength(2);
+    expect(view?.rows.map((row) => row.name)).toEqual(["Alpha", "Zebra"]);
+    expect(view?.columnDefs?.some((col) => col.key === "status")).toBe(true);
 
     db.close();
+    rmSync(dir, { recursive: true, force: true });
   });
 });

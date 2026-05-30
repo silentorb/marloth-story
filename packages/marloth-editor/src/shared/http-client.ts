@@ -15,7 +15,10 @@ export type { OrderedAssociationViewDetail } from "marloth-db";
 export const DEFAULT_API_BASE_URL = "http://127.0.0.1:3847";
 
 export interface GetNodeOptions {
+  tab?: string;
+  /** @deprecated Use tab */
   view?: string;
+  /** @deprecated Use tab */
   scope?: string;
 }
 
@@ -41,7 +44,19 @@ export interface EditorApiClient {
     input: { title: string; view?: string; properties?: Record<string, string> },
   ): Promise<CreateNodeResponse>;
   getNode(id: string, options?: GetNodeOptions | string): Promise<NodePageDetail>;
-  getDatabaseView(id: string, view?: string): Promise<DatabaseViewDetail>;
+  getDatabaseView(id: string, tabId?: string): Promise<DatabaseViewDetail>;
+  createSectionTab(
+    nodeId: string,
+    sectionKey: string,
+    input: { name: string; sorts?: import("marloth-db").ViewSortSpec[] },
+  ): Promise<import("marloth-db").CustomTabDefinition>;
+  updateSectionTab(
+    nodeId: string,
+    sectionKey: string,
+    tabId: string,
+    input: { name?: string; sorts?: import("marloth-db").ViewSortSpec[] },
+  ): Promise<import("marloth-db").CustomTabDefinition>;
+  deleteSectionTab(nodeId: string, sectionKey: string, tabId: string): Promise<void>;
   moveOrderedAssociation(
     configId: string,
     params: OrderedAssociationMoveParams,
@@ -147,22 +162,59 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     },
     async getNode(id: string, options?: GetNodeOptions | string): Promise<NodePageDetail> {
       const normalized =
-        typeof options === "string" ? { view: options } : (options ?? {});
+        typeof options === "string" ? { tab: options } : (options ?? {});
       const params = new URLSearchParams();
-      if (normalized.view) params.set("view", normalized.view);
-      if (normalized.scope) params.set("scope", normalized.scope);
+      const tab = normalized.tab ?? normalized.scope ?? normalized.view;
+      if (tab) params.set("tab", tab);
       const query = params.toString();
       const data = await fetchJson<{ node: NodePageDetail }>(
         `/api/nodes/${id}${query ? `?${query}` : ""}`,
       );
       return data.node;
     },
-    async getDatabaseView(id: string, view?: string): Promise<DatabaseViewDetail> {
-      const params = view ? `?view=${encodeURIComponent(view)}` : "";
+    async getDatabaseView(id: string, tabId?: string): Promise<DatabaseViewDetail> {
+      const params = tabId ? `?tab=${encodeURIComponent(tabId)}` : "";
       const data = await fetchJson<{ databaseView: DatabaseViewDetail }>(
         `/api/databases/${id}${params}`,
       );
       return data.databaseView;
+    },
+    async createSectionTab(
+      nodeId: string,
+      sectionKey: string,
+      input: { name: string; sorts?: import("marloth-db").ViewSortSpec[] },
+    ) {
+      const data = await fetchJson<{ tab: import("marloth-db").CustomTabDefinition }>(
+        `/api/views/nodes/${nodeId}/sections/${encodeURIComponent(sectionKey)}/tabs`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(input),
+        },
+      );
+      return data.tab;
+    },
+    async updateSectionTab(
+      nodeId: string,
+      sectionKey: string,
+      tabId: string,
+      input: { name?: string; sorts?: import("marloth-db").ViewSortSpec[] },
+    ) {
+      const data = await fetchJson<{ tab: import("marloth-db").CustomTabDefinition }>(
+        `/api/views/nodes/${nodeId}/sections/${encodeURIComponent(sectionKey)}/tabs/${encodeURIComponent(tabId)}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(input),
+        },
+      );
+      return data.tab;
+    },
+    async deleteSectionTab(nodeId: string, sectionKey: string, tabId: string): Promise<void> {
+      await fetchJson(
+        `/api/views/nodes/${nodeId}/sections/${encodeURIComponent(sectionKey)}/tabs/${encodeURIComponent(tabId)}`,
+        { method: "DELETE" },
+      );
     },
     async moveOrderedAssociation(
       configId: string,

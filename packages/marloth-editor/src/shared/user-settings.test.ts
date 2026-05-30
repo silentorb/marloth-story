@@ -8,7 +8,9 @@ import {
   parseUserSettings,
   relationTableSortKey,
   sortTableRows,
+  effectiveTableSort,
   tableSortForKey,
+  viewSortsToTableSort,
 } from "./user-settings";
 
 describe("user-settings", () => {
@@ -32,6 +34,33 @@ describe("user-settings", () => {
     expect(nextSortOnColumnClick(current, "priority")).toEqual([
       { column: "priority", direction: "asc" },
     ]);
+  });
+
+  test("effectiveTableSort uses tab default until user overrides", () => {
+    const settings = {
+      version: 1 as const,
+      tableSorts: {
+        "records/db": { orderBy: [{ column: "name", direction: "desc" as const }] },
+      },
+    };
+    const tabDefault = viewSortsToTableSort([{ column: "priority", direction: "desc" }]);
+
+    expect(effectiveTableSort({ version: 1 }, "records/db", tabDefault)).toEqual(tabDefault);
+    expect(effectiveTableSort(settings, "records/db", tabDefault).orderBy[0]?.column).toBe("name");
+  });
+
+  test("viewSortsToTableSort maps view sort specs to table sort specs", () => {
+    expect(
+      viewSortsToTableSort([
+        { column: "priority", direction: "desc" },
+        { column: "name", direction: "asc" },
+      ]),
+    ).toEqual({
+      orderBy: [
+        { column: "priority", direction: "desc" },
+        { column: "name", direction: "asc" },
+      ],
+    });
   });
 
   test("sortTableRows supports multi-column order specs", () => {

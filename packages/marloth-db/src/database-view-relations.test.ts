@@ -8,7 +8,10 @@ import {
   seedTestCompositeRelationships,
   seedTestNode,
   seedTestRelationships,
+  seedTestViews,
+  seedTestDynamicFields,
 } from "./content/test-helpers";
+import { VIEWS_FILE_VERSION } from "./content/views-file";
 
 describe("database-view relation hydration", () => {
   const fixture = createTestContentFixture("marloth-db-view-rel-");
@@ -33,25 +36,24 @@ describe("database-view relation hydration", () => {
           },
         },
       }),
-      notion_views: JSON.stringify({
-        syncedAt: "2026-01-01T00:00:00.000Z",
-        views: [
-          {
-            id: "all",
-            name: "All",
-            type: "table",
-            filter: null,
-            sorts: [],
-            visiblePropertyIds: ["jlOE"],
-            configuration: {
-              type: "table",
-              properties: [{ property_id: "jlOE", property_name: "Scenes", visible: true }],
-            },
-          },
-        ],
-      }),
     },
   });
+  seedTestViews(fixture, {
+    version: VIEWS_FILE_VERSION,
+    nodes: {
+      [locationsDb]: {
+        sections: {
+          items: {
+            tabs: {
+              kind: "custom",
+              definitions: [{ id: "all", name: "All", sorts: [{ column: "name", direction: "asc" }] }],
+            },
+          },
+        },
+      },
+    },
+  });
+  seedTestDynamicFields(fixture, []);
   seedTestNode(fixture, { id: scenesDb, properties: typeTableMarkerProperties("Scenes") });
   seedTestNode(fixture, { id: location, properties: { title: "The Village" } });
   seedTestNode(fixture, { id: scene, properties: { title: "Opening Scene" } });
@@ -71,7 +73,12 @@ describe("database-view relation hydration", () => {
   ]);
 
   test("hydrates Scenes column on Locations table from composite scenes_location", () => {
-    const detail = getDatabaseViewDetail(fixture.ctx.db, locationsDb);
+    const detail = getDatabaseViewDetail(
+      fixture.ctx.db,
+      locationsDb,
+      undefined,
+      fixture.ctx.store.contentDir,
+    );
     const row = detail?.rows.find((entry) => entry.nodeId === location);
     expect(row?.cells.scenes).toBe("Opening Scene");
     expect(row?.relationCells?.scenes).toEqual([

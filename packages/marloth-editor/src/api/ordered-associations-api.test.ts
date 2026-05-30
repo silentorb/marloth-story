@@ -1,11 +1,12 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { IS_A_TYPE, typeTableMarkerProperties } from "marloth-db";
+import { IS_A_TYPE, typeTableMarkerProperties, VIEWS_FILE_VERSION } from "marloth-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
   seedTestCompositeRelationships,
   seedTestRelationships,
   seedTestNode,
+  seedTestViews,
 } from "marloth-db/content/test-helpers";
 import { createTestApiFromContent } from "./test-api-setup";
 
@@ -41,12 +42,22 @@ describe("ordered-associations API", () => {
     { a: scene2, b: part, typeFromA: "scenes", typeFromB: "part", properties: { ordinal: 1 } },
     { a: part, b: book, typeFromA: "products", typeFromB: "parts_database", properties: { ordinal: 0 } },
   ]);
+  seedTestViews(fixture, {
+    version: VIEWS_FILE_VERSION,
+    nodes: {
+      [SCENES_DB]: {
+        sections: {
+          items: { tabs: { kind: "generated", provider: "scenes-by-book" } },
+        },
+      },
+    },
+  });
 
   const api = createTestApiFromContent(fixture);
 
-  test("GET node with scope returns ordered-association section", async () => {
+  test("GET node with tab returns ordered-association section", async () => {
     const res = await api.handler(
-      new Request(`http://127.0.0.1/api/nodes/${SCENES_DB}?scope=${book}`),
+      new Request(`http://127.0.0.1/api/nodes/${SCENES_DB}?tab=${book}`),
     );
     expect(res.status).toBe(200);
     const payload = (await res.json()) as {

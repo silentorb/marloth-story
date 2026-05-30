@@ -1,0 +1,74 @@
+import { describe, expect, test, afterAll } from "bun:test";
+import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestViews,
+} from "../content/test-helpers";
+import { VIEWS_FILE_VERSION } from "../content/views-file";
+import { createTab, deleteTab, updateTab } from "./mutations";
+
+describe("views mutations", () => {
+  const fixture = createTestContentFixture("marloth-views-mut-");
+  const nodeId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+  seedTestViews(fixture, {
+    version: VIEWS_FILE_VERSION,
+    nodes: {
+      [nodeId]: {
+        sections: {
+          items: {
+            tabs: {
+              kind: "custom",
+              definitions: [
+                { id: "all", name: "All", sorts: [{ column: "name", direction: "asc" }] },
+              ],
+            },
+          },
+        },
+      },
+    },
+  });
+
+  test("creates and updates tabs", () => {
+    const created = createTab(fixture.ctx.store, nodeId, "items", {
+      name: "Sorted",
+      sorts: [{ column: "priority", direction: "desc" }],
+    });
+    expect(created.name).toBe("Sorted");
+
+    const updated = updateTab(fixture.ctx.store, nodeId, "items", created.id, {
+      name: "Renamed",
+    });
+    expect(updated.name).toBe("Renamed");
+  });
+
+  test("refuses to delete the last tab", () => {
+    const soloFixture = createTestContentFixture("marloth-views-last-tab-");
+    seedTestViews(soloFixture, {
+      version: VIEWS_FILE_VERSION,
+      nodes: {
+        [nodeId]: {
+          sections: {
+            items: {
+              tabs: {
+                kind: "custom",
+                definitions: [
+                  { id: "all", name: "All", sorts: [{ column: "name", direction: "asc" }] },
+                ],
+              },
+            },
+          },
+        },
+      },
+    });
+    try {
+      expect(() => deleteTab(soloFixture.ctx.store, nodeId, "items", "all")).toThrow("last_tab");
+    } finally {
+      destroyTestContentFixture(soloFixture);
+    }
+  });
+
+  afterAll(() => {
+    destroyTestContentFixture(fixture);
+  });
+});

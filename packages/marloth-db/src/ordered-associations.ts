@@ -12,8 +12,9 @@ import {
   normalizeRowCells,
   parseDatabaseSchema,
 } from "./database-column-defs";
-import { parseNotionViews } from "./notion-database-schema";
 import type { EvalRow } from "./notion-view-eval";
+import { resolveGeneratedTabsFromScopes } from "./views/resolve-tabs";
+import type { TableTabsDetail } from "./views/tabs";
 import {
   firstRelatedNodeId,
   listRelationshipsForComposite,
@@ -77,8 +78,7 @@ export interface OrderedAssociationViewDetail {
   configId: string;
   typeDatabaseId: string;
   typeDatabaseTitle: string;
-  scopes: OrderedAssociationScope[];
-  activeScopeId: string;
+  tabs: TableTabsDetail;
   groups: OrderedAssociationGroup[];
   columns: string[];
   columnDefs?: DatabaseColumnDef[];
@@ -153,6 +153,10 @@ function cellsFromMembershipRelationship(
 
 function getConfig(configId: string): OrderedAssociationConfig | null {
   return CONFIGS.find((config) => config.id === configId) ?? null;
+}
+
+export function getConfigByProvider(provider: string): OrderedAssociationConfig | null {
+  return CONFIGS.find((config) => config.id === provider) ?? null;
 }
 
 export function getOrderedAssociationConfigForDatabase(
@@ -392,7 +396,8 @@ function discoverScopes(
 export function getOrderedAssociationView(
   db: GraphDatabase,
   configId: string,
-  requestedScopeId?: string,
+  requestedTabId?: string,
+  contentDir?: string,
 ): OrderedAssociationViewDetail | null {
   const config = getConfig(configId);
   if (!config) return null;
@@ -401,10 +406,8 @@ export function getOrderedAssociationView(
   if (!database) return null;
 
   const scopes = discoverScopes(db, config);
-  const activeScopeId =
-    requestedScopeId && scopes.some((scope) => scope.id === requestedScopeId)
-      ? requestedScopeId
-      : (scopes[0]?.id ?? "");
+  const tabs = resolveGeneratedTabsFromScopes(scopes, requestedTabId);
+  const activeScopeId = tabs.activeTabId;
 
   const members = activeScopeId ? collectMembersInScope(db, config, activeScopeId) : [];
   const groups = activeScopeId
@@ -424,13 +427,14 @@ export function getOrderedAssociationView(
   const { rows: enrichedRows, dynamicColumnDefs, hiddenColumnKeys } = applyDynamicFields(
     db,
     config.typeDatabaseId,
-    config.columnViewName ?? "default",
+    "default",
     evalRows,
+    undefined,
+    contentDir ? { contentDir } : undefined,
   );
   const mergedColumnDefs = buildDatabaseColumnDefs(
     db,
     config.typeDatabaseId,
-    config.columnViewName,
     dynamicColumnDefs,
     hiddenColumnKeys,
     { excludeKeys },
@@ -459,8 +463,7 @@ export function getOrderedAssociationView(
     configId: config.id,
     typeDatabaseId: config.typeDatabaseId,
     typeDatabaseTitle: titleFromProperties(database.properties),
-    scopes,
-    activeScopeId,
+    tabs,
     groups: enrichedGroups,
     columns,
     columnDefs: mergedColumnDefs.length > 0 ? mergedColumnDefs : undefined,

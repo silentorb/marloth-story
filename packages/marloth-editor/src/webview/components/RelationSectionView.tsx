@@ -15,6 +15,8 @@ interface RelationSectionViewProps {
   section: RelationTableSection;
   onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
+  onArchiveNode?: (nodeId: string) => Promise<void>;
+  onDeleteNode?: (nodeId: string) => Promise<void>;
 }
 
 export function RelationSectionView({
@@ -23,6 +25,8 @@ export function RelationSectionView({
   section,
   onOpenNode,
   onCellUpdated,
+  onArchiveNode,
+  onDeleteNode,
 }: RelationSectionViewProps) {
   const tableKey = relationTableSortKey(nodeId, section.label);
 
@@ -121,6 +125,18 @@ export function RelationSectionView({
         renderNameCell={renderNameCell}
         columnLabels={columnLabels}
         renderCell={renderCell}
+        rowPageActions={
+          onArchiveNode && onDeleteNode
+            ? {
+                onArchiveNode,
+                onRemoveNode: async (targetId) => {
+                  await api.unlinkOutgoingRelationship(nodeId, section.label, targetId);
+                  onCellUpdated?.();
+                },
+                onDeleteNode,
+              }
+            : undefined
+        }
       />
       <TableAddRowFooter
         label={`New ${section.title.replace(/s$/i, "") || "row"}`}

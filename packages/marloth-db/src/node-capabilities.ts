@@ -110,7 +110,7 @@ export function graphLabelsForNode(db: GraphDatabase, nodeId: string): string[] 
 
 /** Minimal properties so tests and tooling can mark a node as a type table without labels. */
 export function typeTableMarkerProperties(title: string): Properties {
-  return { title, notion_views: '{"views":[]}' };
+  return { title, notion_schema: '{"syncedAt":"test","properties":{}}' };
 }
 
 export function nodeMatchesTargetTypes(

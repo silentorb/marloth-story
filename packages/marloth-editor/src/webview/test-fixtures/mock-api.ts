@@ -19,11 +19,22 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     getNode: async () => {
       throw new Error("not implemented in mock");
     },
-    getDatabaseView: async (databaseId, view) => {
+    getDatabaseView: async (databaseId, tabId) => {
       void databaseId;
-      void view;
+      void tabId;
       return makeDatabaseViewDetail();
     },
+    createSectionTab: async (_nodeId, _sectionKey, input) => ({
+      id: "new-tab",
+      name: input.name,
+      sorts: input.sorts ?? [{ column: "name", direction: "asc" as const }],
+    }),
+    updateSectionTab: async (_nodeId, _sectionKey, tabId, input) => ({
+      id: tabId,
+      name: input.name ?? tabId,
+      sorts: input.sorts ?? [{ column: "name", direction: "asc" as const }],
+    }),
+    deleteSectionTab: async () => {},
     search: async () => [],
     saveBody: async () => {},
     saveTitle: async () => {},

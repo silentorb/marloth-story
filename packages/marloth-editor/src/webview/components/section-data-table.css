@@ -1,3 +1,39 @@
+.marloth-table-row-actions-col {
+  width: 2rem;
+  padding: 10px 0 10px 4px;
+  vertical-align: top;
+  text-align: center;
+}
+
+/* Split gutter with the next column instead of stacking both cells' padding. */
+.marloth-database-table .marloth-table-row-actions-col + :is(th, td) {
+  padding-left: 4px;
+}
+
+/* Drag column already provides inner spacing; don't pad again on the actions column. */
+.marloth-ordered-association-drag-cell + .marloth-table-row-actions-col,
+.marloth-ordered-association-drag-col + .marloth-table-row-actions-col {
+  padding-left: 0;
+}
+
+.marloth-database-table td.marloth-table-row-actions-col {
+  max-width: none;
+  overflow: visible;
+  white-space: nowrap;
+}
+
+.marloth-database-table tbody .marloth-table-row-actions-col .marloth-page-actions-trigger {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.marloth-database-table tbody tr:hover .marloth-table-row-actions-col .marloth-page-actions-trigger,
+.marloth-database-table tbody tr:focus-within .marloth-table-row-actions-col .marloth-page-actions-trigger,
+.marloth-database-table tbody .marloth-table-row-actions-col .marloth-page-actions.is-menu-open .marloth-page-actions-trigger {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .marloth-table-sort-button {
   display: inline-flex;
   align-items: center;

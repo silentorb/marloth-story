@@ -2,7 +2,7 @@ import { openEditorDatabase } from "./database";
 import { UserSettingsStore } from "./user-settings-store";
 import { resolveApiPort, resolveContentPath, resolveDbPath } from "./paths";
 import type { UserSettingsPatch } from "../shared/user-settings";
-import type { NodeLifecycleError } from "marloth-db";
+import type { NodeLifecycleError, ViewSortSpec } from "marloth-db";
 
 export { pickExistingDbPath, resolveApiPort, resolveContentPath, resolveDbPath } from "./paths";
 
@@ -125,9 +125,12 @@ export function createApiHandler(
       if (nodeMatch) {
         const id = nodeMatch[1]!.toLowerCase();
         if (req.method === "GET") {
-          const view = url.searchParams.get("view") ?? undefined;
-          const scopeId = url.searchParams.get("scope") ?? undefined;
-          const node = db.getNode(id, { databaseView: view, scopeId });
+          const tab =
+            url.searchParams.get("tab") ??
+            url.searchParams.get("scope") ??
+            url.searchParams.get("view") ??
+            undefined;
+          const node = db.getNode(id, { tabId: tab ?? undefined });
           if (!node) return json({ error: "not found" }, 404);
           return json({ node });
         }
@@ -185,12 +188,69 @@ export function createApiHandler(
         return json({ ok: true });
       }
 
+      const viewsNodeMatch = /^\/api\/views\/nodes\/([a-f0-9]{32})$/i.exec(path);
+      if (viewsNodeMatch && req.method === "GET") {
+        const nodeId = viewsNodeMatch[1]!.toLowerCase();
+        const views = db.getNodeViews(nodeId);
+        return json({ views: views ?? null });
+      }
+
+      const viewsTabCollectionMatch =
+        /^\/api\/views\/nodes\/([a-f0-9]{32})\/sections\/([a-z0-9_-]+)\/tabs$/i.exec(path);
+      if (viewsTabCollectionMatch && req.method === "POST") {
+        const nodeId = viewsTabCollectionMatch[1]!.toLowerCase();
+        const sectionKey = viewsTabCollectionMatch[2]!;
+        const payload = (await req.json()) as { name?: string; sorts?: ViewSortSpec[] };
+        if (typeof payload.name !== "string" || !payload.name.trim()) {
+          return json({ error: "name required" }, 400);
+        }
+        try {
+          const tab = db.createSectionTab(nodeId, sectionKey, {
+            name: payload.name,
+            sorts: payload.sorts,
+          });
+          return json({ tab });
+        } catch (err) {
+          return json({ error: String(err) }, 400);
+        }
+      }
+
+      const viewsTabMatch =
+        /^\/api\/views\/nodes\/([a-f0-9]{32})\/sections\/([a-z0-9_-]+)\/tabs\/([a-z0-9-]+)$/i.exec(
+          path,
+        );
+      if (viewsTabMatch) {
+        const nodeId = viewsTabMatch[1]!.toLowerCase();
+        const sectionKey = viewsTabMatch[2]!;
+        const tabId = viewsTabMatch[3]!;
+        if (req.method === "PATCH") {
+          const payload = (await req.json()) as { name?: string; sorts?: ViewSortSpec[] };
+          try {
+            const tab = db.updateSectionTab(nodeId, sectionKey, tabId, payload);
+            return json({ tab });
+          } catch (err) {
+            return json({ error: String(err) }, 400);
+          }
+        }
+        if (req.method === "DELETE") {
+          try {
+            db.deleteSectionTab(nodeId, sectionKey, tabId);
+            return json({ ok: true });
+          } catch (err) {
+            return json({ error: String(err) }, 400);
+          }
+        }
+      }
+
       const databaseMatch = /^\/api\/databases\/([a-f0-9]{32})$/i.exec(path);
       if (databaseMatch) {
         const id = databaseMatch[1]!.toLowerCase();
         if (req.method === "GET") {
-          const view = url.searchParams.get("view") ?? undefined;
-          const databaseView = db.getDatabaseView(id, view);
+          const tab =
+            url.searchParams.get("tab") ??
+            url.searchParams.get("view") ??
+            undefined;
+          const databaseView = db.getDatabaseView(id, tab ?? undefined);
           if (!databaseView) return json({ error: "not found" }, 404);
           return json({ databaseView });
         }

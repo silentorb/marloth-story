@@ -31,6 +31,8 @@ import {
   type DatabaseViewDetail,
   type MarlothWriteContext,
   type SchemaFile,
+  type ViewSortSpec,
+  type NodeViewConfig,
 } from "marloth-db";
 import {
   ContentWatcher,
@@ -38,11 +40,31 @@ import {
 } from "marloth-db/content";
 import type { NodeSummary } from "../shared/types";
 import { resolveContentPath, resolveDbPath } from "./paths";
+import {
+  createSectionTab,
+  deleteSectionTab,
+  ITEMS_SECTION_KEY,
+  readNodeViews,
+  updateSectionTab,
+} from "./views";
 
 export interface EditorDatabase {
   getHomeId(): string;
-  getNode(id: string, options?: { databaseView?: string; scopeId?: string }): NodePageDetail | null;
-  getDatabaseView(id: string, view?: string): DatabaseViewDetail | null;
+  getNode(id: string, options?: { tabId?: string; databaseView?: string; scopeId?: string }): NodePageDetail | null;
+  getDatabaseView(id: string, tabId?: string): DatabaseViewDetail | null;
+  getNodeViews(nodeId: string): NodeViewConfig | null;
+  createSectionTab(
+    nodeId: string,
+    sectionKey: string,
+    input: { name: string; sorts?: ViewSortSpec[] },
+  ): ReturnType<typeof createSectionTab>;
+  updateSectionTab(
+    nodeId: string,
+    sectionKey: string,
+    tabId: string,
+    input: { name?: string; sorts?: ViewSortSpec[] },
+  ): ReturnType<typeof updateSectionTab>;
+  deleteSectionTab(nodeId: string, sectionKey: string, tabId: string): void;
   getSchema(): SchemaFile;
   moveOrderedAssociation(
     configId: string,
@@ -104,11 +126,33 @@ export function openEditorDatabase(
       const recent = searchNodes(writeCtx.db, "", 1);
       return recent[0]?.id ?? DEFAULT_HOME_NODE_ID;
     },
-    getNode(id: string, options?: { databaseView?: string; scopeId?: string }): NodePageDetail | null {
-      return getNodePageDetail(writeCtx.db, id, { ...options, schema: schema() });
+    getNode(id: string, options?: { tabId?: string; databaseView?: string; scopeId?: string }): NodePageDetail | null {
+      const tabId = options?.tabId ?? options?.scopeId ?? options?.databaseView;
+      return getNodePageDetail(writeCtx.db, id, {
+        tabId,
+        schema: schema(),
+        contentDir: contentPath,
+      });
     },
-    getDatabaseView(id: string, view?: string) {
-      return getDatabaseViewDetail(writeCtx.db, id, view);
+    getDatabaseView(id: string, tabId?: string) {
+      return getDatabaseViewDetail(writeCtx.db, id, tabId, contentPath);
+    },
+    getNodeViews(nodeId: string) {
+      return readNodeViews(writeCtx, nodeId);
+    },
+    createSectionTab(nodeId: string, sectionKey: string, input: { name: string; sorts?: ViewSortSpec[] }) {
+      return createSectionTab(writeCtx, nodeId, sectionKey, input);
+    },
+    updateSectionTab(
+      nodeId: string,
+      sectionKey: string,
+      tabId: string,
+      input: { name?: string; sorts?: ViewSortSpec[] },
+    ) {
+      return updateSectionTab(writeCtx, nodeId, sectionKey, tabId, input);
+    },
+    deleteSectionTab(nodeId: string, sectionKey: string, tabId: string) {
+      deleteSectionTab(writeCtx, nodeId, sectionKey, tabId);
     },
     getSchema(): SchemaFile {
       return schema();

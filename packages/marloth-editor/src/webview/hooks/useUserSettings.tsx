@@ -13,7 +13,8 @@ import {
   isDefaultTableSort,
   nextSortOnColumnClick,
   normalizeTableSort,
-  tableSortForKey,
+  effectiveTableSort,
+  tableSortOverrideForKey,
   type SortColumn,
   type TableSortSpec,
   type UserSettings,
@@ -21,9 +22,14 @@ import {
 
 interface UserSettingsContextValue {
   ready: boolean;
-  getTableSort: (tableKey: string) => TableSortSpec;
+  hasTableSortOverride: (tableKey: string) => boolean;
+  getTableSort: (tableKey: string, defaultSort?: TableSortSpec) => TableSortSpec;
   setTableSortColumns: (tableKey: string, orderBy: SortColumn[]) => void;
-  toggleTableSortColumn: (tableKey: string, column: string) => void;
+  toggleTableSortColumn: (
+    tableKey: string,
+    column: string,
+    defaultSort?: TableSortSpec,
+  ) => void;
 }
 
 const UserSettingsContext = createContext<UserSettingsContextValue | null>(null);
@@ -51,8 +57,14 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
     };
   }, [api]);
 
+  const hasTableSortOverride = useCallback(
+    (tableKey: string): boolean => tableSortOverrideForKey(settings, tableKey) !== undefined,
+    [settings],
+  );
+
   const getTableSort = useCallback(
-    (tableKey: string): TableSortSpec => tableSortForKey(settings, tableKey),
+    (tableKey: string, defaultSort?: TableSortSpec): TableSortSpec =>
+      effectiveTableSort(settings, tableKey, defaultSort),
     [settings],
   );
 
@@ -86,8 +98,8 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
   );
 
   const toggleTableSortColumn = useCallback(
-    (tableKey: string, column: string) => {
-      const current = getTableSort(tableKey);
+    (tableKey: string, column: string, defaultSort?: TableSortSpec) => {
+      const current = getTableSort(tableKey, defaultSort);
       persistTableSort(tableKey, nextSortOnColumnClick(current, column));
     },
     [getTableSort, persistTableSort],
@@ -96,11 +108,12 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
   const value = useMemo(
     (): UserSettingsContextValue => ({
       ready: true,
+      hasTableSortOverride,
       getTableSort,
       setTableSortColumns,
       toggleTableSortColumn,
     }),
-    [getTableSort, setTableSortColumns, toggleTableSortColumn],
+    [hasTableSortOverride, getTableSort, setTableSortColumns, toggleTableSortColumn],
   );
 
   return <UserSettingsContext.Provider value={value}>{children}</UserSettingsContext.Provider>;

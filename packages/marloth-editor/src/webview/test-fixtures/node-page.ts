@@ -9,11 +9,28 @@ export const FIXTURE_DATABASE_ID = "dddddddddddddddddddddddddddddddd";
 export function makeDatabaseViewDetail(
   overrides: Partial<DatabaseViewDetail> = {},
 ): DatabaseViewDetail {
+  const view = overrides.view ?? "All";
+  const views = overrides.views ?? [view];
+  const tabs = overrides.tabs ?? {
+    kind: "custom" as const,
+    items: views.map((label) => ({
+      id: label.toLowerCase().replace(/\s+/g, "-"),
+      label,
+      kind: "custom" as const,
+    })),
+    activeTabId: views[0]!.toLowerCase().replace(/\s+/g, "-"),
+    customDefinitions: views.map((label) => ({
+      id: label.toLowerCase().replace(/\s+/g, "-"),
+      name: label,
+      sorts: [{ column: "name", direction: "asc" as const }],
+    })),
+  };
   return {
     id: FIXTURE_DATABASE_ID,
     title: "Features",
-    views: ["All"],
-    view: "All",
+    views,
+    view,
+    tabs,
     columns: ["priority"],
     columnDefs: [
       {

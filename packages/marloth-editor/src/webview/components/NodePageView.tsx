@@ -23,8 +23,7 @@ interface NodePageViewProps {
   onBodyChange: (body: string) => void;
   onEditorBaseline?: (body: string) => void;
   onTitleChange: (title: string) => void;
-  onDatabaseViewChange: (view: string) => void;
-  onScopeChange: (scopeId: string) => void;
+  onTabSelect: (tabId: string) => void;
   onOrderedAssociationViewChange: (view: OrderedAssociationViewDetail) => void;
   onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onArchiveNode: (nodeId: string) => Promise<void>;
@@ -41,8 +40,7 @@ export function NodePageView({
   onBodyChange,
   onEditorBaseline,
   onTitleChange,
-  onDatabaseViewChange,
-  onScopeChange,
+  onTabSelect,
   onOrderedAssociationViewChange,
   onOpenNode,
   onArchiveNode,
@@ -125,7 +123,7 @@ export function NodePageView({
           if (section.type === "markdown") return null;
           if (section.type === "database") {
             return (
-              <section key={`database-${section.databaseView.view}`} className="marloth-record-section">
+              <section key={`database-${section.databaseView.tabs.activeTabId}`} className="marloth-record-section">
                 <SectionTitle
                   api={api}
                   title="Items"
@@ -139,9 +137,12 @@ export function NodePageView({
                   nodeId={node.id}
                   databaseView={section.databaseView}
                   embedded
-                  onViewChange={onDatabaseViewChange}
+                  onTabSelect={onTabSelect}
+                  onTabsUpdated={onTableCellUpdated}
                   onOpenNode={onOpenNode}
                   onCellUpdated={onTableCellUpdated}
+                  onArchiveNode={onArchiveNode}
+                  onDeleteNode={onDeleteNode}
                 />
               </section>
             );
@@ -149,7 +150,7 @@ export function NodePageView({
           if (section.type === "ordered-association") {
             return (
               <section
-                key={`ordered-association-${section.configId}-${section.view.activeScopeId}`}
+                key={`ordered-association-${section.configId}-${section.view.tabs.activeTabId}`}
                 className="marloth-record-section"
               >
                 <SectionTitle
@@ -164,10 +165,12 @@ export function NodePageView({
                   api={api}
                   configId={section.configId}
                   view={section.view}
-                  onScopeChange={onScopeChange}
+                  onTabSelect={onTabSelect}
                   onViewChange={onOrderedAssociationViewChange}
                   onOpenNode={onOpenNode}
                   onCellUpdated={onTableCellUpdated}
+                  onArchiveNode={onArchiveNode}
+                  onDeleteNode={onDeleteNode}
                 />
               </section>
             );
@@ -180,6 +183,8 @@ export function NodePageView({
               section={section}
               onOpenNode={onOpenNode}
               onCellUpdated={onTableCellUpdated}
+              onArchiveNode={onArchiveNode}
+              onDeleteNode={onDeleteNode}
             />
           );
         })}

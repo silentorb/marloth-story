@@ -25,8 +25,7 @@ describe("NodePageView", () => {
           onMetadataExpandedChange={() => {}}
           onBodyChange={() => {}}
           onTitleChange={() => {}}
-          onDatabaseViewChange={() => {}}
-          onScopeChange={() => {}}
+          onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
           onOpenNode={() => {}}
           onArchiveNode={async () => {}}
@@ -41,7 +40,7 @@ describe("NodePageView", () => {
     expect(screen.getByTestId("marloth-editor-stub")).toBeTruthy();
     expect(screen.getByRole("heading", { name: "Related items", level: 2 })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
-    expect(screen.getByRole("button", { name: "Page actions" })).toBeTruthy();
+    expect(screen.getAllByRole("button", { name: "Page actions" })).toHaveLength(2);
   });
 
   test("renders embedded database table section", () => {
@@ -64,8 +63,7 @@ describe("NodePageView", () => {
           onMetadataExpandedChange={() => {}}
           onBodyChange={() => {}}
           onTitleChange={() => {}}
-          onDatabaseViewChange={() => {}}
-          onScopeChange={() => {}}
+          onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
           onOpenNode={() => {}}
           onArchiveNode={async () => {}}
@@ -110,8 +108,7 @@ describe("NodePageView", () => {
           onMetadataExpandedChange={() => {}}
           onBodyChange={() => {}}
           onTitleChange={() => {}}
-          onDatabaseViewChange={() => {}}
-          onScopeChange={() => {}}
+          onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
           onOpenNode={() => {}}
           onArchiveNode={async () => {}}

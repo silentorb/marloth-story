@@ -1,17 +1,22 @@
 import type { GraphDatabase } from "./graph";
 import { TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { isTypeTableNode } from "./node-capabilities";
-import {
-  parseNotionSchema,
-  parseNotionViews,
-  resolveViewByKey,
-  type NotionViewDefinition,
-} from "./notion-database-schema";
-import { filterEvalRows, sortEvalRows, type EvalRow } from "./notion-view-eval";
+import { parseNotionSchema } from "./notion-database-schema";
+import type { EvalRow } from "./notion-view-eval";
 import { applyDynamicFields } from "./dynamic-fields";
 import { hydrateRelationCellsForRows } from "./database-view-relations";
 import { buildDatabaseColumnDefs, normalizeRowCells } from "./database-column-defs";
 import { enrichColumnDefs } from "./property-enums";
+import { resolveContentPath } from "./content/paths";
+import {
+  resolveCustomTabsForNode,
+  activeTabName,
+  getSectionTabsConfig,
+  ITEMS_SECTION_KEY,
+} from "./views/resolve-tabs";
+import { loadViewsFromContent } from "./views/load";
+import { sortEvalRowsFromViewSorts } from "./views/sort-spec";
+import type { TableTabsDetail } from "./views/tabs";
 
 const ROW_META_KEYS = new Set(["view", "row_index", "row_name", "order"]);
 
@@ -46,8 +51,11 @@ export interface DatabaseColumnDef {
 export interface DatabaseViewDetail {
   id: string;
   title: string;
-  views: string[];
+  /** @deprecated Use tabs.activeTabId and active tab label from tabs.items */
   view: string;
+  /** @deprecated Use tabs.items */
+  views: string[];
+  tabs: TableTabsDetail;
   columns: string[];
   rows: DatabaseRow[];
   columnDefs?: DatabaseColumnDef[];
@@ -106,16 +114,17 @@ function rowSort(a: DatabaseRow, b: DatabaseRow): number {
   return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
 }
 
-function buildNotionViewDetail(
+function buildCustomViewDetail(
   db: GraphDatabase,
   databaseId: string,
   databaseTitle: string,
   incoming: ReturnType<GraphDatabase["listRelationshipsToTarget"]>,
-  notionViews: NotionViewDefinition[],
-  requestedView?: string,
+  contentDir: string,
+  requestedTabId?: string,
 ): DatabaseViewDetail {
   const schema = parseNotionSchema(db.getNode(databaseId)?.properties.notion_schema);
-  const selected = resolveViewByKey(notionViews, requestedView) ?? notionViews[0]!;
+  const resolved = resolveCustomTabsForNode(contentDir, databaseId, requestedTabId);
+  const tabName = activeTabName(resolved);
 
   const evalRows: EvalRow[] = [];
   for (const connection of incoming) {
@@ -139,17 +148,21 @@ function buildNotionViewDetail(
   const { rows: enrichedRows, dynamicColumnDefs, hiddenColumnKeys } = applyDynamicFields(
     db,
     databaseId,
-    selected.name,
+    tabName,
     evalRows,
+    undefined,
+    { contentDir },
   );
 
-  const filtered = filterEvalRows(enrichedRows, selected.filter);
-  const sorted = sortEvalRows(filtered, selected.sorts);
+  const sorted = sortEvalRowsFromViewSorts(
+    enrichedRows,
+    resolved.activeDefinition.sorts,
+    schema,
+  );
 
   const mergedColumnDefs = buildDatabaseColumnDefs(
     db,
     databaseId,
-    selected.name,
     dynamicColumnDefs,
     hiddenColumnKeys,
   );
@@ -171,11 +184,19 @@ function buildNotionViewDetail(
     relationCells: row.relationCells,
   }));
 
+  const tabs: TableTabsDetail = {
+    kind: "custom",
+    items: resolved.items,
+    activeTabId: resolved.activeTabId,
+    customDefinitions: resolved.definitions,
+  };
+
   return {
     id: databaseId,
     title: databaseTitle,
-    views: notionViews.map((v) => v.name),
-    view: selected.name,
+    views: resolved.items.map((tab) => tab.label),
+    view: tabName,
+    tabs,
     columns,
     rows,
     columnDefs: mergedColumnDefs.length > 0 ? mergedColumnDefs : undefined,
@@ -188,6 +209,7 @@ function buildLegacyViewDetail(
   databaseTitle: string,
   incoming: ReturnType<GraphDatabase["listRelationshipsToTarget"]>,
   requestedView?: string,
+  contentDir?: string,
 ): DatabaseViewDetail {
   const connectionViews = incoming
     .map((connection) => stringProperty(connection.properties.view))
@@ -234,11 +256,14 @@ function buildLegacyViewDetail(
     modifiedAt: null,
   }));
 
+  const dir = contentDir ?? resolveContentPath();
   const { rows: enrichedEvalRows, dynamicColumnDefs, hiddenColumnKeys } = applyDynamicFields(
     db,
     databaseId,
     view,
     evalRows,
+    undefined,
+    { contentDir: dir },
   );
 
   const enrichedByNodeId = new Map(enrichedEvalRows.map((r) => [r.nodeId, r]));
@@ -264,11 +289,20 @@ function buildLegacyViewDetail(
   const columns = legacyColumnDefs.map((c) => c.key);
   const rows = [...rowsByNodeId.values()].sort(rowSort);
 
+  const tabItems = views.map((label) => ({
+    id: label,
+    label,
+    kind: "custom" as const,
+  }));
+  const activeTabId =
+    requestedView && views.includes(requestedView) ? requestedView : pickDefaultLegacyView(views);
+
   return {
     id: databaseId,
     title: databaseTitle,
     views,
     view,
+    tabs: { kind: "custom", items: tabItems, activeTabId },
     columns,
     rows,
     columnDefs: legacyColumnDefs.length > 0 ? legacyColumnDefs : undefined,
@@ -279,7 +313,8 @@ function buildLegacyViewDetail(
 export function getDatabaseViewDetail(
   db: GraphDatabase,
   databaseId: string,
-  requestedView?: string,
+  requestedTabId?: string,
+  contentDir?: string,
 ): DatabaseViewDetail | null {
   const database = db.getNode(databaseId);
   if (!database || !isTypeTableNode(db, databaseId)) return null;
@@ -289,18 +324,22 @@ export function getDatabaseViewDetail(
   );
 
   const title = titleFromProperties(database.properties);
-  const storedViews = parseNotionViews(database.properties.notion_views);
+  const dir = contentDir ?? resolveContentPath();
+  const views = loadViewsFromContent(dir);
+  const sectionConfig = getSectionTabsConfig(views, databaseId, ITEMS_SECTION_KEY);
 
-  if (storedViews && storedViews.views.length > 0) {
-    return buildNotionViewDetail(
-      db,
-      databaseId,
-      title,
-      incoming,
-      storedViews.views,
-      requestedView,
-    );
+  if (sectionConfig?.kind === "generated") {
+    return null;
   }
 
-  return buildLegacyViewDetail(db, databaseId, title, incoming, requestedView);
+  if (!sectionConfig) {
+    const hasLegacyViews = incoming.some((connection) =>
+      Boolean(stringProperty(connection.properties.view)),
+    );
+    if (hasLegacyViews) {
+      return buildLegacyViewDetail(db, databaseId, title, incoming, requestedTabId, dir);
+    }
+  }
+
+  return buildCustomViewDetail(db, databaseId, title, incoming, dir, requestedTabId);
 }

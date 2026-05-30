@@ -1,22 +1,28 @@
 import { useCallback, useMemo } from "react";
 import type { EditorApi } from "../api/client";
 import type { DatabaseViewDetail } from "../../shared/types";
-import { databaseTableSortKey } from "../../shared/user-settings";
+import { databaseTableSortKey, viewSortsToTableSort } from "../../shared/user-settings";
 import { standaloneNodeUrl } from "../../shared/types";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
 import { TableAddRowFooter } from "./TableAddRowFooter";
 import { RelationCellEditor } from "./RelationCellEditor";
 import { renderTableCell } from "./table-cell-render";
+import { TableTabsBar } from "./TableTabsBar";
 import "./database-table-view.css";
+
+const ITEMS_SECTION_KEY = "items";
 
 interface DatabaseTableViewProps {
   api: EditorApi;
   nodeId: string;
   databaseView: DatabaseViewDetail;
   embedded?: boolean;
-  onViewChange: (view: string) => void;
+  onTabSelect: (tabId: string) => void;
+  onTabsUpdated?: () => void;
   onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
+  onArchiveNode?: (nodeId: string) => Promise<void>;
+  onDeleteNode?: (nodeId: string) => Promise<void>;
 }
 
 export function DatabaseTableView({
@@ -24,11 +30,21 @@ export function DatabaseTableView({
   nodeId,
   databaseView,
   embedded = false,
-  onViewChange,
+  onTabSelect,
+  onTabsUpdated,
   onOpenNode,
   onCellUpdated,
+  onArchiveNode,
+  onDeleteNode,
 }: DatabaseTableViewProps) {
-  const tableKey = databaseTableSortKey(nodeId, databaseView.id, databaseView.view);
+  const tableKey = databaseTableSortKey(nodeId, databaseView.id, databaseView.tabs.activeTabId);
+
+  const tabDefaultSort = useMemo(() => {
+    const tab = databaseView.tabs.customDefinitions?.find(
+      (definition) => definition.id === databaseView.tabs.activeTabId,
+    );
+    return tab?.sorts?.length ? viewSortsToTableSort(tab.sorts) : undefined;
+  }, [databaseView.tabs.activeTabId, databaseView.tabs.customDefinitions]);
 
   const columnLabels = useMemo(() => {
     if (!databaseView.columnDefs?.length) return undefined;
@@ -138,6 +154,21 @@ export function DatabaseTableView({
     [api.host, openRowInEditor],
   );
 
+  const rowPageActions = useMemo(
+    () =>
+      onArchiveNode && onDeleteNode
+        ? {
+            onArchiveNode,
+            onRemoveNode: async (rowNodeId: string) => {
+              await api.unlinkOutgoingRelationship(rowNodeId, "is_a", databaseView.id);
+              onCellUpdated?.();
+            },
+            onDeleteNode,
+          }
+        : undefined,
+    [api, databaseView.id, onArchiveNode, onCellUpdated, onDeleteNode],
+  );
+
   return (
     <div className={`marloth-database-view${embedded ? " is-embedded" : ""}`}>
       <header className="marloth-database-header">
@@ -146,22 +177,24 @@ export function DatabaseTableView({
             <h1 className="marloth-database-title">{databaseView.title}</h1>
           </div>
         )}
-        {databaseView.views.length > 1 ? (
-          <div className="marloth-database-view-tabs" role="tablist" aria-label="Database views">
-            {databaseView.views.map((view) => (
-              <button
-                key={view}
-                type="button"
-                role="tab"
-                aria-selected={view === databaseView.view}
-                className={`marloth-database-view-tab${view === databaseView.view ? " is-active" : ""}`}
-                onClick={() => onViewChange(view)}
-              >
-                {view}
-              </button>
-            ))}
-          </div>
-        ) : null}
+        <TableTabsBar
+          tabs={databaseView.tabs}
+          columnDefs={databaseView.columnDefs}
+          onTabSelect={onTabSelect}
+          onCreateTab={async (input) => {
+            const tab = await api.createSectionTab(nodeId, ITEMS_SECTION_KEY, input);
+            onTabSelect(tab.id);
+            onTabsUpdated?.();
+          }}
+          onUpdateTab={async (tabId, input) => {
+            await api.updateSectionTab(nodeId, ITEMS_SECTION_KEY, tabId, input);
+            onTabsUpdated?.();
+          }}
+          onDeleteTab={async (tabId) => {
+            await api.deleteSectionTab(nodeId, ITEMS_SECTION_KEY, tabId);
+            onTabsUpdated?.();
+          }}
+        />
       </header>
 
       {databaseView.rows.length === 0 ? (
@@ -171,9 +204,11 @@ export function DatabaseTableView({
           tableKey={tableKey}
           columns={databaseView.columns}
           rows={rows}
+          defaultSort={tabDefaultSort}
           renderNameCell={renderNameCell}
           columnLabels={columnLabels}
           renderCell={renderCell}
+          rowPageActions={rowPageActions}
         />
       )}
       <TableAddRowFooter

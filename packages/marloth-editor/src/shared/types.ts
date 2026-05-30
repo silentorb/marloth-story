@@ -28,8 +28,9 @@ export type {
 export type {
   OrderedAssociationGroup,
   OrderedAssociationRow,
-  OrderedAssociationScope,
   OrderedAssociationViewDetail,
+  TableTabsDetail,
+  ViewSortSpec,
 } from "marloth-db";
 
 export type EditorHost = "vscode" | "standalone";
@@ -78,6 +79,7 @@ export function standaloneNodeUrl(nodeId: string, base?: string | URL): string {
   const url = base instanceof URL ? new URL(base.href) : new URL(base ?? defaultBase);
   url.searchParams.set("node", nodeId);
   url.searchParams.delete("view");
+  url.searchParams.delete("tab");
   url.searchParams.delete("meta");
   return url.toString();
 }

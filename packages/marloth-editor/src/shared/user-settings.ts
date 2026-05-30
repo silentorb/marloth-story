@@ -66,11 +66,45 @@ export function normalizeTableSort(spec: TableSortSpec | undefined): TableSortSp
   };
 }
 
+export function tableSortOverrideForKey(
+  settings: UserSettings,
+  tableKey: string,
+): TableSortSpec | undefined {
+  const stored = settings.tableSorts?.[tableKey];
+  return stored ? normalizeTableSort(stored) : undefined;
+}
+
+/** User override when set; otherwise `defaultSort`, then global default (name asc). */
+export function effectiveTableSort(
+  settings: UserSettings,
+  tableKey: string,
+  defaultSort?: TableSortSpec,
+): TableSortSpec {
+  return tableSortOverrideForKey(settings, tableKey) ?? normalizeTableSort(defaultSort);
+}
+
 export function tableSortForKey(
   settings: UserSettings,
   tableKey: string,
 ): TableSortSpec {
-  return normalizeTableSort(settings.tableSorts?.[tableKey]);
+  return effectiveTableSort(settings, tableKey);
+}
+
+export interface ViewSortLike {
+  column: string;
+  direction: SortDirection;
+}
+
+export function viewSortsToTableSort(sorts: ViewSortLike[]): TableSortSpec {
+  const orderBy: SortColumn[] = sorts
+    .filter((sort) => typeof sort.column === "string" && sort.column.length > 0)
+    .map((sort) => ({
+      column: sort.column,
+      direction: (sort.direction === "desc" ? "desc" : "asc") as SortDirection,
+    }));
+  return orderBy.length > 0
+    ? { orderBy }
+    : DEFAULT_TABLE_SORT;
 }
 
 export function nextSortOnColumnClick(

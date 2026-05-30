@@ -46,12 +46,14 @@ export {
   RELATIONSHIPS_FILENAME,
   RELATIONSHIP_TYPES_FILENAME,
   DYNAMIC_FIELDS_FILENAME,
+  VIEWS_FILENAME,
   NODE_FILE_PATTERN,
   NODE_ID_PATTERN,
   relationshipsFilePath,
   relationshipTypesFilePath,
   defaultDbPathForContent,
   dynamicFieldsFilePath,
+  viewsFilePath,
   isNodeId,
   nodeFileName,
   nodeFilePath,
@@ -71,6 +73,7 @@ export {
   destroyTestContentFixture,
   seedTestRelationships,
   seedTestNode,
+  seedTestViews,
 } from "./test-helpers";
 export type { TestContentFixture } from "./test-helpers";
 export type { MarlothWriteContext } from "./write-context";

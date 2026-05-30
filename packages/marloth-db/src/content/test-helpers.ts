@@ -4,8 +4,10 @@ import { tmpdir } from "node:os";
 import type { Node, Properties } from "../graph";
 import { bodyFromNode, serializeNodeFile } from "./node-file";
 import { fileFromSeedInputs } from "./dynamic-fields-file";
+import { serializeViewsFile, type ViewsFile } from "./views-file";
 import type { SeedDynamicColumnSetInput, SeedDynamicFieldInput } from "../dynamic-fields/overlay";
 import { invalidateDynamicFieldsCache } from "./sync";
+import { invalidateViewsCache } from "../views/load";
 import { openMarlothWriteContext, type MarlothWriteContext } from "./write-context";
 import { writeFileSync } from "node:fs";
 import { nodeFilePath } from "./paths";
@@ -32,6 +34,8 @@ export function createTestContentFixture(prefix = "marloth-content-test-"): Test
   mkdirSync(contentDir, { recursive: true });
   const dbPath = join(tempDir, "test.sqlite");
   const ctx = openMarlothWriteContext(contentDir, dbPath);
+  ctx.store.writeDynamicFieldsFile(fileFromSeedInputs([], []));
+  invalidateDynamicFieldsCache();
   return { tempDir, ctx };
 }
 
@@ -62,6 +66,11 @@ export function seedTestDynamicFields(
 ): void {
   fixture.ctx.store.writeDynamicFieldsFile(fileFromSeedInputs(fields, columnSets));
   invalidateDynamicFieldsCache();
+}
+
+export function seedTestViews(fixture: TestContentFixture, file: ViewsFile): void {
+  fixture.ctx.store.writeViewsFile(file);
+  invalidateViewsCache();
 }
 
 function entryFromSeedConnection(connection: {

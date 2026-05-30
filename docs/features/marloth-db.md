@@ -52,6 +52,7 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 | `content/{nodeId}.md` | Canonical node (YAML frontmatter + markdown body) |
 | `content/relationships.json` | Canonical bidirectional relationship records (v2) |
 | `content/relationship-types.json` | Composite type → perspective mapping |
+| `content/views.json` | UI table tab definitions (custom + generated providers) |
 | `content/dynamic-fields.json` | Dynamic table field bindings |
 | `content/schema.json` | Relationship rules (allowed target types) |
 | `data/marloth.sqlite` | Local query cache (gitignored; default path via `MARLOTH_DB_PATH`) |

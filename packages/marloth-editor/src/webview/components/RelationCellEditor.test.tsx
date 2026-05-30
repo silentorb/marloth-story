@@ -147,7 +147,7 @@ describe("RelationCellEditor", () => {
   test("clicking a visible link does not open edit popup", () => {
     render(
       <RelationCellEditor
-        api={makeMockEditorApi()}
+        api={makeMockEditorApi("standalone")}
         links={[{ targetId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", title: "Parent" }]}
         columnName="Parents"
         onAdd={async () => {}}
@@ -156,7 +156,7 @@ describe("RelationCellEditor", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: "Parent" }));
+    fireEvent.click(screen.getByRole("link", { name: "Parent" }));
     expect(screen.queryByRole("dialog", { name: "Edit Parents links" })).toBeNull();
   });
 });

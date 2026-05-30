@@ -156,7 +156,8 @@ describe("dynamic-fields resolvers", () => {
   });
 
   test("database view integration for characters", () => {
-    const detail = getDatabaseViewDetail(db, CHAR_DB);
+    const contentDir = join(dir, "content");
+    const detail = getDatabaseViewDetail(db, CHAR_DB, undefined, contentDir);
     const james = detail?.rows.find((r) => r.nodeId === character);
     expect(james?.cells.all_scene_count).toBe("3");
     expect(james?.cells[`scene_count__${TWOLD}`]).toBe("2");
@@ -165,7 +166,8 @@ describe("dynamic-fields resolvers", () => {
   });
 
   test("database view integration for inspirations", () => {
-    const detail = getDatabaseViewDetail(db, INSP_DB);
+    const contentDir = join(dir, "content");
+    const detail = getDatabaseViewDetail(db, INSP_DB, undefined, contentDir);
     const row = detail?.rows.find((r) => r.nodeId === inspiration);
     expect(row?.cells.weighted_use).toBe("6");
     expect(row?.cells.wonder).toBe("1");
@@ -243,7 +245,12 @@ describe("dynamic-fields with composite relationships", () => {
   ]);
 
   test("weighted_use and wonder with production params and composite edges", () => {
-    const detail = getDatabaseViewDetail(fixture.ctx.db, INSP_DB);
+    const detail = getDatabaseViewDetail(
+      fixture.ctx.db,
+      INSP_DB,
+      undefined,
+      fixture.ctx.store.contentDir,
+    );
     const row = detail?.rows.find((entry) => entry.nodeId === inspiration);
     expect(row?.cells.weighted_use).toBe("6");
     expect(row?.cells.wonder).toBe("1");

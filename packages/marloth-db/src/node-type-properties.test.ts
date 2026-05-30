@@ -39,7 +39,16 @@ describe("node-type-properties", () => {
       ]),
     );
     invalidateDynamicFieldsCache();
-    db.upsertNode(CHAR_DB, { ...typeTableMarkerProperties("Characters") });
+    db.upsertNode(CHAR_DB, {
+      ...typeTableMarkerProperties("Characters"),
+      notion_schema: JSON.stringify({
+        syncedAt: "test",
+        properties: {
+          Name: { id: "title", name: "Name", type: "title", config: {} },
+          Priority: { id: "Vpkf", name: "Priority", type: "select", config: {} },
+        },
+      }),
+    });
     db.upsertNode(character, { title: "James" });
     db.upsertRelationship(character, CHAR_DB, IS_A_TYPE, { row_index: 0, priority: "High" });
 

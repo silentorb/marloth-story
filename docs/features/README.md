@@ -22,6 +22,7 @@ Each file in this directory is the **authoritative design spec** for one major w
 | Graph Explorer (LOD graph visualization) | [graph-explorer.md](./graph-explorer.md) |
 | Ordered associations (scene order, DnD) | [ordered-associations.md](./ordered-associations.md) |
 | Dynamic table fields (computed columns) | [dynamic-table-fields.md](./dynamic-table-fields.md) |
+| Table view tabs (`views.json`) | [views.md](./views.md) |
 | Relationship schema rules | [schema.md](./schema.md) |
 
 ## Split of concerns

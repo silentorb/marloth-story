@@ -11,6 +11,7 @@ export interface EvalRow {
 }
 
 function cellValue(row: EvalRow, propertyName: string): string | null {
+  if (propertyName === "title") return row.name || null;
   const direct = row.cells[propertyName];
   if (direct !== undefined && direct !== "") return direct;
   const slug = propertyName.toLowerCase().replace(/[^a-z0-9_]+/g, "_");

@@ -10,11 +10,13 @@ import {
 } from "./dynamic-fields-file";
 import { bodyFromNode } from "./node-file";
 import { invalidateSchemaCache } from "../schema-rules/load";
+import { invalidateViewsCache } from "../views/load";
 import {
   RELATIONSHIPS_FILENAME,
   RELATIONSHIP_TYPES_FILENAME,
   DYNAMIC_FIELDS_FILENAME,
   SCHEMA_FILENAME,
+  VIEWS_FILENAME,
   dynamicFieldsFilePath,
   NODE_FILE_PATTERN,
 } from "./paths";
@@ -123,6 +125,7 @@ export class CacheSync {
     scan(RELATIONSHIP_TYPES_FILENAME);
     scan(DYNAMIC_FIELDS_FILENAME);
     scan(SCHEMA_FILENAME);
+    scan(VIEWS_FILENAME);
     try {
       for (const name of readdirSync(this.contentDir)) {
         if (NODE_FILE_PATTERN.test(name)) {
@@ -239,6 +242,12 @@ export class CacheSync {
 
     if (relativeName === SCHEMA_FILENAME) {
       invalidateSchemaCache();
+      this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
+      return;
+    }
+
+    if (relativeName === VIEWS_FILENAME) {
+      invalidateViewsCache();
       this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
       return;
     }

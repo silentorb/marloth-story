@@ -79,10 +79,6 @@ export async function syncDatabases(
       const patch: Record<string, string> = {
         ...databaseMetadataPatch(database, node.properties, options.force),
         notion_schema: JSON.stringify(schema),
-        notion_views: JSON.stringify({
-          syncedAt: new Date().toISOString(),
-          views,
-        }),
       };
 
       if (options.dryRun) {

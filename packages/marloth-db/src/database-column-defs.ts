@@ -2,12 +2,8 @@ import type { GraphDatabase } from "./graph";
 import type { DatabaseColumnDef } from "./database-view";
 import {
   parseNotionSchema,
-  parseNotionViews,
-  propertyNameForId,
-  propertyNamesById,
-  resolveViewByKey,
   slugifyPropertyKey,
-  visiblePropertyIdsForView,
+  storedScalarColumnDefsFromSchema,
   type NotionDatabaseSchema,
   type NotionPropertyDefinition,
 } from "./notion-database-schema";
@@ -68,61 +64,55 @@ export function mergeDynamicColumnDefs(
   return merged;
 }
 
-/** Build typed column definitions from notion_schema and a named view. */
+/** Build typed column definitions from notion_schema (all stored scalar columns). */
 export function buildDatabaseColumnDefs(
   db: GraphDatabase,
   databaseId: string,
-  viewName: string | undefined,
   dynamicColumnDefs: DatabaseColumnDef[],
   hiddenColumnKeys: Set<string>,
   options?: BuildDatabaseColumnDefsOptions,
 ): DatabaseColumnDef[] {
   const database = db.getNode(databaseId);
   const schema = parseNotionSchema(database?.properties.notion_schema);
-  const storedViews = parseNotionViews(database?.properties.notion_views);
-  const notionViews = storedViews?.views ?? [];
-  const selected = resolveViewByKey(notionViews, viewName) ?? notionViews[0];
   const excludeKeys = options?.excludeKeys ?? new Set<string>();
 
   const columnDefs: DatabaseColumnDef[] = [];
-  if (schema && selected) {
-    const idToName = propertyNamesById(schema);
-    const visiblePropertyIds = visiblePropertyIdsForView(selected);
-    if (visiblePropertyIds.length > 0) {
-      for (const propId of visiblePropertyIds) {
-        const name = propertyNameForId(idToName, propId);
-        if (!name || name === "Name") continue;
-        const def = schema.properties[name];
-        if (!def) continue;
-        const key = slugifyPropertyKey(name);
-        if (excludeKeys.has(key)) continue;
-        columnDefs.push(
-          enrichRelationColumnDef(
-            enrichColumnDef({
-              key,
-              name,
-              type: def.type,
-            }),
-            def,
-          ),
-        );
-      }
-    } else {
-      for (const [name, def] of Object.entries(schema.properties)) {
-        if (name === "Name" || def.type === "title") continue;
-        const key = slugifyPropertyKey(name);
-        if (excludeKeys.has(key)) continue;
-        columnDefs.push(
-          enrichRelationColumnDef(
-            enrichColumnDef({
-              key,
-              name,
-              type: def.type,
-            }),
-            def,
-          ),
-        );
-      }
+  if (schema) {
+    const scalarDefs = storedScalarColumnDefsFromSchema(schema, (def) =>
+      enrichColumnDef(def),
+    );
+    for (const def of scalarDefs) {
+      const key = slugifyPropertyKey(def.name);
+      if (excludeKeys.has(key)) continue;
+      const propDef = schema.properties[def.name];
+      columnDefs.push(
+        enrichRelationColumnDef(
+          {
+            key,
+            name: def.name,
+            type: def.type,
+          },
+          propDef,
+        ),
+      );
+    }
+
+    for (const [name, def] of Object.entries(schema.properties)) {
+      if (name === "Name" || def.type === "title") continue;
+      if (def.type !== "relation") continue;
+      const key = slugifyPropertyKey(name);
+      if (excludeKeys.has(key)) continue;
+      if (columnDefs.some((col) => col.key === key)) continue;
+      columnDefs.push(
+        enrichRelationColumnDef(
+          enrichColumnDef({
+            key,
+            name,
+            type: def.type,
+          }),
+          def,
+        ),
+      );
     }
   }
 

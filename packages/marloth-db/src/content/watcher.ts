@@ -1,6 +1,6 @@
 import { watch, type FSWatcher } from "node:fs";
 import type { CacheSync } from "./sync";
-import { RELATIONSHIPS_FILENAME, DYNAMIC_FIELDS_FILENAME, NODE_FILE_PATTERN } from "./paths";
+import { RELATIONSHIPS_FILENAME, DYNAMIC_FIELDS_FILENAME, VIEWS_FILENAME, NODE_FILE_PATTERN } from "./paths";
 
 const DEBOUNCE_MS = 200;
 
@@ -35,6 +35,7 @@ export class ContentWatcher {
     return (
       name === RELATIONSHIPS_FILENAME ||
       name === DYNAMIC_FIELDS_FILENAME ||
+      name === VIEWS_FILENAME ||
       NODE_FILE_PATTERN.test(name)
     );
   }

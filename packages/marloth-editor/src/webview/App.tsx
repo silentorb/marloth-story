@@ -6,7 +6,7 @@ import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
 import { UserSettingsProvider } from "./hooks/useUserSettings";
 import type { GetNodeOptions } from "../shared/http-client";
-import type { AppView, OrderedAssociationViewDetail, NodePageDetail } from "../shared/types";
+import type { AppView, DatabaseViewDetail, OrderedAssociationViewDetail, NodePageDetail } from "../shared/types";
 import { standaloneNodeUrl } from "../shared/types";
 import {
   anchorFromLocation,
@@ -59,22 +59,23 @@ function viewFromLocation(): AppView {
   return "node-page";
 }
 
-function databaseViewFromLocation(): string | undefined {
+function tabFromLocation(): string | undefined {
   const params = new URLSearchParams(window.location.search);
-  const dbView = params.get("dbView");
-  return dbView ?? undefined;
-}
-
-function scopeFromLocation(): string | undefined {
-  const params = new URLSearchParams(window.location.search);
-  const scope = params.get("scope");
-  return scope ?? undefined;
+  return params.get("tab") ?? params.get("dbView") ?? params.get("scope") ?? undefined;
 }
 
 function viewToQueryParam(view: AppView): string | null {
   if (view === "graph-explorer") return "explorer";
   if (view === "create-node") return "create";
   return null;
+}
+
+function activeTabIdFromNode(node: NodePageDetail): string | undefined {
+  for (const section of node.sections) {
+    if (section.type === "database") return section.databaseView.tabs.activeTabId;
+    if (section.type === "ordered-association") return section.view.tabs.activeTabId;
+  }
+  return undefined;
 }
 
 export function App() {
@@ -190,10 +191,13 @@ export function App() {
       else url.searchParams.delete("view");
       if (nodeId) url.searchParams.set("node", nodeId);
       else url.searchParams.delete("node");
-      if (options?.scope) url.searchParams.set("scope", options.scope);
-      else url.searchParams.delete("scope");
-      if (options?.view) url.searchParams.set("dbView", options.view);
-      else url.searchParams.delete("dbView");
+      if (options?.tab ?? options?.scope ?? options?.view) {
+        url.searchParams.set("tab", options.tab ?? options.scope ?? options.view!);
+      } else {
+        url.searchParams.delete("tab");
+      }
+      url.searchParams.delete("scope");
+      url.searchParams.delete("dbView");
       stripMetadataParamFromUrl(url);
       if (nextView === "graph-explorer") {
         url.searchParams.set("anchor", explorerAnchorId);
@@ -214,7 +218,7 @@ export function App() {
       }
       try {
         const normalized =
-          typeof options === "string" ? { view: options } : (options ?? {});
+          typeof options === "string" ? { tab: options } : (options ?? {});
         const detail = await api.getNode(nodeId, normalized);
         const { title, content } = resolvePageTitleAndContent(detail.body, detail.title);
         const normalizedNode = {
@@ -254,10 +258,7 @@ export function App() {
 
       const fromUrl = nodeFromLocation();
       if (fromUrl) {
-        await loadNode(fromUrl, {
-          view: databaseViewFromLocation(),
-          scope: scopeFromLocation(),
-        });
+        await loadNode(fromUrl, { tab: tabFromLocation() });
         return;
       }
       await loadNode(home);
@@ -461,6 +462,58 @@ export function App() {
     });
   }, []);
 
+  const updateDatabaseView = useCallback((databaseView: DatabaseViewDetail) => {
+    setNode((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        sections: prev.sections.map((section) =>
+          section.type === "database" ? { ...section, databaseView } : section,
+        ),
+      };
+    });
+  }, []);
+
+  const selectTab = useCallback(
+    async (tabId: string) => {
+      if (!node) return;
+      syncStandaloneUrl("node-page", node.id, { tab: tabId });
+      if (activeTabIdFromNode(node) === tabId) return;
+
+      const databaseSection = node.sections.find((section) => section.type === "database");
+      if (databaseSection?.type === "database") {
+        try {
+          const databaseView = await api.getDatabaseView(databaseSection.databaseView.id, tabId);
+          updateDatabaseView(databaseView);
+        } catch (err) {
+          setError(err instanceof Error ? err.message : String(err));
+        }
+        return;
+      }
+
+      const orderedSection = node.sections.find(
+        (section) => section.type === "ordered-association",
+      );
+      if (orderedSection?.type === "ordered-association") {
+        try {
+          const detail = await api.getNode(node.id, { tab: tabId });
+          const nextOrdered = detail.sections.find(
+            (section) => section.type === "ordered-association",
+          );
+          if (nextOrdered?.type === "ordered-association") {
+            updateOrderedAssociationView(nextOrdered.view);
+          }
+        } catch (err) {
+          setError(err instanceof Error ? err.message : String(err));
+        }
+        return;
+      }
+
+      void loadNode(node.id, { tab: tabId });
+    },
+    [api, loadNode, node, syncStandaloneUrl, updateDatabaseView, updateOrderedAssociationView],
+  );
+
   const archiveCurrentNode = useCallback(
     async (nodeId: string) => {
       if (saveTimer.current) {
@@ -469,12 +522,16 @@ export function App() {
       }
       try {
         await api.archiveNode(nodeId);
-        await goHome();
+        if (node?.id === nodeId) {
+          await goHome();
+        } else if (node) {
+          await loadNode(node.id, { tab: tabFromLocation() });
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       }
     },
-    [api, goHome],
+    [api, goHome, loadNode, node],
   );
 
   const deleteCurrentNode = useCallback(
@@ -485,12 +542,16 @@ export function App() {
       }
       try {
         await api.deleteNode(nodeId);
-        await goHome();
+        if (node?.id === nodeId) {
+          await goHome();
+        } else if (node) {
+          await loadNode(node.id, { tab: tabFromLocation() });
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
       }
     },
-    [api, goHome],
+    [api, goHome, loadNode, node],
   );
 
   return (
@@ -547,13 +608,12 @@ export function App() {
             onBodyChange={scheduleSave}
             onEditorBaseline={syncEditorBaseline}
             onTitleChange={scheduleSaveTitle}
-            onDatabaseViewChange={(dbView) => void loadNode(node.id, { view: dbView, scope: scopeFromLocation() })}
-            onScopeChange={(scopeId) => void loadNode(node.id, { scope: scopeId })}
+            onTabSelect={(tabId) => void selectTab(tabId)}
             onOrderedAssociationViewChange={updateOrderedAssociationView}
             onOpenNode={openLinkedNode}
             onArchiveNode={archiveCurrentNode}
             onDeleteNode={deleteCurrentNode}
-            onTableCellUpdated={() => void loadNode(node.id, { view: databaseViewFromLocation(), scope: scopeFromLocation() })}
+            onTableCellUpdated={() => void loadNode(node.id, { tab: tabFromLocation() })}
           />
         )}
       </div>

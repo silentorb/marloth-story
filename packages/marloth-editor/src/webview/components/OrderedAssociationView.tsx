@@ -16,19 +16,24 @@ import type {
   OrderedAssociationViewDetail,
 } from "../../shared/types";
 import type { EditorApi } from "../api/client";
-import { standaloneNodeUrl } from "../../shared/types";
+import { isProtectedEditorNode, standaloneNodeUrl } from "../../shared/types";
 import { RelationCellEditor } from "./RelationCellEditor";
+import { TableRowActionsCell } from "./TableRowActionsCell";
 import { renderTableCell } from "./table-cell-render";
+import { TableTabsBar } from "./TableTabsBar";
 import "./ordered-association-view.css";
+import "./section-data-table.css";
 
 interface OrderedAssociationViewProps {
   api: EditorApi;
   configId: string;
   view: OrderedAssociationViewDetail;
-  onScopeChange: (scopeId: string) => void;
+  onTabSelect: (tabId: string) => void;
   onViewChange: (view: OrderedAssociationViewDetail) => void;
   onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
+  onArchiveNode?: (nodeId: string) => Promise<void>;
+  onDeleteNode?: (nodeId: string) => Promise<void>;
 }
 
 interface SortableSceneRowProps {
@@ -38,6 +43,11 @@ interface SortableSceneRowProps {
   columns: string[];
   renderCell: (column: string, row: OrderedAssociationGroup["rows"][number]) => ReactNode;
   renderNameCell: (sceneId: string, name: string) => ReactNode;
+  rowPageActions?: {
+    onArchiveNode: (nodeId: string) => Promise<void>;
+    onRemoveNode: (nodeId: string) => Promise<void>;
+    onDeleteNode: (nodeId: string) => Promise<void>;
+  };
 }
 
 function groupDropId(groupId: string): string {
@@ -71,6 +81,7 @@ function SortableSceneRow({
   columns,
   renderCell,
   renderNameCell,
+  rowPageActions,
 }: SortableSceneRowProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: row.sceneId,
@@ -100,6 +111,18 @@ function SortableSceneRow({
           ⋮⋮
         </button>
       </td>
+      {rowPageActions ? (
+        <td className="marloth-table-row-actions-col">
+          {!isProtectedEditorNode(row.sceneId) ? (
+            <TableRowActionsCell
+              recordTitle={row.name}
+              onArchive={() => rowPageActions.onArchiveNode(row.sceneId)}
+              onRemove={() => rowPageActions.onRemoveNode(row.sceneId)}
+              onDelete={() => rowPageActions.onDeleteNode(row.sceneId)}
+            />
+          ) : null}
+        </td>
+      ) : null}
       <th scope="row">{renderNameCell(row.sceneId, row.name)}</th>
       {columns.map((column) => (
         <td key={column}>{renderCell(column, row)}</td>
@@ -114,6 +137,11 @@ interface GroupTableProps {
   columnLabels: Record<string, string>;
   renderCell: (column: string, row: OrderedAssociationGroup["rows"][number]) => ReactNode;
   renderNameCell: (sceneId: string, name: string) => ReactNode;
+  rowPageActions?: {
+    onArchiveNode: (nodeId: string) => Promise<void>;
+    onRemoveNode: (nodeId: string) => Promise<void>;
+    onDeleteNode: (nodeId: string) => Promise<void>;
+  };
 }
 
 function GroupTable({
@@ -122,6 +150,7 @@ function GroupTable({
   columnLabels,
   renderCell,
   renderNameCell,
+  rowPageActions,
 }: GroupTableProps) {
   const itemIds = useMemo(() => group.rows.map((row) => row.sceneId), [group.rows]);
   const { setNodeRef } = useDroppable({
@@ -137,6 +166,9 @@ function GroupTable({
           <thead>
             <tr>
               <th scope="col" aria-label="Reorder" className="marloth-ordered-association-drag-col" />
+              {rowPageActions ? (
+                <th scope="col" className="marloth-table-row-actions-col" aria-label="Row actions" />
+              ) : null}
               <th scope="col">Name</th>
               {columns.map((column) => (
                 <th key={column} scope="col">
@@ -149,7 +181,7 @@ function GroupTable({
             <tbody ref={setNodeRef}>
               {group.rows.length === 0 ? (
                 <tr className="marloth-ordered-association-empty-row">
-                  <td colSpan={columns.length + 2}>Drop scenes here</td>
+                  <td colSpan={columns.length + 2 + (rowPageActions ? 1 : 0)}>Drop scenes here</td>
                 </tr>
               ) : (
                 group.rows.map((row, index) => (
@@ -161,6 +193,7 @@ function GroupTable({
                     columns={columns}
                     renderCell={renderCell}
                     renderNameCell={renderNameCell}
+                    rowPageActions={rowPageActions}
                   />
                 ))
               )}
@@ -176,10 +209,12 @@ export function OrderedAssociationView({
   api,
   configId,
   view,
-  onScopeChange,
+  onTabSelect,
   onViewChange,
   onOpenNode,
   onCellUpdated,
+  onArchiveNode,
+  onDeleteNode,
 }: OrderedAssociationViewProps) {
   const [activeSceneId, setActiveSceneId] = useState<string | null>(null);
   const [moveError, setMoveError] = useState<string | null>(null);
@@ -195,6 +230,21 @@ export function OrderedAssociationView({
     if (!view.columnDefs?.length) return undefined;
     return Object.fromEntries(view.columnDefs.map((col) => [col.key, col.name]));
   }, [view.columnDefs]);
+
+  const rowPageActions = useMemo(
+    () =>
+      onArchiveNode && onDeleteNode
+        ? {
+            onArchiveNode,
+            onRemoveNode: async (sceneId: string) => {
+              await api.unlinkOutgoingRelationship(sceneId, "is_a", view.typeDatabaseId);
+              onCellUpdated?.();
+            },
+            onDeleteNode,
+          }
+        : undefined,
+    [api, onArchiveNode, onCellUpdated, onDeleteNode, view.typeDatabaseId],
+  );
 
   const activeRow = useMemo(() => {
     if (!activeSceneId) return null;
@@ -291,7 +341,7 @@ export function OrderedAssociationView({
       setIsMoving(true);
       try {
         const nextView = await api.moveOrderedAssociation(configId, {
-          scopeId: view.activeScopeId,
+          scopeId: view.tabs.activeTabId,
           sceneId: String(active.id),
           targetGroupId: target.targetGroupId,
           targetIndex: target.targetIndex,
@@ -303,33 +353,16 @@ export function OrderedAssociationView({
         setIsMoving(false);
       }
     },
-    [api, configId, onViewChange, view.activeScopeId, view.groups],
+    [api, configId, onViewChange, view.tabs.activeTabId, view.groups],
   );
 
-  if (view.scopes.length === 0) {
+  if (view.tabs.items.length === 0) {
     return <div className="marloth-database-empty">No scenes in this database.</div>;
   }
 
   return (
     <div className={`marloth-ordered-association-view${isMoving ? " is-moving" : ""}`}>
-      <div
-        className="marloth-ordered-association-scope-tabs"
-        role="tablist"
-        aria-label="Books"
-      >
-        {view.scopes.map((scope) => (
-          <button
-            key={scope.id}
-            type="button"
-            role="tab"
-            aria-selected={scope.id === view.activeScopeId}
-            className={`marloth-database-view-tab${scope.id === view.activeScopeId ? " is-active" : ""}`}
-            onClick={() => onScopeChange(scope.id)}
-          >
-            {scope.name}
-          </button>
-        ))}
-      </div>
+      <TableTabsBar tabs={view.tabs} onTabSelect={onTabSelect} />
 
       {moveError ? <div className="marloth-ordered-association-error">{moveError}</div> : null}
 
@@ -349,6 +382,7 @@ export function OrderedAssociationView({
               columnLabels={columnLabels ?? {}}
               renderCell={renderCell}
               renderNameCell={renderNameCell}
+              rowPageActions={rowPageActions}
             />
           ))}
         </div>

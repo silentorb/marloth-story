@@ -1,15 +1,29 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { isArchivedNotionPath } from "marloth-db/archive-path";
 import { ConfirmDialog } from "./ConfirmDialog";
 import "./page-actions-menu.css";
 
-type PendingAction = "archive" | "delete" | null;
+type PendingAction = "archive" | "remove" | "delete" | null;
+
+interface MenuPosition {
+  top: number;
+  left: number;
+}
 
 interface PageActionsMenuProps {
   recordTitle: string;
   recordPath: string | null;
   disabled?: boolean;
+  /** `ellipsis` (⋯) for the page app bar; `edit` (✎) for table rows. */
+  trigger?: "ellipsis" | "edit";
+  /** Menu alignment relative to the trigger. */
+  menuAlign?: "left" | "right";
+  /** Portal + fixed positioning so menus are not clipped by scroll containers. */
+  menuPlacement?: "inline" | "portal";
   onArchive: () => Promise<void>;
+  /** Unlink from the current table only; shown when provided (table rows, not page app bar). */
+  onRemove?: () => Promise<void>;
   onDelete: () => Promise<void>;
 }
 
@@ -17,24 +31,57 @@ export function PageActionsMenu({
   recordTitle,
   recordPath,
   disabled = false,
+  trigger = "ellipsis",
+  menuAlign = "right",
+  menuPlacement = "inline",
   onArchive,
+  onRemove,
   onDelete,
 }: PageActionsMenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
   const [busy, setBusy] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<MenuPosition | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const isArchived = isArchivedNotionPath(recordPath);
+
+  const updateMenuPosition = useCallback(() => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+    const rect = trigger.getBoundingClientRect();
+    setMenuPosition({
+      top: rect.bottom + 4,
+      left: menuAlign === "left" ? rect.left : rect.right,
+    });
+  }, [menuAlign]);
+
+  useLayoutEffect(() => {
+    if (!menuOpen || menuPlacement !== "portal") return;
+    updateMenuPosition();
+    window.addEventListener("resize", updateMenuPosition);
+    window.addEventListener("scroll", updateMenuPosition, true);
+    return () => {
+      window.removeEventListener("resize", updateMenuPosition);
+      window.removeEventListener("scroll", updateMenuPosition, true);
+    };
+  }, [menuOpen, menuPlacement, updateMenuPosition]);
 
   useEffect(() => {
     if (!menuOpen) return;
     const onPointerDown = (event: MouseEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setMenuOpen(false);
-      }
+      const target = event.target as Node;
+      if (rootRef.current?.contains(target)) return;
+      if (menuRef.current?.contains(target)) return;
+      setMenuOpen(false);
     };
     window.addEventListener("mousedown", onPointerDown);
     return () => window.removeEventListener("mousedown", onPointerDown);
+  }, [menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) setMenuPosition(null);
   }, [menuOpen]);
 
   const closeConfirm = () => {
@@ -46,6 +93,7 @@ export function PageActionsMenu({
     setBusy(true);
     try {
       if (action === "archive") await onArchive();
+      else if (action === "remove") await onRemove!();
       else await onDelete();
       setPendingAction(null);
       setMenuOpen(false);
@@ -56,49 +104,99 @@ export function PageActionsMenu({
 
   const displayTitle = recordTitle.trim() || "Untitled";
 
-  return (
+  const menuItems = (
     <>
-      <div className="marloth-page-actions" ref={rootRef}>
+      {!isArchived ? (
         <button
           type="button"
-          className="marloth-page-actions-trigger"
+          role="menuitem"
+          className="marloth-page-actions-item"
+          onClick={() => {
+            setMenuOpen(false);
+            setPendingAction("archive");
+          }}
+        >
+          Archive
+        </button>
+      ) : null}
+      {onRemove ? (
+        <button
+          type="button"
+          role="menuitem"
+          className="marloth-page-actions-item"
+          onClick={() => {
+            setMenuOpen(false);
+            setPendingAction("remove");
+          }}
+        >
+          Remove
+        </button>
+      ) : null}
+      <button
+        type="button"
+        role="menuitem"
+        className="marloth-page-actions-item is-danger"
+        onClick={() => {
+          setMenuOpen(false);
+          setPendingAction("delete");
+        }}
+      >
+        Delete
+      </button>
+    </>
+  );
+
+  const menuPanel =
+    menuOpen && (menuPlacement === "inline" || menuPosition) ? (
+      <div
+        ref={menuPlacement === "portal" ? menuRef : undefined}
+        className={`marloth-page-actions-menu${menuPlacement === "portal" ? " is-portal" : ""}`}
+        role="menu"
+        style={
+          menuPlacement === "portal" && menuPosition
+            ? {
+                position: "fixed",
+                top: menuPosition.top,
+                left: menuPosition.left,
+                transform: menuAlign === "right" ? "translateX(-100%)" : undefined,
+              }
+            : undefined
+        }
+      >
+        {menuItems}
+      </div>
+    ) : null;
+
+  return (
+    <>
+      <div
+        className={`marloth-page-actions${menuOpen ? " is-menu-open" : ""}`}
+        ref={rootRef}
+        data-menu-align={menuAlign}
+      >
+        <button
+          ref={triggerRef}
+          type="button"
+          className={`marloth-page-actions-trigger${trigger === "edit" ? " is-edit" : ""}`}
           aria-label="Page actions"
           aria-haspopup="menu"
           aria-expanded={menuOpen}
           disabled={disabled}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          ⋯
+          {trigger === "edit" ? (
+            <span className="marloth-page-actions-edit-icon" aria-hidden="true">
+              ✎
+            </span>
+          ) : (
+            "⋯"
+          )}
         </button>
-        {menuOpen ? (
-          <div className="marloth-page-actions-menu" role="menu">
-            {!isArchived ? (
-              <button
-                type="button"
-                role="menuitem"
-                className="marloth-page-actions-item"
-                onClick={() => {
-                  setMenuOpen(false);
-                  setPendingAction("archive");
-                }}
-              >
-                Archive
-              </button>
-            ) : null}
-            <button
-              type="button"
-              role="menuitem"
-              className="marloth-page-actions-item is-danger"
-              onClick={() => {
-                setMenuOpen(false);
-                setPendingAction("delete");
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        ) : null}
+        {menuPlacement === "inline" ? menuPanel : null}
       </div>
+      {menuPlacement === "portal" && menuPanel
+        ? createPortal(menuPanel, document.body)
+        : null}
 
       <ConfirmDialog
         open={pendingAction === "archive"}
@@ -108,6 +206,16 @@ export function PageActionsMenu({
         busy={busy}
         onCancel={closeConfirm}
         onConfirm={() => void runAction("archive")}
+      />
+
+      <ConfirmDialog
+        open={pendingAction === "remove"}
+        title="Remove from table?"
+        message={`Remove “${displayTitle}” from this table? The linked page will remain; only the relationship is removed.`}
+        confirmLabel="Remove"
+        busy={busy}
+        onCancel={closeConfirm}
+        onConfirm={() => void runAction("remove")}
       />
 
       <ConfirmDialog

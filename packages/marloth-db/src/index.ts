@@ -141,6 +141,7 @@ export type {
 } from "./node-page-sections";
 export {
   applyOrderedAssociationMove,
+  getConfigByProvider,
   getOrderedAssociationConfigForDatabase,
   getOrderedAssociationView,
   UNASSIGNED_GROUP_ID,
@@ -181,6 +182,43 @@ export {
   isTypeMembershipLabel,
 } from "./labels";
 export { loadSchemaFromContent, invalidateSchemaCache } from "./schema-rules/load";
+export { loadViewsFromContent, invalidateViewsCache } from "./views/load";
+export {
+  ITEMS_SECTION_KEY,
+  resolveCustomTabs,
+  resolveCustomTabsForNode,
+  resolveGeneratedTabsFromScopes,
+  generatedProviderId,
+} from "./views/resolve-tabs";
+export {
+  createTab,
+  updateTab,
+  deleteTab,
+  getNodeViews,
+  replaceViewsFile,
+} from "./views/mutations";
+export type { ViewsMutationError } from "./views/mutations";
+export {
+  emptyViewsFile,
+  parseViewsFile,
+  serializeViewsFile,
+  slugifyTabId,
+  uniqueTabId,
+  VIEWS_FILE_VERSION,
+} from "./content/views-file";
+export type {
+  CustomTabDefinition,
+  CustomSectionTabs,
+  GeneratedSectionTabs,
+  NodeSectionViewConfig,
+  NodeViewConfig,
+  SectionTabsConfig,
+  ViewSortDirection,
+  ViewSortSpec,
+  ViewsFile,
+} from "./content/views-file";
+export type { ResolvedTab, TableTabsDetail, TabKind } from "./views/tabs";
+export { sortEvalRowsFromViewSorts, notionSortToViewSort, viewSortsToNotionSorts } from "./views/sort-spec";
 export {
   allowedTargetTypeIdsForRule,
   relationshipRuleContextForType,

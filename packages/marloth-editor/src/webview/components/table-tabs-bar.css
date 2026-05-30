@@ -1,0 +1,117 @@
+.marloth-table-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.marloth-table-tab-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+}
+
+.marloth-table-tab-add {
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--marloth-muted);
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.marloth-table-tab-editor {
+  border: 1px solid var(--marloth-border);
+  border-radius: 8px;
+  background: var(--marloth-surface);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.marloth-table-tab-editor-heading {
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.marloth-table-tab-name-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.marloth-table-tab-name-row label {
+  flex: 1;
+  min-width: 0;
+}
+
+.marloth-table-tab-delete {
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 120, 120, 0.35);
+  border-radius: 6px;
+  background: transparent;
+  color: #ff9a9a;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.marloth-table-tab-delete:hover:not(:disabled) {
+  background: rgba(255, 120, 120, 0.1);
+}
+
+.marloth-table-tab-delete:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.marloth-table-tab-editor label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.marloth-table-tab-editor input,
+.marloth-table-tab-sort-row select {
+  background: var(--marloth-bg);
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  color: var(--marloth-text);
+  padding: 6px 8px;
+}
+
+.marloth-table-tab-sort-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.marloth-table-tab-sort-row select {
+  min-width: 140px;
+}
+
+.marloth-table-tab-sort-add,
+.marloth-table-tab-editor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.marloth-table-tab-editor-actions {
+  justify-content: flex-end;
+}
+
+.marloth-table-tab-editor-actions button,
+.marloth-table-tab-sort-add {
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--marloth-text);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.marloth-table-tab-editor-actions button[type="submit"],
+.marloth-table-tab-editor-actions button:last-child {
+  background: rgba(108, 182, 255, 0.12);
+  border-color: rgba(108, 182, 255, 0.35);
+  color: var(--marloth-link);
+}

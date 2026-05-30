@@ -3,7 +3,7 @@ import { getDatabaseViewDetail, type DatabaseColumnDef, type DatabaseViewDetail 
 import { coalescePriorityValue, enrichColumnDefs, isPriorityColumnKey } from "./property-enums";
 import { IS_A_TYPE, isTypeMembershipType, LEGACY_IN_DATABASE_TYPE } from "./labels";
 import {
-  getOrderedAssociationConfigForDatabase,
+  getConfigByProvider,
   getOrderedAssociationView,
   type OrderedAssociationViewDetail,
 } from "./ordered-associations";
@@ -13,6 +13,9 @@ import { buildPropertiesSection, type PropertiesSection } from "./node-type-prop
 import { findTypeNodeByTitle, isTypeTableNode } from "./node-capabilities";
 import { relationshipRuleContextForType } from "./schema-rules/resolve";
 import type { SchemaFile } from "./schema-rules/schema-file";
+import { resolveContentPath } from "./content/paths";
+import { generatedProviderId, ITEMS_SECTION_KEY } from "./views/resolve-tabs";
+import { loadViewsFromContent } from "./views/load";
 
 const RELATION_META_KEYS = new Set([
   "ordinal",
@@ -254,26 +257,42 @@ function buildRelationSections(
 export function getNodePageDetail(
   db: GraphDatabase,
   id: string,
-  options?: { databaseView?: string; scopeId?: string; schema?: SchemaFile },
+  options?: {
+    /** Active table tab id (custom or generated). */
+    tabId?: string;
+    /** @deprecated Use tabId */
+    databaseView?: string;
+    /** @deprecated Use tabId */
+    scopeId?: string;
+    schema?: SchemaFile;
+    contentDir?: string;
+  },
 ): NodePageDetail | null {
   const node = getNodeDetail(db, id);
   if (!node) return null;
 
+  const contentDir = options?.contentDir ?? resolveContentPath();
+  const tabId = options?.tabId ?? options?.scopeId ?? options?.databaseView;
+  const views = loadViewsFromContent(contentDir);
+
   const sections: NodeSection[] = [{ type: "markdown", body: node.body }];
 
   if (node.isTypeTable) {
-    const orderedConfig = getOrderedAssociationConfigForDatabase(id);
-    if (orderedConfig) {
-      const orderedView = getOrderedAssociationView(db, orderedConfig.id, options?.scopeId);
-      if (orderedView) {
-        sections.push({
-          type: "ordered-association",
-          configId: orderedConfig.id,
-          view: orderedView,
-        });
+    const provider = generatedProviderId(views, id, ITEMS_SECTION_KEY);
+    if (provider) {
+      const config = getConfigByProvider(provider);
+      if (config) {
+        const orderedView = getOrderedAssociationView(db, config.id, tabId, contentDir);
+        if (orderedView) {
+          sections.push({
+            type: "ordered-association",
+            configId: config.id,
+            view: orderedView,
+          });
+        }
       }
     } else {
-      const databaseSection = getDatabaseViewDetail(db, id, options?.databaseView);
+      const databaseSection = getDatabaseViewDetail(db, id, tabId, contentDir);
       if (databaseSection) {
         sections.push({ type: "database", databaseView: databaseSection });
       }
