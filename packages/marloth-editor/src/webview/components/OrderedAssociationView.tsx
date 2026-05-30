@@ -11,9 +11,14 @@ import {
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { useCallback, useMemo, useState, type ReactNode } from "react";
-import type { OrderedAssociationGroup, OrderedAssociationViewDetail } from "../../shared/types";
+import type {
+  OrderedAssociationGroup,
+  OrderedAssociationViewDetail,
+} from "../../shared/types";
 import type { EditorApi } from "../api/client";
 import { standaloneNodeUrl } from "../../shared/types";
+import { RelationCellEditor } from "./RelationCellEditor";
+import { renderTableCell } from "./table-cell-render";
 import "./ordered-association-view.css";
 
 interface OrderedAssociationViewProps {
@@ -23,6 +28,7 @@ interface OrderedAssociationViewProps {
   onScopeChange: (scopeId: string) => void;
   onViewChange: (view: OrderedAssociationViewDetail) => void;
   onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
+  onCellUpdated?: () => void;
 }
 
 interface SortableSceneRowProps {
@@ -30,6 +36,7 @@ interface SortableSceneRowProps {
   groupId: string;
   index: number;
   columns: string[];
+  renderCell: (column: string, row: OrderedAssociationGroup["rows"][number]) => ReactNode;
   renderNameCell: (sceneId: string, name: string) => ReactNode;
 }
 
@@ -62,6 +69,7 @@ function SortableSceneRow({
   groupId,
   index,
   columns,
+  renderCell,
   renderNameCell,
 }: SortableSceneRowProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -94,7 +102,7 @@ function SortableSceneRow({
       </td>
       <th scope="row">{renderNameCell(row.sceneId, row.name)}</th>
       {columns.map((column) => (
-        <td key={column}>{row.cells[column] ?? ""}</td>
+        <td key={column}>{renderCell(column, row)}</td>
       ))}
     </tr>
   );
@@ -103,10 +111,18 @@ function SortableSceneRow({
 interface GroupTableProps {
   group: OrderedAssociationGroup;
   columns: string[];
+  columnLabels: Record<string, string>;
+  renderCell: (column: string, row: OrderedAssociationGroup["rows"][number]) => ReactNode;
   renderNameCell: (sceneId: string, name: string) => ReactNode;
 }
 
-function GroupTable({ group, columns, renderNameCell }: GroupTableProps) {
+function GroupTable({
+  group,
+  columns,
+  columnLabels,
+  renderCell,
+  renderNameCell,
+}: GroupTableProps) {
   const itemIds = useMemo(() => group.rows.map((row) => row.sceneId), [group.rows]);
   const { setNodeRef } = useDroppable({
     id: groupDropId(group.groupId),
@@ -124,11 +140,7 @@ function GroupTable({ group, columns, renderNameCell }: GroupTableProps) {
               <th scope="col">Name</th>
               {columns.map((column) => (
                 <th key={column} scope="col">
-                  {column
-                    .split("_")
-                    .filter(Boolean)
-                    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-                    .join(" ")}
+                  {columnLabels[column] ?? column}
                 </th>
               ))}
             </tr>
@@ -147,6 +159,7 @@ function GroupTable({ group, columns, renderNameCell }: GroupTableProps) {
                     groupId={group.groupId}
                     index={index}
                     columns={columns}
+                    renderCell={renderCell}
                     renderNameCell={renderNameCell}
                   />
                 ))
@@ -166,6 +179,7 @@ export function OrderedAssociationView({
   onScopeChange,
   onViewChange,
   onOpenNode,
+  onCellUpdated,
 }: OrderedAssociationViewProps) {
   const [activeSceneId, setActiveSceneId] = useState<string | null>(null);
   const [moveError, setMoveError] = useState<string | null>(null);
@@ -176,6 +190,11 @@ export function OrderedAssociationView({
       activationConstraint: { distance: 6 },
     }),
   );
+
+  const columnLabels = useMemo(() => {
+    if (!view.columnDefs?.length) return undefined;
+    return Object.fromEntries(view.columnDefs.map((col) => [col.key, col.name]));
+  }, [view.columnDefs]);
 
   const activeRow = useMemo(() => {
     if (!activeSceneId) return null;
@@ -218,6 +237,45 @@ export function OrderedAssociationView({
       );
     },
     [api.host, openRowInEditor],
+  );
+
+  const renderCell = useCallback(
+    (column: string, row: OrderedAssociationGroup["rows"][number]) => {
+      const def = view.columnDefs?.find((col) => col.key === column);
+      const value = row.cells[column] ?? "";
+
+      if (def?.type === "relation" && def.relationType) {
+        const links = row.relationCells?.[column] ?? [];
+        return (
+          <RelationCellEditor
+            api={api}
+            links={links}
+            columnName={def.name}
+            allowedTypeIds={def.targetDatabaseId ? [def.targetDatabaseId] : undefined}
+            onAdd={async (targetId) => {
+              await api.linkOutgoingRelationship(row.sceneId, {
+                type: def.relationType!,
+                targetId,
+                viaDatabase: view.typeDatabaseId,
+              });
+              onCellUpdated?.();
+            }}
+            onRemove={async (targetId) => {
+              await api.unlinkOutgoingRelationship(row.sceneId, def.relationType!, targetId);
+              onCellUpdated?.();
+            }}
+            onOpenNode={onOpenNode}
+          />
+        );
+      }
+
+      return renderTableCell({
+        column,
+        value,
+        columnDef: def,
+      });
+    },
+    [api, onCellUpdated, onOpenNode, view.columnDefs, view.typeDatabaseId],
   );
 
   const handleDragEnd = useCallback(
@@ -288,6 +346,8 @@ export function OrderedAssociationView({
               key={group.groupId}
               group={group}
               columns={view.columns}
+              columnLabels={columnLabels ?? {}}
+              renderCell={renderCell}
               renderNameCell={renderNameCell}
             />
           ))}

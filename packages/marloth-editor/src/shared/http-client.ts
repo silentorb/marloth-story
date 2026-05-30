@@ -34,7 +34,7 @@ export interface EditorApiClient {
   createNode(input: { title: string; body?: string }): Promise<CreateNodeResponse>;
   createRelationRow(
     sourceId: string,
-    input: { label: string; title: string; properties?: Record<string, string> },
+    input: { type: string; title: string; properties?: Record<string, string> },
   ): Promise<CreateNodeResponse>;
   createDatabaseRow(
     databaseId: string,
@@ -57,18 +57,18 @@ export interface EditorApiClient {
   ): Promise<void>;
   updateOutgoingRelationshipProperty(
     nodeId: string,
-    label: string,
+    type: string,
     targetId: string,
     propertyKey: string,
     value: string | null,
   ): Promise<void>;
   linkOutgoingRelationship(
     sourceId: string,
-    input: { label: string; targetId: string; viaDatabase?: string },
+    input: { type: string; targetId: string; viaDatabase?: string },
   ): Promise<void>;
   unlinkOutgoingRelationship(
     sourceId: string,
-    label: string,
+    type: string,
     targetId: string,
   ): Promise<void>;
   deleteNode(id: string): Promise<void>;
@@ -119,7 +119,7 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     },
     async createRelationRow(
       sourceId: string,
-      input: { label: string; title: string; properties?: Record<string, string> },
+      input: { type: string; title: string; properties?: Record<string, string> },
     ): Promise<CreateNodeResponse> {
       const data = await fetchJson<{ node: CreateNodeResponse }>(
         `/api/nodes/${sourceId}/relation-rows`,
@@ -216,13 +216,13 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     },
     async updateOutgoingRelationshipProperty(
       nodeId: string,
-      label: string,
+      type: string,
       targetId: string,
       propertyKey: string,
       value: string | null,
     ): Promise<void> {
       await fetchJson(
-        `/api/nodes/${nodeId}/connections/${encodeURIComponent(label)}/${targetId}`,
+        `/api/nodes/${nodeId}/connections/${encodeURIComponent(type)}/${targetId}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -232,7 +232,7 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     },
     async linkOutgoingRelationship(
       sourceId: string,
-      input: { label: string; targetId: string; viaDatabase?: string },
+      input: { type: string; targetId: string; viaDatabase?: string },
     ): Promise<void> {
       await fetchJson(`/api/nodes/${sourceId}/connections`, {
         method: "POST",
@@ -242,11 +242,11 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     },
     async unlinkOutgoingRelationship(
       sourceId: string,
-      label: string,
+      type: string,
       targetId: string,
     ): Promise<void> {
       await fetchJson(
-        `/api/nodes/${sourceId}/connections/${encodeURIComponent(label)}/${targetId}`,
+        `/api/nodes/${sourceId}/connections/${encodeURIComponent(type)}/${targetId}`,
         { method: "DELETE" },
       );
     },

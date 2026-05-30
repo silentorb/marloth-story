@@ -40,7 +40,7 @@ export function DatabaseTableView({
       const def = databaseView.columnDefs?.find((col) => col.key === column);
       const rowNodeId = row.id.split(":")[0]!;
 
-      if (def?.type === "relation" && def.relationLabel) {
+      if (def?.type === "relation" && def.relationType) {
         const links = row.relationCells?.[column] ?? [];
         return (
           <RelationCellEditor
@@ -52,7 +52,7 @@ export function DatabaseTableView({
             }
             onAdd={async (targetId) => {
               await api.linkOutgoingRelationship(rowNodeId, {
-                label: def.relationLabel!,
+                type: def.relationType!,
                 targetId,
                 viaDatabase: databaseView.id,
               });
@@ -61,7 +61,7 @@ export function DatabaseTableView({
             onRemove={async (targetId) => {
               await api.unlinkOutgoingRelationship(
                 rowNodeId,
-                def.relationLabel!,
+                def.relationType!,
                 targetId,
               );
               onCellUpdated?.();

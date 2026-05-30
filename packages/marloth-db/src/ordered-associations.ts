@@ -2,7 +2,18 @@ import type { GraphDatabase, Relationship, Properties } from "./graph";
 import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterRelationshipsWrite } from "./content/write-context";
 import { relationshipId } from "./graph";
-import { TYPE_MEMBERSHIP_LABELS } from "./labels";
+import { IS_A_TYPE, TYPE_MEMBERSHIP_TYPES } from "./labels";
+import type { DatabaseColumnDef } from "./database-view";
+import type { RelationLink } from "./relation-link";
+import { applyDynamicFields } from "./dynamic-fields";
+import { hydrateRelationCellsForRows } from "./database-view-relations";
+import {
+  buildDatabaseColumnDefs,
+  normalizeRowCells,
+  parseDatabaseSchema,
+} from "./database-column-defs";
+import { parseNotionViews } from "./notion-database-schema";
+import type { EvalRow } from "./notion-view-eval";
 
 /** Synthetic group id for scenes with no Part association. */
 export const UNASSIGNED_GROUP_ID = "__unassigned__";
@@ -21,14 +32,16 @@ const ORDERED_ASSOCIATION_META_KEYS = new Set([
 export interface OrderedAssociationConfig {
   id: string;
   typeDatabaseId: string;
-  membershipLabel: string;
+  membershipEdgeType: string;
   orderProperty: string;
-  scopeEdgeLabel: string;
-  groupEdgeLabel: string;
-  /** Optional Part→Scene edge label used when Scene→Part is missing or points at a duplicate part. */
-  inverseGroupEdgeLabel?: string;
+  scopeEdgeType: string;
+  groupEdgeType: string;
   groupTypeDatabaseId: string;
   unassignedGroupTitle: string;
+  /** Notion view name used internally for column visibility (no view tabs in UI). */
+  columnViewName?: string;
+  /** Slugified column keys excluded from table columns (UI-redundant or deprecated). */
+  excludedColumnKeys?: string[];
 }
 
 export interface OrderedAssociationScope {
@@ -40,6 +53,7 @@ export interface OrderedAssociationRow {
   sceneId: string;
   name: string;
   cells: Record<string, string>;
+  relationCells?: Record<string, RelationLink[]>;
 }
 
 export interface OrderedAssociationGroup {
@@ -56,6 +70,7 @@ export interface OrderedAssociationViewDetail {
   activeScopeId: string;
   groups: OrderedAssociationGroup[];
   columns: string[];
+  columnDefs?: DatabaseColumnDef[];
 }
 
 export interface OrderedAssociationMoveParams {
@@ -68,13 +83,14 @@ export interface OrderedAssociationMoveParams {
 const SCENES_BY_BOOK: OrderedAssociationConfig = {
   id: "scenes-by-book",
   typeDatabaseId: "204dba198db74611b0b49a98dd53e8f5",
-  membershipLabel: "IS_A",
+  membershipEdgeType: IS_A_TYPE,
   orderProperty: "order",
-  scopeEdgeLabel: "PRODUCT",
-  groupEdgeLabel: "PART",
-  inverseGroupEdgeLabel: "SCENES",
+  scopeEdgeType: "product",
+  groupEdgeType: "part",
   groupTypeDatabaseId: "5e45eefc69a14f45b988ad1f3c9d1ef5",
   unassignedGroupTitle: "Unassigned",
+  columnViewName: "TWOLD Active",
+  excludedColumnKeys: ["order", "product", "part", "status"],
 };
 
 const CONFIGS: OrderedAssociationConfig[] = [SCENES_BY_BOOK];
@@ -143,11 +159,11 @@ function groupConnectionTarget(db: GraphDatabase, sceneId: string, label: string
 }
 
 function membershipRelationships(db: GraphDatabase, config: OrderedAssociationConfig): Relationship[] {
-  return db.listRelationshipsToTarget(config.typeDatabaseId, config.membershipLabel);
+  return db.listRelationshipsToTarget(config.typeDatabaseId, config.membershipEdgeType);
 }
 
 function productSortKey(db: GraphDatabase, productId: string): number {
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
+  for (const label of TYPE_MEMBERSHIP_TYPES) {
     const edge = db.getRelationship(relationshipId(productId, label, PRODUCTS_DATABASE_ID));
     if (edge) {
       return numericSortKey(edge.properties.order, numericSortKey(edge.properties.row_index, 999));
@@ -157,7 +173,7 @@ function productSortKey(db: GraphDatabase, productId: string): number {
 }
 
 function partSortKey(db: GraphDatabase, partId: string, config: OrderedAssociationConfig): number {
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
+  for (const label of TYPE_MEMBERSHIP_TYPES) {
     const edge = db.getRelationship(relationshipId(partId, label, config.groupTypeDatabaseId));
     if (edge) {
       return numericSortKey(edge.properties.row_index, numericSortKey(edge.properties.order, 999));
@@ -173,10 +189,10 @@ function partsForScope(
 ): { id: string; title: string; sortKey: number }[] {
   const parts: { id: string; title: string; sortKey: number }[] = [];
 
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
+  for (const label of TYPE_MEMBERSHIP_TYPES) {
     for (const connection of db.listRelationshipsToTarget(config.groupTypeDatabaseId, label)) {
       const partId = connection.sourceNodeId;
-      const productConnections = db.listRelationshipsFromSource(partId, "PRODUCTS");
+      const productConnections = db.listRelationshipsFromSource(partId, "products");
       if (!productConnections.some((productConnection) => productConnection.targetNodeId === scopeId)) continue;
 
       const vertex = db.getNode(partId);
@@ -214,7 +230,7 @@ function resolveScenePartId(
   scopeParts: { id: string; title: string }[],
 ): string | null {
   const scopePartIds = new Set(scopeParts.map((part) => part.id));
-  const partConnectionTarget = groupConnectionTarget(db, sceneId, config.groupEdgeLabel);
+  const partConnectionTarget = groupConnectionTarget(db, sceneId, config.groupEdgeType);
 
   if (partConnectionTarget) {
     if (scopePartIds.has(partConnectionTarget)) return partConnectionTarget;
@@ -229,14 +245,6 @@ function resolveScenePartId(
     }
   }
 
-  if (config.inverseGroupEdgeLabel) {
-    for (const part of scopeParts) {
-      const containsScene = db
-        .listRelationshipsFromSource(part.id, config.inverseGroupEdgeLabel)
-        .some((edge) => edge.targetNodeId === sceneId);
-      if (containsScene) return part.id;
-    }
-  }
 
   return null;
 }
@@ -252,7 +260,7 @@ function collectMembersInScope(
 
   for (const connection of membershipRelationships(db, config)) {
     const sceneId = connection.sourceNodeId;
-    const productId = scopeRelationshipTarget(db, sceneId, config.scopeEdgeLabel);
+    const productId = scopeRelationshipTarget(db, sceneId, config.scopeEdgeType);
     if (productId !== scopeId) continue;
 
     const vertex = db.getNode(sceneId);
@@ -336,7 +344,7 @@ function discoverScopes(
   const scopeIds = new Set<string>();
 
   for (const connection of membershipRelationships(db, config)) {
-    const productId = scopeRelationshipTarget(db, connection.sourceNodeId, config.scopeEdgeLabel);
+    const productId = scopeRelationshipTarget(db, connection.sourceNodeId, config.scopeEdgeType);
     if (productId) scopeIds.add(productId);
   }
 
@@ -381,14 +389,59 @@ export function getOrderedAssociationView(
     ? buildGroups(db, config, activeScopeId, members)
     : [];
 
+  const excludeKeys = new Set(config.excludedColumnKeys ?? []);
+  const schema = parseDatabaseSchema(db, config.typeDatabaseId);
+  const evalRows: EvalRow[] = members.map((member) => ({
+    nodeId: member.sceneId,
+    name: member.name,
+    cells: member.cells,
+    rowIndex: member.order,
+    createdAt: null,
+    modifiedAt: null,
+  }));
+  const { rows: enrichedRows, dynamicColumnDefs, hiddenColumnKeys } = applyDynamicFields(
+    db,
+    config.typeDatabaseId,
+    config.columnViewName ?? "default",
+    evalRows,
+  );
+  const mergedColumnDefs = buildDatabaseColumnDefs(
+    db,
+    config.typeDatabaseId,
+    config.columnViewName,
+    dynamicColumnDefs,
+    hiddenColumnKeys,
+    { excludeKeys },
+  );
+  hydrateRelationCellsForRows(db, config.typeDatabaseId, schema, mergedColumnDefs, enrichedRows);
+  const rowBySceneId = new Map(enrichedRows.map((row) => [row.nodeId, row]));
+  const enrichedGroups = groups.map((group) => ({
+    ...group,
+    rows: group.rows.map((row) => {
+      const enriched = rowBySceneId.get(row.sceneId);
+      if (!enriched) return row;
+      return {
+        sceneId: row.sceneId,
+        name: row.name,
+        cells: normalizeRowCells(enriched.cells, mergedColumnDefs),
+        relationCells: enriched.relationCells,
+      };
+    }),
+  }));
+  const columns =
+    mergedColumnDefs.length > 0
+      ? mergedColumnDefs.map((col) => col.key)
+      : collectColumns(members);
+
   return {
     configId: config.id,
     typeDatabaseId: config.typeDatabaseId,
     typeDatabaseTitle: titleFromProperties(database.properties),
     scopes,
     activeScopeId,
-    groups,
-    columns: collectColumns(members),
+    groups: enrichedGroups,
+    columns,
+    columnDefs: mergedColumnDefs.length > 0 ? mergedColumnDefs : undefined,
   };
 }
 
@@ -479,7 +532,7 @@ export function applyOrderedAssociationMove(
     ctx.store.mergeRelationshipProperties(
       member.membershipRelationship.sourceNodeId,
       member.membershipRelationship.targetNodeId,
-      member.membershipRelationship.label,
+      member.membershipRelationship.type,
       membershipProps,
     );
   }
@@ -494,12 +547,12 @@ export function applyOrderedAssociationMove(
     params.targetGroupId === UNASSIGNED_GROUP_ID ? null : params.targetGroupId;
 
   if (currentPartId !== targetPartId) {
-    const existingPartConnections = db.listRelationshipsFromSource(params.sceneId, config.groupEdgeLabel);
+    const existingPartConnections = db.listRelationshipsFromSource(params.sceneId, config.groupEdgeType);
     for (const connection of existingPartConnections) {
       ctx.store.deleteRelationship(
         connection.sourceNodeId,
         connection.targetNodeId,
-        connection.label,
+        connection.type,
       );
     }
 
@@ -510,7 +563,7 @@ export function applyOrderedAssociationMove(
         if (key === "ordinal") continue;
         partProps[key] = value;
       }
-      ctx.store.upsertRelationship(params.sceneId, targetPartId, config.groupEdgeLabel, partProps);
+      ctx.store.upsertRelationship(params.sceneId, targetPartId, config.groupEdgeType, partProps);
     }
   }
 

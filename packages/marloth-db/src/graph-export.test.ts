@@ -35,7 +35,7 @@ describe("graph export", () => {
       title: "Feature B",
       inferred_notion_path: "Marloth/Features",
     });
-    db.upsertRelationship("page1", "page2", "FEATURES");
+    db.upsertRelationship("page1", "page2", "features");
 
     const snapshot = exportFullGraph(db);
     db.close();
@@ -46,7 +46,7 @@ describe("graph export", () => {
     expect(snapshot.relationships[0]).toMatchObject({
       source: "page1",
       target: "page2",
-      label: "FEATURES",
+      type: "features",
     });
   });
 
@@ -67,8 +67,8 @@ describe("graph export", () => {
       title: "Archive",
       inferred_notion_path: "Marloth/Archive",
     });
-    db.upsertRelationship("active", "archived", "INSPIRATIONS");
-    db.upsertRelationship("archived", "archive-root", "PART");
+    db.upsertRelationship("active", "archived", "inspirations");
+    db.upsertRelationship("archived", "archive-root", "part");
 
     const snapshot = exportFullGraph(db);
     db.close();
@@ -93,8 +93,8 @@ describe("graph export", () => {
     db.upsertNode("page1", { title: "Scene 1" });
     db.upsertNode("page2", { title: "Scene 2" });
     db.upsertNode("page3", { title: "Feature 1" });
-    db.upsertRelationship("page1", "page2", "BLOCKS");
-    db.upsertRelationship("page2", "page3", "FEATURES");
+    db.upsertRelationship("page1", "page2", "blocks");
+    db.upsertRelationship("page2", "page3", "features");
 
     const lod = exportExplorerLodGraph(db);
     db.close();
@@ -113,7 +113,7 @@ describe("graph export", () => {
     db.upsertNode("anchor", { title: "Anchor" });
     db.upsertNode("near", { title: "Near" });
     db.upsertNode("far", { title: "Far" });
-    db.upsertRelationship("anchor", "near", "RELATES");
+    db.upsertRelationship("anchor", "near", "relates");
 
     const lod = exportExplorerLodGraph(db, { anchorId: "anchor" });
     db.close();

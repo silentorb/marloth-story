@@ -1,5 +1,6 @@
 import type { GraphDatabase } from "../graph";
 import { typeIdsForInstance } from "../node-capabilities";
+import { normalizeRelationshipType } from "../relation-type";
 import type { RelationshipRuleEntry, SchemaFile } from "./schema-file";
 
 export function allowedTargetTypeIdsForRule(rule: RelationshipRuleEntry): string[] {
@@ -10,13 +11,13 @@ export function resolveRelationshipRule(
   schema: SchemaFile,
   db: GraphDatabase,
   sourceNodeId: string,
-  label: string,
+  type: string,
 ): RelationshipRuleEntry | null {
-  const normalizedLabel = label.trim().toUpperCase();
+  const normalizedType = normalizeRelationshipType(type);
   const sourceTypes = typeIdsForInstance(db, sourceNodeId);
 
   for (const rule of schema.relationshipRules) {
-    if (rule.label !== normalizedLabel) continue;
+    if (rule.type !== normalizedType) continue;
     if (!sourceTypes.includes(rule.sourceTypeId)) continue;
     return rule;
   }
@@ -36,21 +37,24 @@ export function resolveRelationshipRulesForSource(
 
 export interface RelationshipRuleContext {
   ruleId: string;
-  label: string;
+  type: string;
   allowedTargetTypeIds: string[];
 }
 
-export function relationshipRuleContextForLabel(
+export function relationshipRuleContextForType(
   schema: SchemaFile,
   db: GraphDatabase,
   sourceNodeId: string,
-  label: string,
+  type: string,
 ): RelationshipRuleContext | null {
-  const rule = resolveRelationshipRule(schema, db, sourceNodeId, label);
+  const rule = resolveRelationshipRule(schema, db, sourceNodeId, type);
   if (!rule) return null;
   return {
     ruleId: rule.id,
-    label: rule.label,
+    type: rule.type,
     allowedTargetTypeIds: allowedTargetTypeIdsForRule(rule),
   };
 }
+
+/** @deprecated Use relationshipRuleContextForType */
+export const relationshipRuleContextForLabel = relationshipRuleContextForType;

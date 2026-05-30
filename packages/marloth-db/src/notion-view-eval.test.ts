@@ -54,8 +54,8 @@ describe("getDatabaseViewDetail with notion views", () => {
     });
     db.upsertNode("page1", { title: "One" });
     db.upsertNode("page2", { title: "Two" });
-    db.upsertRelationship("page1", databaseId, "IS_A", { status: "Done", row_index: 0 });
-    db.upsertRelationship("page2", databaseId, "IS_A", { status: "Todo", row_index: 1 });
+    db.upsertRelationship("page1", databaseId, "is_a", { status: "Done", row_index: 0 });
+    db.upsertRelationship("page2", databaseId, "is_a", { status: "Todo", row_index: 1 });
 
     const view = getDatabaseViewDetail(db, databaseId);
     expect(view?.views).toEqual(["Done only"]);

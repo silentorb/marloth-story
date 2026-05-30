@@ -1,5 +1,5 @@
 import type { GraphDatabase } from "../../graph";
-import { TYPE_MEMBERSHIP_LABELS } from "../../labels";
+import { TYPE_MEMBERSHIP_TYPES } from "../../labels";
 import { priorityWeight } from "../../property-enums";
 import type { DynamicResolverContext } from "../registry";
 
@@ -45,7 +45,7 @@ export function buildSceneCountByProductPrefetch(
   params: Record<string, unknown>,
 ): SceneCountByProductPrefetch {
   const scenesLabel = String(params.scenes_edge_label ?? "SCENES");
-  const productLabel = String(params.product_edge_label ?? "PRODUCT");
+  const productLabel = String(params.product_edge_label ?? "product");
 
   const characterSceneProducts = new Map<string, Map<string, string[]>>();
   const productIds = new Set<string>();
@@ -104,13 +104,13 @@ export function buildWeightedUsePrefetch(
   ctx: DynamicResolverContext,
   params: Record<string, unknown>,
 ): WeightedUsePrefetch {
-  const featuresLabel = String(params.features_edge_label ?? "FEATURES");
+  const featuresLabel = String(params.features_edge_label ?? "features");
   const featuresDbId = String(params.features_database_id ?? "");
 
   const priorityByFeature = new Map<string, number>();
   if (featuresDbId) {
-    for (const label of TYPE_MEMBERSHIP_LABELS) {
-      for (const connection of ctx.db.listRelationshipsToTarget(featuresDbId, label)) {
+    for (const type of TYPE_MEMBERSHIP_TYPES) {
+      for (const connection of ctx.db.listRelationshipsToTarget(featuresDbId, type)) {
         priorityByFeature.set(connection.sourceNodeId, priorityWeight(connection.properties.priority));
       }
     }
@@ -146,14 +146,14 @@ export function buildWonderPrefetch(
   ctx: DynamicResolverContext,
   params: Record<string, unknown>,
 ): WonderPrefetch {
-  const featuresLabel = String(params.features_edge_label ?? "FEATURES");
+  const featuresLabel = String(params.features_edge_label ?? "features");
   const themeLabel = String(params.theme_edge_label ?? "THEME");
   const themeTargetId = String(params.theme_target_id ?? "");
 
   const themedFeatures = new Set<string>();
   if (themeTargetId) {
     for (const connection of ctx.db.listRelationshipsToTarget(themeTargetId)) {
-      if (connection.label === themeLabel) themedFeatures.add(connection.sourceNodeId);
+      if (connection.type === themeLabel) themedFeatures.add(connection.sourceNodeId);
     }
   }
 

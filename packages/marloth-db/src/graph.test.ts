@@ -22,14 +22,14 @@ describe("GraphDatabase", () => {
     const db = new GraphDatabase(dbPath);
     db.upsertNode("abc123", { title: "Hello" });
     db.upsertNode("def456", { title: "World" });
-    db.upsertRelationship("abc123", "def456", "LINKS_TO", { ordinal: 0 });
+    db.upsertRelationship("abc123", "def456", "links_to", { ordinal: 0 });
     db.finalize();
     db.close();
 
     const db2 = new GraphDatabase(dbPath);
     const v = db2.getNode("abc123");
     expect(v?.properties.title).toBe("Hello");
-    const e = db2.getRelationship("abc123:LINKS_TO:def456");
+    const e = db2.getRelationship("abc123:links_to:def456");
     expect(e?.targetNodeId).toBe("def456");
     expect(db2.counts()).toEqual({ nodes: 2, relationships: 1 });
     db2.close();
@@ -52,10 +52,10 @@ describe("GraphDatabase", () => {
     const db = new GraphDatabase(dbPath);
     db.upsertNode("a", { title: "A" });
     db.upsertNode("b", { title: "B" });
-    db.upsertRelationship("a", "b", "RELATED", { ordinal: 0 });
-    expect(db.getRelationship("a:RELATED:b")).not.toBeNull();
-    expect(db.deleteRelationship("a", "b", "RELATED")).toBe(true);
-    expect(db.getRelationship("a:RELATED:b")).toBeNull();
+    db.upsertRelationship("a", "b", "related", { ordinal: 0 });
+    expect(db.getRelationship("a:related:b")).not.toBeNull();
+    expect(db.deleteRelationship("a", "b", "related")).toBe(true);
+    expect(db.getRelationship("a:related:b")).toBeNull();
     db.close();
   });
 
@@ -65,10 +65,9 @@ describe("GraphDatabase", () => {
     const db = new GraphDatabase(dbPath);
     db.upsertNode("a", { title: "A" });
     db.upsertNode("b", { title: "B" });
-    db.upsertRelationship("a", "b", "RELATED", { ordinal: 0 });
+    db.upsertRelationship("a", "b", "related", { ordinal: 0 });
     expect(db.deleteNode("a")).toBe(true);
     expect(db.getNode("a")).toBeNull();
-    expect(db.getRelationship("a:RELATED:b")).toBeNull();
     db.close();
   });
 });

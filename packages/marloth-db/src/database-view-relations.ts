@@ -2,7 +2,7 @@ import type { GraphDatabase, Relationship } from "./graph";
 import type { DatabaseColumnDef } from "./database-view";
 import type { NotionDatabaseSchema } from "./notion-database-schema";
 import type { RelationLink } from "./relation-link";
-import { relationLabel } from "./relation-label";
+import { relationType } from "./relation-type";
 import type { EvalRow } from "./notion-view-eval";
 
 function titleFromProperties(properties: Record<string, unknown>): string {
@@ -26,10 +26,10 @@ function viaDatabaseId(properties: Record<string, unknown>): string | null {
 function relationConnectionsForRow(
   db: GraphDatabase,
   nodeId: string,
-  connectionLabel: string,
+  connectionType: string,
   databaseId: string,
 ): Relationship[] {
-  const outgoing = db.listRelationshipsFromSource(nodeId, connectionLabel);
+  const outgoing = db.listRelationshipsFromSource(nodeId, connectionType);
   const scoped = outgoing.filter((c) => viaDatabaseId(c.properties) === databaseId);
   if (scoped.length > 0) return scoped;
   return outgoing.filter((c) => viaDatabaseId(c.properties) === null);
@@ -71,8 +71,8 @@ export function hydrateRelationCellsForRows(
   for (const row of rows) {
     if (!row.relationCells) row.relationCells = {};
     for (const col of relationColumns) {
-      const label = col.relationLabel ?? relationLabel(col.name);
-      const relationships = relationConnectionsForRow(db, row.nodeId, label, databaseId);
+      const type = col.relationType ?? relationType(col.name);
+      const relationships = relationConnectionsForRow(db, row.nodeId, type, databaseId);
       const links = linksFromRelationships(db, relationships);
       if (links.length > 0) {
         row.cells[col.key] = formatRelationCell(links);

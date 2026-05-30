@@ -52,7 +52,7 @@ describe("record lifecycle", () => {
     const detail = getNodeDetail(fixture.ctx.db, PAGE_ACTIVE);
     expect(detail?.path).toBe("Marloth/Archive/Active Scene");
     expect(
-      fixture.ctx.db.listRelationshipsFromSource(PAGE_ACTIVE, "PART")[0]?.targetNodeId,
+      fixture.ctx.db.listRelationshipsFromSource(PAGE_ACTIVE, "part")[0]?.targetNodeId,
     ).toBe(DEFAULT_ARCHIVE_NODE_ID);
   });
 

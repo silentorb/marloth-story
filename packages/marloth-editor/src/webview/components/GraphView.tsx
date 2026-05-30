@@ -612,9 +612,9 @@ export function GraphView({
               linkLabel={(link) => {
                 const l = link as ForceLink;
                 if (aggregated && l.weight !== undefined) {
-                  return `${l.label} (${l.weight})`;
+                  return `${l.type} (${l.weight})`;
                 }
-                return l.label;
+                return l.type;
               }}
               linkColor={() => activeLinkColor}
               linkWidth={(link) => {

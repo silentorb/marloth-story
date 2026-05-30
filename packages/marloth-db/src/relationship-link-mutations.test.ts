@@ -30,16 +30,16 @@ describe("relationship-link-mutations", () => {
       linkOutgoingRelationship(ctx, {
         sourceId,
         targetId,
-        label: "PARENTS",
+        type: "parents",
         viaDatabase: databaseId,
       }),
     ).toBeNull();
 
-    const edge = ctx.store.findRelationship(sourceId, targetId, "PARENTS");
+    const edge = ctx.store.findRelationship(sourceId, targetId, "parents");
     expect(edge?.properties.via_database).toBe(databaseId);
 
-    expect(unlinkOutgoingRelationship(ctx, sourceId, targetId, "PARENTS")).toBeNull();
-    expect(ctx.store.findRelationship(sourceId, targetId, "PARENTS")).toBeNull();
+    expect(unlinkOutgoingRelationship(ctx, sourceId, targetId, "parents")).toBeNull();
+    expect(ctx.store.findRelationship(sourceId, targetId, "parents")).toBeNull();
   });
 
   test("rejects duplicate links", () => {
@@ -48,9 +48,9 @@ describe("relationship-link-mutations", () => {
     seedTestNode(fixture, { id: source2, properties: { title: "Source 2" } });
     seedTestNode(fixture, { id: target2, properties: { title: "Target 2" } });
 
-    linkOutgoingRelationship(ctx, { sourceId: source2, targetId: target2, label: "FEATURES" });
+    linkOutgoingRelationship(ctx, { sourceId: source2, targetId: target2, type: "features" });
     expect(
-      linkOutgoingRelationship(ctx, { sourceId: source2, targetId: target2, label: "FEATURES" }),
+      linkOutgoingRelationship(ctx, { sourceId: source2, targetId: target2, type: "features" }),
     ).toBe("duplicate");
   });
 

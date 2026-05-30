@@ -1,7 +1,7 @@
 import type { DatabaseColumnDef } from "./database-view";
 import { applyDynamicFields } from "./dynamic-fields";
 import type { GraphDatabase } from "./graph";
-import { TYPE_MEMBERSHIP_LABELS } from "./labels";
+import { TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { isTypeTableNode } from "./node-capabilities";
 import type { EvalRow } from "./notion-view-eval";
 import {
@@ -111,8 +111,8 @@ export function buildPropertiesSection(
 ): PropertiesSection | null {
   // v1: first type membership connection when a node belongs to multiple types.
   let membershipRelationship = null as ReturnType<GraphDatabase["listRelationshipsFromSource"]>[number] | null;
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
-    const connections = db.listRelationshipsFromSource(nodeId, label);
+  for (const type of TYPE_MEMBERSHIP_TYPES) {
+    const connections = db.listRelationshipsFromSource(nodeId, type);
     if (connections.length > 0) {
       membershipRelationship = connections[0]!;
       break;

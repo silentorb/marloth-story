@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { GraphDatabase } from "./graph";
-import { IS_A_LABEL } from "./labels";
+import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { getDatabaseViewDetail } from "./database-view";
 
@@ -21,7 +21,7 @@ describe("database-view", () => {
     const databaseId = "db12345678901234567890123456789012";
     db.upsertNode(databaseId, { ...typeTableMarkerProperties("Features") });
     db.upsertNode("page1", { title: "Desperation" });
-    db.upsertRelationship("page1", databaseId, IS_A_LABEL, {
+    db.upsertRelationship("page1", databaseId, IS_A_TYPE, {
       view: "all",
       row_index: 0,
       priority: "High",
@@ -59,7 +59,7 @@ describe("database-view", () => {
     const databaseId = "db22345678901234567890123456789012";
     db.upsertNode(databaseId, { ...typeTableMarkerProperties("Features") });
     db.upsertNode("page2", { title: "Peace in the eye of the storm" });
-    db.upsertRelationship("page2", databaseId, IS_A_LABEL, {
+    db.upsertRelationship("page2", databaseId, IS_A_TYPE, {
       view: "default",
       row_index: 0,
       row_name: "Stale CSV label",
@@ -98,8 +98,8 @@ describe("database-view", () => {
     });
     db.upsertNode("page3", { title: "Child feature" });
     db.upsertNode(parentId, { title: "Parent feature" });
-    db.upsertRelationship("page3", databaseId, IS_A_LABEL, { row_index: 0 });
-    db.upsertRelationship("page3", parentId, "PARENTS", {
+    db.upsertRelationship("page3", databaseId, IS_A_TYPE, { row_index: 0 });
+    db.upsertRelationship("page3", parentId, "parents", {
       ordinal: 0,
       via_database: databaseId,
     });
@@ -108,7 +108,7 @@ describe("database-view", () => {
     expect(detail?.rows[0]?.cells.parents).toBe("Parent feature");
     expect(detail?.columnDefs?.[0]).toMatchObject({
       type: "relation",
-      relationLabel: "PARENTS",
+      relationType: "parents",
     });
     expect(detail?.rows[0]?.relationCells?.parents).toEqual([
       { targetId: parentId, title: "Parent feature" },

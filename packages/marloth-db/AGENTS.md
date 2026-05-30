@@ -8,12 +8,13 @@
 ## Terminology
 
 - **Node** — entity in `content/{id}.md` and cache `nodes`.
-- **Relationship** — directed labeled link in `content/relationships.json` and cache `relationships`.
+- **Relationship** — link in `content/relationships.json` (v2: `{ a, b, type }`) with types in lower snake_case.
+- **Relationship type** — storage type (composite for bidirectional pairs, e.g. `inspirations_features`) or local perspective (e.g. `inspirations` in UI).
 - **Page** — editor view of a node (`getNodePageDetail`, `node-page-sections.ts`).
-- **Type table** — node with incoming `IS_A` and/or `notion_schema` metadata (`isTypeTableNode`).
+- **Type table** — node with incoming `is_a` and/or `notion_schema` metadata (`isTypeTableNode`).
 - **Schema** — relationship rules in `content/schema.json` ([`docs/features/schema.md`](../../docs/features/schema.md)).
 
-Cache tables: `nodes`, `relationships` (`SCHEMA_VERSION` 6).
+Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` 7).
 
 ## Run
 - Tests: `bun test` (from this directory).
@@ -21,7 +22,7 @@ Cache tables: `nodes`, `relationships` (`SCHEMA_VERSION` 6).
 
 ## Editing data
 
-- **Canonical store:** `content/` — commit markdown + JSON changes.
+- **Canonical store:** `content/` — commit markdown + JSON changes (`relationships.json`, `relationship-types.json`).
 - Use `ContentStore` / `MarlothWriteContext` for mutations.
 - Rebuild cache: `bun run content:sync` from repo root.
 - **Do not** edit `data/marloth.sqlite` directly or run `notion:import` / `--clean` for routine updates.
@@ -29,7 +30,5 @@ Cache tables: `nodes`, `relationships` (`SCHEMA_VERSION` 6).
 ## Repo-wide context
 - **Feature spec:** [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)
 - **Schema rules:** [`docs/features/schema.md`](../../docs/features/schema.md)
-- **Dynamic table fields:** [`docs/features/dynamic-table-fields.md`](../../docs/features/dynamic-table-fields.md)
 - Graph Explorer LOD export: [`docs/features/graph-explorer.md`](../../docs/features/graph-explorer.md)
-- Legacy Notion import / export mining: [`docs/features/notion-import.md`](../../docs/features/notion-import.md)
 - Global conventions: repository root [`AGENTS.md`](../../AGENTS.md)

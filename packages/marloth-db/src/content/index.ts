@@ -4,8 +4,21 @@ export {
   entryFromRelationship,
   parseRelationshipsFile,
   serializeRelationshipsFile,
+  relationshipRecordId,
+  sortEndpoints,
 } from "./relationships-file";
 export type { RelationshipEntry, RelationshipsFile } from "./relationships-file";
+export {
+  RELATIONSHIP_TYPES_FILE_VERSION,
+  compositeTypeForPerspectives,
+  emptyRelationshipTypesFile,
+  parseRelationshipTypesFile,
+  registerBidirectionalType,
+  registerUnidirectionalType,
+  serializeRelationshipTypesFile,
+} from "./relationship-types-file";
+export type { RelationshipTypeDefinition, RelationshipTypesFile } from "./relationship-types-file";
+export { expandAllRelationships } from "./relationship-sync-expand";
 export {
   DYNAMIC_FIELDS_FILE_VERSION,
   columnSetRecordFromEntry,
@@ -31,10 +44,12 @@ export {
 export type { ParsedNodeFile } from "./node-file";
 export {
   RELATIONSHIPS_FILENAME,
+  RELATIONSHIP_TYPES_FILENAME,
   DYNAMIC_FIELDS_FILENAME,
   NODE_FILE_PATTERN,
   NODE_ID_PATTERN,
   relationshipsFilePath,
+  relationshipTypesFilePath,
   defaultDbPathForContent,
   dynamicFieldsFilePath,
   isNodeId,

@@ -1,9 +1,11 @@
+import { normalizeRelationshipType } from "../relation-type";
+
 export const SCHEMA_FILE_VERSION = 1;
 
 export interface RelationshipRuleEntry {
   id: string;
   sourceTypeId: string;
-  label: string;
+  type: string;
   allowedTargetTypeIds: string[];
 }
 
@@ -41,8 +43,9 @@ export function parseSchemaFile(raw: string): SchemaFile {
     if (typeof rule.sourceTypeId !== "string" || !rule.sourceTypeId.trim()) {
       throw new Error(`schema.json: relationship rule ${rule.id} sourceTypeId is required`);
     }
-    if (typeof rule.label !== "string" || !rule.label.trim()) {
-      throw new Error(`schema.json: relationship rule ${rule.id} label is required`);
+    const rawType = rule.type ?? rule.label;
+    if (typeof rawType !== "string" || !rawType.trim()) {
+      throw new Error(`schema.json: relationship rule ${rule.id} type is required`);
     }
     if (!Array.isArray(rule.allowedTargetTypeIds)) {
       throw new Error(`schema.json: relationship rule ${rule.id} allowedTargetTypeIds must be an array`);
@@ -50,7 +53,7 @@ export function parseSchemaFile(raw: string): SchemaFile {
     relationshipRules.push({
       id: rule.id.trim(),
       sourceTypeId: rule.sourceTypeId.trim().toLowerCase(),
-      label: rule.label.trim().toUpperCase(),
+      type: normalizeRelationshipType(rawType),
       allowedTargetTypeIds: rule.allowedTargetTypeIds
         .filter((id): id is string => typeof id === "string" && id.trim().length > 0)
         .map((id) => id.trim().toLowerCase()),

@@ -1,23 +1,17 @@
 import type { GraphDatabase } from "./graph";
-import { TYPE_MEMBERSHIP_LABELS } from "./labels";
+import { TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { isTypeTableNode } from "./node-capabilities";
 import {
   parseNotionSchema,
   parseNotionViews,
-  propertyNameForId,
-  propertyNamesById,
   resolveViewByKey,
-  slugifyPropertyKey,
-  visiblePropertyIdsForView,
   type NotionViewDefinition,
 } from "./notion-database-schema";
 import { filterEvalRows, sortEvalRows, type EvalRow } from "./notion-view-eval";
 import { applyDynamicFields } from "./dynamic-fields";
 import { hydrateRelationCellsForRows } from "./database-view-relations";
-import { normalizeNotionId } from "./notion-ids";
-import type { NotionPropertyDefinition } from "./notion-database-schema";
-import { relationLabel } from "./relation-label";
-import { coalescePriorityValue, enrichColumnDef, enrichColumnDefs, isPriorityColumnKey } from "./property-enums";
+import { buildDatabaseColumnDefs, normalizeRowCells } from "./database-column-defs";
+import { enrichColumnDefs } from "./property-enums";
 
 const ROW_META_KEYS = new Set(["view", "row_index", "row_name", "order"]);
 
@@ -43,28 +37,10 @@ export interface DatabaseColumnDef {
   options?: string[];
   /** Default enum label when the stored value is unset. */
   defaultValue?: string;
-  /** Graph relationship label when type is `relation`. */
-  relationLabel?: string;
+  /** Graph relationship type when type is `relation`. */
+  relationType?: string;
   /** Target type-table node id for search filtering when type is `relation`. */
   targetDatabaseId?: string;
-}
-
-function enrichRelationColumnDef(
-  col: DatabaseColumnDef,
-  propDef?: NotionPropertyDefinition,
-): DatabaseColumnDef {
-  if (col.type !== "relation") return col;
-  let targetDatabaseId: string | undefined;
-  const rawDbId = propDef?.config?.database_id;
-  if (typeof rawDbId === "string") {
-    const normalized = normalizeNotionId(rawDbId);
-    if (normalized) targetDatabaseId = normalized;
-  }
-  return {
-    ...col,
-    relationLabel: relationLabel(col.name),
-    targetDatabaseId,
-  };
 }
 
 export interface DatabaseViewDetail {
@@ -130,32 +106,6 @@ function rowSort(a: DatabaseRow, b: DatabaseRow): number {
   return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
 }
 
-function mergeDynamicColumnDefs(
-  columnDefs: DatabaseColumnDef[],
-  dynamicColumnDefs: DatabaseColumnDef[],
-  hiddenColumnKeys: Set<string>,
-): DatabaseColumnDef[] {
-  const dynamicByKey = new Map(dynamicColumnDefs.map((c) => [c.key, c]));
-  const merged: DatabaseColumnDef[] = [];
-
-  for (const col of columnDefs) {
-    if (hiddenColumnKeys.has(col.key)) continue;
-    const dynamic = dynamicByKey.get(col.key);
-    if (dynamic) {
-      merged.push(dynamic);
-      dynamicByKey.delete(col.key);
-    } else {
-      merged.push(col);
-    }
-  }
-
-  for (const col of dynamicByKey.values()) {
-    merged.push(col);
-  }
-
-  return merged;
-}
-
 function buildNotionViewDetail(
   db: GraphDatabase,
   databaseId: string,
@@ -166,7 +116,6 @@ function buildNotionViewDetail(
 ): DatabaseViewDetail {
   const schema = parseNotionSchema(db.getNode(databaseId)?.properties.notion_schema);
   const selected = resolveViewByKey(notionViews, requestedView) ?? notionViews[0]!;
-  const idToName = schema ? propertyNamesById(schema) : new Map<string, string>();
 
   const evalRows: EvalRow[] = [];
   for (const connection of incoming) {
@@ -197,45 +146,12 @@ function buildNotionViewDetail(
   const filtered = filterEvalRows(enrichedRows, selected.filter);
   const sorted = sortEvalRows(filtered, selected.sorts);
 
-  const columnDefs: DatabaseColumnDef[] = [];
-  const visiblePropertyIds = visiblePropertyIdsForView(selected);
-  if (schema) {
-    if (visiblePropertyIds.length > 0) {
-      for (const propId of visiblePropertyIds) {
-        const name = propertyNameForId(idToName, propId);
-        if (!name || name === "Name") continue;
-        const def = schema.properties[name];
-        if (!def) continue;
-        columnDefs.push(
-          enrichRelationColumnDef(
-            enrichColumnDef({
-              key: slugifyPropertyKey(name),
-              name,
-              type: def.type,
-            }),
-            def,
-          ),
-        );
-      }
-    } else {
-      for (const [name, def] of Object.entries(schema.properties)) {
-        if (name === "Name" || def.type === "title") continue;
-        columnDefs.push(
-          enrichRelationColumnDef(
-            enrichColumnDef({
-              key: slugifyPropertyKey(name),
-              name,
-              type: def.type,
-            }),
-            def,
-          ),
-        );
-      }
-    }
-  }
-
-  const mergedColumnDefs = enrichColumnDefs(
-    mergeDynamicColumnDefs(columnDefs, dynamicColumnDefs, hiddenColumnKeys),
+  const mergedColumnDefs = buildDatabaseColumnDefs(
+    db,
+    databaseId,
+    selected.name,
+    dynamicColumnDefs,
+    hiddenColumnKeys,
   );
 
   hydrateRelationCellsForRows(db, databaseId, schema, mergedColumnDefs, sorted);
@@ -264,28 +180,6 @@ function buildNotionViewDetail(
     rows,
     columnDefs: mergedColumnDefs.length > 0 ? mergedColumnDefs : undefined,
   };
-}
-
-function normalizeRowCells(
-  cells: Record<string, string>,
-  columnDefs: DatabaseColumnDef[],
-): Record<string, string> {
-  if (columnDefs.length === 0) return cells;
-  const out: Record<string, string> = {};
-  for (const col of columnDefs) {
-    const value =
-      cells[col.key] ??
-      cells[col.name] ??
-      Object.entries(cells).find(
-        ([k]) => k.toLowerCase() === col.name.toLowerCase(),
-      )?.[1];
-    if (value !== undefined) {
-      out[col.key] = value;
-    } else if (isPriorityColumnKey(col.key) || col.enumId === "priority") {
-      out[col.key] = coalescePriorityValue(undefined);
-    }
-  }
-  return out;
 }
 
 function buildLegacyViewDetail(
@@ -390,8 +284,8 @@ export function getDatabaseViewDetail(
   const database = db.getNode(databaseId);
   if (!database || !isTypeTableNode(db, databaseId)) return null;
 
-  const incoming = TYPE_MEMBERSHIP_LABELS.flatMap((label) =>
-    db.listRelationshipsToTarget(databaseId, label),
+  const incoming = TYPE_MEMBERSHIP_TYPES.flatMap((type) =>
+    db.listRelationshipsToTarget(databaseId, type),
   );
 
   const title = titleFromProperties(database.properties);

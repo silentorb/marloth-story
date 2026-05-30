@@ -7,16 +7,30 @@ import {
   writeFileSync,
 } from "node:fs";
 import { dirname, join } from "node:path";
-import type { Relationship, Node, Properties } from "../graph";
+import type { Node, Properties } from "../graph";
 import { relationshipId } from "../graph";
+import { normalizeRelationshipType } from "../relation-type";
 import {
   type RelationshipEntry,
   type RelationshipsFile,
   RELATIONSHIPS_FILE_VERSION,
-  entryFromRelationship,
   parseRelationshipsFile,
+  relationshipRecordId,
   serializeRelationshipsFile,
+  sortEndpoints,
 } from "./relationships-file";
+import {
+  type RelationshipTypesFile,
+  RELATIONSHIP_TYPES_FILE_VERSION,
+  emptyRelationshipTypesFile,
+  isBidirectionalComposite,
+  localTypesForComposite,
+  parseRelationshipTypesFile,
+  registerBidirectionalType,
+  registerUnidirectionalType,
+  resolveCompositeType,
+  serializeRelationshipTypesFile,
+} from "./relationship-types-file";
 import {
   type DynamicFieldsFile,
   emptyDynamicFieldsFile,
@@ -26,6 +40,7 @@ import {
 import { bodyFromNode, nodeFromFile, serializeNodeFile } from "./node-file";
 import {
   relationshipsFilePath,
+  relationshipTypesFilePath,
   dynamicFieldsFilePath,
   isNodeId,
   nodeFilePath,
@@ -109,50 +124,103 @@ export class ContentStore {
     atomicWrite(relationshipsFilePath(this.contentDir), serializeRelationshipsFile(file));
   }
 
-  readRelationships(): Relationship[] {
-    return this.readRelationshipsFile().relationships.map((entry) => {
-      const properties = entry.properties ?? {};
-      return {
-        id: relationshipId(entry.source, entry.label, entry.target),
-        sourceNodeId: entry.source,
-        targetNodeId: entry.target,
-        label: entry.label,
-        properties,
-      };
-    });
+  readRelationshipTypesFile(): RelationshipTypesFile {
+    const path = relationshipTypesFilePath(this.contentDir);
+    try {
+      return parseRelationshipTypesFile(readFileSync(path, "utf-8"));
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+        return emptyRelationshipTypesFile();
+      }
+      throw err;
+    }
   }
 
-  writeRelationships(connections: Relationship[]): void {
-    const entries = connections.map(entryFromRelationship);
-    this.writeRelationshipsFile({ version: RELATIONSHIPS_FILE_VERSION, relationships: entries });
+  writeRelationshipTypesFile(file: RelationshipTypesFile): void {
+    atomicWrite(relationshipTypesFilePath(this.contentDir), serializeRelationshipTypesFile(file));
   }
 
-  findRelationship(source: string, target: string, label: string): Relationship | null {
-    return (
-      this.readRelationships().find(
-        (c) => c.sourceNodeId === source && c.targetNodeId === target && c.label === label,
-      ) ?? null
-    );
+  findContentEntry(
+    source: string,
+    target: string,
+    localType: string,
+  ): RelationshipEntry | null {
+    const registry = this.readRelationshipTypesFile();
+    const normalized = normalizeRelationshipType(localType);
+    const { a, b } = sortEndpoints(source, target);
+
+    for (const entry of this.readRelationshipsFile().relationships) {
+      if (entry.a !== a || entry.b !== b) continue;
+      const perspectives = localTypesForComposite(registry, entry.type);
+      if (perspectives.includes(normalized)) {
+        return entry;
+      }
+      if (!isBidirectionalComposite(registry, entry.type) && entry.type === normalized) {
+        return entry;
+      }
+    }
+    return null;
+  }
+
+  findRelationship(source: string, target: string, localType: string) {
+    const entry = this.findContentEntry(source, target, localType);
+    if (!entry) return null;
+    const normalized = normalizeRelationshipType(localType);
+    return {
+      id: relationshipId(source, normalized, target),
+      sourceNodeId: source,
+      targetNodeId: target,
+      type: normalized,
+      properties: entry.properties ?? {},
+    };
   }
 
   upsertRelationship(
     source: string,
     target: string,
-    label: string,
+    localType: string,
     properties: Properties = {},
   ): void {
+    const registry = this.readRelationshipTypesFile();
     const file = this.readRelationshipsFile();
-    const index = file.relationships.findIndex(
-      (c) => c.source === source && c.target === target && c.label === label,
-    );
-    const entry: RelationshipEntry = { source, target, label, properties };
+    const normalized = normalizeRelationshipType(localType);
+    const { a, b } = sortEndpoints(source, target);
+
+    let composite = resolveCompositeType(registry, normalized);
+    const existing = file.relationships.find((e) => e.a === a && e.b === b && e.type === composite);
+
+    if (!existing) {
+      for (const entry of file.relationships) {
+        if (entry.a !== a || entry.b !== b) continue;
+        const perspectives = localTypesForComposite(registry, entry.type);
+        if (perspectives.includes(normalized)) {
+          composite = entry.type;
+          break;
+        }
+      }
+    }
+
+    const index = file.relationships.findIndex((e) => e.a === a && e.b === b && e.type === composite);
+    const entry: RelationshipEntry = {
+      a,
+      b,
+      type: composite,
+      directedFrom: source,
+      properties,
+    };
+
     if (index >= 0) {
-      const existing = file.relationships[index]!;
+      const prev = file.relationships[index]!;
       file.relationships[index] = {
         ...entry,
-        properties: { ...(existing.properties ?? {}), ...properties },
+        directedFrom: prev.directedFrom ?? entry.directedFrom,
+        properties: { ...(prev.properties ?? {}), ...properties },
       };
     } else {
+      if (!registry.types[composite]) {
+        registerUnidirectionalType(registry, composite);
+        this.writeRelationshipTypesFile(registry);
+      }
       file.relationships.push(entry);
     }
     this.writeRelationshipsFile(file);
@@ -161,12 +229,12 @@ export class ContentStore {
   mergeRelationshipProperties(
     source: string,
     target: string,
-    label: string,
+    localType: string,
     patch: Properties,
   ): void {
-    const existing = this.findRelationship(source, target, label);
+    const existing = this.findRelationship(source, target, localType);
     if (!existing) {
-      this.upsertRelationship(source, target, label, patch);
+      this.upsertRelationship(source, target, localType, patch);
       return;
     }
     const merged = { ...existing.properties };
@@ -174,15 +242,26 @@ export class ContentStore {
       if (v === undefined) continue;
       merged[k] = v;
     }
-    this.upsertRelationship(source, target, label, merged);
+    this.upsertRelationship(source, target, localType, merged);
   }
 
-  deleteRelationship(source: string, target: string, label: string): boolean {
+  deleteRelationship(source: string, target: string, localType: string): boolean {
+    const registry = this.readRelationshipTypesFile();
     const file = this.readRelationshipsFile();
+    const normalized = normalizeRelationshipType(localType);
+    const { a, b } = sortEndpoints(source, target);
     const before = file.relationships.length;
-    file.relationships = file.relationships.filter(
-      (c) => !(c.source === source && c.target === target && c.label === label),
-    );
+
+    file.relationships = file.relationships.filter((entry) => {
+      if (entry.a !== a || entry.b !== b) return true;
+      const perspectives = localTypesForComposite(registry, entry.type);
+      if (perspectives.includes(normalized)) return false;
+      if (!isBidirectionalComposite(registry, entry.type) && entry.type === normalized) {
+        return false;
+      }
+      return true;
+    });
+
     if (file.relationships.length === before) return false;
     this.writeRelationshipsFile(file);
     return true;
@@ -191,9 +270,17 @@ export class ContentStore {
   removeIncidentRelationships(nodeId: string): void {
     const file = this.readRelationshipsFile();
     file.relationships = file.relationships.filter(
-      (c) => c.source !== nodeId && c.target !== nodeId,
+      (c) => c.a !== nodeId && c.b !== nodeId,
     );
     this.writeRelationshipsFile(file);
+  }
+
+  /** Register a bidirectional composite type and return its storage type name. */
+  ensureBidirectionalType(typeFromSource: string, typeFromTarget: string): string {
+    const registry = this.readRelationshipTypesFile();
+    const composite = registerBidirectionalType(registry, typeFromSource, typeFromTarget);
+    this.writeRelationshipTypesFile(registry);
+    return composite;
   }
 
   readDynamicFieldsFile(): DynamicFieldsFile {
@@ -222,3 +309,5 @@ export class ContentStore {
     return true;
   }
 }
+
+export { relationshipRecordId, registerBidirectionalType, registerUnidirectionalType };

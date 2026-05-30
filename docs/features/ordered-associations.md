@@ -23,7 +23,7 @@ For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor 
 - The `order` property **must** be treated as import/metadata: hidden from all table columns and never exposed as an editable field in the UI.
 - Order **must** be scoped: for scenes, order applies within a **book** (Product), not globally across all scenes in the database.
 - **Grouping** (Part) is a display dimension only; all scenes in a book share one global sequence. Part subsections sort scenes by that book-wide order.
-- Part membership **must** resolve when import created duplicate part nodes: match Scene→`PART` to the canonical Parts-database row by title, then fall back to Part→`SCENES` containment relationships.
+- Part membership **must** resolve when import created duplicate part nodes: match scene→`part` to the canonical Parts-database row by title.
 - Configurations **must** be registered in code (`packages/marloth-db/src/ordered-associations.ts`); v1 has no UI for adding new configs.
 
 ### Scenes configuration (`scenes-by-book`)
@@ -31,9 +31,9 @@ For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor 
 | Setting | Value |
 | --- | --- |
 | Type database | Scenes NotionDatabase (`204dba198db74611b0b49a98dd53e8f5`) |
-| Membership relationship | `IS_A` with `order` property |
-| Scope (book tabs) | `PRODUCT` relationship from scene → Product |
-| Group (part subsections) | `PART` relationship from scene → Part |
+| Membership relationship | `is_a` with `order` property |
+| Scope (book tabs) | `product` relationship from scene → Product |
+| Group (part subsections) | `part` relationship from scene → Part |
 | Unassigned | Scenes with a Product but no Part appear in an **Unassigned** group at the end |
 
 ### Editor UI (Scenes Items section)
@@ -42,6 +42,8 @@ For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor 
 - Book tabs **must** appear at the start of the section; each tab filters to one Product that has scenes.
 - Each Part **must** have its own subsection with a table of scenes in that part.
 - Tables **must** be sorted only by `order` (server-provided); column header sorting **must not** be available.
+- Table columns **must** come from the Scenes database `notion_schema`, using the configured reference view (`TWOLD Active`) for visibility. Product, Part, Order, and Status **must** be excluded from columns because scope tabs, part groups, or drag-and-drop ordering replace them.
+- Relation columns **must** be hydrated from outgoing graph relationships (same pipeline as standard database table views), not inferred only from `IS_A` edge properties.
 - Users **must** be able to drag scenes within a part to reorder (book-wide sequence).
 - Users **must** be able to drag scenes to a different part to change the `PART` association.
 - Name cells **must** remain navigable links to scene node pages.
@@ -77,7 +79,7 @@ Scenes are the only known use case. A typed configuration registry keeps the fir
 User drag-drop (webview)
   → PATCH /api/ordered-associations/scenes-by-book/move
   → applyOrderedAssociationMove (marloth-db)
-  → upsert IS_A {order} + PART relationship
+  → upsert is_a {order} + part relationship
   → SQLite data/marloth.sqlite
 ```
 
@@ -95,7 +97,6 @@ GET /api/nodes/:scenesDbId?scope=:productId
 - UI for registering new ordered-association configs
 - Creating scenes or parts from the editor
 - Inline editing of non-order relationship scalars
-- Syncing Part→`SCENES` reverse relationships after reorder
 - Per-part local order
 
 ## Verification
@@ -108,7 +109,8 @@ GET /api/nodes/:scenesDbId?scope=:productId
 
 | Module | Responsibility |
 | --- | --- |
-| `packages/marloth-db/src/ordered-associations.ts` | Config registry, view query, move mutation |
+| `packages/marloth-db/src/ordered-associations.ts` | Config registry, view query, move mutation, schema-driven column defs |
+| `packages/marloth-db/src/database-column-defs.ts` | Shared column-def builder used by database and ordered-association views |
 | `packages/marloth-db/src/node-page-sections.ts` | Emits `ordered-association` section for configured databases |
 | `packages/marloth-editor/src/api/server.ts` | PATCH move endpoint, `scope` query param |
 | `packages/marloth-editor/src/webview/components/OrderedAssociationView.tsx` | Book tabs + DnD part tables |

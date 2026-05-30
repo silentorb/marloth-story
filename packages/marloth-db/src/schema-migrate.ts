@@ -34,9 +34,21 @@ export function migrateSchemaToV6(db: Database): void {
   }
 }
 
+/** Replace directed `relationships` table with records + projections (schema v6 → v7). */
+export function migrateSchemaToV7(db: Database): void {
+  if (tableExists(db, "relationships") && !tableExists(db, "relationship_projections")) {
+    db.exec("DROP INDEX IF EXISTS idx_relationships_source");
+    db.exec("DROP INDEX IF EXISTS idx_relationships_target");
+    db.exec("DROP INDEX IF EXISTS idx_relationships_label");
+    db.exec("DROP INDEX IF EXISTS idx_relationships_endpoint_label");
+    db.exec("DROP TABLE relationships");
+  }
+}
+
 export function migrateSchema(db: Database): void {
   migrateSchemaToV5(db);
   migrateSchemaToV6(db);
+  migrateSchemaToV7(db);
 
   const versionRow = db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get() as
     | { value: string }

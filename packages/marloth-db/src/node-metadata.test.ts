@@ -19,7 +19,7 @@ describe("node-metadata", () => {
     db.upsertNode(PAGE_A, { title: "Page A" });
     db.upsertNode(PAGE_B, { title: "Page B" });
     db.upsertNode(PAGE_C, { title: "Page C" });
-    db.upsertRelationship(PAGE_B, PAGE_A, "LINKS");
+    db.upsertRelationship(PAGE_B, PAGE_A, "links");
     db.upsertRelationship(PAGE_C, PAGE_A, "REFERENCES");
 
     const meta = getNodePageMetadata(db, PAGE_A);

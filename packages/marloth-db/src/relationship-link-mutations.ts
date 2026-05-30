@@ -2,7 +2,8 @@ import type { Properties } from "./graph";
 import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterRelationshipsWrite } from "./content/write-context";
 import { nodeMatchesTargetTypes } from "./node-capabilities";
-import { relationshipRuleContextForLabel } from "./schema-rules/resolve";
+import { normalizeRelationshipType } from "./relation-type";
+import { relationshipRuleContextForType } from "./schema-rules/resolve";
 import type { SchemaFile } from "./schema-rules/schema-file";
 
 export type LinkOutgoingRelationshipError =
@@ -23,9 +24,9 @@ function ordinalFromProperties(properties: Record<string, unknown>): number | nu
 function nextOutgoingOrdinal(
   ctx: MarlothWriteContext,
   sourceId: string,
-  label: string,
+  type: string,
 ): number | undefined {
-  const outgoing = ctx.db.listRelationshipsFromSource(sourceId).filter((c) => c.label === label);
+  const outgoing = ctx.db.listRelationshipsFromSource(sourceId).filter((c) => c.type === type);
   if (outgoing.length === 0) return undefined;
   const ordinals = outgoing
     .map((c) => ordinalFromProperties(c.properties))
@@ -37,7 +38,7 @@ function nextOutgoingOrdinal(
 export interface LinkOutgoingRelationshipInput {
   sourceId: string;
   targetId: string;
-  label: string;
+  type: string;
   viaDatabase?: string;
   properties?: Properties;
   schema?: SchemaFile | null;
@@ -47,18 +48,18 @@ export function linkOutgoingRelationship(
   ctx: MarlothWriteContext,
   input: LinkOutgoingRelationshipInput,
 ): LinkOutgoingRelationshipError | null {
-  const { sourceId, targetId, label, viaDatabase, properties = {}, schema } = input;
-  const normalizedLabel = label.trim().toUpperCase();
+  const { sourceId, targetId, type, viaDatabase, properties = {}, schema } = input;
+  const normalizedType = normalizeRelationshipType(type);
 
   if (!ctx.store.readNode(sourceId)) return "source_not_found";
   if (!ctx.store.readNode(targetId)) return "target_not_found";
 
-  if (ctx.store.findRelationship(sourceId, targetId, normalizedLabel)) {
+  if (ctx.store.findRelationship(sourceId, targetId, normalizedType)) {
     return "duplicate";
   }
 
   if (schema) {
-    const ruleContext = relationshipRuleContextForLabel(schema, ctx.db, sourceId, normalizedLabel);
+    const ruleContext = relationshipRuleContextForType(schema, ctx.db, sourceId, normalizedType);
     if (
       ruleContext &&
       ruleContext.allowedTargetTypeIds.length > 0 &&
@@ -69,11 +70,11 @@ export function linkOutgoingRelationship(
   }
 
   const relProps: Properties = { ...properties };
-  const nextOrdinal = nextOutgoingOrdinal(ctx, sourceId, normalizedLabel);
+  const nextOrdinal = nextOutgoingOrdinal(ctx, sourceId, normalizedType);
   if (nextOrdinal !== undefined) relProps.ordinal = nextOrdinal;
   if (viaDatabase) relProps.via_database = viaDatabase;
 
-  ctx.store.upsertRelationship(sourceId, targetId, normalizedLabel, relProps);
+  ctx.store.upsertRelationship(sourceId, targetId, normalizedType, relProps);
   syncAfterRelationshipsWrite(ctx);
   return null;
 }
@@ -82,13 +83,13 @@ export function unlinkOutgoingRelationship(
   ctx: MarlothWriteContext,
   sourceId: string,
   targetId: string,
-  label: string,
+  type: string,
 ): UnlinkOutgoingRelationshipError | null {
-  const normalizedLabel = label.trim().toUpperCase();
-  if (!ctx.store.findRelationship(sourceId, targetId, normalizedLabel)) {
+  const normalizedType = normalizeRelationshipType(type);
+  if (!ctx.store.findRelationship(sourceId, targetId, normalizedType)) {
     return "not_found";
   }
-  ctx.store.deleteRelationship(sourceId, targetId, normalizedLabel);
+  ctx.store.deleteRelationship(sourceId, targetId, normalizedType);
   syncAfterRelationshipsWrite(ctx);
   return null;
 }

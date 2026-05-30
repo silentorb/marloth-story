@@ -1,5 +1,5 @@
 import type { GraphDatabase, Node, Properties } from "./graph";
-import { IS_A_LABEL, TYPE_MEMBERSHIP_LABELS } from "./labels";
+import { IS_A_TYPE, TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { typeFolderFromPath } from "./type-membership-audit";
 
 const TYPE_TABLE_PROPERTY_KEYS = ["notion_schema", "notion_views", "notion_database"] as const;
@@ -29,8 +29,8 @@ export function hasTypeTableSchema(
 }
 
 export function hasIncomingIsA(db: GraphDatabase, nodeId: string): boolean {
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
-    if (db.listRelationshipsToTarget(nodeId, label).length > 0) return true;
+  for (const type of TYPE_MEMBERSHIP_TYPES) {
+    if (db.listRelationshipsToTarget(nodeId, type).length > 0) return true;
   }
   return false;
 }
@@ -44,8 +44,8 @@ export function isTypeTableNode(db: GraphDatabase, nodeId: string): boolean {
 
 export function typeIdsForInstance(db: GraphDatabase, nodeId: string): string[] {
   const ids = new Set<string>();
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
-    for (const connection of db.listRelationshipsFromSource(nodeId, label)) {
+  for (const type of TYPE_MEMBERSHIP_TYPES) {
+    for (const connection of db.listRelationshipsFromSource(nodeId, type)) {
       ids.add(connection.targetNodeId);
     }
   }

@@ -1,7 +1,7 @@
 import type { GraphDatabase, Relationship } from "./graph";
 import { getDatabaseViewDetail, type DatabaseColumnDef, type DatabaseViewDetail } from "./database-view";
 import { coalescePriorityValue, enrichColumnDefs, isPriorityColumnKey } from "./property-enums";
-import { IS_A_LABEL, isTypeMembershipLabel, LEGACY_IN_DATABASE_LABEL } from "./labels";
+import { IS_A_TYPE, isTypeMembershipType, LEGACY_IN_DATABASE_TYPE } from "./labels";
 import {
   getOrderedAssociationConfigForDatabase,
   getOrderedAssociationView,
@@ -11,7 +11,7 @@ import { getNodeDetail, type NodeDetail } from "./queries";
 import { getNodePageMetadata, type NodePageMetadata } from "./node-metadata";
 import { buildPropertiesSection, type PropertiesSection } from "./node-type-properties";
 import { findTypeNodeByTitle, isTypeTableNode } from "./node-capabilities";
-import { relationshipRuleContextForLabel } from "./schema-rules/resolve";
+import { relationshipRuleContextForType } from "./schema-rules/resolve";
 import type { SchemaFile } from "./schema-rules/schema-file";
 
 const RELATION_META_KEYS = new Set([
@@ -109,9 +109,9 @@ function labelToSectionTitle(label: string): string {
     .join(" ");
 }
 
-function relationLabelSortKey(label: string): string {
-  if (isTypeMembershipLabel(label)) return "z:is_a";
-  return `a:${label}`;
+function relationTypeSortKey(type: string): string {
+  if (isTypeMembershipType(type)) return "z:is_a";
+  return `a:${type}`;
 }
 
 function ordinalFromProperties(properties: Record<string, unknown>): number {
@@ -121,9 +121,9 @@ function ordinalFromProperties(properties: Record<string, unknown>): number {
   return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER;
 }
 
-function normalizeRelationGroupLabel(label: string): string {
-  if (label === LEGACY_IN_DATABASE_LABEL) return IS_A_LABEL;
-  return label;
+function normalizeRelationGroupType(type: string): string {
+  if (type === LEGACY_IN_DATABASE_TYPE) return IS_A_TYPE;
+  return type;
 }
 
 function resolveViaDatabase(connections: Relationship[]): string | null {
@@ -137,10 +137,10 @@ function resolveViaDatabase(connections: Relationship[]): string | null {
 
 function resolveTypeNodeId(
   db: GraphDatabase,
-  label: string,
+  relationshipType: string,
   connections: Relationship[],
 ): string | null {
-  if (label === IS_A_LABEL) {
+  if (relationshipType === IS_A_TYPE) {
     const viaDatabase = resolveViaDatabase(connections);
     if (viaDatabase) {
       if (isTypeTableNode(db, viaDatabase)) return viaDatabase;
@@ -149,7 +149,7 @@ function resolveTypeNodeId(
     if (targetIds.length === 1) return targetIds[0]!;
   }
 
-  return findTypeNodeByTitle(db, labelToSectionTitle(label));
+  return findTypeNodeByTitle(db, labelToSectionTitle(relationshipType));
 }
 
 function sectionTitleForType(
@@ -170,21 +170,21 @@ function buildRelationSections(
   schema?: SchemaFile,
 ): RelationTableSection[] {
   const outgoing = db.listRelationshipsFromSource(nodeId);
-  const byLabel = new Map<string, typeof outgoing>();
+  const byType = new Map<string, typeof outgoing>();
 
   for (const connection of outgoing) {
-    const groupLabel = normalizeRelationGroupLabel(connection.label);
-    const group = byLabel.get(groupLabel) ?? [];
+    const groupType = normalizeRelationGroupType(connection.type);
+    const group = byType.get(groupType) ?? [];
     group.push(connection);
-    byLabel.set(groupLabel, group);
+    byType.set(groupType, group);
   }
 
   const sections: RelationTableSection[] = [];
 
-  for (const label of [...byLabel.keys()].sort((a, b) =>
-    relationLabelSortKey(a).localeCompare(relationLabelSortKey(b)),
+  for (const label of [...byType.keys()].sort((a, b) =>
+    relationTypeSortKey(a).localeCompare(relationTypeSortKey(b)),
   )) {
-    const connections = byLabel.get(label)!;
+    const connections = byType.get(label)!;
     const columnSet = new Set<string>();
     const rows: RelationRow[] = [];
 
@@ -212,8 +212,8 @@ function buildRelationSections(
 
     const typeNodeId = resolveTypeNodeId(db, label, connections);
     const ruleContext =
-      schema && !isTypeMembershipLabel(label)
-        ? relationshipRuleContextForLabel(schema, db, nodeId, label)
+      schema && !isTypeMembershipType(label)
+        ? relationshipRuleContextForType(schema, db, nodeId, label)
         : null;
     const columns = [...columnSet].sort((a, b) => a.localeCompare(b));
     if (columns.includes("priority")) {
@@ -288,7 +288,7 @@ export function getNodePageDetail(
 
   const finalSections = properties
     ? sections.filter(
-        (section) => !(section.type === "relations" && section.label === IS_A_LABEL),
+        (section) => !(section.type === "relations" && section.label === IS_A_TYPE),
       )
     : sections;
 

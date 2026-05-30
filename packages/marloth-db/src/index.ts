@@ -48,7 +48,7 @@ export {
 export type { NodeLifecycleError } from "./node-lifecycle";
 export { getDatabaseViewDetail } from "./database-view";
 export { hydrateRelationCellsForRows } from "./database-view-relations";
-export { relationLabel, stripEmojis } from "./relation-label";
+export { relationType, normalizeRelationshipType, stripEmojis } from "./relation-type";
 export type {
   DatabaseColumnDef,
   DatabaseRow,
@@ -170,11 +170,20 @@ export {
   seedDynamicField,
 } from "./dynamic-fields";
 export type { DynamicColumnSetRecord, DynamicFieldRecord } from "./dynamic-fields";
-export { IS_A_LABEL, LEGACY_IN_DATABASE_LABEL, TYPE_MEMBERSHIP_LABELS, isTypeMembershipLabel } from "./labels";
+export {
+  IS_A_TYPE,
+  IS_A_LABEL,
+  LEGACY_IN_DATABASE_TYPE,
+  LEGACY_IN_DATABASE_LABEL,
+  TYPE_MEMBERSHIP_TYPES,
+  TYPE_MEMBERSHIP_LABELS,
+  isTypeMembershipType,
+  isTypeMembershipLabel,
+} from "./labels";
 export { loadSchemaFromContent, invalidateSchemaCache } from "./schema-rules/load";
 export {
   allowedTargetTypeIdsForRule,
-  relationshipRuleContextForLabel,
+  relationshipRuleContextForType,
   resolveRelationshipRule,
   resolveRelationshipRulesForSource,
 } from "./schema-rules/resolve";

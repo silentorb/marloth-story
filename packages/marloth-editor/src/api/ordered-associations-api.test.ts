@@ -1,5 +1,5 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { IS_A_LABEL, typeTableMarkerProperties } from "marloth-db";
+import { IS_A_TYPE, typeTableMarkerProperties } from "marloth-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
@@ -28,15 +28,15 @@ describe("ordered-associations API", () => {
   seedTestNode(fixture, { id: scene1, properties: { title: "Scene One" } });
   seedTestNode(fixture, { id: scene2, properties: { title: "Scene Two" } });
   seedTestRelationships(fixture, [
-    { source: book, target: PRODUCTS_DB, label: IS_A_LABEL, properties: { order: "1", row_index: 0 } },
-    { source: part, target: PARTS_DB, label: IS_A_LABEL, properties: { row_index: 0 } },
-    { source: part, target: book, label: "PRODUCTS", properties: { ordinal: 0 } },
-    { source: scene1, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "10" } },
-    { source: scene2, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "20" } },
-    { source: scene1, target: book, label: "PRODUCT", properties: { ordinal: 0 } },
-    { source: scene2, target: book, label: "PRODUCT", properties: { ordinal: 0 } },
-    { source: scene1, target: part, label: "PART", properties: { ordinal: 0 } },
-    { source: scene2, target: part, label: "PART", properties: { ordinal: 1 } },
+    { source: book, target: PRODUCTS_DB, type: IS_A_TYPE, properties: { order: "1", row_index: 0 } },
+    { source: part, target: PARTS_DB, type: IS_A_TYPE, properties: { row_index: 0 } },
+    { source: part, target: book, type: "PRODUCTS", properties: { ordinal: 0 } },
+    { source: scene1, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "10" } },
+    { source: scene2, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "20" } },
+    { source: scene1, target: book, type: "PRODUCT", properties: { ordinal: 0 } },
+    { source: scene2, target: book, type: "PRODUCT", properties: { ordinal: 0 } },
+    { source: scene1, target: part, type: "PART", properties: { ordinal: 0 } },
+    { source: scene2, target: part, type: "PART", properties: { ordinal: 1 } },
   ]);
 
   const api = createTestApiFromContent(fixture);

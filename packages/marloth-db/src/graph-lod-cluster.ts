@@ -39,7 +39,7 @@ export interface LodClusterRelationship {
   id: string;
   sourceNodeId: string;
   targetNodeId: string;
-  label: string;
+  type: string;
 }
 
 interface RelevanceEntry {
@@ -304,7 +304,7 @@ function aggregateRelationships(
 ): GraphRelationship[] {
   const linkCounts = new Map<
     string,
-    { source: string; target: string; label: string; weight: number }
+    { source: string; target: string; type: string; weight: number }
   >();
 
   for (const relationship of relationships) {
@@ -312,7 +312,7 @@ function aggregateRelationships(
     const target = nodeToCluster.get(relationship.targetNodeId);
     if (!source || !target || source === target) continue;
 
-    const key = `${source}:${relationship.label}:${target}`;
+    const key = `${source}:${relationship.type}:${target}`;
     const existing = linkCounts.get(key);
     if (existing) {
       existing.weight += 1;
@@ -320,17 +320,17 @@ function aggregateRelationships(
       linkCounts.set(key, {
         source,
         target,
-        label: relationship.label,
+        type: relationship.type,
         weight: 1,
       });
     }
   }
 
   return [...linkCounts.values()].map((link) => ({
-    id: relationshipId(link.source, link.label, link.target),
+    id: relationshipId(link.source, link.type, link.target),
     source: link.source,
     target: link.target,
-    label: link.label,
+    type: link.type,
     weight: link.weight,
   }));
 }
@@ -420,7 +420,7 @@ function snapshotFromPartition(
         id: relationship.id,
         source: relationship.sourceNodeId,
         target: relationship.targetNodeId,
-        label: relationship.label,
+        type: relationship.type,
       }))
     : aggregateRelationships(relationships, nodeToCluster);
 

@@ -43,7 +43,7 @@ export function makeGraphLodSnapshot(
             id: "connection-anchor-neighbor",
             source: anchorId,
             target: neighborId,
-            label: "related",
+            type: "related",
           },
         ],
       },

@@ -125,7 +125,7 @@ export function RelationSectionView({
       <TableAddRowFooter
         label={`New ${section.title.replace(/s$/i, "") || "row"}`}
         onSubmit={async (title) => {
-          await api.createRelationRow(nodeId, { label: section.label, title });
+          await api.createRelationRow(nodeId, { type: section.label, title });
           onCellUpdated?.();
         }}
       />

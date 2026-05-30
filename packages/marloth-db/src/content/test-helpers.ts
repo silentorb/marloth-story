@@ -9,6 +9,17 @@ import { invalidateDynamicFieldsCache } from "./sync";
 import { openMarlothWriteContext, type MarlothWriteContext } from "./write-context";
 import { writeFileSync } from "node:fs";
 import { nodeFilePath } from "./paths";
+import {
+  entryFromRelationship,
+  RELATIONSHIPS_FILE_VERSION,
+  type RelationshipEntry,
+  sortEndpoints,
+} from "./relationships-file";
+import { relationshipId } from "../graph";
+import {
+  registerBidirectionalType,
+  registerUnidirectionalType,
+} from "./relationship-types-file";
 
 export interface TestContentFixture {
   tempDir: string;
@@ -53,32 +64,57 @@ export function seedTestDynamicFields(
   invalidateDynamicFieldsCache();
 }
 
+function entryFromSeedConnection(connection: {
+  source: string;
+  target: string;
+  type: string;
+  properties?: Properties;
+}): RelationshipEntry {
+  return entryFromRelationship({
+    id: relationshipId(connection.source, connection.type, connection.target),
+    sourceNodeId: connection.source,
+    targetNodeId: connection.target,
+    type: connection.type,
+    properties: connection.properties ?? {},
+  });
+}
+
 export function seedTestRelationships(
   fixture: TestContentFixture,
   connections: Array<{
     source: string;
     target: string;
-    label: string;
+    type: string;
     properties?: Properties;
   }>,
   options?: { replace?: boolean },
 ): void {
+  const registry = options?.replace
+    ? { version: 1 as const, types: {} as Record<string, never> }
+    : fixture.ctx.store.readRelationshipTypesFile();
   const file = options?.replace
-    ? { version: 1 as const, relationships: [] }
+    ? { version: RELATIONSHIPS_FILE_VERSION, relationships: [] as RelationshipEntry[] }
     : fixture.ctx.store.readRelationshipsFile();
+
   for (const connection of connections) {
+    registerUnidirectionalType(registry, connection.type);
+    const entry = entryFromSeedConnection(connection);
     const index = file.relationships.findIndex(
-      (c) =>
-        c.source === connection.source &&
-        c.target === connection.target &&
-        c.label === connection.label,
+      (existing) =>
+        existing.a === entry.a &&
+        existing.b === entry.b &&
+        existing.type === entry.type,
     );
     if (index >= 0) {
-      file.relationships[index] = connection;
+      file.relationships[index] = entry;
     } else {
-      file.relationships.push(connection);
+      file.relationships.push(entry);
     }
   }
+
+  fixture.ctx.store.writeRelationshipTypesFile(registry);
   fixture.ctx.store.writeRelationshipsFile(file);
   fixture.ctx.sync.syncRelationships();
 }
+
+export { registerBidirectionalType, registerUnidirectionalType, sortEndpoints };

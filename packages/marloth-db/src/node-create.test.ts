@@ -1,5 +1,5 @@
 import { describe, expect, test, afterEach } from "bun:test";
-import { IS_A_LABEL } from "./labels";
+import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { getNodeDetail } from "./queries";
 import { createNode } from "./node-create";
@@ -46,18 +46,18 @@ describe("createNode", () => {
       id: "b1111111111111111111111111111111",
       properties: { title: "Existing feat" },
     });
-    fixture.ctx.store.upsertRelationship(sourceId, "b1111111111111111111111111111111", "FEATURES", {
+    fixture.ctx.store.upsertRelationship(sourceId, "b1111111111111111111111111111111", "features", {
       ordinal: 2,
     });
     fixture.ctx.sync.syncRelationships();
 
     const result = createNode(fixture.ctx, {
       title: "New feature",
-      link: { kind: "outgoing", sourceId, label: "FEATURES" },
+      link: { kind: "outgoing", sourceId, type: "features" },
     });
     if (typeof result === "string") throw new Error(result);
 
-    const rel = fixture.ctx.store.findRelationship(sourceId, result.id, "FEATURES");
+    const rel = fixture.ctx.store.findRelationship(sourceId, result.id, "features");
     expect(rel).not.toBeNull();
     expect(rel?.properties.ordinal).toBe(3);
   });
@@ -73,7 +73,7 @@ describe("createNode", () => {
       id: "d1111111111111111111111111111111",
       properties: { title: "Old row" },
     });
-    fixture.ctx.store.upsertRelationship("d1111111111111111111111111111111", databaseId, IS_A_LABEL, {
+    fixture.ctx.store.upsertRelationship("d1111111111111111111111111111111", databaseId, IS_A_TYPE, {
       row_index: 4,
       view: "default",
     });
@@ -85,7 +85,7 @@ describe("createNode", () => {
     });
     if (typeof result === "string") throw new Error(result);
 
-    const rel = fixture.ctx.store.findRelationship(result.id, databaseId, IS_A_LABEL);
+    const rel = fixture.ctx.store.findRelationship(result.id, databaseId, IS_A_TYPE);
     expect(rel?.properties.row_index).toBe(5);
     expect(rel?.properties.view).toBe("default");
   });
@@ -98,7 +98,7 @@ describe("createNode", () => {
         link: {
           kind: "outgoing",
           sourceId: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-          label: "FEATURES",
+          type: "features",
         },
       }),
     ).toBe("source_not_found");

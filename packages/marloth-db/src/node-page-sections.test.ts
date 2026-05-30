@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { GraphDatabase } from "./graph";
-import { IS_A_LABEL } from "./labels";
+import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { getNodePageDetail } from "./node-page-sections";
 
@@ -29,8 +29,8 @@ describe("node-sections", () => {
       inferred_notion_path: "Marloth/Features/Desperation.md",
     });
     db.upsertNode("insp1", { title: "Pride and Prejudice" });
-    db.upsertRelationship("scene1", "feat1", "FEATURES", { ordinal: 0, weight: "strong" });
-    db.upsertRelationship("scene1", "insp1", "INSPIRATIONS", { ordinal: 1 });
+    db.upsertRelationship("scene1", "feat1", "features", { ordinal: 0, weight: "strong" });
+    db.upsertRelationship("scene1", "insp1", "inspirations", { ordinal: 1 });
 
     const detail = getNodePageDetail(db, "scene1");
     const relationSections = detail?.sections.filter((section) => section.type === "relations");
@@ -38,7 +38,7 @@ describe("node-sections", () => {
     expect(relationSections).toHaveLength(2);
     expect(relationSections?.[0]).toMatchObject({
       type: "relations",
-      label: "FEATURES",
+      label: "features",
       title: "Features",
       columns: ["weight"],
       rows: [
@@ -51,7 +51,8 @@ describe("node-sections", () => {
       ],
     });
     expect(relationSections?.[1]).toMatchObject({
-      label: "INSPIRATIONS",
+      type: "relations",
+      label: "inspirations",
       rows: [{ targetId: "insp1", name: "Pride and Prejudice" }],
     });
   });
@@ -60,7 +61,7 @@ describe("node-sections", () => {
     const databaseId = "db42345678901234567890123456789012";
     db.upsertNode(databaseId, { ...typeTableMarkerProperties("Features DB"), body: "# About" });
     db.upsertNode("page4", { title: "Guest consultant" });
-    db.upsertRelationship("page4", databaseId, IS_A_LABEL, {
+    db.upsertRelationship("page4", databaseId, IS_A_TYPE, {
       view: "default",
       row_index: 0,
       status: "Active",
@@ -88,7 +89,7 @@ describe("node-sections", () => {
     const databaseId = "db52345678901234567890123456789012";
     db.upsertNode("page5", { title: "Scene A", body: "Prose" });
     db.upsertNode(databaseId, { ...typeTableMarkerProperties("Scene Archive") });
-    db.upsertRelationship("page5", databaseId, IS_A_LABEL, {
+    db.upsertRelationship("page5", databaseId, IS_A_TYPE, {
       view: "default",
       row_index: 3,
       priority: "High",
@@ -96,7 +97,7 @@ describe("node-sections", () => {
 
     const detail = getNodePageDetail(db, "page5");
     const membership = detail?.sections.find(
-      (section) => section.type === "relations" && section.label === IS_A_LABEL,
+      (section) => section.type === "relations" && section.label === IS_A_TYPE,
     );
 
     expect(membership).toBeUndefined();
@@ -121,11 +122,11 @@ describe("node-sections", () => {
     const databaseId = "db62345678901234567890123456789012";
     db.upsertNode("page6", { title: "Legacy row" });
     db.upsertNode(databaseId, { ...typeTableMarkerProperties("Legacy Features") });
-    db.upsertRelationship("page6", databaseId, "IN_DATABASE", { status: "Draft" });
+    db.upsertRelationship("page6", databaseId, "in_database", { status: "Draft" });
 
     const detail = getNodePageDetail(db, "page6");
     const membership = detail?.sections.find(
-      (section) => section.type === "relations" && section.label === IS_A_LABEL,
+      (section) => section.type === "relations" && section.label === IS_A_TYPE,
     );
 
     expect(membership).toBeUndefined();
@@ -141,11 +142,11 @@ describe("node-sections", () => {
     db.upsertNode("scene2", { title: "Chase" });
     db.upsertNode(featuresTypeId, { ...typeTableMarkerProperties("Features") });
     db.upsertNode("feat2", { title: "Desperation" });
-    db.upsertRelationship("scene2", "feat2", "FEATURES", { ordinal: 0 });
+    db.upsertRelationship("scene2", "feat2", "features", { ordinal: 0 });
 
     const detail = getNodePageDetail(db, "scene2");
     const features = detail?.sections.find(
-      (section) => section.type === "relations" && section.label === "FEATURES",
+      (section) => section.type === "relations" && section.label === "features",
     );
 
     expect(features).toMatchObject({
@@ -161,14 +162,14 @@ describe("node-sections", () => {
     db.upsertNode(featuresTypeId, { ...typeTableMarkerProperties("Features") });
     db.upsertNode(inspirationsTypeId, { ...typeTableMarkerProperties("Inspirations") });
     db.upsertNode("insp3", { title: "Emma" });
-    db.upsertRelationship("scene4", "insp3", "INSPIRATIONS", {
+    db.upsertRelationship("scene4", "insp3", "inspirations", {
       ordinal: 0,
       via_database: featuresTypeId,
     });
 
     const detail = getNodePageDetail(db, "scene4");
     const inspirations = detail?.sections.find(
-      (section) => section.type === "relations" && section.label === "INSPIRATIONS",
+      (section) => section.type === "relations" && section.label === "inspirations",
     );
 
     expect(inspirations).toMatchObject({
@@ -182,11 +183,11 @@ describe("node-sections", () => {
     db.upsertNode("scene3", { title: "Ball" });
     db.upsertNode(inspTypeId, { ...typeTableMarkerProperties("Inspirations") });
     db.upsertNode("insp2", { title: "Emma" });
-    db.upsertRelationship("scene3", "insp2", "INSPIRATIONS", { ordinal: 0 });
+    db.upsertRelationship("scene3", "insp2", "inspirations", { ordinal: 0 });
 
     const detail = getNodePageDetail(db, "scene3");
     const inspirations = detail?.sections.find(
-      (section) => section.type === "relations" && section.label === "INSPIRATIONS",
+      (section) => section.type === "relations" && section.label === "inspirations",
     );
 
     expect(inspirations?.typeNodeId).toBe(inspTypeId);

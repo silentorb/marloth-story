@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { Properties } from "./graph";
-import { IS_A_LABEL } from "./labels";
+import { IS_A_TYPE } from "./labels";
 import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterNodeWrite, syncAfterRelationshipsWrite } from "./content/write-context";
 import { isTypeTableNode } from "./node-capabilities";
@@ -11,7 +11,7 @@ export type CreateNodeLink =
   | {
       kind: "outgoing";
       sourceId: string;
-      label: string;
+      type: string;
       properties?: Properties;
       /** When set, also create IS_A membership on the new node to this type. */
       membershipTypeId?: string;
@@ -52,8 +52,8 @@ function ordinalFromProperties(properties: Record<string, unknown>): number | nu
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-function nextOutgoingOrdinal(ctx: MarlothWriteContext, sourceId: string, label: string): number | undefined {
-  const outgoing = ctx.db.listRelationshipsFromSource(sourceId).filter((c) => c.label === label);
+function nextOutgoingOrdinal(ctx: MarlothWriteContext, sourceId: string, type: string): number | undefined {
+  const outgoing = ctx.db.listRelationshipsFromSource(sourceId).filter((c) => c.type === type);
   if (outgoing.length === 0) return undefined;
   const ordinals = outgoing
     .map((c) => ordinalFromProperties(c.properties))
@@ -63,7 +63,7 @@ function nextOutgoingOrdinal(ctx: MarlothWriteContext, sourceId: string, label: 
 }
 
 function nextDatabaseRowIndex(ctx: MarlothWriteContext, databaseId: string): number {
-  const incoming = ctx.db.listRelationshipsToTarget(databaseId).filter((c) => c.label === IS_A_LABEL);
+  const incoming = ctx.db.listRelationshipsToTarget(databaseId).filter((c) => c.type === IS_A_TYPE);
   let max = -1;
   for (const connection of incoming) {
     const raw = connection.properties.row_index;
@@ -109,13 +109,13 @@ export function createNode(
   syncAfterNodeWrite(ctx, id);
 
   if (input.link?.kind === "outgoing") {
-    const { sourceId, label, properties = {}, membershipTypeId } = input.link;
+    const { sourceId, type, properties = {}, membershipTypeId } = input.link;
     const relProps: Properties = { ...properties };
-    const nextOrdinal = nextOutgoingOrdinal(ctx, sourceId, label);
+    const nextOrdinal = nextOutgoingOrdinal(ctx, sourceId, type);
     if (nextOrdinal !== undefined) relProps.ordinal = nextOrdinal;
-    ctx.store.upsertRelationship(sourceId, id, label, relProps);
+    ctx.store.upsertRelationship(sourceId, id, type, relProps);
     if (membershipTypeId) {
-      ctx.store.upsertRelationship(id, membershipTypeId, IS_A_LABEL, {});
+      ctx.store.upsertRelationship(id, membershipTypeId, IS_A_TYPE, {});
     }
     syncAfterRelationshipsWrite(ctx);
   }
@@ -127,7 +127,7 @@ export function createNode(
       row_index: nextDatabaseRowIndex(ctx, databaseId),
       view: view ?? properties.view ?? "default",
     };
-    ctx.store.upsertRelationship(id, databaseId, IS_A_LABEL, relProps);
+    ctx.store.upsertRelationship(id, databaseId, IS_A_TYPE, relProps);
     syncAfterRelationshipsWrite(ctx);
   }
 

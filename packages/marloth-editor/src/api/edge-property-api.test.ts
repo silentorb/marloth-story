@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, test } from "bun:test";
-import { GraphDatabase, IS_A_LABEL, typeTableMarkerProperties } from "marloth-db";
+import { GraphDatabase, IS_A_TYPE, typeTableMarkerProperties } from "marloth-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
@@ -17,7 +17,7 @@ describe("edge property API", () => {
   seedTestNode(fixture, { id: databaseId, properties: typeTableMarkerProperties("Features") });
   seedTestNode(fixture, { id: nodeId, properties: { title: "Feature" } });
   seedTestRelationships(fixture, [
-    { source: nodeId, target: databaseId, label: IS_A_LABEL, properties: { priority: "Low" } },
+    { source: nodeId, target: databaseId, type: IS_A_TYPE, properties: { priority: "Low" } },
   ]);
 
   const api = createTestApiFromContent(fixture);
@@ -33,7 +33,7 @@ describe("edge property API", () => {
     expect(res.status).toBe(200);
 
     const verifyDb = new GraphDatabase(api.dbPath);
-    const edge = verifyDb.listRelationshipsFromSource(nodeId, IS_A_LABEL)[0];
+    const edge = verifyDb.listRelationshipsFromSource(nodeId, IS_A_TYPE)[0];
     expect(edge?.properties.priority).toBe("High");
     verifyDb.close();
   });

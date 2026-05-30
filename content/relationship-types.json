@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "types": {
+    "bible_passages": {
+      "bidirectional": false,
+      "perspectives": [
+        "bible_passages"
+      ]
+    },
+    "blocking_blocked_by": {
+      "bidirectional": true,
+      "perspectives": [
+        "blocked_by",
+        "blocking"
+      ]
+    },
+    "characters_character_attributes": {
+      "bidirectional": true,
+      "perspectives": [
+        "characters",
+        "character_attributes"
+      ]
+    },
+    "children": {
+      "bidirectional": false,
+      "perspectives": [
+        "children"
+      ]
+    },
+    "enemies_enemies": {
+      "bidirectional": true,
+      "perspectives": [
+        "enemies",
+        "enemies"
+      ]
+    },
+    "features": {
+      "bidirectional": false,
+      "perspectives": [
+        "features"
+      ]
+    },
+    "features_bible_passages": {
+      "bidirectional": true,
+      "perspectives": [
+        "features",
+        "bible_passages"
+      ]
+    },
+    "groups_characters": {
+      "bidirectional": true,
+      "perspectives": [
+        "characters",
+        "groups"
+      ]
+    },
+    "inspirations": {
+      "bidirectional": false,
+      "perspectives": [
+        "inspirations"
+      ]
+    },
+    "inspirations_features": {
+      "bidirectional": true,
+      "perspectives": [
+        "inspirations",
+        "features"
+      ]
+    },
+    "is_a": {
+      "bidirectional": false,
+      "perspectives": [
+        "is_a"
+      ]
+    },
+    "monsters": {
+      "bidirectional": false,
+      "perspectives": [
+        "monsters"
+      ]
+    },
+    "monsters_inspirations": {
+      "bidirectional": true,
+      "perspectives": [
+        "inspirations",
+        "monsters"
+      ]
+    },
+    "motivation": {
+      "bidirectional": false,
+      "perspectives": [
+        "motivation"
+      ]
+    },
+    "pacing": {
+      "bidirectional": false,
+      "perspectives": [
+        "pacing"
+      ]
+    },
+    "pacing_inspirations": {
+      "bidirectional": true,
+      "perspectives": [
+        "inspirations",
+        "pacing"
+      ]
+    },
+    "parents": {
+      "bidirectional": false,
+      "perspectives": [
+        "parents"
+      ]
+    },
+    "parents_children": {
+      "bidirectional": true,
+      "perspectives": [
+        "children",
+        "parents"
+      ]
+    },
+    "products": {
+      "bidirectional": false,
+      "perspectives": [
+        "products"
+      ]
+    },
+    "products_characters": {
+      "bidirectional": true,
+      "perspectives": [
+        "characters",
+        "products"
+      ]
+    },
+    "products_features": {
+      "bidirectional": true,
+      "perspectives": [
+        "features",
+        "products"
+      ]
+    },
+    "products_parts_database": {
+      "bidirectional": true,
+      "perspectives": [
+        "products",
+        "parts_database"
+      ]
+    },
+    "prop_type": {
+      "bidirectional": false,
+      "perspectives": [
+        "prop_type"
+      ]
+    },
+    "prop_type_inspirations": {
+      "bidirectional": true,
+      "perspectives": [
+        "prop_type",
+        "inspirations"
+      ]
+    },
+    "scenes": {
+      "bidirectional": false,
+      "perspectives": [
+        "scenes"
+      ]
+    },
+    "scenes_2": {
+      "bidirectional": false,
+      "perspectives": [
+        "scenes_2"
+      ]
+    },
+    "scenes_arcs": {
+      "bidirectional": true,
+      "perspectives": [
+        "scenes",
+        "arcs"
+      ]
+    },
+    "scenes_characters": {
+      "bidirectional": true,
+      "perspectives": [
+        "scenes",
+        "characters"
+      ]
+    },
+    "scenes_features_test": {
+      "bidirectional": true,
+      "perspectives": [
+        "features_test",
+        "scenes"
+      ]
+    },
+    "scenes_location": {
+      "bidirectional": true,
+      "perspectives": [
+        "location",
+        "scenes"
+      ]
+    },
+    "scenes_part": {
+      "bidirectional": true,
+      "perspectives": [
+        "scenes",
+        "part"
+      ]
+    },
+    "scenes_parts_test": {
+      "bidirectional": true,
+      "perspectives": [
+        "scenes",
+        "parts_test"
+      ]
+    },
+    "scenes_product": {
+      "bidirectional": true,
+      "perspectives": [
+        "scenes",
+        "product"
+      ]
+    },
+    "solutions": {
+      "bidirectional": false,
+      "perspectives": [
+        "solutions"
+      ]
+    },
+    "solutions_features": {
+      "bidirectional": true,
+      "perspectives": [
+        "features",
+        "solutions"
+      ]
+    },
+    "solutions_products": {
+      "bidirectional": true,
+      "perspectives": [
+        "solutions",
+        "products"
+      ]
+    },
+    "solutions_scenes": {
+      "bidirectional": true,
+      "perspectives": [
+        "solutions",
+        "scenes"
+      ]
+    },
+    "story_scale": {
+      "bidirectional": false,
+      "perspectives": [
+        "story_scale"
+      ]
+    },
+    "story_scale_inspirations": {
+      "bidirectional": true,
+      "perspectives": [
+        "story_scale",
+        "inspirations"
+      ]
+    },
+    "theme": {
+      "bidirectional": false,
+      "perspectives": [
+        "theme"
+      ]
+    },
+    "traversal_reasons": {
+      "bidirectional": false,
+      "perspectives": [
+        "traversal_reasons"
+      ]
+    },
+    "traversal_reasons_inspirations": {
+      "bidirectional": true,
+      "perspectives": [
+        "inspirations",
+        "traversal_reasons"
+      ]
+    },
+    "traversal_types": {
+      "bidirectional": false,
+      "perspectives": [
+        "traversal_types"
+      ]
+    },
+    "traversal_types_inspirations": {
+      "bidirectional": true,
+      "perspectives": [
+        "inspirations",
+        "traversal_types"
+      ]
+    }
+  }
+}

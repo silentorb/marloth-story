@@ -6,7 +6,7 @@ import { ContentStore } from "./content/store";
 import { fileFromSeedInputs } from "./content/dynamic-fields-file";
 import { invalidateDynamicFieldsCache } from "./content/sync";
 import { GraphDatabase } from "./graph";
-import { IS_A_LABEL } from "./labels";
+import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { buildPropertiesSection } from "./node-type-properties";
 import { getNodePageDetail } from "./node-page-sections";
@@ -41,7 +41,7 @@ describe("node-type-properties", () => {
     invalidateDynamicFieldsCache();
     db.upsertNode(CHAR_DB, { ...typeTableMarkerProperties("Characters") });
     db.upsertNode(character, { title: "James" });
-    db.upsertRelationship(character, CHAR_DB, IS_A_LABEL, { row_index: 0, priority: "High" });
+    db.upsertRelationship(character, CHAR_DB, IS_A_TYPE, { row_index: 0, priority: "High" });
 
     db.upsertNode(scene1, { title: "Scene A" });
     db.upsertNode(scene2, { title: "Scene B" });
@@ -81,7 +81,7 @@ describe("node-type-properties", () => {
     expect(detail?.properties?.cells.all_scene_count).toBe("2");
     expect(
       detail?.sections.some(
-        (section) => section.type === "relations" && section.label === IS_A_LABEL,
+        (section) => section.type === "relations" && section.label === IS_A_TYPE,
       ),
     ).toBe(false);
   });

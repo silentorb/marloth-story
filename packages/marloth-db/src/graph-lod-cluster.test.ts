@@ -20,9 +20,9 @@ function makeTriangleGraph(anchorId = "aaaa0001"): {
     { id: "aaaa0003", title: "Gamma", path: null, group: "Node", labels: ["Node"] },
   ];
   const edges: LodClusterRelationship[] = [
-    { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
-    { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", label: "LINKS" },
-    { id: "e3", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0003", label: "LINKS" },
+    { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", type: "links" },
+    { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", type: "links" },
+    { id: "e3", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0003", type: "links" },
   ];
   return { vertices, edges, anchorId };
 }
@@ -41,11 +41,11 @@ function makeStarGraph(): {
     { id: "leaf0003", title: "Leaf3", path: null, group: "Node", labels: ["Node"] },
   ];
   const edges: LodClusterRelationship[] = [
-    { id: "e1", sourceNodeId: anchorId, targetNodeId: "hub00001", label: "LINKS" },
-    { id: "e2", sourceNodeId: "hub00001", targetNodeId: "leaf0001", label: "LINKS" },
-    { id: "e3", sourceNodeId: "hub00001", targetNodeId: "leaf0002", label: "LINKS" },
-    { id: "e4", sourceNodeId: "hub00001", targetNodeId: "leaf0003", label: "LINKS" },
-    { id: "e5", sourceNodeId: anchorId, targetNodeId: "leaf0001", label: "LINKS" },
+    { id: "e1", sourceNodeId: anchorId, targetNodeId: "hub00001", type: "links" },
+    { id: "e2", sourceNodeId: "hub00001", targetNodeId: "leaf0001", type: "links" },
+    { id: "e3", sourceNodeId: "hub00001", targetNodeId: "leaf0002", type: "links" },
+    { id: "e4", sourceNodeId: "hub00001", targetNodeId: "leaf0003", type: "links" },
+    { id: "e5", sourceNodeId: anchorId, targetNodeId: "leaf0001", type: "links" },
   ];
   return { vertices, edges, anchorId };
 }
@@ -63,9 +63,9 @@ function makeChainGraph(): {
     { id: "aaaa0004", title: "D", path: null, group: "Node", labels: ["Node"] },
   ];
   const edges: LodClusterRelationship[] = [
-    { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
-    { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", label: "LINKS" },
-    { id: "e3", sourceNodeId: "aaaa0003", targetNodeId: "aaaa0004", label: "LINKS" },
+    { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", type: "links" },
+    { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", type: "links" },
+    { id: "e3", sourceNodeId: "aaaa0003", targetNodeId: "aaaa0004", type: "links" },
   ];
   return { vertices, edges, anchorId };
 }
@@ -85,11 +85,11 @@ function makeLongChainGraph(): {
     { id: "aaaa0006", title: "F", path: null, group: "Node", labels: ["Node"] },
   ];
   const edges: LodClusterRelationship[] = [
-    { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", label: "LINKS" },
-    { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", label: "LINKS" },
-    { id: "e3", sourceNodeId: "aaaa0003", targetNodeId: "aaaa0004", label: "LINKS" },
-    { id: "e4", sourceNodeId: "aaaa0004", targetNodeId: "aaaa0005", label: "LINKS" },
-    { id: "e5", sourceNodeId: "aaaa0005", targetNodeId: "aaaa0006", label: "LINKS" },
+    { id: "e1", sourceNodeId: "aaaa0001", targetNodeId: "aaaa0002", type: "links" },
+    { id: "e2", sourceNodeId: "aaaa0002", targetNodeId: "aaaa0003", type: "links" },
+    { id: "e3", sourceNodeId: "aaaa0003", targetNodeId: "aaaa0004", type: "links" },
+    { id: "e4", sourceNodeId: "aaaa0004", targetNodeId: "aaaa0005", type: "links" },
+    { id: "e5", sourceNodeId: "aaaa0005", targetNodeId: "aaaa0006", type: "links" },
   ];
   return { vertices, edges, anchorId };
 }

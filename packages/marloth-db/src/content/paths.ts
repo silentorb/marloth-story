@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 
 export const RELATIONSHIPS_FILENAME = "relationships.json";
+export const RELATIONSHIP_TYPES_FILENAME = "relationship-types.json";
 /** @deprecated Use RELATIONSHIPS_FILENAME. Legacy content file name (pre–relationship terminology). */
 export const CONNECTIONS_FILENAME = "connections.json";
 export const DYNAMIC_FIELDS_FILENAME = "dynamic-fields.json";
@@ -24,6 +25,10 @@ export function nodeFilePath(contentDir: string, id: string): string {
 
 export function relationshipsFilePath(contentDir: string): string {
   return resolve(contentDir, RELATIONSHIPS_FILENAME);
+}
+
+export function relationshipTypesFilePath(contentDir: string): string {
+  return resolve(contentDir, RELATIONSHIP_TYPES_FILENAME);
 }
 
 /** @deprecated Use relationshipsFilePath. */

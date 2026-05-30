@@ -160,15 +160,15 @@ export function createApiHandler(
       if (relationRowMatch && req.method === "POST") {
         const sourceId = relationRowMatch[1]!.toLowerCase();
         const payload = (await req.json()) as {
-          label?: string;
+          type?: string;
           title?: string;
           properties?: Record<string, string>;
         };
-        if (typeof payload.label !== "string" || typeof payload.title !== "string") {
-          return json({ error: "label and title required" }, 400);
+        if (typeof payload.type !== "string" || typeof payload.title !== "string") {
+          return json({ error: "type and title required" }, 400);
         }
         const result = db.createRelationRow(sourceId, {
-          label: payload.label,
+          type: payload.type,
           title: payload.title,
           properties: payload.properties,
         });
@@ -249,15 +249,15 @@ export function createApiHandler(
       if (connectionsPostMatch && req.method === "POST") {
         const sourceId = connectionsPostMatch[1]!.toLowerCase();
         const payload = (await req.json()) as {
-          label?: string;
+          type?: string;
           targetId?: string;
           viaDatabase?: string;
         };
-        if (typeof payload.label !== "string" || typeof payload.targetId !== "string") {
-          return json({ error: "label and targetId required" }, 400);
+        if (typeof payload.type !== "string" || typeof payload.targetId !== "string") {
+          return json({ error: "type and targetId required" }, 400);
         }
         const error = db.linkOutgoingRelationship(sourceId, {
-          label: payload.label,
+          type: payload.type,
           targetId: payload.targetId.toLowerCase(),
           viaDatabase:
             typeof payload.viaDatabase === "string"
@@ -278,16 +278,16 @@ export function createApiHandler(
         /^\/api\/nodes\/([a-f0-9]{32})\/connections\/([^/]+)\/([a-f0-9]{32})$/i.exec(path);
       if (connectionMatch && req.method === "DELETE") {
         const sourceId = connectionMatch[1]!.toLowerCase();
-        const label = decodeURIComponent(connectionMatch[2]!);
+        const type = decodeURIComponent(connectionMatch[2]!);
         const targetId = connectionMatch[3]!.toLowerCase();
-        const error = db.unlinkOutgoingRelationship(sourceId, label, targetId);
+        const error = db.unlinkOutgoingRelationship(sourceId, type, targetId);
         if (error === "not_found") return json({ error: "not found" }, 404);
         return json({ ok: true });
       }
 
       if (connectionMatch && req.method === "PATCH") {
         const nodeId = connectionMatch[1]!.toLowerCase();
-        const label = decodeURIComponent(connectionMatch[2]!);
+        const type = decodeURIComponent(connectionMatch[2]!);
         const targetId = connectionMatch[3]!.toLowerCase();
         const payload = (await req.json()) as { property?: string; value?: string | null };
         if (typeof payload.property !== "string") {
@@ -299,7 +299,7 @@ export function createApiHandler(
             : String(payload.value);
         const error = db.updateOutgoingRelationshipProperty(
           nodeId,
-          label,
+          type,
           targetId,
           payload.property,
           value,

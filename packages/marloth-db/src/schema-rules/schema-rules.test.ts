@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test";
 import { GraphDatabase } from "../graph";
-import { IS_A_LABEL } from "../labels";
+import { IS_A_TYPE } from "../labels";
 import { typeTableMarkerProperties } from "../node-capabilities";
 import { loadSchemaFromContent } from "./load";
-import { relationshipRuleContextForLabel, resolveRelationshipRule } from "./resolve";
+import { relationshipRuleContextForType, resolveRelationshipRule } from "./resolve";
 import { parseSchemaFile } from "./schema-file";
 import { resolveContentPath } from "../content/paths";
 
@@ -22,7 +22,7 @@ describe("schema rules", () => {
         ],
       }),
     );
-    expect(file.relationshipRules[0]?.label).toBe("FEATURES");
+    expect(file.relationshipRules[0]?.type).toBe("features");
   });
 
   test("resolveRelationshipRule matches source type membership", () => {
@@ -34,7 +34,7 @@ describe("schema rules", () => {
     db.upsertNode(scenesType, typeTableMarkerProperties("Scenes"));
     db.upsertNode(featuresType, typeTableMarkerProperties("Features"));
     db.upsertNode(scene, { title: "Test scene" });
-    db.upsertRelationship(scene, scenesType, IS_A_LABEL, {});
+    db.upsertRelationship(scene, scenesType, IS_A_TYPE, {});
 
     const schema = parseSchemaFile(
       JSON.stringify({
@@ -43,17 +43,17 @@ describe("schema rules", () => {
           {
             id: "scene-features",
             sourceTypeId: scenesType,
-            label: "FEATURES",
+            type: "features",
             allowedTargetTypeIds: [featuresType],
           },
         ],
       }),
     );
 
-    const rule = resolveRelationshipRule(schema, db, scene, "FEATURES");
+    const rule = resolveRelationshipRule(schema, db, scene, "features");
     expect(rule?.id).toBe("scene-features");
 
-    const context = relationshipRuleContextForLabel(schema, db, scene, "FEATURES");
+    const context = relationshipRuleContextForType(schema, db, scene, "features");
     expect(context?.allowedTargetTypeIds).toEqual([featuresType]);
   });
 

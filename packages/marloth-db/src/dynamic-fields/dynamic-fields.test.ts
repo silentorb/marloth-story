@@ -7,7 +7,7 @@ import { fileFromSeedInputs } from "../content/dynamic-fields-file";
 import { invalidateDynamicFieldsCache } from "../content/sync";
 import { GraphDatabase } from "../graph";
 import { typeTableMarkerProperties } from "../node-capabilities";
-import { IS_A_LABEL } from "../labels";
+import { IS_A_TYPE } from "../labels";
 import { getDatabaseViewDetail } from "../database-view";
 import {
   buildAllSceneCountPrefetch,
@@ -97,7 +97,7 @@ describe("dynamic-fields resolvers", () => {
     db.upsertNode(WONDERLAND, { title: "Wonderland" });
 
     db.upsertNode(character, { title: "James" });
-    db.upsertRelationship(character, CHAR_DB, IS_A_LABEL, { row_index: 0 });
+    db.upsertRelationship(character, CHAR_DB, IS_A_TYPE, { row_index: 0 });
 
     db.upsertNode(scene1, { title: "Scene A" });
     db.upsertNode(scene2, { title: "Scene B" });
@@ -105,19 +105,19 @@ describe("dynamic-fields resolvers", () => {
     db.upsertRelationship(character, scene1, "SCENES", {});
     db.upsertRelationship(character, scene2, "SCENES", {});
     db.upsertRelationship(character, scene3, "SCENES", {});
-    db.upsertRelationship(scene1, TWOLD, "PRODUCT", {});
-    db.upsertRelationship(scene2, TWOLD, "PRODUCT", {});
-    db.upsertRelationship(scene3, OTHER_PRODUCT, "PRODUCT", {});
+    db.upsertRelationship(scene1, TWOLD, "product", {});
+    db.upsertRelationship(scene2, TWOLD, "product", {});
+    db.upsertRelationship(scene3, OTHER_PRODUCT, "product", {});
 
     db.upsertNode(inspiration, { title: "Test Inspiration" });
-    db.upsertRelationship(inspiration, INSP_DB, IS_A_LABEL, { row_index: 0 });
+    db.upsertRelationship(inspiration, INSP_DB, IS_A_TYPE, { row_index: 0 });
 
     db.upsertNode(featureWonder, { title: "Adventure" });
     db.upsertNode(featurePlain, { title: "Plain" });
-    db.upsertRelationship(featureWonder, FEAT_DB, IS_A_LABEL, { priority: "Medium" });
-    db.upsertRelationship(featurePlain, FEAT_DB, IS_A_LABEL, { priority: "High" });
-    db.upsertRelationship(inspiration, featureWonder, "FEATURES", {});
-    db.upsertRelationship(inspiration, featurePlain, "FEATURES", {});
+    db.upsertRelationship(featureWonder, FEAT_DB, IS_A_TYPE, { priority: "Medium" });
+    db.upsertRelationship(featurePlain, FEAT_DB, IS_A_TYPE, { priority: "High" });
+    db.upsertRelationship(inspiration, featureWonder, "features", {});
+    db.upsertRelationship(inspiration, featurePlain, "features", {});
     db.upsertRelationship(featureWonder, WONDERLAND, "THEME", {});
 
   });

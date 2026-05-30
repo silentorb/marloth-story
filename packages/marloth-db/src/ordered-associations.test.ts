@@ -1,5 +1,5 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { IS_A_LABEL } from "./labels";
+import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import {
   applyOrderedAssociationMove,
@@ -26,13 +26,82 @@ const part2 = "22222222222222222222222222222222";
 const scene1 = "33333333333333333333333333333333";
 const scene2 = "44444444444444444444444444444444";
 const scene3 = "55555555555555555555555555555555";
+const character1 = "77777777777777777777777777777777";
+
+const SCENES_TABLE_METADATA = {
+  notion_schema: JSON.stringify({
+    syncedAt: "2026-01-01T00:00:00.000Z",
+    properties: {
+      Name: { id: "title", name: "Name", type: "title", config: {} },
+      Product: {
+        id: "z>kT",
+        name: "Product",
+        type: "relation",
+        config: { database_id: "4e973268-d347-4f71-bd79-92094fb39663" },
+      },
+      Part: {
+        id: "OeMk",
+        name: "Part",
+        type: "relation",
+        config: { database_id: "5e45eefc-69a1-4f45-b988-ad1f3c9d1ef5" },
+      },
+      Solutions: {
+        id: "Zxzj",
+        name: "Solutions",
+        type: "relation",
+        config: { database_id: "52838494-3746-443a-9c89-699b57e3bbec" },
+      },
+      "📁 Characters": {
+        id: "UIUV",
+        name: "📁 Characters",
+        type: "relation",
+        config: { database_id: "f984a934-ad64-4f84-80b0-f8f51449569f" },
+      },
+      "📁 Location": {
+        id: "s[oN",
+        name: "📁 Location",
+        type: "relation",
+        config: { database_id: "df096ab2-6e83-47e6-992e-95698345aad0" },
+      },
+      Order: { id: "si~w", name: "Order", type: "number", config: {} },
+    },
+  }),
+  notion_views: JSON.stringify({
+    syncedAt: "2026-01-01T00:00:00.000Z",
+    views: [
+      {
+        id: "twold-active",
+        name: "TWOLD Active",
+        type: "table",
+        filter: null,
+        sorts: [],
+        visiblePropertyIds: [],
+        configuration: {
+          type: "table",
+          properties: [
+            { property_id: "title", property_name: "Name", visible: true },
+            { property_id: "z>kT", property_name: "Product", visible: true },
+            { property_id: "OeMk", property_name: "Part", visible: true },
+            { property_id: "Zxzj", property_name: "Solutions", visible: true },
+            { property_id: "UIUV", property_name: "📁 Characters", visible: true },
+            { property_id: "s[oN", property_name: "📁 Location", visible: true },
+            { property_id: "si~w", property_name: "Order", visible: true },
+          ],
+        },
+      },
+    ],
+  }),
+};
 
 describe("ordered-associations", () => {
   const fixture = createTestContentFixture("marloth-ordered-");
 
   seedTestNode(fixture, { id: PRODUCTS_DB, properties: typeTableMarkerProperties("Products") });
   seedTestNode(fixture, { id: PARTS_DB, properties: typeTableMarkerProperties("Parts database") });
-  seedTestNode(fixture, { id: SCENES_DB, properties: typeTableMarkerProperties("Scenes") });
+  seedTestNode(fixture, {
+    id: SCENES_DB,
+    properties: { ...typeTableMarkerProperties("Scenes"), ...SCENES_TABLE_METADATA },
+  });
   seedTestNode(fixture, { id: bookA, properties: { title: "Book A" } });
   seedTestNode(fixture, { id: bookB, properties: { title: "Book B" } });
   seedTestNode(fixture, { id: part1, properties: { title: "Part 1" } });
@@ -40,23 +109,30 @@ describe("ordered-associations", () => {
   seedTestNode(fixture, { id: scene1, properties: { title: "Scene One" } });
   seedTestNode(fixture, { id: scene2, properties: { title: "Scene Two" } });
   seedTestNode(fixture, { id: scene3, properties: { title: "Scene Three" } });
+  seedTestNode(fixture, { id: character1, properties: { title: "Hero" } });
 
   seedTestRelationships(fixture, [
-    { source: bookA, target: PRODUCTS_DB, label: IS_A_LABEL, properties: { order: "1", row_index: 0 } },
-    { source: bookB, target: PRODUCTS_DB, label: IS_A_LABEL, properties: { order: "2", row_index: 1 } },
-    { source: part1, target: PARTS_DB, label: IS_A_LABEL, properties: { row_index: 0 } },
-    { source: part2, target: PARTS_DB, label: IS_A_LABEL, properties: { row_index: 1 } },
-    { source: part1, target: bookA, label: "PRODUCTS", properties: { ordinal: 0 } },
-    { source: part2, target: bookA, label: "PRODUCTS", properties: { ordinal: 0 } },
-    { source: scene1, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "10", status: "Yes" } },
-    { source: scene2, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "20", status: "Yes" } },
-    { source: scene3, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "30", status: "Draft" } },
-    { source: scene1, target: bookA, label: "PRODUCT", properties: { ordinal: 0 } },
-    { source: scene2, target: bookA, label: "PRODUCT", properties: { ordinal: 0 } },
-    { source: scene3, target: bookB, label: "PRODUCT", properties: { ordinal: 0 } },
-    { source: scene1, target: part1, label: "PART", properties: { ordinal: 0 } },
-    { source: scene2, target: part1, label: "PART", properties: { ordinal: 1 } },
-    { source: scene3, target: part2, label: "PART", properties: { ordinal: 0 } },
+    { source: bookA, target: PRODUCTS_DB, type: IS_A_TYPE, properties: { order: "1", row_index: 0 } },
+    { source: bookB, target: PRODUCTS_DB, type: IS_A_TYPE, properties: { order: "2", row_index: 1 } },
+    { source: part1, target: PARTS_DB, type: IS_A_TYPE, properties: { row_index: 0 } },
+    { source: part2, target: PARTS_DB, type: IS_A_TYPE, properties: { row_index: 1 } },
+    { source: part1, target: bookA, type: "products", properties: { ordinal: 0 } },
+    { source: part2, target: bookA, type: "products", properties: { ordinal: 0 } },
+    { source: scene1, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "10" } },
+    { source: scene2, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "20" } },
+    { source: scene3, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "30" } },
+    { source: scene1, target: bookA, type: "product", properties: { ordinal: 0 } },
+    { source: scene2, target: bookA, type: "product", properties: { ordinal: 0 } },
+    { source: scene3, target: bookB, type: "product", properties: { ordinal: 0 } },
+    { source: scene1, target: part1, type: "part", properties: { ordinal: 0 } },
+    { source: scene2, target: part1, type: "part", properties: { ordinal: 1 } },
+    { source: scene3, target: part2, type: "part", properties: { ordinal: 0 } },
+    {
+      source: scene1,
+      target: character1,
+      type: "characters",
+      properties: { via_database: SCENES_DB, ordinal: 0 },
+    },
   ]);
 
   const db = () => fixture.ctx.db;
@@ -75,15 +151,21 @@ describe("ordered-associations", () => {
       "Unassigned",
     ]);
     expect(view?.groups[0]?.rows.map((row) => row.name)).toEqual(["Scene One", "Scene Two"]);
-    expect(view?.columns).toEqual(["status"]);
+    expect(view?.columns).toEqual(["solutions", "characters", "location"]);
+    expect(view?.columnDefs?.map((col) => col.key)).toEqual(["solutions", "characters", "location"]);
+    expect(view?.columnDefs?.some((col) => col.key === "status")).toBe(false);
+
+    const sceneOne = view?.groups[0]?.rows[0];
+    expect(sceneOne?.cells.characters).toBe("Hero");
+    expect(sceneOne?.relationCells?.characters?.[0]?.title).toBe("Hero");
   });
 
   test("places scenes without part in Unassigned group", () => {
     const unassigned = "66666666666666666666666666666666";
     seedTestNode(fixture, { id: unassigned, properties: { title: "Loose Scene" } });
     seedTestRelationships(fixture, [
-      { source: unassigned, target: SCENES_DB, label: IS_A_LABEL, properties: { order: "40" } },
-      { source: unassigned, target: bookA, label: "PRODUCT", properties: { ordinal: 0 } },
+      { source: unassigned, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "40" } },
+      { source: unassigned, target: bookA, type: "product", properties: { ordinal: 0 } },
     ]);
 
     const view = getOrderedAssociationView(db(), CONFIG_ID, bookA);
@@ -102,8 +184,8 @@ describe("ordered-associations", () => {
     const partGroup = updated?.groups.find((group) => group.groupId === part1);
     expect(partGroup?.rows.map((row) => row.sceneId)).toEqual([scene2, scene1]);
 
-    const edge1 = db().getRelationship(`${scene1}:${IS_A_LABEL}:${SCENES_DB}`);
-    const edge2 = db().getRelationship(`${scene2}:${IS_A_LABEL}:${SCENES_DB}`);
+    const edge1 = db().getRelationship(`${scene1}:${IS_A_TYPE}:${SCENES_DB}`);
+    const edge2 = db().getRelationship(`${scene2}:${IS_A_TYPE}:${SCENES_DB}`);
     expect(edge1?.properties.order).toBe("20");
     expect(edge2?.properties.order).toBe("10");
   });
@@ -118,7 +200,7 @@ describe("ordered-associations", () => {
 
     const part2Group = updated?.groups.find((group) => group.groupId === part2);
     expect(part2Group?.rows.some((row) => row.sceneId === scene1)).toBe(true);
-    expect(db().listRelationshipsFromSource(scene1, "PART")[0]?.targetNodeId).toBe(part2);
+    expect(db().listRelationshipsFromSource(scene1, "part")[0]?.targetNodeId).toBe(part2);
   });
 
   test("moving to Unassigned removes PART edge", () => {
@@ -129,7 +211,7 @@ describe("ordered-associations", () => {
       targetIndex: 0,
     });
 
-    expect(db().listRelationshipsFromSource(scene2, "PART")).toHaveLength(0);
+    expect(db().listRelationshipsFromSource(scene2, "part")).toHaveLength(0);
   });
 
   test("Scenes database record page emits ordered-association section", () => {

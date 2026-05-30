@@ -167,6 +167,7 @@ export function NodePageView({
                   onScopeChange={onScopeChange}
                   onViewChange={onOrderedAssociationViewChange}
                   onOpenNode={onOpenNode}
+                  onCellUpdated={onTableCellUpdated}
                 />
               </section>
             );

@@ -12,12 +12,14 @@ import { bodyFromNode } from "./node-file";
 import { invalidateSchemaCache } from "../schema-rules/load";
 import {
   RELATIONSHIPS_FILENAME,
+  RELATIONSHIP_TYPES_FILENAME,
   DYNAMIC_FIELDS_FILENAME,
   SCHEMA_FILENAME,
   dynamicFieldsFilePath,
   NODE_FILE_PATTERN,
 } from "./paths";
 import { ContentStore } from "./store";
+import { expandAllRelationships } from "./relationship-sync-expand";
 
 let cachedDynamicConfig: {
   mtimeMs: number;
@@ -118,6 +120,7 @@ export class CacheSync {
       max = Math.max(max, statSync(path).mtimeMs);
     };
     scan(RELATIONSHIPS_FILENAME);
+    scan(RELATIONSHIP_TYPES_FILENAME);
     scan(DYNAMIC_FIELDS_FILENAME);
     scan(SCHEMA_FILENAME);
     try {
@@ -139,10 +142,32 @@ export class CacheSync {
     return cacheMarker !== contentMtime;
   }
 
+  private expandRelationshipsToCache(): void {
+    const entries = this.store.readRelationshipsFile().relationships;
+    const registry = this.store.readRelationshipTypesFile();
+    const { records, projections } = expandAllRelationships(entries, registry);
+
+    this.db.runExec("BEGIN");
+    try {
+      this.db.clearRelationshipCache();
+      for (let i = 0; i < records.length; i++) {
+        const record = records[i]!;
+        const entry = entries[i];
+        this.db.upsertRelationshipRecord(record, entry?.directedFrom);
+      }
+      for (const projection of projections) {
+        this.db.upsertRelationshipProjection(projection);
+      }
+      this.db.runExec("COMMIT");
+    } catch (err) {
+      this.db.runExec("ROLLBACK");
+      throw err;
+    }
+  }
+
   fullRebuild(): void {
     this.applying = true;
     try {
-      this.db.runExec("DELETE FROM relationships");
       this.db.runExec("DELETE FROM nodes");
 
       for (const id of this.store.listNodeIds()) {
@@ -153,14 +178,7 @@ export class CacheSync {
         this.db.upsertNode(node.id, props);
       }
 
-      for (const connection of this.store.readRelationships()) {
-        this.db.upsertRelationship(
-          connection.sourceNodeId,
-          connection.targetNodeId,
-          connection.label,
-          connection.properties,
-        );
-      }
+      this.expandRelationshipsToCache();
 
       invalidateDynamicFieldsCache();
       this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
@@ -195,15 +213,7 @@ export class CacheSync {
     if (this.applying) return;
     this.applying = true;
     try {
-      this.db.runExec("DELETE FROM relationships");
-      for (const connection of this.store.readRelationships()) {
-        this.db.upsertRelationship(
-          connection.sourceNodeId,
-          connection.targetNodeId,
-          connection.label,
-          connection.properties,
-        );
-      }
+      this.expandRelationshipsToCache();
     } finally {
       this.applying = false;
     }
@@ -212,7 +222,10 @@ export class CacheSync {
   syncFile(relativeName: string): void {
     if (this.applying) return;
 
-    if (relativeName === RELATIONSHIPS_FILENAME) {
+    if (
+      relativeName === RELATIONSHIPS_FILENAME ||
+      relativeName === RELATIONSHIP_TYPES_FILENAME
+    ) {
       this.syncRelationships();
       this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
       return;

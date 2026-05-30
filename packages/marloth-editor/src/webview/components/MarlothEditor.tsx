@@ -47,6 +47,7 @@ export function MarlothEditor({
   const [mention, setMention] = useState<MentionState | null>(null);
   const [results, setResults] = useState<NodeSummary[]>([]);
   const [initError, setInitError] = useState<string | null>(null);
+  const [isEmpty, setIsEmpty] = useState(() => !initialBody.trim());
   const mentionRef = useRef<MentionState | null>(null);
   const resultsRef = useRef<NodeSummary[]>([]);
   mentionRef.current = mention;
@@ -92,6 +93,7 @@ export function MarlothEditor({
     let editorReady = false;
     let baselineCaptured = false;
     setInitError(null);
+    setIsEmpty(!initialBody.trim());
     root.replaceChildren();
     const editorDefault =
       api.host === "standalone"
@@ -122,6 +124,7 @@ export function MarlothEditor({
     crepe.on((listener) => {
       listener.markdownUpdated((_ctx, markdown, prevMarkdown) => {
         if (markdown === prevMarkdown || destroyed || !editorReady) return;
+        setIsEmpty(!markdown.trim());
         if (!baselineCaptured) {
           baselineCaptured = true;
           onEditorBaseline?.(markdown);
@@ -269,7 +272,10 @@ export function MarlothEditor({
           <h1 className="marloth-editor-title">{title}</h1>
         </header>
       )}
-      <div className="marloth-editor-body" ref={rootRef} />
+      <div
+        className={`marloth-editor-body${isEmpty ? " is-empty" : ""}`}
+        ref={rootRef}
+      />
       {initError ? <div className="marloth-editor-error">{initError}</div> : null}
       {mention ? (
         <div

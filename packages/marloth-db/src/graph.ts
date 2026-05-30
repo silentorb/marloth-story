@@ -3,6 +3,10 @@ import { mkdirSync, rmSync } from "node:fs";
 import { dirname } from "node:path";
 import { migrateSchema } from "./schema-migrate";
 import { DDL, SCHEMA_VERSION } from "./schema";
+import type {
+  RelationshipProjectionRow,
+  RelationshipRecordRow,
+} from "./content/relationship-sync-expand";
 
 export type PropertyValue = string | number | boolean | null | PropertyValue[] | { [key: string]: PropertyValue };
 export type Properties = Record<string, PropertyValue>;
@@ -16,8 +20,9 @@ export interface Relationship {
   id: string;
   sourceNodeId: string;
   targetNodeId: string;
-  label: string;
+  type: string;
   properties: Properties;
+  recordId?: string;
 }
 
 export interface GraphCounts {
@@ -44,8 +49,26 @@ function mergeProperties(base: Properties, patch: Properties): Properties {
   return out;
 }
 
-export function relationshipId(sourceNodeId: string, label: string, targetNodeId: string): string {
-  return `${sourceNodeId}:${label}:${targetNodeId}`;
+export function relationshipId(sourceNodeId: string, type: string, targetNodeId: string): string {
+  return `${sourceNodeId}:${type}:${targetNodeId}`;
+}
+
+function mapProjectionRow(row: {
+  id: string;
+  record_id: string;
+  source_node_id: string;
+  target_node_id: string;
+  type: string;
+  properties: string;
+}): Relationship {
+  return {
+    id: row.id,
+    recordId: row.record_id,
+    sourceNodeId: row.source_node_id,
+    targetNodeId: row.target_node_id,
+    type: row.type,
+    properties: parseJsonObject(row.properties),
+  };
 }
 
 export class GraphDatabase {
@@ -54,8 +77,10 @@ export class GraphDatabase {
 
   private insertNode!: ReturnType<Database["prepare"]>;
   private updateNodeProps!: ReturnType<Database["prepare"]>;
-  private insertRelationship!: ReturnType<Database["prepare"]>;
-  private updateRelationshipProps!: ReturnType<Database["prepare"]>;
+  private insertRecord!: ReturnType<Database["prepare"]>;
+  private updateRecordProps!: ReturnType<Database["prepare"]>;
+  private insertProjection!: ReturnType<Database["prepare"]>;
+  private updateProjectionProps!: ReturnType<Database["prepare"]>;
 
   constructor(path: string, options?: { clean?: boolean }) {
     this.path = path;
@@ -83,11 +108,19 @@ export class GraphDatabase {
     this.updateNodeProps = this.db.prepare(
       "UPDATE nodes SET properties = ? WHERE id = ?",
     );
-    this.insertRelationship = this.db.prepare(
-      "INSERT INTO relationships (id, source_node_id, target_node_id, label, properties) VALUES (?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING",
+    this.insertRecord = this.db.prepare(
+      `INSERT INTO relationship_records (id, node_a, node_b, composite_type, properties, directed_from)
+       VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING`,
     );
-    this.updateRelationshipProps = this.db.prepare(
-      "UPDATE relationships SET properties = ? WHERE id = ?",
+    this.updateRecordProps = this.db.prepare(
+      "UPDATE relationship_records SET properties = ? WHERE id = ?",
+    );
+    this.insertProjection = this.db.prepare(
+      `INSERT INTO relationship_projections (id, record_id, source_node_id, target_node_id, type, properties)
+       VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO NOTHING`,
+    );
+    this.updateProjectionProps = this.db.prepare(
+      "UPDATE relationship_projections SET properties = ? WHERE id = ?",
     );
   }
 
@@ -125,31 +158,99 @@ export class GraphDatabase {
     this.updateNodeProps.run(JSON.stringify(merged), id);
   }
 
+  clearRelationshipCache(): void {
+    this.db.exec("DELETE FROM relationship_projections");
+    this.db.exec("DELETE FROM relationship_records");
+  }
+
+  upsertRelationshipRecord(
+    record: RelationshipRecordRow,
+    directedFrom?: string | null,
+  ): void {
+    this.insertRecord.run(
+      record.id,
+      record.nodeA,
+      record.nodeB,
+      record.compositeType,
+      JSON.stringify(record.properties),
+      directedFrom ?? null,
+    );
+    const existing = this.getRelationshipRecord(record.id);
+    if (existing && Object.keys(record.properties).length > 0) {
+      const merged = mergeProperties(existing.properties, record.properties);
+      this.updateRecordProps.run(JSON.stringify(merged), record.id);
+    }
+  }
+
+  upsertRelationshipProjection(projection: RelationshipProjectionRow): void {
+    this.insertProjection.run(
+      projection.id,
+      projection.recordId,
+      projection.sourceNodeId,
+      projection.targetNodeId,
+      projection.type,
+      JSON.stringify(projection.properties),
+    );
+    const existing = this.getRelationship(projection.id);
+    if (existing && Object.keys(projection.properties).length > 0) {
+      const merged = mergeProperties(existing.properties, projection.properties);
+      this.updateProjectionProps.run(JSON.stringify(merged), projection.id);
+    }
+  }
+
+  /** @deprecated Use upsertRelationshipProjection via sync expander. Kept for test helpers. */
+  upsertRelationship(
+    sourceNodeId: string,
+    targetNodeId: string,
+    type: string,
+    properties: Properties = {},
+  ): void {
+    const id = relationshipId(sourceNodeId, type, targetNodeId);
+    this.insertRecord.run(
+      id,
+      sourceNodeId < targetNodeId ? sourceNodeId : targetNodeId,
+      sourceNodeId < targetNodeId ? targetNodeId : sourceNodeId,
+      type,
+      JSON.stringify(properties),
+      sourceNodeId,
+    );
+    this.insertProjection.run(
+      id,
+      id,
+      sourceNodeId,
+      targetNodeId,
+      type,
+      JSON.stringify(properties),
+    );
+    const existing = this.getRelationship(id);
+    if (existing && Object.keys(properties).length > 0) {
+      const merged = mergeProperties(existing.properties, properties);
+      this.updateProjectionProps.run(JSON.stringify(merged), id);
+    }
+  }
+
   mergeRelationshipProperties(id: string, properties: Properties): void {
     const existing = this.getRelationship(id);
     if (!existing) return;
     const merged = mergeProperties(existing.properties, properties);
-    this.updateRelationshipProps.run(JSON.stringify(merged), id);
-  }
-
-  upsertRelationship(
-    sourceNodeId: string,
-    targetNodeId: string,
-    label: string,
-    properties: Properties = {},
-  ): void {
-    const id = relationshipId(sourceNodeId, label, targetNodeId);
-    this.insertRelationship.run(id, sourceNodeId, targetNodeId, label, JSON.stringify(properties));
-    const existing = this.getRelationship(id);
-    if (existing && Object.keys(properties).length > 0) {
-      const merged = mergeProperties(existing.properties, properties);
-      this.updateRelationshipProps.run(JSON.stringify(merged), id);
+    this.updateProjectionProps.run(JSON.stringify(merged), id);
+    if (existing.recordId) {
+      this.updateRecordProps.run(JSON.stringify(merged), existing.recordId);
     }
   }
 
-  deleteRelationship(sourceNodeId: string, targetNodeId: string, label: string): boolean {
-    const id = relationshipId(sourceNodeId, label, targetNodeId);
-    const result = this.db.prepare("DELETE FROM relationships WHERE id = ?").run(id);
+  deleteRelationship(sourceNodeId: string, targetNodeId: string, type: string): boolean {
+    const id = relationshipId(sourceNodeId, type, targetNodeId);
+    const row = this.getRelationship(id);
+    if (!row?.recordId) {
+      const result = this.db
+        .prepare("DELETE FROM relationship_projections WHERE id = ?")
+        .run(id);
+      return result.changes > 0;
+    }
+    const result = this.db
+      .prepare("DELETE FROM relationship_records WHERE id = ?")
+      .run(row.recordId);
     return result.changes > 0;
   }
 
@@ -169,33 +270,55 @@ export class GraphDatabase {
     };
   }
 
-  getRelationship(id: string): Relationship | null {
+  getRelationshipRecord(id: string): RelationshipRecordRow | null {
     const row = this.db
       .prepare(
-        "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE id = ?",
+        "SELECT id, node_a, node_b, composite_type, properties FROM relationship_records WHERE id = ?",
       )
       .get(id) as
       | {
           id: string;
-          source_node_id: string;
-          target_node_id: string;
-          label: string;
+          node_a: string;
+          node_b: string;
+          composite_type: string;
           properties: string;
         }
       | undefined;
     if (!row) return null;
     return {
       id: row.id,
-      sourceNodeId: row.source_node_id,
-      targetNodeId: row.target_node_id,
-      label: row.label,
+      nodeA: row.node_a,
+      nodeB: row.node_b,
+      compositeType: row.composite_type,
       properties: parseJsonObject(row.properties),
     };
   }
 
+  getRelationship(id: string): Relationship | null {
+    const row = this.db
+      .prepare(
+        `SELECT id, record_id, source_node_id, target_node_id, type, properties
+         FROM relationship_projections WHERE id = ?`,
+      )
+      .get(id) as
+      | {
+          id: string;
+          record_id: string;
+          source_node_id: string;
+          target_node_id: string;
+          type: string;
+          properties: string;
+        }
+      | undefined;
+    if (!row) return null;
+    return mapProjectionRow(row);
+  }
+
   counts(): GraphCounts {
     const n = this.db.prepare("SELECT COUNT(*) AS c FROM nodes").get() as { c: number };
-    const r = this.db.prepare("SELECT COUNT(*) AS c FROM relationships").get() as { c: number };
+    const r = this.db
+      .prepare("SELECT COUNT(*) AS c FROM relationship_projections")
+      .get() as { c: number };
     return { nodes: n.c, relationships: r.c };
   }
 
@@ -252,8 +375,8 @@ export class GraphDatabase {
   }
 
   private nodeMatchesAnyAllowedType(nodeId: string, allowedTypeIds: readonly string[]): boolean {
-    for (const label of ["IS_A", "IN_DATABASE"] as const) {
-      for (const connection of this.listRelationshipsFromSource(nodeId, label)) {
+    for (const type of ["is_a", "in_database"] as const) {
+      for (const connection of this.listRelationshipsFromSource(nodeId, type)) {
         if (allowedTypeIds.includes(connection.targetNodeId)) return true;
       }
     }
@@ -293,99 +416,96 @@ export class GraphDatabase {
     id: string;
     sourceNodeId: string;
     targetNodeId: string;
-    label: string;
+    type: string;
   }[] {
     return this.db
-      .prepare("SELECT id, source_node_id, target_node_id, label FROM relationships")
+      .prepare("SELECT id, source_node_id, target_node_id, type FROM relationship_projections")
       .all()
       .map((row) => {
         const r = row as {
           id: string;
           source_node_id: string;
           target_node_id: string;
-          label: string;
+          type: string;
         };
         return {
           id: r.id,
           sourceNodeId: r.source_node_id,
           targetNodeId: r.target_node_id,
-          label: r.label,
+          type: r.type,
         };
       });
   }
 
-  listRelationshipsFromSource(sourceNodeId: string, label?: string): Relationship[] {
-    const rows = label
+  listRelationshipsFromSource(sourceNodeId: string, type?: string): Relationship[] {
+    const rows = type
       ? (this.db
           .prepare(
-            "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE source_node_id = ? AND label = ? ORDER BY id",
+            `SELECT id, record_id, source_node_id, target_node_id, type, properties
+             FROM relationship_projections WHERE source_node_id = ? AND type = ? ORDER BY id`,
           )
-          .all(sourceNodeId, label) as {
+          .all(sourceNodeId, type) as {
           id: string;
+          record_id: string;
           source_node_id: string;
           target_node_id: string;
-          label: string;
+          type: string;
           properties: string;
         }[])
       : (this.db
           .prepare(
-            "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE source_node_id = ? ORDER BY label, id",
+            `SELECT id, record_id, source_node_id, target_node_id, type, properties
+             FROM relationship_projections WHERE source_node_id = ? ORDER BY type, id`,
           )
           .all(sourceNodeId) as {
           id: string;
+          record_id: string;
           source_node_id: string;
           target_node_id: string;
-          label: string;
+          type: string;
           properties: string;
         }[]);
 
-    return rows.map((row) => ({
-      id: row.id,
-      sourceNodeId: row.source_node_id,
-      targetNodeId: row.target_node_id,
-      label: row.label,
-      properties: parseJsonObject(row.properties),
-    }));
+    return rows.map(mapProjectionRow);
   }
 
-  listRelationshipsToTarget(targetNodeId: string, label?: string): Relationship[] {
-    const rows = label
+  listRelationshipsToTarget(targetNodeId: string, type?: string): Relationship[] {
+    const rows = type
       ? (this.db
           .prepare(
-            "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE target_node_id = ? AND label = ? ORDER BY id",
+            `SELECT id, record_id, source_node_id, target_node_id, type, properties
+             FROM relationship_projections WHERE target_node_id = ? AND type = ? ORDER BY id`,
           )
-          .all(targetNodeId, label) as {
+          .all(targetNodeId, type) as {
           id: string;
+          record_id: string;
           source_node_id: string;
           target_node_id: string;
-          label: string;
+          type: string;
           properties: string;
         }[])
       : (this.db
           .prepare(
-            "SELECT id, source_node_id, target_node_id, label, properties FROM relationships WHERE target_node_id = ? ORDER BY id",
+            `SELECT id, record_id, source_node_id, target_node_id, type, properties
+             FROM relationship_projections WHERE target_node_id = ? ORDER BY id`,
           )
           .all(targetNodeId) as {
           id: string;
+          record_id: string;
           source_node_id: string;
           target_node_id: string;
-          label: string;
+          type: string;
           properties: string;
         }[]);
 
-    return rows.map((row) => ({
-      id: row.id,
-      sourceNodeId: row.source_node_id,
-      targetNodeId: row.target_node_id,
-      label: row.label,
-      properties: parseJsonObject(row.properties),
-    }));
+    return rows.map(mapProjectionRow);
   }
 
   countIncidentRelationships(nodeId: string): number {
     const row = this.db
       .prepare(
-        "SELECT COUNT(*) AS c FROM relationships WHERE source_node_id = ? OR target_node_id = ?",
+        `SELECT COUNT(*) AS c FROM relationship_projections
+         WHERE source_node_id = ? OR target_node_id = ?`,
       )
       .get(nodeId, nodeId) as { c: number };
     return row.c;

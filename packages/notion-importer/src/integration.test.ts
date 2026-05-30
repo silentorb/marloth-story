@@ -45,7 +45,7 @@ describe("integration", () => {
     const connection = db.getRelationship(
       "0123456789abcdef0123456789abcdef:LINKS:0123456789abcdef0123456789abcdee",
     );
-    expect(connection?.label).toBe("LINKS");
+    expect(connection?.type).toBe("LINKS");
     db.close();
   });
 });

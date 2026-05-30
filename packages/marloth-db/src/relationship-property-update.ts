@@ -7,7 +7,7 @@ import {
   isPriorityValue,
   isUnsetPriority,
 } from "./property-enums";
-import { TYPE_MEMBERSHIP_LABELS } from "./labels";
+import { TYPE_MEMBERSHIP_TYPES } from "./labels";
 
 export type RelationshipPropertyUpdateError = "not_found" | "invalid_value";
 
@@ -15,17 +15,17 @@ export function updateOutgoingRelationshipProperty(
   ctx: MarlothWriteContext,
   sourceNodeId: string,
   targetNodeId: string,
-  label: string,
+  type: string,
   propertyKey: string,
   value: string | null,
 ): RelationshipPropertyUpdateError | null {
-  const connection = ctx.store.findRelationship(sourceNodeId, targetNodeId, label);
+  const connection = ctx.store.findRelationship(sourceNodeId, targetNodeId, type);
   if (!connection) return "not_found";
 
   if (isPriorityColumnKey(propertyKey)) {
     const resolved: string = isUnsetPriority(value) ? PRIORITY_DEFAULT : (value ?? PRIORITY_DEFAULT);
     if (!isPriorityValue(resolved)) return "invalid_value";
-    ctx.store.mergeRelationshipProperties(sourceNodeId, targetNodeId, label, {
+    ctx.store.mergeRelationshipProperties(sourceNodeId, targetNodeId, type, {
       ...connection.properties,
       [propertyKey]: resolved,
     });
@@ -40,7 +40,7 @@ export function updateOutgoingRelationshipProperty(
     patch[propertyKey] = value;
   }
 
-  ctx.store.mergeRelationshipProperties(sourceNodeId, targetNodeId, label, patch);
+  ctx.store.mergeRelationshipProperties(sourceNodeId, targetNodeId, type, patch);
   syncAfterRelationshipsWrite(ctx);
   return null;
 }
@@ -52,14 +52,14 @@ export function updateDatabaseRowProperty(
   propertyKey: string,
   value: string | null,
 ): RelationshipPropertyUpdateError | null {
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
-    const connection = ctx.store.findRelationship(nodeId, databaseId, label);
+  for (const type of TYPE_MEMBERSHIP_TYPES) {
+    const connection = ctx.store.findRelationship(nodeId, databaseId, type);
     if (connection) {
       return updateOutgoingRelationshipProperty(
         ctx,
         nodeId,
         databaseId,
-        label,
+        type,
         propertyKey,
         value,
       );

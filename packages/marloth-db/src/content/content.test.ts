@@ -43,23 +43,22 @@ describe("node-file", () => {
 
 describe("relationships-file", () => {
   test("round-trips relationships", () => {
-    const file = {
+    const raw = JSON.stringify({
       version: 1,
       relationships: [
         {
           source: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
           target: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
-          label: "SCENES",
+          label: "scenes",
           properties: { ordinal: 1 },
         },
       ],
-    };
-    const raw = serializeRelationshipsFile(file);
+    });
     const parsed = parseRelationshipsFile(raw);
     expect(parsed.relationships).toHaveLength(1);
     const conn = relationshipFromEntry(parsed.relationships[0]!);
-    expect(conn.id).toBe("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:SCENES:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-    expect(entryFromRelationship(conn).label).toBe("SCENES");
+    expect(conn.id).toBe("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:scenes:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+    expect(entryFromRelationship(conn).type).toBe("scenes");
   });
 });
 

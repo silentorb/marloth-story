@@ -1,5 +1,5 @@
 import type { GraphDatabase, Relationship, Properties } from "./graph";
-import { IS_A_LABEL, TYPE_MEMBERSHIP_LABELS } from "./labels";
+import { IS_A_TYPE, TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { findTypeNodeByTitle, isTypeTableNode } from "./node-capabilities";
 
 /** Node properties that are not database row scalars. */
@@ -110,7 +110,7 @@ export function findTypeMembershipRelationship(
   nodeId: string,
   databaseId: string,
 ): Relationship | null {
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
+  for (const label of TYPE_MEMBERSHIP_TYPES) {
     const connection = db
       .listRelationshipsFromSource(nodeId, label)
       .find((c) => c.targetNodeId === databaseId);
@@ -148,7 +148,7 @@ export function findSpuriousTypeMembershipRelationships(db: GraphDatabase): Spur
     const expected = expectedTypeDatabaseForPage(db, node.id);
     if (!expected) continue;
 
-    for (const label of TYPE_MEMBERSHIP_LABELS) {
+    for (const label of TYPE_MEMBERSHIP_TYPES) {
       for (const connection of db.listRelationshipsFromSource(node.id, label)) {
         if (connection.targetNodeId === expected.databaseId) continue;
 
@@ -228,7 +228,7 @@ export function findNodeScalarsOnTypedNodes(db: GraphDatabase): NodeScalarOnType
 
 export function maxRowIndexForDatabase(db: GraphDatabase, databaseId: string): number {
   let max = -1;
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
+  for (const label of TYPE_MEMBERSHIP_TYPES) {
     for (const connection of db.listRelationshipsToTarget(databaseId, label)) {
       const raw = connection.properties.row_index;
       const index =
@@ -262,4 +262,4 @@ export function setNodeProperties(db: GraphDatabase, nodeId: string, properties:
   db.runExec("UPDATE nodes SET properties = ? WHERE id = ?", JSON.stringify(properties), nodeId);
 }
 
-export { IS_A_LABEL };
+export { IS_A_TYPE };

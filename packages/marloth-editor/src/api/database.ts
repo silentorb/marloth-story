@@ -9,7 +9,7 @@ import {
   getDatabaseViewDetail,
   getNodePageDetail,
   loadSchemaFromContent,
-  relationshipRuleContextForLabel,
+  relationshipRuleContextForType,
   searchNodes,
   updateNodeBody,
   updateNodeTitle,
@@ -59,7 +59,7 @@ export interface EditorDatabase {
   ): import("marloth-db").RelationshipPropertyUpdateError | null;
   updateOutgoingRelationshipProperty(
     nodeId: string,
-    label: string,
+    type: string,
     targetId: string,
     propertyKey: string,
     value: string | null,
@@ -69,15 +69,15 @@ export interface EditorDatabase {
   createNode(input: CreateNodeInput): CreateNodeResult | CreateNodeError;
   createRelationRow(
     sourceId: string,
-    input: { label: string; title: string; properties?: Record<string, string> },
+    input: { type: string; title: string; properties?: Record<string, string> },
   ): CreateNodeResult | CreateNodeError;
   linkOutgoingRelationship(
     sourceId: string,
-    input: { label: string; targetId: string; viaDatabase?: string },
+    input: { type: string; targetId: string; viaDatabase?: string },
   ): LinkOutgoingRelationshipError | null;
   unlinkOutgoingRelationship(
     sourceId: string,
-    label: string,
+    type: string,
     targetId: string,
   ): UnlinkOutgoingRelationshipError | null;
   getGraphFull(): GraphSnapshot;
@@ -138,7 +138,7 @@ export function openEditorDatabase(
     },
     updateOutgoingRelationshipProperty(
       nodeId: string,
-      label: string,
+      type: string,
       targetId: string,
       propertyKey: string,
       value: string | null,
@@ -147,7 +147,7 @@ export function openEditorDatabase(
         writeCtx,
         nodeId,
         targetId,
-        label,
+        type,
         propertyKey,
         value,
       );
@@ -163,9 +163,9 @@ export function openEditorDatabase(
     },
     createRelationRow(
       sourceId: string,
-      input: { label: string; title: string; properties?: Record<string, string> },
+      input: { type: string; title: string; properties?: Record<string, string> },
     ): CreateNodeResult | CreateNodeError {
-      const rule = relationshipRuleContextForLabel(schema(), writeCtx.db, sourceId, input.label);
+      const rule = relationshipRuleContextForType(schema(), writeCtx.db, sourceId, input.type);
       const membershipTypeId =
         rule && rule.allowedTargetTypeIds.length === 1
           ? rule.allowedTargetTypeIds[0]
@@ -175,7 +175,7 @@ export function openEditorDatabase(
         link: {
           kind: "outgoing",
           sourceId,
-          label: input.label,
+          type: input.type,
           properties: input.properties,
           membershipTypeId,
         },
@@ -183,22 +183,22 @@ export function openEditorDatabase(
     },
     linkOutgoingRelationship(
       sourceId: string,
-      input: { label: string; targetId: string; viaDatabase?: string },
+      input: { type: string; targetId: string; viaDatabase?: string },
     ): LinkOutgoingRelationshipError | null {
       return linkOutgoingRelationship(writeCtx, {
         sourceId,
         targetId: input.targetId,
-        label: input.label,
+        type: input.type,
         viaDatabase: input.viaDatabase,
         schema: schema(),
       });
     },
     unlinkOutgoingRelationship(
       sourceId: string,
-      label: string,
+      type: string,
       targetId: string,
     ): UnlinkOutgoingRelationshipError | null {
-      return unlinkOutgoingRelationship(writeCtx, sourceId, targetId, label);
+      return unlinkOutgoingRelationship(writeCtx, sourceId, targetId, type);
     },
     getGraphFull(): GraphSnapshot {
       return exportFullGraph(writeCtx.db);

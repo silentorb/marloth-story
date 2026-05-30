@@ -43,7 +43,7 @@ export interface GraphRelationship {
   id: string;
   source: string;
   target: string;
-  label: string;
+  type: string;
   weight?: number;
 }
 
@@ -81,7 +81,7 @@ interface ActiveGraphRelationship {
   id: string;
   sourceNodeId: string;
   targetNodeId: string;
-  label: string;
+  type: string;
 }
 
 function collectActiveGraphData(db: GraphDatabase): {
@@ -172,7 +172,7 @@ export function exportFullGraph(db: GraphDatabase): GraphSnapshot {
     id: relationship.id,
     source: relationship.sourceNodeId,
     target: relationship.targetNodeId,
-    label: relationship.label,
+    type: relationship.type,
   }));
 
   return { nodes: graphNodes, relationships: graphRelationships };

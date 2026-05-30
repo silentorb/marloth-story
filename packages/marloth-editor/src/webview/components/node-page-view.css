@@ -55,8 +55,18 @@
   padding: 0;
 }
 
-.marloth-record-page .marloth-editor-body {
-  min-height: 1.5em;
+.marloth-record-page .marloth-editor-body.is-empty {
+  min-height: 0;
+}
+
+.marloth-record-page .marloth-editor-body.is-empty .milkdown .ProseMirror {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.marloth-record-page .marloth-editor-body.is-empty .milkdown .ProseMirror p {
+  padding-top: 0;
+  padding-bottom: 0;
   min-height: 1lh;
 }
 

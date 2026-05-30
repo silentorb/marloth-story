@@ -52,12 +52,12 @@ describe("node create API", () => {
       new Request(`http://127.0.0.1/api/nodes/${sourceId}/relation-rows`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ label: "FEATURES", title: "Linked feature" }),
+        body: JSON.stringify({ type: "features", title: "Linked feature" }),
       }),
     );
     expect(res.status).toBe(200);
     const payload = (await res.json()) as { node: { id: string } };
-    const rel = fixture.ctx.store.findRelationship(sourceId, payload.node.id, "FEATURES");
+    const rel = fixture.ctx.store.findRelationship(sourceId, payload.node.id, "features");
     expect(rel).not.toBeNull();
   });
 
@@ -71,7 +71,7 @@ describe("node create API", () => {
     );
     expect(res.status).toBe(200);
     const payload = (await res.json()) as { node: { id: string } };
-    const rel = fixture.ctx.store.findRelationship(payload.node.id, databaseId, "IS_A");
+    const rel = fixture.ctx.store.findRelationship(payload.node.id, databaseId, "is_a");
     expect(rel).not.toBeNull();
   });
 
@@ -95,29 +95,29 @@ describe("connections API", () => {
       new Request(`http://127.0.0.1/api/nodes/${linkSourceId}/connections`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ label: "FEATURES", targetId: linkTargetId }),
+        body: JSON.stringify({ type: "features", targetId: linkTargetId }),
       }),
     );
     expect(linkRes.status).toBe(200);
-    expect(fixture.ctx.store.findRelationship(linkSourceId, linkTargetId, "FEATURES")).not.toBeNull();
+    expect(fixture.ctx.store.findRelationship(linkSourceId, linkTargetId, "features")).not.toBeNull();
 
     const dupRes = await api.handler(
       new Request(`http://127.0.0.1/api/nodes/${linkSourceId}/connections`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ label: "FEATURES", targetId: linkTargetId }),
+        body: JSON.stringify({ type: "features", targetId: linkTargetId }),
       }),
     );
     expect(dupRes.status).toBe(409);
 
     const unlinkRes = await api.handler(
       new Request(
-        `http://127.0.0.1/api/nodes/${linkSourceId}/connections/${encodeURIComponent("FEATURES")}/${linkTargetId}`,
+        `http://127.0.0.1/api/nodes/${linkSourceId}/connections/${encodeURIComponent("features")}/${linkTargetId}`,
         { method: "DELETE" },
       ),
     );
     expect(unlinkRes.status).toBe(200);
-    expect(fixture.ctx.store.findRelationship(linkSourceId, linkTargetId, "FEATURES")).toBeNull();
+    expect(fixture.ctx.store.findRelationship(linkSourceId, linkTargetId, "features")).toBeNull();
   });
 
   afterAll(() => {
