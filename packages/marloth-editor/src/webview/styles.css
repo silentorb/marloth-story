@@ -9,6 +9,7 @@
   --marloth-border: rgba(255, 255, 255, 0.09);
   --marloth-hover: rgba(255, 255, 255, 0.06);
   --marloth-link: #6cb6ff;
+  --marloth-relation-cell-link: rgb(240, 239, 237);
   --marloth-graph-link: rgba(235, 235, 234, 0.28);
   --marloth-graph-link-strong: rgba(235, 235, 234, 0.42);
   --marloth-graph-cluster-node: #d4a24c;

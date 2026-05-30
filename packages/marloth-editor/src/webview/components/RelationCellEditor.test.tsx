@@ -30,6 +30,24 @@ describe("RelationCellEditor", () => {
     );
   });
 
+  test("opens popup from empty links area via hit layer", () => {
+    const { container } = render(
+      <RelationCellEditor
+        api={makeMockEditorApi()}
+        links={[{ targetId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", title: "Parent" }]}
+        columnName="Parents"
+        onAdd={async () => {}}
+        onRemove={async () => {}}
+        onOpenNode={() => {}}
+      />,
+    );
+
+    const hitArea = container.querySelector(".marloth-relation-cell-hit-area");
+    expect(hitArea).toBeTruthy();
+    fireEvent.click(hitArea!);
+    expect(screen.getByRole("dialog", { name: "Edit Parents links" })).toBeTruthy();
+  });
+
   test("standalone cell link uses native href without custom click handler", () => {
     const onOpenNode = mock(() => {});
     const { container } = render(
@@ -61,7 +79,7 @@ describe("RelationCellEditor", () => {
       search,
     };
 
-    const { container } = render(
+    render(
       <RelationCellEditor
         api={api}
         links={[]}
@@ -72,7 +90,7 @@ describe("RelationCellEditor", () => {
       />,
     );
 
-    fireEvent.mouseEnter(container.querySelector(".marloth-relation-cell")!);
+    fireEvent.mouseEnter(document.querySelector(".marloth-relation-cell")!);
     fireEvent.click(screen.getByRole("button", { name: "Edit Parents links" }));
     expect(screen.getByRole("dialog", { name: "Edit Parents links" })).toBeTruthy();
 
@@ -103,5 +121,42 @@ describe("RelationCellEditor", () => {
     expect(screen.getByRole("link", { name: "Feat 1" })).toBeTruthy();
     const body = document.querySelector(".marloth-relation-cell-links");
     expect(body?.textContent).toMatch(/\d+\+/);
+  });
+
+  test("opens popup when empty links area is clicked beside overflow suffix", () => {
+    const manyLinks = Array.from({ length: 30 }, (_, index) => ({
+      targetId: `${index}`.padStart(32, "0"),
+      title: `Feat ${index + 1}`,
+    }));
+
+    const { container } = render(
+      <RelationCellEditor
+        api={makeMockEditorApi()}
+        links={manyLinks}
+        columnName="Parents"
+        onAdd={async () => {}}
+        onRemove={async () => {}}
+        onOpenNode={() => {}}
+      />,
+    );
+
+    fireEvent.click(container.querySelector(".marloth-relation-cell-hit-area")!);
+    expect(screen.getByRole("dialog", { name: "Edit Parents links" })).toBeTruthy();
+  });
+
+  test("clicking a visible link does not open edit popup", () => {
+    render(
+      <RelationCellEditor
+        api={makeMockEditorApi()}
+        links={[{ targetId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", title: "Parent" }]}
+        columnName="Parents"
+        onAdd={async () => {}}
+        onRemove={async () => {}}
+        onOpenNode={() => {}}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Parent" }));
+    expect(screen.queryByRole("dialog", { name: "Edit Parents links" })).toBeNull();
   });
 });

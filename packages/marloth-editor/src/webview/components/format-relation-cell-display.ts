@@ -3,13 +3,23 @@ import type { RelationLink } from "../../shared/types";
 export const RELATION_CELL_MAX_WIDTH_REM = 14;
 export const RELATION_CELL_MAX_LINES = 6;
 export const RELATION_CELL_FONT =
-  '0.85rem ui-sans-serif, system-ui, sans-serif';
+  '0.95rem ui-sans-serif, system-ui, sans-serif';
 
-/** Matches `.marloth-database-cell-badge` horizontal padding (8px × 2). */
-export const RELATION_CELL_BADGE_PADDING_X_PX = 16;
+/** Inline icon slot (matches relation-cell-editor.css). */
+export const RELATION_CELL_LINK_ICON_SIZE_PX = 20;
+export const RELATION_CELL_LINK_ICON_GAP_PX = 4;
+export const RELATION_CELL_LINK_ICON_SLOT_PX =
+  RELATION_CELL_LINK_ICON_SIZE_PX + RELATION_CELL_LINK_ICON_GAP_PX;
 
-/** Reserved at the right of the cell for the hover edit control (see relation-cell-editor.css). */
-export const RELATION_CELL_EDIT_GUTTER_PX = 26;
+/** Horizontal gap between inline links on the same row (matches relation-cell-editor.css). */
+export const RELATION_CELL_LINK_GAP_PX = 6;
+
+export const RELATION_CELL_EDIT_BUTTON_WIDTH_PX = 22;
+export const RELATION_CELL_CELL_GAP_PX = 4;
+
+/** Reserved beside the links box for the edit control column + cell gap. */
+export const RELATION_CELL_EDIT_GUTTER_PX =
+  RELATION_CELL_EDIT_BUTTON_WIDTH_PX + RELATION_CELL_CELL_GAP_PX;
 
 export type MeasureTextWidth = (text: string) => number;
 
@@ -27,9 +37,36 @@ export interface FormatRelationCellDisplayOptions {
   emptyPlaceholder?: string;
 }
 
-/** Text used when measuring how many lines a link occupies in the cell. */
+/** Text used when measuring title wrapping in the cell (icon width is added separately). */
 export function relationCellLinkMeasureText(title: string): string {
   return title;
+}
+
+export function measureRelationLinkWidth(
+  title: string,
+  measureWidth: MeasureTextWidth,
+): number {
+  return RELATION_CELL_LINK_ICON_SLOT_PX + measureWidth(title);
+}
+
+function countRelationLinkWrappedLines(
+  title: string,
+  maxWidthPx: number,
+  measureWidth: MeasureTextWidth,
+): number {
+  const tokens = title.match(/\S+|\s+/g) ?? [title];
+  let lines = 1;
+  let lineWidth = RELATION_CELL_LINK_ICON_SLOT_PX;
+  for (const token of tokens) {
+    const tokenWidth = measureWidth(token);
+    if (lineWidth + tokenWidth > maxWidthPx) {
+      lines += 1;
+      lineWidth = tokenWidth;
+    } else {
+      lineWidth += tokenWidth;
+    }
+  }
+  return lines;
 }
 
 /** Count wrapped lines for `text` at `maxWidthPx`. */
@@ -59,25 +96,26 @@ export function countRelationLinkLines(
   maxWidthPx: number,
   measureWidth: MeasureTextWidth,
 ): number {
-  const contentMaxWidth = Math.max(1, maxWidthPx - RELATION_CELL_BADGE_PADDING_X_PX);
-  return countWrappedLines(
-    relationCellLinkMeasureText(title),
-    contentMaxWidth,
-    measureWidth,
-  );
+  const width = measureRelationLinkWidth(title, measureWidth);
+  if (width <= maxWidthPx) return 1;
+  return countRelationLinkWrappedLines(title, maxWidthPx, measureWidth);
 }
 
 function buildDisplayText(visible: RelationLink[], overflowCount: number): string {
   if (visible.length === 0 && overflowCount === 0) return "";
-  const prefix = visible.map((link) => relationCellLinkMeasureText(link.title)).join(" ");
+  const prefix = visible.map((link) => link.title).join(" ");
   if (overflowCount <= 0) return prefix;
   const suffix = `${overflowCount}+`;
   return prefix ? `${prefix} ${suffix}` : suffix;
 }
 
+function wouldExceedLineBudget(usedLines: number, maxLines: number): boolean {
+  return usedLines > maxLines;
+}
+
 /**
- * Pack relation links by wrapped line budget; long titles wrap instead of being skipped.
- * Always keeps at least the first link when any exist.
+ * Pack relation links by wrapped line budget with inline flex-wrap row simulation.
+ * Long titles wrap instead of being skipped. Always keeps at least the first link.
  */
 export function packRelationCellVisibleLinks(
   links: RelationLink[],
@@ -85,8 +123,10 @@ export function packRelationCellVisibleLinks(
 ): RelationLink[] {
   const visible: RelationLink[] = [];
   let usedLines = 0;
+  let currentLineWidth = 0;
 
   for (const link of links) {
+    const linkWidth = measureRelationLinkWidth(link.title, options.measureWidth);
     const linkLines = countRelationLinkLines(
       link.title,
       options.maxWidthPx,
@@ -96,15 +136,38 @@ export function packRelationCellVisibleLinks(
     if (visible.length === 0) {
       visible.push(link);
       usedLines = linkLines;
+      currentLineWidth = linkLines === 1 ? linkWidth : 0;
       continue;
     }
 
-    if (usedLines + linkLines > options.maxLines) {
+    if (linkLines === 1) {
+      if (currentLineWidth > 0) {
+        const neededWidth = currentLineWidth + RELATION_CELL_LINK_GAP_PX + linkWidth;
+        if (neededWidth <= options.maxWidthPx) {
+          visible.push(link);
+          currentLineWidth = neededWidth;
+          continue;
+        }
+      }
+
+      if (wouldExceedLineBudget(usedLines + 1, options.maxLines)) {
+        break;
+      }
+
+      visible.push(link);
+      usedLines += 1;
+      currentLineWidth = linkWidth;
+      continue;
+    }
+
+    const rowsNeeded = currentLineWidth > 0 ? linkLines + 1 : linkLines;
+    if (wouldExceedLineBudget(usedLines + rowsNeeded, options.maxLines)) {
       break;
     }
 
     visible.push(link);
-    usedLines += linkLines;
+    usedLines += rowsNeeded;
+    currentLineWidth = 0;
   }
 
   return visible;

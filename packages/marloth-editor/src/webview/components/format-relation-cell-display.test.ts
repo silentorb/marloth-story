@@ -4,6 +4,7 @@ import {
   countWrappedLines,
   fixedCharMeasureWidth,
   formatRelationCellDisplay,
+  packRelationCellVisibleLinks,
   relationCellLinkMeasureText,
   RELATION_CELL_MAX_LINES,
 } from "./format-relation-cell-display";
@@ -37,6 +38,15 @@ describe("formatRelationCellDisplay", () => {
     expect(result.visibleCount).toBe(1);
     expect(result.overflowCount).toBe(0);
     expect(result.visibleLinks).toEqual([{ targetId: expect.any(String), title: "Parent" }]);
+  });
+
+  test("short links pack onto shared rows before overflow", () => {
+    const links = Array.from({ length: 10 }, (_, index) => ({
+      title: String.fromCharCode(65 + index),
+    }));
+    const result = format(links);
+    expect(result.visibleCount).toBe(10);
+    expect(result.overflowCount).toBe(0);
   });
 
   test("many links append overflow suffix", () => {
@@ -83,6 +93,21 @@ describe("formatRelationCellDisplay", () => {
     const result = format([{ title: wideTitle }]);
     expect(result.visibleCount).toBeGreaterThan(0);
     expect(result.text).toContain(wideTitle);
+  });
+});
+
+describe("packRelationCellVisibleLinks", () => {
+  test("packs more short links per line budget than one link per row", () => {
+    const links = Array.from({ length: 10 }, (_, index) => ({
+      targetId: `${index}`.padStart(32, "a"),
+      title: String.fromCharCode(65 + index),
+    }));
+    const packed = packRelationCellVisibleLinks(links, {
+      maxWidthPx,
+      maxLines: 1,
+      measureWidth: measure,
+    });
+    expect(packed.length).toBeGreaterThan(1);
   });
 });
 

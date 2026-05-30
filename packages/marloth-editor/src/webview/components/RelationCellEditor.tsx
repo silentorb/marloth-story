@@ -10,6 +10,7 @@ import {
   RELATION_CELL_MAX_LINES,
 } from "./format-relation-cell-display";
 import { RecordLinkPicker } from "./RecordLinkPicker";
+import { RelationCellLinkIcon } from "./RelationCellLinkIcon";
 import "./relation-cell-editor.css";
 
 interface RelationCellEditorProps {
@@ -55,9 +56,10 @@ function RelationCellLinkLabel({ api, link, onOpenNode }: RelationCellLinkLabelP
     return (
       <a
         href={standaloneNodeUrl(link.targetId, window.location.href)}
-        className="marloth-database-cell-badge marloth-relation-cell-link"
+        className="marloth-relation-cell-link"
       >
-        {link.title}
+        <RelationCellLinkIcon />
+        <span className="marloth-relation-cell-link-title">{link.title}</span>
       </a>
     );
   }
@@ -65,11 +67,12 @@ function RelationCellLinkLabel({ api, link, onOpenNode }: RelationCellLinkLabelP
   return (
     <button
       type="button"
-      className="marloth-database-cell-badge marloth-relation-cell-link"
+      className="marloth-relation-cell-link"
       onClick={openTarget}
       onAuxClick={openTarget}
     >
-      {link.title}
+      <RelationCellLinkIcon />
+      <span className="marloth-relation-cell-link-title">{link.title}</span>
     </button>
   );
 }
@@ -231,6 +234,14 @@ export function RelationCellEditor({
 
   const editLabel = `Edit ${columnName} links`;
 
+  const togglePopup = useCallback(() => {
+    if (popupOpen) {
+      setPopupOpen(false);
+      return;
+    }
+    openPopup();
+  }, [openPopup, popupOpen]);
+
   const run = useCallback(async (action: () => void | Promise<void>) => {
     setBusy(true);
     try {
@@ -274,19 +285,29 @@ export function RelationCellEditor({
 
   return (
     <div className={cellClassName}>
-      <div className="marloth-relation-cell-links">
-        {links.length === 0 ? (
-          <span className="marloth-relation-cell-placeholder">—</span>
-        ) : (
-          <>
-            {display.visibleLinks.map((link) => (
-              <RelationCellLinkLabel key={link.targetId} api={api} link={link} onOpenNode={onOpenNode} />
-            ))}
-            {display.overflowCount > 0 ? (
-              <span className="marloth-relation-cell-overflow">{display.overflowCount}+</span>
-            ) : null}
-          </>
-        )}
+      <div className="marloth-relation-cell-content">
+        <button
+          type="button"
+          className="marloth-relation-cell-hit-area"
+          aria-hidden="true"
+          tabIndex={-1}
+          disabled={disabled || busy}
+          onClick={togglePopup}
+        />
+        <div className="marloth-relation-cell-links">
+          {links.length === 0 ? (
+            <span className="marloth-relation-cell-placeholder">—</span>
+          ) : (
+            <>
+              {display.visibleLinks.map((link) => (
+                <RelationCellLinkLabel key={link.targetId} api={api} link={link} onOpenNode={onOpenNode} />
+              ))}
+              {display.overflowCount > 0 ? (
+                <span className="marloth-relation-cell-overflow">{display.overflowCount}+</span>
+              ) : null}
+            </>
+          )}
+        </div>
       </div>
       <button
         type="button"
@@ -295,7 +316,7 @@ export function RelationCellEditor({
         aria-haspopup="dialog"
         aria-expanded={popupOpen}
         disabled={disabled || busy}
-        onClick={() => (popupOpen ? setPopupOpen(false) : openPopup())}
+        onClick={togglePopup}
       >
         <span className="marloth-relation-cell-edit-icon" aria-hidden="true">
           ✎

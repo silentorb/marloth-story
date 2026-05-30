@@ -1,8 +1,12 @@
 .marloth-relation-cell {
-  --marloth-relation-cell-edit-gutter: 26px;
+  --marloth-relation-cell-edit-width: 22px;
+  --marloth-relation-cell-cell-gap: 4px;
   position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--marloth-relation-cell-cell-gap);
   max-width: 14rem;
-  padding-right: var(--marloth-relation-cell-edit-gutter);
 }
 
 .marloth-relation-cell.is-busy {
@@ -10,26 +14,59 @@
   pointer-events: none;
 }
 
+.marloth-relation-cell-content {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: calc(1.5em + 4px);
+}
+
+.marloth-relation-cell-hit-area {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.marloth-relation-cell-hit-area:disabled {
+  cursor: default;
+}
+
 .marloth-relation-cell-links {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  max-width: 100%;
-  /* Extra slack for badge borders/padding beyond line-height × 6 */
-  max-height: calc(1.35em * 6 + 2px * 5 + 8px);
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  /* Inline text flow so wrapped links share rows with following links. */
+  display: block;
+  /* line-height × 6 rows + row gaps between wrapped lines */
+  max-height: calc(1.5em * 6 + 2px * 5 + 8px);
   padding: 1px 0 3px;
-  font: 0.85rem ui-sans-serif, system-ui, sans-serif;
-  line-height: 1.35;
+  font: inherit;
+  line-height: 1.5;
   text-align: left;
   overflow: hidden;
 }
 
 .marloth-relation-cell-links .marloth-relation-cell-link {
-  max-width: 100%;
-  border-radius: 10px;
-  color: var(--marloth-link);
+  display: inline;
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  border: 0;
+  border-radius: 4px;
+  margin-right: 6px;
+  padding: 0;
+  background: transparent;
+  color: var(--marloth-relation-cell-link);
   cursor: pointer;
+  font-weight: 500;
   text-align: left;
   text-decoration: none;
   white-space: normal;
@@ -37,11 +74,35 @@
   word-break: break-word;
 }
 
+.marloth-relation-cell-link-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+  margin-bottom: -1px;
+  vertical-align: text-top;
+  color: var(--marloth-muted);
+}
+
+.marloth-relation-cell-page-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
 .marloth-relation-cell-links button.marloth-relation-cell-link {
   font: inherit;
+  display: inline;
 }
 
 .marloth-relation-cell-link:hover {
+  text-decoration: none;
+}
+
+.marloth-relation-cell-link:hover .marloth-relation-cell-link-title {
   text-decoration: underline;
 }
 
@@ -50,18 +111,20 @@
 }
 
 .marloth-relation-cell-overflow {
+  display: inline;
   color: var(--marloth-muted);
   font-weight: 500;
 }
 
 .marloth-relation-cell-edit {
-  position: absolute;
-  top: 2px;
-  left: calc(100% - var(--marloth-relation-cell-edit-gutter));
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
+  align-self: flex-start;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
+  width: var(--marloth-relation-cell-edit-width);
   height: 22px;
   padding: 0;
   border: 0;
@@ -96,9 +159,8 @@
 .marloth-relation-field-popup {
   position: absolute;
   z-index: 40;
-  top: 100%;
+  top: 0;
   left: 0;
-  margin-top: 4px;
   min-width: 280px;
   max-width: 360px;
   border: 1px solid var(--marloth-border);
