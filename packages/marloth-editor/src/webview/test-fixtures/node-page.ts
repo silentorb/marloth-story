@@ -1,8 +1,41 @@
-import type { NodePageDetail, RelationTableSection } from "../../shared/types";
+import type { DatabaseViewDetail, NodePageDetail, RelationTableSection } from "../../shared/types";
 
 export const FIXTURE_PAGE_ID = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 export const FIXTURE_TYPE_ID = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 export const FIXTURE_TARGET_ID = "cccccccccccccccccccccccccccccccc";
+
+export const FIXTURE_DATABASE_ID = "dddddddddddddddddddddddddddddddd";
+
+export function makeDatabaseViewDetail(
+  overrides: Partial<DatabaseViewDetail> = {},
+): DatabaseViewDetail {
+  return {
+    id: FIXTURE_DATABASE_ID,
+    title: "Features",
+    views: ["All"],
+    view: "All",
+    columns: ["priority"],
+    columnDefs: [
+      {
+        key: "priority",
+        name: "Priority",
+        type: "enum",
+        enumId: "priority",
+        options: ["Low", "Medium", "High"],
+        defaultValue: "Low",
+      },
+    ],
+    rows: [
+      {
+        rowIndex: 0,
+        nodeId: FIXTURE_TARGET_ID,
+        name: "Linked record",
+        cells: { priority: "High" },
+      },
+    ],
+    ...overrides,
+  };
+}
 
 export function makeRelationSection(
   overrides: Partial<RelationTableSection> = {},

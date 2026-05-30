@@ -22,4 +22,49 @@ describe("renderTableCell", () => {
     );
     expect(screen.getByRole("button", { name: "Priority" })).toBeTruthy();
   });
+
+  test("renders read-only enum as badge without handler", () => {
+    render(
+      <>
+        {renderTableCell({
+          column: "priority",
+          value: "High",
+          columnDef: {
+            key: "priority",
+            name: "Priority",
+            type: "enum",
+            enumId: "priority",
+            options: ["Low", "High"],
+          },
+        })}
+      </>,
+    );
+    expect(screen.getByText("High")).toBeTruthy();
+  });
+
+  test("renders checkbox values", () => {
+    render(
+      <>
+        {renderTableCell({
+          column: "done",
+          value: "true",
+          columnDef: { key: "done", name: "Done", type: "checkbox" },
+        })}
+      </>,
+    );
+    expect(screen.getByText("☑")).toBeTruthy();
+  });
+
+  test("renders relation values as badges", () => {
+    render(
+      <>
+        {renderTableCell({
+          column: "parents",
+          value: "Parent A",
+          columnDef: { key: "parents", name: "Parents", type: "relation" },
+        })}
+      </>,
+    );
+    expect(screen.getByText("Parent A")).toBeTruthy();
+  });
 });

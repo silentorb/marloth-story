@@ -1,6 +1,7 @@
 import type { EditorApi } from "../api/client";
 import { emptyUserSettings } from "../../shared/user-settings";
 import { makeGraphLodSnapshot } from "./graph-lod";
+import { makeDatabaseViewDetail } from "./node-page";
 
 export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"): EditorApi {
   return {
@@ -18,8 +19,10 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     getNode: async () => {
       throw new Error("not implemented in mock");
     },
-    getDatabaseView: async () => {
-      throw new Error("not implemented in mock");
+    getDatabaseView: async (databaseId, view) => {
+      void databaseId;
+      void view;
+      return makeDatabaseViewDetail();
     },
     search: async () => [],
     saveBody: async () => {},

@@ -60,6 +60,10 @@ bun test packages/marloth-editor/src
 bun test packages/marloth-db/src
 ```
 
+### Regression tests
+
+When fixing table-view bugs, add a regression test in the same change. Prefer `seedTestCompositeRelationships` (or full `ContentStore` sync) for graph traversal bugs so tests match production `relationships.json` composite types. Do not close a bug fix without a test unless the user explicitly waives it.
+
 ## Repo-wide context
 
 - Feature spec: [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md)

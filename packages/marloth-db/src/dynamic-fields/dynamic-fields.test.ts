@@ -10,6 +10,14 @@ import { typeTableMarkerProperties } from "../node-capabilities";
 import { IS_A_TYPE } from "../labels";
 import { getDatabaseViewDetail } from "../database-view";
 import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestCompositeRelationships,
+  seedTestDynamicFields,
+  seedTestNode,
+  seedTestRelationships,
+} from "../content/test-helpers";
+import {
   buildAllSceneCountPrefetch,
   buildSceneCountByProductPrefetch,
   buildWeightedUsePrefetch,
@@ -168,5 +176,82 @@ describe("dynamic-fields resolvers", () => {
     invalidateDynamicFieldsCache();
     db.close();
     rmSync(dir, { recursive: true, force: true });
+  });
+});
+
+describe("dynamic-fields with composite relationships", () => {
+  const fixture = createTestContentFixture("marloth-df-composite-");
+  const INSP_DB = "2eea538996934ce8abafc27132e576c1";
+  const FEAT_DB = "dd0de9867cc345b898929306bdf9fc83";
+  const WONDERLAND = "3cbc40d2ba2a4c76b4b9dc370452fcfe";
+  const inspiration = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+  const featureWonder = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+  const featurePlain = "cccccccccccccccccccccccccccccccc";
+
+  process.env.MARLOTH_CONTENT_PATH = fixture.ctx.store.contentDir;
+  seedTestDynamicFields(fixture, [
+    {
+      id: "inspirations-weighted-use",
+      databaseId: INSP_DB,
+      columnKey: "weighted_use",
+      columnName: "Weighted Use",
+      resolverId: "inspirations.weightedUse",
+      docsPath: "docs/dynamic-fields/inspirations.weighted-use.md",
+      params: {
+        features_edge_label: "FEATURES",
+        features_database_id: FEAT_DB,
+      },
+    },
+    {
+      id: "inspirations-wonder",
+      databaseId: INSP_DB,
+      columnKey: "wonder",
+      columnName: "Wonder",
+      resolverId: "inspirations.wonder",
+      docsPath: "docs/dynamic-fields/inspirations.wonder.md",
+      params: {
+        features_edge_label: "FEATURES",
+        theme_edge_label: "THEME",
+        theme_target_id: WONDERLAND,
+      },
+    },
+  ]);
+
+  seedTestNode(fixture, { id: INSP_DB, properties: typeTableMarkerProperties("Inspirations") });
+  seedTestNode(fixture, { id: FEAT_DB, properties: typeTableMarkerProperties("Features") });
+  seedTestNode(fixture, { id: WONDERLAND, properties: { title: "Wonderland" } });
+  seedTestNode(fixture, { id: inspiration, properties: { title: "Test Inspiration" } });
+  seedTestNode(fixture, { id: featureWonder, properties: { title: "Adventure" } });
+  seedTestNode(fixture, { id: featurePlain, properties: { title: "Plain" } });
+
+  seedTestRelationships(fixture, [
+    { source: inspiration, target: INSP_DB, type: IS_A_TYPE, properties: { row_index: 0 } },
+    { source: featureWonder, target: FEAT_DB, type: IS_A_TYPE, properties: { priority: "Medium" } },
+    { source: featurePlain, target: FEAT_DB, type: IS_A_TYPE, properties: { priority: "High" } },
+  ]);
+  seedTestCompositeRelationships(fixture, [
+    { a: inspiration, b: featureWonder, typeFromA: "inspirations", typeFromB: "features", properties: {} },
+    { a: inspiration, b: featurePlain, typeFromA: "inspirations", typeFromB: "features", properties: {} },
+  ]);
+  seedTestRelationships(fixture, [
+    {
+      source: featureWonder,
+      target: WONDERLAND,
+      type: "theme",
+      properties: {},
+    },
+  ]);
+
+  test("weighted_use and wonder with production params and composite edges", () => {
+    const detail = getDatabaseViewDetail(fixture.ctx.db, INSP_DB);
+    const row = detail?.rows.find((entry) => entry.nodeId === inspiration);
+    expect(row?.cells.weighted_use).toBe("6");
+    expect(row?.cells.wonder).toBe("1");
+  });
+
+  afterAll(() => {
+    delete process.env.MARLOTH_CONTENT_PATH;
+    invalidateDynamicFieldsCache();
+    destroyTestContentFixture(fixture);
   });
 });

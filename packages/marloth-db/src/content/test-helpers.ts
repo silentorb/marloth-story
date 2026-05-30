@@ -79,6 +79,55 @@ function entryFromSeedConnection(connection: {
   });
 }
 
+export function seedTestCompositeRelationships(
+  fixture: TestContentFixture,
+  connections: Array<{
+    a: string;
+    b: string;
+    typeFromA: string;
+    typeFromB: string;
+    properties?: Properties;
+    directedFrom?: string;
+  }>,
+  options?: { replace?: boolean },
+): void {
+  const registry = options?.replace
+    ? { version: 1 as const, types: {} as Record<string, never> }
+    : fixture.ctx.store.readRelationshipTypesFile();
+  const file = options?.replace
+    ? { version: RELATIONSHIPS_FILE_VERSION, relationships: [] as RelationshipEntry[] }
+    : fixture.ctx.store.readRelationshipsFile();
+
+  for (const connection of connections) {
+    const compositeType = registerBidirectionalType(
+      registry,
+      connection.typeFromA,
+      connection.typeFromB,
+    );
+    const { a, b } = sortEndpoints(connection.a, connection.b);
+    const entry: RelationshipEntry = {
+      a,
+      b,
+      type: compositeType,
+      properties: connection.properties ?? {},
+      directedFrom: connection.directedFrom,
+    };
+    const index = file.relationships.findIndex(
+      (existing) =>
+        existing.a === entry.a && existing.b === entry.b && existing.type === entry.type,
+    );
+    if (index >= 0) {
+      file.relationships[index] = entry;
+    } else {
+      file.relationships.push(entry);
+    }
+  }
+
+  fixture.ctx.store.writeRelationshipTypesFile(registry);
+  fixture.ctx.store.writeRelationshipsFile(file);
+  fixture.ctx.sync.syncRelationships();
+}
+
 export function seedTestRelationships(
   fixture: TestContentFixture,
   connections: Array<{

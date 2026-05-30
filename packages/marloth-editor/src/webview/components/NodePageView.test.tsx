@@ -8,7 +8,7 @@ mock.module("./MarlothEditor", () => ({
 import { PropertiesSectionView } from "./PropertiesSectionView";
 import { NodePageView } from "./NodePageView";
 import { UserSettingsProvider } from "../hooks/useUserSettings";
-import { makeNodePageDetail } from "../test-fixtures/node-page";
+import { makeNodePageDetail, makeDatabaseViewDetail } from "../test-fixtures/node-page";
 import { makeMockEditorApi } from "../test-fixtures/mock-api";
 
 describe("NodePageView", () => {
@@ -42,6 +42,40 @@ describe("NodePageView", () => {
     expect(screen.getByRole("heading", { name: "Related items", level: 2 })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Page actions" })).toBeTruthy();
+  });
+
+  test("renders embedded database table section", () => {
+    const api = makeMockEditorApi("standalone");
+    const node = makeNodePageDetail({
+      isTypeTable: true,
+      sections: [
+        { type: "markdown", body: "# Database page\n" },
+        { type: "database", databaseView: makeDatabaseViewDetail() },
+      ],
+    });
+
+    render(
+      <UserSettingsProvider api={api}>
+        <NodePageView
+          api={api}
+          node={node}
+          saveState="idle"
+          metadataExpanded={false}
+          onMetadataExpandedChange={() => {}}
+          onBodyChange={() => {}}
+          onTitleChange={() => {}}
+          onDatabaseViewChange={() => {}}
+          onScopeChange={() => {}}
+          onOrderedAssociationViewChange={() => {}}
+          onOpenNode={() => {}}
+          onArchiveNode={async () => {}}
+          onDeleteNode={async () => {}}
+        />
+      </UserSettingsProvider>,
+    );
+
+    expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "+ New row" })).toBeTruthy();
   });
 
   test("renders Properties section when present", () => {

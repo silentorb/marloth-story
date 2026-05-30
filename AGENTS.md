@@ -58,6 +58,7 @@ See [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) for file form
 - Make focused changes that address the requested task only.
 - Avoid unrelated refactors unless they are required to complete the task safely.
 - Prefer small, incremental edits that are easy to review.
+- **Regression tests:** When fixing a bug in table views (database tables, relation tables, Properties section, ordered-association tables, dynamic fields, or related API endpoints), add a regression test in the same change that would have failed before the fix. Seed test relationships using **composite types** from `content/relationship-types.json` (via `ContentStore` / `seedTestCompositeRelationships`) when the bug involves graph traversals — do not rely only on direct `db.upsertRelationship` with legacy unidirectional types. Do not close a bug fix without a test unless the user explicitly waives it.
 - **Script language:** agentic scripts created for this project should use **TypeScript** (Bun) by default — place durable tooling under `packages/` with tests and a shell wrapper in `scripts/` when appropriate. **One-off temporary scripts** (exploratory, throwaway, not intended to be maintained) may still be written in Python.
 
 ## Implementation Expectations

@@ -23,6 +23,7 @@ For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor 
 - The `order` property **must** be treated as import/metadata: hidden from all table columns and never exposed as an editable field in the UI.
 - Order **must** be scoped: for scenes, order applies within a **book** (Product), not globally across all scenes in the database.
 - **Grouping** (Part) is a display dimension only; all scenes in a book share one global sequence. Part subsections sort scenes by that book-wide order.
+- Part subsections **must** sort by the Parts database `number` property (with **Unassigned** always last), not by table row index.
 - Part membership **must** resolve when import created duplicate part nodes: match scene→`part` to the canonical Parts-database row by title.
 - Configurations **must** be registered in code (`packages/marloth-db/src/ordered-associations.ts`); v1 has no UI for adding new configs.
 
@@ -34,6 +35,7 @@ For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor 
 | Membership relationship | `is_a` with `order` property |
 | Scope (book tabs) | `product` relationship from scene → Product |
 | Group (part subsections) | `part` relationship from scene → Part |
+| Part subsection order | Parts database `number` property on each Part's `is_a` membership (Unassigned always last) |
 | Unassigned | Scenes with a Product but no Part appear in an **Unassigned** group at the end |
 
 ### Editor UI (Scenes Items section)

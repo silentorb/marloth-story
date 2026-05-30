@@ -4,6 +4,13 @@ import type { NotionDatabaseSchema } from "./notion-database-schema";
 import type { RelationLink } from "./relation-link";
 import { relationType } from "./relation-type";
 import type { EvalRow } from "./notion-view-eval";
+import {
+  filterRelationshipsByViaDatabase,
+  listRelationshipsForComposite,
+  listRelationshipsToDatabaseMembers,
+  otherEndpoint,
+} from "./relationship-traverse";
+import { compositeTypeForPerspectives } from "./content/relationship-types-file";
 
 function titleFromProperties(properties: Record<string, unknown>): string {
   const title = properties.title;
@@ -18,25 +25,44 @@ function ordinalFromProperties(properties: Record<string, unknown>): number {
   return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER;
 }
 
-function viaDatabaseId(properties: Record<string, unknown>): string | null {
-  const raw = properties.via_database;
-  return typeof raw === "string" && raw.trim() ? raw.trim() : null;
-}
-
 function relationConnectionsForRow(
   db: GraphDatabase,
   nodeId: string,
   connectionType: string,
   databaseId: string,
+  targetDatabaseId?: string,
 ): Relationship[] {
+  const viaDatabaseIds = targetDatabaseId ? [databaseId, targetDatabaseId] : [databaseId];
+
+  if (targetDatabaseId) {
+    const byTargetDb = listRelationshipsToDatabaseMembers(db, nodeId, targetDatabaseId);
+    const filtered = filterRelationshipsByViaDatabase(byTargetDb, viaDatabaseIds);
+    if (filtered.length > 0) return filtered;
+
+    const compositeType = compositeTypeForPerspectives(connectionType, inferInverseRelationType(connectionType));
+    const byComposite = listRelationshipsForComposite(db, nodeId, compositeType);
+    const compositeFiltered = filterRelationshipsByViaDatabase(byComposite, viaDatabaseIds);
+    if (compositeFiltered.length > 0) return compositeFiltered;
+  }
+
   const outgoing = db.listRelationshipsFromSource(nodeId, connectionType);
-  const scoped = outgoing.filter((c) => viaDatabaseId(c.properties) === databaseId);
-  if (scoped.length > 0) return scoped;
-  return outgoing.filter((c) => viaDatabaseId(c.properties) === null);
+  return filterRelationshipsByViaDatabase(outgoing, viaDatabaseIds);
+}
+
+function inferInverseRelationType(localType: string): string {
+  switch (localType) {
+    case "scenes":
+      return "location";
+    case "location":
+      return "scenes";
+    default:
+      return localType;
+  }
 }
 
 function linksFromRelationships(
   db: GraphDatabase,
+  nodeId: string,
   relationships: Relationship[],
 ): RelationLink[] {
   const sorted = [...relationships].sort(
@@ -44,9 +70,10 @@ function linksFromRelationships(
   );
   const links: RelationLink[] = [];
   for (const relationship of sorted) {
-    const target = db.getNode(relationship.targetNodeId);
+    const targetId = otherEndpoint(relationship, nodeId);
+    const target = db.getNode(targetId);
     const title = target ? titleFromProperties(target.properties) : "Untitled";
-    links.push({ targetId: relationship.targetNodeId, title });
+    links.push({ targetId, title });
   }
   return links;
 }
@@ -72,8 +99,14 @@ export function hydrateRelationCellsForRows(
     if (!row.relationCells) row.relationCells = {};
     for (const col of relationColumns) {
       const type = col.relationType ?? relationType(col.name);
-      const relationships = relationConnectionsForRow(db, row.nodeId, type, databaseId);
-      const links = linksFromRelationships(db, relationships);
+      const relationships = relationConnectionsForRow(
+        db,
+        row.nodeId,
+        type,
+        databaseId,
+        col.targetDatabaseId,
+      );
+      const links = linksFromRelationships(db, row.nodeId, relationships);
       if (links.length > 0) {
         row.cells[col.key] = formatRelationCell(links);
         row.relationCells[col.key] = links;

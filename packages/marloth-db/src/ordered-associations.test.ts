@@ -10,13 +10,16 @@ import { getNodePageDetail } from "./node-page-sections";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
+  seedTestCompositeRelationships,
   seedTestRelationships,
   seedTestNode,
 } from "./content/test-helpers";
+import { firstRelatedNodeId } from "./relationship-traverse";
 
 const SCENES_DB = "204dba198db74611b0b49a98dd53e8f5";
 const PARTS_DB = "5e45eefc69a14f45b988ad1f3c9d1ef5";
 const PRODUCTS_DB = "4e973268d3474f71bd7992094fb39663";
+const CHARACTERS_DB = "f984a934ad644f8480b0f8f51449569f";
 const CONFIG_ID = "scenes-by-book";
 
 const bookA = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -98,6 +101,7 @@ describe("ordered-associations", () => {
 
   seedTestNode(fixture, { id: PRODUCTS_DB, properties: typeTableMarkerProperties("Products") });
   seedTestNode(fixture, { id: PARTS_DB, properties: typeTableMarkerProperties("Parts database") });
+  seedTestNode(fixture, { id: CHARACTERS_DB, properties: typeTableMarkerProperties("Characters") });
   seedTestNode(fixture, {
     id: SCENES_DB,
     properties: { ...typeTableMarkerProperties("Scenes"), ...SCENES_TABLE_METADATA },
@@ -114,23 +118,40 @@ describe("ordered-associations", () => {
   seedTestRelationships(fixture, [
     { source: bookA, target: PRODUCTS_DB, type: IS_A_TYPE, properties: { order: "1", row_index: 0 } },
     { source: bookB, target: PRODUCTS_DB, type: IS_A_TYPE, properties: { order: "2", row_index: 1 } },
-    { source: part1, target: PARTS_DB, type: IS_A_TYPE, properties: { row_index: 0 } },
-    { source: part2, target: PARTS_DB, type: IS_A_TYPE, properties: { row_index: 1 } },
-    { source: part1, target: bookA, type: "products", properties: { ordinal: 0 } },
-    { source: part2, target: bookA, type: "products", properties: { ordinal: 0 } },
+    { source: part1, target: PARTS_DB, type: IS_A_TYPE, properties: { row_index: 5, number: "1" } },
+    { source: part2, target: PARTS_DB, type: IS_A_TYPE, properties: { row_index: 0, number: "2" } },
     { source: scene1, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "10" } },
     { source: scene2, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "20" } },
     { source: scene3, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "30" } },
-    { source: scene1, target: bookA, type: "product", properties: { ordinal: 0 } },
-    { source: scene2, target: bookA, type: "product", properties: { ordinal: 0 } },
-    { source: scene3, target: bookB, type: "product", properties: { ordinal: 0 } },
-    { source: scene1, target: part1, type: "part", properties: { ordinal: 0 } },
-    { source: scene2, target: part1, type: "part", properties: { ordinal: 1 } },
-    { source: scene3, target: part2, type: "part", properties: { ordinal: 0 } },
+    { source: character1, target: CHARACTERS_DB, type: IS_A_TYPE, properties: { row_index: 0 } },
+  ]);
+
+  seedTestCompositeRelationships(fixture, [
+    { a: scene1, b: bookA, typeFromA: "scenes", typeFromB: "product", properties: { ordinal: 0 } },
+    { a: scene2, b: bookA, typeFromA: "scenes", typeFromB: "product", properties: { ordinal: 0 } },
+    { a: scene3, b: bookB, typeFromA: "scenes", typeFromB: "product", properties: { ordinal: 0 } },
+    { a: scene1, b: part1, typeFromA: "scenes", typeFromB: "part", properties: { ordinal: 0 } },
+    { a: scene2, b: part1, typeFromA: "scenes", typeFromB: "part", properties: { ordinal: 1 } },
+    { a: scene3, b: part2, typeFromA: "scenes", typeFromB: "part", properties: { ordinal: 0 } },
     {
-      source: scene1,
-      target: character1,
-      type: "characters",
+      a: part1,
+      b: bookA,
+      typeFromA: "products",
+      typeFromB: "parts_database",
+      properties: { ordinal: 0 },
+    },
+    {
+      a: part2,
+      b: bookA,
+      typeFromA: "products",
+      typeFromB: "parts_database",
+      properties: { ordinal: 0 },
+    },
+    {
+      a: scene1,
+      b: character1,
+      typeFromA: "scenes",
+      typeFromB: "characters",
       properties: { via_database: SCENES_DB, ordinal: 0 },
     },
   ]);
@@ -160,12 +181,20 @@ describe("ordered-associations", () => {
     expect(sceneOne?.relationCells?.characters?.[0]?.title).toBe("Hero");
   });
 
+  test("sorts part subsections by number property, not row_index", () => {
+    const view = getOrderedAssociationView(db(), CONFIG_ID, bookA);
+    const partGroups = view?.groups.filter((group) => group.groupId !== UNASSIGNED_GROUP_ID) ?? [];
+    expect(partGroups.map((group) => group.title)).toEqual(["Part 1", "Part 2"]);
+  });
+
   test("places scenes without part in Unassigned group", () => {
     const unassigned = "66666666666666666666666666666666";
     seedTestNode(fixture, { id: unassigned, properties: { title: "Loose Scene" } });
     seedTestRelationships(fixture, [
       { source: unassigned, target: SCENES_DB, type: IS_A_TYPE, properties: { order: "40" } },
-      { source: unassigned, target: bookA, type: "product", properties: { ordinal: 0 } },
+    ]);
+    seedTestCompositeRelationships(fixture, [
+      { a: unassigned, b: bookA, typeFromA: "scenes", typeFromB: "product", properties: { ordinal: 0 } },
     ]);
 
     const view = getOrderedAssociationView(db(), CONFIG_ID, bookA);
@@ -200,7 +229,7 @@ describe("ordered-associations", () => {
 
     const part2Group = updated?.groups.find((group) => group.groupId === part2);
     expect(part2Group?.rows.some((row) => row.sceneId === scene1)).toBe(true);
-    expect(db().listRelationshipsFromSource(scene1, "part")[0]?.targetNodeId).toBe(part2);
+    expect(firstRelatedNodeId(db(), scene1, "scenes_part")).toBe(part2);
   });
 
   test("moving to Unassigned removes PART edge", () => {
@@ -211,7 +240,7 @@ describe("ordered-associations", () => {
       targetIndex: 0,
     });
 
-    expect(db().listRelationshipsFromSource(scene2, "part")).toHaveLength(0);
+    expect(firstRelatedNodeId(db(), scene2, "scenes_part")).toBeNull();
   });
 
   test("Scenes database record page emits ordered-association section", () => {

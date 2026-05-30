@@ -145,6 +145,23 @@ bun run editor:dev
 - `bun test` (repo root — runs marloth-db unit tests and marloth-editor typecheck + unit/component tests)
 - `bun run --cwd packages/marloth-editor test` includes `tsc -p tsconfig.check.json` (webview/shared/api)
 - Component smoke tests use synthetic fixtures in `src/webview/test-fixtures/` (no real graph content)
+- **Regression tests:** bug fixes for table views, dynamic fields, or related API endpoints must include a failing test seeded with composite relationship types when graph traversal is involved (see root `AGENTS.md`).
+
+### Test coverage map
+
+| Requirement | Primary tests |
+| --- | --- |
+| Database table assembly (`getDatabaseViewDetail`) | `packages/marloth-db/src/database-view.test.ts`, `database-view-relations.test.ts` |
+| Ordered-association part tables | `packages/marloth-db/src/ordered-associations.test.ts` |
+| Dynamic computed columns | `packages/marloth-db/src/dynamic-fields/dynamic-fields.test.ts` |
+| Composite relationship traversal | `packages/marloth-db/src/relationship-traverse.test.ts` |
+| Database table UI | `packages/marloth-editor/src/webview/components/DatabaseTableView.test.tsx` |
+| Shared sortable table UI | `packages/marloth-editor/src/webview/components/SectionDataTable.test.tsx` |
+| Relation / enum cell rendering | `table-cell-render.test.tsx`, `RelationSectionView.test.tsx`, `EnumSelectCell.test.tsx` |
+| Database HTTP API | `packages/marloth-editor/src/api/database-view-api.test.ts`, `edge-property-api.test.ts` |
+| Table sort persistence | `packages/marloth-editor/src/shared/user-settings.test.ts`, `user-settings-api.test.ts` |
+| Properties section (stored + dynamic) | `NodePageView.test.tsx`, `node-type-properties.test.ts` |
+
 - Manual: open home → edit → reload → body persisted
 - Manual: `@` search inserts link; click navigates; Ctrl+click opens new tab
 - Manual: open any node with relation sections and confirm tables render
