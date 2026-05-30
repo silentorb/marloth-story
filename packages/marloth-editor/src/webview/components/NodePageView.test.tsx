@@ -89,7 +89,7 @@ describe("NodePageView", () => {
     const propertiesHeading = screen.getByRole("heading", { name: "Properties", level: 2 });
     const propertiesSection = propertiesHeading.closest("section");
     expect(propertiesSection).toBeTruthy();
-    expect(within(propertiesSection!).getByRole("combobox")).toBeTruthy();
+    expect(within(propertiesSection!).getByRole("button", { name: "Priority" })).toBeTruthy();
   });
 });
 
@@ -122,6 +122,6 @@ describe("PropertiesSectionView", () => {
 
     expect(screen.getByText("3")).toBeTruthy();
     expect(screen.getByText(/computed/i)).toBeTruthy();
-    expect(screen.queryByRole("combobox")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Priority" })).toBeNull();
   });
 });

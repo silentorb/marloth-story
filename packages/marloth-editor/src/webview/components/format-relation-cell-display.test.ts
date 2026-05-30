@@ -1,10 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import {
+  countRelationLinkLines,
   countWrappedLines,
   fixedCharMeasureWidth,
   formatRelationCellDisplay,
-  packRelationCellVisibleLinks,
-  RELATION_CELL_BADGE_PADDING_X_PX,
+  relationCellLinkMeasureText,
   RELATION_CELL_MAX_LINES,
 } from "./format-relation-cell-display";
 
@@ -61,28 +61,36 @@ describe("formatRelationCellDisplay", () => {
     expect(withoutSuffix).not.toContain("+");
   });
 
-  test("skips link wider than cell instead of truncating with ellipsis", () => {
+  test("long title still shows first link instead of overflow only", () => {
     const wideTitle = "x".repeat(40);
-    const result = format([{ title: wideTitle }, { title: "OK" }]);
-    expect(result.visibleLinks).toEqual([{ targetId: expect.any(String), title: "OK" }]);
-    expect(result.visibleCount).toBe(1);
+    const result = formatRelationCellDisplay(
+      [
+        { targetId: "0".padStart(32, "a"), title: wideTitle },
+        { targetId: "1".padStart(32, "a"), title: "OK" },
+      ],
+      { maxWidthPx, maxLines: 1, measureWidth: measure },
+    );
+    expect(result.visibleLinks).toHaveLength(1);
+    expect(result.visibleLinks[0]?.title).toBe(wideTitle);
     expect(result.overflowCount).toBe(1);
     expect(result.text).not.toContain("…");
     expect(result.text).not.toContain("...");
+    expect(result.text).toContain(wideTitle);
+  });
+
+  test("never returns overflow-only when links exist", () => {
+    const wideTitle = "x".repeat(80);
+    const result = format([{ title: wideTitle }]);
+    expect(result.visibleCount).toBeGreaterThan(0);
+    expect(result.text).toContain(wideTitle);
   });
 });
 
-describe("packRelationCellVisibleLinks", () => {
-  test("badge width includes horizontal padding", () => {
-    const title = "x".repeat(24);
-    const badgeW = measure(title) + RELATION_CELL_BADGE_PADDING_X_PX;
-    const links = [{ targetId: "a".repeat(32), title }];
-    const packed = packRelationCellVisibleLinks(links, {
-      maxWidthPx: badgeW - 1,
-      maxLines: RELATION_CELL_MAX_LINES,
-      measureWidth: measure,
-    });
-    expect(packed).toEqual([]);
+describe("countRelationLinkLines", () => {
+  test("wraps long title across multiple lines", () => {
+    const title = "word ".repeat(12).trim();
+    expect(countRelationLinkLines(title, 80, measure)).toBeGreaterThan(1);
+    expect(relationCellLinkMeasureText(title)).toBe(title);
   });
 });
 

@@ -20,6 +20,6 @@ describe("renderTableCell", () => {
         })}
       </>,
     );
-    expect(screen.getByRole("combobox", { name: "Priority" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Priority" })).toBeTruthy();
   });
 });

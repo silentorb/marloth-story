@@ -30,7 +30,7 @@ describe("RelationCellEditor", () => {
     );
   });
 
-  test("navigates via cell link label without opening popup", () => {
+  test("standalone cell link uses native href without custom click handler", () => {
     const onOpenNode = mock(() => {});
     const { container } = render(
       <RelationCellEditor
@@ -43,8 +43,10 @@ describe("RelationCellEditor", () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole("link", { name: "Parent" }));
-    expect(onOpenNode).toHaveBeenCalledWith("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", false);
+    const link = screen.getByRole("link", { name: "Parent" });
+    expect(link.getAttribute("href")).toContain("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+    fireEvent.click(link);
+    expect(onOpenNode).not.toHaveBeenCalled();
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(container.querySelector(".marloth-relation-cell.is-popup-open")).toBeNull();
   });
@@ -99,7 +101,7 @@ describe("RelationCellEditor", () => {
     );
 
     expect(screen.getByRole("link", { name: "Feat 1" })).toBeTruthy();
-    const body = document.querySelector(".marloth-relation-cell-body");
+    const body = document.querySelector(".marloth-relation-cell-links");
     expect(body?.textContent).toMatch(/\d+\+/);
   });
 });

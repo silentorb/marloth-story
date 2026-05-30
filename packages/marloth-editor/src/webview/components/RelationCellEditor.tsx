@@ -5,14 +5,12 @@ import { standaloneNodeUrl } from "../../shared/types";
 import {
   createCanvasMeasureWidth,
   formatRelationCellDisplay,
+  RELATION_CELL_EDIT_GUTTER_PX,
   relationCellMaxWidthPx,
   RELATION_CELL_MAX_LINES,
 } from "./format-relation-cell-display";
 import { RecordLinkPicker } from "./RecordLinkPicker";
 import "./relation-cell-editor.css";
-
-/** Horizontal space reserved for the hover edit control when measuring truncation. */
-const EDIT_ICON_RESERVE_PX = 24;
 
 interface RelationCellEditorProps {
   api: EditorApi;
@@ -46,7 +44,7 @@ interface RelationCellLinkLabelProps {
 
 function RelationCellLinkLabel({ api, link, onOpenNode }: RelationCellLinkLabelProps) {
   const openTarget = useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+    (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
       onOpenNode(link.targetId, event.metaKey || event.ctrlKey || event.button === 1);
     },
@@ -58,8 +56,6 @@ function RelationCellLinkLabel({ api, link, onOpenNode }: RelationCellLinkLabelP
       <a
         href={standaloneNodeUrl(link.targetId, window.location.href)}
         className="marloth-database-cell-badge marloth-relation-cell-link"
-        onClick={openTarget}
-        onAuxClick={openTarget}
       >
         {link.title}
       </a>
@@ -114,6 +110,30 @@ function RelationFieldPopup({
     [onOpenNode],
   );
 
+  const renderPopupLink = (link: RelationLink) => {
+    if (api.host === "standalone") {
+      return (
+        <a
+          href={standaloneNodeUrl(link.targetId, window.location.href)}
+          className="marloth-relation-field-popup-link"
+        >
+          {link.title}
+        </a>
+      );
+    }
+
+    return (
+      <button
+        type="button"
+        className="marloth-relation-field-popup-link"
+        onClick={(event) => openTarget(link.targetId, event)}
+        onAuxClick={(event) => openTarget(link.targetId, event)}
+      >
+        {link.title}
+      </button>
+    );
+  };
+
   return (
     <div
       ref={dialogRef}
@@ -138,14 +158,7 @@ function RelationFieldPopup({
           <ul className="marloth-relation-field-popup-list">
             {links.map((link) => (
               <li key={link.targetId} className="marloth-relation-field-popup-row">
-                <button
-                  type="button"
-                  className="marloth-relation-field-popup-link"
-                  onClick={(event) => openTarget(link.targetId, event)}
-                  onAuxClick={(event) => openTarget(link.targetId, event)}
-                >
-                  {link.title}
-                </button>
+                {renderPopupLink(link)}
                 <button
                   type="button"
                   className="marloth-relation-field-popup-remove"
@@ -202,7 +215,7 @@ export function RelationCellEditor({
 
   const measureWidth = useMemo(() => createCanvasMeasureWidth(), []);
   const maxWidthPx = useMemo(
-    () => Math.max(80, relationCellMaxWidthPx() - EDIT_ICON_RESERVE_PX),
+    () => Math.max(80, relationCellMaxWidthPx() - RELATION_CELL_EDIT_GUTTER_PX),
     [],
   );
 
@@ -261,7 +274,7 @@ export function RelationCellEditor({
 
   return (
     <div className={cellClassName}>
-      <div className="marloth-relation-cell-body">
+      <div className="marloth-relation-cell-links">
         {links.length === 0 ? (
           <span className="marloth-relation-cell-placeholder">—</span>
         ) : (

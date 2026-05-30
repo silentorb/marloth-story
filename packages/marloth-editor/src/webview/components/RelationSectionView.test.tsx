@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { UserSettingsProvider } from "../hooks/useUserSettings";
 import { RelationSectionView } from "./RelationSectionView";
 import { FIXTURE_PAGE_ID, FIXTURE_TARGET_ID, makeRelationSection } from "../test-fixtures/node-page";
@@ -26,8 +26,9 @@ describe("RelationSectionView", () => {
     const link = screen.getByRole("link", { name: "Linked record" });
     expect(link.getAttribute("href")).toContain(`node=${FIXTURE_TARGET_ID}`);
     expect(screen.getByRole("columnheader", { name: /Priority/ })).toBeTruthy();
-    const prioritySelect = screen.getByRole("combobox", { name: "Priority" });
-    expect((prioritySelect as HTMLSelectElement).value).toBe("High");
+    const priorityTrigger = screen.getByRole("button", { name: "Priority", expanded: false });
+    expect(priorityTrigger.textContent).toBe("High");
+    expect(priorityTrigger.getAttribute("aria-haspopup")).toBe("listbox");
   });
 
   test("renders vscode row controls as buttons", () => {
@@ -41,7 +42,8 @@ describe("RelationSectionView", () => {
     renderRelationSection();
 
     expect(screen.getByRole("button", { name: /Name/ })).toBeTruthy();
-    expect(screen.getByRole("button", { name: /Priority/ })).toBeTruthy();
+    const priorityHeader = screen.getByRole("columnheader", { name: /Priority/ });
+    expect(within(priorityHeader).getByRole("button")).toBeTruthy();
   });
 
   test("renders add row control", () => {

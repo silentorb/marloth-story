@@ -8,32 +8,65 @@ const columnDef = {
   type: "enum" as const,
   enumId: "priority",
   options: ["Low", "High"],
+  defaultValue: "Low",
 };
 
 describe("EnumSelectCell", () => {
-  test("shows current value in native select", () => {
+  test("collapsed trigger shows current value as pill", () => {
     render(<EnumSelectCell def={columnDef} value="High" onChange={async () => {}} />);
 
-    const select = screen.getByRole("combobox", { name: "Priority" }) as HTMLSelectElement;
-    expect(select.value).toBe("High");
-    expect(select.className).toContain("marloth-enum-select");
+    const trigger = screen.getByRole("button", { name: "Priority" });
+    expect(trigger.textContent).toBe("High");
+    expect(trigger.className).toContain("marloth-database-cell-badge");
+    expect(screen.queryByRole("listbox")).toBeNull();
   });
 
-  test("change calls onChange with selected value", async () => {
+  test("empty value shows placeholder, not schema default", () => {
+    render(<EnumSelectCell def={columnDef} value="" onChange={async () => {}} />);
+
+    const trigger = screen.getByRole("button", { name: "Priority" });
+    expect(trigger.textContent).toBe("—");
+    expect(trigger.className).toContain("is-empty");
+  });
+
+  test("click opens options and selecting calls onChange", () => {
     const onChange = mock(async () => {});
 
     render(<EnumSelectCell def={columnDef} value="High" onChange={onChange} />);
 
-    fireEvent.change(screen.getByRole("combobox", { name: "Priority" }), {
-      target: { value: "Low" },
-    });
+    fireEvent.click(screen.getByRole("button", { name: "Priority" }));
+    expect(screen.getByRole("listbox", { name: "Priority" })).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("option", { name: /Low/ }));
+    expect(onChange).toHaveBeenCalledWith("Low");
+    expect(screen.queryByRole("listbox")).toBeNull();
+  });
+
+  test("selecting current value does not call onChange", () => {
+    const onChange = mock(async () => {});
+
+    render(<EnumSelectCell def={columnDef} value="High" onChange={onChange} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Priority" }));
+    fireEvent.click(screen.getByRole("option", { name: /High/ }));
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  test("empty value can pick default without spurious display", () => {
+    const onChange = mock(async () => {});
+
+    render(<EnumSelectCell def={columnDef} value="" onChange={onChange} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Priority" }));
+    fireEvent.click(screen.getByRole("option", { name: /Low/ }));
     expect(onChange).toHaveBeenCalledWith("Low");
   });
 
-  test("disabled select cannot be interacted with", () => {
+  test("disabled trigger does not open menu", () => {
     render(<EnumSelectCell def={columnDef} value="High" disabled onChange={async () => {}} />);
 
-    const select = screen.getByRole("combobox", { name: "Priority" }) as HTMLSelectElement;
-    expect(select.disabled).toBe(true);
+    fireEvent.click(screen.getByRole("button", { name: "Priority" }));
+    expect(screen.queryByRole("listbox")).toBeNull();
   });
+
 });

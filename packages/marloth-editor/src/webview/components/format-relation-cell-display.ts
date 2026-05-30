@@ -7,8 +7,9 @@ export const RELATION_CELL_FONT =
 
 /** Matches `.marloth-database-cell-badge` horizontal padding (8px × 2). */
 export const RELATION_CELL_BADGE_PADDING_X_PX = 16;
-/** Gap between badges in the cell body flex layout. */
-export const RELATION_CELL_BADGE_GAP_PX = 4;
+
+/** Reserved at the right of the cell for the hover edit control (see relation-cell-editor.css). */
+export const RELATION_CELL_EDIT_GUTTER_PX = 26;
 
 export type MeasureTextWidth = (text: string) => number;
 
@@ -24,8 +25,11 @@ export interface FormatRelationCellDisplayOptions {
   maxLines: number;
   measureWidth: MeasureTextWidth;
   emptyPlaceholder?: string;
-  badgePaddingPx?: number;
-  badgeGapPx?: number;
+}
+
+/** Text used when measuring how many lines a link occupies in the cell. */
+export function relationCellLinkMeasureText(title: string): string {
+  return title;
 }
 
 /** Count wrapped lines for `text` at `maxWidthPx`. */
@@ -50,59 +54,57 @@ export function countWrappedLines(
   return lines;
 }
 
-function badgeWidth(
+export function countRelationLinkLines(
   title: string,
+  maxWidthPx: number,
   measureWidth: MeasureTextWidth,
-  badgePaddingPx: number,
 ): number {
-  return measureWidth(title) + badgePaddingPx;
+  const contentMaxWidth = Math.max(1, maxWidthPx - RELATION_CELL_BADGE_PADDING_X_PX);
+  return countWrappedLines(
+    relationCellLinkMeasureText(title),
+    contentMaxWidth,
+    measureWidth,
+  );
 }
 
 function buildDisplayText(visible: RelationLink[], overflowCount: number): string {
   if (visible.length === 0 && overflowCount === 0) return "";
-  const prefix = visible.map((link) => link.title).join(" ");
+  const prefix = visible.map((link) => relationCellLinkMeasureText(link.title)).join(" ");
   if (overflowCount <= 0) return prefix;
   const suffix = `${overflowCount}+`;
   return prefix ? `${prefix} ${suffix}` : suffix;
 }
 
 /**
- * Pack relation links into visible badges: skip any title wider than the cell
- * (no ellipsis on individual entries), then fill up to `maxLines` of wrapped rows.
+ * Pack relation links by wrapped line budget; long titles wrap instead of being skipped.
+ * Always keeps at least the first link when any exist.
  */
 export function packRelationCellVisibleLinks(
   links: RelationLink[],
   options: FormatRelationCellDisplayOptions,
 ): RelationLink[] {
-  const badgePaddingPx = options.badgePaddingPx ?? RELATION_CELL_BADGE_PADDING_X_PX;
-  const badgeGapPx = options.badgeGapPx ?? RELATION_CELL_BADGE_GAP_PX;
   const visible: RelationLink[] = [];
-  let lines = 1;
-  let lineWidth = 0;
+  let usedLines = 0;
 
   for (const link of links) {
-    const width = badgeWidth(link.title, options.measureWidth, badgePaddingPx);
-    if (width > options.maxWidthPx) {
-      continue;
-    }
+    const linkLines = countRelationLinkLines(
+      link.title,
+      options.maxWidthPx,
+      options.measureWidth,
+    );
 
-    const gap = lineWidth > 0 ? badgeGapPx : 0;
-    const need = gap + width;
-
-    if (lineWidth + need <= options.maxWidthPx) {
-      lineWidth += need;
+    if (visible.length === 0) {
       visible.push(link);
+      usedLines = linkLines;
       continue;
     }
 
-    if (lines < options.maxLines) {
-      lines += 1;
-      lineWidth = width;
-      visible.push(link);
-      continue;
+    if (usedLines + linkLines > options.maxLines) {
+      break;
     }
 
-    break;
+    visible.push(link);
+    usedLines += linkLines;
   }
 
   return visible;

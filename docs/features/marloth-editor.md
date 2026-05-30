@@ -33,7 +33,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 - Each node page **must** include a collapsible **metadata** panel below the page title and above Properties (when present). Collapsed by default; standalone mode supports `?meta=1` to expand (not persisted in user settings).
 - **Connections** — total incident graph relationships (in + out). **Backlinks** — prose-only discovery: other pages whose markdown `body` links here (inline `marloth:` or export-style links). Backlinks are a gap-filler for references not already visible in relation/database sections; typed graph relationships are excluded.
 - Database tables **should** use synced Notion view definitions (`notion_views` on `NotionDatabase` nodes) for view tabs, filters, sorts, and typed columns when present; see [notion-metadata-sync.md](./notion-metadata-sync.md).
-- Database table **relation columns** (`type: relation` in synced `notion_schema`) **must** be editable in the UI: the cell shows a compact summary (max width `14rem`, ~6 lines) of **navigable link labels** for visible records, with overflow as `N+` when more links exist. An **edit control** (top-right, shown on cell hover or focus) opens a popup listing all links (remove per row) plus a searchable add control (filtered by the relation property’s target database when `config.database_id` is present). Linking uses `POST /api/nodes/:rowId/connections`; unlinking uses `DELETE /api/nodes/:rowId/connections/:label/:targetId` (edges carry `via_database` scoped to the table).
+- Database table **relation columns** (`type: relation` in synced `notion_schema`) **must** be editable in the UI: the cell shows a compact summary (max width `14rem`, ~6 lines) of **navigable link labels** for visible records, with overflow as `N+` when more links exist. In standalone mode those labels are plain `<a href="?node=…">` elements (native navigation). An **edit control** (top-right, shown on cell hover or focus) opens a popup listing all links (remove per row) plus a searchable add control (filtered by the relation property’s target database when `config.database_id` is present). Linking uses `POST /api/nodes/:rowId/connections`; unlinking uses `DELETE /api/nodes/:rowId/connections/:label/:targetId` (edges carry `via_database` scoped to the table).
 
 ### Cross-linking
 
@@ -43,7 +43,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
   - plain click → same editor tab
   - Ctrl/Cmd+click or middle-click → new editor tab (VS Code custom editor instance)
 - Legacy Notion export links (32-hex id embedded in path) **should** resolve at navigation time without requiring a bulk migration.
-- **Standalone browser mode** should use normal `<a href="?node=…">` URLs and native browser navigation (including Ctrl/Cmd+click for new tabs). Avoid `preventDefault`, `window.open`, and other JS overrides where a real link works.
+- **Standalone browser mode** **must** use normal `<a href="?node=…">` URLs and native browser navigation (including Ctrl/Cmd+click, middle-click, and context-menu “open in new tab”). Do **not** attach `onClick` / `onAuxClick` handlers, `preventDefault`, or `window.open` on those anchors. Database relation column cell labels and edit-popup row links are included.
 - **VS Code webview** may intercept `marloth:` links (no native target) and route via postMessage; keep that interception minimal and limited to cases without a usable URL.
 
 ### Entry / navigation
@@ -56,6 +56,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 - The editor UI **must** default to a **dark** theme in standalone browser and VS Code webview modes, independent of OS `prefers-color-scheme` or VS Code workbench theme.
 - Shared colors **must** live as `--marloth-*` CSS custom properties on `:root` in `src/webview/styles.css`; canvas or library code that cannot use CSS directly should read those tokens (see `src/webview/theme.ts`).
+- Editable **enum** property fields (Properties section and database/relation table cells) **should** use collapsed pill labels that open a popover option list on click (Notion-like), not native `<select>` controls. Empty values **must** show a muted placeholder until the user picks an option—never display a schema default as if it were already stored.
 
 ### Dev / agent workflow
 
