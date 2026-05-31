@@ -21,7 +21,7 @@ import { RelationCellEditor } from "./RelationCellEditor";
 import { TableRowActionsCell } from "./TableRowActionsCell";
 import { renderTableCell } from "./table-cell-render";
 import { TableTabsBar } from "./TableTabsBar";
-import { SortableDataColumnHeaders, columnReorderOnDragEnd } from "./SortableDataColumnHeaders";
+import { SortableDataColumnHeaders, columnLabelFor, moveColumnOrderItem } from "./SortableDataColumnHeaders";
 import "./ordered-association-view.css";
 import "./section-data-table.css";
 
@@ -159,6 +159,10 @@ function formatColumnLabel(key: string): string {
     .join(" ");
 }
 
+function columnSortablePrefix(groupId: string): string {
+  return `col:${groupId}:`;
+}
+
 function GroupTable({
   group,
   columns,
@@ -176,73 +180,56 @@ function GroupTable({
     id: groupDropId(group.groupId),
     data: { groupId: group.groupId, type: "group" },
   });
-  const columnDragSensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: { distance: 6 },
-    }),
-  );
-
-  const tableMarkup = (
-    <table className="marloth-database-table">
-      <thead>
-        <tr>
-          <th scope="col" aria-label="Reorder" className="marloth-ordered-association-drag-col" />
-          {rowPageActions ? (
-            <th scope="col" className="marloth-table-row-actions-col" aria-label="Row actions" />
-          ) : null}
-          <th scope="col">Name</th>
-          <SortableDataColumnHeaders
-            columns={columns}
-            columnLabels={columnLabels}
-            formatLabel={formatColumnLabel}
-            renderHeader={(_column, label) => label}
-            reorderable={Boolean(onColumnsReorder)}
-            canDeleteColumn={canDeleteColumn}
-            isRelationColumn={isRelationColumn}
-            onColumnDelete={onColumnDelete}
-          />
-        </tr>
-      </thead>
-      <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
-        <tbody ref={setNodeRef}>
-          {group.rows.length === 0 ? (
-            <tr className="marloth-ordered-association-empty-row">
-              <td colSpan={columns.length + 2 + (rowPageActions ? 1 : 0)}>Drop scenes here</td>
-            </tr>
-          ) : (
-            group.rows.map((row, index) => (
-              <SortableSceneRow
-                key={row.sceneId}
-                row={row}
-                groupId={group.groupId}
-                index={index}
-                columns={columns}
-                renderCell={renderCell}
-                renderNameCell={renderNameCell}
-                rowPageActions={rowPageActions}
-              />
-            ))
-          )}
-        </tbody>
-      </SortableContext>
-    </table>
-  );
 
   return (
     <section className="marloth-ordered-association-group">
       <h3 className="marloth-ordered-association-group-title">{group.title}</h3>
       <div className="marloth-database-table-wrap">
-        {onColumnsReorder ? (
-          <DndContext
-            sensors={columnDragSensors}
-            collisionDetection={closestCenter}
-            onDragEnd={(event) => columnReorderOnDragEnd(event, columns, onColumnsReorder)}
-          >
-            {tableMarkup}
-          </DndContext>
-        ) : (
-          tableMarkup
-        )}
+        <table className="marloth-database-table">
+          <thead>
+            <tr>
+              <th scope="col" aria-label="Reorder" className="marloth-ordered-association-drag-col" />
+              {rowPageActions ? (
+                <th scope="col" className="marloth-table-row-actions-col" aria-label="Row actions" />
+              ) : null}
+              <th scope="col">Name</th>
+              <SortableDataColumnHeaders
+                columns={columns}
+                columnLabels={columnLabels}
+                formatLabel={formatColumnLabel}
+                renderHeader={(_column, label) => label}
+                reorderable={Boolean(onColumnsReorder)}
+                useDragOverlay={Boolean(onColumnsReorder)}
+                sortableIdPrefix={columnSortablePrefix(group.groupId)}
+                canDeleteColumn={canDeleteColumn}
+                isRelationColumn={isRelationColumn}
+                onColumnDelete={onColumnDelete}
+              />
+            </tr>
+          </thead>
+          <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
+            <tbody ref={setNodeRef}>
+              {group.rows.length === 0 ? (
+                <tr className="marloth-ordered-association-empty-row">
+                  <td colSpan={columns.length + 2 + (rowPageActions ? 1 : 0)}>Drop scenes here</td>
+                </tr>
+              ) : (
+                group.rows.map((row, index) => (
+                  <SortableSceneRow
+                    key={row.sceneId}
+                    row={row}
+                    groupId={group.groupId}
+                    index={index}
+                    columns={columns}
+                    renderCell={renderCell}
+                    renderNameCell={renderNameCell}
+                    rowPageActions={rowPageActions}
+                  />
+                ))
+              )}
+            </tbody>
+          </SortableContext>
+        </table>
       </div>
     </section>
   );
@@ -260,6 +247,7 @@ export function OrderedAssociationView({
   onDeleteNode,
 }: OrderedAssociationViewProps) {
   const [activeSceneId, setActiveSceneId] = useState<string | null>(null);
+  const [activeColumnId, setActiveColumnId] = useState<string | null>(null);
   const [moveError, setMoveError] = useState<string | null>(null);
   const [isMoving, setIsMoving] = useState(false);
   const [displayColumns, setDisplayColumns] = useState(view.columns);
@@ -407,7 +395,7 @@ export function OrderedAssociationView({
     [api, onCellUpdated, onOpenNode, view.columnDefs, view.typeDatabaseId],
   );
 
-  const handleDragEnd = useCallback(
+  const handleSceneDragEnd = useCallback(
     async (event: DragEndEvent) => {
       const { active, over } = event;
       setActiveSceneId(null);
@@ -435,6 +423,51 @@ export function OrderedAssociationView({
     [api, configId, onViewChange, view.tabs.activeTabId, view.groups],
   );
 
+  const handleColumnDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+      setActiveColumnId(null);
+      if (!over || active.id === over.id) return;
+
+      const activeMatch = /^col:[^:]+:(.+)$/.exec(String(active.id));
+      const overMatch = /^col:[^:]+:(.+)$/.exec(String(over.id));
+      if (!activeMatch || !overMatch) return;
+
+      const oldIndex = displayColumns.indexOf(activeMatch[1]!);
+      const newIndex = displayColumns.indexOf(overMatch[1]!);
+      if (oldIndex < 0 || newIndex < 0) return;
+
+      void handleColumnsReorder(moveColumnOrderItem(displayColumns, oldIndex, newIndex));
+    },
+    [displayColumns, handleColumnsReorder],
+  );
+
+  const handleDragStart = useCallback((event: { active: { id: string | number } }) => {
+    const activeId = String(event.active.id);
+    const columnMatch = /^col:[^:]+:(.+)$/.exec(activeId);
+    if (columnMatch) {
+      setActiveColumnId(columnMatch[1]!);
+      return;
+    }
+    setActiveSceneId(activeId);
+  }, []);
+
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      if (String(event.active.id).startsWith("col:")) {
+        handleColumnDragEnd(event);
+        return;
+      }
+      void handleSceneDragEnd(event);
+    },
+    [handleColumnDragEnd, handleSceneDragEnd],
+  );
+
+  const handleDragCancel = useCallback(() => {
+    setActiveSceneId(null);
+    setActiveColumnId(null);
+  }, []);
+
   if (view.tabs.items.length === 0) {
     return <div className="marloth-database-empty">No scenes in this database.</div>;
   }
@@ -448,9 +481,9 @@ export function OrderedAssociationView({
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
-        onDragStart={(event) => setActiveSceneId(String(event.active.id))}
-        onDragEnd={(event) => void handleDragEnd(event)}
-        onDragCancel={() => setActiveSceneId(null)}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
       >
         <div className="marloth-ordered-association-groups">
           {view.groups.map((group) => (
@@ -473,6 +506,10 @@ export function OrderedAssociationView({
         <DragOverlay>
           {activeRow ? (
             <div className="marloth-ordered-association-drag-overlay">{activeRow.name}</div>
+          ) : activeColumnId ? (
+            <div className="marloth-column-drag-overlay">
+              {columnLabelFor(activeColumnId, columnLabels, formatColumnLabel)}
+            </div>
           ) : null}
         </DragOverlay>
       </DndContext>

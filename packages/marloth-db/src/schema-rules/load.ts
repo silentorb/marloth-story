@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
-import { schemaFilePath as contentSchemaFilePath } from "../content/paths";
+import { resolveContentPath, schemaFilePath as contentSchemaFilePath } from "../content/paths";
 import { emptySchemaFile, parseSchemaFile, type SchemaFile } from "./schema-file";
 
 let cachedSchema: { mtimeMs: number; file: SchemaFile } | null = null;
@@ -32,4 +32,9 @@ export function loadSchemaFromContent(contentDir: string): SchemaFile {
 
   cachedSchema = { mtimeMs, file };
   return file;
+}
+
+/** Load schema from the default workspace `content/` directory. */
+export function loadWorkspaceSchema(): SchemaFile {
+  return loadSchemaFromContent(resolveContentPath());
 }

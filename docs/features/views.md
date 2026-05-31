@@ -49,12 +49,14 @@ Both kinds render through the shared `TableTabsBar` component.
 - **`sections.items`**: the type-table Items section (only section with tabs in v1).
 - **Sort spec**: `{ column: "name" | columnKey, direction: "asc" | "desc" }`.
 - **`columnOrder`** (optional): section-level override for data column order (column keys). When absent, columns use default schema order. Editable in the UI by dragging column headers.
+- **Custom tab order**: implicit array order of `tabs.definitions[]`. Editable in the UI by dragging custom tab buttons (generated tabs are not reorderable).
 - **Columns**: all stored scalar + relation columns from `notion_schema`, plus dynamic fields. No per-tab column visibility or filters.
 
 ## Editor behavior
 
 - Active tab is selected via `?tab=` (standalone) or node GET `?tab=`.
 - Custom tabs support in-editor CRUD (rename, edit sorts, add, delete) via `/api/views/nodes/:id/sections/:sectionKey/tabs`.
+- Custom tab order is updated via `PATCH /api/views/nodes/:id/sections/:sectionKey` with `{ tabOrder: string[] }` (tab ids in desired order).
 - Section column order is updated via `PATCH /api/views/nodes/:id/sections/:sectionKey` with `{ columnOrder: string[] }`.
 - Generated tabs (Scenes) switch scope only; no CRUD chrome.
 

@@ -10,6 +10,20 @@
   align-items: stretch;
 }
 
+.marloth-table-tab-wrap.is-dragging {
+  z-index: 1;
+  opacity: 0.85;
+}
+
+.marloth-database-view-tab.is-reorderable {
+  cursor: grab;
+  touch-action: none;
+}
+
+.marloth-table-tab-wrap.is-dragging .marloth-database-view-tab.is-reorderable {
+  cursor: grabbing;
+}
+
 .marloth-table-tab-add {
   border: 1px solid var(--marloth-border);
   border-radius: 6px;

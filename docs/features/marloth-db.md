@@ -28,7 +28,7 @@ For **what design nodes mean** (features, inspirations, products, traceability),
 | **Type table** | Node that receives `is_a` rows and/or carries table schema metadata (`notion_schema`, etc.). |
 | **Schema** | Workspace model config in `content/schema.json` (relationship rules, enums) — see [schema.md](./schema.md). |
 
-API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` **7**).
+API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` **8**).
 
 ## Editing the graph (agent workflow)
 
@@ -82,6 +82,8 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 | `relationship_projections` | Directed rows `(source, target, local_type)` — hot path for queries |
 | `nodes` | Entity property bags |
 | `meta` | Schema version, content mtime |
+
+**Enum properties in cache:** keys declared in [`content/schema.json`](../../content/schema.json) `enums` (e.g. `priority`) are stored in SQLite relationship `properties` JSON as **0-based indices** into the enum’s `options` array. Git-tracked [`content/relationships.json`](../../content/relationships.json) keeps **string labels**. Encode on cache write and decode on cache read (`packages/marloth-db/src/enum-codec.ts`, `graph.ts`). After pulling enum-cache changes or a `SCHEMA_VERSION` bump, run `bun run content:sync` (or restart the editor API) to rebuild the cache from content.
 
 Type-table behavior is inferred from `is_a` usage and schema metadata (`isTypeTableNode` in `node-capabilities.ts`).
 

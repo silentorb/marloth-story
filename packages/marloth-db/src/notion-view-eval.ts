@@ -1,3 +1,9 @@
+import {
+  compareEnumLabels,
+  resolveEnumIdForPropertyName,
+} from "./enum-codec";
+import { loadWorkspaceSchema } from "./schema-rules/load";
+import { resolvePropertyEnum } from "./property-enums";
 import type { RelationLink } from "./relation-link";
 
 export interface EvalRow {
@@ -155,7 +161,14 @@ export function sortEvalRows(rows: EvalRow[], sorts: unknown[]): EvalRow[] {
       if (!property) continue;
       const av = cellValue(a, property);
       const bv = cellValue(b, property);
-      const cmp = compareNumbers(av, bv) * direction;
+      const schema = loadWorkspaceSchema();
+      const enumId = resolveEnumIdForPropertyName(property, schema);
+      const enumDef = enumId ? resolvePropertyEnum(enumId, schema) : null;
+      const cmp = (
+        enumDef
+          ? compareEnumLabels(av, bv, enumDef)
+          : compareNumbers(av, bv)
+      ) * direction;
       if (cmp !== 0) return cmp;
     }
     if (a.rowIndex !== b.rowIndex) return a.rowIndex - b.rowIndex;

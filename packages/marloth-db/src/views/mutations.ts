@@ -16,6 +16,7 @@ export type ViewsMutationError =
   | "tab_not_found"
   | "last_tab"
   | "invalid_name"
+  | "invalid_tab_order"
   | "not_custom_tabs";
 
 function ensureCustomSection(
@@ -116,6 +117,36 @@ export function deleteTab(
   if (index < 0) throw new Error("tab_not_found");
   definitions.splice(index, 1);
   writeViews(store, file);
+}
+
+export function reorderSectionTabs(
+  store: ContentStore,
+  nodeId: string,
+  sectionKey: string,
+  tabIds: string[],
+): CustomTabDefinition[] {
+  if (!Array.isArray(tabIds) || tabIds.length === 0) {
+    throw new Error("invalid_tab_order");
+  }
+
+  const file = store.readViewsFile();
+  const definitions = ensureCustomSection(file, nodeId, sectionKey);
+  if (tabIds.length !== definitions.length) {
+    throw new Error("invalid_tab_order");
+  }
+
+  const byId = new Map(definitions.map((tab) => [tab.id, tab]));
+  const reordered: CustomTabDefinition[] = [];
+  for (const tabId of tabIds) {
+    const tab = byId.get(tabId);
+    if (!tab) throw new Error("invalid_tab_order");
+    reordered.push(tab);
+  }
+
+  const section = file.nodes[nodeId]!.sections[sectionKey]!;
+  section.tabs = { kind: "custom", definitions: reordered };
+  writeViews(store, file);
+  return reordered;
 }
 
 export function updateSectionColumnOrder(

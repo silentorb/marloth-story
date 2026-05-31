@@ -49,7 +49,7 @@ describe("OrderedAssociationView", () => {
   test("renders book tabs and schema-driven column headers", () => {
     const api = makeMockEditorApi("standalone");
 
-    const { getByRole, getAllByRole, queryByRole } = render(
+    const { getByRole, getAllByRole, getAllByText, queryByRole } = render(
       <OrderedAssociationView
         api={api}
         configId="scenes-by-book"
@@ -64,9 +64,10 @@ describe("OrderedAssociationView", () => {
     expect(getByRole("tab", { name: "Fairytale" })).toBeTruthy();
     expect(getByRole("heading", { name: "Part 1", level: 3 })).toBeTruthy();
     expect(getByRole("link", { name: "Opening" })).toBeTruthy();
-    expect(getAllByRole("button", { name: "Reorder Solutions column" }).length).toBeGreaterThan(0);
-    expect(getAllByRole("button", { name: "Reorder 📁 Characters column" }).length).toBeGreaterThan(0);
-    expect(getAllByRole("button", { name: "Reorder 📁 Location column" }).length).toBeGreaterThan(0);
+    expect(getAllByText("Solutions").length).toBeGreaterThanOrEqual(1);
+    expect(getAllByText("📁 Characters").length).toBeGreaterThanOrEqual(1);
+    expect(getAllByText("📁 Location").length).toBeGreaterThanOrEqual(1);
+    expect(document.querySelectorAll("th.marloth-column-header.is-reorderable").length).toBe(6);
     expect(queryByRole("columnheader", { name: "Status" })).toBeNull();
   });
 });

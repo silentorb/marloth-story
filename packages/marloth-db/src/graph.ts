@@ -7,6 +7,8 @@ import type {
   RelationshipProjectionRow,
   RelationshipRecordRow,
 } from "./content/relationship-sync-expand";
+import { decodeEnumProperties, encodeEnumProperties } from "./enum-codec";
+import { loadWorkspaceSchema } from "./schema-rules/load";
 
 export type PropertyValue = string | number | boolean | null | PropertyValue[] | { [key: string]: PropertyValue };
 export type Properties = Record<string, PropertyValue>;
@@ -40,6 +42,14 @@ function parseJsonObject(raw: string): Properties {
   return {};
 }
 
+function parseRelationshipProperties(raw: string): Properties {
+  return decodeEnumProperties(parseJsonObject(raw), loadWorkspaceSchema());
+}
+
+function stringifyRelationshipProperties(properties: Properties): string {
+  return JSON.stringify(encodeEnumProperties(properties, loadWorkspaceSchema()));
+}
+
 function mergeProperties(base: Properties, patch: Properties): Properties {
   const out = { ...base };
   for (const [k, v] of Object.entries(patch)) {
@@ -67,7 +77,7 @@ function mapProjectionRow(row: {
     sourceNodeId: row.source_node_id,
     targetNodeId: row.target_node_id,
     type: row.type,
-    properties: parseJsonObject(row.properties),
+    properties: parseRelationshipProperties(row.properties),
   };
 }
 
@@ -172,13 +182,13 @@ export class GraphDatabase {
       record.nodeA,
       record.nodeB,
       record.compositeType,
-      JSON.stringify(record.properties),
+      stringifyRelationshipProperties(record.properties),
       directedFrom ?? null,
     );
     const existing = this.getRelationshipRecord(record.id);
     if (existing && Object.keys(record.properties).length > 0) {
       const merged = mergeProperties(existing.properties, record.properties);
-      this.updateRecordProps.run(JSON.stringify(merged), record.id);
+      this.updateRecordProps.run(stringifyRelationshipProperties(merged), record.id);
     }
   }
 
@@ -189,12 +199,12 @@ export class GraphDatabase {
       projection.sourceNodeId,
       projection.targetNodeId,
       projection.type,
-      JSON.stringify(projection.properties),
+      stringifyRelationshipProperties(projection.properties),
     );
     const existing = this.getRelationship(projection.id);
     if (existing && Object.keys(projection.properties).length > 0) {
       const merged = mergeProperties(existing.properties, projection.properties);
-      this.updateProjectionProps.run(JSON.stringify(merged), projection.id);
+      this.updateProjectionProps.run(stringifyRelationshipProperties(merged), projection.id);
     }
   }
 
@@ -211,7 +221,7 @@ export class GraphDatabase {
       sourceNodeId < targetNodeId ? sourceNodeId : targetNodeId,
       sourceNodeId < targetNodeId ? targetNodeId : sourceNodeId,
       type,
-      JSON.stringify(properties),
+      stringifyRelationshipProperties(properties),
       sourceNodeId,
     );
     this.insertProjection.run(
@@ -220,12 +230,12 @@ export class GraphDatabase {
       sourceNodeId,
       targetNodeId,
       type,
-      JSON.stringify(properties),
+      stringifyRelationshipProperties(properties),
     );
     const existing = this.getRelationship(id);
     if (existing && Object.keys(properties).length > 0) {
       const merged = mergeProperties(existing.properties, properties);
-      this.updateProjectionProps.run(JSON.stringify(merged), id);
+      this.updateProjectionProps.run(stringifyRelationshipProperties(merged), id);
     }
   }
 
@@ -233,9 +243,9 @@ export class GraphDatabase {
     const existing = this.getRelationship(id);
     if (!existing) return;
     const merged = mergeProperties(existing.properties, properties);
-    this.updateProjectionProps.run(JSON.stringify(merged), id);
+    this.updateProjectionProps.run(stringifyRelationshipProperties(merged), id);
     if (existing.recordId) {
-      this.updateRecordProps.run(JSON.stringify(merged), existing.recordId);
+      this.updateRecordProps.run(stringifyRelationshipProperties(merged), existing.recordId);
     }
   }
 
@@ -290,7 +300,7 @@ export class GraphDatabase {
       nodeA: row.node_a,
       nodeB: row.node_b,
       compositeType: row.composite_type,
-      properties: parseJsonObject(row.properties),
+      properties: parseRelationshipProperties(row.properties),
     };
   }
 

@@ -9,9 +9,13 @@ export interface RelationshipRuleEntry {
   allowedTargetTypeIds: string[];
 }
 
+export type EnumDefaultOrder = "asc" | "desc";
+
 export interface EnumDefinition {
   options: string[];
   default: string;
+  /** Dropdown display order (UI only); defaults to asc when omitted in schema.json. */
+  defaultOrder: EnumDefaultOrder;
   values?: Record<string, number>;
 }
 
@@ -47,6 +51,14 @@ function parseEnumDefinition(enumId: string, raw: unknown): EnumDefinition {
     throw new Error(`schema.json: enums.${enumId}.default must be one of options`);
   }
 
+  let defaultOrder: EnumDefaultOrder = "asc";
+  if (entry.defaultOrder !== undefined) {
+    if (entry.defaultOrder !== "asc" && entry.defaultOrder !== "desc") {
+      throw new Error(`schema.json: enums.${enumId}.defaultOrder must be "asc" or "desc"`);
+    }
+    defaultOrder = entry.defaultOrder;
+  }
+
   let values: Record<string, number> | undefined;
   if (entry.values !== undefined) {
     if (!entry.values || typeof entry.values !== "object" || Array.isArray(entry.values)) {
@@ -65,7 +77,7 @@ function parseEnumDefinition(enumId: string, raw: unknown): EnumDefinition {
     }
   }
 
-  return { options, default: defaultValue, ...(values ? { values } : {}) };
+  return { options, default: defaultValue, defaultOrder, ...(values ? { values } : {}) };
 }
 
 function parseEnums(raw: unknown): Record<string, EnumDefinition> {

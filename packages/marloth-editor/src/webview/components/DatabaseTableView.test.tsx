@@ -24,8 +24,12 @@ describe("DatabaseTableView", () => {
       </UserSettingsProvider>,
     );
 
-    expect(screen.getByRole("columnheader", { name: /Name/i })).toBeTruthy();
-    expect(screen.getByRole("columnheader", { name: /Priority/i })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Name" })).toBeTruthy();
+    expect(
+      screen
+        .getAllByRole("button", { name: "Priority" })
+        .some((el) => el.classList.contains("marloth-table-sort-button")),
+    ).toBe(true);
     expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
     expect(screen.getByText("High")).toBeTruthy();
   });

@@ -30,6 +30,7 @@
     "priority": {
       "options": ["Low", "Medium", "High", "Consideration"],
       "default": "Low",
+      "defaultOrder": "desc",
       "values": {
         "Low": 1,
         "Medium": 2,

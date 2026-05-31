@@ -200,17 +200,30 @@ export function createApiHandler(
       if (viewsSectionMatch && req.method === "PATCH") {
         const nodeId = viewsSectionMatch[1]!.toLowerCase();
         const sectionKey = viewsSectionMatch[2]!;
-        const payload = (await req.json()) as { columnOrder?: string[] };
-        if (!Array.isArray(payload.columnOrder)) {
-          return json({ error: "columnOrder required" }, 400);
+        const payload = (await req.json()) as { columnOrder?: string[]; tabOrder?: string[] };
+        const hasColumnOrder = Array.isArray(payload.columnOrder);
+        const hasTabOrder = Array.isArray(payload.tabOrder);
+        if (!hasColumnOrder && !hasTabOrder) {
+          return json({ error: "columnOrder or tabOrder required" }, 400);
         }
         try {
-          const columnOrder = db.updateSectionColumnOrder(
-            nodeId,
-            sectionKey,
-            payload.columnOrder,
-          );
-          return json({ columnOrder });
+          const response: { columnOrder?: string[]; tabOrder?: import("marloth-db").CustomTabDefinition[] } =
+            {};
+          if (hasColumnOrder) {
+            response.columnOrder = db.updateSectionColumnOrder(
+              nodeId,
+              sectionKey,
+              payload.columnOrder!,
+            );
+          }
+          if (hasTabOrder) {
+            response.tabOrder = db.updateSectionTabOrder(
+              nodeId,
+              sectionKey,
+              payload.tabOrder!,
+            );
+          }
+          return json(response);
         } catch (err) {
           return json({ error: String(err) }, 400);
         }

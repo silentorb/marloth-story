@@ -7,6 +7,7 @@ import type {
   OrderedAssociationViewDetail,
 } from "./types";
 import type { UserSettings, UserSettingsPatch } from "./user-settings";
+import type { SchemaFile } from "marloth-db/schema-file";
 import type { OrderedAssociationMoveParams } from "marloth-db";
 
 export type { GraphRelationship, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseViewDetail } from "marloth-db";
@@ -62,6 +63,11 @@ export interface EditorApiClient {
     sectionKey: string,
     columnOrder: string[],
   ): Promise<string[]>;
+  updateSectionTabOrder(
+    nodeId: string,
+    sectionKey: string,
+    tabOrder: string[],
+  ): Promise<import("marloth-db").CustomTabDefinition[]>;
   deleteDatabaseColumn(
     databaseId: string,
     columnKey: string,
@@ -99,6 +105,7 @@ export interface EditorApiClient {
   archiveNode(id: string): Promise<void>;
   getGraphFull(): Promise<GraphSnapshot>;
   getGraphExplorerLod(options?: GraphExplorerLodOptions): Promise<GraphLodSnapshot>;
+  getSchema(): Promise<SchemaFile>;
   getUserSettings(): Promise<UserSettings>;
   patchUserSettings(patch: UserSettingsPatch): Promise<UserSettings>;
 }
@@ -240,6 +247,21 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       );
       return data.columnOrder;
     },
+    async updateSectionTabOrder(
+      nodeId: string,
+      sectionKey: string,
+      tabOrder: string[],
+    ): Promise<import("marloth-db").CustomTabDefinition[]> {
+      const data = await fetchJson<{ tabOrder: import("marloth-db").CustomTabDefinition[] }>(
+        `/api/views/nodes/${nodeId}/sections/${encodeURIComponent(sectionKey)}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tabOrder }),
+        },
+      );
+      return data.tabOrder;
+    },
     async deleteDatabaseColumn(
       databaseId: string,
       columnKey: string,
@@ -354,6 +376,10 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         `/api/graph/explorer-lod${query ? `?${query}` : ""}`,
       );
       return data.graph;
+    },
+    async getSchema(): Promise<SchemaFile> {
+      const data = await fetchJson<{ schema: SchemaFile }>("/api/schema");
+      return data.schema;
     },
     async getUserSettings(): Promise<UserSettings> {
       const data = await fetchJson<{ settings: UserSettings }>("/api/user-settings");

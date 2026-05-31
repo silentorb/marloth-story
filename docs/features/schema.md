@@ -27,6 +27,7 @@ This is separate from:
     "priority": {
       "options": ["Low", "Medium", "High", "Consideration"],
       "default": "Low",
+      "defaultOrder": "desc",
       "values": {
         "Low": 1,
         "Medium": 2,
@@ -54,11 +55,14 @@ Types are identified by **stable node id**, not display names.
 
 | Field | Meaning |
 | --- | --- |
-| `options` | Allowed labels stored on relationships / type membership |
+| `options` | Allowed labels; **array order defines sort order** (index 0, 1, …) |
 | `default` | Label used when the stored value is unset |
+| `defaultOrder` | Optional `"asc"` (default) or `"desc"`. Controls **dropdown display order** only; `options` array order remains canonical for storage and table sorting. |
 | `values` | Optional map from option label → number; meaning is **consumer-defined** |
 
-For `priority`, `values` are interpreted as numeric **weights** by `priorityWeight()` and the [`inspirations.weightedUse`](../../docs/dynamic-fields/inspirations.weighted-use.md) dynamic field. Other enums may use `values` differently or omit them when only labels matter for UI dropdowns.
+**Storage:** `content/relationships.json` stores enum properties as **labels** (e.g. `"priority": "Medium"`). The SQLite cache stores the same properties as **integer indices** into `options` (see [marloth-db.md](./marloth-db.md)). Table sorts use **index order**, not `values`.
+
+For `priority`, `values` are interpreted as numeric **weights** by `priorityWeight()` and the [`inspirations.weightedUse`](../../docs/dynamic-fields/inspirations.weighted-use.md) dynamic field only — not for table sorting. Other enums may use `values` differently or omit them when only labels matter for UI dropdowns.
 
 `GET /api/schema` returns the parsed file including `enums`.
 
@@ -70,7 +74,7 @@ For `priority`, `values` are interpreted as numeric **weights** by `priorityWeig
 - `GET /api/nodes/search?allowedTypeIds=id1,id2` filters results to nodes whose `is_a` types intersect the list
 - Node page relation sections expose `allowedTargetTypeIds` on each outgoing type section when a rule matches
 - Creating a relation row via `POST /api/nodes/:id/relation-rows` auto-adds `is_a` to the sole allowed type when a rule defines exactly one target type
-- Priority columns are enriched from `enums.priority` (`options`, `default` on column defs; `values` read by weight consumers)
+- Priority columns are enriched from `enums.priority` (`options`, `default`, `defaultOrder` on column defs; `values` read by weight consumers)
 
 ## Implementation
 
@@ -78,6 +82,7 @@ For `priority`, `values` are interpreted as numeric **weights** by `priorityWeig
 | --- | --- |
 | `packages/marloth-db/src/schema-rules/schema-file.ts` | Parse/serialize `schema.json` |
 | `packages/marloth-db/src/schema-rules/resolve.ts` | Match rules to source node + type |
+| `packages/marloth-db/src/enum-codec.ts` | Label ↔ index encode/decode for SQLite cache |
 | `packages/marloth-db/src/property-enums.ts` | Resolve enums from schema; priority helpers |
 | `packages/marloth-db/src/node-page-sections.ts` | Embeds `allowedTargetTypeIds` on relation sections |
 

@@ -55,6 +55,8 @@ interface SortableColumnHeaderCellProps {
   canDelete?: boolean;
   isRelation?: boolean;
   onColumnDelete?: (column: string) => void | Promise<void>;
+  useDragOverlay?: boolean;
+  sortableId?: string;
 }
 
 function SortableColumnHeaderCell({
@@ -64,33 +66,31 @@ function SortableColumnHeaderCell({
   canDelete,
   isRelation,
   onColumnDelete,
+  useDragOverlay = false,
+  sortableId,
 }: SortableColumnHeaderCellProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: column,
+    id: sortableId ?? column,
   });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
+  const style =
+    useDragOverlay && isDragging
+      ? { opacity: 0.35 }
+      : {
+          transform: CSS.Transform.toString(transform),
+          transition,
+        };
 
   return (
     <th
       ref={setNodeRef}
       scope="col"
       style={style}
-      className={isDragging ? "marloth-column-header is-dragging" : "marloth-column-header"}
+      className={`marloth-column-header is-reorderable${isDragging ? " is-dragging" : ""}`}
+      {...attributes}
+      {...listeners}
     >
       <div className="marloth-column-header-inner">
-        <button
-          type="button"
-          className="marloth-column-drag-handle"
-          aria-label={`Reorder ${label} column`}
-          {...attributes}
-          {...listeners}
-        >
-          ⋮⋮
-        </button>
         <ColumnHeaderCellContent
           column={column}
           label={label}
@@ -110,6 +110,9 @@ export interface SortableDataColumnHeadersProps {
   formatLabel: (column: string) => string;
   renderHeader: (column: string, label: string) => ReactNode;
   reorderable?: boolean;
+  useDragOverlay?: boolean;
+  /** Prefix for @dnd-kit sortable ids when the same column keys appear in multiple contexts. */
+  sortableIdPrefix?: string;
   canDeleteColumn?: (column: string) => boolean;
   isRelationColumn?: (column: string) => boolean;
   onColumnDelete?: (column: string) => void | Promise<void>;
@@ -121,11 +124,16 @@ export function SortableDataColumnHeaders({
   formatLabel,
   renderHeader,
   reorderable = false,
+  useDragOverlay = false,
+  sortableIdPrefix,
   canDeleteColumn,
   isRelationColumn,
   onColumnDelete,
 }: SortableDataColumnHeadersProps) {
   const labelFor = (column: string) => columnLabels?.[column] ?? formatLabel(column);
+  const sortableIdFor = (column: string) =>
+    sortableIdPrefix ? `${sortableIdPrefix}${column}` : column;
+  const sortableItems = columns.map(sortableIdFor);
 
   if (!reorderable) {
     return (
@@ -147,7 +155,7 @@ export function SortableDataColumnHeaders({
   }
 
   return (
-    <SortableContext items={columns} strategy={horizontalListSortingStrategy}>
+    <SortableContext items={sortableItems} strategy={horizontalListSortingStrategy}>
       {columns.map((column) => (
         <SortableColumnHeaderCell
           key={column}
@@ -157,10 +165,20 @@ export function SortableDataColumnHeaders({
           canDelete={canDeleteColumn?.(column)}
           isRelation={isRelationColumn?.(column)}
           onColumnDelete={onColumnDelete}
+          useDragOverlay={useDragOverlay}
+          sortableId={sortableIdFor(column)}
         />
       ))}
     </SortableContext>
   );
+}
+
+export function columnLabelFor(
+  column: string,
+  columnLabels: Record<string, string> | undefined,
+  formatLabel: (column: string) => string,
+): string {
+  return columnLabels?.[column] ?? formatLabel(column);
 }
 
 export function columnReorderOnDragEnd(

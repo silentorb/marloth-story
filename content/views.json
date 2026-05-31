@@ -306,13 +306,9 @@
             "kind": "custom",
             "definitions": [
               {
-                "id": "prioritized",
-                "name": "Prioritized",
+                "id": "name",
+                "name": "Name",
                 "sorts": [
-                  {
-                    "column": "priority",
-                    "direction": "desc"
-                  },
                   {
                     "column": "name",
                     "direction": "asc"
@@ -320,9 +316,13 @@
                 ]
               },
               {
-                "id": "name",
-                "name": "Name",
+                "id": "prioritized",
+                "name": "Prioritized",
                 "sorts": [
+                  {
+                    "column": "priority",
+                    "direction": "desc"
+                  },
                   {
                     "column": "name",
                     "direction": "asc"

@@ -51,7 +51,13 @@ describe("SectionDataTable", () => {
     const priorityHeader = screen.getByRole("button", { name: "Priority" });
     fireEvent.click(priorityHeader);
 
-    const names = screen.getAllByRole("row").slice(1).map((row) => row.textContent);
+    let names = screen.getAllByRole("row").slice(1).map((row) => row.textContent);
+    expect(names[0]).toContain("Alpha");
+    expect(names[1]).toContain("Beta");
+
+    fireEvent.click(priorityHeader);
+
+    names = screen.getAllByRole("row").slice(1).map((row) => row.textContent);
     expect(names[0]).toContain("Beta");
     expect(names[1]).toContain("Alpha");
   });
@@ -97,7 +103,7 @@ describe("SectionDataTable", () => {
     expect(screen.getByText("status:Open")).toBeTruthy();
   });
 
-  test("shows column drag handles when reorder is enabled", () => {
+  test("does not render column drag handles when reorder is enabled", () => {
     const api = makeMockEditorApi("standalone");
     render(
       <UserSettingsProvider api={api}>
@@ -111,6 +117,7 @@ describe("SectionDataTable", () => {
       </UserSettingsProvider>,
     );
 
-    expect(screen.getAllByRole("button", { name: /Reorder .* column/ })).toHaveLength(2);
+    expect(screen.queryByRole("button", { name: /Reorder .* column/ })).toBeNull();
+    expect(document.querySelectorAll(".marloth-column-header.is-reorderable")).toHaveLength(2);
   });
 });

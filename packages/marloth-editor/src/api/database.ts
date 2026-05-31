@@ -46,6 +46,7 @@ import {
   deleteSectionTab,
   ITEMS_SECTION_KEY,
   patchSectionColumnOrder,
+  patchSectionTabOrder,
   readNodeViews,
   updateSectionTab,
 } from "./views";
@@ -72,6 +73,11 @@ export interface EditorDatabase {
     sectionKey: string,
     columnOrder: string[],
   ): string[];
+  updateSectionTabOrder(
+    nodeId: string,
+    sectionKey: string,
+    tabOrder: string[],
+  ): import("marloth-db").CustomTabDefinition[];
   deleteDatabaseColumn(
     databaseId: string,
     columnKey: string,
@@ -167,6 +173,9 @@ export function openEditorDatabase(
     },
     updateSectionColumnOrder(nodeId: string, sectionKey: string, columnOrder: string[]) {
       return patchSectionColumnOrder(writeCtx, nodeId, sectionKey, columnOrder);
+    },
+    updateSectionTabOrder(nodeId: string, sectionKey: string, tabOrder: string[]) {
+      return patchSectionTabOrder(writeCtx, nodeId, sectionKey, tabOrder);
     },
     deleteDatabaseColumn(databaseId: string, columnKey: string) {
       return deleteDatabaseColumnInDb(writeCtx, databaseId, columnKey);

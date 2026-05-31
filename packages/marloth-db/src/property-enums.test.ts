@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import type { SchemaFile } from "./schema-rules/schema-file";
 import {
+  comparePriorityLabels,
   getPriorityOptions,
   coalescePriorityValue,
   enrichColumnDef,
@@ -16,6 +17,7 @@ const TEST_SCHEMA: SchemaFile = {
     priority: {
       options: ["Low", "Medium", "High", "Consideration"],
       default: "Low",
+      defaultOrder: "desc",
       values: {
         Low: 1,
         Medium: 2,
@@ -33,6 +35,12 @@ describe("property-enums", () => {
     expect(priorityWeight("Consideration")).toBe(0);
     expect(priorityWeight("")).toBe(1);
     expect(priorityWeight("unknown")).toBe(0);
+  });
+
+  test("comparePriorityLabels orders by weight, not alphabetically", () => {
+    expect(comparePriorityLabels("High", "Medium")).toBeGreaterThan(0);
+    expect(comparePriorityLabels("Medium", "High")).toBeLessThan(0);
+    expect(comparePriorityLabels("Low", "Consideration")).toBeGreaterThan(0);
   });
 
   test("coalescePriorityValue defaults unset to Low", () => {
@@ -63,5 +71,6 @@ describe("property-enums", () => {
     expect(enriched.enumId).toBe("priority");
     expect(enriched.options).toEqual([...getPriorityOptions()]);
     expect(enriched.defaultValue).toBe("Low");
+    expect(enriched.defaultOrder).toBe("desc");
   });
 });

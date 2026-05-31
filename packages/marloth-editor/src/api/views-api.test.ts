@@ -69,6 +69,19 @@ describe("views API", () => {
     const sectionBody = (await sectionPatch.json()) as { columnOrder: string[] };
     expect(sectionBody.columnOrder).toEqual(["name", "priority"]);
 
+    const tabOrderPatch = await handler(
+      new Request(`http://127.0.0.1/api/views/nodes/${nodeId}/sections/items`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tabOrder: [createdBody.tab.id, "all"] }),
+      }),
+    );
+    expect(tabOrderPatch.status).toBe(200);
+    const tabOrderBody = (await tabOrderPatch.json()) as {
+      tabOrder: Array<{ id: string; name: string }>;
+    };
+    expect(tabOrderBody.tabOrder.map((tab) => tab.id)).toEqual([createdBody.tab.id, "all"]);
+
     rmSync(dir, { recursive: true, force: true });
   });
 });

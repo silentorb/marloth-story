@@ -43,6 +43,8 @@ export interface DatabaseColumnDef {
   options?: string[];
   /** Default enum label when the stored value is unset. */
   defaultValue?: string;
+  /** Dropdown display order for enum options (UI only; storage uses canonical options order). */
+  defaultOrder?: "asc" | "desc";
   /** Graph relationship type when type is `relation`. */
   relationType?: string;
   /** Target type-table node id for search filtering when type is `relation`. */

@@ -5965,7 +5965,7 @@
       "properties": {
         "view": "all",
         "row_index": 43,
-        "priority": "High",
+        "priority": "Medium",
         "inspiration_count": "10",
         "weight": "4",
         "wonderland_count": "0"
@@ -35917,7 +35917,7 @@
       "properties": {
         "view": "all",
         "row_index": 44,
-        "priority": "Low",
+        "priority": "Medium",
         "inspiration_count": "8",
         "weight": "1",
         "wonderland_count": "0"

@@ -1,3 +1,6 @@
+import { compareEnumLabelsForColumn } from "marloth-db/enum-codec";
+import { emptySchemaFile, type SchemaFile } from "marloth-db/schema-file";
+
 /** Local user preferences persisted outside git (see `.marloth/user-settings.json`). */
 
 export const USER_SETTINGS_VERSION = 1;
@@ -133,16 +136,33 @@ export interface SortableTableRow {
   cells: Record<string, string>;
 }
 
+function compareColumnValues(
+  column: string,
+  leftValue: string,
+  rightValue: string,
+  schema?: SchemaFile,
+): number {
+  const enumCmp = compareEnumLabelsForColumn(
+    column,
+    leftValue,
+    rightValue,
+    schema ?? emptySchemaFile(),
+  );
+  if (enumCmp !== null) return enumCmp;
+  return compareValues(leftValue, rightValue);
+}
+
 export function sortTableRows<T extends SortableTableRow>(
   rows: T[],
   spec: TableSortSpec,
+  schema?: SchemaFile,
 ): T[] {
   const orderBy = normalizeTableSort(spec).orderBy;
   return [...rows].sort((left, right) => {
     for (const { column, direction } of orderBy) {
       const leftValue = column === "name" ? left.name : (left.cells[column] ?? "");
       const rightValue = column === "name" ? right.name : (right.cells[column] ?? "");
-      const cmp = compareValues(leftValue, rightValue);
+      const cmp = compareColumnValues(column, leftValue, rightValue, schema);
       if (cmp !== 0) return direction === "desc" ? -cmp : cmp;
     }
     return left.id.localeCompare(right.id);

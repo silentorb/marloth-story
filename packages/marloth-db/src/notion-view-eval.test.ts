@@ -38,6 +38,16 @@ describe("notion-view-eval", () => {
     const sorted = sortEvalRows(unsorted, [{ property: "title", direction: "ascending" }]);
     expect(sorted.map((r) => r.name)).toEqual(["Alpha", "Zebra"]);
   });
+
+  test("sorts priority by options index, not alphabetically", () => {
+    const unsorted: EvalRow[] = [
+      { nodeId: "m", name: "Medium item", cells: { priority: "Medium" }, rowIndex: 0, createdAt: null, modifiedAt: null },
+      { nodeId: "h", name: "High item", cells: { priority: "High" }, rowIndex: 1, createdAt: null, modifiedAt: null },
+      { nodeId: "l", name: "Low item", cells: { priority: "Low" }, rowIndex: 2, createdAt: null, modifiedAt: null },
+    ];
+    const sorted = sortEvalRows(unsorted, [{ property: "Priority", direction: "descending" }]);
+    expect(sorted.map((r) => r.name)).toEqual(["High item", "Medium item", "Low item"]);
+  });
 });
 
 describe("getDatabaseViewDetail with custom tabs", () => {

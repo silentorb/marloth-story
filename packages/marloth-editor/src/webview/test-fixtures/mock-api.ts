@@ -1,4 +1,5 @@
 import type { EditorApi } from "../api/client";
+import { emptySchemaFile } from "marloth-db/schema-file";
 import { emptyUserSettings } from "../../shared/user-settings";
 import { makeGraphLodSnapshot } from "./graph-lod";
 import { makeDatabaseViewDetail } from "./node-page";
@@ -36,6 +37,12 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     }),
     deleteSectionTab: async () => {},
     updateSectionColumnOrder: async (_nodeId, _sectionKey, columnOrder) => columnOrder,
+    updateSectionTabOrder: async (_nodeId, _sectionKey, tabOrder) =>
+      tabOrder.map((id) => ({
+        id,
+        name: id,
+        sorts: [{ column: "name", direction: "asc" as const }],
+      })),
     deleteDatabaseColumn: async () => ({ rowsAffected: 0, relationsUnlinked: 0 }),
     search: async () => [],
     saveBody: async () => {},
@@ -48,6 +55,7 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     archiveNode: async () => {},
     getGraphFull: async () => ({ nodes: [], relationships: [] }),
     getGraphExplorerLod: async () => makeGraphLodSnapshot(),
+    getSchema: async () => emptySchemaFile(),
     getUserSettings: async () => emptyUserSettings(),
     patchUserSettings: async () => emptyUserSettings(),
     moveOrderedAssociation: async () => {

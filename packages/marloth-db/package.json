@@ -8,7 +8,9 @@
     "./archive-path": "./src/archive-path.ts",
     "./content": "./src/content/index.ts",
     "./content/test-helpers": "./src/content/test-helpers.ts",
-    "./markdown-links": "./src/markdown-links.ts"
+    "./enum-codec": "./src/enum-codec.ts",
+    "./markdown-links": "./src/markdown-links.ts",
+    "./schema-file": "./src/schema-rules/schema-file.ts"
   },
   "scripts": {
     "test": "bun test"

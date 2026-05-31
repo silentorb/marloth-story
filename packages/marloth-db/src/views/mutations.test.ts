@@ -5,7 +5,7 @@ import {
   seedTestViews,
 } from "../content/test-helpers";
 import { VIEWS_FILE_VERSION } from "../content/views-file";
-import { createTab, deleteTab, updateTab, updateSectionColumnOrder } from "./mutations";
+import { createTab, deleteTab, reorderSectionTabs, updateTab, updateSectionColumnOrder } from "./mutations";
 
 describe("views mutations", () => {
   const fixture = createTestContentFixture("marloth-views-mut-");
@@ -50,6 +50,39 @@ describe("views mutations", () => {
     expect(order).toEqual(["status", "priority"]);
     const file = fixture.ctx.store.readViewsFile();
     expect(file.nodes[nodeId]?.sections.items?.columnOrder).toEqual(["status", "priority"]);
+  });
+
+  test("reorders custom tabs", () => {
+    const reorderFixture = createTestContentFixture("marloth-views-reorder-");
+    seedTestViews(reorderFixture, {
+      version: VIEWS_FILE_VERSION,
+      nodes: {
+        [nodeId]: {
+          sections: {
+            items: {
+              tabs: {
+                kind: "custom",
+                definitions: [
+                  { id: "first", name: "First", sorts: [{ column: "name", direction: "asc" }] },
+                  { id: "second", name: "Second", sorts: [{ column: "name", direction: "asc" }] },
+                  { id: "third", name: "Third", sorts: [{ column: "name", direction: "asc" }] },
+                ],
+              },
+            },
+          },
+        },
+      },
+    });
+    try {
+      const reordered = reorderSectionTabs(reorderFixture.ctx.store, nodeId, "items", [
+        "third",
+        "first",
+        "second",
+      ]);
+      expect(reordered.map((tab) => tab.id)).toEqual(["third", "first", "second"]);
+    } finally {
+      destroyTestContentFixture(reorderFixture);
+    }
   });
 
   test("refuses to delete the last tab", () => {

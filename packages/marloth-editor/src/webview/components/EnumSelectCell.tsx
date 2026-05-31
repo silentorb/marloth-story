@@ -23,6 +23,15 @@ function menuOptions(options: string[], value: string): string[] {
   return options;
 }
 
+function displayOptions(
+  options: string[],
+  defaultOrder: "asc" | "desc" | undefined,
+  value: string,
+): string[] {
+  const ordered = defaultOrder === "desc" ? [...options].reverse() : options;
+  return menuOptions(ordered, value);
+}
+
 function storedValueInOptions(value: string, options: string[]): boolean {
   return Boolean(value && options.includes(value));
 }
@@ -39,7 +48,7 @@ export function EnumSelectCell({ def, value, disabled = false, onChange }: EnumS
   const menuId = `marloth-enum-menu-${reactId.replace(/:/g, "")}`;
 
   const options = def.options ?? [];
-  const allOptions = menuOptions(options, value);
+  const allOptions = displayOptions(options, def.defaultOrder, value);
   const isDisabled = disabled || saving;
   const hasStoredValue = storedValueInOptions(value, options);
   const triggerLabel = hasStoredValue

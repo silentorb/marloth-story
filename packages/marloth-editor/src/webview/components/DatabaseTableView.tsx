@@ -215,6 +215,10 @@ export function DatabaseTableView({
             await api.deleteSectionTab(nodeId, ITEMS_SECTION_KEY, tabId);
             onTabsUpdated?.();
           }}
+          onTabsReorder={async (tabOrder) => {
+            await api.updateSectionTabOrder(nodeId, ITEMS_SECTION_KEY, tabOrder);
+            onTabsUpdated?.();
+          }}
         />
       </header>
 

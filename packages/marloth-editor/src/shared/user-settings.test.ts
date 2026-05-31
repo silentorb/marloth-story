@@ -70,14 +70,23 @@ describe("user-settings", () => {
       { id: "3", name: "Gamma", cells: { priority: "Low" } },
     ];
 
-    const byName = sortTableRows(rows, {
+    const byPriorityDesc = sortTableRows(rows, {
+      orderBy: [
+        { column: "priority", direction: "desc" },
+        { column: "name", direction: "asc" },
+      ],
+    });
+
+    expect(byPriorityDesc.map((row) => row.name)).toEqual(["Alpha", "Beta", "Gamma"]);
+
+    const byPriorityAsc = sortTableRows(rows, {
       orderBy: [
         { column: "priority", direction: "asc" },
         { column: "name", direction: "asc" },
       ],
     });
 
-    expect(byName.map((row) => row.name)).toEqual(["Alpha", "Beta", "Gamma"]);
+    expect(byPriorityAsc.map((row) => row.name)).toEqual(["Gamma", "Alpha", "Beta"]);
   });
 
   test("applyUserSettingsPatch stores sparse overrides only", () => {

@@ -69,4 +69,20 @@ describe("EnumSelectCell", () => {
     expect(screen.queryByRole("listbox")).toBeNull();
   });
 
+  test("defaultOrder desc reverses dropdown option order", () => {
+    render(
+      <EnumSelectCell
+        def={{ ...columnDef, defaultOrder: "desc" }}
+        value="High"
+        onChange={async () => {}}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Priority" }));
+    const options = screen.getAllByRole("option");
+    expect(options.map((option) => option.textContent?.replace("✓", "").trim())).toEqual([
+      "High",
+      "Low",
+    ]);
+  });
 });

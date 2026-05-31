@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import {
   DndContext,
+  DragOverlay,
   PointerSensor,
   closestCenter,
   useSensor,
@@ -16,6 +17,7 @@ import {
 import { useUserSettings } from "../hooks/useUserSettings";
 import {
   SortableDataColumnHeaders,
+  columnLabelFor,
   columnReorderOnDragEnd,
 } from "./SortableDataColumnHeaders";
 import { TableRowActionsCell } from "./TableRowActionsCell";
@@ -82,8 +84,9 @@ export function SectionDataTable({
   isRelationColumn,
   onColumnDelete,
 }: SectionDataTableProps) {
-  const { getTableSort, hasTableSortOverride, toggleTableSortColumn } = useUserSettings();
+  const { getTableSort, hasTableSortOverride, toggleTableSortColumn, schema } = useUserSettings();
   const [displayColumns, setDisplayColumns] = useState(columns);
+  const [activeColumnId, setActiveColumnId] = useState<string | null>(null);
 
   useEffect(() => {
     setDisplayColumns(columns);
@@ -93,8 +96,8 @@ export function SectionDataTable({
   const useServerRowOrder =
     sortable && defaultSort !== undefined && !hasTableSortOverride(tableKey);
   const sortedRows = useMemo(
-    () => (sortable && !useServerRowOrder ? sortTableRows(rows, sortSpec) : rows),
-    [rows, sortSpec, sortable, useServerRowOrder],
+    () => (sortable && !useServerRowOrder ? sortTableRows(rows, sortSpec, schema) : rows),
+    [rows, sortSpec, schema, sortable, useServerRowOrder],
   );
   const primarySort = sortable ? sortSpec.orderBy[0] : undefined;
 
@@ -161,6 +164,7 @@ export function SectionDataTable({
             formatLabel={formatColumnLabel}
             renderHeader={renderHeaderCell}
             reorderable={Boolean(onColumnsReorder)}
+            useDragOverlay={Boolean(onColumnsReorder)}
             canDeleteColumn={canDeleteColumn}
             isRelationColumn={isRelationColumn}
             onColumnDelete={onColumnDelete}
@@ -208,9 +212,21 @@ export function SectionDataTable({
         <DndContext
           sensors={columnDragSensors}
           collisionDetection={closestCenter}
-          onDragEnd={(event) => columnReorderOnDragEnd(event, displayColumns, handleColumnsReorder)}
+          onDragStart={(event) => setActiveColumnId(String(event.active.id))}
+          onDragEnd={(event) => {
+            columnReorderOnDragEnd(event, displayColumns, handleColumnsReorder);
+            setActiveColumnId(null);
+          }}
+          onDragCancel={() => setActiveColumnId(null)}
         >
           {tableMarkup}
+          <DragOverlay>
+            {activeColumnId ? (
+              <div className="marloth-column-drag-overlay">
+                {columnLabelFor(activeColumnId, columnLabels, formatColumnLabel)}
+              </div>
+            ) : null}
+          </DragOverlay>
         </DndContext>
       ) : (
         tableMarkup

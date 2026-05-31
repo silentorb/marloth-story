@@ -133,6 +133,32 @@ describe("TableTabsBar", () => {
     expect(screen.queryByRole("tab", { name: "New tab" })).toBeNull();
   });
 
+  test("marks custom tabs reorderable when onTabsReorder is provided", () => {
+    render(
+      <TableTabsBar
+        tabs={{
+          kind: "custom",
+          items: [
+            { id: "all", label: "All", kind: "custom" },
+            { id: "active", label: "Active", kind: "custom" },
+          ],
+          activeTabId: "all",
+          customDefinitions: [
+            { id: "all", name: "All", sorts: [] },
+            { id: "active", name: "Active", sorts: [] },
+          ],
+        }}
+        onTabSelect={() => {}}
+        onCreateTab={async () => {}}
+        onUpdateTab={async () => {}}
+        onDeleteTab={async () => {}}
+        onTabsReorder={async () => {}}
+      />,
+    );
+
+    expect(document.querySelectorAll(".marloth-database-view-tab.is-reorderable")).toHaveLength(2);
+  });
+
   test("hides generated tab chrome", () => {
     render(
       <TableTabsBar

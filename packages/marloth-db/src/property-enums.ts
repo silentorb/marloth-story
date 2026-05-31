@@ -2,31 +2,34 @@ import { resolveContentPath } from "./content/paths";
 import type { DatabaseColumnDef } from "./database-view";
 import { loadSchemaFromContent } from "./schema-rules/load";
 import type { EnumDefinition, SchemaFile } from "./schema-rules/schema-file";
+import {
+  FALLBACK_PRIORITY,
+  isPriorityColumnKey,
+  isPriorityPropertyName,
+  PRIORITY_ENUM_ID,
+  resolvePriorityEnum,
+  resolvePropertyEnum,
+  type PriorityValue,
+} from "./property-enums-core";
 
-/** Workspace-wide priority enum id (shared across table views). */
-export const PRIORITY_ENUM_ID = "priority";
+export {
+  FALLBACK_PRIORITY,
+  isPriorityColumnKey,
+  isPriorityPropertyName,
+  PRIORITY_ENUM_ID,
+  resolvePriorityEnum,
+  resolvePropertyEnum,
+  type PriorityValue,
+} from "./property-enums-core";
 
-const FALLBACK_PRIORITY = {
-  options: ["Low", "Medium", "High", "Consideration"] as const,
-  default: "Low",
-  values: {
-    Low: 1,
-    Medium: 2,
-    High: 4,
-    Consideration: 0,
-  },
-} satisfies EnumDefinition;
+/** @deprecated Use getPriorityOptions() */
+export const PRIORITY_OPTIONS = FALLBACK_PRIORITY.options;
 
-export type PriorityValue = (typeof FALLBACK_PRIORITY.options)[number];
+/** @deprecated Use getPriorityDefault() */
+export const PRIORITY_DEFAULT: PriorityValue = FALLBACK_PRIORITY.default as PriorityValue;
 
-export function resolvePropertyEnum(enumId: string, schema?: SchemaFile): EnumDefinition | null {
-  const id = enumId.trim();
-  if (!id) return null;
-  const def = schema?.enums[id];
-  if (def) return def;
-  if (id === PRIORITY_ENUM_ID) return FALLBACK_PRIORITY;
-  return null;
-}
+/** @deprecated Use getPriorityValues() */
+export const PRIORITY_WEIGHT: Record<string, number> = FALLBACK_PRIORITY.values ?? {};
 
 export function resolvePropertyEnumFromContent(
   enumId: string,
@@ -34,10 +37,6 @@ export function resolvePropertyEnumFromContent(
 ): EnumDefinition | null {
   const schema = loadSchemaFromContent(contentDir ?? resolveContentPath());
   return resolvePropertyEnum(enumId, schema);
-}
-
-export function resolvePriorityEnum(schema?: SchemaFile): EnumDefinition {
-  return resolvePropertyEnum(PRIORITY_ENUM_ID, schema) ?? FALLBACK_PRIORITY;
 }
 
 function activePriority(): EnumDefinition {
@@ -57,23 +56,6 @@ export function getPriorityDefault(): string {
 /** Priority numeric values from schema.json, interpreted as weights by consumers. */
 export function getPriorityValues(): Record<string, number> {
   return { ...(activePriority().values ?? {}) };
-}
-
-/** @deprecated Use getPriorityOptions() */
-export const PRIORITY_OPTIONS = FALLBACK_PRIORITY.options;
-
-/** @deprecated Use getPriorityDefault() */
-export const PRIORITY_DEFAULT: PriorityValue = FALLBACK_PRIORITY.default as PriorityValue;
-
-/** @deprecated Use getPriorityValues() */
-export const PRIORITY_WEIGHT: Record<string, number> = FALLBACK_PRIORITY.values ?? {};
-
-export function isPriorityColumnKey(key: string): boolean {
-  return key.trim().toLowerCase() === PRIORITY_ENUM_ID;
-}
-
-export function isPriorityPropertyName(name: string): boolean {
-  return name.trim().toLowerCase() === "priority";
 }
 
 function enumIdForColumn(def: DatabaseColumnDef, schema: SchemaFile): string | null {
@@ -98,6 +80,14 @@ export function priorityWeight(priority: unknown): number {
     return values[defaultValue] ?? 0;
   }
   return values[priority] ?? 0;
+}
+
+/** Compare priority labels by schema weight (not alphabetical order). */
+export function comparePriorityLabels(
+  left: string | null | undefined,
+  right: string | null | undefined,
+): number {
+  return priorityWeight(left) - priorityWeight(right);
 }
 
 export function coalescePriorityValue(value: string | null | undefined): PriorityValue {
@@ -125,6 +115,7 @@ export function enrichColumnDef(def: DatabaseColumnDef, schema?: SchemaFile): Da
     enumId,
     options: [...enumDef.options],
     defaultValue: enumDef.default,
+    defaultOrder: enumDef.defaultOrder,
   };
 }
 

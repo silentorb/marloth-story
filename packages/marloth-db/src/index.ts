@@ -80,12 +80,22 @@ export {
   isPriorityColumnKey,
   isPriorityPropertyName,
   isPriorityValue,
+  comparePriorityLabels,
   priorityWeight,
   resolvePriorityEnum,
   resolvePropertyEnum,
   resolvePropertyEnumFromContent,
 } from "./property-enums";
 export type { PriorityValue } from "./property-enums";
+export {
+  compareEnumLabels,
+  compareEnumLabelsForColumn,
+  decodeEnumProperties,
+  encodeEnumProperties,
+  indexToEnumLabel,
+  labelToEnumIndex,
+  resolveEnumIdForPropertyName,
+} from "./enum-codec";
 export {
   updateDatabaseRowProperty,
   updateOutgoingRelationshipProperty,
@@ -192,7 +202,7 @@ export {
   isTypeMembershipType,
   isTypeMembershipLabel,
 } from "./labels";
-export { loadSchemaFromContent, invalidateSchemaCache } from "./schema-rules/load";
+export { loadSchemaFromContent, loadWorkspaceSchema, invalidateSchemaCache } from "./schema-rules/load";
 export { loadViewsFromContent, invalidateViewsCache } from "./views/load";
 export {
   ITEMS_SECTION_KEY,
@@ -208,6 +218,7 @@ export {
   getNodeViews,
   replaceViewsFile,
   updateSectionColumnOrder,
+  reorderSectionTabs,
 } from "./views/mutations";
 export type { ViewsMutationError } from "./views/mutations";
 export {

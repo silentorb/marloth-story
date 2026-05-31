@@ -5,6 +5,7 @@ import {
   getNodeViews,
   updateTab,
   updateSectionColumnOrder,
+  reorderSectionTabs,
   type ViewSortSpec,
 } from "marloth-db";
 import { invalidateViewsCache } from "marloth-db";
@@ -63,6 +64,17 @@ export function patchSectionColumnOrder(
   invalidateViewsCache();
   ctx.sync.syncFile("views.json");
   return updateSectionColumnOrder(ctx.store, nodeId, sectionKey, columnOrder);
+}
+
+export function patchSectionTabOrder(
+  ctx: MarlothWriteContext,
+  nodeId: string,
+  sectionKey: string,
+  tabOrder: string[],
+) {
+  invalidateViewsCache();
+  ctx.sync.syncFile("views.json");
+  return reorderSectionTabs(ctx.store, nodeId, sectionKey, tabOrder);
 }
 
 export { ITEMS_SECTION_KEY };

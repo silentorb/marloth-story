@@ -61,6 +61,7 @@ describe("schema rules", () => {
     const schema = loadSchemaFromContent(resolveContentPath());
     expect(schema.relationshipRules.length).toBeGreaterThan(0);
     expect(schema.enums.priority?.options).toEqual(["Low", "Medium", "High", "Consideration"]);
+    expect(schema.enums.priority?.defaultOrder).toBe("desc");
     expect(schema.enums.priority?.values?.High).toBe(4);
   });
 
@@ -114,5 +115,56 @@ describe("schema rules", () => {
         }),
       ),
     ).toThrow(/values key "Ultimate" is not in options/);
+  });
+
+  test("parseSchemaFile defaults defaultOrder to asc when omitted", () => {
+    const file = parseSchemaFile(
+      JSON.stringify({
+        version: 1,
+        relationshipRules: [],
+        enums: {
+          priority: {
+            options: ["Low", "Medium"],
+            default: "Low",
+          },
+        },
+      }),
+    );
+    expect(file.enums.priority?.defaultOrder).toBe("asc");
+  });
+
+  test("parseSchemaFile accepts defaultOrder desc", () => {
+    const file = parseSchemaFile(
+      JSON.stringify({
+        version: 1,
+        relationshipRules: [],
+        enums: {
+          priority: {
+            options: ["Low", "Medium"],
+            default: "Low",
+            defaultOrder: "desc",
+          },
+        },
+      }),
+    );
+    expect(file.enums.priority?.defaultOrder).toBe("desc");
+  });
+
+  test("parseSchemaFile rejects invalid defaultOrder", () => {
+    expect(() =>
+      parseSchemaFile(
+        JSON.stringify({
+          version: 1,
+          relationshipRules: [],
+          enums: {
+            priority: {
+              options: ["Low", "Medium"],
+              default: "Low",
+              defaultOrder: "newest",
+            },
+          },
+        }),
+      ),
+    ).toThrow(/defaultOrder must be "asc" or "desc"/);
   });
 });

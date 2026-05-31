@@ -8,6 +8,8 @@ import {
   type ReactNode,
 } from "react";
 import type { EditorApiClient } from "../../shared/http-client";
+import type { SchemaFile } from "marloth-db/schema-file";
+import { emptySchemaFile } from "marloth-db/schema-file";
 import {
   emptyUserSettings,
   isDefaultTableSort,
@@ -22,6 +24,7 @@ import {
 
 interface UserSettingsContextValue {
   ready: boolean;
+  schema: SchemaFile;
   hasTableSortOverride: (tableKey: string) => boolean;
   getTableSort: (tableKey: string, defaultSort?: TableSortSpec) => TableSortSpec;
   setTableSortColumns: (tableKey: string, orderBy: SortColumn[]) => void;
@@ -41,13 +44,20 @@ interface UserSettingsProviderProps {
 
 export function UserSettingsProvider({ api, children }: UserSettingsProviderProps) {
   const [settings, setSettings] = useState<UserSettings>(() => emptyUserSettings());
+  const [schema, setSchema] = useState<SchemaFile>(() => emptySchemaFile());
 
   useEffect(() => {
     let cancelled = false;
     void (async () => {
       try {
-        const loaded = await api.getUserSettings();
-        if (!cancelled) setSettings(loaded);
+        const [loaded, loadedSchema] = await Promise.all([
+          api.getUserSettings(),
+          api.getSchema(),
+        ]);
+        if (!cancelled) {
+          setSettings(loaded);
+          setSchema(loadedSchema);
+        }
       } catch {
         /* keep defaults */
       }
@@ -108,12 +118,13 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
   const value = useMemo(
     (): UserSettingsContextValue => ({
       ready: true,
+      schema,
       hasTableSortOverride,
       getTableSort,
       setTableSortColumns,
       toggleTableSortColumn,
     }),
-    [hasTableSortOverride, getTableSort, setTableSortColumns, toggleTableSortColumn],
+    [schema, hasTableSortOverride, getTableSort, setTableSortColumns, toggleTableSortColumn],
   );
 
   return <UserSettingsContext.Provider value={value}>{children}</UserSettingsContext.Provider>;
