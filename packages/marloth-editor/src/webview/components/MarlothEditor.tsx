@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { editorViewCtx } from "@milkdown/kit/core";
+import { replaceRange } from "@milkdown/kit/utils";
 import { Crepe } from "@milkdown/crepe";
 import "@milkdown/crepe/theme/common/style.css";
 import "@milkdown/crepe/theme/frame-dark.css";
@@ -10,12 +11,19 @@ import {
 } from "../../shared/types";
 import type { NodeSummary } from "../../shared/types";
 import { installCalloutDecoration } from "../callout-decoration";
+import { installMentionSync } from "../mention-sync";
 import { resolveNodeLinkTarget } from "../node-links";
+import {
+  activeMentionRangeAtSelection,
+  resolveMentionInsertRange,
+} from "../mention-range";
 import { preprocessStandaloneMarkdown } from "../standalone-markdown";
 import "./editor.css";
 
 interface MentionState {
   query: string;
+  replaceFrom: number;
+  replaceTo: number;
   top: number;
   left: number;
   activeIndex: number;
@@ -49,11 +57,13 @@ export function MarlothEditor({
   const [initError, setInitError] = useState<string | null>(null);
   const [isEmpty, setIsEmpty] = useState(() => !initialBody.trim());
   const mentionRef = useRef<MentionState | null>(null);
+  const mentionRangeRef = useRef<{ replaceFrom: number; replaceTo: number } | null>(null);
   const resultsRef = useRef<NodeSummary[]>([]);
   mentionRef.current = mention;
   resultsRef.current = results;
 
   const closeMention = useCallback(() => {
+    mentionRangeRef.current = null;
     setMention(null);
     setResults([]);
   }, []);
@@ -61,16 +71,14 @@ export function MarlothEditor({
   const insertMention = useCallback(
     (item: NodeSummary) => {
       const editor = crepeRef.current?.editor;
-      if (!editor) return;
+      const stored = mentionRangeRef.current ?? mentionRef.current;
+      if (!editor || !stored) return;
       editor.action((ctx) => {
         const view = ctx.get(editorViewCtx);
-        const { state, dispatch } = view;
-        const { from } = state.selection;
-        const mentionState = mentionRef.current;
-        if (!mentionState) return;
-        const atPos = from - mentionState.query.length - 1;
+        const range = resolveMentionInsertRange(view.state, stored);
+        if (!range) return;
         const link = formatMarlothLink(item.title, item.id);
-        dispatch(state.tr.insertText(link, atPos, from));
+        replaceRange(link, { from: range.replaceFrom, to: range.replaceTo })(ctx);
       });
       closeMention();
     },
@@ -92,6 +100,8 @@ export function MarlothEditor({
     let destroyed = false;
     let editorReady = false;
     let baselineCaptured = false;
+    let editorDom: HTMLElement | null = null;
+    let onKeyDown: ((event: KeyboardEvent) => void) | null = null;
     setInitError(null);
     setIsEmpty(!initialBody.trim());
     root.replaceChildren();
@@ -144,7 +154,34 @@ export function MarlothEditor({
         const dom = view.dom;
         installCalloutDecoration(view);
 
-        const onKeyDown = (event: KeyboardEvent) => {
+        const syncMentionMenu = () => {
+          const { state } = view;
+          const { from } = state.selection;
+          const mentionRange = activeMentionRangeAtSelection(state);
+          if (!mentionRange) {
+            mentionRangeRef.current = null;
+            if (mentionRef.current) closeMention();
+            return;
+          }
+          mentionRangeRef.current = {
+            replaceFrom: mentionRange.replaceFrom,
+            replaceTo: mentionRange.replaceTo,
+          };
+          const coords = view.coordsAtPos(from);
+          const hostRect = root.getBoundingClientRect();
+          setMention((prev) => ({
+            query: mentionRange.query,
+            replaceFrom: mentionRange.replaceFrom,
+            replaceTo: mentionRange.replaceTo,
+            top: coords.bottom - hostRect.top + 4,
+            left: coords.left - hostRect.left,
+            activeIndex: prev?.activeIndex ?? 0,
+          }));
+        };
+
+        installMentionSync(view, syncMentionMenu);
+
+        onKeyDown = (event: KeyboardEvent) => {
           const state = mentionRef.current;
           if (!state) return;
           if (event.key === "Escape") {
@@ -169,35 +206,15 @@ export function MarlothEditor({
           }
           if (event.key === "Enter") {
             const item = resultsRef.current[state.activeIndex];
-            if (item) {
-              insertMention(item);
-              event.preventDefault();
-            }
+            event.preventDefault();
+            event.stopPropagation();
+            syncMentionMenu();
+            if (item) insertMention(item);
           }
         };
 
-        const onInput = () => {
-          const { state } = view;
-          const { from } = state.selection;
-          const textBefore = state.doc.textBetween(Math.max(0, from - 64), from, "\n", "\0");
-          const atMatch = /(?:^|\s)@([\w\s\-'.]{0,48})$/.exec(textBefore);
-          if (!atMatch) {
-            if (mentionRef.current) closeMention();
-            return;
-          }
-          const query = atMatch[1] ?? "";
-          const coords = view.coordsAtPos(from);
-          const hostRect = root.getBoundingClientRect();
-          setMention({
-            query,
-            top: coords.bottom - hostRect.top + 4,
-            left: coords.left - hostRect.left,
-            activeIndex: 0,
-          });
-        };
-
-        dom.addEventListener("keydown", onKeyDown);
-        dom.addEventListener("input", onInput);
+        editorDom = dom;
+        dom.addEventListener("keydown", onKeyDown, true);
       });
     }).catch((err: unknown) => {
       console.error("Marloth editor failed to initialize:", err);
@@ -246,6 +263,9 @@ export function MarlothEditor({
 
     return () => {
       destroyed = true;
+      if (editorDom && onKeyDown) {
+        editorDom.removeEventListener("keydown", onKeyDown, true);
+      }
       root.removeEventListener("click", onClick);
       root.removeEventListener("auxclick", onClick);
       root.removeEventListener("contextmenu", onContextMenu);
