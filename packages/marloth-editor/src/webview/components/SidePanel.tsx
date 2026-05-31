@@ -16,6 +16,7 @@ interface SidePanelProps {
   onHome: () => void;
   onViewChange: (view: AppView) => void;
   onOpenNode: (nodeId: string) => void;
+  onOpenSearch: () => void;
   standaloneUrls?: SidePanelStandaloneUrls;
 }
 
@@ -61,6 +62,7 @@ export function SidePanel({
   onHome,
   onViewChange,
   onOpenNode,
+  onOpenSearch,
   standaloneUrls,
 }: SidePanelProps) {
   const [collapsed, setCollapsed] = useState(false);
@@ -92,6 +94,13 @@ export function SidePanel({
           label="Home"
           href={standaloneUrls?.home}
           onClick={standaloneUrls ? undefined : onHome}
+        />
+        <NavItem
+          active={false}
+          title="Search nodes (Ctrl+K)"
+          icon="⌕"
+          label="Search"
+          onClick={onOpenSearch}
         />
         <NavItem
           active={activeView === "graph-explorer"}

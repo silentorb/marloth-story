@@ -3,11 +3,15 @@ import type { EditorApi } from "../api/client";
 import type { DatabaseViewDetail } from "../../shared/types";
 import { databaseTableSortKey, viewSortsToTableSort } from "../../shared/user-settings";
 import { standaloneNodeUrl } from "../../shared/types";
+import { useTableSearch } from "../hooks/useTableSearch";
+import { filterRowsByName } from "../table-name-filter";
+import { itemsTableSearchParamKey } from "../../shared/table-search-url";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
 import { TableAddRowFooter } from "./TableAddRowFooter";
 import { RelationCellEditor } from "./RelationCellEditor";
 import { renderTableCell } from "./table-cell-render";
-import { TableTabsBar } from "./TableTabsBar";
+import { TableSearchInput } from "./TableSearchInput";
+import { TableUtilityBar } from "./TableUtilityBar";
 import "./database-table-view.css";
 
 const ITEMS_SECTION_KEY = "items";
@@ -37,6 +41,7 @@ export function DatabaseTableView({
   onArchiveNode,
   onDeleteNode,
 }: DatabaseTableViewProps) {
+  const [searchQuery, setSearchQuery] = useTableSearch(itemsTableSearchParamKey());
   const tableKey = databaseTableSortKey(nodeId, databaseView.id, databaseView.tabs.activeTabId);
 
   const tabDefaultSort = useMemo(() => {
@@ -140,6 +145,15 @@ export function DatabaseTableView({
     [databaseView.rows],
   );
 
+  const filteredRows = useMemo(
+    () => filterRowsByName(rows, searchQuery, (row) => row.name),
+    [rows, searchQuery],
+  );
+
+  const hasActiveSearch = searchQuery.trim().length > 0;
+  const hasRows = databaseView.rows.length > 0;
+  const hasMatchingRows = filteredRows.length > 0;
+
   const openRowInEditor = useCallback(
     (nodeId: string, event: React.MouseEvent<HTMLButtonElement>) => {
       onOpenNode(nodeId, event.metaKey || event.ctrlKey || event.button === 1);
@@ -198,9 +212,10 @@ export function DatabaseTableView({
             <h1 className="marloth-database-title">{databaseView.title}</h1>
           </div>
         )}
-        <TableTabsBar
+        <TableUtilityBar
           tabs={databaseView.tabs}
           columnDefs={databaseView.columnDefs}
+          search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
           onTabSelect={onTabSelect}
           onCreateTab={async (input) => {
             const tab = await api.createSectionTab(nodeId, ITEMS_SECTION_KEY, input);
@@ -222,13 +237,15 @@ export function DatabaseTableView({
         />
       </header>
 
-      {databaseView.rows.length === 0 ? (
+      {!hasRows ? (
         <div className="marloth-database-empty">No rows in this view.</div>
+      ) : !hasMatchingRows && hasActiveSearch ? (
+        <div className="marloth-database-empty">No rows match “{searchQuery.trim()}”.</div>
       ) : (
         <SectionDataTable
           tableKey={tableKey}
           columns={databaseView.columns}
-          rows={rows}
+          rows={filteredRows}
           defaultSort={tabDefaultSort}
           renderNameCell={renderNameCell}
           columnLabels={columnLabels}

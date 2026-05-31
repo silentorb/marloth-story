@@ -52,6 +52,7 @@ VS Code extension: F5 → **Marloth Editor: Extension** (requires `editor:dev` r
 
 - `marloth.openHome` — open home node (Marloth root page)
 - `marloth.openNode` — open by 32-char node id
+- `marloth.search` — open global node search (Ctrl/Cmd+K when Marloth editor is active)
 
 ## Tests
 

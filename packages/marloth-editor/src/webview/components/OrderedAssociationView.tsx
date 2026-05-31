@@ -17,10 +17,14 @@ import type {
 } from "../../shared/types";
 import type { EditorApi } from "../api/client";
 import { isProtectedEditorNode, standaloneNodeUrl } from "../../shared/types";
+import { filterRowsByName } from "../table-name-filter";
+import { itemsTableSearchParamKey } from "../../shared/table-search-url";
+import { useTableSearch } from "../hooks/useTableSearch";
 import { RelationCellEditor } from "./RelationCellEditor";
 import { TableRowActionsCell } from "./TableRowActionsCell";
 import { renderTableCell } from "./table-cell-render";
-import { TableTabsBar } from "./TableTabsBar";
+import { TableSearchInput } from "./TableSearchInput";
+import { TableUtilityBar } from "./TableUtilityBar";
 import { SortableDataColumnHeaders, columnLabelFor, moveColumnOrderItem } from "./SortableDataColumnHeaders";
 import "./ordered-association-view.css";
 import "./section-data-table.css";
@@ -246,6 +250,7 @@ export function OrderedAssociationView({
   onArchiveNode,
   onDeleteNode,
 }: OrderedAssociationViewProps) {
+  const [searchQuery, setSearchQuery] = useTableSearch(itemsTableSearchParamKey());
   const [activeSceneId, setActiveSceneId] = useState<string | null>(null);
   const [activeColumnId, setActiveColumnId] = useState<string | null>(null);
   const [moveError, setMoveError] = useState<string | null>(null);
@@ -468,16 +473,40 @@ export function OrderedAssociationView({
     setActiveColumnId(null);
   }, []);
 
+  const filteredGroups = useMemo(() => {
+    const trimmed = searchQuery.trim();
+    if (!trimmed) return view.groups;
+    return view.groups
+      .map((group) => ({
+        ...group,
+        rows: filterRowsByName(group.rows, searchQuery, (row) => row.name),
+      }))
+      .filter((group) => group.rows.length > 0);
+  }, [searchQuery, view.groups]);
+
+  const totalRowCount = useMemo(
+    () => view.groups.reduce((count, group) => count + group.rows.length, 0),
+    [view.groups],
+  );
+  const hasActiveSearch = searchQuery.trim().length > 0;
+
   if (view.tabs.items.length === 0) {
     return <div className="marloth-database-empty">No scenes in this database.</div>;
   }
 
   return (
     <div className={`marloth-ordered-association-view${isMoving ? " is-moving" : ""}`}>
-      <TableTabsBar tabs={view.tabs} onTabSelect={onTabSelect} />
+      <TableUtilityBar
+        tabs={view.tabs}
+        onTabSelect={onTabSelect}
+        search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
+      />
 
       {moveError ? <div className="marloth-ordered-association-error">{moveError}</div> : null}
 
+      {totalRowCount > 0 && hasActiveSearch && filteredGroups.length === 0 ? (
+        <div className="marloth-database-empty">No rows match “{searchQuery.trim()}”.</div>
+      ) : (
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -486,7 +515,7 @@ export function OrderedAssociationView({
         onDragCancel={handleDragCancel}
       >
         <div className="marloth-ordered-association-groups">
-          {view.groups.map((group) => (
+          {filteredGroups.map((group) => (
             <GroupTable
               key={group.groupId}
               group={group}
@@ -513,6 +542,7 @@ export function OrderedAssociationView({
           ) : null}
         </DragOverlay>
       </DndContext>
+      )}
     </div>
   );
 }

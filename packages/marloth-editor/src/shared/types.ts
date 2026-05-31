@@ -72,6 +72,8 @@ export function nodeIdFromUri(uri: string): string | null {
   return m?.[1]?.toLowerCase() ?? null;
 }
 
+import { stripTableSearchParams } from "./table-search-url";
+
 /** Browser URL for standalone dev mode (`?node=` query param). */
 export function standaloneNodeUrl(nodeId: string, base?: string | URL): string {
   const defaultBase =
@@ -81,6 +83,7 @@ export function standaloneNodeUrl(nodeId: string, base?: string | URL): string {
   url.searchParams.delete("view");
   url.searchParams.delete("tab");
   url.searchParams.delete("meta");
+  stripTableSearchParams(url);
   return url.toString();
 }
 

@@ -1,11 +1,12 @@
 import { describe, expect, test, mock } from "bun:test";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { TableTabsBar } from "./TableTabsBar";
+import { TableSearchInput } from "./TableSearchInput";
+import { TableUtilityBar } from "./TableUtilityBar";
 
-describe("TableTabsBar", () => {
+describe("TableUtilityBar", () => {
   test("renders custom tabs with add control", () => {
     render(
-      <TableTabsBar
+      <TableUtilityBar
         tabs={{
           kind: "custom",
           items: [
@@ -32,7 +33,7 @@ describe("TableTabsBar", () => {
 
   test("opens tab editor on right click", () => {
     render(
-      <TableTabsBar
+      <TableUtilityBar
         tabs={{
           kind: "custom",
           items: [{ id: "all", label: "All", kind: "custom" }],
@@ -54,7 +55,7 @@ describe("TableTabsBar", () => {
 
   test("opens tab editor when clicking the active tab", () => {
     render(
-      <TableTabsBar
+      <TableUtilityBar
         tabs={{
           kind: "custom",
           items: [
@@ -82,7 +83,7 @@ describe("TableTabsBar", () => {
     const onCreateTab = mock(async () => {});
 
     render(
-      <TableTabsBar
+      <TableUtilityBar
         tabs={{
           kind: "custom",
           items: [{ id: "all", label: "All", kind: "custom" }],
@@ -113,7 +114,7 @@ describe("TableTabsBar", () => {
 
   test("discards draft tab on cancel", () => {
     render(
-      <TableTabsBar
+      <TableUtilityBar
         tabs={{
           kind: "custom",
           items: [{ id: "all", label: "All", kind: "custom" }],
@@ -135,7 +136,7 @@ describe("TableTabsBar", () => {
 
   test("marks custom tabs reorderable when onTabsReorder is provided", () => {
     render(
-      <TableTabsBar
+      <TableUtilityBar
         tabs={{
           kind: "custom",
           items: [
@@ -161,7 +162,7 @@ describe("TableTabsBar", () => {
 
   test("hides generated tab chrome", () => {
     render(
-      <TableTabsBar
+      <TableUtilityBar
         tabs={{
           kind: "generated",
           items: [
@@ -176,5 +177,45 @@ describe("TableTabsBar", () => {
 
     expect(screen.getByRole("tab", { name: "Book A" })).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Add tab" })).toBeNull();
+  });
+
+  test("renders search-only utility bar without tabs", () => {
+    render(
+      <TableUtilityBar
+        search={<TableSearchInput value="" onChange={() => {}} />}
+      />,
+    );
+
+    expect(screen.getByRole("searchbox", { name: "Filter table rows by name" })).toBeTruthy();
+    expect(document.querySelector(".marloth-table-search-icon")).toBeTruthy();
+    expect(screen.queryByRole("tablist")).toBeNull();
+    expect(document.querySelector(".marloth-table-utility-actions")).toBeTruthy();
+  });
+
+  test("renders search to the right of tabs", () => {
+    render(
+      <TableUtilityBar
+        tabs={{
+          kind: "generated",
+          items: [
+            { id: "book-a", label: "Book A", kind: "generated" },
+            { id: "book-b", label: "Book B", kind: "generated" },
+          ],
+          activeTabId: "book-a",
+        }}
+        onTabSelect={() => {}}
+        search={<TableSearchInput value="quest" onChange={() => {}} />}
+      />,
+    );
+
+    const row = document.querySelector(".marloth-table-utility-row");
+    expect(row).toBeTruthy();
+    const tabs = row!.querySelector(".marloth-table-utility-tabs");
+    const actions = row!.querySelector(".marloth-table-utility-actions");
+    expect(tabs).toBeTruthy();
+    expect(actions).toBeTruthy();
+    expect((tabs!.compareDocumentPosition(actions!) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0).toBe(
+      true,
+    );
   });
 });

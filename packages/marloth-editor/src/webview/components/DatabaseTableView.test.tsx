@@ -141,4 +141,84 @@ describe("DatabaseTableView", () => {
 
     expect(screen.getByText("No rows in this view.")).toBeTruthy();
   });
+
+  test("filters rows by name from search input", () => {
+    window.history.replaceState({}, "", "http://127.0.0.1:5173/?node=abc");
+    const api = makeMockEditorApi("standalone");
+    render(
+      <UserSettingsProvider api={api}>
+        <DatabaseTableView
+          api={api}
+          nodeId={FIXTURE_DATABASE_ID}
+          databaseView={makeDatabaseViewDetail({
+            rows: [
+              {
+                rowIndex: 0,
+                nodeId: FIXTURE_TARGET_ID,
+                name: "Quest item",
+                cells: { priority: "High" },
+              },
+              {
+                rowIndex: 1,
+                nodeId: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                name: "Other item",
+                cells: { priority: "Low" },
+              },
+            ],
+          })}
+          onTabSelect={() => {}}
+          onOpenNode={() => {}}
+        />
+      </UserSettingsProvider>,
+    );
+
+    fireEvent.change(screen.getByRole("searchbox", { name: "Filter table rows by name" }), {
+      target: { value: "quest" },
+    });
+
+    expect(screen.getByRole("link", { name: "Quest item" })).toBeTruthy();
+    expect(screen.queryByRole("link", { name: "Other item" })).toBeNull();
+    expect(window.location.search).toContain("search_items=quest");
+  });
+
+  test("seeds search filter from URL on load", () => {
+    window.history.replaceState(
+      {},
+      "",
+      "http://127.0.0.1:5173/?node=abc&search_items=linked",
+    );
+    const api = makeMockEditorApi("standalone");
+    render(
+      <UserSettingsProvider api={api}>
+        <DatabaseTableView
+          api={api}
+          nodeId={FIXTURE_DATABASE_ID}
+          databaseView={makeDatabaseViewDetail({
+            rows: [
+              {
+                rowIndex: 0,
+                nodeId: FIXTURE_TARGET_ID,
+                name: "Linked record",
+                cells: { priority: "High" },
+              },
+              {
+                rowIndex: 1,
+                nodeId: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+                name: "Other record",
+                cells: { priority: "Low" },
+              },
+            ],
+          })}
+          onTabSelect={() => {}}
+          onOpenNode={() => {}}
+        />
+      </UserSettingsProvider>,
+    );
+
+    expect(
+      (screen.getByRole("searchbox", { name: "Filter table rows by name" }) as HTMLInputElement).value,
+    ).toBe("linked");
+    expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
+    expect(screen.queryByRole("link", { name: "Other record" })).toBeNull();
+  });
 });

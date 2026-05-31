@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GraphView } from "./components/GraphView";
 import { CreateNodeView } from "./components/CreateNodeView";
+import { GlobalSearch } from "./components/GlobalSearch";
 import { NodePageView } from "./components/NodePageView";
 import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
@@ -99,6 +100,7 @@ export function App() {
     readGraphExplorerRelativeDetail(readGraphExplorerLayerDepth()),
   );
   const [explorerAnchorStack, setExplorerAnchorStack] = useState<string[]>([]);
+  const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
   const [homeId, setHomeId] = useState<string | null>(null);
   const [explorerAnchorId, setExplorerAnchorId] = useState(() =>
     resolveGraphExplorerAnchor(anchorFromLocation()),
@@ -276,6 +278,17 @@ export function App() {
   }, [bootstrap]);
 
   useEffect(() => {
+    if (api.host !== "standalone") return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "k") return;
+      event.preventDefault();
+      setGlobalSearchOpen(true);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [api.host]);
+
+  useEffect(() => {
     syncDocumentTitle(view, node?.title);
     if (api.host === "standalone") {
       const urlNodeId = nodeFromLocation();
@@ -294,6 +307,10 @@ export function App() {
     if (api.host !== "vscode") return;
     const onMessage = (event: MessageEvent) => {
       const msg = event.data as { type?: string; nodeId?: string; error?: string };
+      if (msg.type === "openSearch") {
+        setGlobalSearchOpen(true);
+        return;
+      }
       if (msg.type === "init" || msg.type === "navigate") {
         const view = (msg as { view?: AppView }).view;
         if (view === "create-node") {
@@ -563,6 +580,7 @@ export function App() {
         onHome={() => void goHome()}
         onViewChange={changeView}
         onOpenNode={(nodeId) => openLinkedNode(nodeId)}
+        onOpenSearch={() => setGlobalSearchOpen(true)}
         standaloneUrls={standaloneUrls}
       />
       <div className={`marloth-main${view === "graph-explorer" ? " marloth-main-graph" : ""}`}>
@@ -618,6 +636,12 @@ export function App() {
         )}
       </div>
       </div>
+      <GlobalSearch
+        api={api}
+        open={globalSearchOpen}
+        onOpenChange={setGlobalSearchOpen}
+        onOpenNode={openLinkedNode}
+      />
     </UserSettingsProvider>
   );
 }

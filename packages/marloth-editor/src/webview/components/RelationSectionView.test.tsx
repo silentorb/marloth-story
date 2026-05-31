@@ -76,4 +76,30 @@ describe("RelationSectionView", () => {
     renderRelationSection();
     expect(screen.getByRole("button", { name: /\+ New/ })).toBeTruthy();
   });
+
+  test("filters rows using search_<label> URL param", () => {
+    window.history.replaceState(
+      {},
+      "",
+      "http://127.0.0.1:5173/?node=abc&search_RELATED=linked",
+    );
+    renderRelationSection();
+
+    expect(
+      (screen.getByRole("searchbox", { name: "Filter table rows by name" }) as HTMLInputElement).value,
+    ).toBe("linked");
+    expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
+  });
+
+  test("filters rows when typing in search input", () => {
+    window.history.replaceState({}, "", "http://127.0.0.1:5173/?node=abc");
+    renderRelationSection();
+
+    fireEvent.change(screen.getByRole("searchbox", { name: "Filter table rows by name" }), {
+      target: { value: "nope" },
+    });
+
+    expect(screen.getByText('No rows match “nope”.')).toBeTruthy();
+    expect(window.location.search).toContain("search_RELATED=nope");
+  });
 });

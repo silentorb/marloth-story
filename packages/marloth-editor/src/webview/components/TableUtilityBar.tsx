@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import {
   DndContext,
   PointerSensor,
@@ -16,7 +16,7 @@ import { CSS } from "@dnd-kit/utilities";
 import type { DatabaseColumnDef, TableTabsDetail, ViewSortSpec } from "../../shared/types";
 import { moveColumnOrderItem } from "./SortableDataColumnHeaders";
 import { TabEditor } from "./TabEditor";
-import "./table-tabs-bar.css";
+import "./table-utility-bar.css";
 
 const DRAFT_TAB_ID = "__draft__";
 
@@ -31,10 +31,11 @@ interface TableTabItem {
   kind: "custom" | "generated";
 }
 
-interface TableTabsBarProps {
-  tabs: TableTabsDetail;
+interface TableUtilityBarProps {
+  tabs?: TableTabsDetail;
+  search?: ReactNode;
   columnDefs?: DatabaseColumnDef[];
-  onTabSelect: (tabId: string) => void;
+  onTabSelect?: (tabId: string) => void;
   onCreateTab?: (input: { name: string; sorts?: ViewSortSpec[] }) => Promise<void>;
   onUpdateTab?: (
     tabId: string,
@@ -112,32 +113,34 @@ function tabReorderOnDragEnd(
   void onTabsReorder(moveColumnOrderItem(tabIds, oldIndex, newIndex));
 }
 
-export function TableTabsBar({
+export function TableUtilityBar({
   tabs,
+  search,
   columnDefs,
   onTabSelect,
   onCreateTab,
   onUpdateTab,
   onDeleteTab,
   onTabsReorder,
-}: TableTabsBarProps) {
-  const editable = tabs.kind === "custom" && Boolean(onCreateTab && onUpdateTab && onDeleteTab);
+}: TableUtilityBarProps) {
+  const editable =
+    tabs?.kind === "custom" && Boolean(onCreateTab && onUpdateTab && onDeleteTab);
   const reorderable = editable && Boolean(onTabsReorder);
   const [editorTabId, setEditorTabId] = useState<string | null>(null);
   const [draftTab, setDraftTab] = useState<DraftTab | null>(null);
   const [pendingTabId, setPendingTabId] = useState<string | null>(null);
-  const [displayTabItems, setDisplayTabItems] = useState(tabs.items);
+  const [displayTabItems, setDisplayTabItems] = useState(tabs?.items ?? []);
   const [busy, setBusy] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const dragCompletedRef = useRef(false);
 
   useEffect(() => {
-    setDisplayTabItems(tabs.items);
-  }, [tabs.items]);
+    setDisplayTabItems(tabs?.items ?? []);
+  }, [tabs?.items]);
 
   useEffect(() => {
     setPendingTabId(null);
-  }, [tabs.activeTabId]);
+  }, [tabs?.activeTabId]);
 
   const discardDraft = () => {
     setEditorTabId(null);
@@ -175,11 +178,15 @@ export function TableTabsBar({
     }),
   );
 
-  if (displayTabItems.length <= 1 && !editable && !draftTab) return null;
-  if (displayTabItems.length === 0 && !draftTab) return null;
+  const showTabs =
+    tabs != null &&
+    (displayTabItems.length > 1 || editable || draftTab != null) &&
+    (displayTabItems.length > 0 || draftTab != null);
+
+  if (!showTabs && !search) return null;
 
   const definitionFor = (tabId: string) =>
-    tabs.customDefinitions?.find((definition) => definition.id === tabId);
+    tabs?.customDefinitions?.find((definition) => definition.id === tabId);
 
   const tabLabel = (tabId: string) => {
     if (tabId === DRAFT_TAB_ID) return draftTab?.name ?? "New tab";
@@ -207,7 +214,7 @@ export function TableTabsBar({
 
   const displayActiveTabId = draftTab
     ? DRAFT_TAB_ID
-    : (pendingTabId ?? tabs.activeTabId);
+    : (pendingTabId ?? tabs?.activeTabId ?? "");
 
   const editingTab =
     editorTabId === DRAFT_TAB_ID && draftTab
@@ -239,10 +246,10 @@ export function TableTabsBar({
     }
     discardDraft();
     setPendingTabId(tab.id);
-    onTabSelect(tab.id);
+    onTabSelect?.(tab.id);
   };
 
-  const tabList = (
+  const tabList = showTabs ? (
     <div className="marloth-database-view-tabs" role="tablist" aria-label="Table views">
       {reorderable ? (
         <SortableContext items={sortableTabIds} strategy={horizontalListSortingStrategy}>
@@ -301,11 +308,11 @@ export function TableTabsBar({
         </button>
       ) : null}
     </div>
-  );
+  ) : null;
 
-  return (
-    <div className="marloth-table-tabs" ref={rootRef}>
-      {reorderable ? (
+  const tabsContent =
+    showTabs && tabList ?
+      reorderable ?
         <DndContext
           sensors={tabDragSensors}
           collisionDetection={closestCenter}
@@ -313,9 +320,15 @@ export function TableTabsBar({
         >
           {tabList}
         </DndContext>
-      ) : (
-        tabList
-      )}
+      : tabList
+    : null;
+
+  return (
+    <div className="marloth-table-utility-bar" ref={rootRef}>
+      <div className="marloth-table-utility-row">
+        {tabsContent ? <div className="marloth-table-utility-tabs">{tabsContent}</div> : null}
+        {search ? <div className="marloth-table-utility-actions">{search}</div> : null}
+      </div>
 
       {editable && editingTab ? (
         <TabEditor

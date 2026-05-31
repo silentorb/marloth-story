@@ -4,6 +4,7 @@ import {
   openCreate,
   openHome,
   openNode,
+  openSearch,
   registerEditorProvider,
 } from "./provider";
 import { stopApiServer } from "./api-bridge";
@@ -19,6 +20,7 @@ export function activate(context: vscode.ExtensionContext): void {
     }),
     vscode.commands.registerCommand("marloth.openHome", () => openHome(context)),
     vscode.commands.registerCommand("marloth.createNode", () => openCreate(context)),
+    vscode.commands.registerCommand("marloth.search", () => openSearch(context)),
     vscode.commands.registerCommand("marloth.openNode", (nodeId?: string) => {
       if (typeof nodeId === "string" && nodeId) {
         return openNode(nodeId, { preview: false });

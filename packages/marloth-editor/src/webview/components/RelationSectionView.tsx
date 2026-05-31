@@ -3,9 +3,14 @@ import type { EditorApi } from "../api/client";
 import type { RelationTableSection } from "../../shared/types";
 import { relationTableSortKey } from "../../shared/user-settings";
 import { standaloneNodeUrl } from "../../shared/types";
+import { useTableSearch } from "../hooks/useTableSearch";
+import { filterRowsByName } from "../table-name-filter";
+import { relationTableSearchParamKey } from "../../shared/table-search-url";
 import { SectionTitle } from "./NodeNameLink";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
 import { TableAddRowFooter } from "./TableAddRowFooter";
+import { TableSearchInput } from "./TableSearchInput";
+import { TableUtilityBar } from "./TableUtilityBar";
 import { renderTableCell } from "./table-cell-render";
 import "./relation-section-view.css";
 
@@ -28,6 +33,7 @@ export function RelationSectionView({
   onArchiveNode,
   onDeleteNode,
 }: RelationSectionViewProps) {
+  const [searchQuery, setSearchQuery] = useTableSearch(relationTableSearchParamKey(section.label));
   const tableKey = relationTableSortKey(nodeId, section.label);
 
   const columnLabels = useMemo(() => {
@@ -70,6 +76,14 @@ export function RelationSectionView({
       })),
     [section.rows],
   );
+
+  const filteredRows = useMemo(
+    () => filterRowsByName(rows, searchQuery, (row) => row.name),
+    [rows, searchQuery],
+  );
+
+  const hasActiveSearch = searchQuery.trim().length > 0;
+  const hasMatchingRows = filteredRows.length > 0;
 
   const openTarget = useCallback(
     (targetId: string, event: React.MouseEvent<HTMLButtonElement>) => {
@@ -117,10 +131,16 @@ export function RelationSectionView({
         typeNodeId={section.typeNodeId}
         onOpenNode={onOpenNode}
       />
+      <TableUtilityBar
+        search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
+      />
+      {!hasMatchingRows && hasActiveSearch ? (
+        <div className="marloth-database-empty">No rows match “{searchQuery.trim()}”.</div>
+      ) : (
       <SectionDataTable
         tableKey={tableKey}
         columns={section.columns}
-        rows={rows}
+        rows={filteredRows}
         renderNameCell={renderNameCell}
         columnLabels={columnLabels}
         renderCell={renderCell}
@@ -137,6 +157,7 @@ export function RelationSectionView({
             : undefined
         }
       />
+      )}
       <TableAddRowFooter
         label={`New ${section.title.replace(/s$/i, "") || "row"}`}
         onSubmit={async (title) => {

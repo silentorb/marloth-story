@@ -28,6 +28,18 @@
       {
         "command": "marloth.createNode",
         "title": "Marloth: New Page"
+      },
+      {
+        "command": "marloth.search",
+        "title": "Marloth: Search"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "marloth.search",
+        "key": "ctrl+k",
+        "mac": "cmd+k",
+        "when": "activeCustomEditorId == 'marloth.editor'"
       }
     ],
     "customEditors": [
@@ -52,6 +64,9 @@
         },
         {
           "command": "marloth.createNode"
+        },
+        {
+          "command": "marloth.search"
         }
       ]
     }

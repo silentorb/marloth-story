@@ -1,7 +1,27 @@
-.marloth-table-tabs {
+.marloth-table-utility-bar {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 100%;
+}
+
+.marloth-table-utility-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.marloth-table-utility-tabs {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.marloth-table-utility-actions {
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .marloth-table-tab-wrap {

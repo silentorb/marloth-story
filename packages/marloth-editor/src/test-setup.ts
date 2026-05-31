@@ -7,6 +7,7 @@ beforeAll(() => {
 
 afterEach(async () => {
   document.body.replaceChildren();
+  window.history.replaceState({}, "", "http://127.0.0.1:5173/");
   await new Promise((resolve) => setTimeout(resolve, 0));
 });
 

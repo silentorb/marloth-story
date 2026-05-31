@@ -51,6 +51,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 - A **home node** **must** be openable via command palette (`Marloth: Open Home`).
 - Default home is the Marloth root page (`72b6fb455b824b78962b0e509cc091c9`) when present in the graph.
 - Nodes **must** open via virtual URIs: `marloth://node/{id}` using a custom editor (`marloth.editor`).
+- A **global search** widget **must** let users find and open any node by title. Initially search matches **node names only** (via `GET /api/nodes/search`); body search may be added later. Open via sidebar **Search**, command palette (`Marloth: Search`), or **Ctrl/Cmd+K** (standalone browser and VS Code when the Marloth editor is active). Results show title and path; Enter opens in the current tab; Ctrl/Cmd+Enter or middle-click opens in a new tab (VS Code: new editor tab; standalone: native link behavior).
 
 ### Presentation
 
@@ -106,6 +107,7 @@ Search/autocomplete:
 
 ```
 @ query → GET /api/nodes/search?q=… → title/path summaries
+Global search (Ctrl/Cmd+K) → same endpoint; empty query lists recent nodes by title
 ```
 
 ## Inputs / outputs / artifacts
@@ -181,6 +183,7 @@ bun run editor:dev
 | `packages/marloth-editor/src/extension/` | VS Code custom editor provider |
 | `packages/marloth-editor/src/webview/components/NodePageView.tsx` | Universal page layout (title, metadata, properties, markdown, sections) |
 | `packages/marloth-editor/src/webview/components/CreateNodeView.tsx` | Global new-page form |
+| `packages/marloth-editor/src/webview/components/GlobalSearch.tsx` | Global node search (title-only v1) |
 | `packages/marloth-db/src/node-create.ts` | Create node + optional relationship (`createNode`) |
 | `packages/marloth-editor/src/webview/components/PropertiesSectionView.tsx` | Instance-page Properties form (stored + computed fields) |
 | `packages/marloth-editor/src/webview/components/RelationSectionView.tsx` | Outgoing relationship table section |

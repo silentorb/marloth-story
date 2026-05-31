@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { OrderedAssociationView } from "./OrderedAssociationView";
 import { makeMockEditorApi } from "../test-fixtures/mock-api";
 import type { OrderedAssociationViewDetail } from "../../shared/types";
@@ -69,5 +69,50 @@ describe("OrderedAssociationView", () => {
     expect(getAllByText("📁 Location").length).toBeGreaterThanOrEqual(1);
     expect(document.querySelectorAll("th.marloth-column-header.is-reorderable").length).toBe(6);
     expect(queryByRole("columnheader", { name: "Status" })).toBeNull();
+  });
+
+  test("filters scene rows and hides empty groups", () => {
+    window.history.replaceState({}, "", "http://127.0.0.1:5173/?node=abc");
+    const api = makeMockEditorApi("standalone");
+
+    const { getByRole, queryByRole, getByText } = render(
+      <OrderedAssociationView
+        api={api}
+        configId="scenes-by-book"
+        view={view}
+        onTabSelect={() => {}}
+        onViewChange={() => {}}
+        onOpenNode={() => {}}
+      />,
+    );
+
+    fireEvent.change(getByRole("searchbox", { name: "Filter table rows by name" }), {
+      target: { value: "opening" },
+    });
+
+    expect(getByRole("link", { name: "Opening" })).toBeTruthy();
+    expect(queryByRole("heading", { name: "Unassigned", level: 3 })).toBeNull();
+    expect((getByRole("searchbox", { name: "Filter table rows by name" }) as HTMLInputElement).value).toBe(
+      "opening",
+    );
+    expect(window.location.search).toContain("search_items=opening");
+  });
+
+  test("shows empty match message when no scenes match", () => {
+    window.history.replaceState({}, "", "http://127.0.0.1:5173/?node=abc&search_items=missing");
+    const api = makeMockEditorApi("standalone");
+
+    const { getByText } = render(
+      <OrderedAssociationView
+        api={api}
+        configId="scenes-by-book"
+        view={view}
+        onTabSelect={() => {}}
+        onViewChange={() => {}}
+        onOpenNode={() => {}}
+      />,
+    );
+
+    expect(getByText('No rows match “missing”.')).toBeTruthy();
   });
 });

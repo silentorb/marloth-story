@@ -32,6 +32,7 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
   private readonly devWebviewUrl: string;
   private readonly panels = new Map<string, vscode.WebviewPanel>();
   private pendingCreateView = false;
+  private pendingSearchOpen = false;
 
   constructor(private readonly context: vscode.ExtensionContext) {
     this.devMode = context.extensionMode === vscode.ExtensionMode.Development;
@@ -85,9 +86,24 @@ export class MarlothEditorProvider implements vscode.CustomEditorProvider<Marlot
       this.pendingCreateView = false;
       webviewPanel.webview.postMessage({ type: "navigate", view: "create-node" });
       webviewPanel.title = "New page";
+    } else if (this.pendingSearchOpen) {
+      this.pendingSearchOpen = false;
+      webviewPanel.webview.postMessage({ type: "openSearch" });
     } else {
       webviewPanel.webview.postMessage({ type: "init", nodeId: document.nodeId });
     }
+  }
+
+  showSearch(): boolean {
+    for (const panel of this.panels.values()) {
+      panel.webview.postMessage({ type: "openSearch" });
+      return true;
+    }
+    return false;
+  }
+
+  markPendingSearchOpen(): void {
+    this.pendingSearchOpen = true;
   }
 
   showCreateView(homeId: string): void {
@@ -230,4 +246,12 @@ export async function openCreate(context: vscode.ExtensionContext): Promise<void
   const homeId = await api.getHomeId();
   await openNode(homeId, { preview: false });
   editorProvider?.showCreateView(homeId);
+}
+
+export async function openSearch(context: vscode.ExtensionContext): Promise<void> {
+  if (editorProvider?.showSearch()) return;
+  const api = await ensureApiServer(context.extensionPath);
+  const homeId = await api.getHomeId();
+  editorProvider?.markPendingSearchOpen();
+  await openNode(homeId, { preview: false });
 }
