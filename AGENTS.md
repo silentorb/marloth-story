@@ -87,6 +87,7 @@ For **design data** (what nodes mean, how they relate conceptually), read [`docs
 | Ordered associations, scene order, drag-and-drop reorder | [`docs/features/ordered-associations.md`](./docs/features/ordered-associations.md) |
 | Dynamic table view fields, computed columns | [`docs/features/dynamic-table-fields.md`](./docs/features/dynamic-table-fields.md) + [`docs/dynamic-fields/`](./docs/dynamic-fields/) |
 | Table view tabs, `views.json` | [`docs/features/views.md`](./docs/features/views.md) |
+| Static website generation (Astro) | [`docs/features/static-website.md`](./docs/features/static-website.md) |
 
 See also [`docs/features/README.md`](./docs/features/README.md) for the feature-doc template and how to add new features.
 

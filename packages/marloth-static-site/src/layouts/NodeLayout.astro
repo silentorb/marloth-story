@@ -1,0 +1,30 @@
+---
+import "../lib/theme.css";
+
+interface Props {
+  title: string;
+  path?: string | null;
+}
+
+const { title, path = null } = Astro.props;
+const pageTitle = path ? `${title} · ${path}` : title;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href={import.meta.env.BASE_URL}>Marloth design corpus</a>
+    </header>
+    <main class="page">
+      {path ? <span class="node-path">{path}</span> : null}
+      <slot />
+    </main>
+  </body>
+</html>

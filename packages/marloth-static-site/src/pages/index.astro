@@ -1,0 +1,31 @@
+---
+import NodeLayout from "../layouts/NodeLayout.astro";
+import { getHomeNodeId, getSiteBase, loadNodeSummaries } from "../lib/content";
+import { nodePagePath } from "../lib/markdown";
+
+const base = getSiteBase();
+const nodes = loadNodeSummaries().sort((a, b) =>
+  a.title.localeCompare(b.title, undefined, { sensitivity: "base" }),
+);
+const homePath = nodePagePath(getHomeNodeId(), base);
+---
+
+<NodeLayout title="Marloth design corpus">
+  <h1 class="page-title">Marloth design corpus</h1>
+  <p class="home-intro">
+    Static export of the design graph. Start at the
+    <a href={homePath}>home node</a>.
+  </p>
+  <ul class="node-list">
+    {
+      nodes.map((node) => (
+        <li>
+          <a href={nodePagePath(node.id, base)}>
+            {node.title}
+            {node.path ? <span class="node-list-path">{node.path}</span> : null}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</NodeLayout>

@@ -7,7 +7,8 @@
     ".": "./src/index.ts",
     "./archive-path": "./src/archive-path.ts",
     "./content": "./src/content/index.ts",
-    "./content/test-helpers": "./src/content/test-helpers.ts"
+    "./content/test-helpers": "./src/content/test-helpers.ts",
+    "./markdown-links": "./src/markdown-links.ts"
   },
   "scripts": {
     "test": "bun test"

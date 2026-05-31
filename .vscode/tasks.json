@@ -60,6 +60,20 @@
       "problemMatcher": []
     },
     {
+      "label": "Marloth: build static website",
+      "type": "shell",
+      "command": "bun run web:build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Marloth Editor: dev servers",
       "type": "shell",
       "command": "bash scripts/marloth-editor-start",

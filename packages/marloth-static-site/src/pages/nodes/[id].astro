@@ -1,0 +1,45 @@
+---
+import NodeLayout from "../../layouts/NodeLayout.astro";
+import { getSiteBase, loadAllNodes } from "../../lib/content";
+import {
+  prepareNodeMarkdown,
+  renderMarkdownToHtml,
+  resolvePageTitleAndContent,
+} from "../../lib/markdown";
+
+export function getStaticPaths() {
+  const base = getSiteBase();
+  const nodes = loadAllNodes();
+  return nodes.map((node) => {
+    const { title } = resolvePageTitleAndContent(node.body, node.title);
+    return {
+      params: { id: node.id },
+      props: {
+        title,
+        path: node.path,
+        markdown: prepareNodeMarkdown(node.body, node.title, base),
+      },
+    };
+  });
+}
+
+interface Props {
+  title: string;
+  path: string | null;
+  markdown: string;
+}
+
+const { title, path, markdown } = Astro.props;
+const bodyHtml = markdown ? await renderMarkdownToHtml(markdown) : "";
+---
+
+<NodeLayout title={title} path={path}>
+  <h1 class="page-title">{title}</h1>
+  {
+    bodyHtml ? (
+      <article class="prose" set:html={bodyHtml} />
+    ) : (
+      <p class="prose-empty">No content.</p>
+    )
+  }
+</NodeLayout>
