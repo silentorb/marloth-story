@@ -4,6 +4,7 @@ import {
   deleteTab,
   getNodeViews,
   updateTab,
+  updateSectionColumnOrder,
   type ViewSortSpec,
 } from "marloth-db";
 import { invalidateViewsCache } from "marloth-db";
@@ -51,6 +52,17 @@ export function deleteSectionTab(
   invalidateViewsCache();
   ctx.sync.syncFile("views.json");
   deleteTab(ctx.store, nodeId, sectionKey, tabId);
+}
+
+export function patchSectionColumnOrder(
+  ctx: MarlothWriteContext,
+  nodeId: string,
+  sectionKey: string,
+  columnOrder: string[],
+) {
+  invalidateViewsCache();
+  ctx.sync.syncFile("views.json");
+  return updateSectionColumnOrder(ctx.store, nodeId, sectionKey, columnOrder);
 }
 
 export { ITEMS_SECTION_KEY };

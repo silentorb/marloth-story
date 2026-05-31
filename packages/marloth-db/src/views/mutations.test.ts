@@ -5,7 +5,7 @@ import {
   seedTestViews,
 } from "../content/test-helpers";
 import { VIEWS_FILE_VERSION } from "../content/views-file";
-import { createTab, deleteTab, updateTab } from "./mutations";
+import { createTab, deleteTab, updateTab, updateSectionColumnOrder } from "./mutations";
 
 describe("views mutations", () => {
   const fixture = createTestContentFixture("marloth-views-mut-");
@@ -40,6 +40,16 @@ describe("views mutations", () => {
       name: "Renamed",
     });
     expect(updated.name).toBe("Renamed");
+  });
+
+  test("updates section column order", () => {
+    const order = updateSectionColumnOrder(fixture.ctx.store, nodeId, "items", [
+      "status",
+      "priority",
+    ]);
+    expect(order).toEqual(["status", "priority"]);
+    const file = fixture.ctx.store.readViewsFile();
+    expect(file.nodes[nodeId]?.sections.items?.columnOrder).toEqual(["status", "priority"]);
   });
 
   test("refuses to delete the last tab", () => {

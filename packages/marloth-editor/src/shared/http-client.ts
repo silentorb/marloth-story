@@ -57,6 +57,11 @@ export interface EditorApiClient {
     input: { name?: string; sorts?: import("marloth-db").ViewSortSpec[] },
   ): Promise<import("marloth-db").CustomTabDefinition>;
   deleteSectionTab(nodeId: string, sectionKey: string, tabId: string): Promise<void>;
+  updateSectionColumnOrder(
+    nodeId: string,
+    sectionKey: string,
+    columnOrder: string[],
+  ): Promise<string[]>;
   moveOrderedAssociation(
     configId: string,
     params: OrderedAssociationMoveParams,
@@ -215,6 +220,21 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         `/api/views/nodes/${nodeId}/sections/${encodeURIComponent(sectionKey)}/tabs/${encodeURIComponent(tabId)}`,
         { method: "DELETE" },
       );
+    },
+    async updateSectionColumnOrder(
+      nodeId: string,
+      sectionKey: string,
+      columnOrder: string[],
+    ): Promise<string[]> {
+      const data = await fetchJson<{ columnOrder: string[] }>(
+        `/api/views/nodes/${nodeId}/sections/${encodeURIComponent(sectionKey)}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ columnOrder }),
+        },
+      );
+      return data.columnOrder;
     },
     async moveOrderedAssociation(
       configId: string,

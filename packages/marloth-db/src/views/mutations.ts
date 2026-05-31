@@ -3,6 +3,7 @@ import {
   emptyViewsFile,
   slugifyTabId,
   uniqueTabId,
+  DEFAULT_CUSTOM_TAB,
   type CustomTabDefinition,
   type ViewSortSpec,
   type ViewsFile,
@@ -115,6 +116,36 @@ export function deleteTab(
   if (index < 0) throw new Error("tab_not_found");
   definitions.splice(index, 1);
   writeViews(store, file);
+}
+
+export function updateSectionColumnOrder(
+  store: ContentStore,
+  nodeId: string,
+  sectionKey: string,
+  columnOrder: string[],
+): string[] {
+  if (!Array.isArray(columnOrder) || columnOrder.length === 0) {
+    throw new Error("invalid_column_order");
+  }
+  const normalized = columnOrder.map((key) => key.trim()).filter(Boolean);
+  if (normalized.length === 0) throw new Error("invalid_column_order");
+
+  const file = store.readViewsFile();
+  let node = file.nodes[nodeId];
+  if (!node) {
+    node = { sections: {} };
+    file.nodes[nodeId] = node;
+  }
+
+  let section = node.sections[sectionKey];
+  if (!section) {
+    section = { tabs: { kind: "custom", definitions: [DEFAULT_CUSTOM_TAB] } };
+    node.sections[sectionKey] = section;
+  }
+
+  section.columnOrder = normalized;
+  writeViews(store, file);
+  return normalized;
 }
 
 export function ensureCustomItemsSection(

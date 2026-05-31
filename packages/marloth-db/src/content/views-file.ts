@@ -29,6 +29,8 @@ export type SectionTabsConfig = CustomSectionTabs | GeneratedSectionTabs;
 
 export interface NodeSectionViewConfig {
   tabs: SectionTabsConfig;
+  /** Optional override for data column order (column keys, not display names). */
+  columnOrder?: string[];
 }
 
 export interface NodeViewConfig {
@@ -112,6 +114,22 @@ function parseSectionTabs(raw: unknown, path: string): SectionTabsConfig {
   throw new Error(`${path}: tabs.kind must be "custom" or "generated"`);
 }
 
+function parseColumnOrder(raw: unknown, path: string): string[] | undefined {
+  if (raw === undefined) return undefined;
+  if (!Array.isArray(raw)) {
+    throw new Error(`${path}: columnOrder must be an array`);
+  }
+  const order: string[] = [];
+  for (let index = 0; index < raw.length; index += 1) {
+    const entry = raw[index];
+    if (typeof entry !== "string" || !entry.trim()) {
+      throw new Error(`${path}.columnOrder[${index}]: must be a non-empty string`);
+    }
+    order.push(entry.trim());
+  }
+  return order.length > 0 ? order : undefined;
+}
+
 function parseNodeViewConfig(raw: unknown, nodeId: string): NodeViewConfig {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
     throw new Error(`views.json nodes.${nodeId}: must be an object`);
@@ -126,11 +144,11 @@ function parseNodeViewConfig(raw: unknown, nodeId: string): NodeViewConfig {
       throw new Error(`views.json nodes.${nodeId}.sections.${sectionKey}: must be an object`);
     }
     const sectionObj = sectionRaw as Record<string, unknown>;
+    const sectionPath = `views.json nodes.${nodeId}.sections.${sectionKey}`;
+    const columnOrder = parseColumnOrder(sectionObj.columnOrder, sectionPath);
     sections[sectionKey] = {
-      tabs: parseSectionTabs(
-        sectionObj.tabs,
-        `views.json nodes.${nodeId}.sections.${sectionKey}.tabs`,
-      ),
+      tabs: parseSectionTabs(sectionObj.tabs, `${sectionPath}.tabs`),
+      ...(columnOrder ? { columnOrder } : {}),
     };
   }
   return { sections };

@@ -196,6 +196,7 @@ export {
   deleteTab,
   getNodeViews,
   replaceViewsFile,
+  updateSectionColumnOrder,
 } from "./views/mutations";
 export type { ViewsMutationError } from "./views/mutations";
 export {
@@ -219,6 +220,12 @@ export type {
 } from "./content/views-file";
 export type { ResolvedTab, TableTabsDetail, TabKind } from "./views/tabs";
 export { sortEvalRowsFromViewSorts, notionSortToViewSort, viewSortsToNotionSorts } from "./views/sort-spec";
+export {
+  applyColumnOrder,
+  applySectionColumnOrder,
+  getSectionColumnOrder,
+  reorderColumnDefs,
+} from "./views/column-order";
 export {
   allowedTargetTypeIdsForRule,
   relationshipRuleContextForType,

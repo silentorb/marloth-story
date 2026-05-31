@@ -58,6 +58,17 @@ describe("views API", () => {
     );
     expect(updated.status).toBe(200);
 
+    const sectionPatch = await handler(
+      new Request(`http://127.0.0.1/api/views/nodes/${nodeId}/sections/items`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ columnOrder: ["name", "priority"] }),
+      }),
+    );
+    expect(sectionPatch.status).toBe(200);
+    const sectionBody = (await sectionPatch.json()) as { columnOrder: string[] };
+    expect(sectionBody.columnOrder).toEqual(["name", "priority"]);
+
     rmSync(dir, { recursive: true, force: true });
   });
 });

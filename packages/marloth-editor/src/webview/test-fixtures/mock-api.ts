@@ -35,6 +35,7 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
       sorts: input.sorts ?? [{ column: "name", direction: "asc" as const }],
     }),
     deleteSectionTab: async () => {},
+    updateSectionColumnOrder: async (_nodeId, _sectionKey, columnOrder) => columnOrder,
     search: async () => [],
     saveBody: async () => {},
     saveTitle: async () => {},

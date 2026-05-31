@@ -64,9 +64,9 @@ describe("OrderedAssociationView", () => {
     expect(getByRole("tab", { name: "Fairytale" })).toBeTruthy();
     expect(getByRole("heading", { name: "Part 1", level: 3 })).toBeTruthy();
     expect(getByRole("link", { name: "Opening" })).toBeTruthy();
-    expect(getAllByRole("columnheader", { name: "Solutions" }).length).toBeGreaterThan(0);
-    expect(getAllByRole("columnheader", { name: "📁 Characters" }).length).toBeGreaterThan(0);
-    expect(getAllByRole("columnheader", { name: "📁 Location" }).length).toBeGreaterThan(0);
+    expect(getAllByRole("button", { name: "Reorder Solutions column" }).length).toBeGreaterThan(0);
+    expect(getAllByRole("button", { name: "Reorder 📁 Characters column" }).length).toBeGreaterThan(0);
+    expect(getAllByRole("button", { name: "Reorder 📁 Location column" }).length).toBeGreaterThan(0);
     expect(queryByRole("columnheader", { name: "Status" })).toBeNull();
   });
 });

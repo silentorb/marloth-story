@@ -195,6 +195,27 @@ export function createApiHandler(
         return json({ views: views ?? null });
       }
 
+      const viewsSectionMatch =
+        /^\/api\/views\/nodes\/([a-f0-9]{32})\/sections\/([a-z0-9_-]+)$/i.exec(path);
+      if (viewsSectionMatch && req.method === "PATCH") {
+        const nodeId = viewsSectionMatch[1]!.toLowerCase();
+        const sectionKey = viewsSectionMatch[2]!;
+        const payload = (await req.json()) as { columnOrder?: string[] };
+        if (!Array.isArray(payload.columnOrder)) {
+          return json({ error: "columnOrder required" }, 400);
+        }
+        try {
+          const columnOrder = db.updateSectionColumnOrder(
+            nodeId,
+            sectionKey,
+            payload.columnOrder,
+          );
+          return json({ columnOrder });
+        } catch (err) {
+          return json({ error: String(err) }, 400);
+        }
+      }
+
       const viewsTabCollectionMatch =
         /^\/api\/views\/nodes\/([a-f0-9]{32})\/sections\/([a-z0-9_-]+)\/tabs$/i.exec(path);
       if (viewsTabCollectionMatch && req.method === "POST") {

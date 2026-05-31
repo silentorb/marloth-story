@@ -16,6 +16,7 @@ import {
 } from "./views/resolve-tabs";
 import { loadViewsFromContent } from "./views/load";
 import { sortEvalRowsFromViewSorts } from "./views/sort-spec";
+import { applySectionColumnOrder } from "./views/column-order";
 import type { TableTabsDetail } from "./views/tabs";
 
 const ROW_META_KEYS = new Set(["view", "row_index", "row_name", "order"]);
@@ -169,12 +170,21 @@ function buildCustomViewDetail(
 
   hydrateRelationCellsForRows(db, databaseId, schema, mergedColumnDefs, sorted);
 
-  const columns =
+  const defaultColumns =
     mergedColumnDefs.length > 0
       ? mergedColumnDefs.map((c) => c.key)
       : [...new Set(sorted.flatMap((r) => Object.keys(r.cells)))].sort((a, b) =>
           a.localeCompare(b),
         );
+
+  const views = loadViewsFromContent(contentDir);
+  const { columns, columnDefs: orderedColumnDefs } = applySectionColumnOrder(
+    defaultColumns,
+    mergedColumnDefs.length > 0 ? mergedColumnDefs : undefined,
+    views,
+    databaseId,
+    ITEMS_SECTION_KEY,
+  );
 
   const rows: DatabaseRow[] = sorted.map((row, index) => ({
     rowIndex: index,
@@ -199,7 +209,7 @@ function buildCustomViewDetail(
     tabs,
     columns,
     rows,
-    columnDefs: mergedColumnDefs.length > 0 ? mergedColumnDefs : undefined,
+    columnDefs: orderedColumnDefs,
   };
 }
 

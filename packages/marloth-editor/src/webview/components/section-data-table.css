@@ -60,3 +60,41 @@
   line-height: 1;
   color: var(--marloth-link);
 }
+
+.marloth-column-header-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.marloth-column-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--marloth-muted);
+  cursor: grab;
+  font-size: 0.65rem;
+  line-height: 1;
+  letter-spacing: -0.08em;
+  opacity: 0;
+  touch-action: none;
+}
+
+.marloth-column-header:hover .marloth-column-drag-handle,
+.marloth-column-header:focus-within .marloth-column-drag-handle,
+.marloth-column-header.is-dragging .marloth-column-drag-handle {
+  opacity: 1;
+}
+
+.marloth-column-drag-handle:active {
+  cursor: grabbing;
+}
+
+.marloth-column-header.is-dragging {
+  opacity: 0.85;
+  z-index: 1;
+}

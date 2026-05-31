@@ -101,4 +101,62 @@ describe("getDatabaseViewDetail with custom tabs", () => {
     db.close();
     rmSync(dir, { recursive: true, force: true });
   });
+
+  test("applies section columnOrder override from views.json", () => {
+    const dir = mkdtempSync(join(tmpdir(), "marloth-db-view-cols-"));
+    const contentDir = join(dir, "content");
+    mkdirSync(contentDir, { recursive: true });
+    const db = new GraphDatabase(join(dir, "test.sqlite"), { clean: true });
+    const databaseId = "dddddddddddddddddddddddddddddddd";
+
+    writeFileSync(
+      viewsFilePath(contentDir),
+      serializeViewsFile({
+        version: VIEWS_FILE_VERSION,
+        nodes: {
+          [databaseId]: {
+            sections: {
+              items: {
+                columnOrder: ["status"],
+                tabs: {
+                  kind: "custom",
+                  definitions: [
+                    {
+                      id: "all",
+                      name: "All",
+                      sorts: [{ column: "name", direction: "asc" }],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      }),
+    );
+    writeFileSync(
+      dynamicFieldsFilePath(contentDir),
+      serializeDynamicFieldsFile(emptyDynamicFieldsFile()),
+    );
+
+    db.upsertNode(databaseId, {
+      ...typeTableMarkerProperties("Tasks"),
+      notion_schema: JSON.stringify({
+        syncedAt: "2024-01-01T00:00:00.000Z",
+        properties: {
+          Name: { id: "title", name: "Name", type: "title", config: {} },
+          Status: { id: "status", name: "Status", type: "select", config: {} },
+          Priority: { id: "priority", name: "Priority", type: "select", config: {} },
+        },
+      }),
+    });
+    db.upsertNode("page1", { title: "Row" });
+    db.upsertRelationship("page1", databaseId, IS_A_TYPE, { row_index: 0 });
+
+    const view = getDatabaseViewDetail(db, databaseId, undefined, contentDir);
+    expect(view?.columns).toEqual(["status", "priority"]);
+
+    db.close();
+    rmSync(dir, { recursive: true, force: true });
+  });
 });

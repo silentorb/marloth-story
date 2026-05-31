@@ -139,7 +139,19 @@
                 ]
               }
             ]
-          }
+          },
+          "columnOrder": [
+            "type",
+            "features",
+            "weighted_use",
+            "wonder",
+            "monsters",
+            "story_scale",
+            "pacing",
+            "traversal_types",
+            "plot_is_driven_by_mc_desire",
+            "traversal_reasons"
+          ]
         }
       }
     },
@@ -346,7 +358,20 @@
                 ]
               }
             ]
-          }
+          },
+          "columnOrder": [
+            "priority",
+            "inspirations",
+            "solutions",
+            "bible_passages",
+            "date",
+            "custom_target_scene_count",
+            "tags",
+            "children",
+            "products",
+            "parents",
+            "conflicts"
+          ]
         }
       }
     },

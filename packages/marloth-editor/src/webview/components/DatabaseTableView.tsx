@@ -209,6 +209,10 @@ export function DatabaseTableView({
           columnLabels={columnLabels}
           renderCell={renderCell}
           rowPageActions={rowPageActions}
+          onColumnsReorder={async (columnOrder) => {
+            await api.updateSectionColumnOrder(nodeId, ITEMS_SECTION_KEY, columnOrder);
+            onTabsUpdated?.();
+          }}
         />
       )}
       <TableAddRowFooter

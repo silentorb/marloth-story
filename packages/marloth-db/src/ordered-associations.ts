@@ -13,7 +13,10 @@ import {
   parseDatabaseSchema,
 } from "./database-column-defs";
 import type { EvalRow } from "./notion-view-eval";
-import { resolveGeneratedTabsFromScopes } from "./views/resolve-tabs";
+import { resolveGeneratedTabsFromScopes, ITEMS_SECTION_KEY } from "./views/resolve-tabs";
+import { loadViewsFromContent } from "./views/load";
+import { resolveContentPath } from "./content/paths";
+import { applySectionColumnOrder } from "./views/column-order";
 import type { TableTabsDetail } from "./views/tabs";
 import {
   firstRelatedNodeId,
@@ -454,10 +457,20 @@ export function getOrderedAssociationView(
       };
     }),
   }));
-  const columns =
+  const defaultColumns =
     mergedColumnDefs.length > 0
       ? mergedColumnDefs.map((col) => col.key)
       : collectColumns(members);
+
+  const dir = contentDir ?? resolveContentPath();
+  const views = loadViewsFromContent(dir);
+  const { columns, columnDefs } = applySectionColumnOrder(
+    defaultColumns,
+    mergedColumnDefs.length > 0 ? mergedColumnDefs : undefined,
+    views,
+    config.typeDatabaseId,
+    ITEMS_SECTION_KEY,
+  );
 
   return {
     configId: config.id,
@@ -466,7 +479,7 @@ export function getOrderedAssociationView(
     tabs,
     groups: enrichedGroups,
     columns,
-    columnDefs: mergedColumnDefs.length > 0 ? mergedColumnDefs : undefined,
+    columnDefs,
   };
 }
 

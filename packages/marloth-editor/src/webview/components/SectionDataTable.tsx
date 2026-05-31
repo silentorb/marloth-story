@@ -1,4 +1,11 @@
-import { Fragment, useMemo, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  DndContext,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import type { RelationLink } from "../../shared/types";
 import { isProtectedEditorNode } from "../../shared/types";
 import {
@@ -7,6 +14,10 @@ import {
   type TableSortSpec,
 } from "../../shared/user-settings";
 import { useUserSettings } from "../hooks/useUserSettings";
+import {
+  SortableDataColumnHeaders,
+  columnReorderOnDragEnd,
+} from "./SortableDataColumnHeaders";
 import { TableRowActionsCell } from "./TableRowActionsCell";
 import "./section-data-table.css";
 import "./page-actions-menu.css";
@@ -32,6 +43,7 @@ interface SectionDataTableProps {
   columnLabels?: Record<string, string>;
   renderCell?: (column: string, value: string, row: SectionDataTableRow) => ReactNode;
   rowPageActions?: TableRowPageActions;
+  onColumnsReorder?: (nextColumns: string[]) => void | Promise<void>;
 }
 
 function rowNodeId(row: SectionDataTableRow): string {
@@ -62,8 +74,15 @@ export function SectionDataTable({
   columnLabels,
   renderCell,
   rowPageActions,
+  onColumnsReorder,
 }: SectionDataTableProps) {
   const { getTableSort, hasTableSortOverride, toggleTableSortColumn } = useUserSettings();
+  const [displayColumns, setDisplayColumns] = useState(columns);
+
+  useEffect(() => {
+    setDisplayColumns(columns);
+  }, [columns]);
+
   const sortSpec = getTableSort(tableKey, defaultSort);
   const useServerRowOrder =
     sortable && defaultSort !== undefined && !hasTableSortOverride(tableKey);
@@ -73,17 +92,23 @@ export function SectionDataTable({
   );
   const primarySort = sortable ? sortSpec.orderBy[0] : undefined;
 
-  const renderHeaderCell = (column: string, label: string) => {
-    if (!sortable) {
-      return (
-        <th scope="col">
-          <span>{label}</span>
-        </th>
-      );
-    }
+  const handleColumnsReorder = useCallback(
+    async (nextColumns: string[]) => {
+      setDisplayColumns(nextColumns);
+      if (onColumnsReorder) {
+        await onColumnsReorder(nextColumns);
+      }
+    },
+    [onColumnsReorder],
+  );
 
-    return (
-      <th scope="col">
+  const renderHeaderCell = useCallback(
+    (column: string, label: string) => {
+      if (!sortable) {
+        return <span>{label}</span>;
+      }
+
+      return (
         <button
           type="button"
           className={`marloth-table-sort-button${primarySort?.column === column ? " is-active" : ""}`}
@@ -103,59 +128,84 @@ export function SectionDataTable({
             </span>
           ) : null}
         </button>
-      </th>
-    );
-  };
+      );
+    },
+    [defaultSort, primarySort, sortable, tableKey, toggleTableSortColumn],
+  );
+
+  const columnDragSensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 6 },
+    }),
+  );
+
+  const tableMarkup = (
+    <table className="marloth-database-table">
+      <thead>
+        <tr>
+          {rowPageActions ? (
+            <th scope="col" className="marloth-table-row-actions-col" aria-label="Row actions" />
+          ) : null}
+            <th scope="col">
+              {renderHeaderCell("name", formatColumnLabel("name"))}
+            </th>
+          <SortableDataColumnHeaders
+            columns={displayColumns}
+            columnLabels={columnLabels}
+            formatLabel={formatColumnLabel}
+            renderHeader={renderHeaderCell}
+            reorderable={Boolean(onColumnsReorder)}
+          />
+        </tr>
+      </thead>
+      <tbody>
+        {sortedRows.map((row) => {
+          const nodeId = rowNodeId(row);
+          const showRowActions =
+            rowPageActions !== undefined && !isProtectedEditorNode(nodeId);
+
+          return (
+            <tr key={row.id}>
+              {rowPageActions ? (
+                <td className="marloth-table-row-actions-col">
+                  {showRowActions ? (
+                    <TableRowActionsCell
+                      recordTitle={row.name}
+                      onArchive={() => rowPageActions.onArchiveNode(nodeId)}
+                      onRemove={() => rowPageActions.onRemoveNode(nodeId)}
+                      onDelete={() => rowPageActions.onDeleteNode(nodeId)}
+                    />
+                  ) : null}
+                </td>
+              ) : null}
+              <th scope="row">{renderNameCell(row)}</th>
+              {displayColumns.map((column) => (
+                <td key={column}>
+                  {renderCell
+                    ? renderCell(column, row.cells[column] ?? "", row)
+                    : (row.cells[column] ?? "")}
+                </td>
+              ))}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
 
   return (
     <div className="marloth-database-table-wrap">
-      <table className="marloth-database-table">
-        <thead>
-          <tr>
-            {rowPageActions ? (
-              <th scope="col" className="marloth-table-row-actions-col" aria-label="Row actions" />
-            ) : null}
-            {renderHeaderCell("name", formatColumnLabel("name"))}
-            {columns.map((column) => (
-              <Fragment key={column}>
-                {renderHeaderCell(column, columnLabels?.[column] ?? formatColumnLabel(column))}
-              </Fragment>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedRows.map((row) => {
-            const nodeId = rowNodeId(row);
-            const showRowActions =
-              rowPageActions !== undefined && !isProtectedEditorNode(nodeId);
-
-            return (
-              <tr key={row.id}>
-                {rowPageActions ? (
-                  <td className="marloth-table-row-actions-col">
-                    {showRowActions ? (
-                      <TableRowActionsCell
-                        recordTitle={row.name}
-                        onArchive={() => rowPageActions.onArchiveNode(nodeId)}
-                        onRemove={() => rowPageActions.onRemoveNode(nodeId)}
-                        onDelete={() => rowPageActions.onDeleteNode(nodeId)}
-                      />
-                    ) : null}
-                  </td>
-                ) : null}
-                <th scope="row">{renderNameCell(row)}</th>
-                {columns.map((column) => (
-                  <td key={column}>
-                    {renderCell
-                      ? renderCell(column, row.cells[column] ?? "", row)
-                      : (row.cells[column] ?? "")}
-                  </td>
-                ))}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {onColumnsReorder ? (
+        <DndContext
+          sensors={columnDragSensors}
+          collisionDetection={closestCenter}
+          onDragEnd={(event) => columnReorderOnDragEnd(event, displayColumns, handleColumnsReorder)}
+        >
+          {tableMarkup}
+        </DndContext>
+      ) : (
+        tableMarkup
+      )}
     </div>
   );
 }

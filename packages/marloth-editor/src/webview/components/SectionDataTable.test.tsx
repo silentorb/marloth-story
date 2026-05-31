@@ -96,4 +96,21 @@ describe("SectionDataTable", () => {
 
     expect(screen.getByText("status:Open")).toBeTruthy();
   });
+
+  test("shows column drag handles when reorder is enabled", () => {
+    const api = makeMockEditorApi("standalone");
+    render(
+      <UserSettingsProvider api={api}>
+        <SectionDataTable
+          tableKey="test-column-reorder"
+          columns={["priority", "status"]}
+          rows={[{ id: "a", name: "Row", cells: { priority: "Low", status: "Open" } }]}
+          renderNameCell={(row) => row.name}
+          onColumnsReorder={async () => {}}
+        />
+      </UserSettingsProvider>,
+    );
+
+    expect(screen.getAllByRole("button", { name: /Reorder .* column/ })).toHaveLength(2);
+  });
 });

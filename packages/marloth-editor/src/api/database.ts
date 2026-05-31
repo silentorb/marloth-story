@@ -44,6 +44,7 @@ import {
   createSectionTab,
   deleteSectionTab,
   ITEMS_SECTION_KEY,
+  patchSectionColumnOrder,
   readNodeViews,
   updateSectionTab,
 } from "./views";
@@ -65,6 +66,11 @@ export interface EditorDatabase {
     input: { name?: string; sorts?: ViewSortSpec[] },
   ): ReturnType<typeof updateSectionTab>;
   deleteSectionTab(nodeId: string, sectionKey: string, tabId: string): void;
+  updateSectionColumnOrder(
+    nodeId: string,
+    sectionKey: string,
+    columnOrder: string[],
+  ): string[];
   getSchema(): SchemaFile;
   moveOrderedAssociation(
     configId: string,
@@ -153,6 +159,9 @@ export function openEditorDatabase(
     },
     deleteSectionTab(nodeId: string, sectionKey: string, tabId: string) {
       deleteSectionTab(writeCtx, nodeId, sectionKey, tabId);
+    },
+    updateSectionColumnOrder(nodeId: string, sectionKey: string, columnOrder: string[]) {
+      return patchSectionColumnOrder(writeCtx, nodeId, sectionKey, columnOrder);
     },
     getSchema(): SchemaFile {
       return schema();

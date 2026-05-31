@@ -10,7 +10,7 @@ import {
 } from "@dnd-kit/core";
 import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import type {
   OrderedAssociationGroup,
   OrderedAssociationViewDetail,
@@ -21,8 +21,11 @@ import { RelationCellEditor } from "./RelationCellEditor";
 import { TableRowActionsCell } from "./TableRowActionsCell";
 import { renderTableCell } from "./table-cell-render";
 import { TableTabsBar } from "./TableTabsBar";
+import { SortableDataColumnHeaders, columnReorderOnDragEnd } from "./SortableDataColumnHeaders";
 import "./ordered-association-view.css";
 import "./section-data-table.css";
+
+const ITEMS_SECTION_KEY = "items";
 
 interface OrderedAssociationViewProps {
   api: EditorApi;
@@ -142,6 +145,15 @@ interface GroupTableProps {
     onRemoveNode: (nodeId: string) => Promise<void>;
     onDeleteNode: (nodeId: string) => Promise<void>;
   };
+  onColumnsReorder?: (nextColumns: string[]) => void | Promise<void>;
+}
+
+function formatColumnLabel(key: string): string {
+  return key
+    .split("_")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 function GroupTable({
@@ -151,55 +163,77 @@ function GroupTable({
   renderCell,
   renderNameCell,
   rowPageActions,
+  onColumnsReorder,
 }: GroupTableProps) {
   const itemIds = useMemo(() => group.rows.map((row) => row.sceneId), [group.rows]);
   const { setNodeRef } = useDroppable({
     id: groupDropId(group.groupId),
     data: { groupId: group.groupId, type: "group" },
   });
+  const columnDragSensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 6 },
+    }),
+  );
+
+  const tableMarkup = (
+    <table className="marloth-database-table">
+      <thead>
+        <tr>
+          <th scope="col" aria-label="Reorder" className="marloth-ordered-association-drag-col" />
+          {rowPageActions ? (
+            <th scope="col" className="marloth-table-row-actions-col" aria-label="Row actions" />
+          ) : null}
+          <th scope="col">Name</th>
+          <SortableDataColumnHeaders
+            columns={columns}
+            columnLabels={columnLabels}
+            formatLabel={formatColumnLabel}
+            renderHeader={(_column, label) => label}
+            reorderable={Boolean(onColumnsReorder)}
+          />
+        </tr>
+      </thead>
+      <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
+        <tbody ref={setNodeRef}>
+          {group.rows.length === 0 ? (
+            <tr className="marloth-ordered-association-empty-row">
+              <td colSpan={columns.length + 2 + (rowPageActions ? 1 : 0)}>Drop scenes here</td>
+            </tr>
+          ) : (
+            group.rows.map((row, index) => (
+              <SortableSceneRow
+                key={row.sceneId}
+                row={row}
+                groupId={group.groupId}
+                index={index}
+                columns={columns}
+                renderCell={renderCell}
+                renderNameCell={renderNameCell}
+                rowPageActions={rowPageActions}
+              />
+            ))
+          )}
+        </tbody>
+      </SortableContext>
+    </table>
+  );
 
   return (
     <section className="marloth-ordered-association-group">
       <h3 className="marloth-ordered-association-group-title">{group.title}</h3>
       <div className="marloth-database-table-wrap">
-        <table className="marloth-database-table">
-          <thead>
-            <tr>
-              <th scope="col" aria-label="Reorder" className="marloth-ordered-association-drag-col" />
-              {rowPageActions ? (
-                <th scope="col" className="marloth-table-row-actions-col" aria-label="Row actions" />
-              ) : null}
-              <th scope="col">Name</th>
-              {columns.map((column) => (
-                <th key={column} scope="col">
-                  {columnLabels[column] ?? column}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>
-            <tbody ref={setNodeRef}>
-              {group.rows.length === 0 ? (
-                <tr className="marloth-ordered-association-empty-row">
-                  <td colSpan={columns.length + 2 + (rowPageActions ? 1 : 0)}>Drop scenes here</td>
-                </tr>
-              ) : (
-                group.rows.map((row, index) => (
-                  <SortableSceneRow
-                    key={row.sceneId}
-                    row={row}
-                    groupId={group.groupId}
-                    index={index}
-                    columns={columns}
-                    renderCell={renderCell}
-                    renderNameCell={renderNameCell}
-                    rowPageActions={rowPageActions}
-                  />
-                ))
-              )}
-            </tbody>
-          </SortableContext>
-        </table>
+        {onColumnsReorder ? (
+          <DndContext
+            sensors={columnDragSensors}
+            collisionDetection={closestCenter}
+            onDragEnd={(event) => columnReorderOnDragEnd(event, columns, onColumnsReorder)}
+          >
+            {tableMarkup}
+          </DndContext>
+        ) : (
+          tableMarkup
+        )}
       </div>
     </section>
   );
@@ -219,6 +253,20 @@ export function OrderedAssociationView({
   const [activeSceneId, setActiveSceneId] = useState<string | null>(null);
   const [moveError, setMoveError] = useState<string | null>(null);
   const [isMoving, setIsMoving] = useState(false);
+  const [displayColumns, setDisplayColumns] = useState(view.columns);
+
+  useEffect(() => {
+    setDisplayColumns(view.columns);
+  }, [view.columns]);
+
+  const handleColumnsReorder = useCallback(
+    async (columnOrder: string[]) => {
+      setDisplayColumns(columnOrder);
+      await api.updateSectionColumnOrder(view.typeDatabaseId, ITEMS_SECTION_KEY, columnOrder);
+      onCellUpdated?.();
+    },
+    [api, onCellUpdated, view.typeDatabaseId],
+  );
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -378,11 +426,12 @@ export function OrderedAssociationView({
             <GroupTable
               key={group.groupId}
               group={group}
-              columns={view.columns}
+              columns={displayColumns}
               columnLabels={columnLabels ?? {}}
               renderCell={renderCell}
               renderNameCell={renderNameCell}
               rowPageActions={rowPageActions}
+              onColumnsReorder={handleColumnsReorder}
             />
           ))}
         </div>

@@ -15,6 +15,7 @@ describe("views-file", () => {
         dddddddddddddddddddddddddddddddd: {
           sections: {
             items: {
+              columnOrder: ["status", "priority"],
               tabs: {
                 kind: "custom" as const,
                 definitions: [
