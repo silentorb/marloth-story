@@ -81,9 +81,9 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 | `relationship_records` | Mirror of content records |
 | `relationship_projections` | Directed rows `(source, target, local_type)` — hot path for queries |
 | `nodes` | Entity property bags |
-| `meta` | Schema version, content mtime |
+| `meta` | Schema version, content mtime, enum config fingerprint |
 
-**Enum properties in cache:** keys declared in [`content/schema.json`](../../content/schema.json) `enums` (e.g. `priority`) are stored in SQLite relationship `properties` JSON as **0-based indices** into the enum’s `options` array. Git-tracked [`content/relationships.json`](../../content/relationships.json) keeps **string labels**. Encode on cache write and decode on cache read (`packages/marloth-db/src/enum-codec.ts`, `graph.ts`). After pulling enum-cache changes or a `SCHEMA_VERSION` bump, run `bun run content:sync` (or restart the editor API) to rebuild the cache from content.
+**Enum properties in cache:** keys declared in [`content/schema.json`](../../content/schema.json) `enums` (e.g. `priority`) are stored in SQLite relationship `properties` JSON as **0-based indices** into the enum’s `options` array. Git-tracked [`content/relationships.json`](../../content/relationships.json) keeps **string labels**. Encode on cache write and decode on cache read (`packages/marloth-db/src/enum-codec.ts`, `graph.ts`). Changing enum `options` order in `schema.json` triggers a relationship cache re-sync (file watcher + `enum_config_fingerprint` meta check). After pulling enum-cache changes or a `SCHEMA_VERSION` bump, run `bun run content:sync` (or restart the editor API) to rebuild the cache from content.
 
 Type-table behavior is inferred from `is_a` usage and schema metadata (`isTypeTableNode` in `node-capabilities.ts`).
 

@@ -9,7 +9,8 @@ import {
   parseDynamicFieldsFile,
 } from "./dynamic-fields-file";
 import { bodyFromNode } from "./node-file";
-import { invalidateSchemaCache } from "../schema-rules/load";
+import { ENUM_CONFIG_FINGERPRINT_META_KEY, enumConfigFingerprint } from "../enum-config-fingerprint";
+import { invalidateSchemaCache, loadSchemaFromContent } from "../schema-rules/load";
 import { invalidateViewsCache } from "../views/load";
 import {
   RELATIONSHIPS_FILENAME,
@@ -139,10 +140,19 @@ export class CacheSync {
   }
 
   cacheNeedsRebuild(): boolean {
+    if (!existsSync(this.db.path)) return true;
     const cacheMarker = this.db.getMeta("content_mtime_ms");
     const contentMtime = String(this.contentSnapshotMtime());
-    if (!existsSync(this.db.path)) return true;
-    return cacheMarker !== contentMtime;
+    if (cacheMarker !== contentMtime) return true;
+    const schema = loadSchemaFromContent(this.contentDir);
+    const storedFingerprint = this.db.getMeta(ENUM_CONFIG_FINGERPRINT_META_KEY) ?? "";
+    return enumConfigFingerprint(schema) !== storedFingerprint;
+  }
+
+  private updateCacheMarkers(): void {
+    this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
+    const schema = loadSchemaFromContent(this.contentDir);
+    this.db.setMeta(ENUM_CONFIG_FINGERPRINT_META_KEY, enumConfigFingerprint(schema));
   }
 
   private expandRelationshipsToCache(): void {
@@ -184,7 +194,7 @@ export class CacheSync {
       this.expandRelationshipsToCache();
 
       invalidateDynamicFieldsCache();
-      this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
+      this.updateCacheMarkers();
     } finally {
       this.applying = false;
     }
@@ -230,25 +240,27 @@ export class CacheSync {
       relativeName === RELATIONSHIP_TYPES_FILENAME
     ) {
       this.syncRelationships();
-      this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
+      this.updateCacheMarkers();
       return;
     }
 
     if (relativeName === DYNAMIC_FIELDS_FILENAME) {
       invalidateDynamicFieldsCache();
-      this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
+      this.updateCacheMarkers();
       return;
     }
 
     if (relativeName === SCHEMA_FILENAME) {
       invalidateSchemaCache();
-      this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
+      // Enum indices in SQLite depend on options order; re-encode from content labels.
+      this.syncRelationships();
+      this.updateCacheMarkers();
       return;
     }
 
     if (relativeName === VIEWS_FILENAME) {
       invalidateViewsCache();
-      this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
+      this.updateCacheMarkers();
       return;
     }
 
@@ -256,7 +268,7 @@ export class CacheSync {
     if (match) {
       const id = relativeName.slice(0, 32);
       this.syncNode(id);
-      this.db.setMeta("content_mtime_ms", String(this.contentSnapshotMtime()));
+      this.updateCacheMarkers();
     }
   }
 

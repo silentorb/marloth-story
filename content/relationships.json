@@ -29273,7 +29273,7 @@
       "properties": {
         "view": "all",
         "row_index": 0,
-        "priority": "High",
+        "priority": "Primary",
         "inspiration_count": "2",
         "weight": "4",
         "wonderland_count": "0"
@@ -31135,7 +31135,7 @@
       "properties": {
         "view": "all",
         "row_index": 28,
-        "priority": "High",
+        "priority": "Primary",
         "inspiration_count": "4",
         "weight": "4",
         "wonderland_count": "0"
@@ -34854,7 +34854,7 @@
       "properties": {
         "view": "all",
         "row_index": 83,
-        "priority": "High",
+        "priority": "Primary",
         "wonderland_count": "0"
       }
     },
@@ -35064,7 +35064,7 @@
       "properties": {
         "view": "all",
         "row_index": 34,
-        "priority": "High",
+        "priority": "Medium",
         "inspiration_count": "1",
         "weight": "4",
         "wonderland_count": "0"
@@ -35495,7 +35495,7 @@
       "properties": {
         "view": "all",
         "row_index": 112,
-        "priority": "High",
+        "priority": "Primary",
         "wonderland_count": "0"
       }
     },
@@ -35863,7 +35863,7 @@
       "properties": {
         "view": "all",
         "row_index": 14,
-        "priority": "High",
+        "priority": "Primary",
         "inspiration_count": "12",
         "weight": "4",
         "wonderland_count": "0"

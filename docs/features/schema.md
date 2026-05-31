@@ -83,6 +83,7 @@ For `priority`, `values` are interpreted as numeric **weights** by `priorityWeig
 | `packages/marloth-db/src/schema-rules/schema-file.ts` | Parse/serialize `schema.json` |
 | `packages/marloth-db/src/schema-rules/resolve.ts` | Match rules to source node + type |
 | `packages/marloth-db/src/enum-codec.ts` | Label ↔ index encode/decode for SQLite cache |
+| `packages/marloth-db/src/enum-config-fingerprint.ts` | Detect enum option-order changes for cache invalidation |
 | `packages/marloth-db/src/property-enums.ts` | Resolve enums from schema; priority helpers |
 | `packages/marloth-db/src/node-page-sections.ts` | Embeds `allowedTargetTypeIds` on relation sections |
 

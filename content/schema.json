@@ -28,14 +28,15 @@
   ],
   "enums": {
     "priority": {
-      "options": ["Low", "Medium", "High", "Consideration"],
+      "options": ["Consideration", "Low", "Medium", "High", "Primary"],
       "default": "Low",
       "defaultOrder": "desc",
       "values": {
         "Low": 1,
         "Medium": 2,
         "High": 4,
-        "Consideration": 0
+        "Consideration": 0,
+        "Primary": 8
       }
     }
   }

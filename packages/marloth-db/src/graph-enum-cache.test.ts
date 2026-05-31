@@ -3,13 +3,20 @@ import { Database } from "bun:sqlite";
 import { mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { labelToEnumIndex } from "./enum-codec";
 import { GraphDatabase } from "./graph";
+import { loadWorkspaceSchema } from "./schema-rules/load";
+import { resolvePropertyEnum } from "./property-enums-core";
 
 describe("GraphDatabase enum cache encoding", () => {
   const dir = mkdtempSync(join(tmpdir(), "marloth-db-enum-cache-"));
   const dbPath = join(dir, "test.sqlite");
 
   test("stores enum indices in SQLite and returns labels via API", () => {
+    const schema = loadWorkspaceSchema();
+    const priorityEnum = resolvePropertyEnum("priority", schema);
+    expect(priorityEnum).not.toBeNull();
+
     const db = new GraphDatabase(dbPath, { clean: true });
     const recordId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb:is_a";
 
@@ -35,7 +42,7 @@ describe("GraphDatabase enum cache encoding", () => {
     rawDb.close();
 
     const stored = JSON.parse(raw.properties) as Record<string, unknown>;
-    expect(stored.priority).toBe(2);
+    expect(stored.priority).toBe(labelToEnumIndex(priorityEnum!, "High"));
     expect(stored.row_index).toBe(4);
 
     db.close();
