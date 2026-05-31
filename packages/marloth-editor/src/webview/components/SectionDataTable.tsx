@@ -44,6 +44,9 @@ interface SectionDataTableProps {
   renderCell?: (column: string, value: string, row: SectionDataTableRow) => ReactNode;
   rowPageActions?: TableRowPageActions;
   onColumnsReorder?: (nextColumns: string[]) => void | Promise<void>;
+  canDeleteColumn?: (column: string) => boolean;
+  isRelationColumn?: (column: string) => boolean;
+  onColumnDelete?: (column: string) => void | Promise<void>;
 }
 
 function rowNodeId(row: SectionDataTableRow): string {
@@ -75,6 +78,9 @@ export function SectionDataTable({
   renderCell,
   rowPageActions,
   onColumnsReorder,
+  canDeleteColumn,
+  isRelationColumn,
+  onColumnDelete,
 }: SectionDataTableProps) {
   const { getTableSort, hasTableSortOverride, toggleTableSortColumn } = useUserSettings();
   const [displayColumns, setDisplayColumns] = useState(columns);
@@ -155,6 +161,9 @@ export function SectionDataTable({
             formatLabel={formatColumnLabel}
             renderHeader={renderHeaderCell}
             reorderable={Boolean(onColumnsReorder)}
+            canDeleteColumn={canDeleteColumn}
+            isRelationColumn={isRelationColumn}
+            onColumnDelete={onColumnDelete}
           />
         </tr>
       </thead>

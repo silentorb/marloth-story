@@ -6,6 +6,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { DragEndEvent } from "@dnd-kit/core";
+import { ColumnHeaderMenu } from "./ColumnHeaderMenu";
 
 function moveItem<T>(items: T[], fromIndex: number, toIndex: number): T[] {
   const next = [...items];
@@ -14,13 +15,56 @@ function moveItem<T>(items: T[], fromIndex: number, toIndex: number): T[] {
   return next;
 }
 
+interface ColumnHeaderCellContentProps {
+  column: string;
+  label: string;
+  renderHeader: (column: string, label: string) => ReactNode;
+  canDelete?: boolean;
+  isRelation?: boolean;
+  onColumnDelete?: (column: string) => void | Promise<void>;
+}
+
+function ColumnHeaderCellContent({
+  column,
+  label,
+  renderHeader,
+  canDelete,
+  isRelation,
+  onColumnDelete,
+}: ColumnHeaderCellContentProps) {
+  const content = renderHeader(column, label);
+  if (!canDelete || !onColumnDelete) {
+    return content;
+  }
+
+  return (
+    <ColumnHeaderMenu
+      columnLabel={label}
+      isRelation={isRelation}
+      onDelete={() => onColumnDelete(column)}
+    >
+      {content}
+    </ColumnHeaderMenu>
+  );
+}
+
 interface SortableColumnHeaderCellProps {
   column: string;
   label: string;
   renderHeader: (column: string, label: string) => ReactNode;
+  canDelete?: boolean;
+  isRelation?: boolean;
+  onColumnDelete?: (column: string) => void | Promise<void>;
 }
 
-function SortableColumnHeaderCell({ column, label, renderHeader }: SortableColumnHeaderCellProps) {
+function SortableColumnHeaderCell({
+  column,
+  label,
+  renderHeader,
+  canDelete,
+  isRelation,
+  onColumnDelete,
+}: SortableColumnHeaderCellProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: column,
   });
@@ -47,7 +91,14 @@ function SortableColumnHeaderCell({ column, label, renderHeader }: SortableColum
         >
           ⋮⋮
         </button>
-        {renderHeader(column, label)}
+        <ColumnHeaderCellContent
+          column={column}
+          label={label}
+          renderHeader={renderHeader}
+          canDelete={canDelete}
+          isRelation={isRelation}
+          onColumnDelete={onColumnDelete}
+        />
       </div>
     </th>
   );
@@ -59,6 +110,9 @@ export interface SortableDataColumnHeadersProps {
   formatLabel: (column: string) => string;
   renderHeader: (column: string, label: string) => ReactNode;
   reorderable?: boolean;
+  canDeleteColumn?: (column: string) => boolean;
+  isRelationColumn?: (column: string) => boolean;
+  onColumnDelete?: (column: string) => void | Promise<void>;
 }
 
 export function SortableDataColumnHeaders({
@@ -67,6 +121,9 @@ export function SortableDataColumnHeaders({
   formatLabel,
   renderHeader,
   reorderable = false,
+  canDeleteColumn,
+  isRelationColumn,
+  onColumnDelete,
 }: SortableDataColumnHeadersProps) {
   const labelFor = (column: string) => columnLabels?.[column] ?? formatLabel(column);
 
@@ -75,7 +132,14 @@ export function SortableDataColumnHeaders({
       <>
         {columns.map((column) => (
           <th key={column} scope="col">
-            {renderHeader(column, labelFor(column))}
+            <ColumnHeaderCellContent
+              column={column}
+              label={labelFor(column)}
+              renderHeader={renderHeader}
+              canDelete={canDeleteColumn?.(column)}
+              isRelation={isRelationColumn?.(column)}
+              onColumnDelete={onColumnDelete}
+            />
           </th>
         ))}
       </>
@@ -90,6 +154,9 @@ export function SortableDataColumnHeaders({
           column={column}
           label={labelFor(column)}
           renderHeader={renderHeader}
+          canDelete={canDeleteColumn?.(column)}
+          isRelation={isRelationColumn?.(column)}
+          onColumnDelete={onColumnDelete}
         />
       ))}
     </SortableContext>

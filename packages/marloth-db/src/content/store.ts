@@ -252,6 +252,50 @@ export class ContentStore {
     this.upsertRelationship(source, target, localType, merged);
   }
 
+  /** Replace relationship properties exactly (supports removing keys). */
+  replaceRelationshipProperties(
+    source: string,
+    target: string,
+    localType: string,
+    properties: Properties,
+  ): boolean {
+    const registry = this.readRelationshipTypesFile();
+    const file = this.readRelationshipsFile();
+    const normalized = normalizeRelationshipType(localType);
+    const { a, b } = sortEndpoints(source, target);
+
+    let composite = resolveCompositeType(registry, normalized);
+    let index = file.relationships.findIndex((e) => e.a === a && e.b === b && e.type === composite);
+
+    if (index < 0) {
+      for (const entry of file.relationships) {
+        if (entry.a !== a || entry.b !== b) continue;
+        const perspectives = localTypesForComposite(registry, entry.type);
+        if (perspectives.includes(normalized)) {
+          composite = entry.type;
+          index = file.relationships.indexOf(entry);
+          break;
+        }
+        if (!isBidirectionalComposite(registry, entry.type) && entry.type === normalized) {
+          composite = entry.type;
+          index = file.relationships.indexOf(entry);
+          break;
+        }
+      }
+    }
+
+    if (index < 0) return false;
+
+    const prev = file.relationships[index]!;
+    file.relationships[index] = {
+      ...prev,
+      directedFrom: source,
+      properties,
+    };
+    this.writeRelationshipsFile(file);
+    return true;
+  }
+
   deleteRelationship(source: string, target: string, localType: string): boolean {
     const registry = this.readRelationshipTypesFile();
     const file = this.readRelationshipsFile();

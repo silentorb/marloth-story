@@ -13,6 +13,7 @@ import {
   searchNodes,
   updateNodeBody,
   updateNodeTitle,
+  deleteDatabaseColumn as deleteDatabaseColumnInDb,
   updateDatabaseRowProperty,
   updateOutgoingRelationshipProperty,
   linkOutgoingRelationship,
@@ -71,6 +72,10 @@ export interface EditorDatabase {
     sectionKey: string,
     columnOrder: string[],
   ): string[];
+  deleteDatabaseColumn(
+    databaseId: string,
+    columnKey: string,
+  ): import("marloth-db").DeleteDatabaseColumnResult | import("marloth-db").DeleteDatabaseColumnError;
   getSchema(): SchemaFile;
   moveOrderedAssociation(
     configId: string,
@@ -162,6 +167,9 @@ export function openEditorDatabase(
     },
     updateSectionColumnOrder(nodeId: string, sectionKey: string, columnOrder: string[]) {
       return patchSectionColumnOrder(writeCtx, nodeId, sectionKey, columnOrder);
+    },
+    deleteDatabaseColumn(databaseId: string, columnKey: string) {
+      return deleteDatabaseColumnInDb(writeCtx, databaseId, columnKey);
     },
     getSchema(): SchemaFile {
       return schema();

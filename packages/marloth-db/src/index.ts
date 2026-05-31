@@ -85,6 +85,11 @@ export {
   updateOutgoingRelationshipProperty,
 } from "./relationship-property-update";
 export type { RelationshipPropertyUpdateError } from "./relationship-property-update";
+export { deleteDatabaseColumn } from "./delete-database-column";
+export type {
+  DeleteDatabaseColumnError,
+  DeleteDatabaseColumnResult,
+} from "./delete-database-column";
 export {
   parseNotionSchema,
   parseNotionViews,

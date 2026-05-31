@@ -1,5 +1,7 @@
 import { afterAll, describe, expect, test } from "bun:test";
+import { join } from "node:path";
 import { IS_A_TYPE, typeTableMarkerProperties } from "marloth-db";
+import { openContentGraph } from "marloth-db/content";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
@@ -36,6 +38,47 @@ describe("database view API", () => {
     };
     const section = body.node.sections.find((entry) => entry.type === "database");
     expect(section?.databaseView?.title).toBe("Features");
+  });
+
+  test("DELETE /api/databases/:id/columns/:key removes column from schema and rows", async () => {
+    const dbWithSchema = "55555555555555555555555555555555";
+    const rowId = "66666666666666666666666666666666";
+    seedTestNode(fixture, {
+      id: dbWithSchema,
+      properties: {
+        ...typeTableMarkerProperties("Tasks"),
+        notion_schema: JSON.stringify({
+          syncedAt: "2024-01-01T00:00:00.000Z",
+          properties: {
+            Name: { id: "title", name: "Name", type: "title", config: {} },
+            Status: { id: "st", name: "Status", type: "select", config: {} },
+          },
+        }),
+      },
+    });
+    seedTestNode(fixture, { id: rowId, properties: { title: "Task row" } });
+    seedTestRelationships(fixture, [
+      { source: rowId, target: dbWithSchema, type: IS_A_TYPE, properties: { status: "Open" } },
+    ]);
+    const apiCtx = openContentGraph(
+      fixture.ctx.store.contentDir,
+      join(fixture.tempDir, "api.sqlite"),
+    );
+    apiCtx.sync.fullRebuild();
+    apiCtx.db.close();
+
+    const deleteRes = await api.handler(
+      new Request(`http://127.0.0.1/api/databases/${dbWithSchema}/columns/status`, {
+        method: "DELETE",
+      }),
+    );
+    expect(deleteRes.status).toBe(200);
+    const deleteBody = (await deleteRes.json()) as { rowsAffected: number };
+    expect(deleteBody.rowsAffected).toBe(1);
+
+    const viewRes = await api.handler(new Request(`http://127.0.0.1/api/databases/${dbWithSchema}`));
+    const viewBody = (await viewRes.json()) as { databaseView: { columns: string[] } };
+    expect(viewBody.databaseView.columns).not.toContain("status");
   });
 
   afterAll(() => {

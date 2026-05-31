@@ -67,6 +67,11 @@
   gap: 4px;
 }
 
+.marloth-column-header-menu-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+
 .marloth-column-drag-handle {
   display: inline-flex;
   align-items: center;

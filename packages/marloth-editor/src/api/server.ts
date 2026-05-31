@@ -326,6 +326,20 @@ export function createApiHandler(
         return json({ ok: true });
       }
 
+      const databaseColumnMatch =
+        /^\/api\/databases\/([a-f0-9]{32})\/columns\/([a-z0-9_]+)$/i.exec(path);
+      if (databaseColumnMatch && req.method === "DELETE") {
+        const databaseId = databaseColumnMatch[1]!.toLowerCase();
+        const columnKey = databaseColumnMatch[2]!.toLowerCase();
+        const result = db.deleteDatabaseColumn(databaseId, columnKey);
+        if (result === "database_not_found") return json({ error: "not found" }, 404);
+        if (result === "column_not_found") return json({ error: "column not found" }, 404);
+        if (result === "column_not_deletable") {
+          return json({ error: "column not deletable" }, 400);
+        }
+        return json(result);
+      }
+
       const connectionsPostMatch = /^\/api\/nodes\/([a-f0-9]{32})\/connections$/i.exec(path);
       if (connectionsPostMatch && req.method === "POST") {
         const sourceId = connectionsPostMatch[1]!.toLowerCase();

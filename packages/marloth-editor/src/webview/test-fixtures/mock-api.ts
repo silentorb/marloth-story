@@ -36,6 +36,7 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
     }),
     deleteSectionTab: async () => {},
     updateSectionColumnOrder: async (_nodeId, _sectionKey, columnOrder) => columnOrder,
+    deleteDatabaseColumn: async () => ({ rowsAffected: 0, relationsUnlinked: 0 }),
     search: async () => [],
     saveBody: async () => {},
     saveTitle: async () => {},

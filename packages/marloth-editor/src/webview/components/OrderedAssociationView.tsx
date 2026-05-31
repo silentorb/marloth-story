@@ -146,6 +146,9 @@ interface GroupTableProps {
     onDeleteNode: (nodeId: string) => Promise<void>;
   };
   onColumnsReorder?: (nextColumns: string[]) => void | Promise<void>;
+  canDeleteColumn?: (column: string) => boolean;
+  isRelationColumn?: (column: string) => boolean;
+  onColumnDelete?: (column: string) => void | Promise<void>;
 }
 
 function formatColumnLabel(key: string): string {
@@ -164,6 +167,9 @@ function GroupTable({
   renderNameCell,
   rowPageActions,
   onColumnsReorder,
+  canDeleteColumn,
+  isRelationColumn,
+  onColumnDelete,
 }: GroupTableProps) {
   const itemIds = useMemo(() => group.rows.map((row) => row.sceneId), [group.rows]);
   const { setNodeRef } = useDroppable({
@@ -191,6 +197,9 @@ function GroupTable({
             formatLabel={formatColumnLabel}
             renderHeader={(_column, label) => label}
             reorderable={Boolean(onColumnsReorder)}
+            canDeleteColumn={canDeleteColumn}
+            isRelationColumn={isRelationColumn}
+            onColumnDelete={onColumnDelete}
           />
         </tr>
       </thead>
@@ -263,6 +272,28 @@ export function OrderedAssociationView({
     async (columnOrder: string[]) => {
       setDisplayColumns(columnOrder);
       await api.updateSectionColumnOrder(view.typeDatabaseId, ITEMS_SECTION_KEY, columnOrder);
+      onCellUpdated?.();
+    },
+    [api, onCellUpdated, view.typeDatabaseId],
+  );
+
+  const canDeleteColumn = useCallback(
+    (key: string) => {
+      const def = view.columnDefs?.find((col) => col.key === key);
+      return def != null && def.source !== "dynamic";
+    },
+    [view.columnDefs],
+  );
+
+  const isRelationColumn = useCallback(
+    (key: string) => view.columnDefs?.find((col) => col.key === key)?.type === "relation",
+    [view.columnDefs],
+  );
+
+  const handleColumnDelete = useCallback(
+    async (key: string) => {
+      await api.deleteDatabaseColumn(view.typeDatabaseId, key);
+      setDisplayColumns((current) => current.filter((column) => column !== key));
       onCellUpdated?.();
     },
     [api, onCellUpdated, view.typeDatabaseId],
@@ -432,6 +463,9 @@ export function OrderedAssociationView({
               renderNameCell={renderNameCell}
               rowPageActions={rowPageActions}
               onColumnsReorder={handleColumnsReorder}
+              canDeleteColumn={canDeleteColumn}
+              isRelationColumn={isRelationColumn}
+              onColumnDelete={handleColumnDelete}
             />
           ))}
         </div>

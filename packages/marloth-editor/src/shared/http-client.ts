@@ -62,6 +62,10 @@ export interface EditorApiClient {
     sectionKey: string,
     columnOrder: string[],
   ): Promise<string[]>;
+  deleteDatabaseColumn(
+    databaseId: string,
+    columnKey: string,
+  ): Promise<{ rowsAffected: number; relationsUnlinked: number }>;
   moveOrderedAssociation(
     configId: string,
     params: OrderedAssociationMoveParams,
@@ -235,6 +239,15 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         },
       );
       return data.columnOrder;
+    },
+    async deleteDatabaseColumn(
+      databaseId: string,
+      columnKey: string,
+    ): Promise<{ rowsAffected: number; relationsUnlinked: number }> {
+      return fetchJson<{ rowsAffected: number; relationsUnlinked: number }>(
+        `/api/databases/${databaseId}/columns/${encodeURIComponent(columnKey)}`,
+        { method: "DELETE" },
+      );
     },
     async moveOrderedAssociation(
       configId: string,

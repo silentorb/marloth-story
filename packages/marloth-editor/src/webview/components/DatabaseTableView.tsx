@@ -51,6 +51,27 @@ export function DatabaseTableView({
     return Object.fromEntries(databaseView.columnDefs.map((col) => [col.key, col.name]));
   }, [databaseView.columnDefs]);
 
+  const canDeleteColumn = useCallback(
+    (key: string) => {
+      const def = databaseView.columnDefs?.find((col) => col.key === key);
+      return def != null && def.source !== "dynamic";
+    },
+    [databaseView.columnDefs],
+  );
+
+  const isRelationColumn = useCallback(
+    (key: string) => databaseView.columnDefs?.find((col) => col.key === key)?.type === "relation",
+    [databaseView.columnDefs],
+  );
+
+  const handleColumnDelete = useCallback(
+    async (key: string) => {
+      await api.deleteDatabaseColumn(databaseView.id, key);
+      onTabsUpdated?.();
+    },
+    [api, databaseView.id, onTabsUpdated],
+  );
+
   const renderCell = useCallback(
     (column: string, value: string, row: SectionDataTableRow) => {
       const def = databaseView.columnDefs?.find((col) => col.key === column);
@@ -213,6 +234,9 @@ export function DatabaseTableView({
             await api.updateSectionColumnOrder(nodeId, ITEMS_SECTION_KEY, columnOrder);
             onTabsUpdated?.();
           }}
+          canDeleteColumn={canDeleteColumn}
+          isRelationColumn={isRelationColumn}
+          onColumnDelete={handleColumnDelete}
         />
       )}
       <TableAddRowFooter

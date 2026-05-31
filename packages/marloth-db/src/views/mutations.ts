@@ -191,3 +191,35 @@ export function readViewsFileOrEmpty(store: ContentStore): ViewsFile {
     return emptyViewsFile();
   }
 }
+
+/** Remove a column key from section columnOrder and reset tab sorts that reference it. */
+export function purgeColumnFromViews(
+  store: ContentStore,
+  nodeId: string,
+  sectionKey: string,
+  columnKey: string,
+): void {
+  const file = store.readViewsFile();
+  const node = file.nodes[nodeId];
+  if (!node) return;
+
+  const section = node.sections[sectionKey];
+  if (!section) return;
+
+  if (section.columnOrder) {
+    section.columnOrder = section.columnOrder.filter((key) => key !== columnKey);
+    if (section.columnOrder.length === 0) {
+      delete section.columnOrder;
+    }
+  }
+
+  if (section.tabs.kind === "custom") {
+    for (const tab of section.tabs.definitions) {
+      if (tab.sorts.some((sort) => sort.column === columnKey)) {
+        tab.sorts = [{ column: "name", direction: "asc" }];
+      }
+    }
+  }
+
+  writeViews(store, file);
+}

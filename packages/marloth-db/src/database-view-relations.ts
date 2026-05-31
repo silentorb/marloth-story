@@ -25,7 +25,7 @@ function ordinalFromProperties(properties: Record<string, unknown>): number {
   return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER;
 }
 
-function relationConnectionsForRow(
+export function listRelationConnectionsForRow(
   db: GraphDatabase,
   nodeId: string,
   connectionType: string,
@@ -99,7 +99,7 @@ export function hydrateRelationCellsForRows(
     if (!row.relationCells) row.relationCells = {};
     for (const col of relationColumns) {
       const type = col.relationType ?? relationType(col.name);
-      const relationships = relationConnectionsForRow(
+      const relationships = listRelationConnectionsForRow(
         db,
         row.nodeId,
         type,
