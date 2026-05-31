@@ -11,23 +11,29 @@
 
 .marloth-confirm-dialog {
   width: min(420px, 100%);
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 20px;
   border: 1px solid var(--marloth-border);
   border-radius: 8px;
   background: var(--marloth-surface);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  /* Table cells use white-space: nowrap; reset so message text wraps inside the dialog. */
+  white-space: normal;
 }
 
 .marloth-confirm-title {
   margin: 0 0 8px;
   font-size: 1rem;
   font-weight: 600;
+  overflow-wrap: break-word;
 }
 
 .marloth-confirm-message {
   margin: 0 0 20px;
   color: var(--marloth-muted);
   font-size: 0.95rem;
+  overflow-wrap: break-word;
 }
 
 .marloth-confirm-actions {

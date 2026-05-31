@@ -72,7 +72,8 @@ export function RelationSectionView({
   );
 
   const openTarget = useCallback(
-    (targetId: string, event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+    (targetId: string, event: React.MouseEvent<HTMLButtonElement>) => {
+      if (event.button === 2) return;
       onOpenNode(targetId, event.metaKey || event.ctrlKey || event.button === 1);
     },
     [onOpenNode],
@@ -86,8 +87,6 @@ export function RelationSectionView({
           <a
             href={standaloneNodeUrl(targetId, window.location.href)}
             className="marloth-database-name-link"
-            onClick={(event) => openTarget(targetId, event)}
-            onAuxClick={(event) => openTarget(targetId, event)}
           >
             {row.name}
           </a>

@@ -1,8 +1,8 @@
-import { describe, expect, test } from "bun:test";
-import { render, screen, within } from "@testing-library/react";
+import { describe, expect, mock, test } from "bun:test";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { UserSettingsProvider } from "../hooks/useUserSettings";
 import { RelationSectionView } from "./RelationSectionView";
-import { FIXTURE_PAGE_ID, FIXTURE_TARGET_ID, makeRelationSection } from "../test-fixtures/node-page";
+import { FIXTURE_PAGE_ID, FIXTURE_TARGET_ID, FIXTURE_TYPE_ID, makeRelationSection } from "../test-fixtures/node-page";
 import { makeMockEditorApi } from "../test-fixtures/mock-api";
 
 function renderRelationSection(host: "standalone" | "vscode" = "standalone") {
@@ -29,6 +29,32 @@ describe("RelationSectionView", () => {
     const priorityTrigger = screen.getByRole("button", { name: "Priority", expanded: false });
     expect(priorityTrigger.textContent).toBe("High");
     expect(priorityTrigger.getAttribute("aria-haspopup")).toBe("listbox");
+  });
+
+  test("standalone links do not invoke onOpenNode on click", () => {
+    const onOpenNode = mock(() => {});
+    const api = makeMockEditorApi("standalone");
+    render(
+      <UserSettingsProvider api={api}>
+        <RelationSectionView
+          api={api}
+          nodeId={FIXTURE_PAGE_ID}
+          section={makeRelationSection()}
+          onOpenNode={onOpenNode}
+        />
+      </UserSettingsProvider>,
+    );
+
+    fireEvent.click(screen.getByRole("link", { name: "Related items" }));
+    fireEvent.click(screen.getByRole("link", { name: "Linked record" }));
+    expect(onOpenNode).not.toHaveBeenCalled();
+  });
+
+  test("standalone section title link targets type node", () => {
+    renderRelationSection("standalone");
+
+    const link = screen.getByRole("link", { name: "Related items" });
+    expect(link.getAttribute("href")).toContain(`node=${FIXTURE_TYPE_ID}`);
   });
 
   test("renders vscode row controls as buttons", () => {

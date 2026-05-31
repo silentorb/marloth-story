@@ -18,7 +18,8 @@ export function NodeNameLink({
   onOpenNode,
 }: NodeNameLinkProps) {
   const open = useCallback(
-    (event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (event.button === 2) return;
       onOpenNode(nodeId, event.metaKey || event.ctrlKey || event.button === 1);
     },
     [onOpenNode, nodeId],
@@ -26,12 +27,7 @@ export function NodeNameLink({
 
   if (api.host === "standalone") {
     return (
-      <a
-        href={standaloneNodeUrl(nodeId, window.location.href)}
-        className={className}
-        onClick={open}
-        onAuxClick={open}
-      >
+      <a href={standaloneNodeUrl(nodeId, window.location.href)} className={className}>
         {children}
       </a>
     );
