@@ -2,7 +2,8 @@ import type { Properties } from "./graph";
 import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterRelationshipsWrite } from "./content/write-context";
 import {
-  PRIORITY_DEFAULT,
+  coalescePriorityValue,
+  getPriorityDefault,
   isPriorityColumnKey,
   isPriorityValue,
   isUnsetPriority,
@@ -23,7 +24,8 @@ export function updateOutgoingRelationshipProperty(
   if (!connection) return "not_found";
 
   if (isPriorityColumnKey(propertyKey)) {
-    const resolved: string = isUnsetPriority(value) ? PRIORITY_DEFAULT : (value ?? PRIORITY_DEFAULT);
+    const defaultPriority = getPriorityDefault();
+    const resolved: string = isUnsetPriority(value) ? defaultPriority : (value ?? defaultPriority);
     if (!isPriorityValue(resolved)) return "invalid_value";
     ctx.store.mergeRelationshipProperties(sourceNodeId, targetNodeId, type, {
       ...connection.properties,

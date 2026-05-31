@@ -5119,8 +5119,7 @@
       "directedFrom": "2c67c21374464e448ec37fe585475dd6",
       "properties": {
         "view": "all",
-        "row_index": 4,
-        "priority": "Cancelled"
+        "row_index": 4
       }
     },
     {
@@ -5246,8 +5245,7 @@
       "directedFrom": "a1c6ff43c44b4524bfa196808216076b",
       "properties": {
         "view": "all",
-        "row_index": 16,
-        "priority": "Cancelled"
+        "row_index": 16
       }
     },
     {
@@ -26684,7 +26682,6 @@
       "properties": {
         "view": "all",
         "row_index": 21,
-        "priority": "Cancelled",
         "prop_type": "Problem"
       }
     },

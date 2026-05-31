@@ -60,5 +60,59 @@ describe("schema rules", () => {
   test("loadSchemaFromContent reads repo schema.json", () => {
     const schema = loadSchemaFromContent(resolveContentPath());
     expect(schema.relationshipRules.length).toBeGreaterThan(0);
+    expect(schema.enums.priority?.options).toEqual(["Low", "Medium", "High", "Consideration"]);
+    expect(schema.enums.priority?.values?.High).toBe(4);
+  });
+
+  test("parseSchemaFile validates enums", () => {
+    const file = parseSchemaFile(
+      JSON.stringify({
+        version: 1,
+        relationshipRules: [],
+        enums: {
+          priority: {
+            options: ["Low", "Medium", "High", "Consideration"],
+            default: "Low",
+            values: { Low: 1, Medium: 2, High: 4, Consideration: 0 },
+          },
+        },
+      }),
+    );
+    expect(file.enums.priority?.default).toBe("Low");
+  });
+
+  test("parseSchemaFile rejects invalid enum default", () => {
+    expect(() =>
+      parseSchemaFile(
+        JSON.stringify({
+          version: 1,
+          relationshipRules: [],
+          enums: {
+            priority: {
+              options: ["Low", "Medium"],
+              default: "High",
+            },
+          },
+        }),
+      ),
+    ).toThrow(/default must be one of options/);
+  });
+
+  test("parseSchemaFile rejects values key not in options", () => {
+    expect(() =>
+      parseSchemaFile(
+        JSON.stringify({
+          version: 1,
+          relationshipRules: [],
+          enums: {
+            priority: {
+              options: ["Low", "Medium"],
+              default: "Low",
+              values: { Ultimate: 8 },
+            },
+          },
+        }),
+      ),
+    ).toThrow(/values key "Ultimate" is not in options/);
   });
 });

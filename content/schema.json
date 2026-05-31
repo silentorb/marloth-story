@@ -25,5 +25,17 @@
       ],
       "type": "inspirations"
     }
-  ]
+  ],
+  "enums": {
+    "priority": {
+      "options": ["Low", "Medium", "High", "Consideration"],
+      "default": "Low",
+      "values": {
+        "Low": 1,
+        "Medium": 2,
+        "High": 4,
+        "Consideration": 0
+      }
+    }
+  }
 }

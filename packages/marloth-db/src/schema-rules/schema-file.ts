@@ -9,13 +9,81 @@ export interface RelationshipRuleEntry {
   allowedTargetTypeIds: string[];
 }
 
+export interface EnumDefinition {
+  options: string[];
+  default: string;
+  values?: Record<string, number>;
+}
+
 export interface SchemaFile {
   version: number;
   relationshipRules: RelationshipRuleEntry[];
+  enums: Record<string, EnumDefinition>;
 }
 
 export function emptySchemaFile(): SchemaFile {
-  return { version: SCHEMA_FILE_VERSION, relationshipRules: [] };
+  return { version: SCHEMA_FILE_VERSION, relationshipRules: [], enums: {} };
+}
+
+function parseEnumDefinition(enumId: string, raw: unknown): EnumDefinition {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error(`schema.json: enums.${enumId} must be an object`);
+  }
+  const entry = raw as Record<string, unknown>;
+  if (!Array.isArray(entry.options) || entry.options.length === 0) {
+    throw new Error(`schema.json: enums.${enumId}.options must be a non-empty array`);
+  }
+  const options = entry.options.filter(
+    (option): option is string => typeof option === "string" && option.trim().length > 0,
+  );
+  if (options.length === 0) {
+    throw new Error(`schema.json: enums.${enumId}.options must contain non-empty strings`);
+  }
+  if (typeof entry.default !== "string" || !entry.default.trim()) {
+    throw new Error(`schema.json: enums.${enumId}.default is required`);
+  }
+  const defaultValue = entry.default.trim();
+  if (!options.includes(defaultValue)) {
+    throw new Error(`schema.json: enums.${enumId}.default must be one of options`);
+  }
+
+  let values: Record<string, number> | undefined;
+  if (entry.values !== undefined) {
+    if (!entry.values || typeof entry.values !== "object" || Array.isArray(entry.values)) {
+      throw new Error(`schema.json: enums.${enumId}.values must be an object`);
+    }
+    values = {};
+    const optionSet = new Set(options);
+    for (const [key, value] of Object.entries(entry.values as Record<string, unknown>)) {
+      if (!optionSet.has(key)) {
+        throw new Error(`schema.json: enums.${enumId}.values key "${key}" is not in options`);
+      }
+      if (typeof value !== "number" || !Number.isFinite(value)) {
+        throw new Error(`schema.json: enums.${enumId}.values.${key} must be a number`);
+      }
+      values[key] = value;
+    }
+  }
+
+  return { options, default: defaultValue, ...(values ? { values } : {}) };
+}
+
+function parseEnums(raw: unknown): Record<string, EnumDefinition> {
+  if (raw === undefined) {
+    return {};
+  }
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error("schema.json: enums must be an object");
+  }
+  const enums: Record<string, EnumDefinition> = {};
+  for (const [enumId, entry] of Object.entries(raw as Record<string, unknown>)) {
+    const id = enumId.trim();
+    if (!id) {
+      throw new Error("schema.json: each enum id must be non-empty");
+    }
+    enums[id] = parseEnumDefinition(id, entry);
+  }
+  return enums;
 }
 
 export function parseSchemaFile(raw: string): SchemaFile {
@@ -60,7 +128,9 @@ export function parseSchemaFile(raw: string): SchemaFile {
     });
   }
 
-  return { version: obj.version, relationshipRules };
+  const enums = parseEnums(obj.enums);
+
+  return { version: obj.version, relationshipRules, enums };
 }
 
 export function serializeSchemaFile(file: SchemaFile): string {

@@ -17,32 +17,25 @@ For each inspiration row:
 
 1. Follow outgoing `FEATURES` relationships from the inspiration page to feature pages.
 2. For each feature page, read the Features database membership relationship `(feature)-[:IS_A]->(Features DB)` and its `priority` property.
-3. Map priority to weight:
+3. Map priority label to weight using `enums.priority.values` in [`content/schema.json`](../../content/schema.json) (interpreted as weights):
 
 | Priority | Weight |
 | --- | --- |
 | Low | 1 |
 | Medium | 2 |
 | High | 4 |
-| Ultimate | 8 |
+| Consideration | 0 |
 | (missing/other) | 0 |
 
 4. **Must** sum weights across all linked features.
 5. **Must** return the sum as a decimal string.
 
-This matches the Notion formula on Features **Weight**:
-
-```text
-ifs(prop("Priority") == "Low", 1,
-    prop("Priority") == "Medium", 2,
-    prop("Priority") == "High", 4,
-    prop("Priority") == "Ultimate", 8, 0)
-```
-
 ```text
 weighted_use(inspiration) =
   sum over f in FEATURES targets of priorityWeight(feature.IS_A.priority)
 ```
+
+`priorityWeight()` reads `enums.priority.values` from the loaded schema and treats each numeric value as a weight.
 
 ## Graph paths
 

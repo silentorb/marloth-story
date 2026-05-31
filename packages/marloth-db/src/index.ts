@@ -71,6 +71,9 @@ export {
   PRIORITY_OPTIONS,
   PRIORITY_WEIGHT,
   coalescePriorityValue,
+  getPriorityDefault,
+  getPriorityOptions,
+  getPriorityValues,
   isUnsetPriority,
   enrichColumnDef,
   enrichColumnDefs,
@@ -78,6 +81,9 @@ export {
   isPriorityPropertyName,
   isPriorityValue,
   priorityWeight,
+  resolvePriorityEnum,
+  resolvePropertyEnum,
+  resolvePropertyEnumFromContent,
 } from "./property-enums";
 export type { PriorityValue } from "./property-enums";
 export {
@@ -244,4 +250,4 @@ export {
   serializeSchemaFile,
   SCHEMA_FILE_VERSION,
 } from "./schema-rules/schema-file";
-export type { RelationshipRuleEntry, SchemaFile } from "./schema-rules/schema-file";
+export type { RelationshipRuleEntry, SchemaFile, EnumDefinition } from "./schema-rules/schema-file";

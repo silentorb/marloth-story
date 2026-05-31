@@ -26,7 +26,7 @@ For **what design nodes mean** (features, inspirations, products, traceability),
 | **Perspective type** | Local type name used in UI/API from one endpoint (e.g. `inspirations` on a Feature page). Mapped to composite storage types via `relationship-types.json`. |
 | **Page** | Editor-facing node view (`getNodePageDetail`, `NodePageView`)—not a Notion export file. |
 | **Type table** | Node that receives `is_a` rows and/or carries table schema metadata (`notion_schema`, etc.). |
-| **Schema** | Relationship rules in `content/schema.json` — see [schema.md](./schema.md). |
+| **Schema** | Workspace model config in `content/schema.json` (relationship rules, enums) — see [schema.md](./schema.md). |
 
 API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` **7**).
 
@@ -54,7 +54,7 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 | `content/relationship-types.json` | Composite type → perspective mapping |
 | `content/views.json` | UI table tab definitions (custom + generated providers) |
 | `content/dynamic-fields.json` | Dynamic table field bindings |
-| `content/schema.json` | Relationship rules (allowed target types) |
+| `content/schema.json` | Relationship rules and property enums |
 | `data/marloth.sqlite` | Local query cache (gitignored; default path via `MARLOTH_DB_PATH`) |
 
 - `content/` **must** remain a **flat** directory (only files, no subfolders).
@@ -176,7 +176,7 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 
 ## See also
 
-- [schema.md](./schema.md) — relationship rules in `content/schema.json`
+- [schema.md](./schema.md) — workspace model config in `content/schema.json`
 - [graph-explorer.md](./graph-explorer.md) — anchor-scoped LOD graph visualization
 - [ordered-associations.md](./ordered-associations.md) — automatic sequence for associations (scenes-first)
 - [`../ontology.md`](../ontology.md) — design domain model (storage-agnostic)

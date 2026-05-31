@@ -58,7 +58,7 @@ export function archiveNode(ctx: MarlothWriteContext, id: string): NodeLifecycle
   const title = titleFromProperties(node.properties);
   const archivePath = archivePathForNode(currentPath, title);
   ctx.store.mergeNodeProperties(id, { inferred_notion_path: archivePath });
-  ctx.store.upsertRelationship(id, DEFAULT_ARCHIVE_NODE_ID, "PART");
+  ctx.store.upsertRelationship(id, DEFAULT_ARCHIVE_NODE_ID, "archive_member");
   syncAfterNodeWrite(ctx, id);
   syncAfterRelationshipsWrite(ctx);
   return null;
