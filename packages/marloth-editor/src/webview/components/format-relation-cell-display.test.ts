@@ -7,10 +7,11 @@ import {
   packRelationCellVisibleLinks,
   relationCellLinkMeasureText,
   RELATION_CELL_MAX_LINES,
+  RELATION_CELL_MAX_WIDTH_REM,
 } from "./format-relation-cell-display";
 
 const measure = fixedCharMeasureWidth(8);
-const maxWidthPx = 224;
+const maxWidthPx = RELATION_CELL_MAX_WIDTH_REM * 16;
 
 function format(links: { title: string }[]) {
   return formatRelationCellDisplay(
