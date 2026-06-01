@@ -106,6 +106,11 @@ export interface EditorApiClient {
   getGraphFull(): Promise<GraphSnapshot>;
   getGraphExplorerLod(options?: GraphExplorerLodOptions): Promise<GraphLodSnapshot>;
   getSchema(): Promise<SchemaFile>;
+  listRelationshipTypes(): Promise<string[]>;
+  getRelationshipLinkOptions(
+    sourceId: string,
+    type: string,
+  ): Promise<{ allowedTargetTypeIds: string[] | null }>;
   getUserSettings(): Promise<UserSettings>;
   patchUserSettings(patch: UserSettingsPatch): Promise<UserSettings>;
 }
@@ -380,6 +385,19 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     async getSchema(): Promise<SchemaFile> {
       const data = await fetchJson<{ schema: SchemaFile }>("/api/schema");
       return data.schema;
+    },
+    async listRelationshipTypes(): Promise<string[]> {
+      const data = await fetchJson<{ types: string[] }>("/api/relationship-types");
+      return data.types;
+    },
+    async getRelationshipLinkOptions(
+      sourceId: string,
+      type: string,
+    ): Promise<{ allowedTargetTypeIds: string[] | null }> {
+      const params = new URLSearchParams({ type });
+      return fetchJson(
+        `/api/nodes/${sourceId}/relationship-link-options?${params.toString()}`,
+      );
     },
     async getUserSettings(): Promise<UserSettings> {
       const data = await fetchJson<{ settings: UserSettings }>("/api/user-settings");

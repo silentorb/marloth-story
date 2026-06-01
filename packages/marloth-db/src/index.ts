@@ -49,6 +49,7 @@ export type { NodeLifecycleError } from "./node-lifecycle";
 export { getDatabaseViewDetail } from "./database-view";
 export { hydrateRelationCellsForRows } from "./database-view-relations";
 export { relationType, normalizeRelationshipType, stripEmojis } from "./relation-type";
+export { formatRelationshipTypeLabel } from "./relationship-type-label";
 export type {
   DatabaseColumnDef,
   DatabaseRow,

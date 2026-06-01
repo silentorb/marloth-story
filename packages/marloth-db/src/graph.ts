@@ -521,6 +521,14 @@ export class GraphDatabase {
     return row.c;
   }
 
+  /** Distinct local perspective types present in relationship_projections (sorted). */
+  listDistinctRelationshipTypes(): string[] {
+    const rows = this.db
+      .prepare("SELECT DISTINCT type FROM relationship_projections ORDER BY type")
+      .all() as { type: string }[];
+    return rows.map((row) => row.type);
+  }
+
   /** Run a read query (used by overlay / dynamic-field modules). */
   queryAll<T extends Record<string, unknown>>(sql: string, ...params: SQLQueryBindings[]): T[] {
     return this.db.prepare(sql).all(...params) as T[];

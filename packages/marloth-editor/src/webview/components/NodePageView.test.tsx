@@ -1,5 +1,5 @@
 import { mock, describe, expect, test } from "bun:test";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 
 mock.module("./MarlothEditor", () => ({
   MarlothEditor: () => <div data-testid="marloth-editor-stub" />,
@@ -41,6 +41,37 @@ describe("NodePageView", () => {
     expect(screen.getByRole("heading", { name: "Related items", level: 2 })).toBeTruthy();
     expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
     expect(screen.getAllByRole("button", { name: "Page actions" })).toHaveLength(2);
+  });
+
+  test("page actions menu includes Relate for linking existing records", () => {
+    const api = makeMockEditorApi("standalone");
+    const node = makeNodePageDetail({
+      sections: [{ type: "markdown", body: "# Solo page\n" }],
+    });
+
+    render(
+      <UserSettingsProvider api={api}>
+        <NodePageView
+          api={api}
+          node={node}
+          saveState="idle"
+          metadataExpanded={false}
+          onMetadataExpandedChange={() => {}}
+          onBodyChange={() => {}}
+          onTitleChange={() => {}}
+          onTabSelect={() => {}}
+          onOrderedAssociationViewChange={() => {}}
+          onOpenNode={() => {}}
+          onArchiveNode={async () => {}}
+          onDeleteNode={async () => {}}
+        />
+      </UserSettingsProvider>,
+    );
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Page actions" })[0]!);
+    expect(screen.getByRole("menuitem", { name: "Relate" })).toBeTruthy();
+    expect(screen.queryByRole("dialog", { name: "Relate" })).toBeNull();
+    expect(screen.queryByRole("heading", { name: "Related items", level: 2 })).toBeNull();
   });
 
   test("renders embedded database table section", () => {

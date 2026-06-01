@@ -84,6 +84,10 @@ export function createApiHandler(
         return json({ schema: db.getSchema() });
       }
 
+      if (path === "/api/relationship-types") {
+        return json({ types: db.listRelationshipTypes() });
+      }
+
       if (path === "/api/nodes/search") {
         const q = url.searchParams.get("q") ?? "";
         const limit = Number.parseInt(url.searchParams.get("limit") ?? "20", 10);
@@ -119,6 +123,17 @@ export function createApiHandler(
           const settings = settingsStore.patch(payload);
           return json({ settings });
         }
+      }
+
+      const linkOptionsMatch =
+        /^\/api\/nodes\/([a-f0-9]{32})\/relationship-link-options$/i.exec(path);
+      if (linkOptionsMatch && req.method === "GET") {
+        const sourceId = linkOptionsMatch[1]!.toLowerCase();
+        const type = url.searchParams.get("type");
+        if (!type?.trim()) return json({ error: "type query parameter required" }, 400);
+        const node = db.getNode(sourceId);
+        if (!node) return json({ error: "not found" }, 404);
+        return json(db.getRelationshipLinkOptions(sourceId, type));
       }
 
       const nodeMatch = /^\/api\/nodes\/([a-f0-9]{32})$/i.exec(path);

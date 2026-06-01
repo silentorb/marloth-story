@@ -14,6 +14,7 @@ import { findTypeNodeByTitle, isTypeTableNode } from "./node-capabilities";
 import { relationshipRuleContextForType } from "./schema-rules/resolve";
 import type { SchemaFile } from "./schema-rules/schema-file";
 import { resolveContentPath } from "./content/paths";
+import { formatRelationshipTypeLabel } from "./relationship-type-label";
 import { generatedProviderId, ITEMS_SECTION_KEY } from "./views/resolve-tabs";
 import { loadViewsFromContent } from "./views/load";
 
@@ -103,15 +104,6 @@ function cellsFromConnectionProperties(properties: Record<string, unknown>): Rec
   return cells;
 }
 
-function labelToSectionTitle(label: string): string {
-  return label
-    .toLowerCase()
-    .split("_")
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ");
-}
-
 function relationTypeSortKey(type: string): string {
   if (isTypeMembershipType(type)) return "z:is_a";
   return `a:${type}`;
@@ -152,7 +144,7 @@ function resolveTypeNodeId(
     if (targetIds.length === 1) return targetIds[0]!;
   }
 
-  return findTypeNodeByTitle(db, labelToSectionTitle(relationshipType));
+  return findTypeNodeByTitle(db, formatRelationshipTypeLabel(relationshipType));
 }
 
 function sectionTitleForType(
@@ -164,7 +156,7 @@ function sectionTitleForType(
     const typeNode = db.getNode(typeNodeId);
     if (typeNode) return titleFromProperties(typeNode.properties);
   }
-  return labelToSectionTitle(label);
+  return formatRelationshipTypeLabel(label);
 }
 
 function buildRelationSections(

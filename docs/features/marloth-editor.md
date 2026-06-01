@@ -69,11 +69,12 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 - A **global create page** (`?view=create` in standalone; sidebar **New page** / command **Marloth: New Page**) **must** let users create a standalone `NotionPage` with title and optional markdown body (no relationships).
 - **Table section add row** — relation sections and database table sections **must** offer an inline add control that creates a new node and links it to the current page (`POST /api/nodes/:id/relation-rows` or `POST /api/databases/:id/rows`). The new row **must** appear after reload.
-- Relation sections only exist when the page already has at least one outgoing edge for that label; ordered-association tables are unchanged.
+- Relation table sections only appear when the page already has at least one outgoing edge for that label; ordered-association tables are unchanged. Every non-protected node page **must** offer **Relate** in the page actions menu (⋯ upper right) to open a dialog linking the current page to an **existing** target: searchable relationship type (`GET /api/relationship-types`, all types present in data) and searchable target node (`GET /api/nodes/search`, optionally filtered via `GET /api/nodes/:id/relationship-link-options?type=…` from `schema.json`). Linking uses `POST /api/nodes/:id/connections`; the page reloads so new relation sections appear when applicable.
+- Database table **relation columns** (`type: relation` in synced `notion_schema`) **must** be editable in the UI (link/unlink existing rows via the same connections API).
 
 ### Out of scope (v0.1)
 
-- Editing relationships from the UI beyond: ordered-association reorder/part moves (see [ordered-associations.md](./ordered-associations.md)), stored type-membership scalars in the Properties section, **create** flows (new relation/database rows), database **relation column** link/unlink, and enum/scalar patches on existing edges
+- Editing relationships from the UI beyond: ordered-association reorder/part moves (see [ordered-associations.md](./ordered-associations.md)), stored type-membership scalars in the Properties section, **create** flows that mint new target nodes (relation/database add row), **link existing targets** (Relate dialog + database relation columns), and enum/scalar patches on existing edges
 - Weighted relationships or typed link metadata in the editor
 
 ## Design rationale

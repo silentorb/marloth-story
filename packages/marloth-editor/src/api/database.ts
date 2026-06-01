@@ -83,6 +83,11 @@ export interface EditorDatabase {
     columnKey: string,
   ): import("marloth-db").DeleteDatabaseColumnResult | import("marloth-db").DeleteDatabaseColumnError;
   getSchema(): SchemaFile;
+  listRelationshipTypes(): string[];
+  getRelationshipLinkOptions(
+    sourceId: string,
+    type: string,
+  ): { allowedTargetTypeIds: string[] | null };
   moveOrderedAssociation(
     configId: string,
     params: OrderedAssociationMoveParams,
@@ -182,6 +187,15 @@ export function openEditorDatabase(
     },
     getSchema(): SchemaFile {
       return schema();
+    },
+    listRelationshipTypes(): string[] {
+      return writeCtx.db.listDistinctRelationshipTypes();
+    },
+    getRelationshipLinkOptions(sourceId: string, type: string) {
+      const rule = relationshipRuleContextForType(schema(), writeCtx.db, sourceId, type);
+      return {
+        allowedTargetTypeIds: rule ? [...rule.allowedTargetTypeIds] : null,
+      };
     },
     moveOrderedAssociation(
       configId: string,

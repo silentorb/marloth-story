@@ -36454,6 +36454,15 @@
         "via_database": "dd0de9867cc345b898929306bdf9fc83",
         "via_view": "all"
       }
+    },
+    {
+      "a": "23358e628ba280ca9e79ebeaa0fa931b",
+      "b": "dd0de9867cc345b898929306bdf9fc83",
+      "type": "is_a",
+      "directedFrom": "23358e628ba280ca9e79ebeaa0fa931b",
+      "properties": {
+        "priority": "Primary"
+      }
     }
   ]
 }

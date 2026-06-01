@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { DatabaseTableView } from "./DatabaseTableView";
 import { MarlothEditor } from "./MarlothEditor";
 import { OrderedAssociationView } from "./OrderedAssociationView";
@@ -6,6 +7,7 @@ import { PageTitle } from "./PageTitle";
 import { PropertiesSectionView } from "./PropertiesSectionView";
 import { NodeMetadataPanel } from "./NodeMetadataPanel";
 import { RelationSectionView } from "./RelationSectionView";
+import { AddRelationshipDialog } from "./AddRelationshipDialog";
 import type { EditorApi } from "../api/client";
 import type { OrderedAssociationViewDetail, NodePageDetail } from "../../shared/types";
 import { isProtectedEditorNode } from "../../shared/types";
@@ -51,6 +53,7 @@ export function NodePageView({
   const emptyMarkdown = isEffectivelyEmptyMarkdown(node.body, node.title);
   const editorBody = emptyMarkdown ? "" : content;
   const showPageActions = !isProtectedEditorNode(node.id);
+  const [relateOpen, setRelateOpen] = useState(false);
 
   return (
     <div className="marloth-record-page">
@@ -64,6 +67,7 @@ export function NodePageView({
               recordTitle={node.title}
               recordPath={node.path}
               disabled={saveState === "saving"}
+              onRelate={() => setRelateOpen(true)}
               onArchive={() => onArchiveNode(node.id)}
               onDelete={() => onDeleteNode(node.id)}
             />
@@ -118,6 +122,16 @@ export function NodePageView({
             onNavigate={onOpenNode}
           />
         </section>
+
+        {showPageActions ? (
+          <AddRelationshipDialog
+            api={api}
+            nodeId={node.id}
+            open={relateOpen}
+            onClose={() => setRelateOpen(false)}
+            onLinked={onTableCellUpdated}
+          />
+        ) : null}
 
         {node.sections.map((section, index) => {
           if (section.type === "markdown") return null;

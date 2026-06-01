@@ -30,12 +30,14 @@ describe("PageActionsMenu", () => {
       <PageActionsMenu
         recordTitle="Current page"
         recordPath="Marloth/Pages/Example"
+        onRelate={() => {}}
         onArchive={async () => {}}
         onDelete={async () => {}}
       />,
     );
 
     fireEvent.click(screen.getByRole("button", { name: "Page actions" }));
+    expect(screen.getByRole("menuitem", { name: "Relate" })).toBeTruthy();
     expect(screen.queryByRole("menuitem", { name: "Remove" })).toBeNull();
     expect(screen.getByRole("menuitem", { name: "Archive" })).toBeTruthy();
     expect(screen.getByRole("menuitem", { name: "Delete" })).toBeTruthy();

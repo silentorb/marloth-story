@@ -10,7 +10,8 @@
     "./content/test-helpers": "./src/content/test-helpers.ts",
     "./enum-codec": "./src/enum-codec.ts",
     "./markdown-links": "./src/markdown-links.ts",
-    "./schema-file": "./src/schema-rules/schema-file.ts"
+    "./schema-file": "./src/schema-rules/schema-file.ts",
+    "./relationship-type-label": "./src/relationship-type-label.ts"
   },
   "scripts": {
     "test": "bun test"

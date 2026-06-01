@@ -22,6 +22,8 @@ interface PageActionsMenuProps {
   /** Portal + fixed positioning so menus are not clipped by scroll containers. */
   menuPlacement?: "inline" | "portal";
   onArchive: () => Promise<void>;
+  /** Open relate dialog; page app bar only. */
+  onRelate?: () => void;
   /** Unlink from the current table only; shown when provided (table rows, not page app bar). */
   onRemove?: () => Promise<void>;
   onDelete: () => Promise<void>;
@@ -35,6 +37,7 @@ export function PageActionsMenu({
   menuAlign = "right",
   menuPlacement = "inline",
   onArchive,
+  onRelate,
   onRemove,
   onDelete,
 }: PageActionsMenuProps) {
@@ -106,6 +109,19 @@ export function PageActionsMenu({
 
   const menuItems = (
     <>
+      {onRelate ? (
+        <button
+          type="button"
+          role="menuitem"
+          className="marloth-page-actions-item"
+          onClick={() => {
+            setMenuOpen(false);
+            onRelate();
+          }}
+        >
+          Relate
+        </button>
+      ) : null}
       {!isArchived ? (
         <button
           type="button"
