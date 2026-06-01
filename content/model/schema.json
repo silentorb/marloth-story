@@ -7,7 +7,7 @@
       "allowedTargetTypeIds": [
         "dd0de9867cc345b898929306bdf9fc83"
       ],
-      "type": "features"
+      "type": "includes"
     },
     {
       "id": "scene-inspirations",
@@ -15,7 +15,7 @@
       "allowedTargetTypeIds": [
         "2eea538996934ce8abafc27132e576c1"
       ],
-      "type": "inspirations"
+      "type": "includes"
     },
     {
       "id": "feature-inspirations",
@@ -23,7 +23,7 @@
       "allowedTargetTypeIds": [
         "2eea538996934ce8abafc27132e576c1"
       ],
-      "type": "inspirations"
+      "type": "includes"
     }
   ],
   "enums": {

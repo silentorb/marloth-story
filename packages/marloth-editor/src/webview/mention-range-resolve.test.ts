@@ -19,7 +19,11 @@ describe("isMentionFragment", () => {
   });
 
   test("accepts @ with partial query", () => {
-    expect(isMentionFragment("@Cozy hor")).toBe(true);
+    expect(isMentionFragment("@Cozy")).toBe(true);
+  });
+
+  test("rejects query containing whitespace", () => {
+    expect(isMentionFragment("@Cozy hor")).toBe(false);
   });
 
   test("rejects invalid mention characters", () => {
@@ -34,7 +38,7 @@ describe("resolveMentionInsertRange", () => {
     const editor = await Editor.make()
       .config((ctx) => {
         ctx.set(rootCtx, root);
-        ctx.set(defaultValueCtx, "See @Cozy hor here");
+        ctx.set(defaultValueCtx, "See @Coz");
       })
       .use(commonmark)
       .create();
@@ -42,12 +46,13 @@ describe("resolveMentionInsertRange", () => {
     let stored = { replaceFrom: 0, replaceTo: 0 };
     await editor.action((ctx) => {
       const view = ctx.get(editorViewCtx);
-      let cursor = 1;
+      let cursor = -1;
       view.state.doc.descendants((node, pos) => {
-        if (!node.isText || cursor !== 1) return;
-        const idx = node.text?.indexOf("@Cozy hor") ?? -1;
-        if (idx >= 0) cursor = pos + 1 + idx + 9;
+        if (cursor >= 0 || !node.isText || !node.text?.includes("@Coz")) return;
+        const idx = node.text.indexOf("@Coz");
+        cursor = pos + idx + "@Coz".length;
       });
+      expect(cursor).toBeGreaterThan(0);
       view.dispatch(
         view.state.tr.setSelection(TextSelection.create(view.state.doc, cursor)),
       );

@@ -1,4 +1,5 @@
 import type { GraphDatabase } from "../../graph";
+import { INCLUDES_TYPE } from "../../includes-relationship";
 import { TYPE_MEMBERSHIP_TYPES } from "../../labels";
 import { priorityWeight } from "../../property-enums";
 import { normalizeRelationshipType } from "../../relation-type";
@@ -7,6 +8,16 @@ import {
   listRelationshipsForComposite,
   otherEndpoint,
 } from "../../relationship-traverse";
+
+function listAssociations(
+  db: GraphDatabase,
+  nodeId: string,
+  legacyCompositeType: string,
+): ReturnType<typeof listRelationshipsForComposite> {
+  const includes = listRelationshipsForComposite(db, nodeId, INCLUDES_TYPE);
+  if (includes.length > 0) return includes;
+  return listRelationshipsForComposite(db, nodeId, legacyCompositeType);
+}
 
 export { priorityWeight, PRIORITY_WEIGHT } from "../../property-enums";
 
@@ -26,7 +37,7 @@ export function buildAllSceneCountPrefetch(ctx: DynamicResolverContext): Map<str
 }
 
 function countCharacterSceneRelationships(db: GraphDatabase, nodeId: string): number {
-  const compositeCount = listRelationshipsForComposite(db, nodeId, "scenes_characters").length;
+  const compositeCount = listAssociations(db, nodeId, "scenes_characters").length;
   if (compositeCount > 0) return compositeCount;
   return db
     .listRelationshipsFromSource(nodeId)
@@ -61,7 +72,7 @@ export function buildSceneCountByProductPrefetch(
 
   for (const nodeId of ctx.rowNodeIds) {
     const sceneMap = new Map<string, string[]>();
-    for (const sceneConnection of listRelationshipsForComposite(ctx.db, nodeId, "scenes_characters")) {
+    for (const sceneConnection of listAssociations(ctx.db, nodeId, "scenes_characters")) {
       const sceneId = otherEndpoint(sceneConnection, nodeId);
       const products = relatedNodeIdsFromComposite(ctx.db, sceneId, productComposite);
       if (products.length > 0) {
@@ -144,11 +155,7 @@ export function buildWeightedUsePrefetch(
   const sums = new Map<string, number>();
   for (const nodeId of ctx.rowNodeIds) {
     let sum = 0;
-    const featureConnections = listRelationshipsForComposite(
-      ctx.db,
-      nodeId,
-      "inspirations_features",
-    );
+    const featureConnections = listAssociations(ctx.db, nodeId, "inspirations_features");
     const connections =
       featureConnections.length > 0
         ? featureConnections
@@ -207,11 +214,7 @@ export function buildWonderPrefetch(
   const counts = new Map<string, number>();
   for (const nodeId of ctx.rowNodeIds) {
     let count = 0;
-    const featureConnections = listRelationshipsForComposite(
-      ctx.db,
-      nodeId,
-      "inspirations_features",
-    );
+    const featureConnections = listAssociations(ctx.db, nodeId, "inspirations_features");
     const connections =
       featureConnections.length > 0
         ? featureConnections

@@ -50,11 +50,11 @@ describe("activeMentionRangeAtSelection", () => {
     expect(range!.replaceTo).toBe(6);
   });
 
-  test("covers leading space, @, and query after a word", async () => {
+  test("starts replace range at @, preserving leading space", async () => {
     const range = await mentionRangeFor("See @co here", "@co");
     expect(range).not.toBeNull();
     expect(range!.query).toBe("co");
-    expect(range!.replaceFrom).toBe(4);
+    expect(range!.replaceFrom).toBe(5);
     expect(range!.replaceTo).toBe(8);
   });
 

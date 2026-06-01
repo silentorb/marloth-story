@@ -51,7 +51,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 - A **home node** **must** be openable via command palette (`Marloth: Open Home`).
 - Default home is the Marloth root page (`72b6fb455b824b78962b0e509cc091c9`) when present in the graph.
 - Nodes **must** open via virtual URIs: `marloth://node/{id}` using a custom editor (`marloth.editor`).
-- A **global search** widget **must** let users find and open any node by title. Initially search matches **node names only** (via `GET /api/nodes/search`); body search may be added later. Open via sidebar **Search**, command palette (`Marloth: Search`), or **Ctrl/Cmd+K** (standalone browser and VS Code when the Marloth editor is active). Results show title and path; Enter opens in the current tab; Ctrl/Cmd+Enter or middle-click opens in a new tab (VS Code: new editor tab; standalone: native link behavior).
+- A **global search** widget **must** let users find and open any node by title (via `GET /api/nodes/search`). A configuration bar at the top of the panel offers **Search node contents** (markdown body); when enabled, the client passes `includeBody=1` and title matches are listed before body-only matches. The preference is stored in `.marloth/user-settings.json` (`globalSearch.includeBody`). Open via sidebar **Search**, command palette (`Marloth: Search`), or **Ctrl/Cmd+K** (standalone browser and VS Code when the Marloth editor is active). Results show title only; Enter opens in the current tab; Ctrl/Cmd+Enter or middle-click opens in a new tab (VS Code: new editor tab; standalone: native link behavior). `@` mention and Relate pickers use title-only search (no `includeBody`).
 
 ### Presentation
 
@@ -69,7 +69,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 - A **global create page** (`?view=create` in standalone; sidebar **New page** / command **Marloth: New Page**) **must** let users create a standalone `NotionPage` with title and optional markdown body (no relationships).
 - **Table section add row** — relation sections and database table sections **must** offer an inline add control that creates a new node and links it to the current page (`POST /api/nodes/:id/relation-rows` or `POST /api/databases/:id/rows`). The new row **must** appear after reload.
-- Relation table sections only appear when the page already has at least one outgoing edge for that label; ordered-association tables are unchanged. Every non-protected node page **must** offer **Relate** in the page actions menu (⋯ upper right) to open a dialog linking the current page to an **existing** target: searchable relationship type (`GET /api/relationship-types`, all types present in data) and searchable target node (`GET /api/nodes/search`, optionally filtered via `GET /api/nodes/:id/relationship-link-options?type=…` from `schema.json`). Linking uses `POST /api/nodes/:id/connections`; the page reloads so new relation sections appear when applicable.
+- Relation table sections only appear when the page already has at least one outgoing edge for that label; ordered-association tables are unchanged. Every non-protected node page **must** offer **Relate** in the page actions menu (⋯ to the right of the page title) to open a dialog linking the current page to an **existing** target: searchable relationship type (`GET /api/relationship-types`, all types present in data) and searchable target node (`GET /api/nodes/search`, optionally filtered via `GET /api/nodes/:id/relationship-link-options?type=…` from `schema.json`). Linking uses `POST /api/nodes/:id/connections`; the page reloads so new relation sections appear when applicable.
 - Database table **relation columns** (`type: relation` in synced `notion_schema`) **must** be editable in the UI (link/unlink existing rows via the same connections API).
 
 ### Out of scope (v0.1)
@@ -107,8 +107,8 @@ Navigation in VS Code (same tab vs new tab) uses postMessage to the extension ho
 Search/autocomplete:
 
 ```
-@ query → GET /api/nodes/search?q=… → title/path summaries
-Global search (Ctrl/Cmd+K) → same endpoint; empty query lists recent nodes by title
+@ query → GET /api/nodes/search?q=… → title summaries
+Global search (Ctrl/Cmd+K) → same endpoint; optional `includeBody=1`; empty query lists recent nodes by title
 ```
 
 ## Inputs / outputs / artifacts

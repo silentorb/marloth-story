@@ -45,10 +45,23 @@ export function migrateSchemaToV7(db: Database): void {
   }
 }
 
+/** Add denormalized archive flag on nodes (schema v9 → v10). */
+export function migrateSchemaToV10(db: Database): void {
+  if (!tableExists(db, "nodes")) return;
+  const columns = db.prepare("PRAGMA table_info(nodes)").all() as { name: string }[];
+  if (!columns.some((column) => column.name === "is_archived")) {
+    db.exec("ALTER TABLE nodes ADD COLUMN is_archived INTEGER NOT NULL DEFAULT 0");
+    db.exec(
+      "CREATE INDEX IF NOT EXISTS idx_nodes_is_archived ON nodes(is_archived) WHERE is_archived = 1",
+    );
+  }
+}
+
 export function migrateSchema(db: Database): void {
   migrateSchemaToV5(db);
   migrateSchemaToV6(db);
   migrateSchemaToV7(db);
+  migrateSchemaToV10(db);
 
   const versionRow = db.prepare("SELECT value FROM meta WHERE key = 'schema_version'").get() as
     | { value: string }

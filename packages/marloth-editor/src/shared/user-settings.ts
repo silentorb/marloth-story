@@ -17,14 +17,20 @@ export interface TableSortSpec {
   orderBy: SortColumn[];
 }
 
+export interface GlobalSearchSettings {
+  includeBody?: boolean;
+}
+
 export interface UserSettings {
   version: typeof USER_SETTINGS_VERSION;
   /** Sparse overrides keyed by table id (see `tableSortKey` helpers). */
   tableSorts?: Record<string, TableSortSpec>;
+  globalSearch?: GlobalSearchSettings;
 }
 
 export type UserSettingsPatch = {
   tableSorts?: Record<string, TableSortSpec | null>;
+  globalSearch?: GlobalSearchSettings | null;
 };
 
 export const DEFAULT_TABLE_SORT: TableSortSpec = {
@@ -33,6 +39,17 @@ export const DEFAULT_TABLE_SORT: TableSortSpec = {
 
 export function emptyUserSettings(): UserSettings {
   return { version: USER_SETTINGS_VERSION };
+}
+
+export function globalSearchIncludeBody(settings: UserSettings): boolean {
+  return settings.globalSearch?.includeBody === true;
+}
+
+function normalizeGlobalSearch(
+  value: GlobalSearchSettings | undefined,
+): GlobalSearchSettings | undefined {
+  if (!value || value.includeBody !== true) return undefined;
+  return { includeBody: true };
 }
 
 export function relationTableSortKey(nodeId: string, relationLabel: string): string {
@@ -176,6 +193,7 @@ export function applyUserSettingsPatch(
   const next: UserSettings = {
     version: USER_SETTINGS_VERSION,
     tableSorts: current.tableSorts ? { ...current.tableSorts } : undefined,
+    globalSearch: current.globalSearch ? { ...current.globalSearch } : undefined,
   };
 
   if (patch.tableSorts) {
@@ -189,6 +207,19 @@ export function applyUserSettingsPatch(
     }
     if (Object.keys(next.tableSorts).length === 0) {
       delete next.tableSorts;
+    }
+  }
+
+  if (patch.globalSearch !== undefined) {
+    if (patch.globalSearch === null) {
+      delete next.globalSearch;
+    } else {
+      const normalized = normalizeGlobalSearch(patch.globalSearch);
+      if (normalized) {
+        next.globalSearch = normalized;
+      } else {
+        delete next.globalSearch;
+      }
     }
   }
 
@@ -214,6 +245,14 @@ export function parseUserSettings(raw: unknown): UserSettings {
     }
     if (Object.keys(parsed).length > 0) {
       settings.tableSorts = parsed;
+    }
+  }
+
+  const globalSearch = record.globalSearch;
+  if (globalSearch && typeof globalSearch === "object" && !Array.isArray(globalSearch)) {
+    const normalized = normalizeGlobalSearch(globalSearch as GlobalSearchSettings);
+    if (normalized) {
+      settings.globalSearch = normalized;
     }
   }
 

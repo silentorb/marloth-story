@@ -113,7 +113,7 @@ export class GraphDatabase {
 
   private prepareStatements(): void {
     this.insertNode = this.db.prepare(
-      "INSERT INTO nodes (id, properties) VALUES (?, ?) ON CONFLICT(id) DO NOTHING",
+      "INSERT INTO nodes (id, properties, is_archived) VALUES (?, ?, 0) ON CONFLICT(id) DO NOTHING",
     );
     this.updateNodeProps = this.db.prepare(
       "UPDATE nodes SET properties = ? WHERE id = ?",
@@ -280,6 +280,37 @@ export class GraphDatabase {
     };
   }
 
+  isNodeArchived(id: string): boolean {
+    const row = this.db
+      .prepare("SELECT is_archived FROM nodes WHERE id = ?")
+      .get(id) as { is_archived: number } | undefined;
+    return row?.is_archived === 1;
+  }
+
+  listIncludesArchiveMemberIds(archiveId: string): string[] {
+    const rows = this.db
+      .prepare(
+        `SELECT DISTINCT
+           CASE WHEN source_node_id = ?1 THEN target_node_id ELSE source_node_id END AS member_id
+         FROM relationship_projections
+         WHERE type = 'includes'
+           AND (source_node_id = ?1 OR target_node_id = ?1)
+           AND source_node_id != target_node_id`,
+      )
+      .all(archiveId) as { member_id: string }[];
+    return rows.map((row) => row.member_id);
+  }
+
+  recomputeArchivedFlags(archiveId: string): void {
+    this.db.exec("UPDATE nodes SET is_archived = 0");
+    const memberIds = this.listIncludesArchiveMemberIds(archiveId);
+    if (memberIds.length === 0) return;
+    const placeholders = memberIds.map(() => "?").join(", ");
+    this.db
+      .prepare(`UPDATE nodes SET is_archived = 1 WHERE id IN (${placeholders})`)
+      .run(...memberIds);
+  }
+
   getRelationshipRecord(id: string): RelationshipRecordRow | null {
     const row = this.db
       .prepare(
@@ -336,7 +367,7 @@ export class GraphDatabase {
     pattern: string,
     limit: number,
     allowedTypeIds?: readonly string[],
-  ): { id: string; title: string; path: string | null }[] {
+  ): { id: string; title: string }[] {
     const rows = this.db
       .prepare(
         `SELECT id,
@@ -344,14 +375,40 @@ export class GraphDatabase {
                   NULLIF(json_extract(properties, '$.title'), ''),
                   NULLIF(json_extract(properties, '$.alias'), ''),
                   'Untitled'
-                ) AS title,
-                json_extract(properties, '$.inferred_notion_path') AS path
+                ) AS title
          FROM nodes
-         WHERE COALESCE(json_extract(properties, '$.title'), json_extract(properties, '$.alias'), '') LIKE ? ESCAPE '\\'
+         WHERE is_archived = 0
+           AND COALESCE(json_extract(properties, '$.title'), json_extract(properties, '$.alias'), '') LIKE ? ESCAPE '\\'
          ORDER BY title COLLATE NOCASE
          LIMIT ?`,
       )
-      .all(pattern, limit) as { id: string; title: string; path: string | null }[];
+      .all(pattern, limit) as { id: string; title: string }[];
+
+    if (!allowedTypeIds || allowedTypeIds.length === 0) return rows;
+
+    return rows.filter((row) => this.nodeMatchesAnyAllowedType(row.id, allowedTypeIds));
+  }
+
+  searchNodesByBody(
+    pattern: string,
+    limit: number,
+    allowedTypeIds?: readonly string[],
+  ): { id: string; title: string }[] {
+    const rows = this.db
+      .prepare(
+        `SELECT id,
+                COALESCE(
+                  NULLIF(json_extract(properties, '$.title'), ''),
+                  NULLIF(json_extract(properties, '$.alias'), ''),
+                  'Untitled'
+                ) AS title
+         FROM nodes
+         WHERE is_archived = 0
+           AND COALESCE(json_extract(properties, '$.body'), '') LIKE ? ESCAPE '\\'
+         ORDER BY title COLLATE NOCASE
+         LIMIT ?`,
+      )
+      .all(pattern, limit) as { id: string; title: string }[];
 
     if (!allowedTypeIds || allowedTypeIds.length === 0) return rows;
 
@@ -361,7 +418,7 @@ export class GraphDatabase {
   listNodesByTitle(
     limit: number,
     allowedTypeIds?: readonly string[],
-  ): { id: string; title: string; path: string | null }[] {
+  ): { id: string; title: string }[] {
     const rows = this.db
       .prepare(
         `SELECT id,
@@ -369,15 +426,15 @@ export class GraphDatabase {
                   NULLIF(json_extract(properties, '$.title'), ''),
                   NULLIF(json_extract(properties, '$.alias'), ''),
                   'Untitled'
-                ) AS title,
-                json_extract(properties, '$.inferred_notion_path') AS path
+                ) AS title
          FROM nodes
-         WHERE json_extract(properties, '$.title') IS NOT NULL
-            OR json_extract(properties, '$.alias') IS NOT NULL
+         WHERE is_archived = 0
+           AND (json_extract(properties, '$.title') IS NOT NULL
+            OR json_extract(properties, '$.alias') IS NOT NULL)
          ORDER BY title COLLATE NOCASE
          LIMIT ?`,
       )
-      .all(limit) as { id: string; title: string; path: string | null }[];
+      .all(limit) as { id: string; title: string }[];
 
     if (!allowedTypeIds || allowedTypeIds.length === 0) return rows;
 
@@ -403,11 +460,7 @@ export class GraphDatabase {
       .all(pattern) as { id: string; body: string }[];
   }
 
-  listNodesForGraphExport(): {
-    id: string;
-    title: string;
-    path: string | null;
-  }[] {
+  listNodesForGraphExport(): { id: string; title: string }[] {
     return this.db
       .prepare(
         `SELECT id,
@@ -415,11 +468,10 @@ export class GraphDatabase {
                   NULLIF(json_extract(properties, '$.title'), ''),
                   NULLIF(json_extract(properties, '$.alias'), ''),
                   'Untitled'
-                ) AS title,
-                json_extract(properties, '$.inferred_notion_path') AS path
+                ) AS title
          FROM nodes`,
       )
-      .all() as { id: string; title: string; path: string | null }[];
+      .all() as { id: string; title: string }[];
   }
 
   listRelationshipsForGraphExport(): {

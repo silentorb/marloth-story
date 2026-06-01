@@ -84,14 +84,37 @@
   font-size: 0.9rem;
 }
 
-/* Emoji-led blockquotes: hanging indent keeps wrapped lines aligned with text. */
+/*
+ * Callouts: Notion-style panels (background + rounded corners), not quote bars.
+ * `.marloth-callout` is applied via ProseMirror node decorations (callout-decoration.ts).
+ */
 .marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout {
   --marloth-callout-gutter: 1.75em;
+  position: relative;
+  box-sizing: border-box;
+  margin: 10px 0 !important;
+  padding: 12px 14px !important;
+  padding-left: 14px !important;
+  background: var(--marloth-callout-bg) !important;
+  border: 1px solid var(--marloth-callout-border);
+  border-radius: var(--marloth-callout-radius) !important;
+  color: var(--marloth-text) !important;
+}
+
+.marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout::before {
+  content: none !important;
+  display: none !important;
 }
 
 .marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout > p:first-child {
+  margin-top: 0;
   padding-left: var(--marloth-callout-gutter) !important;
   text-indent: calc(-1 * var(--marloth-callout-gutter));
+  overflow: visible;
+}
+
+.marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout > p:last-child {
+  margin-bottom: 0;
 }
 
 .marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout > p ~ p,
@@ -99,6 +122,22 @@
 .marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout > ul,
 .marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout > ol {
   padding-left: var(--marloth-callout-gutter) !important;
+}
+
+/*
+ * Virtual cursor uses selection rects that break on callout hanging indents.
+ * callout-cursor.ts toggles .marloth-callout-editing while the caret is inside a callout.
+ */
+.marloth-editor-body .milkdown .ProseMirror.marloth-callout-editing,
+.marloth-editor-body .milkdown .ProseMirror.marloth-callout-editing * {
+  caret-color: var(--marloth-text) !important;
+}
+
+.marloth-editor-body .milkdown .ProseMirror.marloth-callout-editing .prosemirror-virtual-cursor,
+.marloth-editor-body .milkdown .ProseMirror.marloth-callout-editing .prosemirror-virtual-cursor-left,
+.marloth-editor-body .milkdown .ProseMirror.marloth-callout-editing .prosemirror-virtual-cursor-right {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .marloth-mention-menu {

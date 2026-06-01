@@ -1,5 +1,5 @@
 import { type GraphDatabase } from "./graph";
-import { isArchivedNotionPath } from "./archive-path";
+import { DEFAULT_ARCHIVE_NODE_ID } from "./archive-status";
 import { graphGroupForNode, graphLabelsForNode } from "./node-capabilities";
 import {
   buildHeuristicLodLevels,
@@ -30,7 +30,6 @@ export interface GraphNodeBundle {
 export interface GraphNode {
   id: string;
   title: string;
-  path: string | null;
   labels: string[];
   group?: string;
   val?: number;
@@ -58,8 +57,6 @@ export interface GraphLodSnapshot {
   levels: GraphSnapshot[];
 }
 
-export { ARCHIVE_NOTION_PATH_PREFIX, isArchivedNotionPath } from "./archive-path";
-
 /** Default graph explorer anchor: TWOLD product record. */
 export const DEFAULT_GRAPH_EXPLORER_ANCHOR_ID = "e028aa0786f5449984a4f497c1d746fa";
 
@@ -72,7 +69,6 @@ export function isGraphClusterNode(node: Pick<GraphNode, "id" | "isCluster">): b
 interface ActiveGraphNode {
   id: string;
   title: string;
-  path: string | null;
   group: string;
   labels: string[];
 }
@@ -89,10 +85,9 @@ function collectActiveGraphData(db: GraphDatabase): {
   relationships: ActiveGraphRelationship[];
 } {
   const allNodes = db.listNodesForGraphExport();
-  const excludedIds = new Set<string>();
-
+  const excludedIds = new Set<string>([DEFAULT_ARCHIVE_NODE_ID]);
   for (const node of allNodes) {
-    if (isArchivedNotionPath(node.path)) excludedIds.add(node.id);
+    if (db.isNodeArchived(node.id)) excludedIds.add(node.id);
   }
 
   const nodes = allNodes
@@ -163,7 +158,6 @@ export function exportFullGraph(db: GraphDatabase): GraphSnapshot {
   const graphNodes: GraphNode[] = nodes.map((node) => ({
     id: node.id,
     title: node.title,
-    path: node.path,
     labels: node.labels,
     group: node.group,
   }));

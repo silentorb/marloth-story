@@ -10,7 +10,9 @@ import {
 import { getNodeDetail, type NodeDetail } from "./queries";
 import { getNodePageMetadata, type NodePageMetadata } from "./node-metadata";
 import { buildPropertiesSection, type PropertiesSection } from "./node-type-properties";
-import { findTypeNodeByTitle, isTypeTableNode } from "./node-capabilities";
+import { INCLUDES_TYPE } from "./includes-relationship";
+import { findTypeNodeByTitle, isTypeTableNode, typeIdsForInstance } from "./node-capabilities";
+import { normalizeRelationshipType } from "./relation-type";
 import { relationshipRuleContextForType } from "./schema-rules/resolve";
 import type { SchemaFile } from "./schema-rules/schema-file";
 import { resolveContentPath } from "./content/paths";
@@ -46,7 +48,6 @@ export interface OrderedAssociationSection {
 export interface RelationRow {
   targetId: string;
   name: string;
-  path: string | null;
   cells: Record<string, string>;
 }
 
@@ -83,11 +84,6 @@ function titleFromProperties(properties: Record<string, unknown>): string {
   return "Untitled";
 }
 
-function pathFromProperties(properties: Record<string, unknown>): string | null {
-  const path = properties.inferred_notion_path;
-  return typeof path === "string" && path.trim() ? path.trim() : null;
-}
-
 function stringProperty(value: unknown): string | null {
   if (typeof value === "string" && value.trim()) return value.trim();
   if (typeof value === "number" || typeof value === "boolean") return String(value);
@@ -119,6 +115,24 @@ function ordinalFromProperties(properties: Record<string, unknown>): number {
 function normalizeRelationGroupType(type: string): string {
   if (type === LEGACY_IN_DATABASE_TYPE) return IS_A_TYPE;
   return type;
+}
+
+function relationGroupKey(
+  db: GraphDatabase,
+  connection: { type: string; targetNodeId: string },
+): string {
+  const normalized = normalizeRelationGroupType(connection.type);
+  if (normalizeRelationshipType(normalized) !== INCLUDES_TYPE) return normalized;
+  const targetTypes = typeIdsForInstance(db, connection.targetNodeId);
+  if (targetTypes.length === 1) return `${INCLUDES_TYPE}:${targetTypes[0]}`;
+  return INCLUDES_TYPE;
+}
+
+function parseIncludesGroupKey(label: string): { typeNodeId: string | null; perspective: string } {
+  if (!label.startsWith(`${INCLUDES_TYPE}:`)) {
+    return { typeNodeId: null, perspective: label };
+  }
+  return { typeNodeId: label.slice(INCLUDES_TYPE.length + 1), perspective: INCLUDES_TYPE };
 }
 
 function resolveViaDatabase(connections: Relationship[]): string | null {
@@ -168,7 +182,7 @@ function buildRelationSections(
   const byType = new Map<string, typeof outgoing>();
 
   for (const connection of outgoing) {
-    const groupType = normalizeRelationGroupType(connection.type);
+    const groupType = relationGroupKey(db, connection);
     const group = byType.get(groupType) ?? [];
     group.push(connection);
     byType.set(groupType, group);
@@ -191,7 +205,6 @@ function buildRelationSections(
       rows.push({
         targetId: connection.targetNodeId,
         name: target ? titleFromProperties(target.properties) : "Untitled",
-        path: target ? pathFromProperties(target.properties) : null,
         cells,
       });
     }
@@ -205,10 +218,12 @@ function buildRelationSections(
       return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
     });
 
-    const typeNodeId = resolveTypeNodeId(db, label, connections);
+    const { typeNodeId: includesTypeId, perspective } = parseIncludesGroupKey(label);
+    const typeNodeId =
+      includesTypeId ?? resolveTypeNodeId(db, perspective, connections);
     const ruleContext =
-      schema && !isTypeMembershipType(label)
-        ? relationshipRuleContextForType(schema, db, nodeId, label)
+      schema && !isTypeMembershipType(perspective)
+        ? relationshipRuleContextForType(schema, db, nodeId, perspective)
         : null;
     const columns = [...columnSet].sort((a, b) => a.localeCompare(b));
     if (columns.includes("priority")) {
@@ -232,8 +247,8 @@ function buildRelationSections(
 
     sections.push({
       type: "relations",
-      label,
-      title: sectionTitleForType(db, label, typeNodeId),
+      label: perspective,
+      title: sectionTitleForType(db, perspective, typeNodeId),
       typeNodeId,
       allowedTargetTypeIds: ruleContext?.allowedTargetTypeIds,
       columns,

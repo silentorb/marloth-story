@@ -2,11 +2,8 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, test } from "bun:test";
-import {
-  exportExplorerLodGraph,
-  exportFullGraph,
-  isArchivedNotionPath,
-} from "./graph-export";
+import { exportExplorerLodGraph, exportFullGraph } from "./graph-export";
+import { DEFAULT_ARCHIVE_NODE_ID } from "./archive-status";
 import { DEFAULT_EXPLORER_LOD_LAYER_COUNT } from "./graph-lod-cluster";
 import { GraphDatabase } from "./graph";
 
@@ -27,14 +24,8 @@ describe("graph export", () => {
     dbPath = join(tempDir, "test.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertNode("page1", {
-      title: "Scene A",
-      inferred_notion_path: "Marloth/Scenes",
-    });
-    db.upsertNode("page2", {
-      title: "Feature B",
-      inferred_notion_path: "Marloth/Features",
-    });
+    db.upsertNode("page1", { title: "Scene A" });
+    db.upsertNode("page2", { title: "Feature B" });
     db.upsertRelationship("page1", "page2", "features");
 
     const snapshot = exportFullGraph(db);
@@ -50,25 +41,17 @@ describe("graph export", () => {
     });
   });
 
-  test("exportFullGraph excludes Marloth/Archive pages and their links", () => {
+  test("exportFullGraph excludes archived pages and their links", () => {
     tempDir = mkdtempSync(join(tmpdir(), "marloth-graph-export-"));
     dbPath = join(tempDir, "archive.sqlite");
     const db = new GraphDatabase(dbPath);
 
-    db.upsertNode("active", {
-      title: "Active scene",
-      inferred_notion_path: "Marloth/Scenes/active",
-    });
-    db.upsertNode("archived", {
-      title: "Old foil",
-      inferred_notion_path: "Marloth/Archive/Foils/old",
-    });
-    db.upsertNode("archive-root", {
-      title: "Archive",
-      inferred_notion_path: "Marloth/Archive",
-    });
+    db.upsertNode("active", { title: "Active scene" });
+    db.upsertNode("archived", { title: "Old foil" });
+    db.upsertNode(DEFAULT_ARCHIVE_NODE_ID, { title: "Archive" });
     db.upsertRelationship("active", "archived", "inspirations");
-    db.upsertRelationship("archived", "archive-root", "part");
+    db.upsertRelationship(DEFAULT_ARCHIVE_NODE_ID, "archived", "includes");
+    db.recomputeArchivedFlags(DEFAULT_ARCHIVE_NODE_ID);
 
     const snapshot = exportFullGraph(db);
     db.close();
@@ -76,13 +59,6 @@ describe("graph export", () => {
     expect(snapshot.nodes).toHaveLength(1);
     expect(snapshot.nodes[0]?.id).toBe("active");
     expect(snapshot.relationships).toHaveLength(0);
-  });
-
-  test("isArchivedNotionPath matches archive root and nested pages", () => {
-    expect(isArchivedNotionPath("Marloth/Archive")).toBe(true);
-    expect(isArchivedNotionPath("Marloth/Archive/Foils/old")).toBe(true);
-    expect(isArchivedNotionPath("Marloth/Scenes/active")).toBe(false);
-    expect(isArchivedNotionPath(null)).toBe(false);
   });
 
   test("exportExplorerLodGraph builds heuristic layers", () => {

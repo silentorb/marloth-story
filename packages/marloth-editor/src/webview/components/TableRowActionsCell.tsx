@@ -16,7 +16,6 @@ export function TableRowActionsCell({
   return (
     <PageActionsMenu
       recordTitle={recordTitle}
-      recordPath={null}
       trigger="edit"
       menuAlign="left"
       menuPlacement="portal"

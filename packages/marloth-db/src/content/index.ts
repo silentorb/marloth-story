@@ -14,6 +14,7 @@ export {
   emptyRelationshipTypesFile,
   parseRelationshipTypesFile,
   registerBidirectionalType,
+  registerIncludesType,
   registerUnidirectionalType,
   serializeRelationshipTypesFile,
 } from "./relationship-types-file";

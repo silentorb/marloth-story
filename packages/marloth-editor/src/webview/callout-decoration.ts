@@ -1,8 +1,19 @@
-import { Plugin } from "@milkdown/prose/state";
-import type { EditorView } from "@milkdown/prose/view";
+import type { Node as ProseNode } from "@milkdown/prose/model";
+import { Plugin, PluginKey } from "@milkdown/prose/state";
+import { Decoration, DecorationSet, type EditorView } from "@milkdown/prose/view";
+import {
+  extractLeadingCalloutEmoji,
+  hasLeadingCalloutEmoji,
+} from "marloth-db/callout";
 
-const LEADING_CALLOUT_EMOJI =
-  /^[\p{Extended_Pictographic}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{27BF}\u{2300}-\u{23FF}\u{FE0F}\u{200D}]+(?:\s+)?/u;
+export {
+  DEFAULT_CALLOUT_EMOJI,
+  DEFAULT_CALLOUT_PREFIX,
+  extractLeadingCalloutEmoji,
+  hasLeadingCalloutEmoji,
+} from "marloth-db/callout";
+
+const calloutDecorationKey = new PluginKey("marloth-callout-decoration");
 
 function stripEmojis(text: string): string {
   return text
@@ -20,13 +31,59 @@ export function isEmojiOnlyLine(text: string): boolean {
   return trimmed.length > 0 && stripEmojis(trimmed) === "";
 }
 
-export function hasLeadingCalloutEmoji(text: string): boolean {
-  return LEADING_CALLOUT_EMOJI.test(text.trimStart());
+/** Lead text of the first paragraph in a blockquote node (ProseMirror doc). */
+export function blockquoteCalloutLeadText(blockquote: ProseNode): string {
+  for (let i = 0; i < blockquote.childCount; i++) {
+    const child = blockquote.child(i);
+    if (child.type.name === "paragraph") {
+      return child.textContent;
+    }
+  }
+  return "";
 }
 
-export function extractLeadingCalloutEmoji(text: string): string | null {
-  const match = LEADING_CALLOUT_EMOJI.exec(text.trimStart());
-  return match ? match[0].trim() : null;
+export function isCalloutBlockquoteNode(blockquote: ProseNode): boolean {
+  if (blockquote.type.name !== "blockquote") return false;
+  const lead = blockquoteCalloutLeadText(blockquote);
+  const firstLine = lead.split("\n")[0] ?? "";
+  return hasLeadingCalloutEmoji(firstLine) || isEmojiOnlyLine(firstLine);
+}
+
+export function isCalloutBlockquote(blockquote: HTMLElement): boolean {
+  const firstParagraph = blockquote.querySelector(":scope > p");
+  if (!firstParagraph) return false;
+  const text = firstParagraph.textContent ?? "";
+  const firstLine = text.split("\n")[0] ?? "";
+  return hasLeadingCalloutEmoji(firstLine) || isEmojiOnlyLine(firstLine);
+}
+
+function buildCalloutDecorations(doc: ProseNode): DecorationSet {
+  const decorations: Decoration[] = [];
+  doc.descendants((node, pos) => {
+    if (!isCalloutBlockquoteNode(node)) return;
+    decorations.push(
+      Decoration.node(pos, pos + node.nodeSize, { class: "marloth-callout" }),
+    );
+  });
+  return DecorationSet.create(doc, decorations);
+}
+
+export function createCalloutDecorationPlugin(): Plugin {
+  return new Plugin({
+    key: calloutDecorationKey,
+    state: {
+      init: (_, { doc }) => buildCalloutDecorations(doc),
+      apply(tr, set) {
+        if (tr.docChanged) return buildCalloutDecorations(tr.doc);
+        return set;
+      },
+    },
+    props: {
+      decorations(state) {
+        return calloutDecorationKey.getState(state);
+      },
+    },
+  });
 }
 
 /** First page icon from markdown: emoji-only line or callout blockquote. */
@@ -45,35 +102,6 @@ export function extractPageIconFromMarkdown(body: string): string | null {
     break;
   }
   return null;
-}
-
-export function isCalloutBlockquote(blockquote: HTMLElement): boolean {
-  const firstParagraph = blockquote.querySelector(":scope > p");
-  if (!firstParagraph) return false;
-  const text = firstParagraph.textContent ?? "";
-  const firstLine = text.split("\n")[0] ?? "";
-  return hasLeadingCalloutEmoji(firstLine);
-}
-
-export function decorateCallouts(root: ParentNode): void {
-  root.querySelectorAll("blockquote").forEach((node) => {
-    if (!(node instanceof HTMLElement)) return;
-    node.classList.toggle("marloth-callout", isCalloutBlockquote(node));
-  });
-}
-
-export function createCalloutDecorationPlugin(): Plugin {
-  return new Plugin({
-    view(view: EditorView) {
-      const apply = () => decorateCallouts(view.dom);
-      apply();
-      return {
-        update(nextView, prevState) {
-          if (nextView.state.doc !== prevState.doc) apply();
-        },
-      };
-    },
-  });
 }
 
 export function installCalloutDecoration(view: EditorView): void {

@@ -22,7 +22,7 @@ Read this doc when your task involves:
 | Question | Start here | Then consult |
 | --- | --- | --- |
 | What is a “feature” in this project? | [Terminology](#terminology) | — |
-| What kinds of nodes exist? | [Entity types](#entity-types) | `inferred_notion_path` on nodes (legacy grouping) |
+| What kinds of nodes exist? | [Entity types](#entity-types) | `IS_A` membership, relationship patterns |
 | What does a relationship *mean*? | [Relationship types](#relationship-types) | Relationship `label` in SQLite |
 | How is work scoped to a book vs game? | [Dimensions](#dimensions) | `PRODUCTS` / `PRODUCT` relationships |
 | How does design connect to finished prose? | [Traceability](#traceability) | Node property `body`, scene nodes |
@@ -45,7 +45,7 @@ When ontology and storage disagree, **update one explicitly**—usually the onto
 
 ## Entity types
 
-Types below are **semantic**. In the graph, type is inferred from `inferred_notion_path`, title, `IS_A` membership, and relationship patterns. Any node may serve as a type when used as an `IS_A` target. Relationship rules live in [`content/model/schema.json`](./features/schema.md).
+Types below are **semantic**. In the graph, type is inferred from title, `IS_A` membership, and relationship patterns. Any node may serve as a type when used as an `IS_A` target. Relationship rules live in [`content/model/schema.json`](./features/schema.md).
 
 ### Creative outputs and scope
 
@@ -93,7 +93,7 @@ Types below are **semantic**. In the graph, type is inferred from `inferred_noti
 | Type | Description | Notes |
 | --- | --- | --- |
 | **Task** | Action item from planning; may reference features or arcs. | `Task List/` |
-| **Archive** | Superseded or experimental material kept for reference. | `Marloth/Archive/` |
+| **Archive** | Superseded or experimental material kept for reference. Hub node links to members via **`includes`** (not path prefix). | Archive hub `0f558a609a56485185beed4d1fd1cd9f`; legacy paths under `Marloth/Archive/` |
 
 Not every node fits one type cleanly. Composite and cross-linked nodes are expected—use **relationships** and **dimensions** rather than forcing a single label.
 
@@ -106,8 +106,9 @@ Relationships express **meaning**, not just linkage. Imported Notion relation pr
 | Relationship | Typical meaning | Example |
 | --- | --- | --- |
 | **IS_A** | Page is an instance of a type (imported from Notion database membership) | Scene → *Scene Archive* type |
-| **INSPIRATIONS** | B is influenced by or references external work A | Arc ← inspiration from *Pride and Prejudice* |
-| **FEATURES** | B implements, requires, or engages design feature A | Scene uses *Desperation* |
+| **INCLUDES** | Symmetric cross-entity association (scene↔character, inspiration↔feature, etc.); which column you see depends on the current row and target database | Scene ↔ character in cast |
+| **INSPIRATIONS** | *(legacy composite on taxonomy rows)* B references external work A | Monster type ↔ inspiration |
+| **FEATURES** | *(legacy perspective; storage is often `includes`)* B engages design feature A | Scene uses *Desperation* |
 | **MOTIVATIONS** | A explains why B exists | Motivation node → scene |
 | **SCENES** | Parent contains or orders child scenes | Part → scenes in sequence |
 | **PART** / **ARCS** | Structural containment or membership | Scene belongs to arc / part |
@@ -167,7 +168,7 @@ This section is a **hint**, not the authoritative schema spec.
 | Ontology | Current storage (SCHEMA_VERSION 6) |
 | --- | --- |
 | Node | `nodes` row; JSON `properties` |
-| Node type (semantic) | `inferred_notion_path`, title, body; `IS_A` targets |
+| Node type (semantic) | title, body; `IS_A` targets |
 | Type table | `IS_A` target and/or `notion_schema` metadata (`isTypeTableNode`) |
 | Relationship rules | `content/model/schema.json` |
 | Relationship | `relationships` row with `label` + JSON `properties` |

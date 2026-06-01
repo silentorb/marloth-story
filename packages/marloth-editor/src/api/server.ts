@@ -95,7 +95,12 @@ export function createApiHandler(
         const allowedTypeIds = allowedRaw
           ? allowedRaw.split(",").map((id) => id.trim().toLowerCase()).filter(Boolean)
           : undefined;
-        return json({ results: db.search(q, limit, allowedTypeIds) });
+        const includeBodyParam = url.searchParams.get("includeBody");
+        const includeBody =
+          includeBodyParam === "1" || includeBodyParam === "true";
+        return json({
+          results: db.search(q, limit, allowedTypeIds, { includeBody }),
+        });
       }
 
       if (path === "/api/nodes" && req.method === "POST") {

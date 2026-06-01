@@ -11,7 +11,9 @@ import type { EditorApiClient } from "../../shared/http-client";
 import type { SchemaFile } from "marloth-db/schema-file";
 import { emptySchemaFile } from "marloth-db/schema-file";
 import {
+  applyUserSettingsPatch,
   emptyUserSettings,
+  globalSearchIncludeBody,
   isDefaultTableSort,
   nextSortOnColumnClick,
   normalizeTableSort,
@@ -33,6 +35,8 @@ interface UserSettingsContextValue {
     column: string,
     defaultSort?: TableSortSpec,
   ) => void;
+  globalSearchIncludeBody: boolean;
+  setGlobalSearchIncludeBody: (includeBody: boolean) => void;
 }
 
 const UserSettingsContext = createContext<UserSettingsContextValue | null>(null);
@@ -84,13 +88,9 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
       const patchValue = isDefaultTableSort(spec) ? null : spec;
 
       setSettings((current) => {
-        const tableSorts = { ...(current.tableSorts ?? {}) };
-        if (patchValue === null) delete tableSorts[tableKey];
-        else tableSorts[tableKey] = patchValue;
-        const next: UserSettings = {
-          version: 1,
-          ...(Object.keys(tableSorts).length > 0 ? { tableSorts } : {}),
-        };
+        const next = applyUserSettingsPatch(current, {
+          tableSorts: { [tableKey]: patchValue },
+        });
         void api.patchUserSettings({ tableSorts: { [tableKey]: patchValue } }).catch(() => {
           /* keep optimistic local state */
         });
@@ -115,6 +115,20 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
     [getTableSort, persistTableSort],
   );
 
+  const setGlobalSearchIncludeBody = useCallback(
+    (includeBody: boolean) => {
+      const patch = { globalSearch: includeBody ? { includeBody: true as const } : null };
+      setSettings((current) => {
+        const next = applyUserSettingsPatch(current, patch);
+        void api.patchUserSettings(patch).catch(() => {
+          /* keep optimistic local state */
+        });
+        return next;
+      });
+    },
+    [api],
+  );
+
   const value = useMemo(
     (): UserSettingsContextValue => ({
       ready: true,
@@ -123,8 +137,18 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
       getTableSort,
       setTableSortColumns,
       toggleTableSortColumn,
+      globalSearchIncludeBody: globalSearchIncludeBody(settings),
+      setGlobalSearchIncludeBody,
     }),
-    [schema, hasTableSortOverride, getTableSort, setTableSortColumns, toggleTableSortColumn],
+    [
+      schema,
+      settings,
+      hasTableSortOverride,
+      getTableSort,
+      setTableSortColumns,
+      toggleTableSortColumn,
+      setGlobalSearchIncludeBody,
+    ],
   );
 
   return <UserSettingsContext.Provider value={value}>{children}</UserSettingsContext.Provider>;

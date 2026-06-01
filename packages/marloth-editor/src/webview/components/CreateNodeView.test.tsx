@@ -1,5 +1,10 @@
-import { describe, expect, test } from "bun:test";
+import { mock, describe, expect, test } from "bun:test";
 import { fireEvent, render, screen } from "@testing-library/react";
+
+mock.module("./MarlothEditor", () => ({
+  MarlothEditor: () => <div data-testid="marloth-editor-stub" />,
+}));
+
 import { CreateNodeView } from "./CreateNodeView";
 import { makeMockEditorApi } from "../test-fixtures/mock-api";
 

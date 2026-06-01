@@ -64,13 +64,6 @@ function primaryAlias(title: string, notionId: string): string {
   return t;
 }
 
-function inferredNotionPath(sourceReposix: string): string | undefined {
-  const relative = exportRelativePath(sourceReposix);
-  if (!relative) return undefined;
-  const dir = dirname(relative);
-  return dir === "." ? undefined : dir;
-}
-
 function exportRelativePath(sourceReposix: string): string | null {
   if (sourceReposix.startsWith("exports/")) {
     const rest = sourceReposix.slice("exports/".length);
@@ -94,7 +87,6 @@ export interface GraphRunOptions {
 export interface GraphManifestEntry {
   notion_id: string;
   source_export: string;
-  inferred_notion_path?: string;
   labels: string[];
 }
 
@@ -260,9 +252,6 @@ function importMarkdownPage(
     body,
     alias: primaryAlias(sp.h1Text, notionId),
   };
-  const inferred = inferredNotionPath(sourceReposix);
-  if (inferred) properties.inferred_notion_path = inferred;
-
   for (const [rawK, val] of sp.scalarProperties) {
     let key = textutil.slugifyKey(textutil.stripEmojis(rawK));
     if (key in properties) key = `prop_${key}`;
@@ -435,7 +424,7 @@ export async function runGraphImport(opts: GraphRunOptions): Promise<void> {
     manifest.nodes[plan.notionId] = {
       notion_id: plan.notionId,
       source_export: relposix,
-      inferred_notion_path: inferredNotionPath(relposix),
+      labels: [],
     };
   }
 

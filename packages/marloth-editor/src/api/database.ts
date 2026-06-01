@@ -92,7 +92,12 @@ export interface EditorDatabase {
     configId: string,
     params: OrderedAssociationMoveParams,
   ): OrderedAssociationViewDetail | null;
-  search(query: string, limit?: number, allowedTypeIds?: string[]): NodeSummary[];
+  search(
+    query: string,
+    limit?: number,
+    allowedTypeIds?: string[],
+    options?: { includeBody?: boolean },
+  ): NodeSummary[];
   saveBody(id: string, body: string): boolean;
   saveTitle(id: string, title: string): boolean;
   updateDatabaseRowProperty(
@@ -203,8 +208,13 @@ export function openEditorDatabase(
     ): OrderedAssociationViewDetail | null {
       return applyOrderedAssociationMove(writeCtx, configId, params);
     },
-    search(query: string, limit?: number, allowedTypeIds?: string[]): NodeSummary[] {
-      return searchNodes(writeCtx.db, query, limit, allowedTypeIds);
+    search(
+      query: string,
+      limit?: number,
+      allowedTypeIds?: string[],
+      options?: { includeBody?: boolean },
+    ): NodeSummary[] {
+      return searchNodes(writeCtx.db, query, limit, allowedTypeIds, options);
     },
     saveBody(id: string, body: string): boolean {
       return updateNodeBody(writeCtx, id, body);

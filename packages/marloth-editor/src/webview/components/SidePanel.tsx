@@ -10,9 +10,19 @@ export interface SidePanelStandaloneUrls {
   nodes: Record<string, string>;
 }
 
+export function isHomeNavActive(
+  activeView: AppView,
+  activeNodeId: string | null | undefined,
+  homeNodeId: string | null | undefined,
+): boolean {
+  if (activeView !== "node-page" || !activeNodeId || !homeNodeId) return false;
+  return activeNodeId.toLowerCase() === homeNodeId.toLowerCase();
+}
+
 interface SidePanelProps {
   activeView: AppView;
   activeNodeId?: string | null;
+  homeNodeId?: string | null;
   onHome: () => void;
   onViewChange: (view: AppView) => void;
   onOpenNode: (nodeId: string) => void;
@@ -59,6 +69,7 @@ function NavItem({
 export function SidePanel({
   activeView,
   activeNodeId,
+  homeNodeId,
   onHome,
   onViewChange,
   onOpenNode,
@@ -88,7 +99,7 @@ export function SidePanel({
       </div>
       <nav className="marloth-side-panel-nav">
         <NavItem
-          active={activeView === "node-page"}
+          active={isHomeNavActive(activeView, activeNodeId, homeNodeId)}
           title="Home"
           icon="⌂"
           label="Home"

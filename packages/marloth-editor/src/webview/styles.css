@@ -8,6 +8,9 @@
   --marloth-muted: #9b9a97;
   --marloth-border: rgba(255, 255, 255, 0.09);
   --marloth-hover: rgba(255, 255, 255, 0.06);
+  --marloth-callout-bg: #2f343c;
+  --marloth-callout-border: rgba(255, 255, 255, 0.1);
+  --marloth-callout-radius: 8px;
   --marloth-link: #6cb6ff;
   --marloth-relation-cell-link: rgb(240, 239, 237);
   --marloth-graph-link: rgba(235, 235, 234, 0.28);

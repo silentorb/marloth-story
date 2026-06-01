@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { EditorApi } from "../api/client";
 import type { NodeSummary } from "../../shared/types";
+import { useUserSettings } from "../hooks/useUserSettings";
 import "./global-search.css";
 
 interface GlobalSearchProps {
@@ -11,6 +12,7 @@ interface GlobalSearchProps {
 }
 
 export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSearchProps) {
+  const { globalSearchIncludeBody, setGlobalSearchIncludeBody } = useUserSettings();
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
@@ -57,7 +59,9 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
       setLoading(true);
       setError(null);
       void api
-        .search(query, 25)
+        .search(query, 25, undefined, {
+          includeBody: globalSearchIncludeBody,
+        })
         .then((items) => setResults(items))
         .catch((err) => {
           setResults([]);
@@ -66,7 +70,7 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
         .finally(() => setLoading(false));
     }, 120);
     return () => window.clearTimeout(handle);
-  }, [api, open, query]);
+  }, [api, globalSearchIncludeBody, open, query]);
 
   useEffect(() => {
     if (!open) return;
@@ -92,6 +96,16 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
         aria-label="Search nodes"
         onClick={(event) => event.stopPropagation()}
       >
+        <div className="marloth-global-search-config">
+          <label className="marloth-global-search-config-item">
+            <input
+              type="checkbox"
+              checked={globalSearchIncludeBody}
+              onChange={(event) => setGlobalSearchIncludeBody(event.target.checked)}
+            />
+            <span>Search node contents</span>
+          </label>
+        </div>
         <input
           ref={inputRef}
           type="search"
@@ -150,9 +164,6 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
                   }}
                 >
                   <span className="marloth-global-search-title">{item.title}</span>
-                  {item.path ? (
-                    <span className="marloth-global-search-path">{item.path}</span>
-                  ) : null}
                 </button>
               );
             })

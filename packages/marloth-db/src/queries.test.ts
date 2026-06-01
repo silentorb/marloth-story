@@ -9,19 +9,19 @@ import {
 describe("queries", () => {
   const fixture = createTestContentFixture("marloth-db-queries-");
 
-  test("getNodeDetail returns title, body, and path", () => {
+  test("getNodeDetail returns title and body", () => {
     seedTestNode(fixture, {
       id: "0123456789abcdef0123456789abcdef",
       properties: {
         title: "Alpha",
         body: "# Hello",
-        inferred_notion_path: "Marloth/Features/Alpha.md",
       },
     });
     const detail = getNodeDetail(fixture.ctx.db, "0123456789abcdef0123456789abcdef");
     expect(detail?.id).toBe("0123456789abcdef0123456789abcdef");
     expect(detail?.title).toBe("Alpha");
     expect(detail?.body.trimEnd()).toBe("# Hello");
+    expect(detail?.primaryTypeTitle).toBeNull();
   });
 
   test("searchNodes matches title prefix", () => {
@@ -31,6 +31,24 @@ describe("queries", () => {
     });
     const hits = searchNodes(fixture.ctx.db, "Beta", 10);
     expect(hits.some((h) => h.id === "123456789abcdef0123456789abcdef0")).toBe(true);
+  });
+
+  test("searchNodes matches body when includeBody is enabled", () => {
+    const bodyOnlyId = "3456789abcdef0123456789abcdef012";
+    seedTestNode(fixture, {
+      id: bodyOnlyId,
+      properties: {
+        title: "Unrelated Title",
+        body: "unique-body-marker-xyz",
+      },
+    });
+    const titleOnly = searchNodes(fixture.ctx.db, "unique-body-marker", 10);
+    expect(titleOnly.some((h) => h.id === bodyOnlyId)).toBe(false);
+
+    const withBody = searchNodes(fixture.ctx.db, "unique-body-marker", 10, undefined, {
+      includeBody: true,
+    });
+    expect(withBody.some((h) => h.id === bodyOnlyId)).toBe(true);
   });
 
   test("updateNodeBody persists markdown", () => {

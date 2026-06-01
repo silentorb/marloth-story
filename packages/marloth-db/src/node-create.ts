@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
 import type { Properties } from "./graph";
+import { INCLUDES_TYPE, isIncludesPerspectiveSlug } from "./includes-relationship";
 import { IS_A_TYPE } from "./labels";
+import { normalizeRelationshipType } from "./relation-type";
 import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterNodeWrite, syncAfterRelationshipsWrite } from "./content/write-context";
 import { isTypeTableNode } from "./node-capabilities";
@@ -53,7 +55,12 @@ function ordinalFromProperties(properties: Record<string, unknown>): number | nu
 }
 
 function nextOutgoingOrdinal(ctx: MarlothWriteContext, sourceId: string, type: string): number | undefined {
-  const outgoing = ctx.db.listRelationshipsFromSource(sourceId).filter((c) => c.type === type);
+  const normalized = normalizeRelationshipType(type);
+  const outgoing = ctx.db.listRelationshipsFromSource(sourceId).filter((c) => {
+    const edgeType = normalizeRelationshipType(c.type);
+    if (edgeType === normalized) return true;
+    return isIncludesPerspectiveSlug(normalized) && edgeType === INCLUDES_TYPE;
+  });
   if (outgoing.length === 0) return undefined;
   const ordinals = outgoing
     .map((c) => ordinalFromProperties(c.properties))

@@ -20,6 +20,27 @@
   overflow: hidden;
 }
 
+.marloth-global-search-config {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--marloth-border);
+}
+
+.marloth-global-search-config-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--marloth-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.marloth-global-search-config-item input {
+  margin: 0;
+  accent-color: var(--marloth-link);
+}
+
 .marloth-global-search-input {
   display: block;
   width: 100%;

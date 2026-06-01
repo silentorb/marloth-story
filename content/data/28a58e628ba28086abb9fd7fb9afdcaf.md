@@ -3,7 +3,6 @@ title: Cozy horror wilderness
 notion_id: 28a58e628ba28086abb9fd7fb9afdcaf
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Features/Cozy horror/Cozy horror wilderness 28a58e628ba28086abb9fd7fb9afdcaf.md
 alias: Cozy horror wilderness
-inferred_notion_path: Marloth/Features/Cozy horror
 created_at: 2025-10-12T18:26:00.000Z
 modified_at: 2026-05-23T01:06:00.000Z
 notion_url: https://www.notion.so/Cozy-horror-wilderness-28a58e628ba28086abb9fd7fb9afdcaf

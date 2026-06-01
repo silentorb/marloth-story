@@ -144,3 +144,12 @@ export function registerBidirectionalType(
   });
   return composite;
 }
+
+/** Symmetric association type (both perspectives are `includes`). */
+export function registerIncludesType(file: RelationshipTypesFile): void {
+  const type = "includes";
+  registerTypeDefinition(file, type, {
+    bidirectional: true,
+    perspectives: [type, type],
+  });
+}

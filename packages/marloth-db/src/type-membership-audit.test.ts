@@ -27,15 +27,9 @@ describe("type-membership-audit path matching", () => {
     expect(typeDatabaseTitleFromPath(db, "Marloth/Archive/Lab")).toBeNull();
   });
 
-  test("expectedTypeDatabaseForPage resolves nested related databases", () => {
-    db.upsertNode("missions", {
-      title: "Missions",
-      inferred_notion_path: "Marloth/Inspirations/Traversal reasons",
-    });
-
-    const expected = expectedTypeDatabaseForPage(db, "missions");
-    expect(expected?.databaseId).toBe("tr-db");
-    expect(expected?.databaseTitle).toBe("Traversal reasons");
+  test("expectedTypeDatabaseForPage no longer infers from legacy paths", () => {
+    db.upsertNode("missions", { title: "Missions" });
+    expect(expectedTypeDatabaseForPage(db, "missions")).toBeNull();
   });
 });
 

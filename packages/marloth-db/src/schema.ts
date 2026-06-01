@@ -1,4 +1,4 @@
-export const SCHEMA_VERSION = 8;
+export const SCHEMA_VERSION = 10;
 
 export const DDL = `
 CREATE TABLE IF NOT EXISTS meta (
@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS meta (
 
 CREATE TABLE IF NOT EXISTS nodes (
   id TEXT PRIMARY KEY NOT NULL,
-  properties TEXT NOT NULL DEFAULT '{}'
+  properties TEXT NOT NULL DEFAULT '{}',
+  is_archived INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS relationship_records (

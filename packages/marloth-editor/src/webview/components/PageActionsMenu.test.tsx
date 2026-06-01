@@ -9,7 +9,6 @@ describe("PageActionsMenu", () => {
     render(
       <PageActionsMenu
         recordTitle="Row page"
-        recordPath={null}
         trigger="edit"
         menuPlacement="inline"
         onArchive={async () => {}}
@@ -20,7 +19,6 @@ describe("PageActionsMenu", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Page actions" }));
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }));
-    fireEvent.click(screen.getByRole("button", { name: "Remove" }));
 
     expect(onRemove).toHaveBeenCalledTimes(1);
   });
@@ -29,7 +27,6 @@ describe("PageActionsMenu", () => {
     render(
       <PageActionsMenu
         recordTitle="Current page"
-        recordPath="Marloth/Pages/Example"
         onRelate={() => {}}
         onArchive={async () => {}}
         onDelete={async () => {}}
@@ -41,5 +38,19 @@ describe("PageActionsMenu", () => {
     expect(screen.queryByRole("menuitem", { name: "Remove" })).toBeNull();
     expect(screen.getByRole("menuitem", { name: "Archive" })).toBeTruthy();
     expect(screen.getByRole("menuitem", { name: "Delete" })).toBeTruthy();
+  });
+
+  test("omits Archive when page is already archived", () => {
+    render(
+      <PageActionsMenu
+        recordTitle="Archived page"
+        archived
+        onArchive={async () => {}}
+        onDelete={async () => {}}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Page actions" }));
+    expect(screen.queryByRole("menuitem", { name: "Archive" })).toBeNull();
   });
 });

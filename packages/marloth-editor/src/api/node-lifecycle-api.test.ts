@@ -22,21 +22,20 @@ describe("node lifecycle API", () => {
   });
   seedTestNode(fixture, {
     id: nodeId,
-    properties: {
-      title: "Draft",
-      inferred_notion_path: "Marloth/Features/Draft",
-    },
+    properties: { title: "Draft" },
   });
 
   const api = createTestApiFromContent(fixture);
 
-  test("POST archive moves node under Archive", async () => {
+  test("POST archive links node to Archive via includes", async () => {
     const res = await api.handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}/archive`, { method: "POST" }));
     expect(res.status).toBe(200);
 
     const nodeRes = await api.handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}`));
-    const payload = (await nodeRes.json()) as { node: { path: string | null } };
-    expect(payload.node.path).toBe("Marloth/Archive/Draft");
+    const payload = (await nodeRes.json()) as {
+      node: { archived: boolean };
+    };
+    expect(payload.node.archived).toBe(true);
   });
 
   test("POST archive rejects already archived node", async () => {

@@ -24,10 +24,7 @@ describe("node-sections", () => {
 
   test("adds relation sections grouped by edge label with edge properties as columns", () => {
     db.upsertNode("scene1", { title: "Opening", body: "" });
-    db.upsertNode("feat1", {
-      title: "Desperation",
-      inferred_notion_path: "Marloth/Features/Desperation.md",
-    });
+    db.upsertNode("feat1", { title: "Desperation" });
     db.upsertNode("insp1", { title: "Pride and Prejudice" });
     db.upsertRelationship("scene1", "feat1", "features", { ordinal: 0, weight: "strong" });
     db.upsertRelationship("scene1", "insp1", "inspirations", { ordinal: 1 });
@@ -45,7 +42,6 @@ describe("node-sections", () => {
         {
           targetId: "feat1",
           name: "Desperation",
-          path: "Marloth/Features/Desperation.md",
           cells: { weight: "strong" },
         },
       ],

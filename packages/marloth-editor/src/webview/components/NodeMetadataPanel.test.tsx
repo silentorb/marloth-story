@@ -12,7 +12,6 @@ const metadata: NodePageMetadata = {
     {
       sourceId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
       title: "Source page",
-      path: null,
       linkText: "Target page",
     },
   ],

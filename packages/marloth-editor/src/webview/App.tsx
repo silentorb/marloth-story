@@ -248,10 +248,10 @@ export function App() {
   );
 
   const bootstrap = useCallback(async () => {
-    if (api.host === "vscode") return;
     try {
       const home = await api.getHomeId();
       setHomeId(home);
+      if (api.host === "vscode") return;
       const initialView = viewFromLocation();
       setView(initialView);
       setExplorerAnchorId(resolveGraphExplorerAnchor(anchorFromLocation()));
@@ -295,13 +295,13 @@ export function App() {
       syncDocumentIcon({
         view,
         nodeId: node?.id ?? urlNodeId,
-        recordPath: node?.path,
+        primaryTypeTitle: node?.primaryTypeTitle,
         recordBody: node?.body,
         isTypeTable: node?.isTypeTable,
         homeId,
       });
     }
-  }, [api.host, view, node?.id, node?.title, node?.path, node?.body, node?.isTypeTable, homeId]);
+  }, [api.host, view, node?.id, node?.title, node?.primaryTypeTitle, node?.body, node?.isTypeTable, homeId]);
 
   useEffect(() => {
     if (api.host !== "vscode") return;
@@ -577,6 +577,7 @@ export function App() {
       <SidePanel
         activeView={view}
         activeNodeId={view === "node-page" ? (node?.id ?? nodeFromLocation()) : null}
+        homeNodeId={homeId}
         onHome={() => void goHome()}
         onViewChange={changeView}
         onOpenNode={(nodeId) => openLinkedNode(nodeId)}
@@ -589,6 +590,7 @@ export function App() {
             api={api}
             onCancel={() => void goHome()}
             onCreated={(nodeId) => openLinkedNode(nodeId)}
+            onOpenNode={(nodeId, openInNewTab) => openLinkedNode(nodeId, openInNewTab)}
           />
         ) : view === "graph-explorer" ? (
           <GraphView

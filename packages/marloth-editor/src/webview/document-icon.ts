@@ -15,7 +15,7 @@ const FAVICON_SIZE = 32;
 export interface DocumentIconContext {
   view: AppView;
   nodeId?: string | null;
-  recordPath?: string | null;
+  primaryTypeTitle?: string | null;
   recordBody?: string | null;
   isTypeTable?: boolean | null;
   homeId?: string | null;
@@ -34,19 +34,17 @@ export function resolveDocumentIcon(ctx: DocumentIconContext): string {
     return SIDEBAR_ICON_BY_NODE_ID[nodeId]!;
   }
 
-  const pathIcon = iconFromPath(ctx.recordPath);
-  if (pathIcon) return pathIcon;
+  const typeIcon = iconFromTypeTitle(ctx.primaryTypeTitle);
+  if (typeIcon) return typeIcon;
 
   if (ctx.isTypeTable) return DATABASE_ICON;
 
   return DEFAULT_ICON;
 }
 
-function iconFromPath(path: string | null | undefined): string | null {
-  if (!path) return null;
-  const segments = path.replace(/\.md$/i, "").split("/").filter(Boolean);
-  if (segments.length < 2) return null;
-  return SIDEBAR_ICON_BY_LABEL[segments[1]!] ?? null;
+function iconFromTypeTitle(title: string | null | undefined): string | null {
+  if (!title) return null;
+  return SIDEBAR_ICON_BY_LABEL[title] ?? null;
 }
 
 function escapeXml(value: string): string {

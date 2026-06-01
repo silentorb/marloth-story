@@ -9,6 +9,9 @@
   --marloth-muted: #9b9a97;
   --marloth-border: rgba(255, 255, 255, 0.09);
   --marloth-hover: rgba(255, 255, 255, 0.06);
+  --marloth-callout-bg: #2f343c;
+  --marloth-callout-border: rgba(255, 255, 255, 0.1);
+  --marloth-callout-radius: 8px;
   --marloth-link: #6cb6ff;
   font-family: var(--marloth-font);
   font-size: 16px;
@@ -141,6 +144,33 @@ a:hover {
   border-left: 3px solid var(--marloth-border);
   padding-left: 1em;
   color: var(--marloth-muted);
+}
+
+.prose :where(blockquote.marloth-callout) {
+  border-left: none;
+  margin: 1em 0;
+  padding: 12px 14px;
+  background: var(--marloth-callout-bg);
+  border: 1px solid var(--marloth-callout-border);
+  border-radius: var(--marloth-callout-radius);
+  color: var(--marloth-text);
+  --marloth-callout-gutter: 1.75em;
+}
+
+.prose :where(blockquote.marloth-callout > p:first-child) {
+  margin-top: 0;
+  padding-left: var(--marloth-callout-gutter);
+  text-indent: calc(-1 * var(--marloth-callout-gutter));
+}
+
+.prose :where(blockquote.marloth-callout > p:last-child) {
+  margin-bottom: 0;
+}
+
+.prose :where(blockquote.marloth-callout > p ~ p),
+.prose :where(blockquote.marloth-callout > ul),
+.prose :where(blockquote.marloth-callout > ol) {
+  padding-left: var(--marloth-callout-gutter);
 }
 
 .prose :where(code) {

@@ -1,6 +1,5 @@
 import type { GraphDatabase, Node, Properties } from "./graph";
 import { IS_A_TYPE, TYPE_MEMBERSHIP_TYPES } from "./labels";
-import { typeFolderFromPath } from "./type-membership-audit";
 
 const TYPE_TABLE_PROPERTY_KEYS = ["notion_schema", "notion_views", "notion_database"] as const;
 
@@ -10,11 +9,6 @@ function titleFromProperties(properties: Record<string, unknown>): string {
   const alias = properties.alias;
   if (typeof alias === "string" && alias.trim()) return alias.trim();
   return "Untitled";
-}
-
-function pathFromProperties(properties: Record<string, unknown>): string | null {
-  const path = properties.inferred_notion_path;
-  return typeof path === "string" && path.trim() ? path.trim() : null;
 }
 
 export function hasTypeTableSchema(
@@ -52,6 +46,23 @@ export function typeIdsForInstance(db: GraphDatabase, nodeId: string): string[] 
   return [...ids];
 }
 
+/** Lexicographically first IS_A type title for an instance page, when any. */
+export function primaryTypeTitleForInstance(
+  db: GraphDatabase,
+  nodeId: string,
+): string | null {
+  const titles: string[] = [];
+  for (const typeId of typeIdsForInstance(db, nodeId)) {
+    const typeNode = db.getNode(typeId);
+    if (!typeNode) continue;
+    const title = titleFromProperties(typeNode.properties);
+    if (title !== "Untitled") titles.push(title);
+  }
+  if (titles.length === 0) return null;
+  titles.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+  return titles[0]!;
+}
+
 export function isTypeTableCandidate(
   node: Pick<Node, "properties"> & { id?: string },
   db?: GraphDatabase,
@@ -87,13 +98,13 @@ export function graphGroupForNode(db: GraphDatabase, nodeId: string): string {
     return title === "Untitled" ? "TypeTable" : title;
   }
 
-  const folder = typeFolderFromPath(pathFromProperties(node.properties));
-  if (folder) return folder;
+  const typeTitle = primaryTypeTitleForInstance(db, nodeId);
+  if (typeTitle) return typeTitle;
 
   return "Node";
 }
 
-/** Labels for graph export / visualization (derived from path and node kind). */
+/** Labels for graph export / visualization (derived from IS_A type and node kind). */
 export function graphLabelsForNode(db: GraphDatabase, nodeId: string): string[] {
   const node = db.getNode(nodeId);
   if (!node) return ["Unknown"];
@@ -102,8 +113,8 @@ export function graphLabelsForNode(db: GraphDatabase, nodeId: string): string[] 
     return ["TypeTable"];
   }
 
-  const folder = typeFolderFromPath(pathFromProperties(node.properties));
-  if (folder) return [folder];
+  const typeTitle = primaryTypeTitleForInstance(db, nodeId);
+  if (typeTitle) return [typeTitle];
 
   return ["Node"];
 }

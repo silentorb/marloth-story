@@ -43,7 +43,7 @@ describe("schema rules", () => {
           {
             id: "scene-features",
             sourceTypeId: scenesType,
-            type: "features",
+            type: "includes",
             allowedTargetTypeIds: [featuresType],
           },
         ],

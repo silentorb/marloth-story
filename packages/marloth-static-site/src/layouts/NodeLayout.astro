@@ -3,11 +3,10 @@ import "../lib/theme.css";
 
 interface Props {
   title: string;
-  path?: string | null;
 }
 
-const { title, path = null } = Astro.props;
-const pageTitle = path ? `${title} · ${path}` : title;
+const { title } = Astro.props;
+const pageTitle = title;
 ---
 
 <!doctype html>
@@ -23,7 +22,6 @@ const pageTitle = path ? `${title} · ${path}` : title;
       <a href={import.meta.env.BASE_URL}>Marloth design corpus</a>
     </header>
     <main class="page">
-      {path ? <span class="node-path">{path}</span> : null}
       <slot />
     </main>
   </body>

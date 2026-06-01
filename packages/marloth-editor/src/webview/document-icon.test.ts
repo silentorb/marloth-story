@@ -17,21 +17,21 @@ describe("resolveDocumentIcon", () => {
     ).toBe("⌂");
   });
 
-  test("prefers page emoji over path-based database icon", () => {
+  test("prefers page emoji over type-based database icon", () => {
     expect(
       resolveDocumentIcon({
         view: "node-page",
-        recordPath: "Marloth/Scenes/Opening",
+        primaryTypeTitle: "Scenes",
         recordBody: "💡\n\n# Opening scene",
       }),
     ).toBe("💡");
   });
 
-  test("uses path-based icon for database member pages", () => {
+  test("uses type-title icon for database member pages", () => {
     expect(
       resolveDocumentIcon({
         view: "node-page",
-        recordPath: "Marloth/Features/Desperation.md",
+        primaryTypeTitle: "Features",
       }),
     ).toBe("★");
   });

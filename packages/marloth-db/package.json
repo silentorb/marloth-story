@@ -5,11 +5,12 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./archive-path": "./src/archive-path.ts",
+    "./archive-status": "./src/archive-status.ts",
     "./content": "./src/content/index.ts",
     "./content/test-helpers": "./src/content/test-helpers.ts",
     "./enum-codec": "./src/enum-codec.ts",
     "./markdown-links": "./src/markdown-links.ts",
+    "./callout": "./src/callout.ts",
     "./schema-file": "./src/schema-rules/schema-file.ts",
     "./relationship-type-label": "./src/relationship-type-label.ts"
   },

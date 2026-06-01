@@ -1,4 +1,5 @@
 import { resolveMarkdownHrefTarget } from "marloth-db/markdown-links";
+import { decorateCalloutHtml } from "./callout-html";
 
 const LEADING_TITLE_HEADING = /^#\s+(.+?)(?:\n|$)/;
 
@@ -72,5 +73,6 @@ export function prepareNodeMarkdown(body: string, title: string, base = "/"): st
 export async function renderMarkdownToHtml(markdown: string): Promise<string> {
   if (!markdown.trim()) return "";
   const { marked } = await import("marked");
-  return marked.parse(markdown, { async: true }) as Promise<string>;
+  const html = (await marked.parse(markdown, { async: true })) as string;
+  return decorateCalloutHtml(html);
 }

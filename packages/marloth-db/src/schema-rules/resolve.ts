@@ -1,6 +1,12 @@
 import type { GraphDatabase } from "../graph";
+import { INCLUDES_TYPE, isIncludesPerspectiveSlug } from "../includes-relationship";
 import { typeIdsForInstance } from "../node-capabilities";
 import { normalizeRelationshipType } from "../relation-type";
+
+function ruleLookupType(localType: string): string {
+  const normalized = normalizeRelationshipType(localType);
+  return isIncludesPerspectiveSlug(normalized) ? INCLUDES_TYPE : normalized;
+}
 import type { RelationshipRuleEntry, SchemaFile } from "./schema-file";
 
 export function allowedTargetTypeIdsForRule(rule: RelationshipRuleEntry): string[] {
@@ -13,11 +19,11 @@ export function resolveRelationshipRule(
   sourceNodeId: string,
   type: string,
 ): RelationshipRuleEntry | null {
-  const normalizedType = normalizeRelationshipType(type);
+  const lookupType = ruleLookupType(type);
   const sourceTypes = typeIdsForInstance(db, sourceNodeId);
 
   for (const rule of schema.relationshipRules) {
-    if (rule.type !== normalizedType) continue;
+    if (rule.type !== lookupType) continue;
     if (!sourceTypes.includes(rule.sourceTypeId)) continue;
     return rule;
   }

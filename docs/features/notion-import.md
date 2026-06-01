@@ -43,7 +43,7 @@ Each Notion page (`.md`) **must** become a graph node with properties including 
 - `title` — from first `#` heading
 - `notion_id` — 32-hex id from source filename
 - `source_export` — repo-relative path to exported `.md`
-- `inferred_notion_path` — parent path inside export, when under `exports/`
+- `source_export` — path to the export file (provenance only; not used for graph organization)
 - `body` — markdown body (relation property lines removed; converted to relationships)
 - `alias` — short title without trailing id suffix
 - Scalar `Key: value` lines before the body **must** be stored as slugified, emoji-stripped property keys

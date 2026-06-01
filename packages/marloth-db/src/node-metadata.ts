@@ -5,7 +5,6 @@ import { getNodeDetail } from "./queries";
 export interface NodeBacklink {
   sourceId: string;
   title: string;
-  path: string | null;
   linkText: string | null;
 }
 
@@ -45,7 +44,6 @@ export function getNodePageMetadata(db: GraphDatabase, id: string): NodePageMeta
     backlinks.push({
       sourceId: candidate.id,
       title: source?.title ?? "Untitled",
-      path: source?.path ?? null,
       linkText,
     });
   }

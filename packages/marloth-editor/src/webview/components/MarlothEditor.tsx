@@ -10,6 +10,9 @@ import {
   marlothHref,
 } from "../../shared/types";
 import type { NodeSummary } from "../../shared/types";
+import { buildCalloutSlashMenu } from "../callout-block";
+import { installCalloutCursor } from "../callout-cursor";
+import { installLinkCursor } from "../link-cursor";
 import { installCalloutDecoration } from "../callout-decoration";
 import { installMentionSync } from "../mention-sync";
 import { resolveNodeLinkTarget } from "../node-links";
@@ -128,6 +131,9 @@ export function MarlothEditor({
         [Crepe.Feature.Placeholder]: {
           text: "Type '/' for blocks, '@' to link a record…",
         },
+        [Crepe.Feature.BlockEdit]: {
+          buildMenu: buildCalloutSlashMenu,
+        },
       },
     });
 
@@ -153,6 +159,8 @@ export function MarlothEditor({
         const view = ctx.get(editorViewCtx);
         const dom = view.dom;
         installCalloutDecoration(view);
+        installCalloutCursor(view);
+        installLinkCursor(view);
 
         const syncMentionMenu = () => {
           const { state } = view;
@@ -317,7 +325,6 @@ export function MarlothEditor({
                 }}
               >
                 <span className="marloth-mention-title">{item.title}</span>
-                {item.path ? <span className="marloth-mention-path">{item.path}</span> : null}
               </button>
             ))
           )}

@@ -1,7 +1,7 @@
 import type { EditorState } from "@milkdown/prose/state";
 
 /** Matches @mention trigger at end of text before the cursor (within a text block). */
-export const MENTION_TRIGGER_RE = /(?:^|\s)@([\w\s\-'.]{0,48})$/;
+export const MENTION_TRIGGER_RE = /(?:^|\s)@([\w\-'.]{0,48})$/;
 
 /** True when the whole string is a single @mention trigger (no trailing text). */
 export function isMentionFragment(fragment: string): boolean {
@@ -22,9 +22,10 @@ function mentionFromTextBefore(
 ): ActiveMentionRange | null {
   const match = MENTION_TRIGGER_RE.exec(textBefore);
   if (!match || match.index === undefined) return null;
+  const atOffset = match[0].indexOf("@");
   return {
     query: match[1] ?? "",
-    replaceFrom: replaceFromOffset + match.index,
+    replaceFrom: replaceFromOffset + match.index + atOffset,
     replaceTo,
   };
 }

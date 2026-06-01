@@ -44,7 +44,7 @@ This is separate from:
 | Field | Meaning |
 | --- | --- |
 | `sourceTypeId` | Type node id; rule applies when the source instance has `is_a` to this id |
-| `type` | Outgoing relationship type (lower snake_case, local perspective) |
+| `type` | Outgoing relationship type (lower snake_case). Use `includes` for cross-entity association rules; legacy column slugs (`features`, `inspirations`, `characters`, …) still resolve to `includes` storage when creating links. |
 | `allowedTargetTypeIds` | Target instances must have `is_a` to one of these type ids |
 
 Types are identified by **stable node id**, not display names.

@@ -1,19 +1,28 @@
 import { useCallback, useState } from "react";
 import type { EditorApi } from "../api/client";
+import { MarlothEditor } from "./MarlothEditor";
 import { PageTitle } from "./PageTitle";
 import "./create-node-view.css";
+
+/** Placeholder id until the node exists; MarlothEditor does not persist by id. */
+const CREATE_NODE_EDITOR_ID = "00000000000000000000000000000000";
 
 interface CreateNodeViewProps {
   api: EditorApi;
   onCancel: () => void;
   onCreated: (nodeId: string) => void;
+  onOpenNode?: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
-export function CreateNodeView({ api, onCancel, onCreated }: CreateNodeViewProps) {
+export function CreateNodeView({ api, onCancel, onCreated, onOpenNode }: CreateNodeViewProps) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const syncBody = useCallback((markdown: string) => {
+    setBody(markdown);
+  }, []);
 
   const submit = useCallback(async () => {
     const trimmed = title.trim();
@@ -52,16 +61,16 @@ export function CreateNodeView({ api, onCancel, onCreated }: CreateNodeViewProps
       {error ? <div className="marloth-create-node-error">{error}</div> : null}
       <div className="marloth-create-node-form">
         <PageTitle value={title} onChange={setTitle} />
-        <label className="marloth-create-node-body-label">
-          <span>Body (optional)</span>
-          <textarea
-            className="marloth-create-node-body"
-            value={body}
-            rows={12}
-            placeholder="Markdown body…"
-            onChange={(event) => setBody(event.target.value)}
+        <section className="marloth-create-node-body-section">
+          <MarlothEditor
+            api={api}
+            nodeId={CREATE_NODE_EDITOR_ID}
+            initialBody=""
+            onEditorBaseline={syncBody}
+            onBodyChange={syncBody}
+            onNavigate={onOpenNode}
           />
-        </label>
+        </section>
       </div>
     </div>
   );

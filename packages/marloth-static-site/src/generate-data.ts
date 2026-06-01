@@ -9,7 +9,6 @@ export const DEFAULT_HOME_NODE_ID = "13458e628ba28073850dea0edb9acde1";
 export interface SiteNode {
   id: string;
   title: string;
-  path: string | null;
   body: string;
 }
 
@@ -27,11 +26,6 @@ function titleFromProperties(properties: Record<string, unknown>): string {
   return "Untitled";
 }
 
-function pathFromProperties(properties: Record<string, unknown>): string | null {
-  const path = properties.inferred_notion_path;
-  return typeof path === "string" && path.trim() ? path.trim() : null;
-}
-
 export function loadNodesFromContent(contentDir: string): SiteNode[] {
   const store = new ContentStore(contentDir);
   return store.listNodeIds().map((id) => {
@@ -42,7 +36,6 @@ export function loadNodesFromContent(contentDir: string): SiteNode[] {
     return {
       id: node.id,
       title: titleFromProperties(props),
-      path: pathFromProperties(props),
       body,
     };
   });

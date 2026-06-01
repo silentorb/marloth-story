@@ -20,10 +20,7 @@ const homePath = nodePagePath(getHomeNodeId(), base);
     {
       nodes.map((node) => (
         <li>
-          <a href={nodePagePath(node.id, base)}>
-            {node.title}
-            {node.path ? <span class="node-list-path">{node.path}</span> : null}
-          </a>
+          <a href={nodePagePath(node.id, base)}>{node.title}</a>
         </li>
       ))
     }

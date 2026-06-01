@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import {
   applyUserSettingsPatch,
   databaseTableSortKey,
+  globalSearchIncludeBody,
   isDefaultTableSort,
   nextSortOnColumnClick,
   normalizeTableSort,
@@ -106,6 +107,32 @@ describe("user-settings", () => {
       },
     });
     expect(cleared.tableSorts).toBeUndefined();
+  });
+
+  test("globalSearch includeBody is sparse and patchable", () => {
+    expect(globalSearchIncludeBody({ version: 1 })).toBe(false);
+
+    const enabled = applyUserSettingsPatch(
+      { version: 1 },
+      { globalSearch: { includeBody: true } },
+    );
+    expect(globalSearchIncludeBody(enabled)).toBe(true);
+    expect(enabled.globalSearch).toEqual({ includeBody: true });
+
+    const cleared = applyUserSettingsPatch(enabled, { globalSearch: null });
+    expect(cleared.globalSearch).toBeUndefined();
+
+    const parsed = parseUserSettings({
+      version: 1,
+      globalSearch: { includeBody: true },
+    });
+    expect(globalSearchIncludeBody(parsed)).toBe(true);
+
+    const parsedOff = parseUserSettings({
+      version: 1,
+      globalSearch: { includeBody: false },
+    });
+    expect(parsedOff.globalSearch).toBeUndefined();
   });
 
   test("parseUserSettings drops default sorts and invalid entries", () => {

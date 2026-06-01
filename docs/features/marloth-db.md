@@ -28,7 +28,7 @@ For **what design nodes mean** (features, inspirations, products, traceability),
 | **Type table** | Node that receives `is_a` rows and/or carries table schema metadata (`notion_schema`, etc.). |
 | **Schema** | Workspace model config in `content/model/schema.json` (relationship rules, enums) — see [schema.md](./schema.md). |
 
-API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` **8**).
+API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` **10**).
 
 ## Editing the graph (agent workflow)
 
@@ -68,12 +68,13 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 **Content (canonical, compact):** one record per logical link:
 
 ```json
-{ "a": "<32-hex>", "b": "<32-hex>", "type": "inspirations_features", "properties": { } }
+{ "a": "<32-hex>", "b": "<32-hex>", "type": "includes", "properties": { } }
 ```
 
 - Endpoints `a` / `b` are sorted lexicographically (`a` < `b`).
-- **Directed** types (e.g. `is_a`) include `directedFrom` (source node id).
-- **Bidirectional** pairs use composite types (e.g. `scenes_part`, `inspirations_features`).
+- **Directed** types (e.g. `is_a`) include `directedFrom` (source node id). **`includes` does not** — association is symmetric in storage; UI resolves direction via the relation column’s target database.
+- **Associative** links use `includes` (migrated from legacy composites such as `inspirations_features`, `scenes_characters`).
+- **Structural** and **taxonomy↔inspiration** pairs still use named composite types (e.g. `scenes_part`, `monsters_inspirations`).
 - Record id: `{a}:{b}:{type}`.
 
 **SQLite cache (denormalized):** expanded on sync for fast directed queries:
@@ -82,8 +83,10 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 | --- | --- |
 | `relationship_records` | Mirror of content records |
 | `relationship_projections` | Directed rows `(source, target, local_type)` — hot path for queries |
-| `nodes` | Entity property bags |
+| `nodes` | Entity property bags; `is_archived` denormalized flag (recomputed on sync) |
 | `meta` | Schema version, content mtime, enum config fingerprint |
+
+**Archive membership:** a page is archived when it has an `includes` relationship to the Archive hub node (`0f558a609a56485185beed4d1fd1cd9f`). The editor `POST /api/nodes/:id/archive` adds that edge only. Search, graph export, and `nodes.is_archived` exclude archived pages and the Archive hub.
 
 **Enum properties in cache:** keys declared in [`content/model/schema.json`](../../content/model/schema.json) `enums` (e.g. `priority`) are stored in SQLite relationship `properties` JSON as **0-based indices** into the enum’s `options` array. Git-tracked [`content/data/relationships.json`](../../content/data/relationships.json) keeps **string labels**. Encode on cache write and decode on cache read (`packages/marloth-db/src/enum-codec.ts`, `graph.ts`). Changing enum `options` order in `schema.json` triggers a relationship cache re-sync (file watcher + `enum_config_fingerprint` meta check). After pulling enum-cache changes or a `SCHEMA_VERSION` bump, run `bun run content:sync` (or restart the editor API) to rebuild the cache from content.
 
@@ -103,7 +106,7 @@ Type-table behavior is inferred from `is_a` usage and schema metadata (`isTypeTa
 | Database row / type instance | Relationship `(page)-[:is_a {view, row_index, …}]->(type)` |
 | CSV relation column | Relationship from row's page to targets |
 
-Consolidate legacy dual directed edges with `bun scripts/consolidate-relationships.ts` (already run on the corpus).
+Consolidate legacy dual directed edges with `bun scripts/consolidate-relationships.ts` (already run on the corpus). Migrate associative composites to `includes` with `bun scripts/migrate-to-includes.ts` (already run on the corpus).
 
 ### Schema versioning
 
@@ -130,6 +133,8 @@ Writes go to `content/` via `ContentStore`; sync expands to SQLite projections.
 | `content/` | Canonical property graph root (`data/` + `model/`) |
 | `data/marloth.sqlite` | Local query cache |
 | `scripts/consolidate-relationships.ts` | One-time / re-run migration v1 → v2 relationships |
+| `scripts/migrate-to-includes.ts` | Migrate associative relationship types to `includes` |
+| `scripts/migrate-archive-to-includes.ts` | Migrate archive membership from hub links / legacy paths to `includes` on the Archive hub |
 | `docs/notion-import-manifest.json` | Import summary (nodes, databases, counts) |
 | `docs/notion-link-report.txt` | Unresolved relation paths |
 

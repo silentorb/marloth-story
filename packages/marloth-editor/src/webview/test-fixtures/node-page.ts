@@ -99,6 +99,7 @@ export function makeNodePageDetail(
     path: "Folder/Example page",
     body: "# Example page\n\nBody text.",
     isTypeTable: false,
+    archived: false,
     properties: null,
     metadata: {
       createdAt: null,

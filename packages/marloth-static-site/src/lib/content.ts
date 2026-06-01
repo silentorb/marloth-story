@@ -5,8 +5,8 @@ export function loadAllNodes(): SiteNode[] {
   return siteData.nodes;
 }
 
-export function loadNodeSummaries(): Pick<SiteNode, "id" | "title" | "path">[] {
-  return siteData.nodes.map(({ id, title, path }) => ({ id, title, path }));
+export function loadNodeSummaries(): Pick<SiteNode, "id" | "title">[] {
+  return siteData.nodes.map(({ id, title }) => ({ id, title }));
 }
 
 export function getSiteBase(): string {

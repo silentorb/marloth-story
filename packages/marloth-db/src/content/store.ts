@@ -9,6 +9,7 @@ import {
 import { dirname } from "node:path";
 import type { Node, Properties } from "../graph";
 import { relationshipId } from "../graph";
+import { INCLUDES_TYPE, isIncludesPerspectiveSlug, isIncludesStorageType } from "../includes-relationship";
 import { normalizeRelationshipType } from "../relation-type";
 import {
   type RelationshipEntry,
@@ -27,10 +28,34 @@ import {
   localTypesForComposite,
   parseRelationshipTypesFile,
   registerBidirectionalType,
+  registerIncludesType,
   registerUnidirectionalType,
   resolveCompositeType,
   serializeRelationshipTypesFile,
 } from "./relationship-types-file";
+
+function storageTypeForLocal(
+  registry: RelationshipTypesFile,
+  localType: string,
+): string {
+  const normalized = normalizeRelationshipType(localType);
+  if (isIncludesPerspectiveSlug(normalized)) return INCLUDES_TYPE;
+  return resolveCompositeType(registry, normalized);
+}
+
+function entryMatchesLocalType(
+  registry: RelationshipTypesFile,
+  entry: RelationshipEntry,
+  localType: string,
+): boolean {
+  const normalized = normalizeRelationshipType(localType);
+  if (isIncludesStorageType(entry.type)) {
+    return isIncludesPerspectiveSlug(normalized);
+  }
+  const perspectives = localTypesForComposite(registry, entry.type);
+  if (perspectives.includes(normalized)) return true;
+  return !isBidirectionalComposite(registry, entry.type) && entry.type === normalized;
+}
 import {
   type DynamicFieldsFile,
   emptyDynamicFieldsFile,
@@ -162,11 +187,7 @@ export class ContentStore {
 
     for (const entry of this.readRelationshipsFile().relationships) {
       if (entry.a !== a || entry.b !== b) continue;
-      const perspectives = localTypesForComposite(registry, entry.type);
-      if (perspectives.includes(normalized)) {
-        return entry;
-      }
-      if (!isBidirectionalComposite(registry, entry.type) && entry.type === normalized) {
+      if (entryMatchesLocalType(registry, entry, normalized)) {
         return entry;
       }
     }
@@ -197,14 +218,13 @@ export class ContentStore {
     const normalized = normalizeRelationshipType(localType);
     const { a, b } = sortEndpoints(source, target);
 
-    let composite = resolveCompositeType(registry, normalized);
+    let composite = storageTypeForLocal(registry, normalized);
     const existing = file.relationships.find((e) => e.a === a && e.b === b && e.type === composite);
 
     if (!existing) {
       for (const entry of file.relationships) {
         if (entry.a !== a || entry.b !== b) continue;
-        const perspectives = localTypesForComposite(registry, entry.type);
-        if (perspectives.includes(normalized)) {
+        if (entryMatchesLocalType(registry, entry, normalized)) {
           composite = entry.type;
           break;
         }
@@ -212,24 +232,33 @@ export class ContentStore {
     }
 
     const index = file.relationships.findIndex((e) => e.a === a && e.b === b && e.type === composite);
+    const useIncludes = isIncludesStorageType(composite);
     const entry: RelationshipEntry = {
       a,
       b,
       type: composite,
-      directedFrom: source,
+      ...(useIncludes ? {} : { directedFrom: source }),
       properties,
     };
 
     if (index >= 0) {
       const prev = file.relationships[index]!;
+      const { directedFrom: _drop, ...prevRest } = prev;
       file.relationships[index] = {
+        ...prevRest,
         ...entry,
-        directedFrom: prev.directedFrom ?? entry.directedFrom,
+        ...(useIncludes
+          ? {}
+          : { directedFrom: prev.directedFrom ?? entry.directedFrom }),
         properties: { ...(prev.properties ?? {}), ...properties },
       };
     } else {
       if (!registry.types[composite]) {
-        registerUnidirectionalType(registry, composite);
+        if (useIncludes) {
+          registerIncludesType(registry);
+        } else {
+          registerUnidirectionalType(registry, composite);
+        }
         this.writeRelationshipTypesFile(registry);
       }
       file.relationships.push(entry);
@@ -268,19 +297,13 @@ export class ContentStore {
     const normalized = normalizeRelationshipType(localType);
     const { a, b } = sortEndpoints(source, target);
 
-    let composite = resolveCompositeType(registry, normalized);
+    let composite = storageTypeForLocal(registry, normalized);
     let index = file.relationships.findIndex((e) => e.a === a && e.b === b && e.type === composite);
 
     if (index < 0) {
       for (const entry of file.relationships) {
         if (entry.a !== a || entry.b !== b) continue;
-        const perspectives = localTypesForComposite(registry, entry.type);
-        if (perspectives.includes(normalized)) {
-          composite = entry.type;
-          index = file.relationships.indexOf(entry);
-          break;
-        }
-        if (!isBidirectionalComposite(registry, entry.type) && entry.type === normalized) {
+        if (entryMatchesLocalType(registry, entry, normalized)) {
           composite = entry.type;
           index = file.relationships.indexOf(entry);
           break;
@@ -291,9 +314,10 @@ export class ContentStore {
     if (index < 0) return false;
 
     const prev = file.relationships[index]!;
+    const useIncludes = isIncludesStorageType(composite);
     file.relationships[index] = {
       ...prev,
-      directedFrom: source,
+      ...(useIncludes ? {} : { directedFrom: source }),
       properties,
     };
     this.writeRelationshipsFile(file);
@@ -309,12 +333,7 @@ export class ContentStore {
 
     file.relationships = file.relationships.filter((entry) => {
       if (entry.a !== a || entry.b !== b) return true;
-      const perspectives = localTypesForComposite(registry, entry.type);
-      if (perspectives.includes(normalized)) return false;
-      if (!isBidirectionalComposite(registry, entry.type) && entry.type === normalized) {
-        return false;
-      }
-      return true;
+      return !entryMatchesLocalType(registry, entry, normalized);
     });
 
     if (file.relationships.length === before) return false;

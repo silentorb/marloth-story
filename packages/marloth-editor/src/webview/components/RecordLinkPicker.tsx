@@ -155,9 +155,6 @@ export function RecordLinkPicker({
                 onClick={() => void pick(item.id)}
               >
                 <span className="marloth-record-link-picker-title">{item.title}</span>
-                {item.path ? (
-                  <span className="marloth-record-link-picker-path">{item.path}</span>
-                ) : null}
               </button>
             );
           })

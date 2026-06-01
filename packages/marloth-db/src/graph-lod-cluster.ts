@@ -30,7 +30,6 @@ export const BRANCH_CLUSTER_PREFIX = "branch:";
 export interface LodClusterNode {
   id: string;
   title: string;
-  path: string | null;
   group: string;
   labels: string[];
 }
@@ -392,7 +391,6 @@ function snapshotFromPartition(
       graphNodes.push({
         id: clusterId,
         title: representative.title,
-        path: representative.path,
         labels: ["GraphCluster", ...representative.labels],
         group: representative.group,
         val: memberCount,
@@ -406,7 +404,6 @@ function snapshotFromPartition(
     graphNodes.push({
       id: clusterId,
       title: representative.title,
-      path: representative.path,
       labels: representative.labels,
       group: representative.group,
       relevance: entry ? toGraphNodeRelevance(entry, promoted.has(clusterId)) : undefined,

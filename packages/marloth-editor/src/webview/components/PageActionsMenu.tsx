@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { isArchivedNotionPath } from "marloth-db/archive-path";
 import { ConfirmDialog } from "./ConfirmDialog";
 import "./page-actions-menu.css";
 
-type PendingAction = "archive" | "remove" | "delete" | null;
+type PendingAction = "archive" | "delete" | null;
 
 interface MenuPosition {
   top: number;
@@ -13,7 +12,7 @@ interface MenuPosition {
 
 interface PageActionsMenuProps {
   recordTitle: string;
-  recordPath: string | null;
+  archived?: boolean;
   disabled?: boolean;
   /** `ellipsis` (⋯) for the page app bar; `edit` (✎) for table rows. */
   trigger?: "ellipsis" | "edit";
@@ -31,7 +30,7 @@ interface PageActionsMenuProps {
 
 export function PageActionsMenu({
   recordTitle,
-  recordPath,
+  archived = false,
   disabled = false,
   trigger = "ellipsis",
   menuAlign = "right",
@@ -48,7 +47,7 @@ export function PageActionsMenu({
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const isArchived = isArchivedNotionPath(recordPath);
+  const isArchived = archived;
 
   const updateMenuPosition = useCallback(() => {
     const trigger = triggerRef.current;
@@ -96,10 +95,20 @@ export function PageActionsMenu({
     setBusy(true);
     try {
       if (action === "archive") await onArchive();
-      else if (action === "remove") await onRemove!();
       else await onDelete();
       setPendingAction(null);
       setMenuOpen(false);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const runRemove = async () => {
+    if (!onRemove) return;
+    setMenuOpen(false);
+    setBusy(true);
+    try {
+      await onRemove();
     } finally {
       setBusy(false);
     }
@@ -140,9 +149,9 @@ export function PageActionsMenu({
           type="button"
           role="menuitem"
           className="marloth-page-actions-item"
+          disabled={busy}
           onClick={() => {
-            setMenuOpen(false);
-            setPendingAction("remove");
+            void runRemove();
           }}
         >
           Remove
@@ -222,16 +231,6 @@ export function PageActionsMenu({
         busy={busy}
         onCancel={closeConfirm}
         onConfirm={() => void runAction("archive")}
-      />
-
-      <ConfirmDialog
-        open={pendingAction === "remove"}
-        title="Remove from table?"
-        message={`Remove “${displayTitle}” from this table? The linked page will remain; only the relationship is removed.`}
-        confirmLabel="Remove"
-        busy={busy}
-        onCancel={closeConfirm}
-        onConfirm={() => void runAction("remove")}
       />
 
       <ConfirmDialog

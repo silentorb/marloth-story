@@ -2,8 +2,11 @@ export { GraphDatabase, relationshipId } from "./graph";
 export type { Relationship, GraphCounts, Node, Properties, PropertyValue } from "./graph";
 export {
   ARCHIVE_NOTION_PATH_PREFIX,
-  isArchivedNotionPath,
-} from "./archive-path";
+  DEFAULT_ARCHIVE_NODE_ID,
+  isArchivedNode,
+  isLegacyArchivedNotionPath,
+  listArchivedNodeIds,
+} from "./archive-status";
 export {
   DEFAULT_GRAPH_EXPLORER_ANCHOR_ID,
   exportFullGraph,
@@ -38,13 +41,7 @@ export {
 export { createNode } from "./node-create";
 export type { CreateNodeError, CreateNodeInput, CreateNodeLink, CreateNodeResult } from "./node-create";
 export type { NodeDetail, NodeSummary } from "./queries";
-export {
-  archivePathForNode,
-  archiveNode,
-  DEFAULT_ARCHIVE_NODE_ID,
-  deleteNode,
-  isProtectedNodeId,
-} from "./node-lifecycle";
+export { archiveNode, deleteNode, isProtectedNodeId } from "./node-lifecycle";
 export type { NodeLifecycleError } from "./node-lifecycle";
 export { getDatabaseViewDetail } from "./database-view";
 export { hydrateRelationCellsForRows } from "./database-view-relations";
@@ -144,6 +141,7 @@ export {
   graphLabelsForNode,
   hasTypeTableSchema,
   isTypeTableNode,
+  primaryTypeTitleForInstance,
   typeTableMarkerProperties,
 } from "./node-capabilities";
 export type {

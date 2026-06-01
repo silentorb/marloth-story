@@ -20,8 +20,10 @@ import {
 import { relationshipId } from "../graph";
 import {
   registerBidirectionalType,
+  registerIncludesType,
   registerUnidirectionalType,
 } from "./relationship-types-file";
+import { INCLUDES_TYPE } from "../includes-relationship";
 
 export interface TestContentFixture {
   tempDir: string;
@@ -86,6 +88,48 @@ function entryFromSeedConnection(connection: {
     type: connection.type,
     properties: connection.properties ?? {},
   });
+}
+
+export function seedTestIncludes(
+  fixture: TestContentFixture,
+  connections: Array<{
+    a: string;
+    b: string;
+    properties?: Properties;
+  }>,
+  options?: { replace?: boolean },
+): void {
+  const registry = options?.replace
+    ? { version: 1 as const, types: {} as Record<string, never> }
+    : fixture.ctx.store.readRelationshipTypesFile();
+  const file = options?.replace
+    ? { version: RELATIONSHIPS_FILE_VERSION, relationships: [] as RelationshipEntry[] }
+    : fixture.ctx.store.readRelationshipsFile();
+
+  registerIncludesType(registry);
+
+  for (const connection of connections) {
+    const { a, b } = sortEndpoints(connection.a, connection.b);
+    const entry: RelationshipEntry = {
+      a,
+      b,
+      type: INCLUDES_TYPE,
+      properties: connection.properties ?? {},
+    };
+    const index = file.relationships.findIndex(
+      (existing) =>
+        existing.a === entry.a && existing.b === entry.b && existing.type === entry.type,
+    );
+    if (index >= 0) {
+      file.relationships[index] = entry;
+    } else {
+      file.relationships.push(entry);
+    }
+  }
+
+  fixture.ctx.store.writeRelationshipTypesFile(registry);
+  fixture.ctx.store.writeRelationshipsFile(file);
+  fixture.ctx.sync.syncRelationships();
 }
 
 export function seedTestCompositeRelationships(

@@ -1,14 +1,11 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import {
-  archivePathForNode,
-  archiveNode,
-  DEFAULT_ARCHIVE_NODE_ID,
-  deleteNode,
-} from "./node-lifecycle";
+import { archiveNode, DEFAULT_ARCHIVE_NODE_ID, deleteNode } from "./node-lifecycle";
+import { isArchivedNode } from "./archive-status";
 import { DEFAULT_HOME_NODE_ID, getNodeDetail, searchNodes } from "./queries";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
+  seedTestIncludes,
   seedTestNode,
 } from "./content/test-helpers";
 
@@ -21,40 +18,28 @@ describe("record lifecycle", () => {
 
   seedTestNode(fixture, {
     id: DEFAULT_HOME_NODE_ID,
-    properties: { title: "Marloth", inferred_notion_path: "Marloth" },
+    properties: { title: "Marloth" },
   });
   seedTestNode(fixture, {
     id: DEFAULT_ARCHIVE_NODE_ID,
-    properties: { title: "Archive", inferred_notion_path: "Marloth" },
+    properties: { title: "Archive" },
   });
   seedTestNode(fixture, {
     id: PAGE_ACTIVE,
-    properties: {
-      title: "Active Scene",
-      inferred_notion_path: "Marloth/Scenes/Active Scene",
-    },
+    properties: { title: "Active Scene" },
   });
   seedTestNode(fixture, {
     id: PAGE_ARCHIVED,
-    properties: {
-      title: "Old Scene",
-      inferred_notion_path: "Marloth/Archive/Old Scene",
-    },
+    properties: { title: "Old Scene" },
   });
 
-  test("archivePathForNode preserves leaf segment under Archive", () => {
-    expect(archivePathForNode("Marloth/Features/Idea", "Idea")).toBe("Marloth/Archive/Idea");
-    expect(archivePathForNode(null, "Untitled note")).toBe("Marloth/Archive/Untitled note");
-  });
+  seedTestIncludes(fixture, [{ a: DEFAULT_ARCHIVE_NODE_ID, b: PAGE_ARCHIVED }]);
 
-  test("archiveNode moves page under Archive and links to Archive node", () => {
+  test("archiveNode links page to Archive via includes", () => {
     expect(archiveNode(fixture.ctx, PAGE_ACTIVE)).toBeNull();
     const detail = getNodeDetail(fixture.ctx.db, PAGE_ACTIVE);
-    expect(detail?.path).toBe("Marloth/Archive/Active Scene");
-    expect(
-      fixture.ctx.db.listRelationshipsFromSource(PAGE_ACTIVE, "archive_member")[0]
-        ?.targetNodeId,
-    ).toBe(DEFAULT_ARCHIVE_NODE_ID);
+    expect(detail?.archived).toBe(true);
+    expect(isArchivedNode(fixture.ctx.db, PAGE_ACTIVE)).toBe(true);
   });
 
   test("archiveNode rejects protected and already archived pages", () => {

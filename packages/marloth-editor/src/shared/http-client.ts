@@ -76,7 +76,12 @@ export interface EditorApiClient {
     configId: string,
     params: OrderedAssociationMoveParams,
   ): Promise<OrderedAssociationViewDetail>;
-  search(query: string, limit?: number, allowedTypeIds?: string[]): Promise<NodeSummary[]>;
+  search(
+    query: string,
+    limit?: number,
+    allowedTypeIds?: string[],
+    options?: { includeBody?: boolean },
+  ): Promise<NodeSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
   saveTitle(id: string, title: string): Promise<void>;
   updateDatabaseRowProperty(
@@ -290,10 +295,18 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       );
       return data.view;
     },
-    async search(query: string, limit = 20, allowedTypeIds?: string[]): Promise<NodeSummary[]> {
+    async search(
+      query: string,
+      limit = 20,
+      allowedTypeIds?: string[],
+      options?: { includeBody?: boolean },
+    ): Promise<NodeSummary[]> {
       const params = new URLSearchParams({ q: query, limit: String(limit) });
       if (allowedTypeIds?.length) {
         params.set("allowedTypeIds", allowedTypeIds.join(","));
+      }
+      if (options?.includeBody) {
+        params.set("includeBody", "1");
       }
       const data = await fetchJson<{ results: NodeSummary[] }>(
         `/api/nodes/search?${params}`,

@@ -1,19 +1,20 @@
 import type { GraphDatabase } from "./graph";
-import { isArchivedNotionPath } from "./archive-path";
+import { isArchivedNode } from "./archive-status";
 import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterNodeWrite } from "./content/write-context";
 import { bodyFromNode } from "./content/node-file";
-import { isTypeTableNode } from "./node-capabilities";
+import { isTypeTableNode, primaryTypeTitleForInstance } from "./node-capabilities";
 
 export interface NodeSummary {
   id: string;
   title: string;
-  path: string | null;
+  primaryTypeTitle: string | null;
 }
 
 export interface NodeDetail extends NodeSummary {
   body: string;
   isTypeTable: boolean;
+  archived: boolean;
 }
 
 function titleFromProperties(properties: Record<string, unknown>): string {
@@ -22,11 +23,6 @@ function titleFromProperties(properties: Record<string, unknown>): string {
   const alias = properties.alias;
   if (typeof alias === "string" && alias.trim()) return alias.trim();
   return "Untitled";
-}
-
-function pathFromProperties(properties: Record<string, unknown>): string | null {
-  const path = properties.inferred_notion_path;
-  return typeof path === "string" && path.trim() ? path.trim() : null;
 }
 
 function bodyFromProperties(properties: Record<string, unknown>): string {
@@ -42,23 +38,26 @@ export function getNodeDetail(db: GraphDatabase, id: string): NodeDetail | null 
   return {
     id: node.id,
     title: titleFromProperties(node.properties),
-    path: pathFromProperties(node.properties),
+    primaryTypeTitle: primaryTypeTitleForInstance(db, id),
     body: bodyFromProperties(node.properties),
     isTypeTable: isTypeTableNode(db, id),
+    archived: isArchivedNode(db, id),
   };
 }
 
-function toActiveNodeSummary(row: {
-  id: string;
-  title: string;
-  path: string | null;
-}): NodeSummary | null {
-  if (isArchivedNotionPath(row.path)) return null;
+function toActiveNodeSummary(
+  db: GraphDatabase,
+  row: { id: string; title: string },
+): NodeSummary {
   return {
     id: row.id,
     title: row.title,
-    path: row.path,
+    primaryTypeTitle: primaryTypeTitleForInstance(db, row.id),
   };
+}
+
+export interface SearchNodesOptions {
+  includeBody?: boolean;
 }
 
 export function searchNodes(
@@ -66,6 +65,7 @@ export function searchNodes(
   query: string,
   limit = 20,
   allowedTypeIds?: readonly string[],
+  options?: SearchNodesOptions,
 ): NodeSummary[] {
   const trimmed = query.trim();
   const cap = Math.max(1, Math.min(limit, 100));
@@ -73,10 +73,28 @@ export function searchNodes(
     return listRecentNodes(db, cap, allowedTypeIds);
   }
   const pattern = `%${trimmed.replace(/[%_\\]/g, "\\$&")}%`;
-  return db
-    .searchNodesByTitle(pattern, cap, allowedTypeIds)
-    .map(toActiveNodeSummary)
-    .filter((row): row is NodeSummary => row !== null);
+  const titleRows = db.searchNodesByTitle(pattern, cap, allowedTypeIds);
+  const summaries = titleRows.map((row) => toActiveNodeSummary(db, row));
+
+  if (!options?.includeBody) {
+    return summaries;
+  }
+
+  if (summaries.length >= cap) {
+    return summaries;
+  }
+
+  const seen = new Set(summaries.map((row) => row.id));
+  const bodyFetchLimit = cap + seen.size;
+  const bodyRows = db.searchNodesByBody(pattern, bodyFetchLimit, allowedTypeIds);
+  for (const row of bodyRows) {
+    if (seen.has(row.id)) continue;
+    summaries.push(toActiveNodeSummary(db, row));
+    seen.add(row.id);
+    if (summaries.length >= cap) break;
+  }
+
+  return summaries;
 }
 
 export function listRecentNodes(
@@ -85,10 +103,7 @@ export function listRecentNodes(
   allowedTypeIds?: readonly string[],
 ): NodeSummary[] {
   const cap = Math.max(1, Math.min(limit, 100));
-  return db
-    .listNodesByTitle(cap, allowedTypeIds)
-    .map(toActiveNodeSummary)
-    .filter((row): row is NodeSummary => row !== null);
+  return db.listNodesByTitle(cap, allowedTypeIds).map((row) => toActiveNodeSummary(db, row));
 }
 
 function touchNodeTimestamps(

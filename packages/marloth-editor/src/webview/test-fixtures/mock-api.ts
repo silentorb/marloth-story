@@ -44,7 +44,7 @@ export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"):
         sorts: [{ column: "name", direction: "asc" as const }],
       })),
     deleteDatabaseColumn: async () => ({ rowsAffected: 0, relationsUnlinked: 0 }),
-    search: async () => [],
+    search: async (_query, _limit, _allowedTypeIds, _options) => [],
     saveBody: async () => {},
     saveTitle: async () => {},
     updateDatabaseRowProperty: async () => {},

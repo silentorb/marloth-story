@@ -9,7 +9,6 @@ export const NODE_META_KEYS = new Set([
   "alias",
   "notion_id",
   "source_export",
-  "inferred_notion_path",
   "created_at",
   "modified_at",
   "notion_url",
@@ -84,25 +83,10 @@ export function typeDatabaseTitleFromPath(
 }
 
 export function expectedTypeDatabaseForPage(
-  db: GraphDatabase,
-  nodeId: string,
+  _db: GraphDatabase,
+  _nodeId: string,
 ): { databaseId: string; databaseTitle: string; path: string } | null {
-  const page = db.getNode(nodeId);
-  if (!page || isTypeTableNode(db, nodeId)) return null;
-
-  const path =
-    typeof page.properties.inferred_notion_path === "string"
-      ? page.properties.inferred_notion_path.trim()
-      : "";
-  if (!path) return null;
-
-  const databaseTitle = typeDatabaseTitleFromPath(db, path);
-  if (!databaseTitle) return null;
-
-  const databaseId = findTypeNodeByTitle(db, databaseTitle);
-  if (!databaseId) return null;
-
-  return { databaseId, databaseTitle, path };
+  return null;
 }
 
 export function findTypeMembershipRelationship(

@@ -25,6 +25,7 @@ import {
 } from "./paths";
 import { ContentStore } from "./store";
 import { expandAllRelationships } from "./relationship-sync-expand";
+import { DEFAULT_ARCHIVE_NODE_ID } from "../archive-status";
 
 let cachedDynamicConfig: {
   mtimeMs: number;
@@ -175,11 +176,16 @@ export class CacheSync {
       for (const projection of projections) {
         this.db.upsertRelationshipProjection(projection);
       }
+      this.recomputeArchivedFlags();
       this.db.runExec("COMMIT");
     } catch (err) {
       this.db.runExec("ROLLBACK");
       throw err;
     }
+  }
+
+  recomputeArchivedFlags(): void {
+    this.db.recomputeArchivedFlags(DEFAULT_ARCHIVE_NODE_ID);
   }
 
   fullRebuild(): void {

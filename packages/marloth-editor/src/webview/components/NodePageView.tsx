@@ -55,40 +55,42 @@ export function NodePageView({
   const showPageActions = !isProtectedEditorNode(node.id);
   const [relateOpen, setRelateOpen] = useState(false);
 
+  const saveStatusLabel =
+    saveState === "dirty"
+      ? "Unsaved changes"
+      : saveState === "saving"
+        ? "Saving…"
+        : saveState === "saved"
+          ? "Saved"
+          : saveState === "error"
+            ? "Save failed"
+            : "";
+
   return (
     <div className="marloth-record-page">
-      <div className="marloth-app-bar">
-        <div className="marloth-record-page-heading">
-          {node.path ? <span className="marloth-record-page-path">{node.path}</span> : null}
-        </div>
-        <div className="marloth-app-bar-actions">
-          {showPageActions ? (
-            <PageActionsMenu
-              recordTitle={node.title}
-              recordPath={node.path}
-              disabled={saveState === "saving"}
-              onRelate={() => setRelateOpen(true)}
-              onArchive={() => onArchiveNode(node.id)}
-              onDelete={() => onDeleteNode(node.id)}
-            />
-          ) : null}
-          <span className={`marloth-save-status is-${saveState}`}>
-          {saveState === "dirty"
-            ? "Unsaved changes"
-            : saveState === "saving"
-              ? "Saving…"
-              : saveState === "saved"
-                ? "Saved"
-                : saveState === "error"
-                  ? "Save failed"
-                  : ""}
-          </span>
-        </div>
-      </div>
-
       <div className="marloth-record-sections">
         <section className="marloth-record-section marloth-page-title-section">
-          <PageTitle value={node.title} onChange={onTitleChange} />
+          {node.archived ? (
+            <span className="marloth-record-page-archived">Archived</span>
+          ) : null}
+          <div className="marloth-page-title-row">
+            <PageTitle value={node.title} onChange={onTitleChange} />
+            <div className="marloth-page-title-actions">
+              {showPageActions ? (
+                <PageActionsMenu
+                  recordTitle={node.title}
+                  archived={node.archived}
+                  disabled={saveState === "saving"}
+                  onRelate={() => setRelateOpen(true)}
+                  onArchive={() => onArchiveNode(node.id)}
+                  onDelete={() => onDeleteNode(node.id)}
+                />
+              ) : null}
+              {saveStatusLabel ? (
+                <span className={`marloth-save-status is-${saveState}`}>{saveStatusLabel}</span>
+              ) : null}
+            </div>
+          </div>
         </section>
 
         <NodeMetadataPanel

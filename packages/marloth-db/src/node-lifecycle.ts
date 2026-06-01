@@ -1,9 +1,10 @@
 import type { MarlothWriteContext } from "./content/write-context";
-import { syncAfterRelationshipsWrite, syncAfterNodeWrite } from "./content/write-context";
-import { ARCHIVE_NOTION_PATH_PREFIX, isArchivedNotionPath } from "./archive-path";
+import { syncAfterNodeWrite, syncAfterRelationshipsWrite } from "./content/write-context";
+import { DEFAULT_ARCHIVE_NODE_ID, isArchivedNode } from "./archive-status";
+import { INCLUDES_TYPE } from "./includes-relationship";
 import { DEFAULT_HOME_NODE_ID } from "./queries";
 
-export const DEFAULT_ARCHIVE_NODE_ID = "0f558a609a56485185beed4d1fd1cd9f";
+export { DEFAULT_ARCHIVE_NODE_ID } from "./archive-status";
 
 export type NodeLifecycleError = "not_found" | "protected" | "already_archived";
 
@@ -11,29 +12,6 @@ const PROTECTED_NODE_IDS = new Set([DEFAULT_HOME_NODE_ID, DEFAULT_ARCHIVE_NODE_I
 
 export function isProtectedNodeId(id: string): boolean {
   return PROTECTED_NODE_IDS.has(id);
-}
-
-function titleFromProperties(properties: Record<string, unknown>): string {
-  const title = properties.title;
-  if (typeof title === "string" && title.trim()) return title.trim();
-  const alias = properties.alias;
-  if (typeof alias === "string" && alias.trim()) return alias.trim();
-  return "Untitled";
-}
-
-function pathFromProperties(properties: Record<string, unknown>): string | null {
-  const path = properties.inferred_notion_path;
-  return typeof path === "string" && path.trim() ? path.trim() : null;
-}
-
-export function archivePathForNode(currentPath: string | null, title: string): string {
-  let leaf = title.trim() || "Untitled";
-  if (currentPath) {
-    const segments = currentPath.split("/").filter(Boolean);
-    const last = segments[segments.length - 1];
-    if (last && last !== "Marloth") leaf = last;
-  }
-  return `${ARCHIVE_NOTION_PATH_PREFIX}/${leaf}`;
 }
 
 export function deleteNode(ctx: MarlothWriteContext, id: string): NodeLifecycleError | null {
@@ -49,17 +27,10 @@ export function deleteNode(ctx: MarlothWriteContext, id: string): NodeLifecycleE
 
 export function archiveNode(ctx: MarlothWriteContext, id: string): NodeLifecycleError | null {
   if (isProtectedNodeId(id)) return "protected";
-  const node = ctx.store.readNode(id);
-  if (!node) return "not_found";
+  if (!ctx.store.readNode(id)) return "not_found";
+  if (isArchivedNode(ctx.db, id)) return "already_archived";
 
-  const currentPath = pathFromProperties(node.properties);
-  if (isArchivedNotionPath(currentPath)) return "already_archived";
-
-  const title = titleFromProperties(node.properties);
-  const archivePath = archivePathForNode(currentPath, title);
-  ctx.store.mergeNodeProperties(id, { inferred_notion_path: archivePath });
-  ctx.store.upsertRelationship(id, DEFAULT_ARCHIVE_NODE_ID, "archive_member");
-  syncAfterNodeWrite(ctx, id);
+  ctx.store.upsertRelationship(DEFAULT_ARCHIVE_NODE_ID, id, INCLUDES_TYPE);
   syncAfterRelationshipsWrite(ctx);
   return null;
 }

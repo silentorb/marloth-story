@@ -16,7 +16,6 @@ export function getStaticPaths() {
       params: { id: node.id },
       props: {
         title,
-        path: node.path,
         markdown: prepareNodeMarkdown(node.body, node.title, base),
       },
     };
@@ -25,15 +24,14 @@ export function getStaticPaths() {
 
 interface Props {
   title: string;
-  path: string | null;
   markdown: string;
 }
 
-const { title, path, markdown } = Astro.props;
+const { title, markdown } = Astro.props;
 const bodyHtml = markdown ? await renderMarkdownToHtml(markdown) : "";
 ---
 
-<NodeLayout title={title} path={path}>
+<NodeLayout title={title}>
   <h1 class="page-title">{title}</h1>
   {
     bodyHtml ? (

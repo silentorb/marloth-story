@@ -15,7 +15,7 @@ The `marloth-static-site` package reads the git-tracked design corpus via `marlo
 ## Requirements
 
 - **Must** include every node returned by `ContentStore.listNodeIds()` (~all `content/data/*.md` files).
-- **Must** render title, `inferred_notion_path` (when present), and markdown body per node.
+- **Must** render title and markdown body per node.
 - **Must** rewrite internal graph links (`marloth:{id}` and legacy Notion `{32-hex}.md` paths) to static node URLs.
 - **Must** use a dark theme consistent with the Marloth editor palette.
 - **Must** write to `dist/web/` by default; output directory **must** be configurable for external tools.
