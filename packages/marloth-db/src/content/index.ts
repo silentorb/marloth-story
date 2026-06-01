@@ -43,16 +43,22 @@ export {
 } from "./node-file";
 export type { ParsedNodeFile } from "./node-file";
 export {
+  CONTENT_DATA_SUBDIR,
+  CONTENT_MODEL_SUBDIR,
   RELATIONSHIPS_FILENAME,
   RELATIONSHIP_TYPES_FILENAME,
   DYNAMIC_FIELDS_FILENAME,
+  SCHEMA_FILENAME,
   VIEWS_FILENAME,
   NODE_FILE_PATTERN,
   NODE_ID_PATTERN,
+  contentDataDir,
+  contentModelDir,
   relationshipsFilePath,
   relationshipTypesFilePath,
   defaultDbPathForContent,
   dynamicFieldsFilePath,
+  schemaFilePath,
   viewsFilePath,
   isNodeId,
   nodeFileName,

@@ -2,7 +2,7 @@
 
 ## Summary
 
-UI-only table tab configuration for node pages lives in [`content/views.json`](../../content/views.json). It overlays the editor without changing graph data in node markdown files.
+UI-only table tab configuration for node pages lives in [`content/model/views.json`](../../content/model/views.json). It overlays the editor without changing graph data in node markdown files.
 
 ## Tab kinds
 

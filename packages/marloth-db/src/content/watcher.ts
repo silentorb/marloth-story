@@ -7,12 +7,15 @@ import {
   SCHEMA_FILENAME,
   VIEWS_FILENAME,
   NODE_FILE_PATTERN,
+  contentDataDir,
+  contentModelDir,
 } from "./paths";
 
 const DEBOUNCE_MS = 200;
 
 export class ContentWatcher {
-  private watcher: FSWatcher | null = null;
+  private dataWatcher: FSWatcher | null = null;
+  private modelWatcher: FSWatcher | null = null;
   private pending = new Map<string, ReturnType<typeof setTimeout>>();
   private closed = false;
 
@@ -22,30 +25,42 @@ export class ContentWatcher {
   ) {}
 
   start(): void {
-    if (this.watcher) return;
-    const contentDir = this.sync.contentDir;
+    if (this.dataWatcher || this.modelWatcher) return;
+    const root = this.sync.contentDir;
+    this.dataWatcher = this.watchDir(contentDataDir(root), (name) => this.isRelevantDataFile(name));
+    this.modelWatcher = this.watchDir(contentModelDir(root), (name) => this.isRelevantModelFile(name));
+  }
+
+  private watchDir(
+    dir: string,
+    isRelevant: (name: string) => boolean,
+  ): FSWatcher | null {
     try {
-      this.watcher = watch(contentDir, (event, filename) => {
+      const watcher = watch(dir, (event, filename) => {
         if (this.closed || !filename || typeof filename !== "string") return;
-        if (!this.isRelevantFile(filename)) return;
+        if (!isRelevant(filename)) return;
         this.schedule(filename);
       });
-      this.watcher.on("error", (err) => {
+      watcher.on("error", (err) => {
         this.onError?.(err instanceof Error ? err : new Error(String(err)));
       });
+      return watcher;
     } catch (err) {
       this.onError?.(err instanceof Error ? err : new Error(String(err)));
+      return null;
     }
   }
 
-  private isRelevantFile(name: string): boolean {
+  private isRelevantDataFile(name: string): boolean {
+    return name === RELATIONSHIPS_FILENAME || NODE_FILE_PATTERN.test(name);
+  }
+
+  private isRelevantModelFile(name: string): boolean {
     return (
-      name === RELATIONSHIPS_FILENAME ||
       name === RELATIONSHIP_TYPES_FILENAME ||
       name === SCHEMA_FILENAME ||
       name === DYNAMIC_FIELDS_FILENAME ||
-      name === VIEWS_FILENAME ||
-      NODE_FILE_PATTERN.test(name)
+      name === VIEWS_FILENAME
     );
   }
 
@@ -70,7 +85,9 @@ export class ContentWatcher {
     this.closed = true;
     for (const timer of this.pending.values()) clearTimeout(timer);
     this.pending.clear();
-    this.watcher?.close();
-    this.watcher = null;
+    this.dataWatcher?.close();
+    this.modelWatcher?.close();
+    this.dataWatcher = null;
+    this.modelWatcher = null;
   }
 }

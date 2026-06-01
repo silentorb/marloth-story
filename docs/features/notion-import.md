@@ -6,7 +6,7 @@
 
 ## Summary
 
-The Notion import feature transforms narrative and database content from a Notion export into a property graph (today: flat `content/` files; historically `data/marloth.sqlite`), plus machine-readable metadata under `docs/`. Implementation lives in `packages/notion-importer`; graph storage in `packages/marloth-db`.
+The Notion import feature transforms narrative and database content from a Notion export into a property graph (today: `content/data/` + `content/model/`; historically `data/marloth.sqlite`), plus machine-readable metadata under `docs/`. Implementation lives in `packages/notion-importer`; graph storage in `packages/marloth-db`.
 
 ## When to read this
 

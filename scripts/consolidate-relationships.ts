@@ -9,6 +9,12 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import {
+  relationshipsFilePath,
+  relationshipTypesFilePath,
+  schemaFilePath,
+  resolveContentPath,
+} from "../packages/marloth-db/src/content/paths";
+import {
   compositeTypeForPerspectives,
   emptyRelationshipTypesFile,
   registerBidirectionalType,
@@ -24,7 +30,7 @@ import {
 } from "../packages/marloth-db/src/content/relationships-file";
 import { normalizeRelationshipType } from "../packages/marloth-db/src/relation-type";
 
-const contentDir = resolve(import.meta.dir, "../content");
+const contentRoot = resolveContentPath(resolve(import.meta.dir, ".."));
 const dryRun = process.argv.includes("--dry-run");
 
 interface V1Edge {
@@ -35,7 +41,7 @@ interface V1Edge {
 }
 
 function loadV1(): V1Edge[] {
-  const raw = readFileSync(resolve(contentDir, "relationships.json"), "utf-8");
+  const raw = readFileSync(relationshipsFilePath(contentRoot), "utf-8");
   const data = JSON.parse(raw) as { relationships: Record<string, unknown>[] };
   const edges: V1Edge[] = [];
   for (const row of data.relationships) {
@@ -153,16 +159,16 @@ function main(): void {
   }
 
   writeFileSync(
-    resolve(contentDir, "relationships.json"),
+    relationshipsFilePath(contentRoot),
     serializeRelationshipsFile({ version: RELATIONSHIPS_FILE_VERSION, relationships: v2 }),
   );
   writeFileSync(
-    resolve(contentDir, "relationship-types.json"),
+    relationshipTypesFilePath(contentRoot),
     serializeRelationshipTypesFile(registry),
   );
 
   // Migrate schema.json label → type, lowercase
-  const schemaPath = resolve(contentDir, "schema.json");
+  const schemaPath = schemaFilePath(contentRoot);
   try {
     const schema = JSON.parse(readFileSync(schemaPath, "utf-8")) as {
       version: number;

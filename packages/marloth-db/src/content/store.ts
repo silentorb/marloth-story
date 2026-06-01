@@ -6,7 +6,7 @@ import {
   rmSync,
   writeFileSync,
 } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname } from "node:path";
 import type { Node, Properties } from "../graph";
 import { relationshipId } from "../graph";
 import { normalizeRelationshipType } from "../relation-type";
@@ -45,6 +45,8 @@ import {
 } from "./views-file";
 import { bodyFromNode, nodeFromFile, serializeNodeFile } from "./node-file";
 import {
+  contentDataDir,
+  contentModelDir,
   relationshipsFilePath,
   relationshipTypesFilePath,
   dynamicFieldsFilePath,
@@ -52,7 +54,7 @@ import {
   isNodeId,
   nodeFilePath,
   NODE_FILE_PATTERN,
-  CONNECTIONS_FILENAME,
+  legacyConnectionsFilePath,
 } from "./paths";
 
 function atomicWrite(filePath: string, content: string): void {
@@ -63,16 +65,18 @@ function atomicWrite(filePath: string, content: string): void {
 }
 
 export class ContentStore {
+  /** Content root (`content/`), not `content/data`. */
   readonly contentDir: string;
 
   constructor(contentDir: string) {
     this.contentDir = contentDir;
-    mkdirSync(contentDir, { recursive: true });
+    mkdirSync(contentDataDir(contentDir), { recursive: true });
+    mkdirSync(contentModelDir(contentDir), { recursive: true });
   }
 
   listNodeIds(): string[] {
     try {
-      return readdirSync(this.contentDir)
+      return readdirSync(contentDataDir(this.contentDir))
         .filter((name) => NODE_FILE_PATTERN.test(name))
         .map((name) => name.slice(0, 32));
     } catch {
@@ -113,7 +117,7 @@ export class ContentStore {
       return parseRelationshipsFile(readFileSync(path, "utf-8"));
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code === "ENOENT") {
-        const legacyFile = join(this.contentDir, CONNECTIONS_FILENAME);
+        const legacyFile = legacyConnectionsFilePath(this.contentDir);
         try {
           return parseRelationshipsFile(readFileSync(legacyFile, "utf-8"));
         } catch (legacyErr) {

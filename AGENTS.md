@@ -9,13 +9,13 @@ This workspace supports a **design-heavy, highly traceable** writing process for
 3. Pioneer a composite of subgenres and writing techniques.
 4. Capture general writing and design ideas that may benefit others later.
 
-The git-tracked design corpus in `./content/` is a flat property graph (markdown nodes + JSON for relationships and dynamic fields), with a local SQLite cache under `./data/` for fast queries.
+The git-tracked design corpus in `./content/` is a property graph: node markdown and relationship instances under `content/data/`, workspace model JSON under `content/model/`, with a local SQLite cache under `./data/` for fast queries.
 
 ## Project Context
 - This repository contains the Marloth Story project, related to the Marloth series of fantasy novels and overlapping game-design work.
 - Keep updates aligned with the repository's current scope and documentation.
 - The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs live in `./docs/features/` (see Terminology below). The **design ontology** lives at [`docs/ontology.md`](./docs/ontology.md).
-- The `./content` directory is the **canonical store**: one `{nodeId}.md` per node (YAML frontmatter + markdown body), plus `relationships.json`, `relationship-types.json`, `schema.json`, `views.json`, and `dynamic-fields.json`. The directory is **flat** (no subfolders).
+- The `./content` directory is the **canonical store root**: `content/data/{nodeId}.md` per node (YAML frontmatter + markdown body) plus `relationships.json`; `content/model/` holds `relationship-types.json`, `schema.json`, `views.json`, and `dynamic-fields.json`.
 - The `./data/marloth.sqlite` file is a **local query cache** (gitignored). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
 - The `./exports/` directory holds **archival** Notion export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
@@ -30,7 +30,7 @@ The git-tracked design corpus in `./content/` is a flat property graph (markdown
 | **Relationship** | A link between two nodes with a **relationship type** and properties. Stored compactly in `relationships.json`; SQLite cache expands to directed projections. |
 | **Page** | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a Notion export file. |
 | **Feature** (unqualified) | A **design node** (story/game feature idea), usually under `Marloth/Features/`, unless context clearly means a project feature. |
-| **Schema** | Git-tracked relationship rules in `content/schema.json` (allowed target types per relationship type). Not SQLite DDL. |
+| **Schema** | Git-tracked relationship rules in `content/model/schema.json` (allowed target types per relationship type). Not SQLite DDL. |
 | **Type table** | Any node used as an `IS_A` target and/or with `notion_schema` / `notion_database` metadata—not a permanent import label. |
 
 ## Data modeling direction
@@ -41,14 +41,14 @@ Imported Notion data already separates nodes somewhat by **product** (books, gam
 
 ## Graph data workflow
 
-The flat `./content/` tree is **authoritative and git-tracked**. Notion import was a one-time migration path; ongoing work **must** edit content files (or use tooling that writes them).
+The `./content/` tree is **authoritative and git-tracked**. Notion import was a one-time migration path; ongoing work **must** edit content files (or use tooling that writes them). `MARLOTH_CONTENT_PATH` points at the **content root** (`./content`), not `content/data`.
 
 | Task | Do | Do not |
 | --- | --- | --- |
-| Add or edit nodes, bodies, titles | Edit `content/{nodeId}.md` or use the marloth editor / `ContentStore` (`packages/marloth-db`) | Edit `data/marloth.sqlite` directly |
-| Add or edit relationships | Edit `content/relationships.json`, `content/relationship-types.json`, or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files |
-| Dynamic field bindings | Edit `content/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts` | Use removed `dynamic_*` SQLite overlay tables |
-| Table view tabs (custom / generated) | Edit `content/views.json` or use editor tab CRUD | Edit `notion_views` on node frontmatter (legacy) |
+| Add or edit nodes, bodies, titles | Edit `content/data/{nodeId}.md` or use the marloth editor / `ContentStore` (`packages/marloth-db`) | Edit `data/marloth.sqlite` directly |
+| Add or edit relationships | Edit `content/data/relationships.json`, `content/model/relationship-types.json`, or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files |
+| Dynamic field bindings | Edit `content/model/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts` | Use removed `dynamic_*` SQLite overlay tables |
+| Table view tabs (custom / generated) | Edit `content/model/views.json` or use editor tab CRUD | Edit `notion_views` on node frontmatter (legacy) |
 | Refresh local cache | `bun run content:sync` or start `editor:api` (rebuilds cache + watches `./content`) | Commit `data/marloth.sqlite` |
 | One-time SQLite → content | `bun run content:export` (from existing `data/marloth.sqlite` if present) | — |
 | Data only in `./exports/` | Mine archive and upsert into `./content` (same mapping rules as legacy import) | Run `bun run notion:import` / `--clean` |

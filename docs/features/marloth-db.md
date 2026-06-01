@@ -2,7 +2,7 @@
 
 ## Summary
 
-The Marloth design corpus is a **git-tracked flat content store** under `content/` (markdown nodes + JSON for relationships and dynamic-field config). Implementation lives in `packages/marloth-db`. **`content/` is the canonical store**; `data/marloth.sqlite` is a **local, gitignored query cache** rebuilt from content. A legacy Notion import pipeline (`packages/notion-importer`) populated the initial graph; use `bun run content:export` to migrate an old SQLite file into `content/` (see [notion-import.md](./notion-import.md)).
+The Marloth design corpus is a **git-tracked content store** under `content/` (`content/data/` for nodes and relationship instances; `content/model/` for workspace JSON). Implementation lives in `packages/marloth-db`. **`content/` is the canonical root**; `data/marloth.sqlite` is a **local, gitignored query cache** rebuilt from content. A legacy Notion import pipeline (`packages/notion-importer`) populated the initial graph; use `bun run content:export` to migrate an old SQLite file into `content/` (see [notion-import.md](./notion-import.md)).
 
 ## When to read this
 
@@ -26,7 +26,7 @@ For **what design nodes mean** (features, inspirations, products, traceability),
 | **Perspective type** | Local type name used in UI/API from one endpoint (e.g. `inspirations` on a Feature page). Mapped to composite storage types via `relationship-types.json`. |
 | **Page** | Editor-facing node view (`getNodePageDetail`, `NodePageView`)—not a Notion export file. |
 | **Type table** | Node that receives `is_a` rows and/or carries table schema metadata (`notion_schema`, etc.). |
-| **Schema** | Workspace model config in `content/schema.json` (relationship rules, enums) — see [schema.md](./schema.md). |
+| **Schema** | Workspace model config in `content/model/schema.json` (relationship rules, enums) — see [schema.md](./schema.md). |
 
 API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` **8**).
 
@@ -34,7 +34,7 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 
 **Default:** change files under `content/`.
 
-- Use `ContentStore` / `MarlothWriteContext` (via editor API or `openMarlothWriteContext`), or edit `content/{id}.md`, `content/relationships.json`, and `content/relationship-types.json` directly.
+- Use `ContentStore` / `MarlothWriteContext` (via editor API or `openMarlothWriteContext`), or edit `content/data/{id}.md`, `content/data/relationships.json`, and `content/model/relationship-types.json` directly.
 - Commit changes under `content/`; do not commit `data/marloth.sqlite`.
 - Run `bun run content:sync` after bulk file edits if the editor API is not running (otherwise the file watcher syncs automatically).
 - **Do not** modify `packages/notion-importer` and run `bun run notion:import` / `--clean` for routine work.
@@ -49,15 +49,17 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 
 | Path | Role |
 | --- | --- |
-| `content/{nodeId}.md` | Canonical node (YAML frontmatter + markdown body) |
-| `content/relationships.json` | Canonical bidirectional relationship records (v2) |
-| `content/relationship-types.json` | Composite type → perspective mapping |
-| `content/views.json` | UI table tab definitions (custom + generated providers) |
-| `content/dynamic-fields.json` | Dynamic table field bindings |
-| `content/schema.json` | Relationship rules and property enums |
+| `content/data/{nodeId}.md` | Canonical node (YAML frontmatter + markdown body) |
+| `content/data/relationships.json` | Canonical bidirectional relationship records (v2) |
+| `content/model/relationship-types.json` | Composite type → perspective mapping |
+| `content/model/views.json` | UI table tab definitions (custom + generated providers) |
+| `content/model/dynamic-fields.json` | Dynamic table field bindings |
+| `content/model/schema.json` | Relationship rules and property enums |
 | `data/marloth.sqlite` | Local query cache (gitignored; default path via `MARLOTH_DB_PATH`) |
 
-- `content/` **must** remain a **flat** directory (only files, no subfolders).
+- `content/data/` holds only node markdown and `relationships.json` (flat within `data/`).
+- `content/model/` holds workspace model JSON (flat within `model/`).
+- `MARLOTH_CONTENT_PATH` **must** point at the **content root** (`./content`), not `content/data`.
 - Node filenames **must** match `^[0-9a-f]{32}\.md$`.
 - SQLite WAL sidecar files (`*.sqlite-wal`, `*.sqlite-shm`) **must not** be committed.
 
@@ -83,7 +85,7 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 | `nodes` | Entity property bags |
 | `meta` | Schema version, content mtime, enum config fingerprint |
 
-**Enum properties in cache:** keys declared in [`content/schema.json`](../../content/schema.json) `enums` (e.g. `priority`) are stored in SQLite relationship `properties` JSON as **0-based indices** into the enum’s `options` array. Git-tracked [`content/relationships.json`](../../content/relationships.json) keeps **string labels**. Encode on cache write and decode on cache read (`packages/marloth-db/src/enum-codec.ts`, `graph.ts`). Changing enum `options` order in `schema.json` triggers a relationship cache re-sync (file watcher + `enum_config_fingerprint` meta check). After pulling enum-cache changes or a `SCHEMA_VERSION` bump, run `bun run content:sync` (or restart the editor API) to rebuild the cache from content.
+**Enum properties in cache:** keys declared in [`content/model/schema.json`](../../content/model/schema.json) `enums` (e.g. `priority`) are stored in SQLite relationship `properties` JSON as **0-based indices** into the enum’s `options` array. Git-tracked [`content/data/relationships.json`](../../content/data/relationships.json) keeps **string labels**. Encode on cache write and decode on cache read (`packages/marloth-db/src/enum-codec.ts`, `graph.ts`). Changing enum `options` order in `schema.json` triggers a relationship cache re-sync (file watcher + `enum_config_fingerprint` meta check). After pulling enum-cache changes or a `SCHEMA_VERSION` bump, run `bun run content:sync` (or restart the editor API) to rebuild the cache from content.
 
 Type-table behavior is inferred from `is_a` usage and schema metadata (`isTypeTableNode` in `node-capabilities.ts`).
 
@@ -125,7 +127,7 @@ Writes go to `content/` via `ContentStore`; sync expands to SQLite projections.
 
 | Path | Role |
 | --- | --- |
-| `content/` | Canonical property graph (flat files) |
+| `content/` | Canonical property graph root (`data/` + `model/`) |
 | `data/marloth.sqlite` | Local query cache |
 | `scripts/consolidate-relationships.ts` | One-time / re-run migration v1 → v2 relationships |
 | `docs/notion-import-manifest.json` | Import summary (nodes, databases, counts) |
@@ -169,7 +171,7 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 | `packages/marloth-db/src/content/relationships-file.ts` | v2 `relationships.json` parse/serialize |
 | `packages/marloth-db/src/content/relationship-types-file.ts` | `relationship-types.json` + composite helpers |
 | `packages/marloth-db/src/content/relationship-sync-expand.ts` | Content → SQLite projection expansion |
-| `packages/marloth-db/src/content/sync.ts` | Cache rebuild and file watcher |
+| `packages/marloth-db/src/content/sync.ts` | Cache rebuild; `content/data` + `content/model` file watchers |
 | `packages/marloth-db/src/graph-export.ts` | Full graph and Graph Explorer LOD export |
 | `packages/marloth-db/src/node-page-sections.ts` | Universal page sections |
 | `packages/marloth-db/src/database-view-relations.ts` | Relation-column hydration |
@@ -178,7 +180,7 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 
 ## See also
 
-- [schema.md](./schema.md) — workspace model config in `content/schema.json`
+- [schema.md](./schema.md) — workspace model config in `content/model/schema.json`
 - [graph-explorer.md](./graph-explorer.md) — anchor-scoped LOD graph visualization
 - [ordered-associations.md](./ordered-associations.md) — automatic sequence for associations (scenes-first)
 - [`../ontology.md`](../ontology.md) — design domain model (storage-agnostic)

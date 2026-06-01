@@ -17,7 +17,7 @@ For each inspiration row:
 
 1. Follow outgoing `FEATURES` relationships from the inspiration page to feature pages.
 2. For each feature page, read the Features database membership relationship `(feature)-[:IS_A]->(Features DB)` and its `priority` property.
-3. Map priority label to weight using `enums.priority.values` in [`content/schema.json`](../../content/schema.json) (interpreted as weights):
+3. Map priority label to weight using `enums.priority.values` in [`content/model/schema.json`](../../content/model/schema.json) (interpreted as weights):
 
 | Priority | Weight |
 | --- | --- |

@@ -1,12 +1,12 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { mkdirSync, writeFileSync } from "node:fs";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
   seedTestNode,
   seedTestRelationships,
 } from "marloth-db/content/test-helpers";
+import { contentModelDir, schemaFilePath } from "marloth-db/content";
 import { createTestApiFromContent } from "./test-api-setup";
 
 describe("relationship types API", () => {
@@ -24,8 +24,9 @@ describe("relationship types API", () => {
     { source: sourceId, target: targetId, type: "features" },
   ]);
 
+  mkdirSync(contentModelDir(fixture.ctx.store.contentDir), { recursive: true });
   writeFileSync(
-    join(fixture.ctx.store.contentDir, "schema.json"),
+    schemaFilePath(fixture.ctx.store.contentDir),
     JSON.stringify({
       version: 1,
       relationshipRules: [

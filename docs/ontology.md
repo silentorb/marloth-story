@@ -45,7 +45,7 @@ When ontology and storage disagree, **update one explicitly**—usually the onto
 
 ## Entity types
 
-Types below are **semantic**. In the graph, type is inferred from `inferred_notion_path`, title, `IS_A` membership, and relationship patterns. Any node may serve as a type when used as an `IS_A` target. Relationship rules live in [`content/schema.json`](./features/schema.md).
+Types below are **semantic**. In the graph, type is inferred from `inferred_notion_path`, title, `IS_A` membership, and relationship patterns. Any node may serve as a type when used as an `IS_A` target. Relationship rules live in [`content/model/schema.json`](./features/schema.md).
 
 ### Creative outputs and scope
 
@@ -169,7 +169,7 @@ This section is a **hint**, not the authoritative schema spec.
 | Node | `nodes` row; JSON `properties` |
 | Node type (semantic) | `inferred_notion_path`, title, body; `IS_A` targets |
 | Type table | `IS_A` target and/or `notion_schema` metadata (`isTypeTableNode`) |
-| Relationship rules | `content/schema.json` |
+| Relationship rules | `content/model/schema.json` |
 | Relationship | `relationships` row with `label` + JSON `properties` |
 | Prose / notes | Node property `body` (markdown) — **first section** on every page |
 | Database row scalars | Relationship properties on `(page)-[:IS_A]->(type)` — not on the page node |

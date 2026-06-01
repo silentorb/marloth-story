@@ -16,7 +16,7 @@ Read before making changes:
 - [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)
 - Root [`AGENTS.md`](../../AGENTS.md) — **Graph data workflow**
 
-**Default:** edit `content/` (`{id}.md`, `relationships.json`, `dynamic-fields.json`) or use `ContentStore` / the editor API. **Do not** edit `data/marloth.sqlite` directly or run `bun run notion:import` / `--clean` for routine work.
+**Default:** edit `content/data/` (`{id}.md`, `relationships.json`) and `content/model/` (`schema.json`, `views.json`, etc.) or use `ContentStore` / the editor API. **Do not** edit `data/marloth.sqlite` directly or run `bun run notion:import` / `--clean` for routine work.
 
 **Archival exports:** if data exists only in `./exports/`, mine the relevant files and upsert into `content/` — see [`docs/features/notion-import.md`](../../docs/features/notion-import.md) (legacy).
 

@@ -9,7 +9,7 @@ import { getDatabaseViewDetail } from "./database-view";
 import { filterEvalRows, sortEvalRows, type EvalRow } from "./notion-view-eval";
 import { serializeViewsFile, VIEWS_FILE_VERSION } from "./content/views-file";
 import { serializeDynamicFieldsFile, emptyDynamicFieldsFile } from "./content/dynamic-fields-file";
-import { viewsFilePath, dynamicFieldsFilePath } from "./content/paths";
+import { contentModelDir, viewsFilePath, dynamicFieldsFilePath } from "./content/paths";
 
 describe("notion-view-eval", () => {
   const rows: EvalRow[] = [
@@ -54,7 +54,7 @@ describe("getDatabaseViewDetail with custom tabs", () => {
   test("uses views.json tab sorts and shows all schema columns", () => {
     const dir = mkdtempSync(join(tmpdir(), "marloth-db-view-tabs-"));
     const contentDir = join(dir, "content");
-    mkdirSync(contentDir, { recursive: true });
+    mkdirSync(contentModelDir(contentDir), { recursive: true });
     const db = new GraphDatabase(join(dir, "test.sqlite"), { clean: true });
     const databaseId = "dddddddddddddddddddddddddddddddd";
 
@@ -115,7 +115,7 @@ describe("getDatabaseViewDetail with custom tabs", () => {
   test("applies section columnOrder override from views.json", () => {
     const dir = mkdtempSync(join(tmpdir(), "marloth-db-view-cols-"));
     const contentDir = join(dir, "content");
-    mkdirSync(contentDir, { recursive: true });
+    mkdirSync(contentModelDir(contentDir), { recursive: true });
     const db = new GraphDatabase(join(dir, "test.sqlite"), { clean: true });
     const databaseId = "dddddddddddddddddddddddddddddddd";
 

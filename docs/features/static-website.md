@@ -14,7 +14,7 @@ The `marloth-static-site` package reads the git-tracked design corpus via `marlo
 
 ## Requirements
 
-- **Must** include every node returned by `ContentStore.listNodeIds()` (~all `content/*.md` files).
+- **Must** include every node returned by `ContentStore.listNodeIds()` (~all `content/data/*.md` files).
 - **Must** render title, `inferred_notion_path` (when present), and markdown body per node.
 - **Must** rewrite internal graph links (`marloth:{id}` and legacy Notion `{32-hex}.md` paths) to static node URLs.
 - **Must** use a dark theme consistent with the Marloth editor palette.
@@ -39,8 +39,8 @@ Astro produces plain static HTML suitable for copying into any host or parent bu
 
 | Input | Source |
 | --- | --- |
-| Nodes | `content/{id}.md` |
-| Relationships (cache) | `content/relationships.json` via SQLite rebuild |
+| Nodes | `content/data/{id}.md` |
+| Relationships (cache) | `content/data/relationships.json` via SQLite rebuild |
 
 | Output | Default path |
 | --- | --- |

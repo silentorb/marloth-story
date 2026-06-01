@@ -60,7 +60,13 @@ describe("schema rules", () => {
   test("loadSchemaFromContent reads repo schema.json", () => {
     const schema = loadSchemaFromContent(resolveContentPath());
     expect(schema.relationshipRules.length).toBeGreaterThan(0);
-    expect(schema.enums.priority?.options).toEqual(["Low", "Medium", "High", "Consideration"]);
+    expect(schema.enums.priority?.options).toEqual([
+      "Consideration",
+      "Low",
+      "Medium",
+      "High",
+      "Primary",
+    ]);
     expect(schema.enums.priority?.defaultOrder).toBe("desc");
     expect(schema.enums.priority?.values?.High).toBe(4);
   });

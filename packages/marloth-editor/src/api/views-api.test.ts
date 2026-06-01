@@ -4,13 +4,13 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { createApiHandler } from "./server";
 import { serializeViewsFile, VIEWS_FILE_VERSION } from "marloth-db";
-import { viewsFilePath } from "marloth-db/content";
+import { contentModelDir, viewsFilePath } from "marloth-db/content";
 
 describe("views API", () => {
   test("POST and PATCH section tabs", async () => {
     const dir = mkdtempSync(join(tmpdir(), "marloth-views-api-"));
     const contentDir = join(dir, "content");
-    mkdirSync(contentDir, { recursive: true });
+    mkdirSync(contentModelDir(contentDir), { recursive: true });
     const nodeId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     writeFileSync(
       viewsFilePath(contentDir),

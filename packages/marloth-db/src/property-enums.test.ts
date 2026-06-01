@@ -69,7 +69,7 @@ describe("property-enums", () => {
     );
     expect(enriched.type).toBe("enum");
     expect(enriched.enumId).toBe("priority");
-    expect(enriched.options).toEqual([...getPriorityOptions()]);
+    expect(enriched.options).toEqual(["Low", "Medium", "High", "Consideration"]);
     expect(enriched.defaultValue).toBe("Low");
     expect(enriched.defaultOrder).toBe("desc");
   });

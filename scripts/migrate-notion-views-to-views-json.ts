@@ -16,7 +16,7 @@ import {
   type CustomTabDefinition,
   type ViewsFile,
 } from "marloth-db";
-import { resolveContentPath } from "marloth-db/content";
+import { contentDataDir, resolveContentPath, viewsFilePath } from "marloth-db/content";
 
 const SCENES_DB = "204dba198db74611b0b49a98dd53e8f5";
 
@@ -74,16 +74,17 @@ function hasFilter(filter: unknown): boolean {
 }
 
 function main(): void {
-  const contentDir = resolveContentPath();
+  const contentRoot = resolveContentPath();
+  const dataDir = contentDataDir(contentRoot);
   const views: ViewsFile = emptyViewsFile();
   const removed: RemovedTab[] = [];
   let migratedTabCount = 0;
   let updatedNodeFiles = 0;
 
-  for (const file of readdirSync(contentDir)) {
+  for (const file of readdirSync(dataDir)) {
     if (!file.endsWith(".md")) continue;
     const nodeId = file.replace(/\.md$/, "");
-    const path = join(contentDir, file);
+    const path = join(dataDir, file);
     const raw = readFileSync(path, "utf-8");
     const parsed = parseFrontmatter(raw);
     if (!parsed) continue;
@@ -158,7 +159,7 @@ function main(): void {
     updatedNodeFiles += 1;
   }
 
-  writeFileSync(join(contentDir, "views.json"), serializeViewsFile(views));
+  writeFileSync(viewsFilePath(contentRoot), serializeViewsFile(views));
 
   console.log("Migration complete");
   console.log(`  Nodes in views.json: ${Object.keys(views.nodes).length}`);

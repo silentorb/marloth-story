@@ -2,13 +2,13 @@
 
 ## Summary
 
-Git-tracked [`content/schema.json`](../../content/schema.json) declares optional **workspace model configuration**: relationship rules, property enums, and (in future) additional sections. Only core graph mechanics stay in the editor; labels, enum options, defaults, and per-option numeric values live here.
+Git-tracked [`content/model/schema.json`](../../content/model/schema.json) declares optional **workspace model configuration**: relationship rules, property enums, and (in future) additional sections. Only core graph mechanics stay in the editor; labels, enum options, defaults, and per-option numeric values live here.
 
 This is separate from:
 
 - SQLite DDL (`SCHEMA_VERSION` in `packages/marloth-db/src/schema.ts`)
 - Per-node Notion table metadata (`notion_schema`, etc.)
-- Composite storage types in [`content/relationship-types.json`](../../content/relationship-types.json)
+- Composite storage types in [`content/model/relationship-types.json`](../../content/model/relationship-types.json)
 
 ## File format
 
@@ -60,7 +60,7 @@ Types are identified by **stable node id**, not display names.
 | `defaultOrder` | Optional `"asc"` (default) or `"desc"`. Controls **dropdown display order** only; `options` array order remains canonical for storage and table sorting. |
 | `values` | Optional map from option label → number; meaning is **consumer-defined** |
 
-**Storage:** `content/relationships.json` stores enum properties as **labels** (e.g. `"priority": "Medium"`). The SQLite cache stores the same properties as **integer indices** into `options` (see [marloth-db.md](./marloth-db.md)). Table sorts use **index order**, not `values`.
+**Storage:** `content/data/relationships.json` stores enum properties as **labels** (e.g. `"priority": "Medium"`). The SQLite cache stores the same properties as **integer indices** into `options` (see [marloth-db.md](./marloth-db.md)). Table sorts use **index order**, not `values`.
 
 For `priority`, `values` are interpreted as numeric **weights** by `priorityWeight()` and the [`inspirations.weightedUse`](../../docs/dynamic-fields/inspirations.weighted-use.md) dynamic field only — not for table sorting. Other enums may use `values` differently or omit them when only labels matter for UI dropdowns.
 

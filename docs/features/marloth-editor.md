@@ -2,7 +2,7 @@
 
 ## Summary
 
-Web-based markdown editor for Marloth design nodes backed by flat `content/` files and a local SQLite query cache. Delivered as a **VS Code extension** with a React + Milkdown (Crepe) webview, plus a **standalone browser dev mode** for fast iteration.
+Web-based markdown editor for Marloth design nodes backed by `content/data/` node files and a local SQLite query cache. Delivered as a **VS Code extension** with a React + Milkdown (Crepe) webview, plus a **standalone browser dev mode** for fast iteration.
 
 ## When to read this
 
@@ -21,12 +21,12 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 ### Editing model
 
-- The editor **must** read and write node bodies via `marloth-db` (`ContentStore` → `content/{id}.md`).
+- The editor **must** read and write node bodies via `marloth-db` (`ContentStore` → `content/data/{id}.md`).
 - Every node **must** render as a **universal page** with this block order: **page title** (standalone textarea) → collapsible **metadata** panel → optional **Properties** section → **markdown body** (Milkdown) → optional relationship and database table sections derived from graph relationships.
 - Instance pages (`NotionPage` with `(page)-[:IS_A]->(type)`) **must** show a **Properties** section when the type defines one or more stored scalar fields and/or dynamic computed fields for that database. Stored scalars (e.g. Priority) are editable; computed dynamic fields are read-only. When Properties is shown, the redundant `IS_A` relationship table section **must** be omitted.
 - Relationship tables **must** group outgoing relationships by label; relationship properties (except import metadata like `ordinal`, `via_database`) **must** appear as table columns.
 - Database table sections **must** appear on `NotionDatabase` nodes, built from incoming `IS_A` relationships (Name from linked pages; scalar columns from `IS_A` properties; relation columns from linked targets on outgoing graph relationships — see [marloth-db.md](./marloth-db.md) `getDatabaseViewDetail`).
-- The API **must** load `content/` on startup (full cache rebuild if stale), watch the flat content directory for changes, and sync into `MARLOTH_DB_PATH` (see marloth-db).
+- The API **must** load `content/` on startup (full cache rebuild if stale), watch `content/data/` and `content/model/` for changes, and sync into `MARLOTH_DB_PATH` (see marloth-db).
 - Autosave **should** debounce writes (default ~800ms after last edit).
 - Local UI preferences (table sort order, etc.) **must** persist in a gitignored user settings file (`.marloth/user-settings.json` by default), storing sparse overrides only—not full copies of graph data.
 - Section tables **must** support sortable columns; default sort is Name ascending. Sort preferences **must** persist per section table across sessions.
@@ -169,9 +169,9 @@ bun run editor:dev
 - Manual: `@` search inserts link; click navigates; Ctrl+click opens new tab
 - Manual: open any node with relation sections and confirm tables render
 - Manual: click a section table column header to sort; reload and confirm sort persists in `.marloth/user-settings.json`
-- Manual: sidebar **New page** or `?view=create` → create with title → lands on new node page; `content/{id}.md` exists
+- Manual: sidebar **New page** or `?view=create` → create with title → lands on new node page; `content/data/{id}.md` exists
 - Manual: on a relation or database table section, **+ New …** / **+ New row** → new row appears after reload
-- Manual: on a database table with relation columns (e.g. Features → Parents), click link labels to navigate; hover the cell and use the edit control to open the popup for add/remove; confirm `content/relationships.json` updates
+- Manual: on a database table with relation columns (e.g. Features → Parents), click link labels to navigate; hover the cell and use the edit control to open the popup for add/remove; confirm `content/data/relationships.json` updates
 
 ## Implementation pointers
 

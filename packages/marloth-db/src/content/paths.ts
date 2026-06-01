@@ -1,5 +1,8 @@
 import { existsSync } from "node:fs";
-import { resolve, dirname } from "node:path";
+import { resolve } from "node:path";
+
+export const CONTENT_DATA_SUBDIR = "data";
+export const CONTENT_MODEL_SUBDIR = "model";
 
 export const RELATIONSHIPS_FILENAME = "relationships.json";
 export const RELATIONSHIP_TYPES_FILENAME = "relationship-types.json";
@@ -20,33 +23,47 @@ export function nodeFileName(id: string): string {
   return `${id}.md`;
 }
 
-export function nodeFilePath(contentDir: string, id: string): string {
-  return resolve(contentDir, nodeFileName(id));
+/** Git-tracked node + relationship instance files. */
+export function contentDataDir(contentRoot: string): string {
+  return resolve(contentRoot, CONTENT_DATA_SUBDIR);
 }
 
-export function relationshipsFilePath(contentDir: string): string {
-  return resolve(contentDir, RELATIONSHIPS_FILENAME);
+/** Workspace model config JSON (schema, views, types registry, dynamic fields). */
+export function contentModelDir(contentRoot: string): string {
+  return resolve(contentRoot, CONTENT_MODEL_SUBDIR);
 }
 
-export function relationshipTypesFilePath(contentDir: string): string {
-  return resolve(contentDir, RELATIONSHIP_TYPES_FILENAME);
+export function nodeFilePath(contentRoot: string, id: string): string {
+  return resolve(contentDataDir(contentRoot), nodeFileName(id));
+}
+
+export function relationshipsFilePath(contentRoot: string): string {
+  return resolve(contentDataDir(contentRoot), RELATIONSHIPS_FILENAME);
+}
+
+export function relationshipTypesFilePath(contentRoot: string): string {
+  return resolve(contentModelDir(contentRoot), RELATIONSHIP_TYPES_FILENAME);
 }
 
 /** @deprecated Use relationshipsFilePath. */
-export function connectionsFilePath(contentDir: string): string {
-  return relationshipsFilePath(contentDir);
+export function connectionsFilePath(contentRoot: string): string {
+  return relationshipsFilePath(contentRoot);
 }
 
-export function dynamicFieldsFilePath(contentDir: string): string {
-  return resolve(contentDir, DYNAMIC_FIELDS_FILENAME);
+export function legacyConnectionsFilePath(contentRoot: string): string {
+  return resolve(contentDataDir(contentRoot), CONNECTIONS_FILENAME);
 }
 
-export function schemaFilePath(contentDir: string): string {
-  return resolve(contentDir, SCHEMA_FILENAME);
+export function dynamicFieldsFilePath(contentRoot: string): string {
+  return resolve(contentModelDir(contentRoot), DYNAMIC_FIELDS_FILENAME);
 }
 
-export function viewsFilePath(contentDir: string): string {
-  return resolve(contentDir, VIEWS_FILENAME);
+export function schemaFilePath(contentRoot: string): string {
+  return resolve(contentModelDir(contentRoot), SCHEMA_FILENAME);
+}
+
+export function viewsFilePath(contentRoot: string): string {
+  return resolve(contentModelDir(contentRoot), VIEWS_FILENAME);
 }
 
 export function resolveContentPath(cwd = process.cwd()): string {
@@ -66,6 +83,6 @@ export function resolveContentPath(cwd = process.cwd()): string {
   return resolve(cwd, "content");
 }
 
-export function defaultDbPathForContent(contentDir: string): string {
-  return resolve(contentDir, "..", "data", "marloth.sqlite");
+export function defaultDbPathForContent(contentRoot: string): string {
+  return resolve(contentRoot, "..", "data", "marloth.sqlite");
 }

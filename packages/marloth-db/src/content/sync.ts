@@ -20,6 +20,8 @@ import {
   VIEWS_FILENAME,
   dynamicFieldsFilePath,
   NODE_FILE_PATTERN,
+  contentDataDir,
+  contentModelDir,
 } from "./paths";
 import { ContentStore } from "./store";
 import { expandAllRelationships } from "./relationship-sync-expand";
@@ -117,20 +119,22 @@ export class CacheSync {
 
   contentSnapshotMtime(): number {
     let max = 0;
-    const scan = (name: string) => {
-      const path = join(this.contentDir, name);
+    const scanFile = (dir: string, name: string) => {
+      const path = join(dir, name);
       if (!existsSync(path)) return;
       max = Math.max(max, statSync(path).mtimeMs);
     };
-    scan(RELATIONSHIPS_FILENAME);
-    scan(RELATIONSHIP_TYPES_FILENAME);
-    scan(DYNAMIC_FIELDS_FILENAME);
-    scan(SCHEMA_FILENAME);
-    scan(VIEWS_FILENAME);
+    const dataDir = contentDataDir(this.contentDir);
+    const modelDir = contentModelDir(this.contentDir);
+    scanFile(dataDir, RELATIONSHIPS_FILENAME);
+    scanFile(modelDir, RELATIONSHIP_TYPES_FILENAME);
+    scanFile(modelDir, DYNAMIC_FIELDS_FILENAME);
+    scanFile(modelDir, SCHEMA_FILENAME);
+    scanFile(modelDir, VIEWS_FILENAME);
     try {
-      for (const name of readdirSync(this.contentDir)) {
+      for (const name of readdirSync(dataDir)) {
         if (NODE_FILE_PATTERN.test(name)) {
-          max = Math.max(max, statSync(join(this.contentDir, name)).mtimeMs);
+          max = Math.max(max, statSync(join(dataDir, name)).mtimeMs);
         }
       }
     } catch {

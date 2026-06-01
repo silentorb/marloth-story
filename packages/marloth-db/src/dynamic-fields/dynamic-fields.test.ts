@@ -1,10 +1,11 @@
 import { describe, expect, test, afterAll, beforeAll } from "bun:test";
-import { mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { ContentStore } from "../content/store";
 import { fileFromSeedInputs } from "../content/dynamic-fields-file";
 import { invalidateDynamicFieldsCache } from "../content/sync";
+import { invalidateSchemaCache } from "../schema-rules/load";
 import { GraphDatabase } from "../graph";
 import { typeTableMarkerProperties } from "../node-capabilities";
 import { IS_A_TYPE } from "../labels";
@@ -190,59 +191,74 @@ describe("dynamic-fields with composite relationships", () => {
   const featureWonder = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
   const featurePlain = "cccccccccccccccccccccccccccccccc";
 
-  process.env.MARLOTH_CONTENT_PATH = fixture.ctx.store.contentDir;
-  seedTestDynamicFields(fixture, [
-    {
-      id: "inspirations-weighted-use",
-      databaseId: INSP_DB,
-      columnKey: "weighted_use",
-      columnName: "Weighted Use",
-      resolverId: "inspirations.weightedUse",
-      docsPath: "docs/dynamic-fields/inspirations.weighted-use.md",
-      params: {
-        features_edge_label: "FEATURES",
-        features_database_id: FEAT_DB,
+  beforeAll(() => {
+    process.env.MARLOTH_CONTENT_PATH = fixture.ctx.store.contentDir;
+    writeFileSync(
+      join(fixture.ctx.store.contentDir, "model", "schema.json"),
+      JSON.stringify({
+        version: 1,
+        relationshipRules: [],
+        enums: {
+          priority: {
+            options: ["Low", "Medium", "High", "Consideration"],
+            default: "Low",
+            values: { Low: 1, Medium: 2, High: 4, Consideration: 0 },
+          },
+        },
+      }),
+    );
+    invalidateSchemaCache();
+    seedTestDynamicFields(fixture, [
+      {
+        id: "inspirations-weighted-use",
+        databaseId: INSP_DB,
+        columnKey: "weighted_use",
+        columnName: "Weighted Use",
+        resolverId: "inspirations.weightedUse",
+        docsPath: "docs/dynamic-fields/inspirations.weighted-use.md",
+        params: {
+          features_edge_label: "FEATURES",
+          features_database_id: FEAT_DB,
+        },
       },
-    },
-    {
-      id: "inspirations-wonder",
-      databaseId: INSP_DB,
-      columnKey: "wonder",
-      columnName: "Wonder",
-      resolverId: "inspirations.wonder",
-      docsPath: "docs/dynamic-fields/inspirations.wonder.md",
-      params: {
-        features_edge_label: "FEATURES",
-        theme_edge_label: "THEME",
-        theme_target_id: WONDERLAND,
+      {
+        id: "inspirations-wonder",
+        databaseId: INSP_DB,
+        columnKey: "wonder",
+        columnName: "Wonder",
+        resolverId: "inspirations.wonder",
+        docsPath: "docs/dynamic-fields/inspirations.wonder.md",
+        params: {
+          features_edge_label: "FEATURES",
+          theme_edge_label: "THEME",
+          theme_target_id: WONDERLAND,
+        },
       },
-    },
-  ]);
-
-  seedTestNode(fixture, { id: INSP_DB, properties: typeTableMarkerProperties("Inspirations") });
-  seedTestNode(fixture, { id: FEAT_DB, properties: typeTableMarkerProperties("Features") });
-  seedTestNode(fixture, { id: WONDERLAND, properties: { title: "Wonderland" } });
-  seedTestNode(fixture, { id: inspiration, properties: { title: "Test Inspiration" } });
-  seedTestNode(fixture, { id: featureWonder, properties: { title: "Adventure" } });
-  seedTestNode(fixture, { id: featurePlain, properties: { title: "Plain" } });
-
-  seedTestRelationships(fixture, [
-    { source: inspiration, target: INSP_DB, type: IS_A_TYPE, properties: { row_index: 0 } },
-    { source: featureWonder, target: FEAT_DB, type: IS_A_TYPE, properties: { priority: "Medium" } },
-    { source: featurePlain, target: FEAT_DB, type: IS_A_TYPE, properties: { priority: "High" } },
-  ]);
-  seedTestCompositeRelationships(fixture, [
-    { a: inspiration, b: featureWonder, typeFromA: "inspirations", typeFromB: "features", properties: {} },
-    { a: inspiration, b: featurePlain, typeFromA: "inspirations", typeFromB: "features", properties: {} },
-  ]);
-  seedTestRelationships(fixture, [
-    {
-      source: featureWonder,
-      target: WONDERLAND,
-      type: "theme",
-      properties: {},
-    },
-  ]);
+    ]);
+    seedTestNode(fixture, { id: INSP_DB, properties: typeTableMarkerProperties("Inspirations") });
+    seedTestNode(fixture, { id: FEAT_DB, properties: typeTableMarkerProperties("Features") });
+    seedTestNode(fixture, { id: WONDERLAND, properties: { title: "Wonderland" } });
+    seedTestNode(fixture, { id: inspiration, properties: { title: "Test Inspiration" } });
+    seedTestNode(fixture, { id: featureWonder, properties: { title: "Adventure" } });
+    seedTestNode(fixture, { id: featurePlain, properties: { title: "Plain" } });
+    seedTestRelationships(fixture, [
+      { source: inspiration, target: INSP_DB, type: IS_A_TYPE, properties: { row_index: 0 } },
+      { source: featureWonder, target: FEAT_DB, type: IS_A_TYPE, properties: { priority: "Medium" } },
+      { source: featurePlain, target: FEAT_DB, type: IS_A_TYPE, properties: { priority: "High" } },
+    ]);
+    seedTestCompositeRelationships(fixture, [
+      { a: inspiration, b: featureWonder, typeFromA: "inspirations", typeFromB: "features", properties: {} },
+      { a: inspiration, b: featurePlain, typeFromA: "inspirations", typeFromB: "features", properties: {} },
+    ]);
+    seedTestRelationships(fixture, [
+      {
+        source: featureWonder,
+        target: WONDERLAND,
+        type: "theme",
+        properties: {},
+      },
+    ]);
+  });
 
   test("weighted_use and wonder with production params and composite edges", () => {
     const detail = getDatabaseViewDetail(
