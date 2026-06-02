@@ -12,9 +12,10 @@ This workspace supports a **design-heavy, highly traceable** writing process for
 The git-tracked design corpus in `./content/` is a property graph: node markdown and relationship instances under `content/data/`, workspace model JSON under `content/model/`, with a local SQLite cache under `./data/` for fast queries.
 
 ## Project Context
+
 - This repository contains the Marloth Story project, related to the Marloth series of fantasy novels and overlapping game-design work.
 - Keep updates aligned with the repository's current scope and documentation.
-- The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs live in `./docs/features/` (see Terminology below). The **design ontology** lives at [`docs/ontology.md`](./docs/ontology.md).
+- The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs live in `./docs/features/` (see Terminology below). The **design ontology** lives at `[docs/ontology.md](./docs/ontology.md)`.
 - The `./content` directory is the **canonical store root**: `content/data/{nodeId}.md` per node (YAML frontmatter + markdown body) plus `relationships.json`; `content/model/` holds `relationship-types.json`, `schema.json`, `views.json`, and `dynamic-fields.json`.
 - The `./data/marloth.sqlite` file is a **local query cache** (gitignored). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
@@ -23,15 +24,17 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 
 ## Terminology
 
-| Term | Meaning |
-| --- | --- |
-| **Project feature** | A workspace capability documented in `./docs/features/` (e.g. notion import, marloth-db). Use this phrase when discussing tooling or agent specs—not graph nodes. |
-| **Node** | Any entity in the design graph (SQLite `nodes` table). Replaces legacy *record* / *vertex* in docs and API. |
-| **Relationship** | A link between two nodes with a **relationship type** and properties. Stored compactly in `relationships.json`; SQLite cache expands to directed projections. |
-| **Page** | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a Notion export file. |
-| **Feature** (unqualified) | A **design node** (story/game feature idea), usually under `Marloth/Features/`, unless context clearly means a project feature. |
-| **Schema** | Git-tracked relationship rules in `content/model/schema.json` (allowed target types per relationship type). Not SQLite DDL. |
-| **Type table** | Any node used as an `IS_A` target and/or with `notion_schema` / `notion_database` metadata—not a permanent import label. |
+
+| Term                      | Meaning                                                                                                                                                           |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Project feature**       | A workspace capability documented in `./docs/features/` (e.g. notion import, marloth-db). Use this phrase when discussing tooling or agent specs—not graph nodes. |
+| **Node**                  | Any entity in the design graph (SQLite `nodes` table). Replaces legacy *record* / *vertex* in docs and API.                                                       |
+| **Relationship**          | A link between two nodes with a **relationship type** and properties. Stored compactly in `relationships.json`; SQLite cache expands to directed projections.     |
+| **Page**                  | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a Notion export file.                      |
+| **Feature** (unqualified) | A **design node** (story/game feature idea), usually under `Marloth/Features/`, unless context clearly means a project feature.                                   |
+| **Schema**                | Git-tracked relationship rules in `content/model/schema.json` (allowed target types per relationship type). Not SQLite DDL.                                       |
+| **Type table**            | Any node used as an `IS_A` target and/or with `notion_schema` / `notion_database` metadata—not a permanent import label.                                          |
+
 
 ## Data modeling direction
 
@@ -43,19 +46,22 @@ Imported Notion data already separates nodes somewhat by **product** (books, gam
 
 The `./content/` tree is **authoritative and git-tracked**. Notion import was a one-time migration path; ongoing work **must** edit content files (or use tooling that writes them). `MARLOTH_CONTENT_PATH` points at the **content root** (`./content`), not `content/data`.
 
-| Task | Do | Do not |
-| --- | --- | --- |
-| Add or edit nodes, bodies, titles | Edit `content/data/{nodeId}.md` or use the marloth editor / `ContentStore` (`packages/marloth-db`) | Edit `data/marloth.sqlite` directly |
-| Add or edit relationships | Edit `content/data/relationships.json`, `content/model/relationship-types.json`, or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files |
-| Dynamic field bindings | Edit `content/model/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts` | Use removed `dynamic_*` SQLite overlay tables |
-| Table view tabs (custom / generated) | Edit `content/model/views.json` or use editor tab CRUD | Edit `notion_views` on node frontmatter (legacy) |
-| Refresh local cache | `bun run content:sync` or start `editor:api` (rebuilds cache + watches `./content`) | Commit `data/marloth.sqlite` |
-| One-time SQLite → content | `bun run content:export` (from existing `data/marloth.sqlite` if present) | — |
-| Data only in `./exports/` | Mine archive and upsert into `./content` (same mapping rules as legacy import) | Run `bun run notion:import` / `--clean` |
 
-See [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) for file formats and API. [`docs/features/notion-import.md`](./docs/features/notion-import.md) documents the **legacy** import pipeline for reference and export mining only.
+| Task                                 | Do                                                                                                                            | Do not                                           |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| Add or edit nodes, bodies, titles    | Edit `content/data/{nodeId}.md` or use the marloth editor / `ContentStore` (`packages/marloth-db`)                            | Edit `data/marloth.sqlite` directly              |
+| Add or edit relationships            | Edit `content/data/relationships.json`, `content/model/relationship-types.json`, or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files   |
+| Dynamic field bindings               | Edit `content/model/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts`                                          | Use removed `dynamic_`* SQLite overlay tables    |
+| Table view tabs (custom / generated) | Edit `content/model/views.json` or use editor tab CRUD                                                                        | Edit `notion_views` on node frontmatter (legacy) |
+| Refresh local cache                  | `bun run content:sync` or start `editor:api` (rebuilds cache + watches `./content`)                                           | Commit `data/marloth.sqlite`                     |
+| One-time SQLite → content            | `bun run content:export` (from existing `data/marloth.sqlite` if present)                                                     | —                                                |
+| Data only in `./exports/`            | Mine archive and upsert into `./content` (same mapping rules as legacy import)                                                | Run `bun run notion:import` / `--clean`          |
+
+
+See `[docs/features/marloth-db.md](./docs/features/marloth-db.md)` for file formats and API. `[docs/features/notion-import.md](./docs/features/notion-import.md)` documents the **legacy** import pipeline for reference and export mining only.
 
 ## Working Conventions
+
 - Make focused changes that address the requested task only.
 - Avoid unrelated refactors unless they are required to complete the task safely.
 - Prefer small, incremental edits that are easy to review.
@@ -63,6 +69,7 @@ See [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) for file form
 - **Script language:** agentic scripts created for this project should use **TypeScript** (Bun) by default — place durable tooling under `packages/` with tests and a shell wrapper in `scripts/` when appropriate. **One-off temporary scripts** (exploratory, throwaway, not intended to be maintained) may still be written in Python.
 
 ## Implementation Expectations
+
 - Read existing files before editing to preserve intent and style.
 - Keep assumptions explicit in commit or PR notes when behavior is unclear.
 - Run relevant checks or tests when changing code, if such checks are available.
@@ -74,24 +81,28 @@ Authoritative design specs for **project features** live in `./docs/features/` (
 
 **Do not read all feature docs by default.** When your task matches a row, read only that file (and the package `AGENTS.md` if editing that package). Treat the feature doc as the source of truth over implementation when they disagree—update code or the doc explicitly.
 
-For **design data** (what nodes mean, how they relate conceptually), read [`docs/ontology.md`](./docs/ontology.md) **in addition to** schema-specific docs below.
+For **design data** (what nodes mean, how they relate conceptually), read `[docs/ontology.md](./docs/ontology.md)` **in addition to** schema-specific docs below.
 
-| If your task involves… | Read |
-| --- | --- |
-| Design domain model, node types, relationships, traceability | [`docs/ontology.md`](./docs/ontology.md) |
-| SQLite property graph, `data/marloth.sqlite`, `packages/marloth-db/` | [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) (+ ontology when interpreting data) |
-| Web markdown editor, `packages/marloth-editor/`, VS Code graph editing | [`docs/features/marloth-editor.md`](./docs/features/marloth-editor.md) |
-| Graph Explorer, LOD layers, anchor-scoped graph viz | [`docs/features/graph-explorer.md`](./docs/features/graph-explorer.md) |
-| Editing story/design content in the graph | [`docs/ontology.md`](./docs/ontology.md) + [`docs/features/marloth-db.md`](./docs/features/marloth-db.md) (direct DB edits; see **Graph data workflow** above) |
-| Legacy Notion import / mining `./exports/` | [`docs/features/notion-import.md`](./docs/features/notion-import.md) |
-| Ordered associations, scene order, drag-and-drop reorder | [`docs/features/ordered-associations.md`](./docs/features/ordered-associations.md) |
-| Dynamic table view fields, computed columns | [`docs/features/dynamic-table-fields.md`](./docs/features/dynamic-table-fields.md) + [`docs/dynamic-fields/`](./docs/dynamic-fields/) |
-| Table view tabs, `views.json` | [`docs/features/views.md`](./docs/features/views.md) |
-| Static website generation (Astro) | [`docs/features/static-website.md`](./docs/features/static-website.md) |
 
-See also [`docs/features/README.md`](./docs/features/README.md) for the feature-doc template and how to add new features.
+| If your task involves…                                                 | Read                                                                                                                                                           |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Design domain model, node types, relationships, traceability           | `[docs/ontology.md](./docs/ontology.md)`                                                                                                                       |
+| SQLite property graph, `data/marloth.sqlite`, `packages/marloth-db/`   | `[docs/features/marloth-db.md](./docs/features/marloth-db.md)` (+ ontology when interpreting data)                                                             |
+| Web markdown editor, `packages/marloth-editor/`, VS Code graph editing | `[docs/features/marloth-editor.md](./docs/features/marloth-editor.md)`                                                                                         |
+| Graph Explorer, LOD layers, anchor-scoped graph viz                    | `[docs/features/graph-explorer.md](./docs/features/graph-explorer.md)`                                                                                         |
+| Editing story/design content in the graph                              | `[docs/ontology.md](./docs/ontology.md)` + `[docs/features/marloth-db.md](./docs/features/marloth-db.md)` (direct DB edits; see **Graph data workflow** above) |
+| Legacy Notion import / mining `./exports/`                             | `[docs/features/notion-import.md](./docs/features/notion-import.md)`                                                                                           |
+| Ordered associations, scene order, drag-and-drop reorder               | `[docs/features/ordered-associations.md](./docs/features/ordered-associations.md)`                                                                             |
+| Dynamic table view fields, computed columns                            | `[docs/features/dynamic-table-fields.md](./docs/features/dynamic-table-fields.md)` + `[docs/dynamic-fields/](./docs/dynamic-fields/)`                          |
+| Table view tabs, `views.json`                                          | `[docs/features/views.md](./docs/features/views.md)`                                                                                                           |
+| Static website generation (Astro)                                      | `[docs/features/static-website.md](./docs/features/static-website.md)`                                                                                         |
+
+
+See also `[docs/features/README.md](./docs/features/README.md)` for the feature-doc template and how to add new features.
 
 ## Future Expansion
+
 - Architecture overview
 - Standard test and validation commands
 - Language/framework-specific coding conventions
+

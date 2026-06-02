@@ -23,6 +23,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 - The editor **must** read and write node bodies via `marloth-db` (`ContentStore` → `content/data/{id}.md`).
 - Every node **must** render as a **universal page** with this block order: **page title** (standalone textarea) → collapsible **metadata** panel → optional **Properties** section → **markdown body** (Milkdown) → optional relationship and database table sections derived from graph relationships.
+- Because the page title is rendered outside the markdown body, heading levels in stored markdown **must** render one level deeper in the page body (`h1` → rendered `h2`, `h2` → rendered `h3`, etc.).
 - Instance pages (`NotionPage` with `(page)-[:IS_A]->(type)`) **must** show a **Properties** section when the type defines one or more stored scalar fields and/or dynamic computed fields for that database. Stored scalars (e.g. Priority) are editable; computed dynamic fields are read-only. When Properties is shown, the redundant `IS_A` relationship table section **must** be omitted.
 - Relationship tables **must** group outgoing relationships by label; relationship properties (except import metadata like `ordinal`, `via_database`) **must** appear as table columns.
 - Database table sections **must** appear on `NotionDatabase` nodes, built from incoming `IS_A` relationships (Name from linked pages; scalar columns from `IS_A` properties; relation columns from linked targets on outgoing graph relationships — see [marloth-db.md](./marloth-db.md) `getDatabaseViewDetail`).
@@ -35,23 +36,33 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 - Database table sections on type-table nodes **must** use tab definitions from [`views.json`](./views.md): **custom** tabs (name + sorts, editable in UI) or **generated** tabs (e.g. Scenes book scope via `scenes-by-book`). Column typing still comes from synced `notion_schema`; see [notion-metadata-sync.md](./notion-metadata-sync.md). Optional section-level **`columnOrder`** in `views.json` overrides default column ordering; users can drag column headers to reorder and persist that override.
 - Database table **relation columns** (`type: relation` in synced `notion_schema`) **must** be editable in the UI: the cell shows a compact summary (max width `14rem`, ~6 lines) of **inline wrapping navigable links** (outline page icon prefix, off-white text—not pill badges) for visible records, with overflow as `N+` when more links exist. In standalone mode those links are plain `<a href="?node=…">` elements (native navigation). An **edit control** in a fixed column immediately right of the links box (shown on cell hover or focus) opens a popup listing all links (remove per row) plus a searchable add control (filtered by the relation property’s target database when `config.database_id` is present). Linking uses `POST /api/nodes/:rowId/connections`; unlinking uses `DELETE /api/nodes/:rowId/connections/:label/:targetId` (edges carry `via_database` scoped to the table).
 
-### Cross-linking
+### Cross-linking and navigation links
 
-- Internal links **must** use the `marloth:{nodeId}` URL scheme in stored markdown.
+**Native link behavior (mandatory).** Any UI that navigates to another node **must** be a real `<a href="…">` anchor. Navigation **must** rely on the browser’s native link behavior (plain click, Ctrl/Cmd+click, middle-click, shift-click, and context-menu actions). **Do not** attach `onClick`, `onAuxClick`, or similar mouse handlers on navigational links; **do not** call `preventDefault()` on link activation; **do not** use `window.open()` or imperative routing for mouse-driven navigation. If a host or widget cannot satisfy this (e.g. no resolvable `href`), **stop and ask** whether an exception is acceptable before adding custom click handling.
+
+| Host | `href` for node pages |
+| --- | --- |
+| Standalone browser | `?node={id}` (see `standaloneNodeUrl` in `src/webview/node-links.ts`) |
+| VS Code webview | `marloth://node/{id}` (see `nodeUri`) |
+
+Keyboard shortcuts in combobox-style pickers (global search, Relate, record link picker) may still call navigation imperatively on **Enter** when focus is in the search field; result rows themselves remain anchors for pointer navigation.
+
+- Internal links **must** use the `marloth:{nodeId}` URL scheme in **stored markdown** (rendered to the appropriate `href` in each host).
 - `@` autocomplete **must** search existing nodes by title and insert a markdown link.
-- Clicking a link **must** navigate to the target node:
+- Clicking a rendered link **must** navigate to the target node:
   - plain click → same editor tab
   - Ctrl/Cmd+click or middle-click → new editor tab (VS Code custom editor instance)
 - Legacy Notion export links (32-hex id embedded in path) **should** resolve at navigation time without requiring a bulk migration.
-- **Standalone browser mode** **must** use normal `<a href="?node=…">` URLs and native browser navigation (including Ctrl/Cmd+click, middle-click, and context-menu “open in new tab”). Do **not** attach `onClick` / `onAuxClick` handlers, `preventDefault`, or `window.open` on those anchors. Database relation column cell labels and edit-popup row links are included.
-- **VS Code webview** may intercept `marloth:` links (no native target) and route via postMessage; keep that interception minimal and limited to cases without a usable URL.
+- **Global search** result rows **must** be `<a href="…">` elements (not `<button>` with `onClick`). Standalone uses `?node=` URLs; VS Code uses `marloth://node/…`.
+- Database relation column cell labels, edit-popup row links, section table name cells, and sidebar nav (standalone) follow the same rule: native `<a href>` in standalone; prefer `href` in VS Code where possible.
+- **Milkdown body** in VS Code may use a single delegated listener on the editor root for `marloth:` anchors only (stored markdown has no `?node=` URL); do not copy that pattern to other surfaces without an explicit exception.
 
 ### Entry / navigation
 
 - A **home node** **must** be openable via command palette (`Marloth: Open Home`).
 - Default home is the Marloth root page (`72b6fb455b824b78962b0e509cc091c9`) when present in the graph.
 - Nodes **must** open via virtual URIs: `marloth://node/{id}` using a custom editor (`marloth.editor`).
-- A **global search** widget **must** let users find and open any node by title (via `GET /api/nodes/search`). A configuration bar at the top of the panel offers **Search node contents** (markdown body); when enabled, the client passes `includeBody=1` and title matches are listed before body-only matches. The preference is stored in `.marloth/user-settings.json` (`globalSearch.includeBody`). Open via sidebar **Search**, command palette (`Marloth: Search`), or **Ctrl/Cmd+K** (standalone browser and VS Code when the Marloth editor is active). Results show title only; Enter opens in the current tab; Ctrl/Cmd+Enter or middle-click opens in a new tab (VS Code: new editor tab; standalone: native link behavior). `@` mention and Relate pickers use title-only search (no `includeBody`).
+- A **global search** widget **must** let users find and open any node by title (via `GET /api/nodes/search`). Each result **must** be a native link (`<a href>` per **Native link behavior** above). A configuration bar offers **Search node contents** (markdown body); when enabled, the client passes `includeBody=1` and title matches are listed before body-only matches. When **Search node contents** is on and the query matches a node body, each result may include a `matchPreview` excerpt (up to two lines, match emphasized) below the title; title-only matches show the title line only. The preference is stored in `.marloth/user-settings.json` (`globalSearch.includeBody`). Open via sidebar **Search**, command palette (`Marloth: Search`), or **Ctrl/Cmd+K** (standalone browser and VS Code when the Marloth editor is active). Enter (with focus in the search field) opens the highlighted result; Ctrl/Cmd+Enter or pointer modifier-click use native new-tab behavior where the host supports it. `@` mention and Relate pickers use title-only search (no `includeBody`).
 
 ### Presentation
 

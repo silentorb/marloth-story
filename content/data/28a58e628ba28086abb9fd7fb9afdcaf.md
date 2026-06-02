@@ -4,19 +4,17 @@ notion_id: 28a58e628ba28086abb9fd7fb9afdcaf
 source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Features/Cozy horror/Cozy horror wilderness 28a58e628ba28086abb9fd7fb9afdcaf.md
 alias: Cozy horror wilderness
 created_at: 2025-10-12T18:26:00.000Z
-modified_at: 2026-05-23T01:06:00.000Z
+modified_at: 2026-06-02T07:27:31.629Z
 notion_url: https://www.notion.so/Cozy-horror-wilderness-28a58e628ba28086abb9fd7fb9afdcaf
 notion_archived: false
 ---
-# Cozy horror wilderness
-
 # Overview
 
-Wilderness provides the bulk of the horror in [Cozy horror](../Cozy%20horror%20e5cc80dc61ed4c629951cdf472b20b7a.md).
+Wilderness provides the bulk of the horror in [Cozy horror](http://127.0.0.1:5173/?node=e5cc80dc61ed4c629951cdf472b20b7a).
 
 The wilderness is dangerous and scary.  When characters are in the wilderness they can never let their guard down.
 
-For Marloth stories, the horror of Cozy horror should largely be [Survival horror](../Survival%20horror%20dc101b6438cf43a8b5f1e17212b8c950.md).
+For Marloth stories, the horror of Cozy horror should largely be [Survival horror](http://127.0.0.1:5173/?node=dc101b6438cf43a8b5f1e17212b8c950).
 
 # Ingredients
 
@@ -29,16 +27,7 @@ The ingredients of a cozy horror wilderness setting are:
 
 # Travel
 
-The wilderness is only dangerous to characters inside it.
-
-In order to be inside the wilderness, characters must leave their sanctuaries.
-
-> 💡 There are various motivations that cause characters to enter the wilderness.
-> Provisioning is a core motivation.
-
-Sanctuaries are isolated by wilderness.
-
-Often, characters must travel from one sanctuary to another.
+[Travel](marloth:7cb1f51a24da45e3b29290fc063ae3ed)
 
 # Industry
 
@@ -50,9 +39,9 @@ In those cases, the character isn’t so much traveling between sanctuaries as t
 
 # Dangers
 
-The cozy horror wilderness dangers are a subset of [Potential survival horror dangers](../Survival%20horror/Potential%20survival%20horror%20dangers%2028458e628ba28099bf9dde1a919592c5.md).
+The cozy horror wilderness dangers are a subset of [Potential survival horror dangers](http://127.0.0.1:5173/?node=28458e628ba28099bf9dde1a919592c5).
 
-That is because most cozy horror dangers are [Travel](Cozy%20horror%20wilderness%2028a58e628ba28086abb9fd7fb9afdcaf.md) dangers.
+That is because most cozy horror dangers are [Travel](http://127.0.0.1:5173/?node=28a58e628ba28086abb9fd7fb9afdcaf) dangers.
 
 For example, hunger is not a major concern when traveling in the wilderness.
 
@@ -60,4 +49,4 @@ When spending several days at a time in the wilderness, hunger can be a greater 
 
 # Isolation
 
-Wilderness does not always have [Isolation](../Isolation%20330cda5056f64459b8d0d46a66ed21a2.md), but isolation usually takes place in the wilderness.
+Wilderness does not always have [Isolation](http://127.0.0.1:5173/?node=330cda5056f64459b8d0d46a66ed21a2), but isolation usually takes place in the wilderness.

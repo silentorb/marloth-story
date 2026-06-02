@@ -1,9 +1,11 @@
 import {
   isMarlothHref,
   nodeIdFromHref,
+  nodeUri,
   resolveLinkTarget,
   standaloneNodeUrl,
   type AppView,
+  type EditorHost,
 } from "../shared/types";
 import { DEFAULT_GRAPH_EXPLORER_ANCHOR_ID } from "../shared/graph-explorer";
 
@@ -90,6 +92,12 @@ export function standaloneViewUrl(
   stripMetadataParamFromUrl(url);
   if (view !== "graph-explorer") url.searchParams.delete("anchor");
   return url.toString();
+}
+
+/** Href for opening a node page in the webview (native navigation; no per-link click handlers). */
+export function nodePageHref(nodeId: string, host: EditorHost, base?: string | URL): string {
+  if (host === "standalone") return standaloneNodeUrl(nodeId, base);
+  return nodeUri(nodeId);
 }
 
 export function navigateStandaloneNode(nodeId: string, base?: string | URL): void {

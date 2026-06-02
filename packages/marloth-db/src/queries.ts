@@ -4,11 +4,18 @@ import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterNodeWrite } from "./content/write-context";
 import { bodyFromNode } from "./content/node-file";
 import { isTypeTableNode, primaryTypeTitleForInstance } from "./node-capabilities";
+import {
+  buildSearchMatchPreview,
+  type SearchMatchPreview,
+} from "./search-match-preview";
+
+export type { SearchMatchPreview, SearchMatchPreviewPart } from "./search-match-preview";
 
 export interface NodeSummary {
   id: string;
   title: string;
   primaryTypeTitle: string | null;
+  matchPreview?: SearchMatchPreview;
 }
 
 export interface NodeDetail extends NodeSummary {
@@ -80,21 +87,33 @@ export function searchNodes(
     return summaries;
   }
 
-  if (summaries.length >= cap) {
-    return summaries;
+  if (summaries.length < cap) {
+    const seen = new Set(summaries.map((row) => row.id));
+    const bodyFetchLimit = cap + seen.size;
+    const bodyRows = db.searchNodesByBody(pattern, bodyFetchLimit, allowedTypeIds);
+    for (const row of bodyRows) {
+      if (seen.has(row.id)) continue;
+      summaries.push(toActiveNodeSummary(db, row));
+      seen.add(row.id);
+      if (summaries.length >= cap) break;
+    }
   }
 
-  const seen = new Set(summaries.map((row) => row.id));
-  const bodyFetchLimit = cap + seen.size;
-  const bodyRows = db.searchNodesByBody(pattern, bodyFetchLimit, allowedTypeIds);
-  for (const row of bodyRows) {
-    if (seen.has(row.id)) continue;
-    summaries.push(toActiveNodeSummary(db, row));
-    seen.add(row.id);
-    if (summaries.length >= cap) break;
-  }
-
+  attachMatchPreviews(db, summaries, trimmed);
   return summaries;
+}
+
+function attachMatchPreviews(
+  db: GraphDatabase,
+  summaries: NodeSummary[],
+  query: string,
+): void {
+  for (const summary of summaries) {
+    const node = db.getNode(summary.id);
+    const body = bodyFromProperties(node?.properties ?? {});
+    const preview = buildSearchMatchPreview(body, query);
+    if (preview) summary.matchPreview = preview;
+  }
 }
 
 export function listRecentNodes(

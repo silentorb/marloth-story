@@ -16,6 +16,23 @@ const sampleResults: NodeSummary[] = [
   { id: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", title: "Beta Feature", primaryTypeTitle: null },
 ];
 
+const resultsWithPreview: NodeSummary[] = [
+  {
+    id: "cccccccccccccccccccccccccccccccc",
+    title: "Gamma Note",
+    primaryTypeTitle: null,
+    matchPreview: {
+      parts: [
+        { text: "…", highlight: false },
+        { text: "before ", highlight: false },
+        { text: "needle", highlight: true },
+        { text: " after", highlight: false },
+        { text: "…", highlight: false },
+      ],
+    },
+  },
+];
+
 function makeApi(
   results: NodeSummary[],
   options?: {
@@ -70,7 +87,7 @@ describe("GlobalSearch", () => {
     expect(container.querySelector(".marloth-global-search")).toBeNull();
   });
 
-  test("searches node titles and opens a result", async () => {
+  test("renders standalone result links with node query URLs", async () => {
     const onOpenNode = mock((_nodeId: string, _openInNewTab?: boolean) => {});
     const { container } = renderGlobalSearch({
       open: true,
@@ -78,25 +95,29 @@ describe("GlobalSearch", () => {
       onOpenNode,
     });
 
-    const dialog = container.querySelector(".marloth-global-search");
-    expect(dialog).toBeTruthy();
-
-    const input = container.querySelector(
-      ".marloth-global-search-input",
-    ) as HTMLInputElement;
-    fireEvent.change(input, { target: { value: "alpha" } });
-
     await waitFor(() => {
-      expect(within(dialog as HTMLElement).getByText("Alpha Scene")).toBeTruthy();
+      expect(container.querySelectorAll(".marloth-global-search-item")).toHaveLength(2);
     });
 
-    fireEvent.click(within(dialog as HTMLElement).getByText("Alpha Scene"));
-    expect(onOpenNode).toHaveBeenCalledWith("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", false);
+    const link = container.querySelector(
+      ".marloth-global-search-item",
+    ) as HTMLAnchorElement;
+    expect(link.tagName).toBe("A");
+    expect(link.getAttribute("href")).toContain("node=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+    fireEvent.click(link);
+    expect(onOpenNode).not.toHaveBeenCalled();
   });
 
-  test("supports keyboard navigation and modifier-enter for new tab", async () => {
+  test("vscode Enter uses onOpenNode for keyboard navigation", async () => {
     const onOpenNode = mock((_nodeId: string, _openInNewTab?: boolean) => {});
+    const api = {
+      ...makeApi(sampleResults),
+      host: "vscode" as const,
+      navigate: mock(() => {}),
+    };
     const { container } = renderGlobalSearch({
+      api,
       open: true,
       onOpenChange: () => {},
       onOpenNode,
@@ -110,10 +131,59 @@ describe("GlobalSearch", () => {
       expect(container.querySelectorAll(".marloth-global-search-item")).toHaveLength(2);
     });
 
+    const link = container.querySelector(
+      ".marloth-global-search-item",
+    ) as HTMLAnchorElement;
+    expect(link.getAttribute("href")).toBe(
+      "marloth://node/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    );
+
     fireEvent.keyDown(input, { key: "ArrowDown" });
     fireEvent.keyDown(input, { key: "Enter", ctrlKey: true });
 
     expect(onOpenNode).toHaveBeenCalledWith("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true);
+  });
+
+  test("shows body match preview when search node contents is enabled", async () => {
+    const search = mock(async () => resultsWithPreview);
+    const api = makeApi(resultsWithPreview, { search });
+
+    const { container } = renderGlobalSearch({
+      api,
+      open: true,
+      onOpenChange: () => {},
+      onOpenNode: () => {},
+    });
+
+    const checkbox = container.querySelector(
+      ".marloth-global-search-config-item input",
+    ) as HTMLInputElement;
+    fireEvent.click(checkbox);
+
+    await waitFor(() => {
+      expect(container.querySelector(".marloth-global-search-preview")).toBeTruthy();
+    });
+
+    const preview = container.querySelector(".marloth-global-search-preview");
+    expect(preview?.querySelector("strong")?.textContent).toBe("needle");
+  });
+
+  test("hides body match preview when search node contents is disabled", async () => {
+    const search = mock(async () => resultsWithPreview);
+    const api = makeApi(resultsWithPreview, { search });
+
+    const { container } = renderGlobalSearch({
+      api,
+      open: true,
+      onOpenChange: () => {},
+      onOpenNode: () => {},
+    });
+
+    await waitFor(() => {
+      expect(container.querySelector(".marloth-global-search-title")).toBeTruthy();
+    });
+
+    expect(container.querySelector(".marloth-global-search-preview")).toBeNull();
   });
 
   test("passes includeBody when search node contents is enabled", async () => {

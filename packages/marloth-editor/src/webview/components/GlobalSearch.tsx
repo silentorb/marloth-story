@@ -2,12 +2,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { EditorApi } from "../api/client";
 import type { NodeSummary } from "../../shared/types";
 import { useUserSettings } from "../hooks/useUserSettings";
+import { nodePageHref } from "../node-links";
 import "./global-search.css";
 
 interface GlobalSearchProps {
   api: EditorApi;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** VS Code keyboard navigation only; mouse uses native `<a href>` behavior. */
   onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
@@ -15,6 +17,7 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
   const { globalSearchIncludeBody, setGlobalSearchIncludeBody } = useUserSettings();
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<NodeSummary[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -24,14 +27,6 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
   const close = useCallback(() => {
     onOpenChange(false);
   }, [onOpenChange]);
-
-  const openNode = useCallback(
-    (nodeId: string, openInNewTab = false) => {
-      onOpenNode(nodeId, openInNewTab);
-      close();
-    },
-    [close, onOpenNode],
-  );
 
   useEffect(() => {
     if (!open) return;
@@ -84,7 +79,42 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [close, open]);
 
+  const activateActiveResult = useCallback(
+    (openInNewTab: boolean) => {
+      const item = results[activeIndex];
+      if (!item) return;
+
+      if (api.host === "vscode") {
+        onOpenNode(item.id, openInNewTab);
+        close();
+        return;
+      }
+
+      const link = listRef.current?.querySelector(
+        ".marloth-global-search-item.is-active",
+      ) as HTMLAnchorElement | null;
+      if (!link) return;
+
+      close();
+      if (openInNewTab) {
+        link.dispatchEvent(
+          new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+            ctrlKey: true,
+            metaKey: true,
+          }),
+        );
+        return;
+      }
+      link.click();
+    },
+    [activeIndex, api.host, close, onOpenNode, results],
+  );
+
   if (!open) return null;
+
+  const pageBase = typeof window !== "undefined" ? window.location.href : undefined;
 
   return (
     <div className="marloth-global-search-backdrop">
@@ -129,14 +159,16 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
             }
             if (event.key === "Enter" && results[activeIndex]) {
               event.preventDefault();
-              openNode(
-                results[activeIndex]!.id,
-                event.metaKey || event.ctrlKey,
-              );
+              activateActiveResult(event.metaKey || event.ctrlKey);
             }
           }}
         />
-        <div id="marloth-global-search-listbox" className="marloth-global-search-list" role="listbox">
+        <div
+          ref={listRef}
+          id="marloth-global-search-listbox"
+          className="marloth-global-search-list"
+          role="listbox"
+        >
           {error ? <div className="marloth-global-search-error">{error}</div> : null}
           {loading && results.length === 0 ? (
             <div className="marloth-global-search-empty">Searching…</div>
@@ -149,22 +181,27 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
             results.map((item, index) => {
               const isActive = index === activeIndex;
               return (
-                <button
+                <a
                   key={item.id}
-                  type="button"
+                  href={nodePageHref(item.id, api.host, pageBase)}
                   role="option"
                   aria-selected={isActive}
                   className={`marloth-global-search-item${isActive ? " is-active" : ""}`}
-                  onMouseDown={(event) => event.preventDefault()}
-                  onClick={(event) =>
-                    openNode(item.id, event.metaKey || event.ctrlKey || event.button === 1)
-                  }
-                  onAuxClick={(event) => {
-                    if (event.button === 1) openNode(item.id, true);
-                  }}
+                  onMouseEnter={() => setActiveIndex(index)}
                 >
                   <span className="marloth-global-search-title">{item.title}</span>
-                </button>
+                  {globalSearchIncludeBody && item.matchPreview ? (
+                    <span className="marloth-global-search-preview">
+                      {item.matchPreview.parts.map((part, partIndex) =>
+                        part.highlight ? (
+                          <strong key={partIndex}>{part.text}</strong>
+                        ) : (
+                          <span key={partIndex}>{part.text}</span>
+                        ),
+                      )}
+                    </span>
+                  ) : null}
+                </a>
               );
             })
           )}

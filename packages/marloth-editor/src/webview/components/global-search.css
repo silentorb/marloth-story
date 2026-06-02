@@ -10,7 +10,7 @@
 
 .marloth-global-search {
   width: min(560px, 100%);
-  max-height: min(420px, 70vh);
+  max-height: min(480px, 75vh);
   display: flex;
   flex-direction: column;
   border: 1px solid var(--marloth-border);
@@ -72,7 +72,9 @@
   background: transparent;
   color: inherit;
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .marloth-global-search-item:hover,
@@ -82,6 +84,23 @@
 
 .marloth-global-search-title {
   font-weight: 600;
+}
+
+.marloth-global-search-preview {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  width: 100%;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--marloth-muted);
+  word-break: break-word;
+}
+
+.marloth-global-search-preview strong {
+  font-weight: 600;
+  color: var(--marloth-text);
 }
 
 .marloth-global-search-path {

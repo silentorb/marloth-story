@@ -41,6 +41,8 @@ export {
 export { createNode } from "./node-create";
 export type { CreateNodeError, CreateNodeInput, CreateNodeLink, CreateNodeResult } from "./node-create";
 export type { NodeDetail, NodeSummary } from "./queries";
+export { buildSearchMatchPreview } from "./search-match-preview";
+export type { SearchMatchPreview, SearchMatchPreviewPart } from "./search-match-preview";
 export { archiveNode, deleteNode, isProtectedNodeId } from "./node-lifecycle";
 export type { NodeLifecycleError } from "./node-lifecycle";
 export { getDatabaseViewDetail } from "./database-view";

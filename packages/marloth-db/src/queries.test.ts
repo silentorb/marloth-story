@@ -51,6 +51,43 @@ describe("queries", () => {
     expect(withBody.some((h) => h.id === bodyOnlyId)).toBe(true);
   });
 
+  test("searchNodes attaches matchPreview for body matches when includeBody is enabled", () => {
+    const bodyOnlyId = "456789abcdef0123456789abcdef0123";
+    seedTestNode(fixture, {
+      id: bodyOnlyId,
+      properties: {
+        title: "Another Unrelated Title",
+        body: "prefix unique-preview-marker suffix",
+      },
+    });
+    const hits = searchNodes(fixture.ctx.db, "unique-preview-marker", 10, undefined, {
+      includeBody: true,
+    });
+    const hit = hits.find((h) => h.id === bodyOnlyId);
+    expect(hit).toBeDefined();
+    expect(hit?.matchPreview).toBeDefined();
+    expect(
+      hit?.matchPreview?.parts.some((p) => p.highlight && p.text.includes("unique-preview-marker")),
+    ).toBe(true);
+  });
+
+  test("searchNodes omits matchPreview for title-only matches", () => {
+    const titleOnlyId = "56789abcdef0123456789abcdef01234";
+    seedTestNode(fixture, {
+      id: titleOnlyId,
+      properties: {
+        title: "title-only-marker-node",
+        body: "body without the search term",
+      },
+    });
+    const hits = searchNodes(fixture.ctx.db, "title-only-marker", 10, undefined, {
+      includeBody: true,
+    });
+    const hit = hits.find((h) => h.id === titleOnlyId);
+    expect(hit).toBeDefined();
+    expect(hit?.matchPreview).toBeUndefined();
+  });
+
   test("updateNodeBody persists markdown", () => {
     seedTestNode(fixture, {
       id: "23456789abcdef0123456789abcdef01",
