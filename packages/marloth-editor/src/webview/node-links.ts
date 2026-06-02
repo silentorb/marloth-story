@@ -1,6 +1,7 @@
 import {
   isMarlothHref,
   nodeIdFromHref,
+  nodeIdFromUri,
   nodeUri,
   resolveLinkTarget,
   standaloneNodeUrl,
@@ -29,6 +30,22 @@ export function anchorFromLocation(): string | undefined {
 export function resolveNodeLinkTarget(href: string): string | null {
   if (isMarlothHref(href)) return nodeIdFromHref(href);
   return resolveLinkTarget(href);
+}
+
+/** Resolve a navigable node id from any in-app link href (standalone ?node= or marloth: / legacy). */
+export function resolveNodePageTarget(href: string, base?: string | URL): string | null {
+  if (typeof window !== "undefined" && isStandaloneNodeHref(href, base)) {
+    try {
+      const url = new URL(href, base ?? window.location.href);
+      const nodeParam = url.searchParams.get("node");
+      if (nodeParam && isNodeId(nodeParam)) return nodeParam.toLowerCase();
+    } catch {
+      /* fall through */
+    }
+  }
+  const fromUri = nodeIdFromUri(href);
+  if (fromUri) return fromUri;
+  return resolveNodeLinkTarget(href);
 }
 
 /** True when href already targets a standalone node URL. */
@@ -67,7 +84,13 @@ export function syncMetadataExpandedParam(expanded: boolean, base?: string | URL
   const url = base instanceof URL ? new URL(base.href) : new URL(base ?? window.location.href);
   if (expanded) url.searchParams.set("meta", "1");
   else url.searchParams.delete("meta");
-  window.history.replaceState({}, "", url.toString());
+  replaceStandaloneHistory(url.toString());
+}
+
+/** Update the current history entry without adding a back-stack frame. */
+export function replaceStandaloneHistory(url: string): void {
+  if (typeof window === "undefined") return;
+  window.history.replaceState({}, "", url);
 }
 
 export function stripMetadataParamFromUrl(url: URL): void {
@@ -84,8 +107,6 @@ export function standaloneViewUrl(
   if (view === "graph-explorer") {
     url.searchParams.set("view", "explorer");
     url.searchParams.set("anchor", resolveGraphExplorerAnchor(anchorId));
-  } else if (view === "create-node") {
-    url.searchParams.set("view", "create");
   } else url.searchParams.delete("view");
   if (nodeId) url.searchParams.set("node", nodeId);
   else url.searchParams.delete("node");
@@ -102,6 +123,23 @@ export function nodePageHref(nodeId: string, host: EditorHost, base?: string | U
 
 export function navigateStandaloneNode(nodeId: string, base?: string | URL): void {
   window.location.assign(standaloneNodeUrl(nodeId, base));
+}
+
+/** Standalone URL that triggers automatic new-page creation on load (`?view=create`). */
+export function standaloneCreatePageUrl(base?: string | URL): string {
+  const url = base instanceof URL ? new URL(base.href) : new URL(base ?? window.location.href);
+  url.searchParams.set("view", "create");
+  url.searchParams.delete("node");
+  url.searchParams.delete("tab");
+  url.searchParams.delete("scope");
+  url.searchParams.delete("dbView");
+  url.searchParams.delete("anchor");
+  stripMetadataParamFromUrl(url);
+  return url.toString();
+}
+
+export function isStandaloneCreatePageUrl(url: URL = new URL(window.location.href)): boolean {
+  return url.searchParams.get("view") === "create";
 }
 
 export function openStandaloneNodeInNewTab(nodeId: string, base?: string | URL): void {

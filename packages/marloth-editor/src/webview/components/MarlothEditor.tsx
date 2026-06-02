@@ -5,17 +5,18 @@ import { Crepe } from "@milkdown/crepe";
 import "@milkdown/crepe/theme/common/style.css";
 import "@milkdown/crepe/theme/frame-dark.css";
 import type { EditorApi } from "../api/client";
-import {
-  formatMarlothLink,
-  marlothHref,
-} from "../../shared/types";
+import { marlothHref, standaloneNodeUrl } from "../../shared/types";
 import type { NodeSummary } from "../../shared/types";
 import { buildCalloutSlashMenu } from "../callout-block";
 import { installCalloutCursor } from "../callout-cursor";
 import { installLinkCursor } from "../link-cursor";
 import { installCalloutDecoration } from "../callout-decoration";
 import { installMentionSync } from "../mention-sync";
-import { resolveNodeLinkTarget } from "../node-links";
+import {
+  openStandaloneNodeInNewTab,
+  resolveNodePageTarget,
+  rewriteStandaloneNodeLinks,
+} from "../node-links";
 import {
   activeMentionRangeAtSelection,
   resolveMentionInsertRange,
@@ -80,12 +81,16 @@ export function MarlothEditor({
         const view = ctx.get(editorViewCtx);
         const range = resolveMentionInsertRange(view.state, stored);
         if (!range) return;
-        const link = formatMarlothLink(item.title, item.id);
+        const href =
+          api.host === "standalone"
+            ? standaloneNodeUrl(item.id, window.location.href)
+            : marlothHref(item.id);
+        const link = `[${item.title}](${href})`;
         replaceRange(link, { from: range.replaceFrom, to: range.replaceTo })(ctx);
       });
       closeMention();
     },
-    [closeMention],
+    [api.host, closeMention],
   );
 
   useEffect(() => {
@@ -104,6 +109,7 @@ export function MarlothEditor({
     let editorReady = false;
     let baselineCaptured = false;
     let editorDom: HTMLElement | null = null;
+    const editorDomRef = { current: null as HTMLElement | null };
     let onKeyDown: ((event: KeyboardEvent) => void) | null = null;
     setInitError(null);
     setIsEmpty(!initialBody.trim());
@@ -147,6 +153,9 @@ export function MarlothEditor({
           return;
         }
         onBodyChange?.(markdown);
+        if (api.host === "standalone" && editorDomRef.current) {
+          rewriteStandaloneNodeLinks(editorDomRef.current);
+        }
       });
     });
 
@@ -243,7 +252,11 @@ export function MarlothEditor({
         };
 
         editorDom = dom;
+        editorDomRef.current = dom;
         dom.addEventListener("keydown", onKeyDown, true);
+        if (api.host === "standalone") {
+          rewriteStandaloneNodeLinks(dom);
+        }
       });
     }).catch((err: unknown) => {
       console.error("Marloth editor failed to initialize:", err);
@@ -256,39 +269,57 @@ export function MarlothEditor({
       const target = event.target as HTMLElement | null;
       const anchor = target?.closest("a") as HTMLAnchorElement | null;
       if (!anchor) return;
-      const recordTarget = resolveNodeLinkTarget(anchor.getAttribute("href") ?? "");
+      const recordTarget = resolveNodePageTarget(
+        anchor.getAttribute("href") ?? "",
+        window.location.href,
+      );
       if (!recordTarget) return;
+
+      const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
+      if (api.host === "standalone") {
+        if (!openInNewTab) return;
+        event.preventDefault();
+        event.stopPropagation();
+        openStandaloneNodeInNewTab(recordTarget);
+        return;
+      }
+
       event.preventDefault();
       event.stopPropagation();
-      const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
-      onNavigate?.(recordTarget, openInNewTab);
-      if (api.host === "vscode") {
+      if (onNavigate) {
+        onNavigate(recordTarget, openInNewTab);
+      } else {
         api.navigate(recordTarget, openInNewTab);
       }
     };
 
-    const onContextMenu = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null;
-      const anchor = target?.closest("a") as HTMLAnchorElement | null;
-      if (!anchor) return;
-      const href = anchor.getAttribute("href") ?? "";
-      const recordTarget = resolveNodeLinkTarget(href);
+    const onContextMenu =
+      api.host === "vscode"
+        ? (event: MouseEvent) => {
+            const target = event.target as HTMLElement | null;
+            const anchor = target?.closest("a") as HTMLAnchorElement | null;
+            if (!anchor) return;
+            const href = anchor.getAttribute("href") ?? "";
+      const recordTarget = resolveNodePageTarget(href, window.location.href);
       if (!recordTarget) return;
       event.preventDefault();
       const action = window.prompt(
-        "Marloth link — enter new title (Cancel to keep unchanged):",
-        anchor.textContent ?? "",
-      );
-      if (action === null) return;
-      const trimmed = action.trim();
-      if (!trimmed) return;
-      anchor.textContent = trimmed;
-      anchor.setAttribute("href", marlothHref(recordTarget));
-    };
+              "Marloth link — enter new title (Cancel to keep unchanged):",
+              anchor.textContent ?? "",
+            );
+            if (action === null) return;
+            const trimmed = action.trim();
+            if (!trimmed) return;
+            anchor.textContent = trimmed;
+            anchor.setAttribute("href", marlothHref(recordTarget));
+          }
+        : null;
 
     root.addEventListener("click", onClick);
     root.addEventListener("auxclick", onClick);
-    root.addEventListener("contextmenu", onContextMenu);
+    if (onContextMenu) {
+      root.addEventListener("contextmenu", onContextMenu);
+    }
 
     return () => {
       destroyed = true;
@@ -297,7 +328,9 @@ export function MarlothEditor({
       }
       root.removeEventListener("click", onClick);
       root.removeEventListener("auxclick", onClick);
-      root.removeEventListener("contextmenu", onContextMenu);
+      if (onContextMenu) {
+        root.removeEventListener("contextmenu", onContextMenu);
+      }
       root.replaceChildren();
       void crepe.destroy();
       crepeRef.current = null;

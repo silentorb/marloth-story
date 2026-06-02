@@ -4,7 +4,6 @@ const APP_TITLE = "Marloth";
 
 export function formatDocumentTitle(view: AppView, recordTitle?: string | null): string {
   if (view === "graph-explorer") return `Graph Explorer · ${APP_TITLE}`;
-  if (view === "create-node") return `New page · ${APP_TITLE}`;
   if (recordTitle) {
     return recordTitle === APP_TITLE ? APP_TITLE : `${recordTitle} · ${APP_TITLE}`;
   }

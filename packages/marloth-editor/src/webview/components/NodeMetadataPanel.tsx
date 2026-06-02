@@ -9,7 +9,6 @@ interface NodeMetadataPanelProps {
   metadata: NodePageMetadata;
   expanded: boolean;
   onExpandedChange: (expanded: boolean) => void;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
 function formatTimestamp(iso: string | null): string {
@@ -30,7 +29,6 @@ export function NodeMetadataPanel({
   metadata,
   expanded,
   onExpandedChange,
-  onOpenNode,
 }: NodeMetadataPanelProps) {
   const [backlinksOpen, setBacklinksOpen] = useState(false);
   const backlinksRef = useRef<HTMLDivElement>(null);
@@ -104,11 +102,7 @@ export function NodeMetadataPanel({
                   ) : (
                     metadata.backlinks.map((backlink) => (
                       <div key={backlink.sourceId} className="marloth-record-metadata-backlink-item" role="none">
-                        <NodeNameLink
-                          api={api}
-                          nodeId={backlink.sourceId}
-                          onOpenNode={onOpenNode}
-                        >
+                        <NodeNameLink api={api} nodeId={backlink.sourceId}>
                           {backlink.title}
                         </NodeNameLink>
                       </div>

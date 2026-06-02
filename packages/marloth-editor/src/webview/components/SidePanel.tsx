@@ -1,5 +1,7 @@
 import { useState } from "react";
 import type { AppView } from "../../shared/types";
+import type { EditorApi } from "../api/client";
+import { nodePageHref } from "../node-links";
 import { SIDEBAR_NODE_LINKS } from "../sidebar-nav";
 import "./side-panel.css";
 
@@ -20,12 +22,12 @@ export function isHomeNavActive(
 }
 
 interface SidePanelProps {
+  api: EditorApi;
   activeView: AppView;
   activeNodeId?: string | null;
   homeNodeId?: string | null;
-  onHome: () => void;
   onViewChange: (view: AppView) => void;
-  onOpenNode: (nodeId: string) => void;
+  onNewPage: () => void;
   onOpenSearch: () => void;
   standaloneUrls?: SidePanelStandaloneUrls;
 }
@@ -67,16 +69,21 @@ function NavItem({
 }
 
 export function SidePanel({
+  api,
   activeView,
   activeNodeId,
   homeNodeId,
-  onHome,
   onViewChange,
-  onOpenNode,
+  onNewPage,
   onOpenSearch,
   standaloneUrls,
 }: SidePanelProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const pageBase = typeof window !== "undefined" ? window.location.href : undefined;
+
+  const homeHref =
+    standaloneUrls?.home ??
+    (homeNodeId ? nodePageHref(homeNodeId, api.host, pageBase) : undefined);
 
   return (
     <aside
@@ -103,8 +110,7 @@ export function SidePanel({
           title="Home"
           icon="⌂"
           label="Home"
-          href={standaloneUrls?.home}
-          onClick={standaloneUrls ? undefined : onHome}
+          href={homeHref}
         />
         <NavItem
           active={false}
@@ -122,12 +128,12 @@ export function SidePanel({
           onClick={standaloneUrls ? undefined : () => onViewChange("graph-explorer")}
         />
         <NavItem
-          active={activeView === "create-node"}
+          active={false}
           title="New page"
           icon="+"
           label="New page"
           href={standaloneUrls?.create}
-          onClick={standaloneUrls ? undefined : () => onViewChange("create-node")}
+          onClick={standaloneUrls ? undefined : onNewPage}
         />
         <div className="marloth-side-panel-divider" role="presentation" />
         {SIDEBAR_NODE_LINKS.map(({ id, label, icon }) => (
@@ -137,8 +143,7 @@ export function SidePanel({
             title={label}
             icon={icon}
             label={label}
-            href={standaloneUrls?.nodes[id]}
-            onClick={standaloneUrls ? undefined : () => onOpenNode(id)}
+            href={standaloneUrls?.nodes[id] ?? nodePageHref(id, api.host, pageBase)}
           />
         ))}
       </nav>

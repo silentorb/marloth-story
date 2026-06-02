@@ -27,7 +27,6 @@ describe("NodePageView", () => {
           onTitleChange={() => {}}
           onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
-          onOpenNode={() => {}}
           onArchiveNode={async () => {}}
           onDeleteNode={async () => {}}
         />
@@ -61,7 +60,6 @@ describe("NodePageView", () => {
           onTitleChange={() => {}}
           onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
-          onOpenNode={() => {}}
           onArchiveNode={async () => {}}
           onDeleteNode={async () => {}}
         />
@@ -96,7 +94,6 @@ describe("NodePageView", () => {
           onTitleChange={() => {}}
           onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
-          onOpenNode={() => {}}
           onArchiveNode={async () => {}}
           onDeleteNode={async () => {}}
         />
@@ -141,7 +138,6 @@ describe("NodePageView", () => {
           onTitleChange={() => {}}
           onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
-          onOpenNode={() => {}}
           onArchiveNode={async () => {}}
           onDeleteNode={async () => {}}
         />
@@ -178,7 +174,6 @@ describe("PropertiesSectionView", () => {
           ],
           cells: { all_scene_count: "3" },
         }}
-        onOpenNode={() => {}}
       />,
     );
 

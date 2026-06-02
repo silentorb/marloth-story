@@ -19,7 +19,6 @@ describe("DatabaseTableView", () => {
           nodeId={FIXTURE_DATABASE_ID}
           databaseView={makeDatabaseViewDetail()}
           onTabSelect={() => {}}
-          onOpenNode={() => {}}
         />
       </UserSettingsProvider>,
     );
@@ -72,7 +71,6 @@ describe("DatabaseTableView", () => {
           nodeId={FIXTURE_DATABASE_ID}
           databaseView={databaseView}
           onTabSelect={() => {}}
-          onOpenNode={() => {}}
         />
       </UserSettingsProvider>,
     );
@@ -115,7 +113,6 @@ describe("DatabaseTableView", () => {
           onTabSelect={(tabId) => {
             selectedTab = tabId;
           }}
-          onOpenNode={() => {}}
         />
       </UserSettingsProvider>,
     );
@@ -134,7 +131,6 @@ describe("DatabaseTableView", () => {
           nodeId={FIXTURE_DATABASE_ID}
           databaseView={makeDatabaseViewDetail({ rows: [], columns: [] })}
           onTabSelect={() => {}}
-          onOpenNode={() => {}}
         />
       </UserSettingsProvider>,
     );
@@ -167,7 +163,6 @@ describe("DatabaseTableView", () => {
             ],
           })}
           onTabSelect={() => {}}
-          onOpenNode={() => {}}
         />
       </UserSettingsProvider>,
     );
@@ -210,7 +205,6 @@ describe("DatabaseTableView", () => {
             ],
           })}
           onTabSelect={() => {}}
-          onOpenNode={() => {}}
         />
       </UserSettingsProvider>,
     );

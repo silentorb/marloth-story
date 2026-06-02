@@ -78,7 +78,7 @@ Keyboard shortcuts in combobox-style pickers (global search, Relate, record link
 
 ### Node creation
 
-- A **global create page** (`?view=create` in standalone; sidebar **New page** / command **Marloth: New Page**) **must** let users create a standalone `NotionPage` with title and optional markdown body (no relationships).
+- **New page** (sidebar **New page**, command **Marloth: New Page**, or standalone `?view=create`) **must** immediately create a standalone `NotionPage` with default title `Untitled` (no relationships) and open the universal node edit page so the user can set title and body there.
 - **Table section add row** — relation sections and database table sections **must** offer an inline add control that creates a new node and links it to the current page (`POST /api/nodes/:id/relation-rows` or `POST /api/databases/:id/rows`). The new row **must** appear after reload.
 - Relation table sections only appear when the page already has at least one outgoing edge for that label; ordered-association tables are unchanged. Every non-protected node page **must** offer **Relate** in the page actions menu (⋯ to the right of the page title) to open a dialog linking the current page to an **existing** target: searchable relationship type (`GET /api/relationship-types`, all types present in data) and searchable target node (`GET /api/nodes/search`, optionally filtered via `GET /api/nodes/:id/relationship-link-options?type=…` from `schema.json`). Linking uses `POST /api/nodes/:id/connections`; the page reloads so new relation sections appear when applicable.
 - Database table **relation columns** (`type: relation` in synced `notion_schema`) **must** be editable in the UI (link/unlink existing rows via the same connections API).
@@ -113,7 +113,9 @@ User edit (webview)
   → SQLite data/marloth.sqlite
 ```
 
-Navigation in VS Code (same tab vs new tab) uses postMessage to the extension host; node data still loads via REST.
+Navigation in VS Code (same tab vs new tab) uses postMessage to the extension host for Milkdown `marloth:` links and keyboard-driven pickers; UI surfaces use `<a href="marloth://node/{id}">` anchors. Node data still loads via REST.
+
+In standalone browser mode, changing nodes is a real URL navigation (`?node=`). The browser back/forward buttons use normal history entries—not an in-app navigation stack.
 
 Search/autocomplete:
 
@@ -180,7 +182,7 @@ bun run editor:dev
 - Manual: `@` search inserts link; click navigates; Ctrl+click opens new tab
 - Manual: open any node with relation sections and confirm tables render
 - Manual: click a section table column header to sort; reload and confirm sort persists in `.marloth/user-settings.json`
-- Manual: sidebar **New page** or `?view=create` → create with title → lands on new node page; `content/data/{id}.md` exists
+- Manual: sidebar **New page** or `?view=create` → lands on new node page titled Untitled; `content/data/{id}.md` exists
 - Manual: on a relation or database table section, **+ New …** / **+ New row** → new row appears after reload
 - Manual: on a database table with relation columns (e.g. Features → Parents), click link labels to navigate; hover the cell and use the edit control to open the popup for add/remove; confirm `content/data/relationships.json` updates
 
@@ -194,7 +196,7 @@ bun run editor:dev
 | `packages/marloth-editor/src/webview/` | React + Milkdown Crepe UI |
 | `packages/marloth-editor/src/extension/` | VS Code custom editor provider |
 | `packages/marloth-editor/src/webview/components/NodePageView.tsx` | Universal page layout (title, metadata, properties, markdown, sections) |
-| `packages/marloth-editor/src/webview/components/CreateNodeView.tsx` | Global new-page form |
+| `packages/marloth-editor/src/webview/App.tsx` (`createNewPage`) | New-page auto-create + navigation |
 | `packages/marloth-editor/src/webview/components/GlobalSearch.tsx` | Global node search (title-only v1) |
 | `packages/marloth-db/src/node-create.ts` | Create node + optional relationship (`createNode`) |
 | `packages/marloth-editor/src/webview/components/PropertiesSectionView.tsx` | Instance-page Properties form (stored + computed fields) |

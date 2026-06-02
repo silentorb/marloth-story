@@ -16,7 +16,8 @@ import type {
   OrderedAssociationViewDetail,
 } from "../../shared/types";
 import type { EditorApi } from "../api/client";
-import { isProtectedEditorNode, standaloneNodeUrl } from "../../shared/types";
+import { isProtectedEditorNode } from "../../shared/types";
+import { nodePageHref } from "../node-links";
 import { filterRowsByName } from "../table-name-filter";
 import { itemsTableSearchParamKey } from "../../shared/table-search-url";
 import { useTableSearch } from "../hooks/useTableSearch";
@@ -37,7 +38,6 @@ interface OrderedAssociationViewProps {
   view: OrderedAssociationViewDetail;
   onTabSelect: (tabId: string) => void;
   onViewChange: (view: OrderedAssociationViewDetail) => void;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
   onArchiveNode?: (nodeId: string) => Promise<void>;
   onDeleteNode?: (nodeId: string) => Promise<void>;
@@ -245,7 +245,6 @@ export function OrderedAssociationView({
   view,
   onTabSelect,
   onViewChange,
-  onOpenNode,
   onCellUpdated,
   onArchiveNode,
   onDeleteNode,
@@ -327,38 +326,16 @@ export function OrderedAssociationView({
     return null;
   }, [activeSceneId, view.groups]);
 
-  const openRowInEditor = useCallback(
-    (sceneId: string, event: React.MouseEvent<HTMLButtonElement>) => {
-      onOpenNode(sceneId, event.metaKey || event.ctrlKey || event.button === 1);
-    },
-    [onOpenNode],
-  );
-
   const renderNameCell = useCallback(
-    (sceneId: string, name: string) => {
-      if (api.host === "standalone") {
-        return (
-          <a
-            href={standaloneNodeUrl(sceneId, window.location.href)}
-            className="marloth-database-name-link"
-          >
-            {name}
-          </a>
-        );
-      }
-
-      return (
-        <button
-          type="button"
-          className="marloth-database-name-link"
-          onClick={(event) => openRowInEditor(sceneId, event)}
-          onAuxClick={(event) => openRowInEditor(sceneId, event)}
-        >
-          {name}
-        </button>
-      );
-    },
-    [api.host, openRowInEditor],
+    (sceneId: string, name: string) => (
+      <a
+        href={nodePageHref(sceneId, api.host, window.location.href)}
+        className="marloth-database-name-link"
+      >
+        {name}
+      </a>
+    ),
+    [api.host],
   );
 
   const renderCell = useCallback(
@@ -386,7 +363,6 @@ export function OrderedAssociationView({
               await api.unlinkOutgoingRelationship(row.sceneId, def.relationType!, targetId);
               onCellUpdated?.();
             }}
-            onOpenNode={onOpenNode}
           />
         );
       }
@@ -397,7 +373,7 @@ export function OrderedAssociationView({
         columnDef: def,
       });
     },
-    [api, onCellUpdated, onOpenNode, view.columnDefs, view.typeDatabaseId],
+    [api, onCellUpdated, view.columnDefs, view.typeDatabaseId],
   );
 
   const handleSceneDragEnd = useCallback(

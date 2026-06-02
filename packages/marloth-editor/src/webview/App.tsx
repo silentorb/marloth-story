@@ -1,19 +1,28 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { GraphView } from "./components/GraphView";
-import { CreateNodeView } from "./components/CreateNodeView";
 import { GlobalSearch } from "./components/GlobalSearch";
 import { NodePageView } from "./components/NodePageView";
 import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
 import { UserSettingsProvider } from "./hooks/useUserSettings";
 import type { GetNodeOptions } from "../shared/http-client";
-import type { AppView, DatabaseViewDetail, OrderedAssociationViewDetail, NodePageDetail } from "../shared/types";
-import { standaloneNodeUrl } from "../shared/types";
+import {
+  NEW_PAGE_DEFAULT_TITLE,
+  standaloneNodeUrl,
+  type AppView,
+  type DatabaseViewDetail,
+  type NodePageDetail,
+  type OrderedAssociationViewDetail,
+} from "../shared/types";
 import {
   anchorFromLocation,
   metadataExpandedFromLocation,
+  isStandaloneCreatePageUrl,
   navigateStandaloneNode,
+  replaceStandaloneHistory,
   resolveGraphExplorerAnchor,
+  resolveNodePageTarget,
+  standaloneCreatePageUrl,
   stripMetadataParamFromUrl,
   syncMetadataExpandedParam,
   standaloneViewUrl,
@@ -56,7 +65,6 @@ function viewFromLocation(): AppView {
   const params = new URLSearchParams(window.location.search);
   const view = params.get("view");
   if (view === "overview" || view === "explorer") return "graph-explorer";
-  if (view === "create") return "create-node";
   return "node-page";
 }
 
@@ -67,7 +75,6 @@ function tabFromLocation(): string | undefined {
 
 function viewToQueryParam(view: AppView): string | null {
   if (view === "graph-explorer") return "explorer";
-  if (view === "create-node") return "create";
   return null;
 }
 
@@ -101,6 +108,7 @@ export function App() {
   );
   const [explorerAnchorStack, setExplorerAnchorStack] = useState<string[]>([]);
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
+  const [creatingPage, setCreatingPage] = useState(false);
   const [homeId, setHomeId] = useState<string | null>(null);
   const [explorerAnchorId, setExplorerAnchorId] = useState(() =>
     resolveGraphExplorerAnchor(anchorFromLocation()),
@@ -117,7 +125,7 @@ export function App() {
       if (api.host !== "standalone" || view !== "graph-explorer") return;
       const url = new URL(window.location.href);
       url.searchParams.set("anchor", anchorId);
-      window.history.replaceState({}, "", url.toString());
+      replaceStandaloneHistory(url.toString());
     },
     [api.host, view],
   );
@@ -179,7 +187,7 @@ export function App() {
     return {
       home: standaloneNodeUrl(homeId),
       explorer: standaloneViewUrl("graph-explorer", null, undefined, explorerAnchorId),
-      create: standaloneViewUrl("create-node", null),
+      create: standaloneCreatePageUrl(),
       nodes,
     };
   }, [api.host, explorerAnchorId, homeId]);
@@ -206,7 +214,7 @@ export function App() {
       } else {
         url.searchParams.delete("anchor");
       }
-      window.history.replaceState({}, "", url.toString());
+      replaceStandaloneHistory(url.toString());
     },
     [api.host, explorerAnchorId],
   );
@@ -247,15 +255,37 @@ export function App() {
     [api, syncStandaloneUrl],
   );
 
+  const createNewPage = useCallback(async () => {
+    setCreatingPage(true);
+    setError(null);
+    try {
+      const created = await api.createNode({ title: NEW_PAGE_DEFAULT_TITLE });
+      if (api.host === "standalone") {
+        navigateStandaloneNode(created.id);
+        return;
+      }
+      setView("node-page");
+      api.navigate(created.id);
+      await loadNode(created.id);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setCreatingPage(false);
+    }
+  }, [api, loadNode]);
+
   const bootstrap = useCallback(async () => {
     try {
       const home = await api.getHomeId();
       setHomeId(home);
       if (api.host === "vscode") return;
+      if (isStandaloneCreatePageUrl()) {
+        await createNewPage();
+        return;
+      }
       const initialView = viewFromLocation();
       setView(initialView);
       setExplorerAnchorId(resolveGraphExplorerAnchor(anchorFromLocation()));
-      if (initialView === "create-node") return;
       if (initialView !== "node-page") return;
 
       const fromUrl = nodeFromLocation();
@@ -271,11 +301,46 @@ export function App() {
           : "Could not reach the Marloth editor API. Start it with: bun run editor:dev",
       );
     }
-  }, [api, loadNode]);
+  }, [api, createNewPage, loadNode]);
 
   useEffect(() => {
     void bootstrap();
   }, [bootstrap]);
+
+  const vscodeNavigateNode = useCallback(
+    (nodeId: string, openInNewTab = false) => {
+      if (openInNewTab) {
+        api.navigate(nodeId, true);
+        return;
+      }
+      setView("node-page");
+      void loadNode(nodeId);
+    },
+    [api, loadNode],
+  );
+
+  useEffect(() => {
+    if (api.host !== "vscode") return;
+    const onLinkClick = (event: MouseEvent) => {
+      const anchor = (event.target as HTMLElement | null)?.closest("a");
+      if (!anchor) return;
+      const nodeId = resolveNodePageTarget(
+        anchor.getAttribute("href") ?? "",
+        window.location.href,
+      );
+      if (!nodeId) return;
+      const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
+      event.preventDefault();
+      event.stopPropagation();
+      vscodeNavigateNode(nodeId, openInNewTab);
+    };
+    document.addEventListener("click", onLinkClick, true);
+    document.addEventListener("auxclick", onLinkClick, true);
+    return () => {
+      document.removeEventListener("click", onLinkClick, true);
+      document.removeEventListener("auxclick", onLinkClick, true);
+    };
+  }, [api.host, vscodeNavigateNode]);
 
   useEffect(() => {
     if (api.host !== "standalone") return;
@@ -312,13 +377,6 @@ export function App() {
         return;
       }
       if (msg.type === "init" || msg.type === "navigate") {
-        const view = (msg as { view?: AppView }).view;
-        if (view === "create-node") {
-          setView("create-node");
-          setNode(null);
-          setError(null);
-          return;
-        }
         if (msg.nodeId) {
           setView("node-page");
           void loadNode(msg.nodeId);
@@ -434,27 +492,12 @@ export function App() {
         return;
       }
       if (api.host === "standalone") {
-        navigateStandaloneNode(nodeId);
+        window.location.assign(standaloneNodeUrl(nodeId));
         return;
       }
-      setView("node-page");
-      syncStandaloneUrl("node-page", nodeId);
-      void loadNode(nodeId);
+      vscodeNavigateNode(nodeId);
     },
-    [api, loadNode, syncStandaloneUrl],
-  );
-
-  const openLinkedNode = useCallback(
-    (nodeId: string, openInNewTab = false) => {
-      if (openInNewTab) {
-        api.navigate(nodeId, true);
-        return;
-      }
-      setView("node-page");
-      syncStandaloneUrl("node-page", nodeId);
-      void loadNode(nodeId);
-    },
-    [api, loadNode, syncStandaloneUrl],
+    [api, vscodeNavigateNode],
   );
 
   const setShowGraphNodeLabelsPersisted = useCallback((value: boolean) => {
@@ -575,23 +618,18 @@ export function App() {
     <UserSettingsProvider api={api}>
       <div className="marloth-layout">
       <SidePanel
+        api={api}
         activeView={view}
         activeNodeId={view === "node-page" ? (node?.id ?? nodeFromLocation()) : null}
         homeNodeId={homeId}
-        onHome={() => void goHome()}
         onViewChange={changeView}
-        onOpenNode={(nodeId) => openLinkedNode(nodeId)}
+        onNewPage={() => void createNewPage()}
         onOpenSearch={() => setGlobalSearchOpen(true)}
         standaloneUrls={standaloneUrls}
       />
       <div className={`marloth-main${view === "graph-explorer" ? " marloth-main-graph" : ""}`}>
-        {view === "create-node" ? (
-          <CreateNodeView
-            api={api}
-            onCancel={() => void goHome()}
-            onCreated={(nodeId) => openLinkedNode(nodeId)}
-            onOpenNode={(nodeId, openInNewTab) => openLinkedNode(nodeId, openInNewTab)}
-          />
+        {creatingPage ? (
+          <div className="marloth-loading">Creating page…</div>
         ) : view === "graph-explorer" ? (
           <GraphView
             api={api}
@@ -630,7 +668,7 @@ export function App() {
             onTitleChange={scheduleSaveTitle}
             onTabSelect={(tabId) => void selectTab(tabId)}
             onOrderedAssociationViewChange={updateOrderedAssociationView}
-            onOpenNode={openLinkedNode}
+            onVscodeNavigate={api.host === "vscode" ? vscodeNavigateNode : undefined}
             onArchiveNode={archiveCurrentNode}
             onDeleteNode={deleteCurrentNode}
             onTableCellUpdated={() => void loadNode(node.id, { tab: tabFromLocation() })}
@@ -642,7 +680,7 @@ export function App() {
         api={api}
         open={globalSearchOpen}
         onOpenChange={setGlobalSearchOpen}
-        onOpenNode={openLinkedNode}
+        onKeyboardNavigate={vscodeNavigateNode}
       />
     </UserSettingsProvider>
   );

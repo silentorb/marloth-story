@@ -110,6 +110,7 @@ export function createEditorApi(): EditorApi {
         openStandaloneNodeInNewTab(nodeId);
         return;
       }
+      // Same-tab standalone navigation uses real URLs (anchors or assign), not SPA routing.
       navigateStandaloneNode(nodeId);
     },
   };

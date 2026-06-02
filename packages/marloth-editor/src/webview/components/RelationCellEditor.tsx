@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { EditorApi } from "../api/client";
 import type { NodeSummary, RelationLink } from "../../shared/types";
-import { standaloneNodeUrl } from "../../shared/types";
+import { nodePageHref } from "../node-links";
 import {
   createCanvasMeasureWidth,
   formatRelationCellDisplay,
@@ -21,7 +21,6 @@ interface RelationCellEditorProps {
   disabled?: boolean;
   onAdd: (targetId: string) => void | Promise<void>;
   onRemove: (targetId: string) => void | Promise<void>;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
 interface RelationFieldPopupProps {
@@ -34,46 +33,17 @@ interface RelationFieldPopupProps {
   onClose: () => void;
   onAdd: (targetId: string, summary?: NodeSummary) => void | Promise<void>;
   onRemove: (targetId: string) => void | Promise<void>;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
-interface RelationCellLinkLabelProps {
-  api: EditorApi;
-  link: RelationLink;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
-}
-
-function RelationCellLinkLabel({ api, link, onOpenNode }: RelationCellLinkLabelProps) {
-  const openTarget = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
-      onOpenNode(link.targetId, event.metaKey || event.ctrlKey || event.button === 1);
-    },
-    [link.targetId, onOpenNode],
-  );
-
-  if (api.host === "standalone") {
-    return (
-      <a
-        href={standaloneNodeUrl(link.targetId, window.location.href)}
-        className="marloth-relation-cell-link"
-      >
-        <RelationCellLinkIcon />
-        <span className="marloth-relation-cell-link-title">{link.title}</span>
-      </a>
-    );
-  }
-
+function RelationCellLinkLabel({ api, link }: { api: EditorApi; link: RelationLink }) {
   return (
-    <button
-      type="button"
+    <a
+      href={nodePageHref(link.targetId, api.host, window.location.href)}
       className="marloth-relation-cell-link"
-      onClick={openTarget}
-      onAuxClick={openTarget}
     >
       <RelationCellLinkIcon />
       <span className="marloth-relation-cell-link-title">{link.title}</span>
-    </button>
+    </a>
   );
 }
 
@@ -87,7 +57,6 @@ function RelationFieldPopup({
   onClose,
   onAdd,
   onRemove,
-  onOpenNode,
 }: RelationFieldPopupProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
 
@@ -106,36 +75,14 @@ function RelationFieldPopup({
     };
   }, [onClose]);
 
-  const openTarget = useCallback(
-    (targetId: string, event: React.MouseEvent<HTMLButtonElement>) => {
-      onOpenNode(targetId, event.metaKey || event.ctrlKey || event.button === 1);
-    },
-    [onOpenNode],
+  const renderPopupLink = (link: RelationLink) => (
+    <a
+      href={nodePageHref(link.targetId, api.host, window.location.href)}
+      className="marloth-relation-field-popup-link"
+    >
+      {link.title}
+    </a>
   );
-
-  const renderPopupLink = (link: RelationLink) => {
-    if (api.host === "standalone") {
-      return (
-        <a
-          href={standaloneNodeUrl(link.targetId, window.location.href)}
-          className="marloth-relation-field-popup-link"
-        >
-          {link.title}
-        </a>
-      );
-    }
-
-    return (
-      <button
-        type="button"
-        className="marloth-relation-field-popup-link"
-        onClick={(event) => openTarget(link.targetId, event)}
-        onAuxClick={(event) => openTarget(link.targetId, event)}
-      >
-        {link.title}
-      </button>
-    );
-  };
 
   return (
     <div
@@ -201,7 +148,6 @@ export function RelationCellEditor({
   disabled = false,
   onAdd,
   onRemove,
-  onOpenNode,
 }: RelationCellEditorProps) {
   const [popupOpen, setPopupOpen] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -300,7 +246,7 @@ export function RelationCellEditor({
           ) : (
             <>
               {display.visibleLinks.map((link) => (
-                <RelationCellLinkLabel key={link.targetId} api={api} link={link} onOpenNode={onOpenNode} />
+                <RelationCellLinkLabel key={link.targetId} api={api} link={link} />
               ))}
               {display.overflowCount > 0 ? (
                 <span className="marloth-relation-cell-overflow">{display.overflowCount}+</span>
@@ -333,7 +279,6 @@ export function RelationCellEditor({
           onClose={() => setPopupOpen(false)}
           onAdd={handleAdd}
           onRemove={handleRemove}
-          onOpenNode={onOpenNode}
         />
       ) : null}
     </div>

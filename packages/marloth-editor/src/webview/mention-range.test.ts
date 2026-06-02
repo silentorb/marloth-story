@@ -64,4 +64,12 @@ describe("activeMentionRangeAtSelection", () => {
     expect(range!.query).toBe("");
     expect(range!.replaceTo).toBeGreaterThan(range!.replaceFrom);
   });
+
+  test("includes spaces in multi-word query", async () => {
+    const range = await mentionRangeFor("See @cozy horror", "@cozy horror");
+    expect(range).not.toBeNull();
+    expect(range!.query).toBe("cozy horror");
+    expect(range!.replaceFrom).toBe(5);
+    expect(range!.replaceTo).toBe(17);
+  });
 });

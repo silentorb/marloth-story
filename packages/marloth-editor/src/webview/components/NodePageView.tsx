@@ -27,7 +27,7 @@ interface NodePageViewProps {
   onTitleChange: (title: string) => void;
   onTabSelect: (tabId: string) => void;
   onOrderedAssociationViewChange: (view: OrderedAssociationViewDetail) => void;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
+  onVscodeNavigate?: (nodeId: string, openInNewTab?: boolean) => void;
   onArchiveNode: (nodeId: string) => Promise<void>;
   onDeleteNode: (nodeId: string) => Promise<void>;
   onTableCellUpdated?: () => void;
@@ -44,7 +44,7 @@ export function NodePageView({
   onTitleChange,
   onTabSelect,
   onOrderedAssociationViewChange,
-  onOpenNode,
+  onVscodeNavigate,
   onArchiveNode,
   onDeleteNode,
   onTableCellUpdated,
@@ -98,7 +98,6 @@ export function NodePageView({
           metadata={node.metadata}
           expanded={metadataExpanded}
           onExpandedChange={onMetadataExpandedChange}
-          onOpenNode={onOpenNode}
         />
 
         {node.properties ? (
@@ -106,7 +105,6 @@ export function NodePageView({
             api={api}
             nodeId={node.id}
             section={node.properties}
-            onOpenNode={onOpenNode}
             onCellUpdated={onTableCellUpdated}
           />
         ) : null}
@@ -121,7 +119,7 @@ export function NodePageView({
             initialBody={editorBody}
             onEditorBaseline={onEditorBaseline}
             onBodyChange={onBodyChange}
-            onNavigate={onOpenNode}
+            onNavigate={onVscodeNavigate}
           />
         </section>
 
@@ -146,7 +144,6 @@ export function NodePageView({
                   typeNodeId={
                     node.id === section.databaseView.id ? null : section.databaseView.id
                   }
-                  onOpenNode={onOpenNode}
                 />
                 <DatabaseTableView
                   api={api}
@@ -155,7 +152,6 @@ export function NodePageView({
                   embedded
                   onTabSelect={onTabSelect}
                   onTabsUpdated={onTableCellUpdated}
-                  onOpenNode={onOpenNode}
                   onCellUpdated={onTableCellUpdated}
                   onArchiveNode={onArchiveNode}
                   onDeleteNode={onDeleteNode}
@@ -175,7 +171,6 @@ export function NodePageView({
                   typeNodeId={
                     node.id === section.view.typeDatabaseId ? null : section.view.typeDatabaseId
                   }
-                  onOpenNode={onOpenNode}
                 />
                 <OrderedAssociationView
                   api={api}
@@ -183,7 +178,6 @@ export function NodePageView({
                   view={section.view}
                   onTabSelect={onTabSelect}
                   onViewChange={onOrderedAssociationViewChange}
-                  onOpenNode={onOpenNode}
                   onCellUpdated={onTableCellUpdated}
                   onArchiveNode={onArchiveNode}
                   onDeleteNode={onDeleteNode}
@@ -197,7 +191,6 @@ export function NodePageView({
               api={api}
               nodeId={node.id}
               section={section}
-              onOpenNode={onOpenNode}
               onCellUpdated={onTableCellUpdated}
               onArchiveNode={onArchiveNode}
               onDeleteNode={onDeleteNode}

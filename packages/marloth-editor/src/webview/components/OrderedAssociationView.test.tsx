@@ -56,7 +56,6 @@ describe("OrderedAssociationView", () => {
         view={view}
         onTabSelect={() => {}}
         onViewChange={() => {}}
-        onOpenNode={() => {}}
       />,
     );
 
@@ -82,7 +81,6 @@ describe("OrderedAssociationView", () => {
         view={view}
         onTabSelect={() => {}}
         onViewChange={() => {}}
-        onOpenNode={() => {}}
       />,
     );
 
@@ -109,7 +107,6 @@ describe("OrderedAssociationView", () => {
         view={view}
         onTabSelect={() => {}}
         onViewChange={() => {}}
-        onOpenNode={() => {}}
       />,
     );
 

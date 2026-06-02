@@ -22,8 +22,9 @@ describe("isMentionFragment", () => {
     expect(isMentionFragment("@Cozy")).toBe(true);
   });
 
-  test("rejects query containing whitespace", () => {
-    expect(isMentionFragment("@Cozy hor")).toBe(false);
+  test("accepts query containing whitespace", () => {
+    expect(isMentionFragment("@Cozy hor")).toBe(true);
+    expect(isMentionFragment("@Cozy horror")).toBe(true);
   });
 
   test("rejects invalid mention characters", () => {

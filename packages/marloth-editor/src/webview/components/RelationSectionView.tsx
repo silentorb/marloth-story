@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import type { EditorApi } from "../api/client";
 import type { RelationTableSection } from "../../shared/types";
 import { relationTableSortKey } from "../../shared/user-settings";
-import { standaloneNodeUrl } from "../../shared/types";
+import { nodePageHref } from "../node-links";
 import { useTableSearch } from "../hooks/useTableSearch";
 import { filterRowsByName } from "../table-name-filter";
 import { relationTableSearchParamKey } from "../../shared/table-search-url";
@@ -18,7 +18,6 @@ interface RelationSectionViewProps {
   api: EditorApi;
   nodeId: string;
   section: RelationTableSection;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
   onArchiveNode?: (nodeId: string) => Promise<void>;
   onDeleteNode?: (nodeId: string) => Promise<void>;
@@ -28,7 +27,6 @@ export function RelationSectionView({
   api,
   nodeId,
   section,
-  onOpenNode,
   onCellUpdated,
   onArchiveNode,
   onDeleteNode,
@@ -85,52 +83,26 @@ export function RelationSectionView({
   const hasActiveSearch = searchQuery.trim().length > 0;
   const hasMatchingRows = filteredRows.length > 0;
 
-  const openTarget = useCallback(
-    (targetId: string, event: React.MouseEvent<HTMLButtonElement>) => {
-      if (event.button === 2) return;
-      onOpenNode(targetId, event.metaKey || event.ctrlKey || event.button === 1);
-    },
-    [onOpenNode],
-  );
-
   const renderNameCell = useCallback(
     (row: SectionDataTableRow) => {
       const targetId = row.id;
-      if (api.host === "standalone") {
-        return (
-          <a
-            href={standaloneNodeUrl(targetId, window.location.href)}
-            className="marloth-database-name-link"
-          >
-            {row.name}
-          </a>
-        );
-      }
-
       return (
-        <button
-          type="button"
+        <a
+          href={nodePageHref(targetId, api.host, window.location.href)}
           className="marloth-database-name-link"
-          onClick={(event) => openTarget(targetId, event)}
-          onAuxClick={(event) => openTarget(targetId, event)}
         >
           {row.name}
-        </button>
+        </a>
       );
     },
-    [api.host, openTarget],
+    [api.host],
   );
 
   if (section.rows.length === 0) return null;
 
   return (
     <section className="marloth-record-section marloth-relation-section">
-      <SectionTitle
-        api={api}
-        title={section.title}
-        typeNodeId={section.typeNodeId}
-        onOpenNode={onOpenNode}
-      />
+      <SectionTitle api={api} title={section.title} typeNodeId={section.typeNodeId} />
       <TableUtilityBar
         search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
       />

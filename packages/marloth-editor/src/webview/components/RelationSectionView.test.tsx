@@ -1,4 +1,4 @@
-import { describe, expect, mock, test } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { UserSettingsProvider } from "../hooks/useUserSettings";
 import { RelationSectionView } from "./RelationSectionView";
@@ -13,7 +13,6 @@ function renderRelationSection(host: "standalone" | "vscode" = "standalone") {
         api={api}
         nodeId={FIXTURE_PAGE_ID}
         section={makeRelationSection()}
-        onOpenNode={() => {}}
       />
     </UserSettingsProvider>,
   );
@@ -31,25 +30,6 @@ describe("RelationSectionView", () => {
     expect(priorityTrigger.getAttribute("aria-haspopup")).toBe("listbox");
   });
 
-  test("standalone links do not invoke onOpenNode on click", () => {
-    const onOpenNode = mock(() => {});
-    const api = makeMockEditorApi("standalone");
-    render(
-      <UserSettingsProvider api={api}>
-        <RelationSectionView
-          api={api}
-          nodeId={FIXTURE_PAGE_ID}
-          section={makeRelationSection()}
-          onOpenNode={onOpenNode}
-        />
-      </UserSettingsProvider>,
-    );
-
-    fireEvent.click(screen.getByRole("link", { name: "Related items" }));
-    fireEvent.click(screen.getByRole("link", { name: "Linked record" }));
-    expect(onOpenNode).not.toHaveBeenCalled();
-  });
-
   test("standalone section title link targets type node", () => {
     renderRelationSection("standalone");
 
@@ -57,11 +37,11 @@ describe("RelationSectionView", () => {
     expect(link.getAttribute("href")).toContain(`node=${FIXTURE_TYPE_ID}`);
   });
 
-  test("renders vscode row controls as buttons", () => {
+  test("renders vscode row links with marloth:// href", () => {
     renderRelationSection("vscode");
 
-    expect(screen.getByRole("button", { name: "Linked record" })).toBeTruthy();
-    expect(screen.queryByRole("link", { name: "Linked record" })).toBeNull();
+    const link = screen.getByRole("link", { name: "Linked record" });
+    expect(link.getAttribute("href")).toBe(`marloth://node/${FIXTURE_TARGET_ID}`);
   });
 
   test("renders sortable column headers", () => {

@@ -13,7 +13,6 @@ describe("RelationCellEditor", () => {
         columnName="Parents"
         onAdd={async () => {}}
         onRemove={onRemove}
-        onOpenNode={() => {}}
       />,
     );
 
@@ -38,7 +37,6 @@ describe("RelationCellEditor", () => {
         columnName="Parents"
         onAdd={async () => {}}
         onRemove={async () => {}}
-        onOpenNode={() => {}}
       />,
     );
 
@@ -48,8 +46,7 @@ describe("RelationCellEditor", () => {
     expect(screen.getByRole("dialog", { name: "Edit Parents links" })).toBeTruthy();
   });
 
-  test("standalone cell link uses native href without custom click handler", () => {
-    const onOpenNode = mock(() => {});
+  test("standalone cell link uses native href", () => {
     const { container } = render(
       <RelationCellEditor
         api={makeMockEditorApi("standalone")}
@@ -57,14 +54,12 @@ describe("RelationCellEditor", () => {
         columnName="Parents"
         onAdd={async () => {}}
         onRemove={async () => {}}
-        onOpenNode={onOpenNode}
       />,
     );
 
     const link = screen.getByRole("link", { name: "Parent" });
     expect(link.getAttribute("href")).toContain("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
     fireEvent.click(link);
-    expect(onOpenNode).not.toHaveBeenCalled();
     expect(screen.queryByRole("dialog")).toBeNull();
     expect(container.querySelector(".marloth-relation-cell.is-popup-open")).toBeNull();
   });
@@ -86,7 +81,6 @@ describe("RelationCellEditor", () => {
         columnName="Parents"
         onAdd={onAdd}
         onRemove={async () => {}}
-        onOpenNode={() => {}}
       />,
     );
 
@@ -114,7 +108,6 @@ describe("RelationCellEditor", () => {
         columnName="Parents"
         onAdd={async () => {}}
         onRemove={async () => {}}
-        onOpenNode={() => {}}
       />,
     );
 
@@ -136,7 +129,6 @@ describe("RelationCellEditor", () => {
         columnName="Parents"
         onAdd={async () => {}}
         onRemove={async () => {}}
-        onOpenNode={() => {}}
       />,
     );
 
@@ -152,7 +144,6 @@ describe("RelationCellEditor", () => {
         columnName="Parents"
         onAdd={async () => {}}
         onRemove={async () => {}}
-        onOpenNode={() => {}}
       />,
     );
 

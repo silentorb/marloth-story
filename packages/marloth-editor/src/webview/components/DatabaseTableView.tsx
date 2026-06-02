@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import type { EditorApi } from "../api/client";
 import type { DatabaseViewDetail } from "../../shared/types";
 import { databaseTableSortKey, viewSortsToTableSort } from "../../shared/user-settings";
-import { standaloneNodeUrl } from "../../shared/types";
+import { nodePageHref } from "../node-links";
 import { useTableSearch } from "../hooks/useTableSearch";
 import { filterRowsByName } from "../table-name-filter";
 import { itemsTableSearchParamKey } from "../../shared/table-search-url";
@@ -23,7 +23,6 @@ interface DatabaseTableViewProps {
   embedded?: boolean;
   onTabSelect: (tabId: string) => void;
   onTabsUpdated?: () => void;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
   onArchiveNode?: (nodeId: string) => Promise<void>;
   onDeleteNode?: (nodeId: string) => Promise<void>;
@@ -36,7 +35,6 @@ export function DatabaseTableView({
   embedded = false,
   onTabSelect,
   onTabsUpdated,
-  onOpenNode,
   onCellUpdated,
   onArchiveNode,
   onDeleteNode,
@@ -108,7 +106,6 @@ export function DatabaseTableView({
               );
               onCellUpdated?.();
             }}
-            onOpenNode={onOpenNode}
           />
         );
       }
@@ -131,7 +128,7 @@ export function DatabaseTableView({
             : undefined,
       });
     },
-    [api, databaseView.columnDefs, databaseView.id, onCellUpdated, onOpenNode],
+    [api, databaseView.columnDefs, databaseView.id, onCellUpdated],
   );
 
   const rows = useMemo(
@@ -154,39 +151,19 @@ export function DatabaseTableView({
   const hasRows = databaseView.rows.length > 0;
   const hasMatchingRows = filteredRows.length > 0;
 
-  const openRowInEditor = useCallback(
-    (nodeId: string, event: React.MouseEvent<HTMLButtonElement>) => {
-      onOpenNode(nodeId, event.metaKey || event.ctrlKey || event.button === 1);
-    },
-    [onOpenNode],
-  );
-
   const renderNameCell = useCallback(
     (row: SectionDataTableRow) => {
-      const nodeId = row.id.split(":")[0]!;
-      if (api.host === "standalone") {
-        return (
-          <a
-            href={standaloneNodeUrl(nodeId, window.location.href)}
-            className="marloth-database-name-link"
-          >
-            {row.name}
-          </a>
-        );
-      }
-
+      const rowNodeId = row.id.split(":")[0]!;
       return (
-        <button
-          type="button"
+        <a
+          href={nodePageHref(rowNodeId, api.host, window.location.href)}
           className="marloth-database-name-link"
-          onClick={(event) => openRowInEditor(nodeId, event)}
-          onAuxClick={(event) => openRowInEditor(nodeId, event)}
         >
           {row.name}
-        </button>
+        </a>
       );
     },
-    [api.host, openRowInEditor],
+    [api.host],
   );
 
   const rowPageActions = useMemo(

@@ -9,7 +9,6 @@ interface PropertiesSectionViewProps {
   api: EditorApi;
   nodeId: string;
   section: PropertiesSection;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
   onCellUpdated?: () => void;
 }
 
@@ -17,7 +16,6 @@ export function PropertiesSectionView({
   api,
   nodeId,
   section,
-  onOpenNode,
   onCellUpdated,
 }: PropertiesSectionViewProps) {
   const renderField = useCallback(
@@ -49,12 +47,7 @@ export function PropertiesSectionView({
 
   return (
     <section className="marloth-record-section marloth-properties-section">
-      <SectionTitle
-        api={api}
-        title="Properties"
-        typeNodeId={section.databaseId}
-        onOpenNode={onOpenNode}
-      />
+      <SectionTitle api={api} title="Properties" typeNodeId={section.databaseId} />
       <dl className="marloth-properties-form">
         {section.columns.map((columnKey) => {
           const def = section.columnDefs?.find((col) => col.key === columnKey);

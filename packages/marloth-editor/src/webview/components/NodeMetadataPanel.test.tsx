@@ -26,7 +26,6 @@ describe("NodeMetadataPanel", () => {
         metadata={metadata}
         expanded={false}
         onExpandedChange={() => {}}
-        onOpenNode={() => {}}
       />,
     );
     expect(screen.getByText(/3 relationships · 1 backlink/)).toBeTruthy();
@@ -40,7 +39,6 @@ describe("NodeMetadataPanel", () => {
         metadata={metadata}
         expanded={true}
         onExpandedChange={() => {}}
-        onOpenNode={() => {}}
       />,
     );
     expect(screen.getByText("Created")).toBeTruthy();

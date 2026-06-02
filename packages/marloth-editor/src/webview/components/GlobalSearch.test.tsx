@@ -70,7 +70,7 @@ function renderGlobalSearch(
       <GlobalSearch
         open={props.open}
         onOpenChange={props.onOpenChange}
-        onOpenNode={props.onOpenNode}
+        onKeyboardNavigate={props.onKeyboardNavigate}
         api={api}
       />
     </UserSettingsProvider>,
@@ -82,17 +82,17 @@ describe("GlobalSearch", () => {
     const { container } = renderGlobalSearch({
       open: false,
       onOpenChange: () => {},
-      onOpenNode: () => {},
+      onKeyboardNavigate: () => {},
     });
     expect(container.querySelector(".marloth-global-search")).toBeNull();
   });
 
   test("renders standalone result links with node query URLs", async () => {
-    const onOpenNode = mock((_nodeId: string, _openInNewTab?: boolean) => {});
+    const onKeyboardNavigate = mock((_nodeId: string, _openInNewTab?: boolean) => {});
     const { container } = renderGlobalSearch({
       open: true,
       onOpenChange: () => {},
-      onOpenNode,
+      onKeyboardNavigate,
     });
 
     await waitFor(() => {
@@ -106,11 +106,11 @@ describe("GlobalSearch", () => {
     expect(link.getAttribute("href")).toContain("node=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
     fireEvent.click(link);
-    expect(onOpenNode).not.toHaveBeenCalled();
+    expect(onKeyboardNavigate).not.toHaveBeenCalled();
   });
 
-  test("vscode Enter uses onOpenNode for keyboard navigation", async () => {
-    const onOpenNode = mock((_nodeId: string, _openInNewTab?: boolean) => {});
+  test("vscode Enter uses onKeyboardNavigate for keyboard navigation", async () => {
+    const onKeyboardNavigate = mock((_nodeId: string, _openInNewTab?: boolean) => {});
     const api = {
       ...makeApi(sampleResults),
       host: "vscode" as const,
@@ -120,7 +120,7 @@ describe("GlobalSearch", () => {
       api,
       open: true,
       onOpenChange: () => {},
-      onOpenNode,
+      onKeyboardNavigate,
     });
 
     const input = container.querySelector(
@@ -141,7 +141,7 @@ describe("GlobalSearch", () => {
     fireEvent.keyDown(input, { key: "ArrowDown" });
     fireEvent.keyDown(input, { key: "Enter", ctrlKey: true });
 
-    expect(onOpenNode).toHaveBeenCalledWith("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true);
+    expect(onKeyboardNavigate).toHaveBeenCalledWith("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true);
   });
 
   test("shows body match preview when search node contents is enabled", async () => {
@@ -152,7 +152,7 @@ describe("GlobalSearch", () => {
       api,
       open: true,
       onOpenChange: () => {},
-      onOpenNode: () => {},
+      onKeyboardNavigate: () => {},
     });
 
     const checkbox = container.querySelector(
@@ -176,7 +176,7 @@ describe("GlobalSearch", () => {
       api,
       open: true,
       onOpenChange: () => {},
-      onOpenNode: () => {},
+      onKeyboardNavigate: () => {},
     });
 
     await waitFor(() => {
@@ -194,7 +194,7 @@ describe("GlobalSearch", () => {
       api,
       open: true,
       onOpenChange: () => {},
-      onOpenNode: () => {},
+      onKeyboardNavigate: () => {},
     });
 
     await waitFor(() => {
@@ -218,7 +218,7 @@ describe("GlobalSearch", () => {
     renderGlobalSearch({
       open: true,
       onOpenChange,
-      onOpenNode: () => {},
+      onKeyboardNavigate: () => {},
     });
 
     fireEvent.keyDown(window, { key: "Escape" });

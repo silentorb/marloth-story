@@ -10,10 +10,10 @@ interface GlobalSearchProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   /** VS Code keyboard navigation only; mouse uses native `<a href>` behavior. */
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
+  onKeyboardNavigate?: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
-export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSearchProps) {
+export function GlobalSearch({ api, open, onOpenChange, onKeyboardNavigate }: GlobalSearchProps) {
   const { globalSearchIncludeBody, setGlobalSearchIncludeBody } = useUserSettings();
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -85,7 +85,7 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
       if (!item) return;
 
       if (api.host === "vscode") {
-        onOpenNode(item.id, openInNewTab);
+        onKeyboardNavigate?.(item.id, openInNewTab);
         close();
         return;
       }
@@ -109,7 +109,7 @@ export function GlobalSearch({ api, open, onOpenChange, onOpenNode }: GlobalSear
       }
       link.click();
     },
-    [activeIndex, api.host, close, onOpenNode, results],
+    [activeIndex, api.host, close, onKeyboardNavigate, results],
   );
 
   if (!open) return null;

@@ -35,7 +35,10 @@ export type {
 
 export type EditorHost = "vscode" | "standalone";
 
-export type AppView = "node-page" | "graph-explorer" | "create-node";
+export type AppView = "node-page" | "graph-explorer";
+
+/** Default title for pages created via New page (sidebar / command). */
+export const NEW_PAGE_DEFAULT_TITLE = "Untitled";
 
 export function marlothHref(nodeId: string): string {
   return `${MARLOTH_LINK_SCHEME}${nodeId}`;

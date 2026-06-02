@@ -1,7 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import {
   metadataExpandedFromLocation,
+  replaceStandaloneHistory,
   resolveNodeLinkTarget,
+  resolveNodePageTarget,
+  standaloneCreatePageUrl,
   standaloneViewUrl,
   syncMetadataExpandedParam,
 } from "./node-links";
@@ -27,7 +30,7 @@ describe("node-links", () => {
     expect(
       standaloneViewUrl("node-page", "72b6fb455b824b78962b0e509cc091c9", "http://127.0.0.1:5173/"),
     ).toBe("http://127.0.0.1:5173/?node=72b6fb455b824b78962b0e509cc091c9");
-    expect(standaloneViewUrl("create-node", null, "http://127.0.0.1:5173/")).toBe(
+    expect(standaloneCreatePageUrl("http://127.0.0.1:5173/")).toBe(
       "http://127.0.0.1:5173/?view=create",
     );
   });
@@ -39,6 +42,30 @@ describe("node-links", () => {
     syncMetadataExpandedParam(false);
     expect(metadataExpandedFromLocation()).toBe(false);
     window.history.replaceState({}, "", original);
+  });
+
+  test("replaceStandaloneHistory updates URL without growing history", () => {
+    const original = window.location.href;
+    window.history.replaceState({}, "", "http://127.0.0.1:5173/?node=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    const lengthBefore = window.history.length;
+    replaceStandaloneHistory("http://127.0.0.1:5173/?node=cccccccccccccccccccccccccccccccc");
+    expect(window.history.length).toBe(lengthBefore);
+    expect(window.location.search).toContain("node=cccccccccccccccccccccccccccccccc");
+    window.history.replaceState({}, "", original);
+  });
+
+  test("resolveNodePageTarget accepts ?node= and marloth:// URIs", () => {
+    expect(
+      resolveNodePageTarget(
+        "http://127.0.0.1:5173/?node=72b6fb455b824b78962b0e509cc091c9",
+      ),
+    ).toBe("72b6fb455b824b78962b0e509cc091c9");
+    expect(resolveNodePageTarget(marlothHref("72b6fb455b824b78962b0e509cc091c9"))).toBe(
+      "72b6fb455b824b78962b0e509cc091c9",
+    );
+    expect(resolveNodePageTarget("marloth://node/72b6fb455b824b78962b0e509cc091c9")).toBe(
+      "72b6fb455b824b78962b0e509cc091c9",
+    );
   });
 
   test("standaloneNodeUrl strips meta param", () => {

@@ -1,13 +1,12 @@
-import { useCallback, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import type { EditorApi } from "../api/client";
-import { standaloneNodeUrl } from "../../shared/types";
+import { nodePageHref } from "../node-links";
 
 interface NodeNameLinkProps {
   api: EditorApi;
   nodeId: string;
   children: ReactNode;
   className?: string;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
 export function NodeNameLink({
@@ -15,28 +14,14 @@ export function NodeNameLink({
   nodeId,
   children,
   className = "marloth-record-link",
-  onOpenNode,
 }: NodeNameLinkProps) {
-  const open = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (event.button === 2) return;
-      onOpenNode(nodeId, event.metaKey || event.ctrlKey || event.button === 1);
-    },
-    [onOpenNode, nodeId],
-  );
-
-  if (api.host === "standalone") {
-    return (
-      <a href={standaloneNodeUrl(nodeId, window.location.href)} className={className}>
-        {children}
-      </a>
-    );
-  }
-
   return (
-    <button type="button" className={className} onClick={open} onAuxClick={open}>
+    <a
+      href={nodePageHref(nodeId, api.host, window.location.href)}
+      className={className}
+    >
       {children}
-    </button>
+    </a>
   );
 }
 
@@ -44,10 +29,9 @@ interface SectionTitleProps {
   api: EditorApi;
   title: string;
   typeNodeId?: string | null;
-  onOpenNode: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
-export function SectionTitle({ api, title, typeNodeId, onOpenNode }: SectionTitleProps) {
+export function SectionTitle({ api, title, typeNodeId }: SectionTitleProps) {
   return (
     <h2 className="marloth-record-section-title">
       {typeNodeId ? (
@@ -55,7 +39,6 @@ export function SectionTitle({ api, title, typeNodeId, onOpenNode }: SectionTitl
           api={api}
           nodeId={typeNodeId}
           className="marloth-record-section-title-link"
-          onOpenNode={onOpenNode}
         >
           {title}
         </NodeNameLink>
