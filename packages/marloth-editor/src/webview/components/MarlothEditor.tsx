@@ -190,6 +190,27 @@ export function MarlothEditor({
         installMentionSync(view, syncMentionMenu);
 
         onKeyDown = (event: KeyboardEvent) => {
+          const isHeadingShortcut =
+            (event.ctrlKey || event.metaKey) &&
+            event.shiftKey &&
+            !event.altKey &&
+            /^[1-6]$/.test(event.key);
+          if (isHeadingShortcut) {
+            event.preventDefault();
+            event.stopPropagation();
+            const remapped = new KeyboardEvent("keydown", {
+              key: event.key,
+              code: `Digit${event.key}`,
+              ctrlKey: event.ctrlKey,
+              metaKey: event.metaKey,
+              altKey: true,
+              bubbles: true,
+              cancelable: true,
+            });
+            dom.dispatchEvent(remapped);
+            return;
+          }
+
           const state = mentionRef.current;
           if (!state) return;
           if (event.key === "Escape") {
