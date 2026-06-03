@@ -5,8 +5,8 @@ import { RelationSectionView } from "./RelationSectionView";
 import { FIXTURE_PAGE_ID, FIXTURE_TARGET_ID, FIXTURE_TYPE_ID, makeRelationSection } from "../test-fixtures/node-page";
 import { makeMockEditorApi } from "../test-fixtures/mock-api";
 
-function renderRelationSection(host: "standalone" | "vscode" = "standalone") {
-  const api = makeMockEditorApi(host);
+function renderRelationSection() {
+  const api = makeMockEditorApi();
   return render(
     <UserSettingsProvider api={api}>
       <RelationSectionView
@@ -19,8 +19,8 @@ function renderRelationSection(host: "standalone" | "vscode" = "standalone") {
 }
 
 describe("RelationSectionView", () => {
-  test("renders standalone row links with node query URLs", () => {
-    renderRelationSection("standalone");
+  test("renders row links with node query URLs", () => {
+    renderRelationSection();
 
     const link = screen.getByRole("link", { name: "Linked record" });
     expect(link.getAttribute("href")).toContain(`node=${FIXTURE_TARGET_ID}`);
@@ -30,18 +30,11 @@ describe("RelationSectionView", () => {
     expect(priorityTrigger.getAttribute("aria-haspopup")).toBe("listbox");
   });
 
-  test("standalone section title link targets type node", () => {
-    renderRelationSection("standalone");
+  test("section title link targets type node", () => {
+    renderRelationSection();
 
     const link = screen.getByRole("link", { name: "Related items" });
     expect(link.getAttribute("href")).toContain(`node=${FIXTURE_TYPE_ID}`);
-  });
-
-  test("renders vscode row links with marloth:// href", () => {
-    renderRelationSection("vscode");
-
-    const link = screen.getByRole("link", { name: "Linked record" });
-    expect(link.getAttribute("href")).toBe(`marloth://node/${FIXTURE_TARGET_ID}`);
   });
 
   test("renders sortable column headers", () => {

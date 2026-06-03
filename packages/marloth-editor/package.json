@@ -1,87 +1,16 @@
 {
   "name": "marloth-editor",
-  "displayName": "Marloth Editor",
-  "description": "Notion-style markdown editor for Marloth design records in the SQLite graph",
+  "description": "Browser markdown editor for Marloth design nodes in the content graph",
   "version": "0.1.0",
   "private": true,
-  "publisher": "marloth",
   "type": "module",
-  "engines": {
-    "vscode": "^1.90.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "./dist/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "marloth.openHome",
-        "title": "Marloth: Open Home",
-        "icon": "$(home)"
-      },
-      {
-        "command": "marloth.openNode",
-        "title": "Marloth: Open Node"
-      },
-      {
-        "command": "marloth.createNode",
-        "title": "Marloth: New Page"
-      },
-      {
-        "command": "marloth.search",
-        "title": "Marloth: Search"
-      }
-    ],
-    "keybindings": [
-      {
-        "command": "marloth.search",
-        "key": "ctrl+k",
-        "mac": "cmd+k",
-        "when": "activeCustomEditorId == 'marloth.editor'"
-      }
-    ],
-    "customEditors": [
-      {
-        "viewType": "marloth.editor",
-        "displayName": "Marloth Editor",
-        "selector": [
-          {
-            "filenamePattern": "marloth://*"
-          }
-        ],
-        "priority": "default"
-      }
-    ],
-    "menus": {
-      "commandPalette": [
-        {
-          "command": "marloth.openHome"
-        },
-        {
-          "command": "marloth.openNode"
-        },
-        {
-          "command": "marloth.createNode"
-        },
-        {
-          "command": "marloth.search"
-        }
-      ]
-    }
-  },
   "scripts": {
-    "dev": "bun run dev:standalone",
-    "dev:standalone": "bun run dev:api & bun run dev:webview",
+    "dev": "bun run dev:api & bun run dev:webview",
     "dev:api": "bun --watch src/api/server.ts",
     "dev:webview": "vite",
-    "dev:extension": "bun run build:extension --watch",
-    "build": "bun run build:webview && bun run build:extension",
+    "build": "bun run build:webview",
     "build:webview": "vite build",
-    "build:extension": "bun run scripts/build-extension.ts",
     "test": "bun run typecheck && bun test --preload ./src/test-setup.ts src",
-    "vscode:prepublish": "bun run build",
     "typecheck": "tsc -p tsconfig.check.json --noEmit"
   },
   "dependencies": {
@@ -98,9 +27,7 @@
     "@types/bun": "1.2.23",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
-    "@types/vscode": "1.90.0",
     "@vitejs/plugin-react": "4.3.4",
-    "esbuild": "0.25.1",
     "typescript": "5.8.2",
     "vite": "6.2.2",
     "@happy-dom/global-registrator": "17.4.4",

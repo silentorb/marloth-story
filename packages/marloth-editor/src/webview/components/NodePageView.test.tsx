@@ -13,7 +13,7 @@ import { makeMockEditorApi } from "../test-fixtures/mock-api";
 
 describe("NodePageView", () => {
   test("renders title, metadata, markdown, and relation sections", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
 
     render(
       <UserSettingsProvider api={api}>
@@ -43,7 +43,7 @@ describe("NodePageView", () => {
   });
 
   test("page actions menu includes Relate for linking existing records", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     const node = makeNodePageDetail({
       sections: [{ type: "markdown", body: "# Solo page\n" }],
     });
@@ -73,7 +73,7 @@ describe("NodePageView", () => {
   });
 
   test("renders embedded database table section", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     const node = makeNodePageDetail({
       isTypeTable: true,
       sections: [
@@ -105,7 +105,7 @@ describe("NodePageView", () => {
   });
 
   test("renders Properties section when present", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     const node = makeNodePageDetail({
       properties: {
         type: "properties",
@@ -153,7 +153,7 @@ describe("NodePageView", () => {
 
 describe("PropertiesSectionView", () => {
   test("renders computed fields as read-only", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
 
     render(
       <PropertiesSectionView

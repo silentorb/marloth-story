@@ -19,7 +19,7 @@ const metadata: NodePageMetadata = {
 
 describe("NodeMetadataPanel", () => {
   test("shows summary when collapsed", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <NodeMetadataPanel
         api={api}
@@ -32,7 +32,7 @@ describe("NodeMetadataPanel", () => {
   });
 
   test("shows metadata rows when expanded", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <NodeMetadataPanel
         api={api}

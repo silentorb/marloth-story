@@ -83,7 +83,7 @@ export function SidePanel({
 
   const homeHref =
     standaloneUrls?.home ??
-    (homeNodeId ? nodePageHref(homeNodeId, api.host, pageBase) : undefined);
+    (homeNodeId ? nodePageHref(homeNodeId, pageBase) : undefined);
 
   return (
     <aside
@@ -143,7 +143,7 @@ export function SidePanel({
             title={label}
             icon={icon}
             label={label}
-            href={standaloneUrls?.nodes[id] ?? nodePageHref(id, api.host, pageBase)}
+            href={standaloneUrls?.nodes[id] ?? nodePageHref(id, pageBase)}
           />
         ))}
       </nav>

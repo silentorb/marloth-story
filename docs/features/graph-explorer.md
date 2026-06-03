@@ -167,7 +167,7 @@ The following describes how the server subdivides the scoped graph into detail l
 ## Quick start
 
 1. Start the editor (`bun run editor:dev` or attach to the devcontainer).
-2. Open the Marloth editor in the browser or VS Code webview.
+2. Open the Marloth editor in the browser (`http://127.0.0.1:5173`).
 3. Click **Graph Explorer** in the sidebar (⊕).
 4. Use **Settings** for explorer mode, layer depth, labels, and diagnostics; click cluster nodes to drill down (Layers) or re-anchor (Relative); use **← Out** / **← Back** as appropriate; click individual design nodes on the finest layer to open them.
 

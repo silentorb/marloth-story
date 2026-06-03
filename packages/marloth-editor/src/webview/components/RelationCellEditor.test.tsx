@@ -49,7 +49,7 @@ describe("RelationCellEditor", () => {
   test("standalone cell link uses native href", () => {
     const { container } = render(
       <RelationCellEditor
-        api={makeMockEditorApi("standalone")}
+        api={makeMockEditorApi()}
         links={[{ targetId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", title: "Parent" }]}
         columnName="Parents"
         onAdd={async () => {}}
@@ -66,7 +66,7 @@ describe("RelationCellEditor", () => {
 
   test("adds link inside dialog without closing", async () => {
     const search = mock(async () => [
-      { id: "cccccccccccccccccccccccccccccccc", title: "Child", path: null },
+      { id: "cccccccccccccccccccccccccccccccc", title: "Child", primaryTypeTitle: null },
     ]);
     const onAdd = mock(async () => {});
     const api = {
@@ -103,7 +103,7 @@ describe("RelationCellEditor", () => {
 
     render(
       <RelationCellEditor
-        api={makeMockEditorApi("standalone")}
+        api={makeMockEditorApi()}
         links={manyLinks}
         columnName="Parents"
         onAdd={async () => {}}
@@ -139,7 +139,7 @@ describe("RelationCellEditor", () => {
   test("clicking a visible link does not open edit popup", () => {
     render(
       <RelationCellEditor
-        api={makeMockEditorApi("standalone")}
+        api={makeMockEditorApi()}
         links={[{ targetId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", title: "Parent" }]}
         columnName="Parents"
         onAdd={async () => {}}

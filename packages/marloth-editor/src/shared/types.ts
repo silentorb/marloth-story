@@ -36,8 +36,6 @@ export type {
   ViewSortSpec,
 } from "marloth-db";
 
-export type EditorHost = "vscode" | "standalone";
-
 export type AppView = "node-page" | "graph-explorer";
 
 /** Default title for pages created via New page (sidebar / command). */

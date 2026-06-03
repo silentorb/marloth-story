@@ -17,7 +17,7 @@ export function NodeNameLink({
 }: NodeNameLinkProps) {
   return (
     <a
-      href={nodePageHref(nodeId, api.host, window.location.href)}
+      href={nodePageHref(nodeId, window.location.href)}
       className={className}
     >
       {children}

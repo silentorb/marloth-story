@@ -1,5 +1,5 @@
 ---
-description: Marloth web markdown editor (VS Code extension + graph API)
+description: Marloth browser markdown editor and graph API
 globs:
   - packages/marloth-editor/**
   - docs/features/marloth-editor.md
@@ -13,4 +13,4 @@ Read the authoritative feature spec before making changes:
 
 Package agent notes: [`packages/marloth-editor/AGENTS.md`](../../packages/marloth-editor/AGENTS.md)
 
-For graph node semantics, also read [`docs/ontology.md`](../../docs/ontology.md) and [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md). API: `/api/nodes`, `marloth://node/{id}`, `?node=`.
+For graph node semantics, also read [`docs/ontology.md`](../../docs/ontology.md) and [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md). API: `/api/nodes`, `?node=`.

@@ -88,14 +88,14 @@ export function RelationSectionView({
       const targetId = row.id;
       return (
         <a
-          href={nodePageHref(targetId, api.host, window.location.href)}
+          href={nodePageHref(targetId, window.location.href)}
           className="marloth-database-name-link"
         >
           {row.name}
         </a>
       );
     },
-    [api.host],
+    [],
   );
 
   if (section.rows.length === 0) return null;

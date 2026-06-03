@@ -2,10 +2,8 @@ import {
   isMarlothHref,
   nodeIdFromHref,
   nodeIdFromUri,
-  nodeUri,
   standaloneNodeUrl,
   type AppView,
-  type EditorHost,
 } from "../shared/types";
 import { resolveMarkdownHrefTarget } from "marloth-db/markdown-links";
 import { DEFAULT_GRAPH_EXPLORER_ANCHOR_ID } from "../shared/graph-explorer";
@@ -31,7 +29,7 @@ export function resolveNodeLinkTarget(href: string): string | null {
   return resolveMarkdownHrefTarget(href) ?? nodeIdFromHref(href);
 }
 
-/** Resolve a navigable node id from any in-app link href (standalone ?node= or marloth: / legacy). */
+/** Resolve a navigable node id from any in-app link href (?node=, marloth://, legacy). */
 export function resolveNodePageTarget(href: string, base?: string | URL): string | null {
   if (typeof window !== "undefined" && isStandaloneNodeHref(href, base)) {
     try {
@@ -59,35 +57,25 @@ export function isStandaloneNodeHref(href: string, base?: string | URL): boolean
   }
 }
 
-function isVscodeNodeUri(href: string): boolean {
-  return nodeIdFromUri(href) !== null;
-}
-
 /**
  * @deprecated Display hrefs are set in markdown via `prepareEditorMarkdown` before Milkdown loads.
- * Post-hoc DOM rewrite is not used; ProseMirror re-renders overwrite patched anchors.
  */
-export function rewriteEditorNodeLinks(
-  root: ParentNode,
-  host: EditorHost,
-  base?: string | URL,
-): void {
+export function rewriteEditorNodeLinks(root: ParentNode, base?: string | URL): void {
   if (typeof window === "undefined") return;
   const baseUrl = base ?? window.location.href;
   for (const anchor of root.querySelectorAll("a[href]")) {
     const href = anchor.getAttribute("href") ?? "";
-    if (host === "standalone" && isStandaloneNodeHref(href, baseUrl)) continue;
-    if (host === "vscode" && isVscodeNodeUri(href)) continue;
+    if (isStandaloneNodeHref(href, baseUrl)) continue;
     const nodeId = resolveNodePageTarget(href, baseUrl);
     if (!nodeId) continue;
-    anchor.setAttribute("href", nodePageHref(nodeId, host, baseUrl));
+    anchor.setAttribute("href", nodePageHref(nodeId, baseUrl));
     anchor.removeAttribute("target");
   }
 }
 
 /** @deprecated Use rewriteEditorNodeLinks */
 export function rewriteStandaloneNodeLinks(root: ParentNode, base?: string | URL): void {
-  rewriteEditorNodeLinks(root, "standalone", base);
+  rewriteEditorNodeLinks(root, base);
 }
 
 export function metadataExpandedFromLocation(): boolean {
@@ -131,17 +119,16 @@ export function standaloneViewUrl(
   return url.toString();
 }
 
-/** Href for opening a node page in the webview (native navigation; no per-link click handlers). */
-export function nodePageHref(nodeId: string, host: EditorHost, base?: string | URL): string {
-  if (host === "standalone") return standaloneNodeUrl(nodeId, base);
-  return nodeUri(nodeId);
+/** Href for opening a node page (native navigation; no per-link click handlers). */
+export function nodePageHref(nodeId: string, base?: string | URL): string {
+  return standaloneNodeUrl(nodeId, base);
 }
 
 export function navigateStandaloneNode(nodeId: string, base?: string | URL): void {
   window.location.assign(standaloneNodeUrl(nodeId, base));
 }
 
-/** Standalone URL that triggers automatic new-page creation on load (`?view=create`). */
+/** URL that triggers automatic new-page creation on load (`?view=create`). */
 export function standaloneCreatePageUrl(base?: string | URL): string {
   const url = base instanceof URL ? new URL(base.href) : new URL(base ?? window.location.href);
   url.searchParams.set("view", "create");

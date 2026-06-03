@@ -18,7 +18,7 @@ describe("AddRelationshipDialog", () => {
         {
           id: FIXTURE_TARGET_ID,
           title: "Target record",
-          path: "Folder/Target",
+          primaryTypeTitle: null,
         },
       ],
       linkOutgoingRelationship,

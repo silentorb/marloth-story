@@ -4,9 +4,8 @@ import { emptyUserSettings } from "../../shared/user-settings";
 import { makeGraphLodSnapshot } from "./graph-lod";
 import { makeDatabaseViewDetail } from "./node-page";
 
-export function makeMockEditorApi(host: "standalone" | "vscode" = "standalone"): EditorApi {
+export function makeMockEditorApi(): EditorApi {
   return {
-    host,
     getHomeId: async () => "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     createNode: async (input) => ({ id: "cccccccccccccccccccccccccccccccc", title: input.title }),
     createRelationRow: async (_sourceId, input) => ({

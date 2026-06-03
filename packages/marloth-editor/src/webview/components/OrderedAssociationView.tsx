@@ -329,13 +329,13 @@ export function OrderedAssociationView({
   const renderNameCell = useCallback(
     (sceneId: string, name: string) => (
       <a
-        href={nodePageHref(sceneId, api.host, window.location.href)}
+        href={nodePageHref(sceneId, window.location.href)}
         className="marloth-database-name-link"
       >
         {name}
       </a>
     ),
-    [api.host],
+    [],
   );
 
   const renderCell = useCallback(

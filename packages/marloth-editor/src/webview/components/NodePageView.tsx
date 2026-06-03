@@ -27,7 +27,6 @@ interface NodePageViewProps {
   onTitleChange: (title: string) => void;
   onTabSelect: (tabId: string) => void;
   onOrderedAssociationViewChange: (view: OrderedAssociationViewDetail) => void;
-  onVscodeNavigate?: (nodeId: string, openInNewTab?: boolean) => void;
   onArchiveNode: (nodeId: string) => Promise<void>;
   onDeleteNode: (nodeId: string) => Promise<void>;
   onTableCellUpdated?: () => void;
@@ -44,7 +43,6 @@ export function NodePageView({
   onTitleChange,
   onTabSelect,
   onOrderedAssociationViewChange,
-  onVscodeNavigate,
   onArchiveNode,
   onDeleteNode,
   onTableCellUpdated,
@@ -119,7 +117,6 @@ export function NodePageView({
             initialBody={editorBody}
             onEditorBaseline={onEditorBaseline}
             onBodyChange={onBodyChange}
-            onNavigate={onVscodeNavigate}
           />
         </section>
 

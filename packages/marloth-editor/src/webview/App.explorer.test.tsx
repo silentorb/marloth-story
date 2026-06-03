@@ -24,7 +24,7 @@ const record = makeNodePageDetail({
 
 mock.module("./api/client", () => ({
   createEditorApi: () => ({
-    ...makeMockEditorApi("standalone"),
+    ...makeMockEditorApi(),
     getNode: async () => record,
     getGraphExplorerLod: async () => makeGraphLodSnapshot(),
   }),

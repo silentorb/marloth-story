@@ -2,18 +2,18 @@
 
 ## What it is
 
-VS Code extension + React webview for editing Marloth design nodes stored in `data/marloth.sqlite`. Uses **Milkdown Crepe** for a Notion-like markdown experience with `@` cross-link autocomplete.
+Browser editor for Marloth design nodes stored in `content/` with a SQLite query cache. Uses **Milkdown Crepe** for a Notion-like markdown experience with `@` cross-link autocomplete.
 
 ## Terminology
 
 - **Node** — graph entity; API `GET/PUT /api/nodes/:id`, search `GET /api/nodes/search`.
 - **Page** — `NodePageView` UI for one node (title, metadata, sections).
 - **Relationship** — graph relationship; relationship property edits via `/api/nodes/:id/relationships/...`.
-- Navigation: `marloth://node/{id}`, standalone `?node=`, commands `marloth.openHome` / `marloth.openNode`.
+- Navigation: `?node={id}` (`standaloneNodeUrl` in `src/webview/node-links.ts`).
 
 ## Theme
 
-The editor is **dark-first**: it always uses the `:root` palette in `src/webview/styles.css`, not the host OS or VS Code workbench theme. Milkdown loads `frame-dark.css`; code blocks use Crepe’s One Dark CodeMirror theme. New UI should use `--marloth-*` tokens (add tokens to `styles.css` rather than hardcoding colors).
+The editor is **dark-first**: it always uses the `:root` palette in `src/webview/styles.css`. Milkdown loads `frame-dark.css`; code blocks use Crepe’s One Dark CodeMirror theme. New UI should use `--marloth-*` tokens (add tokens to `styles.css` rather than hardcoding colors).
 
 ## Architecture
 
@@ -21,14 +21,13 @@ The editor is **dark-first**: it always uses the `:root` palette in `src/webview
 | --- | --- | --- |
 | Graph queries | `marloth-db` | Bun |
 | HTTP API | `src/api/server.ts` | Bun |
-| Webview UI | `src/webview/` | Browser / VS Code webview |
-| Extension host | `src/extension/` | Node (VS Code) |
+| Webview UI | `src/webview/` | Browser (Vite) |
 
-The extension host **does not** open SQLite directly. It spawns (or connects to) the Bun REST API on `http://127.0.0.1:3847`.
+The webview talks to the Bun REST API on `http://127.0.0.1:3847` (proxied as `/api` in dev).
 
-**Data transport:** webview → REST (`src/shared/http-client.ts`) in all modes. **Navigation transport:** webview → postMessage → extension host (VS Code only).
+**Data transport:** webview → REST (`src/shared/http-client.ts`).
 
-**Link/navigation convention (read [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md) § Cross-linking):** stored markdown bodies use `./{nodeId}.md`; markdown passed to Milkdown uses display hrefs per host (`prepareEditorMarkdown` / `expandMarkdownBodyLinks`). Navigational UI **must** use `<a href="…">` and native browser link behavior—**never** `onClick` / `onAuxClick` / `preventDefault` / `window.open` on node links. Standalone display: `?node=` (`standaloneNodeUrl`); VS Code display: `marloth://node/{id}` (`nodeUri`). Helpers: `nodePageHref()`, `formatEditorNodeMarkdownLink()` in `src/webview/`. Insert/save: `formatEditorNodeMarkdownLink` (live editor) / `normalizeEditorBody` (persist). If you cannot use a real `href`, **ask the user** before adding custom click handling. Exceptions: Graph Explorer canvas, keyboard Enter in combobox pickers.
+**Link/navigation convention (read [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md) § Cross-linking):** stored markdown bodies use `./{nodeId}.md`; markdown passed to Milkdown uses `?node=` display hrefs (`prepareEditorMarkdown` / `normalizeEditorBody`). Navigational UI **must** use `<a href="…">` and native browser link behavior—**never** `onClick` / `onAuxClick` / `preventDefault` / `window.open` on node links for same-tab navigation. Helpers: `nodePageHref()`, `formatEditorNodeMarkdownLink()` in `src/webview/`. Exceptions: Graph Explorer canvas, Milkdown modifier+click for new-tab only, keyboard Enter in combobox pickers.
 
 ## Run
 
@@ -44,15 +43,7 @@ bun run editor:dev
 # → http://127.0.0.1:5173
 ```
 
-Build (webview + extension): **Tasks: Run Task** → **Marloth Editor: build**, or `bun run editor:build`.
-
-VS Code extension: F5 → **Marloth Editor: Extension** (requires `editor:dev` running for HMR in dev mode).
-
-## Commands
-
-- `marloth.openHome` — open home node (Marloth root page)
-- `marloth.openNode` — open by 32-char node id
-- `marloth.search` — open global node search (Ctrl/Cmd+K when Marloth editor is active)
+Build webview: **Tasks: Run Task** → **Marloth Editor: build**, or `bun run editor:build`.
 
 ## Tests
 

@@ -49,7 +49,7 @@ describe("SectionDataTable column layout", () => {
 
   test("applies max-width caps from stylesheet", () => {
     style = loadTableStyles();
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <SectionDataTable

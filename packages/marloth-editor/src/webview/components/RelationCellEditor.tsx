@@ -38,7 +38,7 @@ interface RelationFieldPopupProps {
 function RelationCellLinkLabel({ api, link }: { api: EditorApi; link: RelationLink }) {
   return (
     <a
-      href={nodePageHref(link.targetId, api.host, window.location.href)}
+      href={nodePageHref(link.targetId, window.location.href)}
       className="marloth-relation-cell-link"
     >
       <RelationCellLinkIcon />
@@ -77,7 +77,7 @@ function RelationFieldPopup({
 
   const renderPopupLink = (link: RelationLink) => (
     <a
-      href={nodePageHref(link.targetId, api.host, window.location.href)}
+      href={nodePageHref(link.targetId, window.location.href)}
       className="marloth-relation-field-popup-link"
     >
       {link.title}

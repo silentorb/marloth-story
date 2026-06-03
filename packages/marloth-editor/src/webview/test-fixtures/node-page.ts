@@ -77,7 +77,6 @@ export function makeRelationSection(
       {
         targetId: FIXTURE_TARGET_ID,
         name: "Linked record",
-        path: "Folder/Linked record",
         cells: { priority: "High" },
       },
     ],
@@ -96,7 +95,7 @@ export function makeNodePageDetail(
   return {
     id: FIXTURE_PAGE_ID,
     title: "Example page",
-    path: "Folder/Example page",
+    primaryTypeTitle: null,
     body: "# Example page\n\nBody text.",
     isTypeTable: false,
     archived: false,

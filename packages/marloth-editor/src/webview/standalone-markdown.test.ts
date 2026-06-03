@@ -4,27 +4,21 @@ import { formatEditorNodeMarkdownLink, prepareEditorMarkdown } from "./standalon
 const TARGET = "e5cc80dc61ed4c629951cdf472b20b7a";
 
 describe("prepareEditorMarkdown", () => {
-  test("standalone expands storage paths to ?node= hrefs", () => {
+  test("expands storage paths to ?node= hrefs", () => {
     const body = `[Cozy horror](./${TARGET}.md)`;
-    const out = prepareEditorMarkdown(body, "standalone");
+    const out = prepareEditorMarkdown(body);
     expect(out).toBe(`[Cozy horror](?node=${TARGET})`);
   });
 
-  test("standalone expands absolute editor URLs to ?node= hrefs", () => {
+  test("expands absolute editor URLs to ?node= hrefs", () => {
     const body = `[Cozy horror](http://127.0.0.1:5173/?node=${TARGET})`;
-    const out = prepareEditorMarkdown(body, "standalone");
+    const out = prepareEditorMarkdown(body);
     expect(out).toBe(`[Cozy horror](?node=${TARGET})`);
   });
 
-  test("vscode expands storage paths to marloth:// node URIs", () => {
-    const body = `[Cozy horror](./${TARGET}.md)`;
-    const out = prepareEditorMarkdown(body, "vscode");
-    expect(out).toBe(`[Cozy horror](marloth://node/${TARGET})`);
-  });
-
-  test("rewrites notion export links to navigable standalone hrefs", () => {
+  test("rewrites notion export links to navigable hrefs", () => {
     const body = "See [Cozy horror](Cozy%20horror%20e5cc80dc61ed4c629951cdf472b20b7a.md).";
-    const out = prepareEditorMarkdown(body, "standalone");
+    const out = prepareEditorMarkdown(body);
     expect(out).toContain(`?node=${TARGET}`);
     expect(out).not.toContain("Cozy%20horror");
     expect(out).not.toContain(`./${TARGET}.md`);
@@ -32,20 +26,14 @@ describe("prepareEditorMarkdown", () => {
 
   test("leaves non-record links unchanged", () => {
     const body = "See [Example](https://example.com).";
-    expect(prepareEditorMarkdown(body, "standalone")).toBe(body);
+    expect(prepareEditorMarkdown(body)).toBe(body);
   });
 });
 
 describe("formatEditorNodeMarkdownLink", () => {
-  test("standalone uses ?node= href", () => {
-    expect(formatEditorNodeMarkdownLink("Cozy horror", TARGET, "standalone")).toBe(
+  test("uses ?node= href", () => {
+    expect(formatEditorNodeMarkdownLink("Cozy horror", TARGET)).toBe(
       `[Cozy horror](?node=${TARGET})`,
-    );
-  });
-
-  test("vscode uses marloth:// node URI", () => {
-    expect(formatEditorNodeMarkdownLink("Cozy horror", TARGET, "vscode")).toBe(
-      `[Cozy horror](marloth://node/${TARGET})`,
     );
   });
 });

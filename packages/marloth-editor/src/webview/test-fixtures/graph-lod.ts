@@ -14,7 +14,6 @@ export function makeGraphLodSnapshot(
           {
             id: anchorId,
             title: "Anchor node",
-            path: "Marloth/Anchor",
             group: "Anchor",
             labels: ["Anchor"],
           },
@@ -26,14 +25,12 @@ export function makeGraphLodSnapshot(
           {
             id: anchorId,
             title: "Anchor node",
-            path: "Marloth/Anchor",
             group: "Anchor",
             labels: ["Anchor"],
           },
           {
             id: neighborId,
             title: "Neighbor node",
-            path: "Marloth/Neighbor",
             group: "Neighbor",
             labels: ["Neighbor"],
           },

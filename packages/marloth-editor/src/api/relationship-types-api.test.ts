@@ -33,7 +33,7 @@ describe("relationship types API", () => {
         {
           id: "scene-features",
           sourceTypeId: sceneTypeId,
-          type: "features",
+          type: "includes",
           allowedTargetTypeIds: [featureTypeId],
         },
       ],
@@ -65,7 +65,7 @@ describe("relationship types API", () => {
   test("GET relationship-link-options returns null when no rule matches", async () => {
     const res = await api.handler(
       new Request(
-        `http://127.0.0.1/api/nodes/${sourceId}/relationship-link-options?type=inspirations`,
+        `http://127.0.0.1/api/nodes/${sourceId}/relationship-link-options?type=theme`,
       ),
     );
     expect(res.status).toBe(200);

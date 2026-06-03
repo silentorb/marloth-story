@@ -1,6 +1,6 @@
 import { describe, expect, mock, test } from "bun:test";
 import type { ComponentProps } from "react";
-import { fireEvent, render, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { GlobalSearch } from "./GlobalSearch";
 import type { EditorApi } from "../api/client";
 import type { NodeSummary } from "../../shared/types";
@@ -46,7 +46,6 @@ function makeApi(
     options?.search ??
     mock(async () => results);
   return {
-    host: "standalone",
     search,
     getUserSettings: mock(async () => settings),
     patchUserSettings: mock(async (patch) => {
@@ -67,12 +66,7 @@ function renderGlobalSearch(
   const api = props.api ?? makeApi(props.results ?? sampleResults);
   return render(
     <UserSettingsProvider api={api}>
-      <GlobalSearch
-        open={props.open}
-        onOpenChange={props.onOpenChange}
-        onKeyboardNavigate={props.onKeyboardNavigate}
-        api={api}
-      />
+      <GlobalSearch open={props.open} onOpenChange={props.onOpenChange} api={api} />
     </UserSettingsProvider>,
   );
 }
@@ -82,17 +76,14 @@ describe("GlobalSearch", () => {
     const { container } = renderGlobalSearch({
       open: false,
       onOpenChange: () => {},
-      onKeyboardNavigate: () => {},
     });
     expect(container.querySelector(".marloth-global-search")).toBeNull();
   });
 
-  test("renders standalone result links with node query URLs", async () => {
-    const onKeyboardNavigate = mock((_nodeId: string, _openInNewTab?: boolean) => {});
+  test("renders result links with node query URLs", async () => {
     const { container } = renderGlobalSearch({
       open: true,
       onOpenChange: () => {},
-      onKeyboardNavigate,
     });
 
     await waitFor(() => {
@@ -104,44 +95,6 @@ describe("GlobalSearch", () => {
     ) as HTMLAnchorElement;
     expect(link.tagName).toBe("A");
     expect(link.getAttribute("href")).toContain("node=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-
-    fireEvent.click(link);
-    expect(onKeyboardNavigate).not.toHaveBeenCalled();
-  });
-
-  test("vscode Enter uses onKeyboardNavigate for keyboard navigation", async () => {
-    const onKeyboardNavigate = mock((_nodeId: string, _openInNewTab?: boolean) => {});
-    const api = {
-      ...makeApi(sampleResults),
-      host: "vscode" as const,
-      navigate: mock(() => {}),
-    };
-    const { container } = renderGlobalSearch({
-      api,
-      open: true,
-      onOpenChange: () => {},
-      onKeyboardNavigate,
-    });
-
-    const input = container.querySelector(
-      ".marloth-global-search-input",
-    ) as HTMLInputElement;
-
-    await waitFor(() => {
-      expect(container.querySelectorAll(".marloth-global-search-item")).toHaveLength(2);
-    });
-
-    const link = container.querySelector(
-      ".marloth-global-search-item",
-    ) as HTMLAnchorElement;
-    expect(link.getAttribute("href")).toBe(
-      "marloth://node/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    );
-
-    fireEvent.keyDown(input, { key: "ArrowDown" });
-    fireEvent.keyDown(input, { key: "Enter", ctrlKey: true });
-
-    expect(onKeyboardNavigate).toHaveBeenCalledWith("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", true);
   });
 
   test("shows body match preview when search node contents is enabled", async () => {
@@ -152,7 +105,6 @@ describe("GlobalSearch", () => {
       api,
       open: true,
       onOpenChange: () => {},
-      onKeyboardNavigate: () => {},
     });
 
     const checkbox = container.querySelector(
@@ -176,7 +128,6 @@ describe("GlobalSearch", () => {
       api,
       open: true,
       onOpenChange: () => {},
-      onKeyboardNavigate: () => {},
     });
 
     await waitFor(() => {
@@ -194,7 +145,6 @@ describe("GlobalSearch", () => {
       api,
       open: true,
       onOpenChange: () => {},
-      onKeyboardNavigate: () => {},
     });
 
     await waitFor(() => {
@@ -218,7 +168,6 @@ describe("GlobalSearch", () => {
     renderGlobalSearch({
       open: true,
       onOpenChange,
-      onKeyboardNavigate: () => {},
     });
 
     fireEvent.keyDown(window, { key: "Escape" });

@@ -47,7 +47,7 @@ const view: OrderedAssociationViewDetail = {
 
 describe("OrderedAssociationView", () => {
   test("renders book tabs and schema-driven column headers", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
 
     const { getByRole, getAllByRole, getAllByText, queryByRole } = render(
       <OrderedAssociationView
@@ -72,7 +72,7 @@ describe("OrderedAssociationView", () => {
 
   test("filters scene rows and hides empty groups", () => {
     window.history.replaceState({}, "", "http://127.0.0.1:5173/?node=abc");
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
 
     const { getByRole, queryByRole, getByText } = render(
       <OrderedAssociationView
@@ -98,7 +98,7 @@ describe("OrderedAssociationView", () => {
 
   test("shows empty match message when no scenes match", () => {
     window.history.replaceState({}, "", "http://127.0.0.1:5173/?node=abc&search_items=missing");
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
 
     const { getByText } = render(
       <OrderedAssociationView

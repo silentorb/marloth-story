@@ -28,7 +28,7 @@ For **what design nodes mean** (features, inspirations, products, traceability),
 | **Type table** | Node that receives `is_a` rows and/or carries table schema metadata (`notion_schema`, etc.). |
 | **Schema** | Workspace model config in `content/model/schema.json` (relationship rules, enums) — see [schema.md](./schema.md). |
 
-API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `marloth://node/{id}`, standalone `?node=`. Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` **10**).
+API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `?node=`. Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` **10**).
 
 ## Editing the graph (agent workflow)
 

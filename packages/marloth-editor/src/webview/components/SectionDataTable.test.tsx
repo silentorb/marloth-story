@@ -6,7 +6,7 @@ import { makeMockEditorApi } from "../test-fixtures/mock-api";
 
 describe("SectionDataTable", () => {
   test("preserves server row order when tab defaultSort is set and user has not overridden", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <SectionDataTable
@@ -32,7 +32,7 @@ describe("SectionDataTable", () => {
   });
 
   test("sorts rows when a column header is clicked", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <SectionDataTable
@@ -63,7 +63,7 @@ describe("SectionDataTable", () => {
   });
 
   test("renders row page actions when rowPageActions is provided", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <SectionDataTable
@@ -87,7 +87,7 @@ describe("SectionDataTable", () => {
   });
 
   test("renders add-row footer when provided via custom cell renderer", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <SectionDataTable
@@ -104,7 +104,7 @@ describe("SectionDataTable", () => {
   });
 
   test("does not render column drag handles when reorder is enabled", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <SectionDataTable

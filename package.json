@@ -8,7 +8,7 @@
   "scripts": {
     "notion:import": "bun run --cwd packages/notion-importer start",
     "notion:sync-metadata": "bun run --cwd packages/notion-metadata-sync start",
-    "editor:dev": "bun run --cwd packages/marloth-editor dev:standalone",
+    "editor:dev": "bun run --cwd packages/marloth-editor dev",
     "editor:api": "bun run --cwd packages/marloth-editor dev:api",
     "editor:build": "bun run --cwd packages/marloth-editor build",
     "web:build": "bun run --cwd packages/marloth-static-site build",

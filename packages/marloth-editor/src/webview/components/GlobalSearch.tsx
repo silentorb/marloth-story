@@ -9,11 +9,9 @@ interface GlobalSearchProps {
   api: EditorApi;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  /** VS Code keyboard navigation only; mouse uses native `<a href>` behavior. */
-  onKeyboardNavigate?: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
-export function GlobalSearch({ api, open, onOpenChange, onKeyboardNavigate }: GlobalSearchProps) {
+export function GlobalSearch({ api, open, onOpenChange }: GlobalSearchProps) {
   const { globalSearchIncludeBody, setGlobalSearchIncludeBody } = useUserSettings();
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -81,15 +79,6 @@ export function GlobalSearch({ api, open, onOpenChange, onKeyboardNavigate }: Gl
 
   const activateActiveResult = useCallback(
     (openInNewTab: boolean) => {
-      const item = results[activeIndex];
-      if (!item) return;
-
-      if (api.host === "vscode") {
-        onKeyboardNavigate?.(item.id, openInNewTab);
-        close();
-        return;
-      }
-
       const link = listRef.current?.querySelector(
         ".marloth-global-search-item.is-active",
       ) as HTMLAnchorElement | null;
@@ -109,7 +98,7 @@ export function GlobalSearch({ api, open, onOpenChange, onKeyboardNavigate }: Gl
       }
       link.click();
     },
-    [activeIndex, api.host, close, onKeyboardNavigate, results],
+    [close],
   );
 
   if (!open) return null;
@@ -183,7 +172,7 @@ export function GlobalSearch({ api, open, onOpenChange, onKeyboardNavigate }: Gl
               return (
                 <a
                   key={item.id}
-                  href={nodePageHref(item.id, api.host, pageBase)}
+                  href={nodePageHref(item.id, pageBase)}
                   role="option"
                   aria-selected={isActive}
                   className={`marloth-global-search-item${isActive ? " is-active" : ""}`}

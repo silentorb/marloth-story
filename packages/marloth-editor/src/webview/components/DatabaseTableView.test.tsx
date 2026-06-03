@@ -11,7 +11,7 @@ import { makeMockEditorApi } from "../test-fixtures/mock-api";
 
 describe("DatabaseTableView", () => {
   test("renders database rows and column headers", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <DatabaseTableView
@@ -34,7 +34,7 @@ describe("DatabaseTableView", () => {
   });
 
   test("sorts rows using the active tab sort config", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     const databaseView = makeDatabaseViewDetail({
       rows: [
         {
@@ -85,7 +85,7 @@ describe("DatabaseTableView", () => {
   });
 
   test("shows view tabs and calls onTabSelect", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     let selectedTab = "all";
     const databaseView = makeDatabaseViewDetail({
       views: ["All", "Active"],
@@ -123,7 +123,7 @@ describe("DatabaseTableView", () => {
   });
 
   test("shows empty state when there are no rows", () => {
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <DatabaseTableView
@@ -140,7 +140,7 @@ describe("DatabaseTableView", () => {
 
   test("filters rows by name from search input", () => {
     window.history.replaceState({}, "", "http://127.0.0.1:5173/?node=abc");
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <DatabaseTableView
@@ -182,7 +182,7 @@ describe("DatabaseTableView", () => {
       "",
       "http://127.0.0.1:5173/?node=abc&search_items=linked",
     );
-    const api = makeMockEditorApi("standalone");
+    const api = makeMockEditorApi();
     render(
       <UserSettingsProvider api={api}>
         <DatabaseTableView

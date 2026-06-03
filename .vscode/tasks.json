@@ -50,16 +50,6 @@
       "problemMatcher": []
     },
     {
-      "label": "Marloth Editor: build extension",
-      "type": "shell",
-      "command": "bun run build:extension",
-      "options": {
-        "cwd": "${workspaceFolder}/packages/marloth-editor"
-      },
-      "group": "build",
-      "problemMatcher": []
-    },
-    {
       "label": "Marloth: build static website",
       "type": "shell",
       "command": "bun run web:build",

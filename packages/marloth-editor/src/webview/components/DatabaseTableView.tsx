@@ -156,14 +156,14 @@ export function DatabaseTableView({
       const rowNodeId = row.id.split(":")[0]!;
       return (
         <a
-          href={nodePageHref(rowNodeId, api.host, window.location.href)}
+          href={nodePageHref(rowNodeId, window.location.href)}
           className="marloth-database-name-link"
         >
           {row.name}
         </a>
       );
     },
-    [api.host],
+    [],
   );
 
   const rowPageActions = useMemo(

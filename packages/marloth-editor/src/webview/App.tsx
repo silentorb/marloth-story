@@ -21,7 +21,6 @@ import {
   navigateStandaloneNode,
   replaceStandaloneHistory,
   resolveGraphExplorerAnchor,
-  resolveNodePageTarget,
   standaloneCreatePageUrl,
   stripMetadataParamFromUrl,
   syncMetadataExpandedParam,
@@ -90,15 +89,11 @@ function activeTabIdFromNode(node: NodePageDetail): string | undefined {
 
 export function App() {
   const api = useMemo(() => createEditorApi(), []);
-  const [view, setView] = useState<AppView>(() =>
-    api.host === "standalone" ? viewFromLocation() : "node-page",
-  );
+  const [view, setView] = useState<AppView>(() => viewFromLocation());
   const [node, setNode] = useState<NodePageDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>("idle");
-  const [metadataExpanded, setMetadataExpanded] = useState(() =>
-    api.host === "standalone" ? metadataExpandedFromLocation() : false,
-  );
+  const [metadataExpanded, setMetadataExpanded] = useState(() => metadataExpandedFromLocation());
   const [showGraphNodeLabels, setShowGraphNodeLabels] = useState(readGraphShowNodeLabels);
   const [showGraphRelevanceDiagnostics, setShowGraphRelevanceDiagnostics] = useState(
     readGraphShowRelevanceDiagnostics,
@@ -124,12 +119,12 @@ export function App() {
 
   const syncExplorerAnchorUrl = useCallback(
     (anchorId: string) => {
-      if (api.host !== "standalone" || view !== "graph-explorer") return;
+      if (view !== "graph-explorer") return;
       const url = new URL(window.location.href);
       url.searchParams.set("anchor", anchorId);
       replaceStandaloneHistory(url.toString());
     },
-    [api.host, view],
+    [view],
   );
 
   const changeExplorerAnchor = useCallback(
@@ -182,7 +177,7 @@ export function App() {
   );
 
   const standaloneUrls = useMemo(() => {
-    if (api.host !== "standalone" || !homeId) return undefined;
+    if (!homeId) return undefined;
     const nodes = Object.fromEntries(
       SIDEBAR_NODE_LINKS.map(({ id }) => [id, standaloneNodeUrl(id)]),
     );
@@ -192,11 +187,10 @@ export function App() {
       create: standaloneCreatePageUrl(),
       nodes,
     };
-  }, [api.host, explorerAnchorId, homeId]);
+  }, [explorerAnchorId, homeId]);
 
   const syncStandaloneUrl = useCallback(
     (nextView: AppView, nodeId?: string | null, options?: GetNodeOptions) => {
-      if (api.host !== "standalone") return;
       const url = new URL(window.location.href);
       const viewParam = viewToQueryParam(nextView);
       if (viewParam) url.searchParams.set("view", viewParam);
@@ -218,7 +212,7 @@ export function App() {
       }
       replaceStandaloneHistory(url.toString());
     },
-    [api.host, explorerAnchorId],
+    [explorerAnchorId],
   );
 
   const loadNode = useCallback(
@@ -262,25 +256,18 @@ export function App() {
     setError(null);
     try {
       const created = await api.createNode({ title: NEW_PAGE_DEFAULT_TITLE });
-      if (api.host === "standalone") {
-        navigateStandaloneNode(created.id);
-        return;
-      }
-      setView("node-page");
-      api.navigate(created.id);
-      await loadNode(created.id);
+      navigateStandaloneNode(created.id);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setCreatingPage(false);
     }
-  }, [api, loadNode]);
+  }, [api]);
 
   const bootstrap = useCallback(async () => {
     try {
       const home = await api.getHomeId();
       setHomeId(home);
-      if (api.host === "vscode") return;
       if (isStandaloneCreatePageUrl()) {
         await createNewPage();
         return;
@@ -309,43 +296,7 @@ export function App() {
     void bootstrap();
   }, [bootstrap]);
 
-  const vscodeNavigateNode = useCallback(
-    (nodeId: string, openInNewTab = false) => {
-      if (openInNewTab) {
-        api.navigate(nodeId, true);
-        return;
-      }
-      setView("node-page");
-      void loadNode(nodeId);
-    },
-    [api, loadNode],
-  );
-
   useEffect(() => {
-    if (api.host !== "vscode") return;
-    const onLinkClick = (event: MouseEvent) => {
-      const anchor = (event.target as HTMLElement | null)?.closest("a");
-      if (!anchor) return;
-      const nodeId = resolveNodePageTarget(
-        anchor.getAttribute("href") ?? "",
-        window.location.href,
-      );
-      if (!nodeId) return;
-      const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
-      event.preventDefault();
-      event.stopPropagation();
-      vscodeNavigateNode(nodeId, openInNewTab);
-    };
-    document.addEventListener("click", onLinkClick, true);
-    document.addEventListener("auxclick", onLinkClick, true);
-    return () => {
-      document.removeEventListener("click", onLinkClick, true);
-      document.removeEventListener("auxclick", onLinkClick, true);
-    };
-  }, [api.host, vscodeNavigateNode]);
-
-  useEffect(() => {
-    if (api.host !== "standalone") return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "k") return;
       event.preventDefault();
@@ -353,44 +304,20 @@ export function App() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [api.host]);
+  }, []);
 
   useEffect(() => {
     syncDocumentTitle(view, node?.title);
-    if (api.host === "standalone") {
-      const urlNodeId = nodeFromLocation();
-      syncDocumentIcon({
-        view,
-        nodeId: node?.id ?? urlNodeId,
-        primaryTypeTitle: node?.primaryTypeTitle,
-        recordBody: node?.body,
-        isTypeTable: node?.isTypeTable,
-        homeId,
-      });
-    }
-  }, [api.host, view, node?.id, node?.title, node?.primaryTypeTitle, node?.body, node?.isTypeTable, homeId]);
-
-  useEffect(() => {
-    if (api.host !== "vscode") return;
-    const onMessage = (event: MessageEvent) => {
-      const msg = event.data as { type?: string; nodeId?: string; error?: string };
-      if (msg.type === "openSearch") {
-        setGlobalSearchOpen(true);
-        return;
-      }
-      if (msg.type === "init" || msg.type === "navigate") {
-        if (msg.nodeId) {
-          setView("node-page");
-          void loadNode(msg.nodeId);
-        }
-      }
-      if (msg.type === "error") {
-        setError(msg.error ?? "Unknown error");
-      }
-    };
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, [api.host, loadNode]);
+    const urlNodeId = nodeFromLocation();
+    syncDocumentIcon({
+      view,
+      nodeId: node?.id ?? urlNodeId,
+      primaryTypeTitle: node?.primaryTypeTitle,
+      recordBody: node?.body,
+      isTypeTable: node?.isTypeTable,
+      homeId,
+    });
+  }, [view, node?.id, node?.title, node?.primaryTypeTitle, node?.body, node?.isTypeTable, homeId]);
 
   const syncEditorBaseline = useCallback(
     (markdown: string) => {
@@ -459,32 +386,21 @@ export function App() {
 
   const goHome = useCallback(async () => {
     const nextHomeId = homeId ?? (await api.getHomeId());
-    if (api.host === "standalone") {
-      navigateStandaloneNode(nextHomeId);
-      return;
-    }
-    setView("node-page");
-    syncStandaloneUrl("node-page", nextHomeId);
-    void loadNode(nextHomeId);
-  }, [api, homeId, loadNode, syncStandaloneUrl]);
+    navigateStandaloneNode(nextHomeId);
+  }, [api, homeId]);
 
   const changeView = useCallback(
     (nextView: AppView) => {
-      if (api.host === "standalone") {
-        window.location.assign(
-          standaloneViewUrl(
-            nextView,
-            node?.id ?? nodeFromLocation(),
-            undefined,
-            nextView === "graph-explorer" ? explorerAnchorId : undefined,
-          ),
-        );
-        return;
-      }
-      setView(nextView);
-      syncStandaloneUrl(nextView, node?.id ?? nodeFromLocation());
+      window.location.assign(
+        standaloneViewUrl(
+          nextView,
+          node?.id ?? nodeFromLocation(),
+          undefined,
+          nextView === "graph-explorer" ? explorerAnchorId : undefined,
+        ),
+      );
     },
-    [api.host, explorerAnchorId, node?.id, syncStandaloneUrl],
+    [explorerAnchorId, node?.id],
   );
 
   const openNodeFromGraph = useCallback(
@@ -493,13 +409,9 @@ export function App() {
         api.navigate(nodeId, true);
         return;
       }
-      if (api.host === "standalone") {
-        window.location.assign(standaloneNodeUrl(nodeId));
-        return;
-      }
-      vscodeNavigateNode(nodeId);
+      window.location.assign(standaloneNodeUrl(nodeId));
     },
-    [api, vscodeNavigateNode],
+    [api],
   );
 
   const setShowGraphNodeLabelsPersisted = useCallback((value: boolean) => {
@@ -663,14 +575,13 @@ export function App() {
             metadataExpanded={metadataExpanded}
             onMetadataExpandedChange={(expanded) => {
               setMetadataExpanded(expanded);
-              if (api.host === "standalone") syncMetadataExpandedParam(expanded);
+              syncMetadataExpandedParam(expanded);
             }}
             onBodyChange={scheduleSave}
             onEditorBaseline={syncEditorBaseline}
             onTitleChange={scheduleSaveTitle}
             onTabSelect={(tabId) => void selectTab(tabId)}
             onOrderedAssociationViewChange={updateOrderedAssociationView}
-            onVscodeNavigate={api.host === "vscode" ? vscodeNavigateNode : undefined}
             onArchiveNode={archiveCurrentNode}
             onDeleteNode={deleteCurrentNode}
             onTableCellUpdated={() => void loadNode(node.id, { tab: tabFromLocation() })}
@@ -682,7 +593,6 @@ export function App() {
         api={api}
         open={globalSearchOpen}
         onOpenChange={setGlobalSearchOpen}
-        onKeyboardNavigate={vscodeNavigateNode}
       />
     </UserSettingsProvider>
   );

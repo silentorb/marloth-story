@@ -36750,6 +36750,16 @@
       "a": "0f558a609a56485185beed4d1fd1cd9f",
       "b": "c2c5a4b0b44f4affa84769650128dba2",
       "type": "includes"
+    },
+    {
+      "a": "1d458e628ba280958a19cd2e4ef11a19",
+      "b": "6e00e13b9bf64b0dbcebd8480f33a7c1",
+      "type": "is_a",
+      "directedFrom": "6e00e13b9bf64b0dbcebd8480f33a7c1",
+      "properties": {
+        "row_index": 23,
+        "view": "Untitled"
+      }
     }
   ]
 }

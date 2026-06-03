@@ -11,7 +11,7 @@ import { installCalloutCursor } from "../callout-cursor";
 import { installLinkCursor } from "../link-cursor";
 import { installCalloutDecoration } from "../callout-decoration";
 import { installMentionSync } from "../mention-sync";
-import { nodePageHref, openStandaloneNodeInNewTab, resolveNodePageTarget } from "../node-links";
+import { openStandaloneNodeInNewTab, resolveNodePageTarget } from "../node-links";
 import {
   activeMentionRangeAtSelection,
   resolveMentionInsertRange,
@@ -36,7 +36,6 @@ interface MarlothEditorProps {
   hideTitle?: boolean;
   onEditorBaseline?: (body: string) => void;
   onBodyChange?: (body: string) => void;
-  onNavigate?: (nodeId: string, openInNewTab?: boolean) => void;
 }
 
 export function MarlothEditor({
@@ -47,7 +46,6 @@ export function MarlothEditor({
   hideTitle = true,
   onEditorBaseline,
   onBodyChange,
-  onNavigate,
 }: MarlothEditorProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const crepeRef = useRef<Crepe | null>(null);
@@ -76,12 +74,12 @@ export function MarlothEditor({
         const view = ctx.get(editorViewCtx);
         const range = resolveMentionInsertRange(view.state, stored);
         if (!range) return;
-        const link = formatEditorNodeMarkdownLink(item.title, item.id, api.host);
+        const link = formatEditorNodeMarkdownLink(item.title, item.id);
         replaceRange(link, { from: range.replaceFrom, to: range.replaceTo })(ctx);
       });
       closeMention();
     },
-    [api.host, closeMention],
+    [closeMention],
   );
 
   useEffect(() => {
@@ -105,7 +103,7 @@ export function MarlothEditor({
     setInitError(null);
     setIsEmpty(!initialBody.trim());
     root.replaceChildren();
-    const editorDefault = prepareEditorMarkdown(initialBody, api.host);
+    const editorDefault = prepareEditorMarkdown(initialBody);
     const crepe = new Crepe({
       root,
       defaultValue: editorDefault,
@@ -258,50 +256,14 @@ export function MarlothEditor({
       if (!recordTarget) return;
 
       const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
-      if (api.host === "standalone") {
-        if (!openInNewTab) return;
-        event.preventDefault();
-        event.stopPropagation();
-        openStandaloneNodeInNewTab(recordTarget);
-        return;
-      }
-
+      if (!openInNewTab) return;
       event.preventDefault();
       event.stopPropagation();
-      if (onNavigate) {
-        onNavigate(recordTarget, openInNewTab);
-      } else {
-        api.navigate(recordTarget, openInNewTab);
-      }
+      openStandaloneNodeInNewTab(recordTarget);
     };
-
-    const onContextMenu =
-      api.host === "vscode"
-        ? (event: MouseEvent) => {
-            const target = event.target as HTMLElement | null;
-            const anchor = target?.closest("a") as HTMLAnchorElement | null;
-            if (!anchor) return;
-            const href = anchor.getAttribute("href") ?? "";
-      const recordTarget = resolveNodePageTarget(href, window.location.href);
-      if (!recordTarget) return;
-      event.preventDefault();
-      const action = window.prompt(
-              "Marloth link — enter new title (Cancel to keep unchanged):",
-              anchor.textContent ?? "",
-            );
-            if (action === null) return;
-            const trimmed = action.trim();
-            if (!trimmed) return;
-            anchor.textContent = trimmed;
-            anchor.setAttribute("href", nodePageHref(recordTarget, api.host));
-          }
-        : null;
 
     root.addEventListener("click", onClick);
     root.addEventListener("auxclick", onClick);
-    if (onContextMenu) {
-      root.addEventListener("contextmenu", onContextMenu);
-    }
 
     return () => {
       destroyed = true;
@@ -310,9 +272,6 @@ export function MarlothEditor({
       }
       root.removeEventListener("click", onClick);
       root.removeEventListener("auxclick", onClick);
-      if (onContextMenu) {
-        root.removeEventListener("contextmenu", onContextMenu);
-      }
       root.replaceChildren();
       void crepe.destroy();
       crepeRef.current = null;
@@ -324,7 +283,6 @@ export function MarlothEditor({
     insertMention,
     onEditorBaseline,
     onBodyChange,
-    onNavigate,
     nodeId,
     title,
   ]);
