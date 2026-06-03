@@ -16163,16 +16163,6 @@
       }
     },
     {
-      "a": "28358e628ba2807fb560caaac1c4aa47",
-      "b": "dd0de9867cc345b898929306bdf9fc83",
-      "type": "is_a",
-      "directedFrom": "28358e628ba2807fb560caaac1c4aa47",
-      "properties": {
-        "view": "all",
-        "row_index": 82
-      }
-    },
-    {
       "a": "28358e628ba280859907dafca337f880",
       "b": "dd0de9867cc345b898929306bdf9fc83",
       "type": "is_a",

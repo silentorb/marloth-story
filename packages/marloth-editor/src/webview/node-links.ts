@@ -63,7 +63,10 @@ function isVscodeNodeUri(href: string): boolean {
   return nodeIdFromUri(href) !== null;
 }
 
-/** Rewrite in-editor anchors to host-specific navigable hrefs (display only). */
+/**
+ * @deprecated Display hrefs are set in markdown via `prepareEditorMarkdown` before Milkdown loads.
+ * Post-hoc DOM rewrite is not used; ProseMirror re-renders overwrite patched anchors.
+ */
 export function rewriteEditorNodeLinks(
   root: ParentNode,
   host: EditorHost,

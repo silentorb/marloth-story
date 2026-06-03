@@ -56,6 +56,8 @@ export type { AppView };
 
 type SaveState = "idle" | "dirty" | "saving" | "saved" | "error";
 
+const saveDebounceDelay: number = 2000
+
 function nodeFromLocation(): string | null {
   const params = new URLSearchParams(window.location.search);
   return params.get("node");
@@ -422,7 +424,7 @@ export function App() {
             setSaveState("error");
           }
         })();
-      }, 800);
+      }, saveDebounceDelay);
     },
     [api, node],
   );
@@ -431,9 +433,9 @@ export function App() {
     (title: string) => {
       if (!node) return;
       const trimmed = title.trim() || "Untitled";
+      setNode((prev) => (prev && prev.title !== title ? { ...prev, title } : prev));
       if (!titleNeedsSave(title, savedTitle.current)) return;
       pendingTitle.current = trimmed;
-      setNode((prev) => (prev ? { ...prev, title: trimmed } : prev));
       setSaveState("dirty");
       if (saveTimer.current) window.clearTimeout(saveTimer.current);
       saveTimer.current = window.setTimeout(() => {
@@ -450,7 +452,7 @@ export function App() {
             setSaveState("error");
           }
         })();
-      }, 800);
+      }, saveDebounceDelay);
     },
     [api, node],
   );

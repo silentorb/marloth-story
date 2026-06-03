@@ -123,6 +123,7 @@ export { filterEvalRows, matchesNotionFilter, sortEvalRows } from "./notion-view
 export {
   canonicalNodeMarkdownHref,
   canonicalizeMarkdownBodyLinks,
+  expandMarkdownBodyLinks,
   findMarkdownLinksToTarget,
   resolveMarkdownHrefTarget,
 } from "./markdown-links";

@@ -32,6 +32,10 @@ describe("titleNeedsSave", () => {
     expect(titleNeedsSave("Alpha", "Alpha")).toBe(false);
   });
 
+  test("returns false for trailing space only (trimmed title unchanged)", () => {
+    expect(titleNeedsSave("Alpha ", "Alpha")).toBe(false);
+  });
+
   test("returns true when title changed", () => {
     expect(titleNeedsSave("Beta", "Alpha")).toBe(true);
   });

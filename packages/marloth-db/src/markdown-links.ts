@@ -1,4 +1,5 @@
 const MARLOTH_LINK_SCHEME = "marloth:";
+const MARLOTH_NODE_URI = /^marloth:\/\/node\/([a-f0-9]{32})$/i;
 const NOTION_ID_IN_PATH = /([a-f0-9]{32})(?:\.(?:md|csv))?$/i;
 const NODE_ID_PATTERN = /^[a-f0-9]{32}$/i;
 const MD_LINK = /\[([^\]]*)\]\(([^)]+)\)/g;
@@ -44,6 +45,9 @@ export function canonicalNodeMarkdownHref(nodeId: string): string {
 export function resolveMarkdownHrefTarget(href: string): string | null {
   const trimmed = href.trim();
   if (!trimmed) return null;
+  const nodeUriMatch = MARLOTH_NODE_URI.exec(trimmed);
+  if (nodeUriMatch?.[1]) return normalizeRecordId(nodeUriMatch[1]);
+
   if (trimmed.startsWith(MARLOTH_LINK_SCHEME)) {
     const id = trimmed.slice(MARLOTH_LINK_SCHEME.length).trim();
     return id && NODE_ID_PATTERN.test(id) ? normalizeRecordId(id) : null;
@@ -81,6 +85,20 @@ export function canonicalizeMarkdownBodyLinks(body: string): string {
     const canonical = canonicalNodeMarkdownHref(targetId);
     if (href.trim() === canonical) return match;
     return `[${text}](${canonical})`;
+  });
+}
+
+/** Rewrite resolvable node links to host-specific navigable hrefs for the editor. */
+export function expandMarkdownBodyLinks(
+  body: string,
+  hrefForNodeId: (nodeId: string) => string,
+): string {
+  return body.replace(MD_LINK, (match, text: string, href: string) => {
+    const targetId = resolveMarkdownHrefTarget(href);
+    if (!targetId) return match;
+    const display = hrefForNodeId(targetId);
+    if (href.trim() === display) return match;
+    return `[${text}](${display})`;
   });
 }
 

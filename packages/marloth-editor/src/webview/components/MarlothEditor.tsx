@@ -5,23 +5,18 @@ import { Crepe } from "@milkdown/crepe";
 import "@milkdown/crepe/theme/common/style.css";
 import "@milkdown/crepe/theme/frame-dark.css";
 import type { EditorApi } from "../api/client";
-import { formatNodeMarkdownLink, nodeMarkdownHref } from "../../shared/types";
 import type { NodeSummary } from "../../shared/types";
 import { buildCalloutSlashMenu } from "../callout-block";
 import { installCalloutCursor } from "../callout-cursor";
 import { installLinkCursor } from "../link-cursor";
 import { installCalloutDecoration } from "../callout-decoration";
 import { installMentionSync } from "../mention-sync";
-import {
-  openStandaloneNodeInNewTab,
-  resolveNodePageTarget,
-  rewriteEditorNodeLinks,
-} from "../node-links";
+import { nodePageHref, openStandaloneNodeInNewTab, resolveNodePageTarget } from "../node-links";
 import {
   activeMentionRangeAtSelection,
   resolveMentionInsertRange,
 } from "../mention-range";
-import { prepareEditorMarkdown } from "../standalone-markdown";
+import { formatEditorNodeMarkdownLink, prepareEditorMarkdown } from "../standalone-markdown";
 import "./editor.css";
 
 interface MentionState {
@@ -81,12 +76,12 @@ export function MarlothEditor({
         const view = ctx.get(editorViewCtx);
         const range = resolveMentionInsertRange(view.state, stored);
         if (!range) return;
-        const link = formatNodeMarkdownLink(item.title, item.id);
+        const link = formatEditorNodeMarkdownLink(item.title, item.id, api.host);
         replaceRange(link, { from: range.replaceFrom, to: range.replaceTo })(ctx);
       });
       closeMention();
     },
-    [closeMention],
+    [api.host, closeMention],
   );
 
   useEffect(() => {
@@ -110,7 +105,7 @@ export function MarlothEditor({
     setInitError(null);
     setIsEmpty(!initialBody.trim());
     root.replaceChildren();
-    const editorDefault = prepareEditorMarkdown(initialBody);
+    const editorDefault = prepareEditorMarkdown(initialBody, api.host);
     const crepe = new Crepe({
       root,
       defaultValue: editorDefault,
@@ -146,9 +141,6 @@ export function MarlothEditor({
           return;
         }
         onBodyChange?.(markdown);
-        if (editorDomRef.current) {
-          rewriteEditorNodeLinks(editorDomRef.current, api.host);
-        }
       });
     });
 
@@ -247,7 +239,6 @@ export function MarlothEditor({
         editorDom = dom;
         editorDomRef.current = dom;
         dom.addEventListener("keydown", onKeyDown, true);
-        rewriteEditorNodeLinks(dom, api.host);
       });
     }).catch((err: unknown) => {
       console.error("Marloth editor failed to initialize:", err);
@@ -302,7 +293,7 @@ export function MarlothEditor({
             const trimmed = action.trim();
             if (!trimmed) return;
             anchor.textContent = trimmed;
-            anchor.setAttribute("href", nodeMarkdownHref(recordTarget));
+            anchor.setAttribute("href", nodePageHref(recordTarget, api.host));
           }
         : null;
 

@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import {
   canonicalNodeMarkdownHref,
   canonicalizeMarkdownBodyLinks,
+  expandMarkdownBodyLinks,
   findMarkdownLinksToTarget,
   resolveMarkdownHrefTarget,
 } from "./markdown-links";
@@ -11,6 +12,10 @@ const TARGET = "0123456789abcdef0123456789abcdef";
 describe("resolveMarkdownHrefTarget", () => {
   test("resolves marloth scheme links", () => {
     expect(resolveMarkdownHrefTarget(`marloth:${TARGET}`)).toBe(TARGET);
+  });
+
+  test("resolves marloth node URIs", () => {
+    expect(resolveMarkdownHrefTarget(`marloth://node/${TARGET}`)).toBe(TARGET);
   });
 
   test("resolves relative sibling md paths", () => {
@@ -47,16 +52,36 @@ describe("canonicalNodeMarkdownHref", () => {
   });
 });
 
+describe("expandMarkdownBodyLinks", () => {
+  test("rewrites storage paths to display hrefs", () => {
+    const body = `[A](./${TARGET}.md) [B](marloth:${TARGET})`;
+    const out = expandMarkdownBodyLinks(body, (id) => `?node=${id}`);
+    expect(out).toBe(`[A](?node=${TARGET}) [B](?node=${TARGET})`);
+  });
+
+  test("leaves external links unchanged", () => {
+    const body = "[Example](https://example.com)";
+    expect(expandMarkdownBodyLinks(body, (id) => `?node=${id}`)).toBe(body);
+  });
+});
+
 describe("canonicalizeMarkdownBodyLinks", () => {
   test("rewrites marloth and absolute editor links to relative paths", () => {
     const body = [
       `[A](marloth:${TARGET})`,
       `[B](http://127.0.0.1:5173/?node=${TARGET})`,
       `[C](./${TARGET}.md)`,
+      `[D](marloth://node/${TARGET})`,
     ].join(" ");
     const out = canonicalizeMarkdownBodyLinks(body);
     const canonical = `./${TARGET}.md`;
-    expect(out).toBe(`[A](${canonical}) [B](${canonical}) [C](${canonical})`);
+    expect(out).toBe(`[A](${canonical}) [B](${canonical}) [C](${canonical}) [D](${canonical})`);
+  });
+
+  test("round-trips display hrefs from expand", () => {
+    const storage = `[Target](./${TARGET}.md)`;
+    const display = expandMarkdownBodyLinks(storage, (id) => `?node=${id}`);
+    expect(canonicalizeMarkdownBodyLinks(display)).toBe(storage);
   });
 
   test("leaves external links unchanged", () => {
