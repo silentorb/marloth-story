@@ -10,19 +10,19 @@ notion_archived: false
 ---
 # Overview
 
-> 💡This is a broader sense of [The Wilderness](http://127.0.0.1:5173/?node=e54012bfd6544f37968a4e9899f53ca0).
+> 💡This is a broader sense of [The Wilderness](./e54012bfd6544f37968a4e9899f53ca0.md).
 
-Wilderness settings provides the bulk of the horror in [Cozy horror](http://127.0.0.1:5173/?node=e5cc80dc61ed4c629951cdf472b20b7a).
+Wilderness settings provides the bulk of the horror in [Cozy horror](./e5cc80dc61ed4c629951cdf472b20b7a.md).
 
 The wilderness is dangerous and scary.  When characters are in the wilderness they can never let their guard down.
 
-For Marloth stories, the horror of Cozy horror should largely be [Survival horror](http://127.0.0.1:5173/?node=dc101b6438cf43a8b5f1e17212b8c950).
+For Marloth stories, the horror of Cozy horror should largely be [Survival horror](./dc101b6438cf43a8b5f1e17212b8c950.md).
 
 # Sanctuaries
 
-The antithesis of wilderness is [Sanctuaries](marloth:28a58e628ba280bdb83effe9f4031ff5).
+The antithesis of wilderness is [Sanctuaries](./28a58e628ba280bdb83effe9f4031ff5.md).
 
-Wilderness settings should usually be cold and dark, in contrast with the warm and light of [Sanctuaries](marloth:28a58e628ba280bdb83effe9f4031ff5).
+Wilderness settings should usually be cold and dark, in contrast with the warm and light of [Sanctuaries](./28a58e628ba280bdb83effe9f4031ff5.md).
 
 # Ingredients
 
@@ -35,7 +35,7 @@ The ingredients of a cozy horror wilderness setting are:
 
 # Travel
 
-[Travel](http://127.0.0.1:5173/?node=7cb1f51a24da45e3b29290fc063ae3ed)
+[Travel](./7cb1f51a24da45e3b29290fc063ae3ed.md)
 
 # Industry
 
@@ -47,9 +47,9 @@ In those cases, the character isn’t so much traveling between sanctuaries as t
 
 # Dangers
 
-The cozy horror wilderness dangers are a subset of [Potential survival horror dangers](http://127.0.0.1:5173/?node=28458e628ba28099bf9dde1a919592c5).
+The cozy horror wilderness dangers are a subset of [Potential survival horror dangers](./28458e628ba28099bf9dde1a919592c5.md).
 
-That is because most cozy horror dangers are [Travel](http://127.0.0.1:5173/?node=7cb1f51a24da45e3b29290fc063ae3ed) dangers.
+That is because most cozy horror dangers are [Travel](./7cb1f51a24da45e3b29290fc063ae3ed.md) dangers.
 
 > 💡For example, hunger is *not* a major concern when traveling in the wilderness.
 >
@@ -57,4 +57,4 @@ That is because most cozy horror dangers are [Travel](http://127.0.0.1:5173/?nod
 
 # Isolation
 
-Wilderness does not always have [Isolation](http://127.0.0.1:5173/?node=330cda5056f64459b8d0d46a66ed21a2), but isolation usually takes place in the wilderness.
+Wilderness does not always have [Isolation](./330cda5056f64459b8d0d46a66ed21a2.md), but isolation usually takes place in the wilderness.

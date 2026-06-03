@@ -1,11 +1,30 @@
 import { describe, expect, test } from "bun:test";
-import { findMarkdownLinksToTarget, resolveMarkdownHrefTarget } from "./markdown-links";
+import {
+  canonicalNodeMarkdownHref,
+  canonicalizeMarkdownBodyLinks,
+  findMarkdownLinksToTarget,
+  resolveMarkdownHrefTarget,
+} from "./markdown-links";
 
 const TARGET = "0123456789abcdef0123456789abcdef";
 
 describe("resolveMarkdownHrefTarget", () => {
   test("resolves marloth scheme links", () => {
     expect(resolveMarkdownHrefTarget(`marloth:${TARGET}`)).toBe(TARGET);
+  });
+
+  test("resolves relative sibling md paths", () => {
+    expect(resolveMarkdownHrefTarget(`./${TARGET}.md`)).toBe(TARGET);
+  });
+
+  test("resolves query-only node and record params", () => {
+    expect(resolveMarkdownHrefTarget(`?node=${TARGET}`)).toBe(TARGET);
+    expect(resolveMarkdownHrefTarget(`?record=${TARGET}`)).toBe(TARGET);
+  });
+
+  test("resolves absolute editor URLs with node or record param", () => {
+    expect(resolveMarkdownHrefTarget(`http://127.0.0.1:5173/?node=${TARGET}`)).toBe(TARGET);
+    expect(resolveMarkdownHrefTarget(`https://editor.example/?record=${TARGET}`)).toBe(TARGET);
   });
 
   test("resolves export-style md paths", () => {
@@ -20,10 +39,41 @@ describe("resolveMarkdownHrefTarget", () => {
   });
 });
 
+describe("canonicalNodeMarkdownHref", () => {
+  test("returns lowercase relative path", () => {
+    expect(canonicalNodeMarkdownHref("ABCDEF0123456789ABCDEF0123456789")).toBe(
+      "./abcdef0123456789abcdef0123456789.md",
+    );
+  });
+});
+
+describe("canonicalizeMarkdownBodyLinks", () => {
+  test("rewrites marloth and absolute editor links to relative paths", () => {
+    const body = [
+      `[A](marloth:${TARGET})`,
+      `[B](http://127.0.0.1:5173/?node=${TARGET})`,
+      `[C](./${TARGET}.md)`,
+    ].join(" ");
+    const out = canonicalizeMarkdownBodyLinks(body);
+    const canonical = `./${TARGET}.md`;
+    expect(out).toBe(`[A](${canonical}) [B](${canonical}) [C](${canonical})`);
+  });
+
+  test("leaves external links unchanged", () => {
+    const body = "[Example](https://example.com)";
+    expect(canonicalizeMarkdownBodyLinks(body)).toBe(body);
+  });
+});
+
 describe("findMarkdownLinksToTarget", () => {
   test("finds marloth markdown links", () => {
     const body = `# Page\n\nSee [Target title](marloth:${TARGET}) for details.`;
     expect(findMarkdownLinksToTarget(body, TARGET)).toEqual([{ linkText: "Target title" }]);
+  });
+
+  test("finds relative sibling markdown links", () => {
+    const body = `See [Target](./${TARGET}.md).`;
+    expect(findMarkdownLinksToTarget(body, TARGET)).toEqual([{ linkText: "Target" }]);
   });
 
   test("finds export-style markdown links", () => {

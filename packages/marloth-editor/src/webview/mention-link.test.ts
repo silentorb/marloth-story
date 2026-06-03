@@ -5,7 +5,7 @@ import { replaceRange } from "@milkdown/kit/utils";
 import { commonmark } from "@milkdown/preset-commonmark";
 import type { EditorView } from "@milkdown/prose/view";
 import { TextSelection } from "@milkdown/prose/state";
-import { formatMarlothLink, marlothHref } from "../shared/types";
+import { formatNodeMarkdownLink, nodeMarkdownHref } from "../shared/types";
 import { installLinkCursor } from "./link-cursor";
 import {
   activeMentionRangeAtSelection,
@@ -55,7 +55,7 @@ function trailingTextPos(view: EditorView): number {
 describe("link cursor", () => {
   test("typing after a trailing link does not extend the mark", async () => {
     const { editor, root } = await setupEditor(
-      `See ${formatMarlothLink("Cozy horror", TARGET_ID)}`,
+      `See ${formatNodeMarkdownLink("Cozy horror", TARGET_ID)}`,
     );
 
     await editor.action((ctx) => {
@@ -70,7 +70,7 @@ describe("link cursor", () => {
       view.dispatch(view.state.tr.insertText(" next"));
     });
 
-    const anchor = root.querySelector(`a[href="${marlothHref(TARGET_ID)}"]`);
+    const anchor = root.querySelector(`a[href="${nodeMarkdownHref(TARGET_ID)}"]`);
     expect(anchor?.textContent).toBe("Cozy horror");
     expect(root.textContent).toBe("See Cozy horror next");
 
@@ -79,10 +79,10 @@ describe("link cursor", () => {
 });
 
 describe("@ mention link insertion", () => {
-  test("replaceRange renders marloth href as a clickable anchor", async () => {
+  test("replaceRange renders stored markdown href as a clickable anchor", async () => {
     const cursor = await cursorAfterMention("See @co here", "@co");
     const { editor, root } = await setupEditor("See @co here");
-    const link = formatMarlothLink("Cozy horror", TARGET_ID);
+    const link = formatNodeMarkdownLink("Cozy horror", TARGET_ID);
     await editor.action((ctx) => {
       const view = ctx.get(editorViewCtx);
       installLinkCursor(view);
@@ -94,7 +94,7 @@ describe("@ mention link insertion", () => {
       replaceRange(link, { from: range!.replaceFrom, to: range!.replaceTo })(ctx);
     });
 
-    const anchor = root.querySelector(`a[href="${marlothHref(TARGET_ID)}"]`);
+    const anchor = root.querySelector(`a[href="${nodeMarkdownHref(TARGET_ID)}"]`);
     expect(anchor).toBeTruthy();
     expect(anchor?.textContent).toBe("Cozy horror");
     expect(root.textContent).not.toContain("@co");
@@ -106,7 +106,7 @@ describe("@ mention link insertion", () => {
   test("stored mention range inserts after selection moves away", async () => {
     const cursor = await cursorAfterMention("See @co here", "@co");
     const { editor, root } = await setupEditor("See @co here");
-    const link = formatMarlothLink("Cozy horror", TARGET_ID);
+    const link = formatNodeMarkdownLink("Cozy horror", TARGET_ID);
     let storedFrom = 0;
     let storedTo = 0;
     await editor.action((ctx) => {
@@ -126,7 +126,7 @@ describe("@ mention link insertion", () => {
       replaceRange(link, { from: storedFrom, to: storedTo })(ctx);
     });
 
-    const anchor = root.querySelector(`a[href="${marlothHref(TARGET_ID)}"]`);
+    const anchor = root.querySelector(`a[href="${nodeMarkdownHref(TARGET_ID)}"]`);
     expect(anchor).toBeTruthy();
     expect(root.textContent).not.toContain("@co");
     expect(root.textContent).toBe("See Cozy horror here");
@@ -148,7 +148,7 @@ describe("@ mention link insertion", () => {
       const resolved = resolveMentionInsertRange(view.state, live);
       expect(resolved?.replaceFrom).toBe(5);
       expect(resolved?.replaceTo).toBe(8);
-      replaceRange(formatMarlothLink("Cozy horror", TARGET_ID), {
+      replaceRange(formatNodeMarkdownLink("Cozy horror", TARGET_ID), {
         from: resolved!.replaceFrom,
         to: resolved!.replaceTo,
       })(ctx);

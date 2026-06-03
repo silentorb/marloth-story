@@ -21,7 +21,7 @@ However, if handled precisely, these characters could provide an excellent contr
 - Pursuing power
 - Natural leaders
 - Drawn to evil
-- [Frenemies](../../Features/Frenemies%2072c9bb5b46fa4405bb0c4aa26424b488.md) with James and Adelle
+- [Frenemies](./72c9bb5b46fa4405bb0c4aa26424b488.md) with James and Adelle
 
 # Differences
 
@@ -31,7 +31,7 @@ However, if handled precisely, these characters could provide an excellent contr
 | Never redeemed (or at least not until way down the line). | Redemption story arc |
 | Deceitful | Generally honest |
 | Upper tier scheming | Mid-tier scheming |
-| Exceptional [traveler](../../Features/Travelers%20bbc494a7892947fd8bc516fab446f6da.md) | Struggles to keep up with magic side-effects |
+| Exceptional [traveler](./bbc494a7892947fd8bc516fab446f6da.md) | Struggles to keep up with magic side-effects |
 | Always one step ahead | Always one step behind |
 
 # Relationship

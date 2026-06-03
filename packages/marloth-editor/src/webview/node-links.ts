@@ -3,11 +3,11 @@ import {
   nodeIdFromHref,
   nodeIdFromUri,
   nodeUri,
-  resolveLinkTarget,
   standaloneNodeUrl,
   type AppView,
   type EditorHost,
 } from "../shared/types";
+import { resolveMarkdownHrefTarget } from "marloth-db/markdown-links";
 import { DEFAULT_GRAPH_EXPLORER_ANCHOR_ID } from "../shared/graph-explorer";
 
 const RECORD_ID_PATTERN = /^[a-f0-9]{32}$/i;
@@ -28,8 +28,7 @@ export function anchorFromLocation(): string | undefined {
 }
 
 export function resolveNodeLinkTarget(href: string): string | null {
-  if (isMarlothHref(href)) return nodeIdFromHref(href);
-  return resolveLinkTarget(href);
+  return resolveMarkdownHrefTarget(href) ?? nodeIdFromHref(href);
 }
 
 /** Resolve a navigable node id from any in-app link href (standalone ?node= or marloth: / legacy). */
@@ -60,18 +59,32 @@ export function isStandaloneNodeHref(href: string, base?: string | URL): boolean
   }
 }
 
-/** Rewrite in-editor anchors to real browser URLs in standalone mode. */
-export function rewriteStandaloneNodeLinks(root: ParentNode, base?: string | URL): void {
+function isVscodeNodeUri(href: string): boolean {
+  return nodeIdFromUri(href) !== null;
+}
+
+/** Rewrite in-editor anchors to host-specific navigable hrefs (display only). */
+export function rewriteEditorNodeLinks(
+  root: ParentNode,
+  host: EditorHost,
+  base?: string | URL,
+): void {
   if (typeof window === "undefined") return;
   const baseUrl = base ?? window.location.href;
   for (const anchor of root.querySelectorAll("a[href]")) {
     const href = anchor.getAttribute("href") ?? "";
-    if (isStandaloneNodeHref(href, baseUrl)) continue;
-    const nodeId = resolveNodeLinkTarget(href);
+    if (host === "standalone" && isStandaloneNodeHref(href, baseUrl)) continue;
+    if (host === "vscode" && isVscodeNodeUri(href)) continue;
+    const nodeId = resolveNodePageTarget(href, baseUrl);
     if (!nodeId) continue;
-    anchor.setAttribute("href", standaloneNodeUrl(nodeId, baseUrl));
+    anchor.setAttribute("href", nodePageHref(nodeId, host, baseUrl));
     anchor.removeAttribute("target");
   }
+}
+
+/** @deprecated Use rewriteEditorNodeLinks */
+export function rewriteStandaloneNodeLinks(root: ParentNode, base?: string | URL): void {
+  rewriteEditorNodeLinks(root, "standalone", base);
 }
 
 export function metadataExpandedFromLocation(): boolean {

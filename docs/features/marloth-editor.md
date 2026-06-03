@@ -47,15 +47,15 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 Keyboard shortcuts in combobox-style pickers (global search, Relate, record link picker) may still call navigation imperatively on **Enter** when focus is in the search field; result rows themselves remain anchors for pointer navigation.
 
-- Internal links **must** use the `marloth:{nodeId}` URL scheme in **stored markdown** (rendered to the appropriate `href` in each host).
-- `@` autocomplete **must** search existing nodes by title and insert a markdown link.
+- Internal links **must** be stored in git-tracked markdown as relative sibling paths: `./{nodeId}.md` (see `canonicalNodeMarkdownHref` in `marloth-db/markdown-links.ts`). The editor canonicalizes on save via `normalizeEditorBody` and rewrites rendered anchors to the host `href` in `rewriteEditorNodeLinks` (standalone `?node=`, VS Code `marloth://node/…`). Legacy `marloth:{id}`, `?node=` / `?record=` absolute URLs, and Notion export paths still resolve at read time.
+- `@` autocomplete **must** search existing nodes by title and insert a markdown link (`formatNodeMarkdownLink`).
 - Clicking a rendered link **must** navigate to the target node:
   - plain click → same editor tab
   - Ctrl/Cmd+click or middle-click → new editor tab (VS Code custom editor instance)
 - Legacy Notion export links (32-hex id embedded in path) **should** resolve at navigation time without requiring a bulk migration.
 - **Global search** result rows **must** be `<a href="…">` elements (not `<button>` with `onClick`). Standalone uses `?node=` URLs; VS Code uses `marloth://node/…`.
 - Database relation column cell labels, edit-popup row links, section table name cells, and sidebar nav (standalone) follow the same rule: native `<a href>` in standalone; prefer `href` in VS Code where possible.
-- **Milkdown body** in VS Code may use a single delegated listener on the editor root for `marloth:` anchors only (stored markdown has no `?node=` URL); do not copy that pattern to other surfaces without an explicit exception.
+- **Milkdown body** stores `./{nodeId}.md` in serialized markdown; `rewriteEditorNodeLinks` sets display `href` on load and after edits. VS Code may still use a delegated click listener when needed; do not copy custom click handling to other surfaces without an explicit exception.
 
 ### Entry / navigation
 

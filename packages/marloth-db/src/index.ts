@@ -121,6 +121,8 @@ export type {
 } from "./notion-database-schema";
 export { filterEvalRows, matchesNotionFilter, sortEvalRows } from "./notion-view-eval";
 export {
+  canonicalNodeMarkdownHref,
+  canonicalizeMarkdownBodyLinks,
   findMarkdownLinksToTarget,
   resolveMarkdownHrefTarget,
 } from "./markdown-links";

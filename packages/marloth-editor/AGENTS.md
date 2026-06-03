@@ -28,7 +28,7 @@ The extension host **does not** open SQLite directly. It spawns (or connects to)
 
 **Data transport:** webview → REST (`src/shared/http-client.ts`) in all modes. **Navigation transport:** webview → postMessage → extension host (VS Code only).
 
-**Link/navigation convention (read [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md) § Cross-linking):** navigational UI **must** use `<a href="…">` and native browser link behavior—**never** `onClick` / `onAuxClick` / `preventDefault` / `window.open` on node links. Standalone: `?node=` (`standaloneNodeUrl`); VS Code: `marloth://node/{id}` (`nodeUri`). Helper: `nodePageHref()` in `src/webview/node-links.ts`. If you cannot use a real `href`, **ask the user** before adding custom click handling. Exceptions: Graph Explorer canvas, Milkdown `marloth:` delegation in VS Code only, keyboard Enter in combobox pickers.
+**Link/navigation convention (read [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md) § Cross-linking):** stored markdown bodies use `./{nodeId}.md`; the webview rewrites display `href` per host (`rewriteEditorNodeLinks`). Navigational UI **must** use `<a href="…">` and native browser link behavior—**never** `onClick` / `onAuxClick` / `preventDefault` / `window.open` on node links. Standalone display: `?node=` (`standaloneNodeUrl`); VS Code display: `marloth://node/{id}` (`nodeUri`). Helper: `nodePageHref()` in `src/webview/node-links.ts`. Insert/save: `formatNodeMarkdownLink` / `normalizeEditorBody`. If you cannot use a real `href`, **ask the user** before adding custom click handling. Exceptions: Graph Explorer canvas, keyboard Enter in combobox pickers.
 
 ## Run
 

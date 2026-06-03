@@ -11,9 +11,10 @@ import {
 import { marlothHref, standaloneNodeUrl } from "../shared/types";
 
 describe("node-links", () => {
-  test("resolveNodeLinkTarget accepts marloth and legacy notion hrefs", () => {
+  test("resolveNodeLinkTarget accepts marloth, relative, and legacy notion hrefs", () => {
     const id = "72b6fb455b824b78962b0e509cc091c9";
     expect(resolveNodeLinkTarget(marlothHref(id))).toBe(id);
+    expect(resolveNodeLinkTarget(`./${id}.md`)).toBe(id);
     expect(resolveNodeLinkTarget("Marloth/Page%20abc.md")).toBeNull();
     expect(resolveNodeLinkTarget("Marloth/Features%20dd0de9867cc345b898929306bdf9fc83.csv")).toBe(
       "dd0de9867cc345b898929306bdf9fc83",

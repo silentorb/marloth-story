@@ -36,6 +36,12 @@ describe("rewriteMarkdownLinks", () => {
     expect(output).toBe(`See [Target](/nodes/${TARGET}/) here.`);
   });
 
+  test("rewrites relative sibling md paths", () => {
+    const input = `See [Target](./${TARGET}.md) here.`;
+    const output = rewriteMarkdownLinks(input, "/");
+    expect(output).toBe(`See [Target](/nodes/${TARGET}/) here.`);
+  });
+
   test("rewrites legacy Notion export paths", () => {
     const input = `[Page](../foo/${TARGET}.md)`;
     const output = rewriteMarkdownLinks(input, "/");

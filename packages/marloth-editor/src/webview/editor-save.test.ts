@@ -5,6 +5,12 @@ describe("normalizeEditorBody", () => {
   test("strips duplicate page title before compare", () => {
     expect(normalizeEditorBody("# Alpha\n\nNotes", "Alpha")).toBe("Notes");
   });
+
+  test("canonicalizes node links to relative sibling paths", () => {
+    const id = "28358e628ba2807fb560caaac1c4aa47";
+    const body = `[Action](http://127.0.0.1:5173/?node=${id})`;
+    expect(normalizeEditorBody(body, "Page")).toBe(`[Action](./${id}.md)`);
+  });
 });
 
 describe("bodyNeedsSave", () => {

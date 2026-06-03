@@ -1,9 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import {
-  formatMarlothLink,
+  formatNodeMarkdownLink,
   marlothHref,
   nodeIdFromHref,
   nodeIdFromUri,
+  nodeMarkdownHref,
   resolveLinkTarget,
   standaloneNodeUrl,
 } from "./types";
@@ -12,7 +13,12 @@ describe("link helpers", () => {
   test("marloth href round-trip", () => {
     const id = "72b6fb455b824b78962b0e509cc091c9";
     expect(nodeIdFromHref(marlothHref(id))).toBe(id);
-    expect(formatMarlothLink("Marloth", id)).toBe(`[Marloth](marloth:${id})`);
+  });
+
+  test("node markdown href for stored content", () => {
+    const id = "72b6fb455b824b78962b0e509cc091c9";
+    expect(nodeMarkdownHref(id)).toBe(`./${id}.md`);
+    expect(formatNodeMarkdownLink("Marloth", id)).toBe(`[Marloth](./${id}.md)`);
   });
 
   test("node uri parsing", () => {
@@ -23,6 +29,11 @@ describe("link helpers", () => {
   test("resolves legacy notion export paths", () => {
     const href = "Marloth/TWOLD%20design%2013458e628ba28073850dea0edb9acde1.md";
     expect(resolveLinkTarget(href)).toBe("13458e628ba28073850dea0edb9acde1");
+  });
+
+  test("resolves relative sibling paths", () => {
+    const id = "72b6fb455b824b78962b0e509cc091c9";
+    expect(resolveLinkTarget(`./${id}.md`)).toBe(id);
   });
 
   test("builds standalone browser node urls", () => {

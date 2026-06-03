@@ -9,7 +9,7 @@ import {
   isMentionFragment,
   resolveMentionInsertRange,
 } from "./mention-range";
-import { formatMarlothLink, marlothHref } from "../shared/types";
+import { formatNodeMarkdownLink, nodeMarkdownHref } from "../shared/types";
 
 const TARGET_ID = "e5cc80dc61ed4c629951cdf472b20b7a";
 
@@ -65,7 +65,7 @@ describe("resolveMentionInsertRange", () => {
       };
       const resolved = resolveMentionInsertRange(view.state, stored);
       expect(resolved?.replaceTo).toBe(cursor);
-      const link = formatMarlothLink("Cozy horror", TARGET_ID);
+      const link = formatNodeMarkdownLink("Cozy horror", TARGET_ID);
       replaceRange(link, {
         from: resolved!.replaceFrom,
         to: resolved!.replaceTo,
@@ -74,7 +74,7 @@ describe("resolveMentionInsertRange", () => {
 
     expect(root.textContent).not.toContain("@Cozy");
     expect(root.textContent).not.toMatch(/\]r/);
-    expect(root.querySelector(`a[href="${marlothHref(TARGET_ID)}"]`)).toBeTruthy();
+    expect(root.querySelector(`a[href="${nodeMarkdownHref(TARGET_ID)}"]`)).toBeTruthy();
     await editor.destroy();
   });
 });
