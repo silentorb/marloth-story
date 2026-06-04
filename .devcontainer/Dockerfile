@@ -31,4 +31,7 @@ COPY package.json bun.lock bunfig.toml ./
 COPY packages packages
 RUN chown -R vscode:vscode /opt/marloth-story
 USER vscode
-RUN bun install --frozen-lockfile
+RUN bun install
+
+WORKDIR /workspaces/marloth-story
+CMD ["bun", "run", "editor:dev"]

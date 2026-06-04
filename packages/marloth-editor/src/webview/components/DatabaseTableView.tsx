@@ -7,7 +7,7 @@ import { useTableSearch } from "../hooks/useTableSearch";
 import { filterRowsByName } from "../table-name-filter";
 import { itemsTableSearchParamKey } from "../../shared/table-search-url";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
-import { TableAddRowFooter } from "./TableAddRowFooter";
+import { TableAddRow, TableAddRowFooter, TableAddRowTrigger } from "./TableAddRowFooter";
 import { RelationCellEditor } from "./RelationCellEditor";
 import { renderTableCell } from "./table-cell-render";
 import { TableSearchInput } from "./TableSearchInput";
@@ -182,71 +182,74 @@ export function DatabaseTableView({
   );
 
   return (
-    <div className={`marloth-database-view${embedded ? " is-embedded" : ""}`}>
-      <header className="marloth-database-header">
-        {embedded ? null : (
-          <div className="marloth-database-heading">
-            <h1 className="marloth-database-title">{databaseView.title}</h1>
-          </div>
-        )}
-        <TableUtilityBar
-          tabs={databaseView.tabs}
-          columnDefs={databaseView.columnDefs}
-          search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
-          onTabSelect={onTabSelect}
-          onCreateTab={async (input) => {
-            const tab = await api.createSectionTab(nodeId, ITEMS_SECTION_KEY, input);
-            onTabSelect(tab.id);
-            onTabsUpdated?.();
-          }}
-          onUpdateTab={async (tabId, input) => {
-            await api.updateSectionTab(nodeId, ITEMS_SECTION_KEY, tabId, input);
-            onTabsUpdated?.();
-          }}
-          onDeleteTab={async (tabId) => {
-            await api.deleteSectionTab(nodeId, ITEMS_SECTION_KEY, tabId);
-            onTabsUpdated?.();
-          }}
-          onTabsReorder={async (tabOrder) => {
-            await api.updateSectionTabOrder(nodeId, ITEMS_SECTION_KEY, tabOrder);
-            onTabsUpdated?.();
-          }}
-        />
-      </header>
+    <TableAddRow
+      label="New row"
+      onSubmit={async (title) => {
+        await api.createDatabaseRow(databaseView.id, {
+          title,
+          view: databaseView.view,
+        });
+        onCellUpdated?.();
+      }}
+    >
+      <div className={`marloth-database-view${embedded ? " is-embedded" : ""}`}>
+        <header className="marloth-database-header">
+          {embedded ? null : (
+            <div className="marloth-database-heading">
+              <h1 className="marloth-database-title">{databaseView.title}</h1>
+            </div>
+          )}
+          <TableUtilityBar
+            tabs={databaseView.tabs}
+            columnDefs={databaseView.columnDefs}
+            search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
+            addRow={<TableAddRowTrigger />}
+            onTabSelect={onTabSelect}
+            onCreateTab={async (input) => {
+              const tab = await api.createSectionTab(nodeId, ITEMS_SECTION_KEY, input);
+              onTabSelect(tab.id);
+              onTabsUpdated?.();
+            }}
+            onUpdateTab={async (tabId, input) => {
+              await api.updateSectionTab(nodeId, ITEMS_SECTION_KEY, tabId, input);
+              onTabsUpdated?.();
+            }}
+            onDeleteTab={async (tabId) => {
+              await api.deleteSectionTab(nodeId, ITEMS_SECTION_KEY, tabId);
+              onTabsUpdated?.();
+            }}
+            onTabsReorder={async (tabOrder) => {
+              await api.updateSectionTabOrder(nodeId, ITEMS_SECTION_KEY, tabOrder);
+              onTabsUpdated?.();
+            }}
+          />
+        </header>
 
-      {!hasRows ? (
-        <div className="marloth-database-empty">No rows in this view.</div>
-      ) : !hasMatchingRows && hasActiveSearch ? (
-        <div className="marloth-database-empty">No rows match “{searchQuery.trim()}”.</div>
-      ) : (
-        <SectionDataTable
-          tableKey={tableKey}
-          columns={databaseView.columns}
-          rows={filteredRows}
-          defaultSort={tabDefaultSort}
-          renderNameCell={renderNameCell}
-          columnLabels={columnLabels}
-          renderCell={renderCell}
-          rowPageActions={rowPageActions}
-          onColumnsReorder={async (columnOrder) => {
-            await api.updateSectionColumnOrder(nodeId, ITEMS_SECTION_KEY, columnOrder);
-            onTabsUpdated?.();
-          }}
-          canDeleteColumn={canDeleteColumn}
-          isRelationColumn={isRelationColumn}
-          onColumnDelete={handleColumnDelete}
-        />
-      )}
-      <TableAddRowFooter
-        label="New row"
-        onSubmit={async (title) => {
-          await api.createDatabaseRow(databaseView.id, {
-            title,
-            view: databaseView.view,
-          });
-          onCellUpdated?.();
-        }}
-      />
-    </div>
+        {!hasRows ? (
+          <div className="marloth-database-empty">No rows in this view.</div>
+        ) : !hasMatchingRows && hasActiveSearch ? (
+          <div className="marloth-database-empty">No rows match “{searchQuery.trim()}”.</div>
+        ) : (
+          <SectionDataTable
+            tableKey={tableKey}
+            columns={databaseView.columns}
+            rows={filteredRows}
+            defaultSort={tabDefaultSort}
+            renderNameCell={renderNameCell}
+            columnLabels={columnLabels}
+            renderCell={renderCell}
+            rowPageActions={rowPageActions}
+            onColumnsReorder={async (columnOrder) => {
+              await api.updateSectionColumnOrder(nodeId, ITEMS_SECTION_KEY, columnOrder);
+              onTabsUpdated?.();
+            }}
+            canDeleteColumn={canDeleteColumn}
+            isRelationColumn={isRelationColumn}
+            onColumnDelete={handleColumnDelete}
+          />
+        )}
+        <TableAddRowFooter />
+      </div>
+    </TableAddRow>
   );
 }

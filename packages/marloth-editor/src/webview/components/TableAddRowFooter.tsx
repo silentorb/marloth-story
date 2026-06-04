@@ -1,12 +1,41 @@
-import { useCallback, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+  type ReactNode,
+} from "react";
 import "./table-add-row-footer.css";
 
-interface TableAddRowFooterProps {
-  label: string;
-  onSubmit: (title: string) => Promise<void>;
+interface TableAddRowContextValue {
+  footerLabel: string;
+  expanded: boolean;
+  expand: () => void;
+  title: string;
+  setTitle: (value: string) => void;
+  submitting: boolean;
+  error: string | null;
+  reset: () => void;
+  submit: () => Promise<void>;
 }
 
-export function TableAddRowFooter({ label, onSubmit }: TableAddRowFooterProps) {
+const TableAddRowContext = createContext<TableAddRowContextValue | null>(null);
+
+function useTableAddRowContext(): TableAddRowContextValue {
+  const context = useContext(TableAddRowContext);
+  if (!context) {
+    throw new Error("TableAddRow components must be used within TableAddRow");
+  }
+  return context;
+}
+
+interface TableAddRowProps {
+  label: string;
+  onSubmit: (title: string) => Promise<void>;
+  children: ReactNode;
+}
+
+export function TableAddRow({ label, onSubmit, children }: TableAddRowProps) {
   const [expanded, setExpanded] = useState(false);
   const [title, setTitle] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -36,15 +65,61 @@ export function TableAddRowFooter({ label, onSubmit }: TableAddRowFooterProps) {
     }
   }, [onSubmit, reset, title]);
 
+  const value: TableAddRowContextValue = {
+    footerLabel: label,
+    expanded,
+    expand: () => setExpanded(true),
+    title,
+    setTitle,
+    submitting,
+    error,
+    reset,
+    submit,
+  };
+
+  return <TableAddRowContext.Provider value={value}>{children}</TableAddRowContext.Provider>;
+}
+
+interface TableAddRowTriggerProps {
+  label?: string;
+}
+
+export function TableAddRowTrigger({ label = "New" }: TableAddRowTriggerProps) {
+  const { expand } = useTableAddRowContext();
+
+  return (
+    <button
+      type="button"
+      className="marloth-table-new-row-btn"
+      onClick={expand}
+    >
+      {label}
+    </button>
+  );
+}
+
+export function TableAddRowFooter() {
+  const {
+    footerLabel,
+    expanded,
+    expand,
+    title,
+    setTitle,
+    submitting,
+    error,
+    reset,
+    submit,
+  } = useTableAddRowContext();
+
   if (!expanded) {
     return (
       <div className="marloth-table-add-row">
         <button
           type="button"
           className="marloth-table-add-row-trigger"
-          onClick={() => setExpanded(true)}
+          onClick={expand}
         >
-          + {label}
+          + {footerLabel}
         </button>
       </div>
     );

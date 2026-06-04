@@ -4,13 +4,13 @@
         "dockerfile": "Dockerfile",
         "context": ".."
     },
+    "workspaceFolder": "/workspaces/marloth-story",
+    "overrideCommand": false,
+    "forwardPorts": [3847, 5173],
     "remoteUser": "vscode",
     "mounts": [
         "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
     ],
-    "postCreateCommand": "bun install --frozen-lockfile",
-    "updateContentCommand": "bun install --frozen-lockfile",
-    "postAttachCommand": "bash scripts/marloth-editor-start",
     "customizations": {
         "vscode": {
             "extensions": [],

@@ -192,6 +192,25 @@ describe("TableUtilityBar", () => {
     expect(document.querySelector(".marloth-table-utility-actions")).toBeTruthy();
   });
 
+  test("renders add row control to the right of search", () => {
+    render(
+      <TableUtilityBar
+        search={<TableSearchInput value="" onChange={() => {}} />}
+        addRow={<button type="button">New</button>}
+      />,
+    );
+
+    const actions = document.querySelector(".marloth-table-utility-actions");
+    expect(actions).toBeTruthy();
+    const search = actions!.querySelector(".marloth-table-search");
+    const addRow = screen.getByRole("button", { name: "New" });
+    expect(search).toBeTruthy();
+    expect(addRow).toBeTruthy();
+    expect((search!.compareDocumentPosition(addRow) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0).toBe(
+      true,
+    );
+  });
+
   test("renders search to the right of tabs", () => {
     render(
       <TableUtilityBar

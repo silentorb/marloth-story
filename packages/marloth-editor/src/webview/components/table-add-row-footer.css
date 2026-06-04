@@ -1,3 +1,20 @@
+.marloth-table-new-row-btn {
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 0.875rem;
+  padding: 6px 12px;
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  background: rgba(108, 182, 255, 0.12);
+  border-color: rgba(108, 182, 255, 0.35);
+  color: var(--marloth-link);
+  cursor: pointer;
+}
+
+.marloth-table-new-row-btn:hover {
+  background: rgba(108, 182, 255, 0.2);
+}
+
 .marloth-table-add-row {
   margin-top: 0.5rem;
 }

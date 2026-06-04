@@ -22,6 +22,9 @@
 .marloth-table-utility-actions {
   flex: 0 0 auto;
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .marloth-table-tab-wrap {

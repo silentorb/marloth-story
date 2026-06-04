@@ -36760,6 +36760,26 @@
         "row_index": 23,
         "view": "Untitled"
       }
+    },
+    {
+      "a": "2d8c154613b34341aa35b740de8045c6",
+      "b": "2eea538996934ce8abafc27132e576c1",
+      "type": "is_a",
+      "directedFrom": "2d8c154613b34341aa35b740de8045c6",
+      "properties": {
+        "row_index": 68,
+        "view": "Weighted"
+      }
+    },
+    {
+      "a": "528384943746443a9c89699b57e3bbec",
+      "b": "8f2b9ca403f940eba307765a0fbcd2a7",
+      "type": "is_a",
+      "directedFrom": "8f2b9ca403f940eba307765a0fbcd2a7",
+      "properties": {
+        "row_index": 74,
+        "view": "Name"
+      }
     }
   ]
 }

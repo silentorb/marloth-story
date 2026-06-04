@@ -8,7 +8,7 @@ import { filterRowsByName } from "../table-name-filter";
 import { relationTableSearchParamKey } from "../../shared/table-search-url";
 import { SectionTitle } from "./NodeNameLink";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
-import { TableAddRowFooter } from "./TableAddRowFooter";
+import { TableAddRow, TableAddRowFooter, TableAddRowTrigger } from "./TableAddRowFooter";
 import { TableSearchInput } from "./TableSearchInput";
 import { TableUtilityBar } from "./TableUtilityBar";
 import { renderTableCell } from "./table-cell-render";
@@ -100,43 +100,48 @@ export function RelationSectionView({
 
   if (section.rows.length === 0) return null;
 
+  const footerLabel = `New ${section.title.replace(/s$/i, "") || "row"}`;
+
   return (
-    <section className="marloth-record-section marloth-relation-section">
-      <SectionTitle api={api} title={section.title} typeNodeId={section.typeNodeId} />
-      <TableUtilityBar
-        search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
-      />
-      {!hasMatchingRows && hasActiveSearch ? (
-        <div className="marloth-database-empty">No rows match “{searchQuery.trim()}”.</div>
-      ) : (
-      <SectionDataTable
-        tableKey={tableKey}
-        columns={section.columns}
-        rows={filteredRows}
-        renderNameCell={renderNameCell}
-        columnLabels={columnLabels}
-        renderCell={renderCell}
-        rowPageActions={
-          onArchiveNode && onDeleteNode
-            ? {
-                onArchiveNode,
-                onRemoveNode: async (targetId) => {
-                  await api.unlinkOutgoingRelationship(nodeId, section.label, targetId);
-                  onCellUpdated?.();
-                },
-                onDeleteNode,
-              }
-            : undefined
-        }
-      />
-      )}
-      <TableAddRowFooter
-        label={`New ${section.title.replace(/s$/i, "") || "row"}`}
-        onSubmit={async (title) => {
-          await api.createRelationRow(nodeId, { type: section.label, title });
-          onCellUpdated?.();
-        }}
-      />
-    </section>
+    <TableAddRow
+      label={footerLabel}
+      onSubmit={async (title) => {
+        await api.createRelationRow(nodeId, { type: section.label, title });
+        onCellUpdated?.();
+      }}
+    >
+      <section className="marloth-record-section marloth-relation-section">
+        <SectionTitle api={api} title={section.title} typeNodeId={section.typeNodeId} />
+        <TableUtilityBar
+          search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
+          addRow={<TableAddRowTrigger />}
+        />
+        {!hasMatchingRows && hasActiveSearch ? (
+          <div className="marloth-database-empty">No rows match “{searchQuery.trim()}”.</div>
+        ) : (
+          <SectionDataTable
+            tableKey={tableKey}
+            columns={section.columns}
+            rows={filteredRows}
+            renderNameCell={renderNameCell}
+            columnLabels={columnLabels}
+            renderCell={renderCell}
+            rowPageActions={
+              onArchiveNode && onDeleteNode
+                ? {
+                    onArchiveNode,
+                    onRemoveNode: async (targetId) => {
+                      await api.unlinkOutgoingRelationship(nodeId, section.label, targetId);
+                      onCellUpdated?.();
+                    },
+                    onDeleteNode,
+                  }
+                : undefined
+            }
+          />
+        )}
+        <TableAddRowFooter />
+      </section>
+    </TableAddRow>
   );
 }

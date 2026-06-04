@@ -123,7 +123,7 @@ Global search (Ctrl/Cmd+K) → same endpoint; optional `includeBody=1`; empty qu
 
 ## Quick start
 
-The editor API and Vite dev server **start automatically** when you attach to the devcontainer (`postAttachCommand`) or open this workspace in VS Code/Cursor (task **Marloth Editor: dev servers**, `runOn: folderOpen`). Manual start: `bash scripts/marloth-editor-start` or `bun run editor:dev`.
+The editor API and Vite dev server **start automatically** when the devcontainer starts (Dockerfile `ENTRYPOINT` + `CMD`: `bun run editor:dev` after `bun install`) or when you open this workspace in VS Code/Cursor outside a devcontainer (task **Marloth Editor: dev servers**, `runOn: folderOpen`). Manual restart: `bash scripts/marloth-editor-start` or `bun run editor:dev`.
 
 ```bash
 bun run editor:dev

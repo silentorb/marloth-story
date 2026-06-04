@@ -34,7 +34,7 @@ The webview talks to the Bun REST API on `http://127.0.0.1:3847` (proxied as `/a
 From repo root:
 
 ```bash
-# API only (auto-started on devcontainer attach + workspace folder open)
+# API only (auto-started on devcontainer boot + workspace folder open outside devcontainer)
 bun run editor:api
 # → http://127.0.0.1:3847
 

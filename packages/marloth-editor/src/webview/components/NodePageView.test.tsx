@@ -101,6 +101,7 @@ describe("NodePageView", () => {
     );
 
     expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "New" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "+ New row" })).toBeTruthy();
   });
 
