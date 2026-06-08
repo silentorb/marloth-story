@@ -5,6 +5,7 @@ import {
   standaloneNodeUrl,
   type AppView,
 } from "../shared/types";
+import { DYNAMIC_NODE_EDITOR_QUERY_PARAM } from "marloth-db/dynamic-node-links";
 import { resolveMarkdownHrefTarget } from "marloth-db/markdown-links";
 import { DEFAULT_GRAPH_EXPLORER_ANCHOR_ID } from "../shared/graph-explorer";
 
@@ -34,7 +35,8 @@ export function resolveNodePageTarget(href: string, base?: string | URL): string
   if (typeof window !== "undefined" && isStandaloneNodeHref(href, base)) {
     try {
       const url = new URL(href, base ?? window.location.href);
-      const nodeParam = url.searchParams.get("node");
+      const nodeParam =
+        url.searchParams.get("node") ?? url.searchParams.get(DYNAMIC_NODE_EDITOR_QUERY_PARAM);
       if (nodeParam && isNodeId(nodeParam)) return nodeParam.toLowerCase();
     } catch {
       /* fall through */
@@ -50,7 +52,8 @@ export function isStandaloneNodeHref(href: string, base?: string | URL): boolean
   if (typeof window === "undefined") return false;
   try {
     const url = new URL(href, base ?? window.location.href);
-    const nodeParam = url.searchParams.get("node");
+    const nodeParam =
+      url.searchParams.get("node") ?? url.searchParams.get(DYNAMIC_NODE_EDITOR_QUERY_PARAM);
     return nodeParam !== null && /^[a-f0-9]{32}$/i.test(nodeParam);
   } catch {
     return false;

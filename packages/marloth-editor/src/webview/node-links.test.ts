@@ -8,6 +8,7 @@ import {
   standaloneViewUrl,
   syncMetadataExpandedParam,
 } from "./node-links";
+import { editorDynamicNodeHref } from "marloth-db/dynamic-node-links";
 import { marlothHref, standaloneNodeUrl } from "../shared/types";
 
 describe("node-links", () => {
@@ -67,6 +68,11 @@ describe("node-links", () => {
     expect(resolveNodePageTarget("marloth://node/72b6fb455b824b78962b0e509cc091c9")).toBe(
       "72b6fb455b824b78962b0e509cc091c9",
     );
+    expect(
+      resolveNodePageTarget(
+        `http://127.0.0.1:5173/${editorDynamicNodeHref("72b6fb455b824b78962b0e509cc091c9")}`,
+      ),
+    ).toBe("72b6fb455b824b78962b0e509cc091c9");
   });
 
   test("standaloneNodeUrl strips meta param", () => {

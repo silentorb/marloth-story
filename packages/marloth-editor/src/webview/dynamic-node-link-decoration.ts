@@ -1,27 +1,13 @@
-import {
-  DYNAMIC_NODE_LINK_QUERY_PARAM,
-  DYNAMIC_NODE_LINK_QUERY_VALUE,
-} from "marloth-db/dynamic-node-links";
+import { isDynamicEditorHref } from "marloth-db/dynamic-node-links";
 import { resolveMarkdownHrefTarget } from "marloth-db/markdown-links";
 import type { Node as ProseNode } from "@milkdown/prose/model";
 import { Plugin, PluginKey } from "@milkdown/prose/state";
 import { Decoration, DecorationSet, type EditorView } from "@milkdown/prose/view";
 import { createNodeLinkIconElement } from "./node-link-icon";
 
-export const dynamicTitleRefreshMetaKey = "marlothDynamicTitleRefresh";
+export { isDynamicEditorHref } from "marloth-db/dynamic-node-links";
 
-export function isDynamicEditorHref(href: string): boolean {
-  const trimmed = href.trim();
-  if (!trimmed.startsWith("?") && !trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
-    return false;
-  }
-  try {
-    const url = trimmed.startsWith("?") ? new URL(trimmed, "http://local/") : new URL(trimmed);
-    return url.searchParams.get(DYNAMIC_NODE_LINK_QUERY_PARAM) === DYNAMIC_NODE_LINK_QUERY_VALUE;
-  } catch {
-    return false;
-  }
-}
+export const dynamicTitleRefreshMetaKey = "marlothDynamicTitleRefresh";
 
 function linkMarkHref(node: ProseNode): string | null {
   if (!node.isText) return null;

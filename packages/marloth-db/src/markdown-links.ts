@@ -7,12 +7,13 @@ const NOTION_PAREN_LINK =
   /(?<!\[)([^\[\]\n(]+?)\s*\(\s*([^)]+?\.(?:md|csv))(?:#([^)]*))?\s*\)(?!\])/gi;
 
 function hasDynamicLinkMarker(href: string): boolean {
-  const trimmed = href.trim();
+  const trimmed = href.replace(/\\&/g, "&").replace(/&amp;/g, "&").trim();
   if (!trimmed.startsWith("?") && !trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
     return false;
   }
   try {
     const url = trimmed.startsWith("?") ? new URL(trimmed, "http://local/") : new URL(trimmed);
+    if (NODE_ID_PATTERN.test(url.searchParams.get("dynnode") ?? "")) return true;
     return url.searchParams.get("dynamic") === "1";
   } catch {
     return false;
@@ -30,10 +31,11 @@ function nodeIdFromQueryParam(value: string | null): string | null {
 
 function resolveNodeIdFromUrl(href: string): string | null {
   try {
-    const url = new URL(href);
+    const url = new URL(href.replace(/\\&/g, "&"));
     return (
       nodeIdFromQueryParam(url.searchParams.get("node")) ??
-      nodeIdFromQueryParam(url.searchParams.get("record"))
+      nodeIdFromQueryParam(url.searchParams.get("record")) ??
+      nodeIdFromQueryParam(url.searchParams.get("dynnode"))
     );
   } catch {
     return null;
@@ -41,11 +43,13 @@ function resolveNodeIdFromUrl(href: string): string | null {
 }
 
 function resolveNodeIdFromQueryOnlyHref(href: string): string | null {
-  const trimmed = href.trim();
+  const trimmed = href.replace(/\\&/g, "&").trim();
   if (!trimmed.startsWith("?")) return null;
   const params = new URLSearchParams(trimmed);
   return (
-    nodeIdFromQueryParam(params.get("node")) ?? nodeIdFromQueryParam(params.get("record"))
+    nodeIdFromQueryParam(params.get("node")) ??
+    nodeIdFromQueryParam(params.get("record")) ??
+    nodeIdFromQueryParam(params.get("dynnode"))
   );
 }
 

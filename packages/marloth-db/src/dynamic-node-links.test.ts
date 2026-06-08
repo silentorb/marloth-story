@@ -47,8 +47,13 @@ describe("expandDynamicNodeLinksForEditor", () => {
 });
 
 describe("collapseDynamicEditorLinks", () => {
-  test("collapses dynamic editor links to storage syntax", () => {
+  test("collapses dynnode editor links to storage syntax", () => {
     const body = `[My Page](${editorDynamicNodeHref(TARGET)})`;
+    expect(collapseDynamicEditorLinks(body)).toBe(formatDynamicNodeLink(TARGET));
+  });
+
+  test("collapses legacy dynamic=1 links including GFM-escaped ampersands", () => {
+    const body = `[My Page](?node=${TARGET}\\&dynamic=1)`;
     expect(collapseDynamicEditorLinks(body)).toBe(formatDynamicNodeLink(TARGET));
   });
 

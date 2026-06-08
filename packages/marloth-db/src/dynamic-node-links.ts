@@ -6,8 +6,15 @@ import {
 const NODE_ID_PATTERN = /^[a-f0-9]{32}$/i;
 const DYNAMIC_NODE_LINK = /\[\[([a-f0-9]{32})\]\]/gi;
 const MD_LINK = /\[([^\]]*)\]\(([^)]+)\)/g;
+/** Ephemeral editor query param for dynamic-titled links (avoids `&` which GFM escapes on save). */
+export const DYNAMIC_NODE_EDITOR_QUERY_PARAM = "dynnode";
+/** @deprecated Legacy dynamic marker; still recognized when collapsing editor markdown. */
 export const DYNAMIC_NODE_LINK_QUERY_PARAM = "dynamic";
 export const DYNAMIC_NODE_LINK_QUERY_VALUE = "1";
+
+function unescapeMarkdownHref(href: string): string {
+  return href.replace(/\\&/g, "&").replace(/&amp;/g, "&");
+}
 
 function normalizeRecordId(id: string): string {
   return id.toLowerCase();
@@ -40,13 +47,16 @@ export function parseDynamicNodeLinkIds(body: string): string[] {
   return [...ids];
 }
 
-function isDynamicEditorHref(href: string): boolean {
-  const trimmed = href.trim();
+export function isDynamicEditorHref(href: string): boolean {
+  const trimmed = unescapeMarkdownHref(href.trim());
   if (!trimmed.startsWith("?") && !trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
     return false;
   }
   try {
     const url = trimmed.startsWith("?") ? new URL(trimmed, "http://local/") : new URL(trimmed);
+    if (NODE_ID_PATTERN.test(url.searchParams.get(DYNAMIC_NODE_EDITOR_QUERY_PARAM) ?? "")) {
+      return true;
+    }
     return url.searchParams.get(DYNAMIC_NODE_LINK_QUERY_PARAM) === DYNAMIC_NODE_LINK_QUERY_VALUE;
   } catch {
     return false;
@@ -54,11 +64,12 @@ function isDynamicEditorHref(href: string): boolean {
 }
 
 function stripDynamicQueryParam(href: string): string {
-  const trimmed = href.trim();
+  const trimmed = unescapeMarkdownHref(href.trim());
   if (!isDynamicEditorHref(trimmed)) return href;
   try {
     const isQueryOnly = trimmed.startsWith("?");
     const url = isQueryOnly ? new URL(trimmed, "http://local/") : new URL(trimmed);
+    url.searchParams.delete(DYNAMIC_NODE_EDITOR_QUERY_PARAM);
     url.searchParams.delete(DYNAMIC_NODE_LINK_QUERY_PARAM);
     if (isQueryOnly) {
       const params = url.searchParams.toString();
@@ -71,7 +82,7 @@ function stripDynamicQueryParam(href: string): string {
 }
 
 export function editorDynamicNodeHref(nodeId: string): string {
-  return `?node=${normalizeRecordId(nodeId)}&${DYNAMIC_NODE_LINK_QUERY_PARAM}=${DYNAMIC_NODE_LINK_QUERY_VALUE}`;
+  return `?${DYNAMIC_NODE_EDITOR_QUERY_PARAM}=${normalizeRecordId(nodeId)}`;
 }
 
 /** Expand `[[id]]` to titled markdown links (outside code fences). */

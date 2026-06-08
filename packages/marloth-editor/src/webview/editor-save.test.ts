@@ -14,7 +14,7 @@ describe("normalizeEditorBody", () => {
 
   test("collapses dynamic editor links to storage syntax", () => {
     const id = "28358e628ba2807fb560caaac1c4aa47";
-    const body = `[Target](?node=${id}&dynamic=1)`;
+    const body = `[Target](?dynnode=${id})`;
     expect(normalizeEditorBody(body, "Page")).toBe(`[[${id}]]`);
   });
 });

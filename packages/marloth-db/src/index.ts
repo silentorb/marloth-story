@@ -131,9 +131,11 @@ export {
 export type { MarkdownLinkMatch } from "./markdown-links";
 export {
   collapseDynamicEditorLinks,
+  DYNAMIC_NODE_EDITOR_QUERY_PARAM,
   DYNAMIC_NODE_LINK_QUERY_PARAM,
   DYNAMIC_NODE_LINK_QUERY_VALUE,
   editorDynamicNodeHref,
+  isDynamicEditorHref,
   expandDynamicNodeLinks,
   expandDynamicNodeLinksForEditor,
   formatDynamicNodeLink,

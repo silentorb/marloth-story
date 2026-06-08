@@ -59,7 +59,7 @@ const saveDebounceDelay: number = 2000
 
 function nodeFromLocation(): string | null {
   const params = new URLSearchParams(window.location.search);
-  return params.get("node");
+  return params.get("node") ?? params.get("dynnode");
 }
 
 function viewFromLocation(): AppView {
