@@ -79,6 +79,27 @@
   cursor: pointer;
 }
 
+.marloth-editor-body .marloth-node-link-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 2px;
+  vertical-align: text-bottom;
+  color: var(--marloth-muted);
+}
+
+.marloth-editor-body .marloth-node-link-page-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.marloth-editor-body .marloth-dynamic-node-link {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .marloth-editor-error {
   margin-top: 8px;
   color: #f87171;

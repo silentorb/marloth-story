@@ -10,13 +10,18 @@ import {
 export function getStaticPaths() {
   const base = getSiteBase();
   const nodes = loadAllNodes();
+  const titleById = new Map(nodes.map((node) => [node.id.toLowerCase(), node.title]));
   return nodes.map((node) => {
     const { title } = resolvePageTitleAndContent(node.body, node.title);
+    const prepared = prepareNodeMarkdown(node.body, node.title, base, (id) =>
+      titleById.get(id.toLowerCase()) ?? "Untitled",
+    );
     return {
       params: { id: node.id },
       props: {
         title,
-        markdown: prepareNodeMarkdown(node.body, node.title, base),
+        markdown: prepared.markdown,
+        dynamicNodeIds: [...prepared.dynamicNodeIds],
       },
     };
   });
@@ -25,10 +30,13 @@ export function getStaticPaths() {
 interface Props {
   title: string;
   markdown: string;
+  dynamicNodeIds: string[];
 }
 
-const { title, markdown } = Astro.props;
-const bodyHtml = markdown ? await renderMarkdownToHtml(markdown) : "";
+const { title, markdown, dynamicNodeIds } = Astro.props;
+const bodyHtml = markdown
+  ? await renderMarkdownToHtml(markdown, new Set(dynamicNodeIds))
+  : "";
 ---
 
 <NodeLayout title={title}>

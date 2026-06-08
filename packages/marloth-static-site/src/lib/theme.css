@@ -205,6 +205,27 @@ a:hover {
   height: auto;
 }
 
+.prose :where(.marloth-dynamic-node-link-wrap) {
+  display: inline;
+  white-space: normal;
+}
+
+.prose :where(.marloth-node-link-icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.15em;
+  vertical-align: text-bottom;
+  color: var(--marloth-muted);
+}
+
+.prose :where(.marloth-node-link-page-icon) {
+  width: 1em;
+  height: 1em;
+}
+
 .prose-empty {
   color: var(--marloth-muted);
   font-style: italic;

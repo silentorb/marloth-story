@@ -3,6 +3,7 @@ import type { AppView } from "../../shared/types";
 import type { EditorApi } from "../api/client";
 import { nodePageHref } from "../node-links";
 import { SIDEBAR_NODE_LINKS } from "../sidebar-nav";
+import { RecentNodesPanel } from "./RecentNodesPanel";
 import "./side-panel.css";
 
 export interface SidePanelStandaloneUrls {
@@ -30,6 +31,7 @@ interface SidePanelProps {
   onNewPage: () => void;
   onOpenSearch: () => void;
   standaloneUrls?: SidePanelStandaloneUrls;
+  recentNodesRefreshKey?: number;
 }
 
 function NavItem({
@@ -77,6 +79,7 @@ export function SidePanel({
   onNewPage,
   onOpenSearch,
   standaloneUrls,
+  recentNodesRefreshKey = 0,
 }: SidePanelProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pageBase = typeof window !== "undefined" ? window.location.href : undefined;
@@ -146,6 +149,15 @@ export function SidePanel({
             href={standaloneUrls?.nodes[id] ?? nodePageHref(id, pageBase)}
           />
         ))}
+        <RecentNodesPanel
+          api={api}
+          activeView={activeView}
+          activeNodeId={activeNodeId}
+          homeNodeId={homeNodeId}
+          collapsed={collapsed}
+          refreshKey={recentNodesRefreshKey}
+          pageBase={pageBase}
+        />
       </nav>
     </aside>
   );

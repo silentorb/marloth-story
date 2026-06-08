@@ -125,6 +125,15 @@ export function listRecentNodes(
   return db.listNodesByTitle(cap, allowedTypeIds).map((row) => toActiveNodeSummary(db, row));
 }
 
+export function listRecentNodesByModifiedAt(
+  db: GraphDatabase,
+  limit = 20,
+  allowedTypeIds?: readonly string[],
+): NodeSummary[] {
+  const cap = Math.max(1, Math.min(limit, 100));
+  return db.listNodesByModifiedAt(cap, allowedTypeIds).map((row) => toActiveNodeSummary(db, row));
+}
+
 function touchNodeTimestamps(
   ctx: MarlothWriteContext,
   id: string,

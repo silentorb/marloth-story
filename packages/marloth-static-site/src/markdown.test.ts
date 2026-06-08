@@ -74,6 +74,16 @@ describe("prepareNodeMarkdown", () => {
   test("deduplicates title and rewrites links", () => {
     const body = `# Page\n\nLink [x](marloth:${TARGET}).`;
     const result = prepareNodeMarkdown(body, "Page", "/docs/");
-    expect(result).toBe(`Link [x](/docs/nodes/${TARGET}/).`);
+    expect(result.markdown).toBe(`Link [x](/docs/nodes/${TARGET}/).`);
+    expect(result.dynamicNodeIds.size).toBe(0);
+  });
+
+  test("expands dynamic links with titles", () => {
+    const body = `See [[${TARGET}]] here.`;
+    const result = prepareNodeMarkdown(body, "Page", "/", (id) =>
+      id === TARGET ? "Target Page" : "Untitled",
+    );
+    expect(result.markdown).toBe(`See [Target Page](/nodes/${TARGET}/) here.`);
+    expect(result.dynamicNodeIds.has(TARGET)).toBe(true);
   });
 });

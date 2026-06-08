@@ -106,6 +106,8 @@ export function App() {
   const [explorerAnchorStack, setExplorerAnchorStack] = useState<string[]>([]);
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
   const [creatingPage, setCreatingPage] = useState(false);
+  const [selectPageTitleOnMount, setSelectPageTitleOnMount] = useState(false);
+  const [recentNodesRefreshKey, setRecentNodesRefreshKey] = useState(0);
   const [homeId, setHomeId] = useState<string | null>(null);
   const [explorerAnchorId, setExplorerAnchorId] = useState(() =>
     resolveGraphExplorerAnchor(anchorFromLocation()),
@@ -251,18 +253,25 @@ export function App() {
     [api, syncStandaloneUrl],
   );
 
+  const bumpRecentNodes = useCallback(() => {
+    setRecentNodesRefreshKey((value) => value + 1);
+  }, []);
+
   const createNewPage = useCallback(async () => {
     setCreatingPage(true);
     setError(null);
     try {
       const created = await api.createNode({ title: NEW_PAGE_DEFAULT_TITLE });
-      navigateStandaloneNode(created.id);
+      bumpRecentNodes();
+      setView("node-page");
+      setSelectPageTitleOnMount(true);
+      await loadNode(created.id);
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
       setCreatingPage(false);
     }
-  }, [api]);
+  }, [api, bumpRecentNodes, loadNode]);
 
   const bootstrap = useCallback(async () => {
     try {
@@ -305,6 +314,10 @@ export function App() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (saveState === "saved") bumpRecentNodes();
+  }, [bumpRecentNodes, saveState]);
 
   useEffect(() => {
     syncDocumentTitle(view, node?.title);
@@ -496,6 +509,7 @@ export function App() {
       }
       try {
         await api.archiveNode(nodeId);
+        bumpRecentNodes();
         if (node?.id === nodeId) {
           await goHome();
         } else if (node) {
@@ -505,7 +519,7 @@ export function App() {
         setError(err instanceof Error ? err.message : String(err));
       }
     },
-    [api, goHome, loadNode, node],
+    [api, bumpRecentNodes, goHome, loadNode, node],
   );
 
   const deleteCurrentNode = useCallback(
@@ -516,6 +530,7 @@ export function App() {
       }
       try {
         await api.deleteNode(nodeId);
+        bumpRecentNodes();
         if (node?.id === nodeId) {
           await goHome();
         } else if (node) {
@@ -525,7 +540,7 @@ export function App() {
         setError(err instanceof Error ? err.message : String(err));
       }
     },
-    [api, goHome, loadNode, node],
+    [api, bumpRecentNodes, goHome, loadNode, node],
   );
 
   return (
@@ -540,6 +555,7 @@ export function App() {
         onNewPage={() => void createNewPage()}
         onOpenSearch={() => setGlobalSearchOpen(true)}
         standaloneUrls={standaloneUrls}
+        recentNodesRefreshKey={recentNodesRefreshKey}
       />
       <div className={`marloth-main${view === "graph-explorer" ? " marloth-main-graph" : ""}`}>
         {creatingPage ? (
@@ -585,6 +601,8 @@ export function App() {
             onArchiveNode={archiveCurrentNode}
             onDeleteNode={deleteCurrentNode}
             onTableCellUpdated={() => void loadNode(node.id, { tab: tabFromLocation() })}
+            selectTitleOnMount={selectPageTitleOnMount}
+            onTitleSelected={() => setSelectPageTitleOnMount(false)}
           />
         )}
       </div>

@@ -30,6 +30,8 @@ interface NodePageViewProps {
   onArchiveNode: (nodeId: string) => Promise<void>;
   onDeleteNode: (nodeId: string) => Promise<void>;
   onTableCellUpdated?: () => void;
+  selectTitleOnMount?: boolean;
+  onTitleSelected?: () => void;
 }
 
 export function NodePageView({
@@ -46,6 +48,8 @@ export function NodePageView({
   onArchiveNode,
   onDeleteNode,
   onTableCellUpdated,
+  selectTitleOnMount = false,
+  onTitleSelected,
 }: NodePageViewProps) {
   const { content } = resolvePageTitleAndContent(node.body, node.title);
   const emptyMarkdown = isEffectivelyEmptyMarkdown(node.body, node.title);
@@ -72,7 +76,12 @@ export function NodePageView({
             <span className="marloth-record-page-archived">Archived</span>
           ) : null}
           <div className="marloth-page-title-row">
-            <PageTitle value={node.title} onChange={onTitleChange} />
+            <PageTitle
+              value={node.title}
+              onChange={onTitleChange}
+              selectOnMount={selectTitleOnMount}
+              onSelected={onTitleSelected}
+            />
             <div className="marloth-page-title-actions">
               {showPageActions ? (
                 <PageActionsMenu

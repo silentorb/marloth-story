@@ -34,6 +34,7 @@ export {
   DEFAULT_HOME_NODE_ID,
   getNodeDetail,
   listRecentNodes,
+  listRecentNodesByModifiedAt,
   searchNodes,
   updateNodeBody,
   updateNodeTitle,
@@ -128,6 +129,21 @@ export {
   resolveMarkdownHrefTarget,
 } from "./markdown-links";
 export type { MarkdownLinkMatch } from "./markdown-links";
+export {
+  collapseDynamicEditorLinks,
+  DYNAMIC_NODE_LINK_QUERY_PARAM,
+  DYNAMIC_NODE_LINK_QUERY_VALUE,
+  editorDynamicNodeHref,
+  expandDynamicNodeLinks,
+  expandDynamicNodeLinksForEditor,
+  formatDynamicNodeLink,
+  isValidNodeId,
+  linkTextMatchesNodeTitle,
+  migrateStaticLinksToDynamic,
+  parseDynamicNodeLinkIds,
+  prepareEditorMarkdownBody,
+  transformOutsideCodeFences,
+} from "./dynamic-node-links";
 export { getNodePageMetadata } from "./node-metadata";
 export type { NodeBacklink, NodePageMetadata } from "./node-metadata";
 export { buildPropertiesSection } from "./node-type-properties";

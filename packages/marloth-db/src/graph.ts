@@ -441,6 +441,33 @@ export class GraphDatabase {
     return rows.filter((row) => this.nodeMatchesAnyAllowedType(row.id, allowedTypeIds));
   }
 
+  listNodesByModifiedAt(
+    limit: number,
+    allowedTypeIds?: readonly string[],
+  ): { id: string; title: string }[] {
+    const rows = this.db
+      .prepare(
+        `SELECT id,
+                COALESCE(
+                  NULLIF(json_extract(properties, '$.title'), ''),
+                  NULLIF(json_extract(properties, '$.alias'), ''),
+                  'Untitled'
+                ) AS title
+         FROM nodes
+         WHERE is_archived = 0
+           AND (json_extract(properties, '$.title') IS NOT NULL
+            OR json_extract(properties, '$.alias') IS NOT NULL)
+           AND NULLIF(json_extract(properties, '$.modified_at'), '') IS NOT NULL
+         ORDER BY json_extract(properties, '$.modified_at') DESC, id
+         LIMIT ?`,
+      )
+      .all(limit) as { id: string; title: string }[];
+
+    if (!allowedTypeIds || allowedTypeIds.length === 0) return rows;
+
+    return rows.filter((row) => this.nodeMatchesAnyAllowedType(row.id, allowedTypeIds));
+  }
+
   private nodeMatchesAnyAllowedType(nodeId: string, allowedTypeIds: readonly string[]): boolean {
     for (const type of ["is_a", "in_database"] as const) {
       for (const connection of this.listRelationshipsFromSource(nodeId, type)) {

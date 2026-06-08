@@ -11,6 +11,12 @@ describe("normalizeEditorBody", () => {
     const body = `[Action](http://127.0.0.1:5173/?node=${id})`;
     expect(normalizeEditorBody(body, "Page")).toBe(`[Action](./${id}.md)`);
   });
+
+  test("collapses dynamic editor links to storage syntax", () => {
+    const id = "28358e628ba2807fb560caaac1c4aa47";
+    const body = `[Target](?node=${id}&dynamic=1)`;
+    expect(normalizeEditorBody(body, "Page")).toBe(`[[${id}]]`);
+  });
 });
 
 describe("bodyNeedsSave", () => {

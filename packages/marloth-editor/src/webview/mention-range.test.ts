@@ -72,4 +72,17 @@ describe("activeMentionRangeAtSelection", () => {
     expect(range!.replaceFrom).toBe(5);
     expect(range!.replaceTo).toBe(17);
   });
+
+  test("detects mention immediately after open parenthesis", async () => {
+    const range = await mentionRangeFor("See (@co here", "@co");
+    expect(range).not.toBeNull();
+    expect(range!.query).toBe("co");
+    expect(range!.replaceFrom).toBe(6);
+    expect(range!.replaceTo).toBe(9);
+  });
+
+  test("does not treat email local-part as a mention trigger", async () => {
+    const range = await mentionRangeFor("user@domain here", "@domain");
+    expect(range).toBeNull();
+  });
 });

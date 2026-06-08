@@ -44,6 +44,7 @@ export function makeMockEditorApi(): EditorApi {
       })),
     deleteDatabaseColumn: async () => ({ rowsAffected: 0, relationsUnlinked: 0 }),
     search: async (_query, _limit, _allowedTypeIds, _options) => [],
+    listRecent: async () => [],
     saveBody: async () => {},
     saveTitle: async () => {},
     updateDatabaseRowProperty: async () => {},

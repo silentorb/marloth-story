@@ -6,6 +6,19 @@ const MD_LINK = /\[([^\]]*)\]\(([^)]+)\)/g;
 const NOTION_PAREN_LINK =
   /(?<!\[)([^\[\]\n(]+?)\s*\(\s*([^)]+?\.(?:md|csv))(?:#([^)]*))?\s*\)(?!\])/gi;
 
+function hasDynamicLinkMarker(href: string): boolean {
+  const trimmed = href.trim();
+  if (!trimmed.startsWith("?") && !trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
+    return false;
+  }
+  try {
+    const url = trimmed.startsWith("?") ? new URL(trimmed, "http://local/") : new URL(trimmed);
+    return url.searchParams.get("dynamic") === "1";
+  } catch {
+    return false;
+  }
+}
+
 function normalizeRecordId(id: string): string {
   return id.toLowerCase();
 }
@@ -94,6 +107,7 @@ export function expandMarkdownBodyLinks(
   hrefForNodeId: (nodeId: string) => string,
 ): string {
   return body.replace(MD_LINK, (match, text: string, href: string) => {
+    if (hasDynamicLinkMarker(href)) return match;
     const targetId = resolveMarkdownHrefTarget(href);
     if (!targetId) return match;
     const display = hrefForNodeId(targetId);
@@ -131,6 +145,16 @@ export function findMarkdownLinksToTarget(
     const pathPart = parenMatch[2]?.trim() ?? "";
     if (resolveMarkdownHrefTarget(pathPart) === normalizedTarget) {
       matches.push({ linkText });
+    }
+  }
+
+  const DYNAMIC_NODE_LINK = /\[\[([a-f0-9]{32})\]\]/gi;
+  DYNAMIC_NODE_LINK.lastIndex = 0;
+  let dynamicMatch: RegExpExecArray | null;
+  while ((dynamicMatch = DYNAMIC_NODE_LINK.exec(body)) !== null) {
+    const id = dynamicMatch[1];
+    if (id && normalizeRecordId(id) === normalizedTarget) {
+      matches.push({ linkText: "" });
     }
   }
 

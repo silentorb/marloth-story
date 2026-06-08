@@ -82,6 +82,7 @@ export interface EditorApiClient {
     allowedTypeIds?: string[],
     options?: { includeBody?: boolean },
   ): Promise<NodeSummary[]>;
+  listRecent(limit?: number): Promise<NodeSummary[]>;
   saveBody(id: string, body: string): Promise<void>;
   saveTitle(id: string, title: string): Promise<void>;
   updateDatabaseRowProperty(
@@ -310,6 +311,13 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
       }
       const data = await fetchJson<{ results: NodeSummary[] }>(
         `/api/nodes/search?${params}`,
+      );
+      return data.results;
+    },
+    async listRecent(limit = 8): Promise<NodeSummary[]> {
+      const params = new URLSearchParams({ limit: String(limit) });
+      const data = await fetchJson<{ results: NodeSummary[] }>(
+        `/api/nodes/recent?${params}`,
       );
       return data.results;
     },

@@ -2,7 +2,9 @@ import { describe, expect, test } from "bun:test";
 import {
   applyUserSettingsPatch,
   databaseTableSortKey,
+  DEFAULT_SIDEBAR_RECENT_MAX_ITEMS,
   globalSearchIncludeBody,
+  sidebarRecentMaxItems,
   isDefaultTableSort,
   nextSortOnColumnClick,
   normalizeTableSort,
@@ -133,6 +135,44 @@ describe("user-settings", () => {
       globalSearch: { includeBody: false },
     });
     expect(parsedOff.globalSearch).toBeUndefined();
+  });
+
+  test("sidebarRecentMaxItems defaults and clamps", () => {
+    expect(sidebarRecentMaxItems({ version: 1 })).toBe(DEFAULT_SIDEBAR_RECENT_MAX_ITEMS);
+    expect(
+      sidebarRecentMaxItems({ version: 1, sidebar: { recentMaxItems: 12 } }),
+    ).toBe(12);
+    expect(
+      sidebarRecentMaxItems({ version: 1, sidebar: { recentMaxItems: 0 } }),
+    ).toBe(1);
+    expect(
+      sidebarRecentMaxItems({ version: 1, sidebar: { recentMaxItems: 500 } }),
+    ).toBe(100);
+  });
+
+  test("sidebar recentMaxItems is sparse and patchable", () => {
+    const enabled = applyUserSettingsPatch(
+      { version: 1 },
+      { sidebar: { recentMaxItems: 12 } },
+    );
+    expect(sidebarRecentMaxItems(enabled)).toBe(12);
+    expect(enabled.sidebar).toEqual({ recentMaxItems: 12 });
+
+    const cleared = applyUserSettingsPatch(enabled, { sidebar: null });
+    expect(cleared.sidebar).toBeUndefined();
+    expect(sidebarRecentMaxItems(cleared)).toBe(DEFAULT_SIDEBAR_RECENT_MAX_ITEMS);
+
+    const parsed = parseUserSettings({
+      version: 1,
+      sidebar: { recentMaxItems: 10 },
+    });
+    expect(sidebarRecentMaxItems(parsed)).toBe(10);
+
+    const parsedDefault = parseUserSettings({
+      version: 1,
+      sidebar: { recentMaxItems: DEFAULT_SIDEBAR_RECENT_MAX_ITEMS },
+    });
+    expect(parsedDefault.sidebar).toBeUndefined();
   });
 
   test("parseUserSettings drops default sorts and invalid entries", () => {

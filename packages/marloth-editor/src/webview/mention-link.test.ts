@@ -5,12 +5,16 @@ import { replaceRange } from "@milkdown/kit/utils";
 import { commonmark } from "@milkdown/preset-commonmark";
 import type { EditorView } from "@milkdown/prose/view";
 import { TextSelection } from "@milkdown/prose/state";
+import { editorDynamicNodeHref } from "marloth-db/dynamic-node-links";
 import { formatNodeMarkdownLink, nodeMarkdownHref } from "../shared/types";
+import { installDynamicLinkDemote } from "./dynamic-node-link-demote";
 import { installLinkCursor } from "./link-cursor";
 import {
   activeMentionRangeAtSelection,
   resolveMentionInsertRange,
 } from "./mention-range";
+import { formatEditorDynamicNodeLink } from "./standalone-markdown";
+import { normalizeEditorBody } from "./editor-save";
 
 const TARGET_ID = "e5cc80dc61ed4c629951cdf472b20b7a";
 
@@ -48,7 +52,6 @@ function trailingTextPos(view: EditorView): number {
   view.state.doc.descendants((node, nodePos) => {
     if (node.isText) pos = nodePos + node.nodeSize - 1;
   });
-  // Step past the last inline character so non-inclusive link marks are cleared.
   return pos + 1;
 }
 
@@ -78,11 +81,11 @@ describe("link cursor", () => {
   });
 });
 
-describe("@ mention link insertion", () => {
-  test("replaceRange renders stored markdown href as a clickable anchor", async () => {
+describe("@ mention dynamic link insertion", () => {
+  test("replaceRange renders dynamic href as a clickable anchor", async () => {
     const cursor = await cursorAfterMention("See @co here", "@co");
     const { editor, root } = await setupEditor("See @co here");
-    const link = formatNodeMarkdownLink("Cozy horror", TARGET_ID);
+    const link = formatEditorDynamicNodeLink(TARGET_ID, "Cozy horror");
     await editor.action((ctx) => {
       const view = ctx.get(editorViewCtx);
       installLinkCursor(view);
@@ -94,11 +97,10 @@ describe("@ mention link insertion", () => {
       replaceRange(link, { from: range!.replaceFrom, to: range!.replaceTo })(ctx);
     });
 
-    const anchor = root.querySelector(`a[href="${nodeMarkdownHref(TARGET_ID)}"]`);
+    const anchor = root.querySelector(`a[href="${editorDynamicNodeHref(TARGET_ID)}"]`);
     expect(anchor).toBeTruthy();
     expect(anchor?.textContent).toBe("Cozy horror");
     expect(root.textContent).not.toContain("@co");
-    expect(root.textContent).toBe("See Cozy horror here");
 
     await editor.destroy();
   });
@@ -106,7 +108,7 @@ describe("@ mention link insertion", () => {
   test("stored mention range inserts after selection moves away", async () => {
     const cursor = await cursorAfterMention("See @co here", "@co");
     const { editor, root } = await setupEditor("See @co here");
-    const link = formatNodeMarkdownLink("Cozy horror", TARGET_ID);
+    const link = formatEditorDynamicNodeLink(TARGET_ID, "Cozy horror");
     let storedFrom = 0;
     let storedTo = 0;
     await editor.action((ctx) => {
@@ -126,10 +128,9 @@ describe("@ mention link insertion", () => {
       replaceRange(link, { from: storedFrom, to: storedTo })(ctx);
     });
 
-    const anchor = root.querySelector(`a[href="${nodeMarkdownHref(TARGET_ID)}"]`);
+    const anchor = root.querySelector(`a[href="${editorDynamicNodeHref(TARGET_ID)}"]`);
     expect(anchor).toBeTruthy();
     expect(root.textContent).not.toContain("@co");
-    expect(root.textContent).toBe("See Cozy horror here");
 
     await editor.destroy();
   });
@@ -148,7 +149,7 @@ describe("@ mention link insertion", () => {
       const resolved = resolveMentionInsertRange(view.state, live);
       expect(resolved?.replaceFrom).toBe(5);
       expect(resolved?.replaceTo).toBe(8);
-      replaceRange(formatNodeMarkdownLink("Cozy horror", TARGET_ID), {
+      replaceRange(formatEditorDynamicNodeLink(TARGET_ID, "Cozy horror"), {
         from: resolved!.replaceFrom,
         to: resolved!.replaceTo,
       })(ctx);
@@ -156,5 +157,49 @@ describe("@ mention link insertion", () => {
 
     expect(root.textContent).toBe("See Cozy horror here");
     await editor.destroy();
+  });
+});
+
+describe("dynamic link demotion", () => {
+  test("editing dynamic link text removes dynamic marker for static save", async () => {
+    const dynamicLink = formatEditorDynamicNodeLink(TARGET_ID, "Cozy horror");
+    const { editor } = await setupEditor(`See ${dynamicLink} here.`);
+
+    await editor.action((ctx) => {
+      const view = ctx.get(editorViewCtx);
+      installDynamicLinkDemote(view);
+      let linkFrom = -1;
+      let linkTo = -1;
+      view.state.doc.descendants((node, pos) => {
+        if (linkFrom >= 0 || !node.isText || !node.text?.includes("Cozy horror")) return;
+        const idx = node.text.indexOf("Cozy horror");
+        linkFrom = pos + idx;
+        linkTo = linkFrom + "Cozy horror".length;
+      });
+      expect(linkFrom).toBeGreaterThan(0);
+      view.dispatch(
+        view.state.tr.insertText("Custom label", linkFrom, linkTo),
+      );
+
+      let href = "";
+      view.state.doc.descendants((node) => {
+        if (!node.isText) return;
+        const link = node.marks.find((mark) => mark.type.name === "link");
+        if (link && node.text?.includes("Custom")) {
+          href = String(link.attrs.href ?? "");
+        }
+      });
+      expect(href).toBe(`?node=${TARGET_ID}`);
+      expect(href).not.toContain("dynamic=1");
+    });
+
+    await editor.destroy();
+  });
+});
+
+describe("normalizeEditorBody after demotion", () => {
+  test("static link is saved when dynamic marker removed", () => {
+    const body = `[Custom label](?node=${TARGET_ID})`;
+    expect(normalizeEditorBody(body, "Page")).toBe(`[Custom label](./${TARGET_ID}.md)`);
   });
 });

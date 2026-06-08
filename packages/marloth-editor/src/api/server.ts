@@ -103,6 +103,11 @@ export function createApiHandler(
         });
       }
 
+      if (path === "/api/nodes/recent") {
+        const limit = Number.parseInt(url.searchParams.get("limit") ?? "8", 10);
+        return json({ results: db.listRecent(limit) });
+      }
+
       if (path === "/api/nodes" && req.method === "POST") {
         const payload = (await req.json()) as {
           title?: string;

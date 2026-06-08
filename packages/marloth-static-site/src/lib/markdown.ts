@@ -1,5 +1,7 @@
+import { expandDynamicNodeLinks, parseDynamicNodeLinkIds } from "marloth-db/dynamic-node-links";
 import { resolveMarkdownHrefTarget } from "marloth-db/markdown-links";
 import { decorateCalloutHtml } from "./callout-html";
+import { decorateDynamicLinkHtml } from "./dynamic-link-html";
 
 const LEADING_TITLE_HEADING = /^#\s+(.+?)(?:\n|$)/;
 
@@ -63,16 +65,36 @@ export function rewriteMarkdownLinks(body: string, base = "/"): string {
   });
 }
 
-/** Prepare node markdown for static rendering. */
-export function prepareNodeMarkdown(body: string, title: string, base = "/"): string {
-  const { content } = resolvePageTitleAndContent(body, title);
-  if (!content.trim()) return "";
-  return rewriteMarkdownLinks(content, base);
+export interface PreparedNodeMarkdown {
+  markdown: string;
+  dynamicNodeIds: Set<string>;
 }
 
-export async function renderMarkdownToHtml(markdown: string): Promise<string> {
+/** Prepare node markdown for static rendering. */
+export function prepareNodeMarkdown(
+  body: string,
+  title: string,
+  base = "/",
+  titleForId: (nodeId: string) => string = () => "Untitled",
+): PreparedNodeMarkdown {
+  const { content } = resolvePageTitleAndContent(body, title);
+  const dynamicNodeIds = new Set(parseDynamicNodeLinkIds(content));
+  if (!content.trim()) {
+    return { markdown: "", dynamicNodeIds };
+  }
+  const withDynamic = expandDynamicNodeLinks(content, titleForId, (id) => nodePagePath(id, base));
+  return {
+    markdown: rewriteMarkdownLinks(withDynamic, base),
+    dynamicNodeIds,
+  };
+}
+
+export async function renderMarkdownToHtml(
+  markdown: string,
+  dynamicNodeIds: ReadonlySet<string> = new Set(),
+): Promise<string> {
   if (!markdown.trim()) return "";
   const { marked } = await import("marked");
   const html = (await marked.parse(markdown, { async: true })) as string;
-  return decorateCalloutHtml(html);
+  return decorateDynamicLinkHtml(decorateCalloutHtml(html), dynamicNodeIds);
 }

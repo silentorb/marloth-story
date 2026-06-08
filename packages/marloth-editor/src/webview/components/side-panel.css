@@ -118,3 +118,22 @@
 .marloth-side-panel.is-collapsed .marloth-side-panel-item-label {
   display: none;
 }
+
+.marloth-side-panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.marloth-side-panel-section-label {
+  padding: 4px 10px 2px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--marloth-muted);
+}
+
+.marloth-side-panel-section.is-collapsed .marloth-side-panel-section-label {
+  display: none;
+}

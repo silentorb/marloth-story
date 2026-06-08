@@ -11,6 +11,7 @@ import {
   loadSchemaFromContent,
   relationshipRuleContextForType,
   searchNodes,
+  listRecentNodesByModifiedAt,
   updateNodeBody,
   updateNodeTitle,
   deleteDatabaseColumn as deleteDatabaseColumnInDb,
@@ -98,6 +99,7 @@ export interface EditorDatabase {
     allowedTypeIds?: string[],
     options?: { includeBody?: boolean },
   ): NodeSummary[];
+  listRecent(limit?: number): NodeSummary[];
   saveBody(id: string, body: string): boolean;
   saveTitle(id: string, title: string): boolean;
   updateDatabaseRowProperty(
@@ -215,6 +217,9 @@ export function openEditorDatabase(
       options?: { includeBody?: boolean },
     ): NodeSummary[] {
       return searchNodes(writeCtx.db, query, limit, allowedTypeIds, options);
+    },
+    listRecent(limit?: number): NodeSummary[] {
+      return listRecentNodesByModifiedAt(writeCtx.db, limit);
     },
     saveBody(id: string, body: string): boolean {
       return updateNodeBody(writeCtx, id, body);

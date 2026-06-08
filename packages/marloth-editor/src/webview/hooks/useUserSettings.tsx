@@ -14,6 +14,7 @@ import {
   applyUserSettingsPatch,
   emptyUserSettings,
   globalSearchIncludeBody,
+  sidebarRecentMaxItems,
   isDefaultTableSort,
   nextSortOnColumnClick,
   normalizeTableSort,
@@ -37,6 +38,7 @@ interface UserSettingsContextValue {
   ) => void;
   globalSearchIncludeBody: boolean;
   setGlobalSearchIncludeBody: (includeBody: boolean) => void;
+  sidebarRecentMaxItems: number;
 }
 
 const UserSettingsContext = createContext<UserSettingsContextValue | null>(null);
@@ -139,6 +141,7 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
       toggleTableSortColumn,
       globalSearchIncludeBody: globalSearchIncludeBody(settings),
       setGlobalSearchIncludeBody,
+      sidebarRecentMaxItems: sidebarRecentMaxItems(settings),
     }),
     [
       schema,

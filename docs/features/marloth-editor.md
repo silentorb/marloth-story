@@ -46,19 +46,26 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 Keyboard shortcuts in combobox-style pickers (global search, Relate, record link picker) may simulate anchor clicks on **Enter** when focus is in the search field; result rows themselves remain anchors for pointer navigation.
 
-- Internal links **must** be stored in git-tracked markdown as relative sibling paths: `./{nodeId}.md` (see `canonicalNodeMarkdownHref` in `marloth-db/markdown-links.ts`). On load, `prepareEditorMarkdown` expands links to `?node=` display hrefs; on save, `normalizeEditorBody` canonicalizes back to `./{nodeId}.md`. Legacy `marloth:{id}`, `marloth://node/{id}`, `?node=` / `?record=` absolute URLs, and Notion export paths still resolve at read time.
-- `@` autocomplete **must** search existing nodes by title and insert a markdown link with a display href (`formatEditorNodeMarkdownLink`).
+- Internal links **must** be stored in git-tracked markdown in one of two forms:
+  - **Static title:** `[Custom text](./{nodeId}.md)` (see `canonicalNodeMarkdownHref` in `marloth-db/markdown-links.ts`) when the author overrides the displayed label.
+  - **Dynamic title:** `[[{nodeId}]]` — no title stored; the displayed label is resolved from the target node’s `title` property at render time.
+- **Load/save transforms happen outside Milkdown** (same as static links): `prepareEditorMarkdown` expands storage to editor display markdown; `normalizeEditorBody` collapses back before `PUT`. Milkdown only sees standard `[text](href)` links. Dynamic links use an ephemeral `?node={id}&dynamic=1` href in the live editor (not stored).
+- On load, `prepareEditorMarkdown` expands `./{nodeId}.md` → `?node=` and `[[{nodeId}]]` → `[title](?node={id}&dynamic=1)` (titles fetched via the API). On save, `normalizeEditorBody` collapses `dynamic=1` links → `[[{nodeId}]]` and other node links → `./{nodeId}.md`. Legacy `marloth:{id}`, `marloth://node/{id}`, `?node=` / `?record=` absolute URLs, and Notion export paths still resolve at read time.
+- `@` autocomplete **must** search existing nodes by title and insert a **dynamic** link (`formatEditorDynamicNodeLink` → stored as `[[{nodeId}]]` after save).
+- Dynamic links **must** show the same file icon as relation table cells (prefix before the link in Milkdown). Static-titled links do not show the icon.
+- If the user edits the text of a dynamic link in Milkdown, the link **must** demote to a static `[text](./{nodeId}.md)` link on save.
 - Clicking a rendered link **must** navigate via the browser: plain click → same tab; Ctrl/Cmd+click or middle-click → new tab.
 - Legacy Notion export links (32-hex id embedded in path) **should** resolve at navigation time without requiring a bulk migration.
 - **Global search** result rows **must** be `<a href="…">` elements (not `<button>` with `onClick`), using `?node=` URLs.
 - Database relation column cell labels, edit-popup row links, section table name cells, and sidebar nav follow the same rule.
-- **Milkdown body** receives display hrefs in the markdown passed to Crepe (`prepareEditorMarkdown`); persisted bodies remain `./{nodeId}.md` after save. The editor intercepts modifier+click in the Milkdown root only to open new tabs; do not copy custom click handling elsewhere without an explicit exception.
+- **Milkdown body** receives display hrefs in the markdown passed to Crepe (`prepareEditorMarkdown`); persisted bodies use `[[{nodeId}]]` or `./{nodeId}.md`. ProseMirror plugins handle dynamic-link icon decoration and demotion on text edit only — not storage parsing. The editor intercepts modifier+click in the Milkdown root only to open new tabs; do not copy custom click handling elsewhere without an explicit exception.
 
 ### Entry / navigation
 
 - Default home is the Marloth root page (`72b6fb455b824b78962b0e509cc091c9`) when present in the graph; open via sidebar **Home** or `?node=` for the home id.
 - Node pages use URL query `?node={id}` (32-char hex).
 - A **global search** widget **must** let users find and open any node by title (via `GET /api/nodes/search`). Each result **must** be a native link (`<a href>` per **Native link behavior** above). A configuration bar offers **Search node contents** (markdown body); when enabled, the client passes `includeBody=1` and title matches are listed before body-only matches. When **Search node contents** is on and the query matches a node body, each result may include a `matchPreview` excerpt (up to two lines, match emphasized) below the title; title-only matches show the title line only. The preference is stored in `.marloth/user-settings.json` (`globalSearch.includeBody`). Open via sidebar **Search** or **Ctrl/Cmd+K**. Enter (with focus in the search field) activates the highlighted result via native anchor behavior; Ctrl/Cmd+Enter opens in a new tab. `@` mention and Relate pickers use title-only search (no `includeBody`).
+- A **Recent** sidebar section **must** appear directly below the static database links. It lists the latest nodes by node `modified_at` (set on create and updated on title/body save; relationship-only edits do not affect recency). Archived nodes are excluded. Each row **must** be a native link (`<a href>` per **Native link behavior** above). The list length is configurable via `.marloth/user-settings.json` (`sidebar.recentMaxItems`, default 8). Data comes from `GET /api/nodes/recent?limit=…`.
 
 ### Presentation
 
@@ -162,12 +169,14 @@ Production UI bundle: `bun run editor:build` → `packages/marloth-editor/dist-w
 | Relation / enum cell rendering | `table-cell-render.test.tsx`, `RelationSectionView.test.tsx`, `EnumSelectCell.test.tsx` |
 | Database HTTP API | `packages/marloth-editor/src/api/database-view-api.test.ts`, `edge-property-api.test.ts` |
 | Table sort persistence | `packages/marloth-editor/src/shared/user-settings.test.ts`, `user-settings-api.test.ts` |
+| Recent sidebar panel | `packages/marloth-db/src/queries.test.ts`, `packages/marloth-editor/src/api/recent-nodes-api.test.ts`, `RecentNodesPanel.test.tsx` |
 | Properties section (stored + dynamic) | `NodePageView.test.tsx`, `node-type-properties.test.ts` |
 
 - Manual: open home → edit → reload → body persisted
 - Manual: `@` search inserts link; click navigates; Ctrl+click opens new tab
 - Manual: open any node with relation sections and confirm tables render
 - Manual: click a section table column header to sort; reload and confirm sort persists in `.marloth/user-settings.json`
+- Manual: sidebar **Recent** lists latest edited nodes below static database links; edit a title/body and confirm the node moves to the top after save
 - Manual: sidebar **New page** or `?view=create` → lands on new node page titled Untitled; `content/data/{id}.md` exists
 - Manual: on a relation or database table section, **+ New …** / **+ New row** → new row appears after reload
 - Manual: on a database table with relation columns (e.g. Features → Parents), click link labels to navigate; hover the cell and use the edit control to open the popup for add/remove; confirm `content/data/relationships.json` updates
@@ -183,6 +192,7 @@ Production UI bundle: `bun run editor:build` → `packages/marloth-editor/dist-w
 | `packages/marloth-editor/src/webview/components/NodePageView.tsx` | Universal page layout (title, metadata, properties, markdown, sections) |
 | `packages/marloth-editor/src/webview/App.tsx` (`createNewPage`) | New-page auto-create + navigation |
 | `packages/marloth-editor/src/webview/components/GlobalSearch.tsx` | Global node search |
+| `packages/marloth-editor/src/webview/components/RecentNodesPanel.tsx` | Sidebar recent nodes (`GET /api/nodes/recent`) |
 | `packages/marloth-db/src/node-create.ts` | Create node + optional relationship (`createNode`) |
 | `packages/marloth-editor/src/webview/components/PropertiesSectionView.tsx` | Instance-page Properties form (stored + computed fields) |
 | `packages/marloth-editor/src/webview/components/RelationSectionView.tsx` | Outgoing relationship table section |

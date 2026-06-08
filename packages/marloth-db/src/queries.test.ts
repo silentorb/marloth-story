@@ -1,10 +1,19 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { getNodeDetail, searchNodes, updateNodeBody } from "./queries";
+import { updateOutgoingRelationshipProperty } from "./relationship-property-update";
+import {
+  getNodeDetail,
+  listRecentNodesByModifiedAt,
+  searchNodes,
+  updateNodeBody,
+} from "./queries";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
+  seedTestIncludes,
   seedTestNode,
+  seedTestRelationships,
 } from "./content/test-helpers";
+import { DEFAULT_ARCHIVE_NODE_ID } from "./archive-status";
 
 describe("queries", () => {
   const fixture = createTestContentFixture("marloth-db-queries-");
@@ -97,6 +106,122 @@ describe("queries", () => {
     expect(getNodeDetail(fixture.ctx.db, "23456789abcdef0123456789abcdef01")?.body.trimEnd()).toBe(
       "new body",
     );
+  });
+
+  test("listRecentNodesByModifiedAt orders by modified_at descending", () => {
+    const olderId = "6789abcdef0123456789abcdef012345";
+    const newerId = "789abcdef0123456789abcdef0123456";
+    seedTestNode(fixture, {
+      id: olderId,
+      properties: {
+        title: "Older",
+        modified_at: "2024-01-01T00:00:00.000Z",
+      },
+    });
+    seedTestNode(fixture, {
+      id: newerId,
+      properties: {
+        title: "Newer",
+        modified_at: "2024-06-01T00:00:00.000Z",
+      },
+    });
+
+    const recent = listRecentNodesByModifiedAt(fixture.ctx.db, 10);
+    const olderIndex = recent.findIndex((row) => row.id === olderId);
+    const newerIndex = recent.findIndex((row) => row.id === newerId);
+    expect(newerIndex).toBeGreaterThanOrEqual(0);
+    expect(olderIndex).toBeGreaterThanOrEqual(0);
+    expect(newerIndex).toBeLessThan(olderIndex);
+  });
+
+  test("listRecentNodesByModifiedAt omits nodes without modified_at", () => {
+    const withTimestamp = "89abcdef0123456789abcdef01234567";
+    const withoutTimestamp = "9abcdef0123456789abcdef012345678";
+    seedTestNode(fixture, {
+      id: withTimestamp,
+      properties: {
+        title: "Has Timestamp",
+        modified_at: "2024-03-01T00:00:00.000Z",
+      },
+    });
+    seedTestNode(fixture, {
+      id: withoutTimestamp,
+      properties: { title: "No Timestamp" },
+    });
+
+    const recent = listRecentNodesByModifiedAt(fixture.ctx.db, 100);
+    expect(recent.some((row) => row.id === withTimestamp)).toBe(true);
+    expect(recent.some((row) => row.id === withoutTimestamp)).toBe(false);
+  });
+
+  test("listRecentNodesByModifiedAt ignores relationship property updates", () => {
+    const pageId = "abcdef0123456789abcdef0123456789";
+    const targetId = "bcdef0123456789abcdef01234567890";
+    seedTestNode(fixture, {
+      id: pageId,
+      properties: {
+        title: "Page",
+        modified_at: "2024-01-01T00:00:00.000Z",
+      },
+    });
+    seedTestNode(fixture, {
+      id: targetId,
+      properties: {
+        title: "Target",
+        modified_at: "2024-06-01T00:00:00.000Z",
+      },
+    });
+    seedTestRelationships(fixture, [
+      { source: pageId, target: targetId, type: "related", properties: { priority: "Low" } },
+    ]);
+
+    const before = listRecentNodesByModifiedAt(fixture.ctx.db, 10);
+    const pageIndexBefore = before.findIndex((row) => row.id === pageId);
+    const targetIndexBefore = before.findIndex((row) => row.id === targetId);
+    expect(pageIndexBefore).toBeGreaterThan(targetIndexBefore);
+
+    expect(
+      updateOutgoingRelationshipProperty(
+        fixture.ctx,
+        pageId,
+        targetId,
+        "related",
+        "priority",
+        "High",
+      ),
+    ).toBeNull();
+
+    const after = listRecentNodesByModifiedAt(fixture.ctx.db, 10);
+    expect(after.findIndex((row) => row.id === pageId)).toBe(pageIndexBefore);
+    expect(after.findIndex((row) => row.id === targetId)).toBe(targetIndexBefore);
+  });
+
+  test("listRecentNodesByModifiedAt excludes archived nodes", () => {
+    const activeId = "cdef0123456789abcdef012345678901";
+    const archivedId = "def0123456789abcdef0123456789012";
+    seedTestNode(fixture, {
+      id: DEFAULT_ARCHIVE_NODE_ID,
+      properties: { title: "Archive" },
+    });
+    seedTestNode(fixture, {
+      id: activeId,
+      properties: {
+        title: "Active",
+        modified_at: "2024-02-01T00:00:00.000Z",
+      },
+    });
+    seedTestNode(fixture, {
+      id: archivedId,
+      properties: {
+        title: "Archived",
+        modified_at: "2024-08-01T00:00:00.000Z",
+      },
+    });
+    seedTestIncludes(fixture, [{ a: DEFAULT_ARCHIVE_NODE_ID, b: archivedId }]);
+
+    const recent = listRecentNodesByModifiedAt(fixture.ctx.db, 100);
+    expect(recent.some((row) => row.id === activeId)).toBe(true);
+    expect(recent.some((row) => row.id === archivedId)).toBe(false);
   });
 
   afterAll(() => {

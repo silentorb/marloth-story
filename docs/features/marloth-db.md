@@ -96,6 +96,17 @@ Type-table behavior is inferred from `is_a` usage and schema metadata (`isTypeTa
 - Projection ids **must** be deterministic: `{source_id}:{type}:{target_id}` (local perspective type).
 - Relationship types **must** be lower snake_case (e.g. `scenes` → `scenes`, not `SCENES`).
 
+### Markdown body links
+
+Node cross-references in markdown `body` use two storage forms (see `packages/marloth-db/src/markdown-links.ts` and `dynamic-node-links.ts`):
+
+| Form | Example | Title source |
+| --- | --- | --- |
+| Static | `[Custom label](./{nodeId}.md)` | Stored anchor text |
+| Dynamic | `[[{nodeId}]]` | Target node `properties.title` at render time |
+
+Helpers: `expandDynamicNodeLinks`, `collapseDynamicEditorLinks`, `findMarkdownLinksToTarget` (includes dynamic syntax for backlinks). One-time migration from title-matching static links: `bun scripts/migrate-static-links-to-dynamic.ts [--dry-run]`.
+
 ### Notion mapping (legacy initial import)
 
 | Notion concept | Graph representation |

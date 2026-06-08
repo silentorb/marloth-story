@@ -1,5 +1,14 @@
 import { describe, expect, test } from "bun:test";
-import { formatEditorNodeMarkdownLink, prepareEditorMarkdown } from "./standalone-markdown";
+import {
+  editorDynamicNodeHref,
+  formatDynamicNodeLink,
+} from "marloth-db/dynamic-node-links";
+import {
+  formatEditorDynamicNodeLink,
+  formatEditorNodeMarkdownLink,
+  prepareEditorMarkdown,
+} from "./standalone-markdown";
+import { normalizeEditorBody } from "./editor-save";
 
 const TARGET = "e5cc80dc61ed4c629951cdf472b20b7a";
 
@@ -8,6 +17,12 @@ describe("prepareEditorMarkdown", () => {
     const body = `[Cozy horror](./${TARGET}.md)`;
     const out = prepareEditorMarkdown(body);
     expect(out).toBe(`[Cozy horror](?node=${TARGET})`);
+  });
+
+  test("expands dynamic storage syntax to editor links", () => {
+    const body = formatDynamicNodeLink(TARGET);
+    const out = prepareEditorMarkdown(body, () => "Cozy horror");
+    expect(out).toBe(formatEditorDynamicNodeLink(TARGET, "Cozy horror"));
   });
 
   test("expands absolute editor URLs to ?node= hrefs", () => {
@@ -30,10 +45,26 @@ describe("prepareEditorMarkdown", () => {
   });
 });
 
+describe("formatEditorDynamicNodeLink", () => {
+  test("uses dynamic editor href", () => {
+    expect(formatEditorDynamicNodeLink(TARGET, "Cozy horror")).toBe(
+      `[Cozy horror](${editorDynamicNodeHref(TARGET)})`,
+    );
+  });
+});
+
 describe("formatEditorNodeMarkdownLink", () => {
   test("uses ?node= href", () => {
     expect(formatEditorNodeMarkdownLink("Cozy horror", TARGET)).toBe(
       `[Cozy horror](?node=${TARGET})`,
     );
+  });
+});
+
+describe("normalizeEditorBody dynamic links", () => {
+  test("round-trips dynamic storage through editor display", () => {
+    const storage = `See ${formatDynamicNodeLink(TARGET)} here.`;
+    const editor = prepareEditorMarkdown(storage, () => "Cozy horror");
+    expect(normalizeEditorBody(editor, "Page")).toBe(storage);
   });
 });

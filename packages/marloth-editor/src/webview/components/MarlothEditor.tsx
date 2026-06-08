@@ -10,13 +10,19 @@ import { buildCalloutSlashMenu } from "../callout-block";
 import { installCalloutCursor } from "../callout-cursor";
 import { installLinkCursor } from "../link-cursor";
 import { installCalloutDecoration } from "../callout-decoration";
+import { installDynamicLinkDecoration } from "../dynamic-node-link-decoration";
+import { installDynamicLinkDemote } from "../dynamic-node-link-demote";
+import { resolveDynamicLinkTitles, titleResolverFromMap } from "../dynamic-link-titles";
 import { installMentionSync } from "../mention-sync";
 import { openStandaloneNodeInNewTab, resolveNodePageTarget } from "../node-links";
 import {
   activeMentionRangeAtSelection,
   resolveMentionInsertRange,
 } from "../mention-range";
-import { formatEditorNodeMarkdownLink, prepareEditorMarkdown } from "../standalone-markdown";
+import {
+  formatEditorDynamicNodeLink,
+  prepareEditorMarkdown,
+} from "../standalone-markdown";
 import "./editor.css";
 
 interface MentionState {
@@ -74,7 +80,7 @@ export function MarlothEditor({
         const view = ctx.get(editorViewCtx);
         const range = resolveMentionInsertRange(view.state, stored);
         if (!range) return;
-        const link = formatEditorNodeMarkdownLink(item.title, item.id);
+        const link = formatEditorDynamicNodeLink(item.id, item.title);
         replaceRange(link, { from: range.replaceFrom, to: range.replaceTo })(ctx);
       });
       closeMention();
@@ -98,13 +104,29 @@ export function MarlothEditor({
     let editorReady = false;
     let baselineCaptured = false;
     let editorDom: HTMLElement | null = null;
-    const editorDomRef = { current: null as HTMLElement | null };
+    let crepe: Crepe | null = null;
+    let onClick: ((event: MouseEvent) => void) | null = null;
     let onKeyDown: ((event: KeyboardEvent) => void) | null = null;
     setInitError(null);
     setIsEmpty(!initialBody.trim());
     root.replaceChildren();
-    const editorDefault = prepareEditorMarkdown(initialBody);
-    const crepe = new Crepe({
+
+    void (async () => {
+      let editorDefault = "";
+      try {
+        const titleMap = await resolveDynamicLinkTitles(api, initialBody);
+        if (destroyed) return;
+        editorDefault = prepareEditorMarkdown(initialBody, titleResolverFromMap(titleMap));
+      } catch (err: unknown) {
+        if (!destroyed) {
+          setInitError(err instanceof Error ? err.message : String(err));
+        }
+        return;
+      }
+
+      if (destroyed) return;
+
+      crepe = new Crepe({
       root,
       defaultValue: editorDefault,
       features: {
@@ -142,17 +164,21 @@ export function MarlothEditor({
       });
     });
 
-    crepeRef.current = crepe;
+    if (!crepe) return;
+    const activeCrepe = crepe;
+    crepeRef.current = activeCrepe;
 
-    void crepe.create().then(() => {
+    void activeCrepe.create().then(() => {
       if (destroyed) return;
       editorReady = true;
-      crepe.editor.action((ctx) => {
+      activeCrepe.editor.action((ctx) => {
         const view = ctx.get(editorViewCtx);
         const dom = view.dom;
         installCalloutDecoration(view);
         installCalloutCursor(view);
         installLinkCursor(view);
+        installDynamicLinkDecoration(view);
+        installDynamicLinkDemote(view);
 
         const syncMentionMenu = () => {
           const { state } = view;
@@ -235,7 +261,6 @@ export function MarlothEditor({
         };
 
         editorDom = dom;
-        editorDomRef.current = dom;
         dom.addEventListener("keydown", onKeyDown, true);
       });
     }).catch((err: unknown) => {
@@ -245,7 +270,7 @@ export function MarlothEditor({
       }
     });
 
-    const onClick = (event: MouseEvent) => {
+    onClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
       const anchor = target?.closest("a") as HTMLAnchorElement | null;
       if (!anchor) return;
@@ -264,16 +289,19 @@ export function MarlothEditor({
 
     root.addEventListener("click", onClick);
     root.addEventListener("auxclick", onClick);
+    })();
 
     return () => {
       destroyed = true;
       if (editorDom && onKeyDown) {
         editorDom.removeEventListener("keydown", onKeyDown, true);
       }
-      root.removeEventListener("click", onClick);
-      root.removeEventListener("auxclick", onClick);
+      if (onClick) {
+        root.removeEventListener("click", onClick);
+        root.removeEventListener("auxclick", onClick);
+      }
       root.replaceChildren();
-      void crepe.destroy();
+      void crepe?.destroy();
       crepeRef.current = null;
     };
   }, [

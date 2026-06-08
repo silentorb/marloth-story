@@ -10,6 +10,7 @@
     "./content/test-helpers": "./src/content/test-helpers.ts",
     "./enum-codec": "./src/enum-codec.ts",
     "./markdown-links": "./src/markdown-links.ts",
+    "./dynamic-node-links": "./src/dynamic-node-links.ts",
     "./callout": "./src/callout.ts",
     "./schema-file": "./src/schema-rules/schema-file.ts",
     "./relationship-type-label": "./src/relationship-type-label.ts"

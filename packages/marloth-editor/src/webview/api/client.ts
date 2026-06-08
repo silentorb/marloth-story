@@ -36,6 +36,7 @@ export function createEditorApi(): EditorApi {
     updateSectionTabOrder: rest.updateSectionTabOrder.bind(rest),
     deleteDatabaseColumn: rest.deleteDatabaseColumn.bind(rest),
     search: rest.search.bind(rest),
+    listRecent: rest.listRecent.bind(rest),
     saveBody: rest.saveBody.bind(rest),
     saveTitle: rest.saveTitle.bind(rest),
     updateDatabaseRowProperty: rest.updateDatabaseRowProperty.bind(rest),

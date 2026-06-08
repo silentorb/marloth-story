@@ -21,17 +21,26 @@ export interface GlobalSearchSettings {
   includeBody?: boolean;
 }
 
+export interface SidebarSettings {
+  recentMaxItems?: number;
+}
+
 export interface UserSettings {
   version: typeof USER_SETTINGS_VERSION;
   /** Sparse overrides keyed by table id (see `tableSortKey` helpers). */
   tableSorts?: Record<string, TableSortSpec>;
   globalSearch?: GlobalSearchSettings;
+  sidebar?: SidebarSettings;
 }
 
 export type UserSettingsPatch = {
   tableSorts?: Record<string, TableSortSpec | null>;
   globalSearch?: GlobalSearchSettings | null;
+  sidebar?: SidebarSettings | null;
 };
+
+export const DEFAULT_SIDEBAR_RECENT_MAX_ITEMS = 8;
+export const MAX_SIDEBAR_RECENT_MAX_ITEMS = 100;
 
 export const DEFAULT_TABLE_SORT: TableSortSpec = {
   orderBy: [{ column: "name", direction: "asc" }],
@@ -43,6 +52,23 @@ export function emptyUserSettings(): UserSettings {
 
 export function globalSearchIncludeBody(settings: UserSettings): boolean {
   return settings.globalSearch?.includeBody === true;
+}
+
+export function sidebarRecentMaxItems(settings: UserSettings): number {
+  const raw = settings.sidebar?.recentMaxItems;
+  if (typeof raw !== "number" || !Number.isFinite(raw)) {
+    return DEFAULT_SIDEBAR_RECENT_MAX_ITEMS;
+  }
+  return Math.max(1, Math.min(Math.floor(raw), MAX_SIDEBAR_RECENT_MAX_ITEMS));
+}
+
+function normalizeSidebar(value: SidebarSettings | undefined): SidebarSettings | undefined {
+  if (!value || typeof value.recentMaxItems !== "number" || !Number.isFinite(value.recentMaxItems)) {
+    return undefined;
+  }
+  const recentMaxItems = sidebarRecentMaxItems({ version: USER_SETTINGS_VERSION, sidebar: value });
+  if (recentMaxItems === DEFAULT_SIDEBAR_RECENT_MAX_ITEMS) return undefined;
+  return { recentMaxItems };
 }
 
 function normalizeGlobalSearch(
@@ -194,6 +220,7 @@ export function applyUserSettingsPatch(
     version: USER_SETTINGS_VERSION,
     tableSorts: current.tableSorts ? { ...current.tableSorts } : undefined,
     globalSearch: current.globalSearch ? { ...current.globalSearch } : undefined,
+    sidebar: current.sidebar ? { ...current.sidebar } : undefined,
   };
 
   if (patch.tableSorts) {
@@ -219,6 +246,19 @@ export function applyUserSettingsPatch(
         next.globalSearch = normalized;
       } else {
         delete next.globalSearch;
+      }
+    }
+  }
+
+  if (patch.sidebar !== undefined) {
+    if (patch.sidebar === null) {
+      delete next.sidebar;
+    } else {
+      const normalized = normalizeSidebar(patch.sidebar);
+      if (normalized) {
+        next.sidebar = normalized;
+      } else {
+        delete next.sidebar;
       }
     }
   }
@@ -253,6 +293,14 @@ export function parseUserSettings(raw: unknown): UserSettings {
     const normalized = normalizeGlobalSearch(globalSearch as GlobalSearchSettings);
     if (normalized) {
       settings.globalSearch = normalized;
+    }
+  }
+
+  const sidebar = record.sidebar;
+  if (sidebar && typeof sidebar === "object" && !Array.isArray(sidebar)) {
+    const normalized = normalizeSidebar(sidebar as SidebarSettings);
+    if (normalized) {
+      settings.sidebar = normalized;
     }
   }
 

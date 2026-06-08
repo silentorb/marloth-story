@@ -1,5 +1,5 @@
 import { mock, describe, expect, test } from "bun:test";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 
 mock.module("./MarlothEditor", () => ({
   MarlothEditor: () => <div data-testid="marloth-editor-stub" />,
@@ -103,6 +103,38 @@ describe("NodePageView", () => {
     expect(screen.getByRole("link", { name: "Linked record" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "New" })).toBeTruthy();
     expect(screen.getByRole("button", { name: "+ New row" })).toBeTruthy();
+  });
+
+  test("selectTitleOnMount focuses and selects the page title", async () => {
+    const api = makeMockEditorApi();
+    const node = makeNodePageDetail({ title: "Untitled", body: "" });
+
+    render(
+      <UserSettingsProvider api={api}>
+        <NodePageView
+          api={api}
+          node={node}
+          saveState="idle"
+          metadataExpanded={false}
+          onMetadataExpandedChange={() => {}}
+          onBodyChange={() => {}}
+          onTitleChange={() => {}}
+          onTabSelect={() => {}}
+          onOrderedAssociationViewChange={() => {}}
+          onArchiveNode={async () => {}}
+          onDeleteNode={async () => {}}
+          selectTitleOnMount
+        />
+      </UserSettingsProvider>,
+    );
+
+    const title = screen.getByRole("textbox", { name: "Page title" }) as HTMLTextAreaElement;
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(title);
+      expect(title.selectionStart).toBe(0);
+      expect(title.selectionEnd).toBe("Untitled".length);
+    });
   });
 
   test("renders Properties section when present", () => {
