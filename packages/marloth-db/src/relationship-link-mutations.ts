@@ -39,7 +39,6 @@ export interface LinkOutgoingRelationshipInput {
   sourceId: string;
   targetId: string;
   type: string;
-  viaDatabase?: string;
   properties?: Properties;
   schema?: SchemaFile | null;
 }
@@ -48,7 +47,7 @@ export function linkOutgoingRelationship(
   ctx: MarlothWriteContext,
   input: LinkOutgoingRelationshipInput,
 ): LinkOutgoingRelationshipError | null {
-  const { sourceId, targetId, type, viaDatabase, properties = {}, schema } = input;
+  const { sourceId, targetId, type, properties = {}, schema } = input;
   const normalizedType = normalizeRelationshipType(type);
 
   if (!ctx.store.readNode(sourceId)) return "source_not_found";
@@ -72,7 +71,6 @@ export function linkOutgoingRelationship(
   const relProps: Properties = { ...properties };
   const nextOrdinal = nextOutgoingOrdinal(ctx, sourceId, normalizedType);
   if (nextOrdinal !== undefined) relProps.ordinal = nextOrdinal;
-  if (viaDatabase) relProps.via_database = viaDatabase;
 
   ctx.store.upsertRelationship(sourceId, targetId, normalizedType, relProps);
   syncAfterRelationshipsWrite(ctx);

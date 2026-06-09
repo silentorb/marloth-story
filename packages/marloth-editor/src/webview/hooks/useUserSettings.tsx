@@ -20,6 +20,7 @@ import {
   normalizeTableSort,
   effectiveTableSort,
   tableSortOverrideForKey,
+  tableTabOverrideForKey,
   type SortColumn,
   type TableSortSpec,
   type UserSettings,
@@ -36,6 +37,8 @@ interface UserSettingsContextValue {
     column: string,
     defaultSort?: TableSortSpec,
   ) => void;
+  getTableTab: (tabKey: string) => string | undefined;
+  setTableTab: (tabKey: string, tabId: string | null) => void;
   globalSearchIncludeBody: boolean;
   setGlobalSearchIncludeBody: (includeBody: boolean) => void;
   sidebarRecentMaxItems: number;
@@ -51,6 +54,7 @@ interface UserSettingsProviderProps {
 export function UserSettingsProvider({ api, children }: UserSettingsProviderProps) {
   const [settings, setSettings] = useState<UserSettings>(() => emptyUserSettings());
   const [schema, setSchema] = useState<SchemaFile>(() => emptySchemaFile());
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -63,9 +67,10 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
         if (!cancelled) {
           setSettings(loaded);
           setSchema(loadedSchema);
+          setReady(true);
         }
       } catch {
-        /* keep defaults */
+        if (!cancelled) setReady(true);
       }
     })();
     return () => {
@@ -131,25 +136,49 @@ export function UserSettingsProvider({ api, children }: UserSettingsProviderProp
     [api],
   );
 
+  const getTableTab = useCallback(
+    (tabKey: string): string | undefined => tableTabOverrideForKey(settings, tabKey),
+    [settings],
+  );
+
+  const setTableTab = useCallback(
+    (tabKey: string, tabId: string | null) => {
+      const patch = { tableTabs: { [tabKey]: tabId } };
+      setSettings((current) => {
+        const next = applyUserSettingsPatch(current, patch);
+        void api.patchUserSettings(patch).catch(() => {
+          /* keep optimistic local state */
+        });
+        return next;
+      });
+    },
+    [api],
+  );
+
   const value = useMemo(
     (): UserSettingsContextValue => ({
-      ready: true,
+      ready,
       schema,
       hasTableSortOverride,
       getTableSort,
       setTableSortColumns,
       toggleTableSortColumn,
+      getTableTab,
+      setTableTab,
       globalSearchIncludeBody: globalSearchIncludeBody(settings),
       setGlobalSearchIncludeBody,
       sidebarRecentMaxItems: sidebarRecentMaxItems(settings),
     }),
     [
+      ready,
       schema,
       settings,
       hasTableSortOverride,
       getTableSort,
       setTableSortColumns,
       toggleTableSortColumn,
+      getTableTab,
+      setTableTab,
       setGlobalSearchIncludeBody,
     ],
   );

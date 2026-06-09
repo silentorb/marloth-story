@@ -67,7 +67,7 @@ function mergeProperties(
   b: Record<string, unknown>,
 ): Record<string, unknown> {
   const score = (p: Record<string, unknown>) =>
-    (p.via_database ? 4 : 0) + (p.ordinal !== undefined ? 2 : 0) + Object.keys(p).length;
+    (p.ordinal !== undefined ? 2 : 0) + Object.keys(p).length;
   return score(a) >= score(b) ? { ...b, ...a } : { ...a, ...b };
 }
 

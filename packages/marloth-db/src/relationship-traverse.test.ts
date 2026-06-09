@@ -7,11 +7,12 @@ import {
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { IS_A_TYPE } from "./labels";
 import {
-  filterRelationshipsByViaDatabase,
+  filterRelationshipsByRowDatabaseContext,
   firstRelatedNodeId,
   listRelationshipsForComposite,
   listRelationshipsToDatabaseMembers,
   relatedNodeIds,
+  rowBelongsToDatabase,
 } from "./relationship-traverse";
 import type { RelationshipEntry } from "./content/relationships-file";
 import { RELATIONSHIPS_FILE_VERSION, sortEndpoints } from "./content/relationships-file";
@@ -47,7 +48,7 @@ describe("relationship-traverse", () => {
       a: scene,
       b: location,
       type: "scenes_location",
-      properties: { ordinal: 0, via_database: scenesDb },
+      properties: { ordinal: 0 },
     },
     { a: scene, b: scenesDb, type: IS_A_TYPE, properties: { row_index: 0 } },
     { a: location, b: locationsDb, type: IS_A_TYPE, properties: { row_index: 0 } },
@@ -56,6 +57,9 @@ describe("relationship-traverse", () => {
     const sorted = sortEndpoints(entry.a, entry.b);
     entry.a = sorted.a;
     entry.b = sorted.b;
+    if (entry.type === IS_A_TYPE) {
+      entry.directedFrom = entry.a === scene ? scene : location;
+    }
   }
   fixture.ctx.store.writeRelationshipsFile({
     version: RELATIONSHIPS_FILE_VERSION,
@@ -81,14 +85,25 @@ describe("relationship-traverse", () => {
     expect(members.some((rel) => otherEndpointFrom(location, rel) === scene)).toBe(true);
   });
 
-  test("via_database accepts related database id for dual-property edges", () => {
+  test("rowBelongsToDatabase reflects is_a membership", () => {
+    expect(rowBelongsToDatabase(fixture.ctx.db, scene, scenesDb)).toBe(true);
+    expect(rowBelongsToDatabase(fixture.ctx.db, scene, locationsDb)).toBe(false);
+    expect(rowBelongsToDatabase(fixture.ctx.db, product, scenesDb)).toBe(false);
+  });
+
+  test("filterRelationshipsByRowDatabaseContext keeps edges for row members", () => {
     const rels = listRelationshipsToDatabaseMembers(fixture.ctx.db, location, scenesDb);
-    const filtered = filterRelationshipsByViaDatabase(rels, [locationsDb, scenesDb]);
+    const filtered = filterRelationshipsByRowDatabaseContext(
+      fixture.ctx.db,
+      location,
+      locationsDb,
+      rels,
+    );
     expect(filtered).toHaveLength(1);
     expect(otherEndpointFrom(location, filtered[0]!)).toBe(scene);
   });
 
-  test("via_database keeps unscoped edges when scoped matches also exist", () => {
+  test("filterRelationshipsByRowDatabaseContext returns empty when row is not a member", () => {
     const relationships = [
       {
         id: "1",
@@ -96,7 +111,7 @@ describe("relationship-traverse", () => {
         sourceNodeId: location,
         targetNodeId: scene,
         type: "includes",
-        properties: { via_database: scenesDb },
+        properties: {},
       },
       {
         id: "2",
@@ -106,20 +121,14 @@ describe("relationship-traverse", () => {
         type: "includes",
         properties: {},
       },
-      {
-        id: "3",
-        recordId: "r3",
-        sourceNodeId: location,
-        targetNodeId: part,
-        type: "includes",
-        properties: { via_database: "99999999999999999999999999999999" },
-      },
     ];
-    const filtered = filterRelationshipsByViaDatabase(relationships, [locationsDb, scenesDb]);
-    expect(filtered).toHaveLength(2);
-    expect(filtered.map((rel) => otherEndpointFrom(location, rel)).sort()).toEqual(
-      [product, scene].sort(),
+    const filtered = filterRelationshipsByRowDatabaseContext(
+      fixture.ctx.db,
+      location,
+      scenesDb,
+      relationships,
     );
+    expect(filtered).toHaveLength(0);
   });
 
   afterAll(() => {

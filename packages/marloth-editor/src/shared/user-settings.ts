@@ -29,12 +29,15 @@ export interface UserSettings {
   version: typeof USER_SETTINGS_VERSION;
   /** Sparse overrides keyed by table id (see `tableSortKey` helpers). */
   tableSorts?: Record<string, TableSortSpec>;
+  /** Active table tab id per node page (see `nodeTableTabKey`). */
+  tableTabs?: Record<string, string>;
   globalSearch?: GlobalSearchSettings;
   sidebar?: SidebarSettings;
 }
 
 export type UserSettingsPatch = {
   tableSorts?: Record<string, TableSortSpec | null>;
+  tableTabs?: Record<string, string | null>;
   globalSearch?: GlobalSearchSettings | null;
   sidebar?: SidebarSettings | null;
 };
@@ -88,6 +91,28 @@ export function databaseTableSortKey(
   viewName: string,
 ): string {
   return `records/${nodeId}/database/${databaseId}/${viewName}`;
+}
+
+/** Stable key for the active table tab on a node page (one tabbed section per type-table node). */
+export function nodeTableTabKey(nodeId: string): string {
+  return `records/${nodeId}/tab`;
+}
+
+export function tableTabOverrideForKey(
+  settings: UserSettings,
+  tabKey: string,
+): string | undefined {
+  const stored = settings.tableTabs?.[tabKey];
+  return typeof stored === "string" && stored.length > 0 ? stored : undefined;
+}
+
+/** URL tab wins when present; otherwise the saved user-settings override. */
+export function effectiveTableTab(
+  settings: UserSettings,
+  nodeId: string,
+  urlTab?: string,
+): string | undefined {
+  return urlTab ?? tableTabOverrideForKey(settings, nodeTableTabKey(nodeId));
 }
 
 export function isDefaultTableSort(spec: TableSortSpec): boolean {
@@ -212,6 +237,12 @@ export function sortTableRows<T extends SortableTableRow>(
   });
 }
 
+function normalizeTableTabId(tabId: string | null | undefined): string | undefined {
+  if (typeof tabId !== "string") return undefined;
+  const trimmed = tabId.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
+
 export function applyUserSettingsPatch(
   current: UserSettings,
   patch: UserSettingsPatch,
@@ -219,6 +250,7 @@ export function applyUserSettingsPatch(
   const next: UserSettings = {
     version: USER_SETTINGS_VERSION,
     tableSorts: current.tableSorts ? { ...current.tableSorts } : undefined,
+    tableTabs: current.tableTabs ? { ...current.tableTabs } : undefined,
     globalSearch: current.globalSearch ? { ...current.globalSearch } : undefined,
     sidebar: current.sidebar ? { ...current.sidebar } : undefined,
   };
@@ -234,6 +266,21 @@ export function applyUserSettingsPatch(
     }
     if (Object.keys(next.tableSorts).length === 0) {
       delete next.tableSorts;
+    }
+  }
+
+  if (patch.tableTabs) {
+    if (!next.tableTabs) next.tableTabs = {};
+    for (const [key, value] of Object.entries(patch.tableTabs)) {
+      const normalized = normalizeTableTabId(value);
+      if (normalized) {
+        next.tableTabs[key] = normalized;
+      } else {
+        delete next.tableTabs[key];
+      }
+    }
+    if (Object.keys(next.tableTabs).length === 0) {
+      delete next.tableTabs;
     }
   }
 
@@ -285,6 +332,18 @@ export function parseUserSettings(raw: unknown): UserSettings {
     }
     if (Object.keys(parsed).length > 0) {
       settings.tableSorts = parsed;
+    }
+  }
+
+  const tableTabs = record.tableTabs;
+  if (tableTabs && typeof tableTabs === "object" && !Array.isArray(tableTabs)) {
+    const parsed: Record<string, string> = {};
+    for (const [key, value] of Object.entries(tableTabs)) {
+      const normalized = normalizeTableTabId(value as string);
+      if (normalized) parsed[key] = normalized;
+    }
+    if (Object.keys(parsed).length > 0) {
+      settings.tableTabs = parsed;
     }
   }
 

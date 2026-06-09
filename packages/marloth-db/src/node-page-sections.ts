@@ -11,7 +11,7 @@ import { getNodeDetail, type NodeDetail } from "./queries";
 import { getNodePageMetadata, type NodePageMetadata } from "./node-metadata";
 import { buildPropertiesSection, type PropertiesSection } from "./node-type-properties";
 import { INCLUDES_TYPE, relationSectionSupportsLinkExisting } from "./includes-relationship";
-import { findTypeNodeByTitle, isTypeTableNode, typeIdsForInstance } from "./node-capabilities";
+import { findTypeNodeByTitle, typeIdsForInstance } from "./node-capabilities";
 import { normalizeRelationshipType } from "./relation-type";
 import { relationshipRuleContextForType } from "./schema-rules/resolve";
 import type { SchemaFile } from "./schema-rules/schema-file";
@@ -22,7 +22,6 @@ import { loadViewsFromContent } from "./views/load";
 
 const RELATION_META_KEYS = new Set([
   "ordinal",
-  "via_database",
   "via_view",
   "view",
   "row_index",
@@ -139,25 +138,12 @@ function parseIncludesGroupKey(label: string): { typeNodeId: string | null; pers
   return { typeNodeId: label.slice(INCLUDES_TYPE.length + 1), perspective: INCLUDES_TYPE };
 }
 
-function resolveViaDatabase(connections: Relationship[]): string | null {
-  const ids = connections
-    .map((connection) => stringProperty(connection.properties.via_database))
-    .filter((id): id is string => id !== null);
-  if (ids.length === 0) return null;
-  const first = ids[0]!;
-  return ids.every((id) => id === first) ? first : null;
-}
-
 function resolveTypeNodeId(
   db: GraphDatabase,
   relationshipType: string,
   connections: Relationship[],
 ): string | null {
   if (relationshipType === IS_A_TYPE) {
-    const viaDatabase = resolveViaDatabase(connections);
-    if (viaDatabase) {
-      if (isTypeTableNode(db, viaDatabase)) return viaDatabase;
-    }
     const targetIds = [...new Set(connections.map((connection) => connection.targetNodeId))];
     if (targetIds.length === 1) return targetIds[0]!;
   }

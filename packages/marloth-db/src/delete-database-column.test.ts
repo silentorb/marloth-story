@@ -94,7 +94,7 @@ describe("deleteDatabaseColumn", () => {
         source: pageId,
         target: parentId,
         type: "parents",
-        properties: { ordinal: 0, via_database: databaseId },
+        properties: { ordinal: 0 },
       },
     ]);
 

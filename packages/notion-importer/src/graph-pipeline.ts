@@ -361,7 +361,6 @@ function importCsvFile(
         ensurePageVertex(db, link.notionId, link.label);
         db.upsertRelationship(targetPageId, link.notionId, label, {
           ordinal,
-          via_database: databaseId,
           via_view: parsed.viewKey,
         });
       });

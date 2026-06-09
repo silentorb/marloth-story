@@ -94,7 +94,6 @@ export function DatabaseTableView({
               await api.linkOutgoingRelationship(rowNodeId, {
                 type: def.relationType!,
                 targetId,
-                viaDatabase: databaseView.id,
               });
             }}
             onRemove={async (targetId) => {

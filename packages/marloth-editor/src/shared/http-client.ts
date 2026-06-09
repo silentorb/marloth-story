@@ -100,7 +100,7 @@ export interface EditorApiClient {
   ): Promise<void>;
   linkOutgoingRelationship(
     sourceId: string,
-    input: { type: string; targetId: string; viaDatabase?: string },
+    input: { type: string; targetId: string },
   ): Promise<void>;
   unlinkOutgoingRelationship(
     sourceId: string,
@@ -365,7 +365,7 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     },
     async linkOutgoingRelationship(
       sourceId: string,
-      input: { type: string; targetId: string; viaDatabase?: string },
+      input: { type: string; targetId: string },
     ): Promise<void> {
       await fetchJson(`/api/nodes/${sourceId}/connections`, {
         method: "POST",

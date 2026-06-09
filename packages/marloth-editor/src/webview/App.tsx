@@ -4,7 +4,8 @@ import { GlobalSearch } from "./components/GlobalSearch";
 import { NodePageView } from "./components/NodePageView";
 import { SidePanel } from "./components/SidePanel";
 import { createEditorApi } from "./api/client";
-import { UserSettingsProvider } from "./hooks/useUserSettings";
+import { UserSettingsProvider, useUserSettings } from "./hooks/useUserSettings";
+import { nodeTableTabKey } from "../shared/user-settings";
 import type { GetNodeOptions } from "../shared/http-client";
 import {
   NEW_PAGE_DEFAULT_TITLE,
@@ -89,6 +90,15 @@ function activeTabIdFromNode(node: NodePageDetail): string | undefined {
 
 export function App() {
   const api = useMemo(() => createEditorApi(), []);
+  return (
+    <UserSettingsProvider api={api}>
+      <AppInner api={api} />
+    </UserSettingsProvider>
+  );
+}
+
+function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
+  const { ready: userSettingsReady, getTableTab, setTableTab } = useUserSettings();
   const [view, setView] = useState<AppView>(() => viewFromLocation());
   const [node, setNode] = useState<NodePageDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -274,6 +284,7 @@ export function App() {
   }, [api, bumpRecentNodes, loadNode]);
 
   const bootstrap = useCallback(async () => {
+    if (!userSettingsReady) return;
     try {
       const home = await api.getHomeId();
       setHomeId(home);
@@ -286,12 +297,15 @@ export function App() {
       setExplorerAnchorId(resolveGraphExplorerAnchor(anchorFromLocation()));
       if (initialView !== "node-page") return;
 
+      const urlTab = tabFromLocation();
       const fromUrl = nodeFromLocation();
       if (fromUrl) {
-        await loadNode(fromUrl, { tab: tabFromLocation() });
+        const tab = urlTab ?? getTableTab(nodeTableTabKey(fromUrl));
+        await loadNode(fromUrl, tab ? { tab } : undefined);
         return;
       }
-      await loadNode(home);
+      const homeTab = urlTab ?? getTableTab(nodeTableTabKey(home));
+      await loadNode(home, homeTab ? { tab: homeTab } : undefined);
     } catch (err) {
       setError(
         err instanceof Error
@@ -299,7 +313,7 @@ export function App() {
           : "Could not reach the Marloth editor API. Start it with: bun run editor:dev",
       );
     }
-  }, [api, createNewPage, loadNode]);
+  }, [api, createNewPage, getTableTab, loadNode, userSettingsReady]);
 
   useEffect(() => {
     void bootstrap();
@@ -464,6 +478,7 @@ export function App() {
   const selectTab = useCallback(
     async (tabId: string) => {
       if (!node) return;
+      setTableTab(nodeTableTabKey(node.id), tabId);
       syncStandaloneUrl("node-page", node.id, { tab: tabId });
       if (activeTabIdFromNode(node) === tabId) return;
 
@@ -498,7 +513,7 @@ export function App() {
 
       void loadNode(node.id, { tab: tabId });
     },
-    [api, loadNode, node, syncStandaloneUrl, updateDatabaseView, updateOrderedAssociationView],
+    [api, loadNode, node, setTableTab, syncStandaloneUrl, updateDatabaseView, updateOrderedAssociationView],
   );
 
   const archiveCurrentNode = useCallback(
@@ -544,7 +559,7 @@ export function App() {
   );
 
   return (
-    <UserSettingsProvider api={api}>
+    <>
       <div className="marloth-layout">
       <SidePanel
         api={api}
@@ -612,6 +627,6 @@ export function App() {
         open={globalSearchOpen}
         onOpenChange={setGlobalSearchOpen}
       />
-    </UserSettingsProvider>
+    </>
   );
 }

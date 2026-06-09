@@ -10,11 +10,12 @@ import {
 import { relationType } from "./relation-type";
 import type { EvalRow } from "./notion-view-eval";
 import {
-  filterRelationshipsByViaDatabase,
+  filterRelationshipsByRowDatabaseContext,
   listIncludesIncident,
   listRelationshipsForComposite,
   listRelationshipsToDatabaseMembers,
   otherEndpoint,
+  rowBelongsToDatabase,
 } from "./relationship-traverse";
 import { compositeTypeForPerspectives } from "./content/relationship-types-file";
 
@@ -36,18 +37,13 @@ function shouldUseIncludesLookup(connectionType: string): boolean {
   return isIncludesPerspectiveSlug(connectionType);
 }
 
-/** Scoped via_database filter; taxonomy↔inspiration edges fall back when import used a nested CSV. */
-function filterByViaDatabaseOrTaxonomyFallback(
+function scopeForRow(
+  db: GraphDatabase,
+  rowId: string,
+  databaseId: string,
   relationships: Relationship[],
-  viaDatabaseIds: string[],
-  connectionType: string,
 ): Relationship[] {
-  const filtered = filterRelationshipsByViaDatabase(relationships, viaDatabaseIds);
-  if (filtered.length > 0) return filtered;
-  if (relationships.length > 0 && TAXONOMY_INSPIRATION_PERSPECTIVES.has(connectionType)) {
-    return relationships;
-  }
-  return filtered;
+  return filterRelationshipsByRowDatabaseContext(db, rowId, databaseId, relationships);
 }
 
 export function listRelationConnectionsForRow(
@@ -57,21 +53,17 @@ export function listRelationConnectionsForRow(
   databaseId: string,
   targetDatabaseId?: string,
 ): Relationship[] {
-  const viaDatabaseIds = targetDatabaseId ? [databaseId, targetDatabaseId] : [databaseId];
+  if (!rowBelongsToDatabase(db, nodeId, databaseId)) return [];
 
   if (targetDatabaseId && shouldUseIncludesLookup(connectionType)) {
     const byIncludes = listIncludesIncident(db, nodeId, targetDatabaseId);
-    const includesFiltered = filterRelationshipsByViaDatabase(byIncludes, viaDatabaseIds);
+    const includesFiltered = scopeForRow(db, nodeId, databaseId, byIncludes);
     if (includesFiltered.length > 0) return includesFiltered;
   }
 
   if (targetDatabaseId) {
     const byTargetDb = listRelationshipsToDatabaseMembers(db, nodeId, targetDatabaseId);
-    const filtered = filterByViaDatabaseOrTaxonomyFallback(
-      byTargetDb,
-      viaDatabaseIds,
-      connectionType,
-    );
+    const filtered = scopeForRow(db, nodeId, databaseId, byTargetDb);
     if (filtered.length > 0) return filtered;
 
     if (!TAXONOMY_INSPIRATION_PERSPECTIVES.has(connectionType)) {
@@ -81,18 +73,14 @@ export function listRelationConnectionsForRow(
       );
       if (!isMigratableToIncludesStorageType(compositeType)) {
         const byComposite = listRelationshipsForComposite(db, nodeId, compositeType);
-        const compositeFiltered = filterByViaDatabaseOrTaxonomyFallback(
-          byComposite,
-          viaDatabaseIds,
-          connectionType,
-        );
+        const compositeFiltered = scopeForRow(db, nodeId, databaseId, byComposite);
         if (compositeFiltered.length > 0) return compositeFiltered;
       }
     }
   }
 
   const outgoing = db.listRelationshipsFromSource(nodeId, connectionType);
-  return filterByViaDatabaseOrTaxonomyFallback(outgoing, viaDatabaseIds, connectionType);
+  return scopeForRow(db, nodeId, databaseId, outgoing);
 }
 
 function inferInverseRelationType(localType: string): string {

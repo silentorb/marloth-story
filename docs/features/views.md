@@ -54,7 +54,7 @@ Both kinds render through the shared `TableTabsBar` component.
 
 ## Editor behavior
 
-- Active tab is selected via `?tab=` (standalone) or node GET `?tab=`.
+- Active tab is selected via `?tab=` (standalone) or node GET `?tab=` when present; otherwise the editor restores the last tab from `.marloth/user-settings.json` (`tableTabs`).
 - Custom tabs support in-editor CRUD (rename, edit sorts, add, delete) via `/api/views/nodes/:id/sections/:sectionKey/tabs`.
 - Custom tab order is updated via `PATCH /api/views/nodes/:id/sections/:sectionKey` with `{ tabOrder: string[] }` (tab ids in desired order).
 - Section column order is updated via `PATCH /api/views/nodes/:id/sections/:sectionKey` with `{ columnOrder: string[] }`.

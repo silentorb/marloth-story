@@ -15,11 +15,14 @@ describe("database-view-relations", () => {
 
   const inspirationsDb = "2eea538996934ce8abafc27132e576c1";
   const inspirationTypesDb = "819dc2fea6cc4cddb5fce9cc4efd0e85";
-  const nestedViewDb = "1149175cc56d45e1b9f96a7455144ae4";
   const inspirationId = "6c3ea4b72e4e4e6e8f3474bbab490186";
   const tvSeriesTypeId = "c847c77114e94ca5ba74405c2a088c76";
+  const scenesDb = "55555555555555555555555555555556";
+  const partsDb = "66666666666666666666666666666667";
+  const sceneId = "11111111111111111111111111111112";
+  const partId = "33333333333333333333333333333334";
 
-  test("listRelationConnectionsForRow falls back for prop_type with mismatched via_database", () => {
+  test("listRelationConnectionsForRow resolves prop_type via row is_a membership", () => {
     db.upsertNode(inspirationsDb, {
       ...typeTableMarkerProperties("Inspirations"),
       notion_schema: JSON.stringify({
@@ -36,14 +39,12 @@ describe("database-view-relations", () => {
       }),
     });
     db.upsertNode(inspirationTypesDb, { ...typeTableMarkerProperties("Inspiration types") });
-    db.upsertNode(nestedViewDb, { ...typeTableMarkerProperties("Extended story") });
     db.upsertNode(inspirationId, { title: "Ash vs. the Evil Dead" });
     db.upsertNode(tvSeriesTypeId, { title: "TV series" });
     db.upsertRelationship(inspirationId, inspirationsDb, IS_A_TYPE, { row_index: 0 });
     db.upsertRelationship(tvSeriesTypeId, inspirationTypesDb, IS_A_TYPE, { row_index: 0 });
     db.upsertRelationship(inspirationId, tvSeriesTypeId, "prop_type_inspirations", {
       ordinal: 0,
-      via_database: nestedViewDb,
       via_view: "default",
     });
 
@@ -60,13 +61,42 @@ describe("database-view-relations", () => {
       connections[0]!.sourceNodeId === tvSeriesTypeId).toBe(true);
   });
 
-  test("hydrates Type column when via_database points at a nested database CSV", () => {
+  test("hydrates Type column from row is_a membership without via_database", () => {
     const detail = getDatabaseViewDetail(db, inspirationsDb);
     const row = detail?.rows.find((r) => r.nodeId === inspirationId);
     expect(row?.cells.type).toBe("TV series");
     expect(row?.relationCells?.type).toEqual([
       { targetId: tvSeriesTypeId, title: "TV series" },
     ]);
+  });
+
+  test("hydrates scenes_part column from row is_a without via_database", () => {
+    db.upsertNode(scenesDb, {
+      ...typeTableMarkerProperties("Scenes"),
+      notion_schema: JSON.stringify({
+        syncedAt: "2024-01-01T00:00:00.000Z",
+        properties: {
+          Name: { id: "title", name: "Name", type: "title", config: {} },
+          Part: {
+            id: "OeMk",
+            name: "Part",
+            type: "relation",
+            config: { database_id: partsDb },
+          },
+        },
+      }),
+    });
+    db.upsertNode(partsDb, { ...typeTableMarkerProperties("Parts") });
+    db.upsertNode(sceneId, { title: "Intro scene" });
+    db.upsertNode(partId, { title: "Part 1" });
+    db.upsertRelationship(sceneId, scenesDb, IS_A_TYPE, { row_index: 0, order: "1005" });
+    db.upsertRelationship(partId, partsDb, IS_A_TYPE, { row_index: 0 });
+    db.upsertRelationship(sceneId, partId, "scenes_part", { ordinal: 0 });
+
+    const detail = getDatabaseViewDetail(db, scenesDb);
+    const row = detail?.rows.find((r) => r.nodeId === sceneId);
+    expect(row?.cells.part).toBe("Part 1");
+    expect(row?.relationCells?.part).toEqual([{ targetId: partId, title: "Part 1" }]);
   });
 
   test("hydrates Features column with scoped and unscoped includes edges", () => {
@@ -91,9 +121,7 @@ describe("database-view-relations", () => {
     }
     db.upsertRelationship(inspirationWithMixedFeatures, cozyHorrorId, "includes");
     db.upsertRelationship(chaoticWorldId, inspirationWithMixedFeatures, "includes");
-    db.upsertRelationship(adventureId, inspirationWithMixedFeatures, "includes", {
-      via_database: inspirationsDb,
-    });
+    db.upsertRelationship(adventureId, inspirationWithMixedFeatures, "includes");
     db.upsertRelationship(darkForestId, inspirationWithMixedFeatures, "includes");
 
     const connections = listRelationConnectionsForRow(

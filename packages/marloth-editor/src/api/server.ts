@@ -384,7 +384,6 @@ export function createApiHandler(
         const payload = (await req.json()) as {
           type?: string;
           targetId?: string;
-          viaDatabase?: string;
         };
         if (typeof payload.type !== "string" || typeof payload.targetId !== "string") {
           return json({ error: "type and targetId required" }, 400);
@@ -392,10 +391,6 @@ export function createApiHandler(
         const error = db.linkOutgoingRelationship(sourceId, {
           type: payload.type,
           targetId: payload.targetId.toLowerCase(),
-          viaDatabase:
-            typeof payload.viaDatabase === "string"
-              ? payload.viaDatabase.toLowerCase()
-              : undefined,
         });
         if (error === "source_not_found" || error === "target_not_found") {
           return json({ error: "not found" }, 404);

@@ -117,6 +117,8 @@ Helpers: `expandDynamicNodeLinks`, `collapseDynamicEditorLinks`, `findMarkdownLi
 | Database row / type instance | Relationship `(page)-[:is_a {view, row_index, …}]->(type)` |
 | CSV relation column | Relationship from row's page to targets |
 
+Database table **relation columns** are scoped by the row node's **`is_a` membership** in the viewing database—not by per-edge `via_database` properties (removed; see `scripts/migrate-remove-via-database.ts`).
+
 Consolidate legacy dual directed edges with `bun scripts/consolidate-relationships.ts` (already run on the corpus). Migrate associative composites to `includes` with `bun scripts/migrate-to-includes.ts` (already run on the corpus).
 
 ### Schema versioning
@@ -145,6 +147,7 @@ Writes go to `content/` via `ContentStore`; sync expands to SQLite projections.
 | `data/marloth.sqlite` | Local query cache |
 | `scripts/consolidate-relationships.ts` | One-time / re-run migration v1 → v2 relationships |
 | `scripts/migrate-to-includes.ts` | Migrate associative relationship types to `includes` |
+| `scripts/migrate-remove-via-database.ts` | Strip legacy `via_database` edge properties (scoping uses row `is_a`) |
 | `scripts/migrate-archive-to-includes.ts` | Migrate archive membership from hub links / legacy paths to `includes` on the Archive hub |
 | `docs/notion-import-manifest.json` | Import summary (nodes, databases, counts) |
 | `docs/notion-link-report.txt` | Unresolved relation paths |

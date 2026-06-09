@@ -355,7 +355,6 @@ export function OrderedAssociationView({
               await api.linkOutgoingRelationship(row.sceneId, {
                 type: def.relationType!,
                 targetId,
-                viaDatabase: view.typeDatabaseId,
               });
             }}
             onRemove={async (targetId) => {

@@ -68,7 +68,7 @@ describe("database-view", () => {
     expect(detail?.rows[0]?.name).toBe("Peace in the eye of the storm");
   });
 
-  test("hydrates relation columns from outgoing via_database edges", () => {
+  test("hydrates relation columns from row is_a membership", () => {
     const databaseId = "db42345678901234567890123456789012";
     const parentId = "parent123456789012345678901234567890";
     db.upsertNode(databaseId, {
@@ -84,10 +84,7 @@ describe("database-view", () => {
     db.upsertNode("page3", { title: "Child feature" });
     db.upsertNode(parentId, { title: "Parent feature" });
     db.upsertRelationship("page3", databaseId, IS_A_TYPE, { row_index: 0 });
-    db.upsertRelationship("page3", parentId, "parents", {
-      ordinal: 0,
-      via_database: databaseId,
-    });
+    db.upsertRelationship("page3", parentId, "parents", { ordinal: 0 });
 
     const detail = getDatabaseViewDetail(db, databaseId);
     expect(detail?.rows[0]?.cells.parents).toBe("Parent feature");

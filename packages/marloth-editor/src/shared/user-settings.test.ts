@@ -3,7 +3,9 @@ import {
   applyUserSettingsPatch,
   databaseTableSortKey,
   DEFAULT_SIDEBAR_RECENT_MAX_ITEMS,
+  effectiveTableTab,
   globalSearchIncludeBody,
+  nodeTableTabKey,
   sidebarRecentMaxItems,
   isDefaultTableSort,
   nextSortOnColumnClick,
@@ -13,6 +15,7 @@ import {
   sortTableRows,
   effectiveTableSort,
   tableSortForKey,
+  tableTabOverrideForKey,
   viewSortsToTableSort,
 } from "./user-settings";
 
@@ -22,6 +25,29 @@ describe("user-settings", () => {
     expect(databaseTableSortKey("page", "db", "Default")).toBe(
       "records/page/database/db/Default",
     );
+    expect(nodeTableTabKey("page")).toBe("records/page/tab");
+  });
+
+  test("table tab overrides are sparse and URL wins over saved tab", () => {
+    const settings = {
+      version: 1 as const,
+      tableTabs: {
+        "records/db/tab": "Weighted",
+      },
+    };
+    expect(tableTabOverrideForKey(settings, "records/db/tab")).toBe("Weighted");
+    expect(effectiveTableTab(settings, "db")).toBe("Weighted");
+    expect(effectiveTableTab(settings, "db", "all")).toBe("all");
+
+    const patched = applyUserSettingsPatch(settings, {
+      tableTabs: { "records/db/tab": "prioritized" },
+    });
+    expect(patched.tableTabs?.["records/db/tab"]).toBe("prioritized");
+
+    const cleared = applyUserSettingsPatch(patched, {
+      tableTabs: { "records/db/tab": null },
+    });
+    expect(cleared.tableTabs).toBeUndefined();
   });
 
   test("default sort is name ascending and is not persisted", () => {
@@ -183,11 +209,19 @@ describe("user-settings", () => {
         drop: { orderBy: [{ column: "name", direction: "asc" }] },
         bad: { orderBy: [] },
       },
+      tableTabs: {
+        keep: "Weighted",
+        drop: "",
+        bad: 1,
+      },
     });
 
     expect(tableSortForKey(parsed, "keep").orderBy[0]?.column).toBe("priority");
     expect(parsed.tableSorts?.drop).toBeUndefined();
     expect(parsed.tableSorts?.bad).toBeUndefined();
+    expect(parsed.tableTabs?.keep).toBe("Weighted");
+    expect(parsed.tableTabs?.drop).toBeUndefined();
+    expect(parsed.tableTabs?.bad).toBeUndefined();
     expect(normalizeTableSort(undefined)).toEqual({
       orderBy: [{ column: "name", direction: "asc" }],
     });

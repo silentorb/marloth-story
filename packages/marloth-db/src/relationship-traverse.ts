@@ -2,10 +2,25 @@ import type { GraphDatabase, Properties, Relationship } from "./graph";
 import { INCLUDES_TYPE } from "./includes-relationship";
 import { IS_A_TYPE, TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { normalizeRelationshipType } from "./relation-type";
+import { findTypeMembershipRelationship } from "./type-membership-audit";
 
-function viaDatabaseId(properties: Record<string, unknown>): string | null {
-  const raw = properties.via_database;
-  return typeof raw === "string" && raw.trim() ? raw.trim() : null;
+export function rowBelongsToDatabase(
+  db: GraphDatabase,
+  rowId: string,
+  databaseId: string,
+): boolean {
+  return findTypeMembershipRelationship(db, rowId, databaseId) !== null;
+}
+
+/** Keep incident edges when row is a member of the viewing database. */
+export function filterRelationshipsByRowDatabaseContext(
+  db: GraphDatabase,
+  rowId: string,
+  databaseId: string,
+  relationships: Relationship[],
+): Relationship[] {
+  if (!rowBelongsToDatabase(db, rowId, databaseId)) return [];
+  return relationships;
 }
 
 function uniqueRelationships(relationships: Relationship[]): Relationship[] {
@@ -167,18 +182,3 @@ export function listRelationshipsToDatabaseMembers(
   );
 }
 
-export function filterRelationshipsByViaDatabase(
-  relationships: Relationship[],
-  viaDatabaseIds: Array<string | null | undefined>,
-): Relationship[] {
-  const allowed = new Set(
-    viaDatabaseIds.filter((id): id is string => typeof id === "string" && id.trim().length > 0),
-  );
-  if (allowed.size === 0) {
-    return relationships.filter((relationship) => viaDatabaseId(relationship.properties) === null);
-  }
-  return relationships.filter((relationship) => {
-    const via = viaDatabaseId(relationship.properties);
-    return via === null || allowed.has(via);
-  });
-}

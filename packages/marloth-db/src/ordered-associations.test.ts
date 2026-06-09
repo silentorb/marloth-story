@@ -155,7 +155,7 @@ describe("ordered-associations", () => {
       b: character1,
       typeFromA: "scenes",
       typeFromB: "characters",
-      properties: { via_database: SCENES_DB, ordinal: 0 },
+      properties: { ordinal: 0 },
     },
   ]);
 

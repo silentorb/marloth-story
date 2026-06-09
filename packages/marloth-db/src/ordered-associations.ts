@@ -31,7 +31,6 @@ const PRODUCTS_DATABASE_ID = "4e973268d3474f71bd7992094fb39663";
 
 const ORDERED_ASSOCIATION_META_KEYS = new Set([
   "ordinal",
-  "via_database",
   "via_view",
   "view",
   "row_index",

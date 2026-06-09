@@ -187,29 +187,6 @@ describe("node-sections", () => {
     });
   });
 
-  test("ignores via_database on non-IS_A edges when resolving typeNodeId", () => {
-    const featuresTypeId = "db92345678901234567890123456789012";
-    const inspirationsTypeId = "db82345678901234567890123456789012";
-    db.upsertNode("scene4", { title: "Storm" });
-    db.upsertNode(featuresTypeId, { ...typeTableMarkerProperties("Features") });
-    db.upsertNode(inspirationsTypeId, { ...typeTableMarkerProperties("Inspirations") });
-    db.upsertNode("insp3", { title: "Emma" });
-    db.upsertRelationship("scene4", "insp3", "inspirations", {
-      ordinal: 0,
-      via_database: featuresTypeId,
-    });
-
-    const detail = getNodePageDetail(db, "scene4");
-    const inspirations = detail?.sections.find(
-      (section) => section.type === "relations" && section.label === "inspirations",
-    );
-
-    expect(inspirations).toMatchObject({
-      title: "Inspirations",
-      typeNodeId: inspirationsTypeId,
-    });
-  });
-
   test("resolves typeNodeId by matching NotionDatabase title to relation label", () => {
     const inspTypeId = "db82345678901234567890123456789012";
     db.upsertNode("scene3", { title: "Ball" });

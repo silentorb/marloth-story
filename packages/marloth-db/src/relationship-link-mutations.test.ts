@@ -18,7 +18,7 @@ describe("relationship-link-mutations", () => {
   const targetId = "b2222222222222222222222222222222";
   const databaseId = "d1111111111111111111111111111111";
 
-  test("links and unlinks with via_database", () => {
+  test("links and unlinks without via_database property", () => {
     seedTestNode(fixture, { id: sourceId, properties: { title: "Source" } });
     seedTestNode(fixture, { id: targetId, properties: { title: "Target" } });
     seedTestNode(fixture, {
@@ -31,12 +31,11 @@ describe("relationship-link-mutations", () => {
         sourceId,
         targetId,
         type: "parents",
-        viaDatabase: databaseId,
       }),
     ).toBeNull();
 
     const edge = ctx.store.findRelationship(sourceId, targetId, "parents");
-    expect(edge?.properties.via_database).toBe(databaseId);
+    expect(edge?.properties.via_database).toBeUndefined();
 
     expect(unlinkOutgoingRelationship(ctx, sourceId, targetId, "parents")).toBeNull();
     expect(ctx.store.findRelationship(sourceId, targetId, "parents")).toBeNull();

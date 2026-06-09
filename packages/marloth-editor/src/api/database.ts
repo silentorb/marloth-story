@@ -124,7 +124,7 @@ export interface EditorDatabase {
   ): CreateNodeResult | CreateNodeError;
   linkOutgoingRelationship(
     sourceId: string,
-    input: { type: string; targetId: string; viaDatabase?: string },
+    input: { type: string; targetId: string },
   ): LinkOutgoingRelationshipError | null;
   unlinkOutgoingRelationship(
     sourceId: string,
@@ -282,13 +282,12 @@ export function openEditorDatabase(
     },
     linkOutgoingRelationship(
       sourceId: string,
-      input: { type: string; targetId: string; viaDatabase?: string },
+      input: { type: string; targetId: string },
     ): LinkOutgoingRelationshipError | null {
       return linkOutgoingRelationship(writeCtx, {
         sourceId,
         targetId: input.targetId,
         type: input.type,
-        viaDatabase: input.viaDatabase,
         schema: schema(),
       });
     },
