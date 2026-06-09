@@ -90,4 +90,28 @@ describe("RecordLinkPicker", () => {
     const options = await view.findAllByRole("option");
     expect(options.map((option) => option.textContent)).toEqual(["Alpha", "Gamma"]);
   });
+
+  test("requests full type-scoped result set when allowedTypeIds is set", async () => {
+    const search = mock(async () => []);
+    const api = {
+      ...makeMockEditorApi(),
+      search,
+    };
+    const featuresDbId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
+    render(
+      <RecordLinkPicker
+        api={api}
+        embedded
+        allowedTypeIds={[featuresDbId]}
+        excludedIds={[]}
+        ariaLabel="Search features"
+        onSelect={async () => {}}
+        onClose={() => {}}
+      />,
+    );
+
+    await waitFor(() => expect(search).toHaveBeenCalled());
+    expect(search).toHaveBeenCalledWith("", 5000, [featuresDbId]);
+  });
 });

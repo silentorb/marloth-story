@@ -88,6 +88,40 @@ describe("relationship-traverse", () => {
     expect(otherEndpointFrom(location, filtered[0]!)).toBe(scene);
   });
 
+  test("via_database keeps unscoped edges when scoped matches also exist", () => {
+    const relationships = [
+      {
+        id: "1",
+        recordId: "r1",
+        sourceNodeId: location,
+        targetNodeId: scene,
+        type: "includes",
+        properties: { via_database: scenesDb },
+      },
+      {
+        id: "2",
+        recordId: "r2",
+        sourceNodeId: location,
+        targetNodeId: product,
+        type: "includes",
+        properties: {},
+      },
+      {
+        id: "3",
+        recordId: "r3",
+        sourceNodeId: location,
+        targetNodeId: part,
+        type: "includes",
+        properties: { via_database: "99999999999999999999999999999999" },
+      },
+    ];
+    const filtered = filterRelationshipsByViaDatabase(relationships, [locationsDb, scenesDb]);
+    expect(filtered).toHaveLength(2);
+    expect(filtered.map((rel) => otherEndpointFrom(location, rel)).sort()).toEqual(
+      [product, scene].sort(),
+    );
+  });
+
   afterAll(() => {
     destroyTestContentFixture(fixture);
   });

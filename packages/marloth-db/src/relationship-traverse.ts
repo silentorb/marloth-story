@@ -177,10 +177,8 @@ export function filterRelationshipsByViaDatabase(
   if (allowed.size === 0) {
     return relationships.filter((relationship) => viaDatabaseId(relationship.properties) === null);
   }
-  const scoped = relationships.filter((relationship) => {
+  return relationships.filter((relationship) => {
     const via = viaDatabaseId(relationship.properties);
-    return via !== null && allowed.has(via);
+    return via === null || allowed.has(via);
   });
-  if (scoped.length > 0) return scoped;
-  return relationships.filter((relationship) => viaDatabaseId(relationship.properties) === null);
 }

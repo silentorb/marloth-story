@@ -1,6 +1,8 @@
 import {
   createContext,
+  useCallback,
   useContext,
+  useEffect,
   useState,
   type ReactNode,
 } from "react";
@@ -47,6 +49,21 @@ export function TableLinkExistingRow({
   children,
 }: TableLinkExistingRowProps) {
   const [expanded, setExpanded] = useState(false);
+  const [sessionExcludedIds, setSessionExcludedIds] = useState<readonly string[]>(excludedIds);
+
+  useEffect(() => {
+    if (!expanded) setSessionExcludedIds(excludedIds);
+  }, [excludedIds, expanded]);
+
+  const handleLink = useCallback(
+    async (targetId: string) => {
+      await onLink(targetId);
+      setSessionExcludedIds((prev) =>
+        prev.includes(targetId) ? prev : [...prev, targetId],
+      );
+    },
+    [onLink],
+  );
 
   const value: TableLinkExistingRowContextValue = {
     footerLabel: label,
@@ -55,8 +72,8 @@ export function TableLinkExistingRow({
     reset: () => setExpanded(false),
     api,
     allowedTypeIds,
-    excludedIds,
-    onLink,
+    excludedIds: sessionExcludedIds,
+    onLink: handleLink,
   };
 
   return (
@@ -113,7 +130,7 @@ export function TableLinkExistingRowFooter() {
       <RecordLinkPicker
         api={api}
         embedded
-        closeOnSelect
+        closeOnSelect={false}
         allowedTypeIds={allowedTypeIds}
         excludedIds={excludedIds}
         ariaLabel={footerLabel}

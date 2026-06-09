@@ -4,6 +4,8 @@ import type { NodeSummary } from "../../shared/types";
 import "./record-link-picker.css";
 
 const DEFAULT_SEARCH_LIMIT = 25;
+/** When type-filtered, list all eligible records (API cap matches graph batch fetch). */
+const TYPE_SCOPED_SEARCH_LIMIT = 5000;
 
 function sortNodeSummariesByTitle(items: NodeSummary[]): NodeSummary[] {
   return [...items].sort((a, b) =>
@@ -35,8 +37,13 @@ export function RecordLinkPicker({
   onClose,
   closeOnSelect = true,
   embedded = false,
-  searchLimit = DEFAULT_SEARCH_LIMIT,
+  searchLimit,
 }: RecordLinkPickerProps) {
+  const effectiveSearchLimit =
+    searchLimit ??
+    (allowedTypeIds && allowedTypeIds.length > 0
+      ? TYPE_SCOPED_SEARCH_LIMIT
+      : DEFAULT_SEARCH_LIMIT);
   const rootRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
@@ -68,7 +75,7 @@ export function RecordLinkPicker({
       setLoading(true);
       setError(null);
       void api
-        .search(query, searchLimit, allowedTypeIds)
+        .search(query, effectiveSearchLimit, allowedTypeIds)
         .then((items) => setResults(sortNodeSummariesByTitle(items)))
         .catch((err) => {
           setResults([]);
@@ -77,7 +84,7 @@ export function RecordLinkPicker({
         .finally(() => setLoading(false));
     }, 120);
     return () => window.clearTimeout(handle);
-  }, [api, allowedTypeIds, query, searchLimit]);
+  }, [allowedTypeIds, api, effectiveSearchLimit, query]);
 
   const selectable = results.filter((item) => !excluded.current.has(item.id));
 

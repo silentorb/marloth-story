@@ -75,7 +75,8 @@ export function searchNodes(
   options?: SearchNodesOptions,
 ): NodeSummary[] {
   const trimmed = query.trim();
-  const cap = Math.max(1, Math.min(limit, 100));
+  const maxCap = allowedTypeIds && allowedTypeIds.length > 0 ? 5000 : 100;
+  const cap = Math.max(1, Math.min(limit, maxCap));
   if (!trimmed) {
     return listRecentNodes(db, cap, allowedTypeIds);
   }
@@ -121,7 +122,8 @@ export function listRecentNodes(
   limit = 20,
   allowedTypeIds?: readonly string[],
 ): NodeSummary[] {
-  const cap = Math.max(1, Math.min(limit, 100));
+  const maxCap = allowedTypeIds && allowedTypeIds.length > 0 ? 5000 : 100;
+  const cap = Math.max(1, Math.min(limit, maxCap));
   return db.listNodesByTitle(cap, allowedTypeIds).map((row) => toActiveNodeSummary(db, row));
 }
 

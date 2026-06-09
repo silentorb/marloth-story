@@ -69,6 +69,58 @@ describe("database-view-relations", () => {
     ]);
   });
 
+  test("hydrates Features column with scoped and unscoped includes edges", () => {
+    const featuresDb = "dd0de9867cc345b898929306bdf9fc83";
+    const inspirationWithMixedFeatures = "e13fc17c7fa440db84b67399994f1c17";
+    const cozyHorrorId = "e5cc80dc61ed4c629951cdf472b20b7a";
+    const chaoticWorldId = "15258e628ba2805abd70e0c63f03c571";
+    const adventureId = "1d458e628ba28026830dfe3db74cba19";
+    const darkForestId = "181a3aae0f4b4056b6c28bb49e27978e";
+
+    db.upsertNode(featuresDb, { ...typeTableMarkerProperties("Features") });
+    db.upsertNode(inspirationWithMixedFeatures, { title: "The Evil Within 2" });
+    db.upsertNode(cozyHorrorId, { title: "Cozy horror" });
+    db.upsertNode(chaoticWorldId, { title: "Chaotic world" });
+    db.upsertNode(adventureId, { title: "Adventure" });
+    db.upsertNode(darkForestId, { title: "Dark forest" });
+    db.upsertRelationship(inspirationWithMixedFeatures, inspirationsDb, IS_A_TYPE, {
+      row_index: 0,
+    });
+    for (const featureId of [cozyHorrorId, chaoticWorldId, adventureId, darkForestId]) {
+      db.upsertRelationship(featureId, featuresDb, IS_A_TYPE, { row_index: 0 });
+    }
+    db.upsertRelationship(inspirationWithMixedFeatures, cozyHorrorId, "includes");
+    db.upsertRelationship(chaoticWorldId, inspirationWithMixedFeatures, "includes");
+    db.upsertRelationship(adventureId, inspirationWithMixedFeatures, "includes", {
+      via_database: inspirationsDb,
+    });
+    db.upsertRelationship(darkForestId, inspirationWithMixedFeatures, "includes");
+
+    const connections = listRelationConnectionsForRow(
+      db,
+      inspirationWithMixedFeatures,
+      "features",
+      inspirationsDb,
+      featuresDb,
+    );
+    expect(connections).toHaveLength(4);
+    const linkedTitles = connections
+      .map((connection) => {
+        const otherId =
+          connection.sourceNodeId === inspirationWithMixedFeatures
+            ? connection.targetNodeId
+            : connection.sourceNodeId;
+        return db.getNode(otherId)?.properties.title;
+      })
+      .sort();
+    expect(linkedTitles).toEqual([
+      "Adventure",
+      "Chaotic world",
+      "Cozy horror",
+      "Dark forest",
+    ]);
+  });
+
   afterAll(() => {
     db.close();
     rmSync(dir, { recursive: true, force: true });
