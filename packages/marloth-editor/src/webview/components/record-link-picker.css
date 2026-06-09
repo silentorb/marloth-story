@@ -24,7 +24,9 @@
 
 .marloth-record-link-picker-list {
   max-height: 240px;
-  overflow: auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .marloth-record-link-picker-item {

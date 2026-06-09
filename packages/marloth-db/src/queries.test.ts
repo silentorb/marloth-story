@@ -97,6 +97,28 @@ describe("queries", () => {
     expect(hit?.matchPreview).toBeUndefined();
   });
 
+  test("searchNodes with allowedTypeIds returns title-ordered eligible nodes up to limit", () => {
+    const featuresDbId = "11111111111111111111111111111111";
+    const alphaId = "22222222222222222222222222222222";
+    const betaId = "33333333333333333333333333333333";
+    const zetaId = "44444444444444444444444444444444";
+    const outsiderId = "55555555555555555555555555555555";
+
+    seedTestNode(fixture, { id: featuresDbId, properties: { title: "Features" } });
+    seedTestNode(fixture, { id: alphaId, properties: { title: "Alpha Feature" } });
+    seedTestNode(fixture, { id: betaId, properties: { title: "Beta Feature" } });
+    seedTestNode(fixture, { id: zetaId, properties: { title: "Zeta Feature" } });
+    seedTestNode(fixture, { id: outsiderId, properties: { title: "AAA Other" } });
+    seedTestRelationships(fixture, [
+      { source: alphaId, target: featuresDbId, type: "is_a" },
+      { source: betaId, target: featuresDbId, type: "is_a" },
+      { source: zetaId, target: featuresDbId, type: "is_a" },
+    ]);
+
+    const hits = searchNodes(fixture.ctx.db, "", 2, [featuresDbId]);
+    expect(hits.map((row) => row.title)).toEqual(["Alpha Feature", "Beta Feature"]);
+  });
+
   test("updateNodeBody persists markdown", () => {
     seedTestNode(fixture, {
       id: "23456789abcdef0123456789abcdef01",

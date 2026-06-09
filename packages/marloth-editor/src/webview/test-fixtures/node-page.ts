@@ -62,6 +62,7 @@ export function makeRelationSection(
     label: "RELATED",
     title: "Related items",
     typeNodeId: FIXTURE_TYPE_ID,
+    addMode: "link-existing",
     columns: ["priority"],
     columnDefs: [
       {

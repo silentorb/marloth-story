@@ -140,8 +140,11 @@ export {
   expandDynamicNodeLinksForEditor,
   formatDynamicNodeLink,
   isValidNodeId,
+  linkTextMatchesAnyNodeName,
   linkTextMatchesNodeTitle,
+  migrateStaticLinksInBodies,
   migrateStaticLinksToDynamic,
+  normalizeLinkTextForTitleMatch,
   parseDynamicNodeLinkIds,
   prepareEditorMarkdownBody,
   transformOutsideCodeFences,
@@ -152,8 +155,13 @@ export { buildPropertiesSection } from "./node-type-properties";
 export type { PropertiesSection } from "./node-type-properties";
 export {
   findMissingTypeMembershipRelationships,
+  findNestedPageSpuriousTypeMembership,
   findSpuriousTypeMembershipRelationships,
   findNodeScalarsOnTypedNodes,
+  folderDepthUnderInstanceRoot,
+  instanceRootFromTypeTableExport,
+  isNestedPageSpuriousTypeMembership,
+  notionPathFromSourceExport,
   typeDatabaseTitleFromPath,
   typeFolderFromPath,
 } from "./type-membership-audit";
@@ -169,6 +177,7 @@ export {
 } from "./node-capabilities";
 export type {
   MissingTypeMembership,
+  NestedPageSpuriousMembership,
   NodeScalarOnTypedNode,
   SpuriousTypeMembership,
 } from "./type-membership-audit";
@@ -180,8 +189,10 @@ export type {
   NodePageDetail,
   NodeSection,
   RelationRow,
+  RelationTableAddMode,
   RelationTableSection,
 } from "./node-page-sections";
+export { relationSectionSupportsLinkExisting } from "./includes-relationship";
 export {
   applyOrderedAssociationMove,
   getConfigByProvider,

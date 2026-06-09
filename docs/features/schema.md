@@ -45,7 +45,7 @@ This is separate from:
 | --- | --- |
 | `sourceTypeId` | Type node id; rule applies when the source instance has `is_a` to this id |
 | `type` | Outgoing relationship type (lower snake_case). Use `includes` for cross-entity association rules; legacy column slugs (`features`, `inspirations`, `characters`, …) still resolve to `includes` storage when creating links. |
-| `allowedTargetTypeIds` | Target instances must have `is_a` to one of these type ids |
+| `allowedTargetTypeIds` | Target instances must have `is_a` to one of these type ids; also scopes the associative relation table **Link** picker in the editor |
 
 Types are identified by **stable node id**, not display names.
 
@@ -72,7 +72,7 @@ For `priority`, `values` are interpreted as numeric **weights** by `priorityWeig
 
 - `GET /api/schema` returns the parsed file
 - `GET /api/nodes/search?allowedTypeIds=id1,id2` filters results to nodes whose `is_a` types intersect the list
-- Node page relation sections expose `allowedTargetTypeIds` on each outgoing type section when a rule matches
+- Node page relation sections expose `allowedTargetTypeIds` and `addMode` (`link-existing` for associative many-to-many perspectives, `none` for structural one-to-many) on each outgoing type section when applicable
 - Creating a relation row via `POST /api/nodes/:id/relation-rows` auto-adds `is_a` to the sole allowed type when a rule defines exactly one target type
 - Priority columns are enriched from `enums.priority` (`options`, `default`, `defaultOrder` on column defs; `values` read by weight consumers)
 

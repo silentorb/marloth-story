@@ -163,6 +163,9 @@
   left: 0;
   min-width: 280px;
   max-width: 360px;
+  max-height: min(70vh, 480px);
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--marloth-border);
   border-radius: 8px;
   background: var(--marloth-surface);
@@ -198,8 +201,11 @@
 }
 
 .marloth-relation-field-popup-links {
+  flex: 0 1 auto;
+  min-height: 0;
   max-height: 200px;
-  overflow: auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .marloth-relation-field-popup-empty {
@@ -267,6 +273,10 @@
 }
 
 .marloth-relation-field-popup-add {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   border-top: 1px solid var(--marloth-border);
   padding: 8px 0 0;
 }
@@ -282,9 +292,22 @@
 
 .marloth-relation-field-popup-add .marloth-record-link-picker.is-embedded {
   position: static;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
   min-width: 0;
+  min-height: 0;
   max-width: none;
   border: 0;
   border-radius: 0;
   box-shadow: none;
+}
+
+.marloth-relation-field-popup-add .marloth-record-link-picker-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }

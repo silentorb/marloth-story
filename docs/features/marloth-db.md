@@ -105,7 +105,7 @@ Node cross-references in markdown `body` use two storage forms (see `packages/ma
 | Static | `[Custom label](./{nodeId}.md)` | Stored anchor text |
 | Dynamic | `[[{nodeId}]]` | Target node `properties.title` at render time |
 
-Helpers: `expandDynamicNodeLinks`, `collapseDynamicEditorLinks`, `findMarkdownLinksToTarget` (includes dynamic syntax for backlinks). One-time migration from title-matching static links: `bun scripts/migrate-static-links-to-dynamic.ts [--dry-run]`.
+Helpers: `expandDynamicNodeLinks`, `collapseDynamicEditorLinks`, `findMarkdownLinksToTarget` (includes dynamic syntax for backlinks). One-time migration converts static links whose anchor text matches the target node's `properties.title` or `properties.alias` (accent/case-insensitive; markdown emphasis stripped from anchor text). Custom anchor text is left static. Run: `bun scripts/migrate-static-links-to-dynamic.ts [--dry-run]`.
 
 ### Notion mapping (legacy initial import)
 

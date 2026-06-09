@@ -37,6 +37,7 @@ describe("node-sections", () => {
       type: "relations",
       label: "features",
       title: "Features",
+      addMode: "link-existing",
       columns: ["weight"],
       rows: [
         {
@@ -49,7 +50,24 @@ describe("node-sections", () => {
     expect(relationSections?.[1]).toMatchObject({
       type: "relations",
       label: "inspirations",
+      addMode: "link-existing",
       rows: [{ targetId: "insp1", name: "Pride and Prejudice" }],
+    });
+  });
+
+  test("sets addMode none on structural one-to-many relation sections", () => {
+    db.upsertNode("scene5", { title: "Bridge" });
+    db.upsertNode("part1", { title: "The Orphanage" });
+    db.upsertRelationship("scene5", "part1", "part", { ordinal: 0 });
+
+    const detail = getNodePageDetail(db, "scene5");
+    const partSection = detail?.sections.find(
+      (section) => section.type === "relations" && section.label === "part",
+    );
+
+    expect(partSection).toMatchObject({
+      label: "part",
+      addMode: "none",
     });
   });
 

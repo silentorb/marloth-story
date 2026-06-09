@@ -21,6 +21,8 @@ interface RelationCellEditorProps {
   disabled?: boolean;
   onAdd: (targetId: string) => void | Promise<void>;
   onRemove: (targetId: string) => void | Promise<void>;
+  /** Called once when the edit popup closes after add/remove mutations in that session. */
+  onEditingComplete?: () => void;
 }
 
 interface RelationFieldPopupProps {
@@ -33,6 +35,12 @@ interface RelationFieldPopupProps {
   onClose: () => void;
   onAdd: (targetId: string, summary?: NodeSummary) => void | Promise<void>;
   onRemove: (targetId: string) => void | Promise<void>;
+}
+
+function sortRelationLinksByTitle(links: readonly RelationLink[]): RelationLink[] {
+  return [...links].sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, { sensitivity: "base", numeric: true }),
+  );
 }
 
 function RelationCellLinkLabel({ api, link }: { api: EditorApi; link: RelationLink }) {
@@ -59,6 +67,7 @@ function RelationFieldPopup({
   onRemove,
 }: RelationFieldPopupProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
+  const sortedLinks = useMemo(() => sortRelationLinksByTitle(links), [links]);
 
   useEffect(() => {
     const handlePointerDown = (event: MouseEvent) => {
@@ -102,11 +111,11 @@ function RelationFieldPopup({
         </button>
       </header>
       <div className="marloth-relation-field-popup-links">
-        {links.length === 0 ? (
+        {sortedLinks.length === 0 ? (
           <div className="marloth-relation-field-popup-empty">No linked records</div>
         ) : (
           <ul className="marloth-relation-field-popup-list">
-            {links.map((link) => (
+            {sortedLinks.map((link) => (
               <li key={link.targetId} className="marloth-relation-field-popup-row">
                 {renderPopupLink(link)}
                 <button
@@ -148,16 +157,27 @@ export function RelationCellEditor({
   disabled = false,
   onAdd,
   onRemove,
+  onEditingComplete,
 }: RelationCellEditorProps) {
   const [popupOpen, setPopupOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [localLinks, setLocalLinks] = useState<RelationLink[]>(links);
+  const mutatedDuringSession = useRef(false);
 
   useEffect(() => {
     if (!popupOpen) setLocalLinks(links);
   }, [links, popupOpen]);
 
+  const closePopup = useCallback(() => {
+    setPopupOpen(false);
+    if (mutatedDuringSession.current) {
+      mutatedDuringSession.current = false;
+      onEditingComplete?.();
+    }
+  }, [onEditingComplete]);
+
   const openPopup = useCallback(() => {
+    mutatedDuringSession.current = false;
     setLocalLinks(links);
     setPopupOpen(true);
   }, [links]);
@@ -182,11 +202,11 @@ export function RelationCellEditor({
 
   const togglePopup = useCallback(() => {
     if (popupOpen) {
-      setPopupOpen(false);
+      closePopup();
       return;
     }
     openPopup();
-  }, [openPopup, popupOpen]);
+  }, [closePopup, openPopup, popupOpen]);
 
   const run = useCallback(async (action: () => void | Promise<void>) => {
     setBusy(true);
@@ -201,6 +221,7 @@ export function RelationCellEditor({
     async (targetId: string, summary?: NodeSummary) => {
       await run(async () => {
         await onAdd(targetId);
+        mutatedDuringSession.current = true;
         const title = summary?.title ?? "Untitled";
         setLocalLinks((prev) => {
           if (prev.some((link) => link.targetId === targetId)) return prev;
@@ -215,6 +236,7 @@ export function RelationCellEditor({
     async (targetId: string) => {
       await run(async () => {
         await onRemove(targetId);
+        mutatedDuringSession.current = true;
         setLocalLinks((prev) => prev.filter((link) => link.targetId !== targetId));
       });
     },
@@ -276,7 +298,7 @@ export function RelationCellEditor({
           allowedTypeIds={allowedTypeIds}
           busy={busy}
           disabled={disabled}
-          onClose={() => setPopupOpen(false)}
+          onClose={closePopup}
           onAdd={handleAdd}
           onRemove={handleRemove}
         />

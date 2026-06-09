@@ -1,63 +1,75 @@
 /**
  * One-time migration: replace static node links whose title matches the target
- * node title with dynamic `[[nodeId]]` links.
+ * node title (or alias) with dynamic `[[nodeId]]` links.
  *
- * Usage: bun scripts/migrate-static-links-to-dynamic.ts [--dry-run]
+ * Usage:
+ *   bun scripts/migrate-static-links-to-dynamic.ts [--dry-run]
  */
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import { migrateStaticLinksToDynamic } from "marloth-db/dynamic-node-links";
+import {
+  linkTextMatchesNodeTitle,
+  migrateStaticLinksInBodies,
+} from "marloth-db/dynamic-node-links";
 import { ContentStore, bodyFromNode, resolveContentPath } from "marloth-db/content";
 
 const dryRun = process.argv.includes("--dry-run");
 
-function titleFromProperties(properties: Record<string, unknown>): string | null {
+function displayNamesFromProperties(properties: Record<string, unknown>): string[] {
+  const names: string[] = [];
   const title = properties.title;
-  if (typeof title === "string" && title.trim()) return title.trim();
-  return null;
+  if (typeof title === "string" && title.trim()) names.push(title.trim());
+  const alias = properties.alias;
+  if (typeof alias === "string" && alias.trim()) {
+    const trimmed = alias.trim();
+    if (!names.some((name) => linkTextMatchesNodeTitle(name, trimmed))) {
+      names.push(trimmed);
+    }
+  }
+  return names;
 }
 
 const contentDir = resolveContentPath();
 const store = new ContentStore(contentDir);
 const dataDir = join(contentDir, "data");
 
-const titleCache = new Map<string, string | null>();
+const nameCache = new Map<string, string[]>();
 
-function titleForId(nodeId: string): string | null {
-  const cached = titleCache.get(nodeId);
-  if (cached !== undefined) return cached;
+function namesForId(nodeId: string): string[] {
+  const cached = nameCache.get(nodeId);
+  if (cached) return cached;
   const node = store.readNode(nodeId);
-  const title = node ? titleFromProperties(node.properties) : null;
-  titleCache.set(nodeId, title);
-  return title;
+  const names = node ? displayNamesFromProperties(node.properties) : [];
+  nameCache.set(nodeId, names);
+  return names;
 }
 
-let updated = 0;
-let unchanged = 0;
-
+const entries: Array<{ id: string; body: string }> = [];
 for (const name of readdirSync(dataDir)) {
   if (!name.endsWith(".md")) continue;
   const id = name.slice(0, -3);
   const node = store.readNode(id);
   if (!node) continue;
+  entries.push({ id, body: bodyFromNode(node) });
+}
 
-  const body = bodyFromNode(node);
-  const nextBody = migrateStaticLinksToDynamic(body, titleForId);
-  if (nextBody === body) {
-    unchanged++;
-    continue;
-  }
+const { bodies, report } = migrateStaticLinksInBodies(entries, namesForId);
 
-  updated++;
-  if (dryRun) {
-    console.log(`would update ${id}`);
-    continue;
+if (!dryRun) {
+  for (const { id, body } of entries) {
+    const nextBody = bodies.get(id);
+    if (!nextBody || nextBody === body) continue;
+    const node = store.readNode(id);
+    if (!node) continue;
+    store.writeNode(node, nextBody);
   }
-  store.writeNode(node, nextBody);
 }
 
 console.log(
   dryRun
-    ? `dry-run: ${updated} file(s) would change, ${unchanged} unchanged`
-    : `updated ${updated} file(s), ${unchanged} unchanged`,
+    ? `dry-run: ${report.filesChanged} file(s) would change, ${report.filesUnchanged} unchanged`
+    : `updated ${report.filesChanged} file(s), ${report.filesUnchanged} unchanged`,
+);
+console.log(
+  `links: ${report.linksConverted} converted to [[node-id]], ${report.linksSkippedCustomText} left static (custom anchor text)`,
 );

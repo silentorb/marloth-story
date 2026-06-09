@@ -21,7 +21,7 @@ Anything to survive.
 
 Characters feeling justified to perform wickedness as long as it preserves their lives or the lives of their idols.
 
-Similar to [Hopeless despair](./df715958d63640cb819ef16e1fd17c33.md), except the character is still striving.
+Similar to [[df715958d63640cb819ef16e1fd17c33]], except the character is still striving.
 
 # Scope
 
@@ -31,11 +31,11 @@ This topic has nothing to do with bad people doing bad things.  It’s about nic
 
 # Survival horror
 
-The main catalyst in TWOLD is [Survival horror](./dc101b6438cf43a8b5f1e17212b8c950.md).
+The main catalyst in TWOLD is [[dc101b6438cf43a8b5f1e17212b8c950]].
 
 # Scoping
 
-[Desperation scoping](./29258e628ba28036a3fdd7873be99cbd.md)
+[[29258e628ba28036a3fdd7873be99cbd]]
 
 # Taking a stand
 

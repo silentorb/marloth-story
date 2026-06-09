@@ -357,12 +357,11 @@ export function OrderedAssociationView({
                 targetId,
                 viaDatabase: view.typeDatabaseId,
               });
-              onCellUpdated?.();
             }}
             onRemove={async (targetId) => {
               await api.unlinkOutgoingRelationship(row.sceneId, def.relationType!, targetId);
-              onCellUpdated?.();
             }}
+            onEditingComplete={onCellUpdated}
           />
         );
       }

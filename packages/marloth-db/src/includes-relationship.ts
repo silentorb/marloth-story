@@ -71,3 +71,14 @@ export function resolveStorageTypeForPerspective(
   }
   return normalized;
 }
+
+/** Whether a relation table section supports linking existing records (many-to-many associative). */
+export function relationSectionSupportsLinkExisting(perspective: string): boolean {
+  const normalized = normalizeRelationshipType(perspective);
+  if (normalized === INCLUDES_TYPE || perspective.startsWith(`${INCLUDES_TYPE}:`)) {
+    return true;
+  }
+  if (isIncludesPerspectiveSlug(perspective)) return true;
+  if (TAXONOMY_INSPIRATION_PERSPECTIVES.has(normalized)) return true;
+  return false;
+}

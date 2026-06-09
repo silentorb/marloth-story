@@ -5,8 +5,11 @@ import {
   expandDynamicNodeLinks,
   expandDynamicNodeLinksForEditor,
   formatDynamicNodeLink,
+  linkTextMatchesAnyNodeName,
   linkTextMatchesNodeTitle,
+  migrateStaticLinksInBodies,
   migrateStaticLinksToDynamic,
+  normalizeLinkTextForTitleMatch,
   parseDynamicNodeLinkIds,
   prepareEditorMarkdownBody,
 } from "./dynamic-node-links";
@@ -90,13 +93,41 @@ describe("linkTextMatchesNodeTitle", () => {
   });
 });
 
+describe("normalizeLinkTextForTitleMatch", () => {
+  test("strips markdown emphasis", () => {
+    expect(normalizeLinkTextForTitleMatch("*Bold Title*")).toBe("Bold Title");
+  });
+});
+
+describe("linkTextMatchesAnyNodeName", () => {
+  test("matches title or alias", () => {
+    expect(linkTextMatchesAnyNodeName("My Page", ["My Page", "Alias"])).toBe(true);
+    expect(linkTextMatchesAnyNodeName("Alias", ["My Page", "Alias"])).toBe(true);
+    expect(linkTextMatchesAnyNodeName("Other", ["My Page", "Alias"])).toBe(false);
+  });
+});
+
 describe("migrateStaticLinksToDynamic", () => {
   test("replaces title-matching static links", () => {
     const body = `[My Page](./${TARGET}.md) and [Alias](./${OTHER}.md)`;
-    const out = migrateStaticLinksToDynamic(body, (id) =>
-      id === TARGET ? "My Page" : "Other Title",
+    const namesForId = (id: string) =>
+      id === TARGET ? ["My Page"] : ["Other Title", "Alias"];
+    const out = migrateStaticLinksToDynamic(body, namesForId);
+    expect(out).toBe(
+      `${formatDynamicNodeLink(TARGET)} and ${formatDynamicNodeLink(OTHER)}`,
     );
-    expect(out).toBe(`${formatDynamicNodeLink(TARGET)} and [Alias](./${OTHER}.md)`);
+  });
+
+  test("matches alias when link text differs from title", () => {
+    const body = `[Short](./${TARGET}.md)`;
+    const out = migrateStaticLinksToDynamic(body, () => ["Long Title", "Short"]);
+    expect(out).toBe(formatDynamicNodeLink(TARGET));
+  });
+
+  test("matches emphasized link text against title", () => {
+    const body = `[*My Page*](./${TARGET}.md)`;
+    const out = migrateStaticLinksToDynamic(body, () => ["My Page"]);
+    expect(out).toBe(formatDynamicNodeLink(TARGET));
   });
 
   test("skips links inside code fences", () => {
@@ -104,9 +135,23 @@ describe("migrateStaticLinksToDynamic", () => {
       /``/g,
       "`",
     );
-    expect(
-      migrateStaticLinksToDynamic(body, () => "My Page"),
-    ).toBe(body);
+    expect(migrateStaticLinksToDynamic(body, () => ["My Page"])).toBe(body);
+  });
+});
+
+describe("migrateStaticLinksInBodies", () => {
+  test("reports conversion stats", () => {
+    const body = `[My Page](./${TARGET}.md) and [Custom](./${OTHER}.md)`;
+    const { bodies, report } = migrateStaticLinksInBodies(
+      [{ id: "file1", body }],
+      (id) => (id === TARGET ? ["My Page"] : ["Other Title"]),
+    );
+    expect(bodies.get("file1")).toBe(
+      `${formatDynamicNodeLink(TARGET)} and [Custom](./${OTHER}.md)`,
+    );
+    expect(report.filesChanged).toBe(1);
+    expect(report.linksConverted).toBe(1);
+    expect(report.linksSkippedCustomText).toBe(1);
   });
 });
 

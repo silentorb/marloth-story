@@ -12,4 +12,4 @@ notion_archived: false
 
 # Overview
 
-[Cosmic horror](./7015e32dadb042b995663e84d5b48388.md).
+[[7015e32dadb042b995663e84d5b48388]].

@@ -36,6 +36,20 @@ function shouldUseIncludesLookup(connectionType: string): boolean {
   return isIncludesPerspectiveSlug(connectionType);
 }
 
+/** Scoped via_database filter; taxonomy↔inspiration edges fall back when import used a nested CSV. */
+function filterByViaDatabaseOrTaxonomyFallback(
+  relationships: Relationship[],
+  viaDatabaseIds: string[],
+  connectionType: string,
+): Relationship[] {
+  const filtered = filterRelationshipsByViaDatabase(relationships, viaDatabaseIds);
+  if (filtered.length > 0) return filtered;
+  if (relationships.length > 0 && TAXONOMY_INSPIRATION_PERSPECTIVES.has(connectionType)) {
+    return relationships;
+  }
+  return filtered;
+}
+
 export function listRelationConnectionsForRow(
   db: GraphDatabase,
   nodeId: string,
@@ -53,7 +67,11 @@ export function listRelationConnectionsForRow(
 
   if (targetDatabaseId) {
     const byTargetDb = listRelationshipsToDatabaseMembers(db, nodeId, targetDatabaseId);
-    const filtered = filterRelationshipsByViaDatabase(byTargetDb, viaDatabaseIds);
+    const filtered = filterByViaDatabaseOrTaxonomyFallback(
+      byTargetDb,
+      viaDatabaseIds,
+      connectionType,
+    );
     if (filtered.length > 0) return filtered;
 
     if (!TAXONOMY_INSPIRATION_PERSPECTIVES.has(connectionType)) {
@@ -63,14 +81,18 @@ export function listRelationConnectionsForRow(
       );
       if (!isMigratableToIncludesStorageType(compositeType)) {
         const byComposite = listRelationshipsForComposite(db, nodeId, compositeType);
-        const compositeFiltered = filterRelationshipsByViaDatabase(byComposite, viaDatabaseIds);
+        const compositeFiltered = filterByViaDatabaseOrTaxonomyFallback(
+          byComposite,
+          viaDatabaseIds,
+          connectionType,
+        );
         if (compositeFiltered.length > 0) return compositeFiltered;
       }
     }
   }
 
   const outgoing = db.listRelationshipsFromSource(nodeId, connectionType);
-  return filterRelationshipsByViaDatabase(outgoing, viaDatabaseIds);
+  return filterByViaDatabaseOrTaxonomyFallback(outgoing, viaDatabaseIds, connectionType);
 }
 
 function inferInverseRelationType(localType: string): string {

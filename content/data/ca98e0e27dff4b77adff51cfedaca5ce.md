@@ -12,7 +12,7 @@ notion_archived: false
 
 # Wonderland
 
-The eponym for [Wonderland](./3cbc40d2ba2a4c76b4b9dc370452fcfe.md) .
+The eponym for [[3cbc40d2ba2a4c76b4b9dc370452fcfe]] .
 
 It’s important to note that the essence of Wonderland I am looking for is partially lost in the last third of the story.
 

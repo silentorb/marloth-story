@@ -81,13 +81,14 @@ Keyboard shortcuts in combobox-style pickers (global search, Relate, record link
 ### Node creation
 
 - **New page** (sidebar **New page** or `?view=create`) **must** immediately create a standalone `NotionPage` with default title `Untitled` (no relationships) and open the universal node edit page so the user can set title and body there.
-- **Table section add row** — relation sections and database table sections **must** offer an inline add control that creates a new node and links it to the current page (`POST /api/nodes/:id/relation-rows` or `POST /api/databases/:id/rows`). The new row **must** appear after reload.
-- Relation table sections only appear when the page already has at least one outgoing edge for that label; ordered-association tables are unchanged. Every non-protected node page **must** offer **Relate** in the page actions menu (⋯ to the right of the page title) to open a dialog linking the current page to an **existing** target: searchable relationship type (`GET /api/relationship-types`, all types present in data) and searchable target node (`GET /api/nodes/search`, optionally filtered via `GET /api/nodes/:id/relationship-link-options?type=…` from `schema.json`). Linking uses `POST /api/nodes/:id/connections`; the page reloads so new relation sections appear when applicable.
+- **Database (IS_A) table add row** — type-table **Items** sections (`section.type === "database"`) **must** offer an inline **New row** control that creates a new type instance and links it via `is_a` (`POST /api/databases/:id/rows`). The new row **must** appear after reload.
+- **Associative relation table link** — many-to-many outgoing relation sections (`addMode: "link-existing"`, e.g. Features, Inspirations, Characters) **must** offer an inline **Link** control that picks an **existing** record (`POST /api/nodes/:id/connections`), scoped by `allowedTargetTypeIds` from `schema.json` when a rule matches. Structural one-to-many relation sections (`addMode: "none"`, e.g. Part) **must not** show a table-level add control; ordered-association tables are unchanged.
+- Relation table sections only appear when the page already has at least one outgoing edge for that label. Every non-protected node page **must** offer **Relate** in the page actions menu (⋯ to the right of the page title) to open a dialog linking the current page to an **existing** target: searchable relationship type (`GET /api/relationship-types`, all types present in data) and searchable target node (`GET /api/nodes/search`, optionally filtered via `GET /api/nodes/:id/relationship-link-options?type=…` from `schema.json`). Linking uses `POST /api/nodes/:id/connections`; the page reloads so new relation sections appear when applicable.
 - Database table **relation columns** (`type: relation` in synced `notion_schema`) **must** be editable in the UI (link/unlink existing rows via the same connections API).
 
 ### Out of scope (v0.1)
 
-- Editing relationships from the UI beyond: ordered-association reorder/part moves (see [ordered-associations.md](./ordered-associations.md)), stored type-membership scalars in the Properties section, **create** flows that mint new target nodes (relation/database add row), **link existing targets** (Relate dialog + database relation columns), and enum/scalar patches on existing edges
+- Editing relationships from the UI beyond: ordered-association reorder/part moves (see [ordered-associations.md](./ordered-associations.md)), stored type-membership scalars in the Properties section, **create** flows that mint new IS_A type instances (database add row), **link existing targets** (Relate dialog, associative relation table **Link**, database relation columns), and enum/scalar patches on existing edges
 - Weighted relationships or typed link metadata in the editor
 
 ## Design rationale
@@ -178,7 +179,8 @@ Production UI bundle: `bun run editor:build` → `packages/marloth-editor/dist-w
 - Manual: click a section table column header to sort; reload and confirm sort persists in `.marloth/user-settings.json`
 - Manual: sidebar **Recent** lists latest edited nodes below static database links; edit a title/body and confirm the node moves to the top after save
 - Manual: sidebar **New page** or `?view=create` → lands on new node page titled Untitled; `content/data/{id}.md` exists
-- Manual: on a relation or database table section, **+ New …** / **+ New row** → new row appears after reload
+- Manual: on an IS_A database table section, **+ New row** → new row appears after reload
+- Manual: on an associative relation table section (e.g. Features), **Link** / **+ Link …** → pick existing record; row appears after reload
 - Manual: on a database table with relation columns (e.g. Features → Parents), click link labels to navigate; hover the cell and use the edit control to open the popup for add/remove; confirm `content/data/relationships.json` updates
 
 ## Implementation pointers

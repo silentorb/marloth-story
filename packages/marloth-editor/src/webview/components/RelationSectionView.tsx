@@ -8,7 +8,11 @@ import { filterRowsByName } from "../table-name-filter";
 import { relationTableSearchParamKey } from "../../shared/table-search-url";
 import { SectionTitle } from "./NodeNameLink";
 import { SectionDataTable, type SectionDataTableRow } from "./SectionDataTable";
-import { TableAddRow, TableAddRowFooter, TableAddRowTrigger } from "./TableAddRowFooter";
+import {
+  TableLinkExistingRow,
+  TableLinkExistingRowFooter,
+  TableLinkExistingRowTrigger,
+} from "./TableLinkExistingRow";
 import { TableSearchInput } from "./TableSearchInput";
 import { TableUtilityBar } from "./TableUtilityBar";
 import { renderTableCell } from "./table-cell-render";
@@ -98,50 +102,73 @@ export function RelationSectionView({
     [],
   );
 
+  const linkLabel = `Link ${section.title.replace(/s$/i, "") || "record"}`;
+  const allowedTypeIds =
+    section.allowedTargetTypeIds ??
+    (section.typeNodeId ? [section.typeNodeId] : undefined);
+  const excludedIds = useMemo(
+    () => [nodeId, ...section.rows.map((row) => row.targetId)],
+    [nodeId, section.rows],
+  );
+
   if (section.rows.length === 0) return null;
 
-  const footerLabel = `New ${section.title.replace(/s$/i, "") || "row"}`;
+  const tableContent = (
+    <section className="marloth-record-section marloth-relation-section">
+      <SectionTitle api={api} title={section.title} typeNodeId={section.typeNodeId} />
+      <TableUtilityBar
+        search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
+        addRow={
+          section.addMode === "link-existing" ? <TableLinkExistingRowTrigger /> : undefined
+        }
+      />
+      {!hasMatchingRows && hasActiveSearch ? (
+        <div className="marloth-database-empty">No rows match “{searchQuery.trim()}”.</div>
+      ) : (
+        <SectionDataTable
+          tableKey={tableKey}
+          columns={section.columns}
+          rows={filteredRows}
+          renderNameCell={renderNameCell}
+          columnLabels={columnLabels}
+          renderCell={renderCell}
+          rowPageActions={
+            onArchiveNode && onDeleteNode
+              ? {
+                  onArchiveNode,
+                  onRemoveNode: async (targetId) => {
+                    await api.unlinkOutgoingRelationship(nodeId, section.label, targetId);
+                    onCellUpdated?.();
+                  },
+                  onDeleteNode,
+                }
+              : undefined
+          }
+        />
+      )}
+      {section.addMode === "link-existing" ? <TableLinkExistingRowFooter /> : null}
+    </section>
+  );
+
+  if (section.addMode !== "link-existing") {
+    return tableContent;
+  }
 
   return (
-    <TableAddRow
-      label={footerLabel}
-      onSubmit={async (title) => {
-        await api.createRelationRow(nodeId, { type: section.label, title });
+    <TableLinkExistingRow
+      label={linkLabel}
+      api={api}
+      allowedTypeIds={allowedTypeIds}
+      excludedIds={excludedIds}
+      onLink={async (targetId) => {
+        await api.linkOutgoingRelationship(nodeId, {
+          type: section.label,
+          targetId,
+        });
         onCellUpdated?.();
       }}
     >
-      <section className="marloth-record-section marloth-relation-section">
-        <SectionTitle api={api} title={section.title} typeNodeId={section.typeNodeId} />
-        <TableUtilityBar
-          search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
-          addRow={<TableAddRowTrigger />}
-        />
-        {!hasMatchingRows && hasActiveSearch ? (
-          <div className="marloth-database-empty">No rows match “{searchQuery.trim()}”.</div>
-        ) : (
-          <SectionDataTable
-            tableKey={tableKey}
-            columns={section.columns}
-            rows={filteredRows}
-            renderNameCell={renderNameCell}
-            columnLabels={columnLabels}
-            renderCell={renderCell}
-            rowPageActions={
-              onArchiveNode && onDeleteNode
-                ? {
-                    onArchiveNode,
-                    onRemoveNode: async (targetId) => {
-                      await api.unlinkOutgoingRelationship(nodeId, section.label, targetId);
-                      onCellUpdated?.();
-                    },
-                    onDeleteNode,
-                  }
-                : undefined
-            }
-          />
-        )}
-        <TableAddRowFooter />
-      </section>
-    </TableAddRow>
+      {tableContent}
+    </TableLinkExistingRow>
   );
 }

@@ -27,6 +27,21 @@ export function linkTextMatchesNodeTitle(linkText: string, nodeTitle: string): b
   );
 }
 
+/** Strip markdown emphasis markers before comparing link text to a node title. */
+export function normalizeLinkTextForTitleMatch(linkText: string): string {
+  return linkText.replace(/\*+/g, "").trim();
+}
+
+/** True when link text matches any of the node's display names (title, alias, …). */
+export function linkTextMatchesAnyNodeName(
+  linkText: string,
+  names: readonly string[],
+): boolean {
+  if (names.length === 0) return false;
+  const normalized = normalizeLinkTextForTitleMatch(linkText);
+  return names.some((name) => linkTextMatchesNodeTitle(normalized, name));
+}
+
 /** Stored dynamic link: `[[{nodeId}]]`. */
 export function formatDynamicNodeLink(nodeId: string): string {
   return `[[${normalizeRecordId(nodeId)}]]`;
@@ -124,20 +139,76 @@ export function collapseDynamicEditorLinks(body: string): string {
   );
 }
 
-/** Replace static links whose text matches the target title with `[[id]]`. */
+/** Replace static links whose text matches a target display name with `[[id]]`. */
 export function migrateStaticLinksToDynamic(
   body: string,
-  titleForId: (nodeId: string) => string | null,
+  namesForId: (nodeId: string) => readonly string[],
 ): string {
   return transformOutsideCodeFences(body, (segment) =>
     segment.replace(MD_LINK, (match, text: string, href: string) => {
       const targetId = resolveMarkdownHrefTarget(href);
       if (!targetId) return match;
-      const nodeTitle = titleForId(targetId);
-      if (!nodeTitle || !linkTextMatchesNodeTitle(text, nodeTitle)) return match;
+      const names = namesForId(targetId);
+      if (!linkTextMatchesAnyNodeName(text, names)) return match;
       return formatDynamicNodeLink(targetId);
     }),
   );
+}
+
+export interface MigrateStaticLinksReport {
+  filesChanged: number;
+  filesUnchanged: number;
+  linksConverted: number;
+  linksSkippedCustomText: number;
+}
+
+/** Scan bodies and apply {@link migrateStaticLinksToDynamic}, returning conversion stats. */
+export function migrateStaticLinksInBodies(
+  bodies: Iterable<{ id: string; body: string }>,
+  namesForId: (nodeId: string) => readonly string[],
+): { bodies: Map<string, string>; report: MigrateStaticLinksReport } {
+  const MD = /\[([^\]]*)\]\(([^)]+)\)/g;
+  const result = new Map<string, string>();
+  const report: MigrateStaticLinksReport = {
+    filesChanged: 0,
+    filesUnchanged: 0,
+    linksConverted: 0,
+    linksSkippedCustomText: 0,
+  };
+
+  for (const { id, body } of bodies) {
+    const nextBody = migrateStaticLinksToDynamic(body, namesForId);
+    result.set(id, nextBody);
+    if (nextBody === body) {
+      report.filesUnchanged++;
+      continue;
+    }
+    report.filesChanged++;
+
+    const beforeLinks: Array<{ text: string; targetId: string }> = [];
+    transformOutsideCodeFences(body, (segment) => {
+      MD.lastIndex = 0;
+      let match: RegExpExecArray | null;
+      while ((match = MD.exec(segment)) !== null) {
+        const targetId = resolveMarkdownHrefTarget(match[2] ?? "");
+        if (targetId) beforeLinks.push({ text: match[1] ?? "", targetId });
+      }
+      return segment;
+    });
+
+    const dynamicAfter = (nextBody.match(/\[\[[a-f0-9]{32}\]\]/gi) ?? []).length;
+    const dynamicBefore = (body.match(/\[\[[a-f0-9]{32}\]\]/gi) ?? []).length;
+    report.linksConverted += dynamicAfter - dynamicBefore;
+
+    for (const link of beforeLinks) {
+      const names = namesForId(link.targetId);
+      if (!linkTextMatchesAnyNodeName(link.text, names)) {
+        report.linksSkippedCustomText++;
+      }
+    }
+  }
+
+  return { bodies: result, report };
 }
 
 /** Split markdown into alternating prose/code segments; transform prose only. */

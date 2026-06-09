@@ -21,7 +21,7 @@ However, if handled precisely, these characters could provide an excellent contr
 - Pursuing power
 - Natural leaders
 - Drawn to evil
-- [Frenemies](./72c9bb5b46fa4405bb0c4aa26424b488.md) with James and Adelle
+- [[72c9bb5b46fa4405bb0c4aa26424b488]] with James and Adelle
 
 # Differences
 

@@ -42,6 +42,20 @@ export interface SpuriousTypeMembership {
   connectionLabel: string;
 }
 
+export interface NestedPageSpuriousMembership {
+  nodeId: string;
+  title: string;
+  pageExport: string;
+  databaseId: string;
+  databaseTitle: string;
+  connectionLabel: string;
+  reason: "outside_instance_root" | "nested_sub_page";
+}
+
+/** Matches Notion database CSV basename: `{DisplayName} {32hex-id}[_all].csv`. */
+const CSV_BASENAME =
+  /^(.+?)\s+([a-f0-9]{32})((?:_all(?:_[0-9]+)?)?)\.csv$/i;
+
 function titleFromProperties(properties: Record<string, unknown>): string {
   const title = properties.title;
   if (typeof title === "string" && title.trim()) return title.trim();
@@ -87,6 +101,129 @@ export function expectedTypeDatabaseForPage(
   _nodeId: string,
 ): { databaseId: string; databaseTitle: string; path: string } | null {
   return null;
+}
+
+/** Strip export archive prefix so paths compare as `Marloth/...`. */
+export function notionPathFromSourceExport(sourceExport: string): string | null {
+  if (!sourceExport.trim()) return null;
+  const zipIdx = sourceExport.indexOf(".zip/");
+  const path = zipIdx >= 0 ? sourceExport.slice(zipIdx + 5) : sourceExport;
+  return path.trim() || null;
+}
+
+/**
+ * Instance folder for CSV-imported rows: `dirname(csv) + "/" + displayName + "/"`.
+ * e.g. `Marloth/Features {id}_all.csv` → `Marloth/Features/`.
+ */
+export function instanceRootFromTypeTableExport(sourceExport: string): string | null {
+  const path = notionPathFromSourceExport(sourceExport);
+  if (!path) return null;
+  const slash = path.lastIndexOf("/");
+  const basename = slash >= 0 ? path.slice(slash + 1) : path;
+  const parsed = CSV_BASENAME.exec(basename);
+  if (!parsed) return null;
+  const displayName = parsed[1]!.trim();
+  const dir = slash >= 0 ? path.slice(0, slash) : "";
+  return dir ? `${dir}/${displayName}/` : `${displayName}/`;
+}
+
+/**
+ * Folder segments between `instanceRoot` and the page filename (0 = direct CSV row page).
+ * Returns null when the page path is outside `instanceRoot` or not a `.md` export.
+ */
+export function folderDepthUnderInstanceRoot(
+  pageExport: string,
+  instanceRoot: string,
+): number | null {
+  const path = notionPathFromSourceExport(pageExport);
+  if (!path || !path.toLowerCase().endsWith(".md")) return null;
+  if (!path.startsWith(instanceRoot)) return null;
+  const relative = path.slice(instanceRoot.length);
+  const segments = relative.split("/").filter(Boolean);
+  if (segments.length === 0) return null;
+  return segments.length - 1;
+}
+
+function hasNotionDatabaseMarker(properties: Record<string, unknown>): boolean {
+  const value = properties.notion_database;
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+export function isNestedPageSpuriousTypeMembership(
+  pageExport: string | null | undefined,
+  databaseSourceExport: string | null | undefined,
+): { spurious: boolean; reason?: NestedPageSpuriousMembership["reason"] } {
+  if (!pageExport || typeof pageExport !== "string") {
+    return { spurious: false };
+  }
+  const instanceRoot = databaseSourceExport
+    ? instanceRootFromTypeTableExport(databaseSourceExport)
+    : null;
+  if (!instanceRoot) return { spurious: false };
+
+  const path = notionPathFromSourceExport(pageExport);
+  if (!path || !path.toLowerCase().endsWith(".md")) {
+    return { spurious: false };
+  }
+  if (!path.startsWith(instanceRoot)) {
+    return { spurious: true, reason: "outside_instance_root" };
+  }
+  const depth = folderDepthUnderInstanceRoot(pageExport, instanceRoot);
+  if (depth === null) return { spurious: false };
+  if (depth > 0) return { spurious: true, reason: "nested_sub_page" };
+  return { spurious: false };
+}
+
+/** Spurious `is_a` edges on nested Notion sub-pages (or pages outside a database instance folder). */
+export function findNestedPageSpuriousTypeMembership(
+  db: GraphDatabase,
+): NestedPageSpuriousMembership[] {
+  const spurious: NestedPageSpuriousMembership[] = [];
+
+  for (const summary of db.listNodesForGraphExport()) {
+    const database = db.getNode(summary.id);
+    if (!database || !hasNotionDatabaseMarker(database.properties)) continue;
+
+    const databaseId = summary.id;
+    const databaseTitle = titleFromProperties(database.properties);
+    const databaseExport = stringProperty(database.properties.source_export);
+    const instanceRoot = databaseExport
+      ? instanceRootFromTypeTableExport(databaseExport)
+      : null;
+    if (!instanceRoot) continue;
+
+    for (const label of TYPE_MEMBERSHIP_TYPES) {
+      for (const connection of db.listRelationshipsToTarget(databaseId, label)) {
+        const pageId = connection.sourceNodeId;
+        if (isTypeTableNode(db, pageId)) continue;
+
+        const page = db.getNode(pageId);
+        if (!page) continue;
+
+        const pageExport = stringProperty(page.properties.source_export);
+        const check = isNestedPageSpuriousTypeMembership(pageExport, databaseExport);
+        if (!check.spurious || !check.reason) continue;
+
+        spurious.push({
+          nodeId: pageId,
+          title: titleFromProperties(page.properties),
+          pageExport: pageExport ?? "",
+          databaseId,
+          databaseTitle,
+          connectionLabel: label,
+          reason: check.reason,
+        });
+      }
+    }
+  }
+
+  return spurious.sort((a, b) => {
+    const byDb = a.databaseTitle.localeCompare(b.databaseTitle, undefined, {
+      sensitivity: "base",
+    });
+    if (byDb !== 0) return byDb;
+    return a.title.localeCompare(b.title, undefined, { sensitivity: "base" });
+  });
 }
 
 export function findTypeMembershipRelationship(

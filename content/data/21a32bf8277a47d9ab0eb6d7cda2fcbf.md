@@ -22,4 +22,4 @@ However, media can also create its own associations.
 
 > **It's like she only wants to hook up when Ryan comes around.** **It's getting to the point where I get excited every time I see that little dude walk through the door. - Darryl Philbin, The Office**
 
-Taking a cue from [Sapphire and Steel](./f4522f813fe047fe9cc7daef159bed6d.md), I don’t always have to be restrained by default associations.  That show regularly creates associations that normally don’t exist.  A rocking chair can be a place to sit, an adversary, a portal to another world, a trap, a key, etc.
+Taking a cue from [[f4522f813fe047fe9cc7daef159bed6d]], I don’t always have to be restrained by default associations.  That show regularly creates associations that normally don’t exist.  A rocking chair can be a place to sit, an adversary, a portal to another world, a trap, a key, etc.

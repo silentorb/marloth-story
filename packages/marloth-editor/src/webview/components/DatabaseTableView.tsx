@@ -96,7 +96,6 @@ export function DatabaseTableView({
                 targetId,
                 viaDatabase: databaseView.id,
               });
-              onCellUpdated?.();
             }}
             onRemove={async (targetId) => {
               await api.unlinkOutgoingRelationship(
@@ -104,8 +103,8 @@ export function DatabaseTableView({
                 def.relationType!,
                 targetId,
               );
-              onCellUpdated?.();
             }}
+            onEditingComplete={onCellUpdated}
           />
         );
       }

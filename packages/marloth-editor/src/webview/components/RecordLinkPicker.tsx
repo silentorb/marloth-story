@@ -3,6 +3,14 @@ import type { EditorApi } from "../api/client";
 import type { NodeSummary } from "../../shared/types";
 import "./record-link-picker.css";
 
+const DEFAULT_SEARCH_LIMIT = 25;
+
+function sortNodeSummariesByTitle(items: NodeSummary[]): NodeSummary[] {
+  return [...items].sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, { sensitivity: "base", numeric: true }),
+  );
+}
+
 interface RecordLinkPickerProps {
   api: EditorApi;
   allowedTypeIds?: string[];
@@ -14,6 +22,8 @@ interface RecordLinkPickerProps {
   closeOnSelect?: boolean;
   /** When true, skip document click-outside handling (parent dialog owns dismissal). */
   embedded?: boolean;
+  /** Max search results to request (default 25). */
+  searchLimit?: number;
 }
 
 export function RecordLinkPicker({
@@ -25,8 +35,10 @@ export function RecordLinkPicker({
   onClose,
   closeOnSelect = true,
   embedded = false,
+  searchLimit = DEFAULT_SEARCH_LIMIT,
 }: RecordLinkPickerProps) {
   const rootRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<NodeSummary[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -36,6 +48,10 @@ export function RecordLinkPicker({
   const excluded = useRef(new Set(excludedIds));
 
   excluded.current = new Set(excludedIds);
+
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [excludedIds]);
 
   useEffect(() => {
     if (embedded) return;
@@ -52,8 +68,8 @@ export function RecordLinkPicker({
       setLoading(true);
       setError(null);
       void api
-        .search(query, 12, allowedTypeIds)
-        .then((items) => setResults(items))
+        .search(query, searchLimit, allowedTypeIds)
+        .then((items) => setResults(sortNodeSummariesByTitle(items)))
         .catch((err) => {
           setResults([]);
           setError(err instanceof Error ? err.message : String(err));
@@ -61,7 +77,16 @@ export function RecordLinkPicker({
         .finally(() => setLoading(false));
     }, 120);
     return () => window.clearTimeout(handle);
-  }, [api, allowedTypeIds, query]);
+  }, [api, allowedTypeIds, query, searchLimit]);
+
+  const selectable = results.filter((item) => !excluded.current.has(item.id));
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+    const active = list.querySelector(".marloth-record-link-picker-item.is-active");
+    active?.scrollIntoView({ block: "nearest" });
+  }, [activeIndex, selectable]);
 
   const pick = useCallback(
     async (nodeId: string) => {
@@ -83,10 +108,8 @@ export function RecordLinkPicker({
         setSubmitting(false);
       }
     },
-    [closeOnSelect, onClose, onSelect, submitting],
+    [closeOnSelect, onClose, onSelect, results, submitting],
   );
-
-  const selectable = results.filter((item) => !excluded.current.has(item.id));
 
   return (
     <div
@@ -128,6 +151,7 @@ export function RecordLinkPicker({
         }}
       />
       <div
+        ref={listRef}
         id="marloth-record-link-picker-listbox"
         className="marloth-record-link-picker-list"
         role="listbox"
@@ -139,17 +163,15 @@ export function RecordLinkPicker({
         {!loading && selectable.length === 0 ? (
           <div className="marloth-record-link-picker-empty">No matching records</div>
         ) : (
-          results.map((item) => {
-            const isExcluded = excluded.current.has(item.id);
-            const selectableIndex = selectable.findIndex((row) => row.id === item.id);
-            const isActive = !isExcluded && selectableIndex === activeIndex;
+          selectable.map((item, index) => {
+            const isActive = index === activeIndex;
             return (
               <button
                 key={item.id}
                 type="button"
                 role="option"
                 aria-selected={isActive}
-                disabled={isExcluded || submitting}
+                disabled={submitting}
                 className={`marloth-record-link-picker-item${isActive ? " is-active" : ""}`}
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => void pick(item.id)}

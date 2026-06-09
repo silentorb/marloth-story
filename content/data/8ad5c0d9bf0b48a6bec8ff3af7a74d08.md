@@ -10,4 +10,4 @@ notion_archived: false
 ---
 # Spectacular climax
 
-My focus is increasingly shifting toward [Extended, fresh continuity](./2e8c934529774ca3bb236738110e73cf.md), and this conflicts with that, so I am de-prioritizing this.
+My focus is increasingly shifting toward [[2e8c934529774ca3bb236738110e73cf]], and this conflicts with that, so I am de-prioritizing this.

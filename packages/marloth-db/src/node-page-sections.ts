@@ -10,7 +10,7 @@ import {
 import { getNodeDetail, type NodeDetail } from "./queries";
 import { getNodePageMetadata, type NodePageMetadata } from "./node-metadata";
 import { buildPropertiesSection, type PropertiesSection } from "./node-type-properties";
-import { INCLUDES_TYPE } from "./includes-relationship";
+import { INCLUDES_TYPE, relationSectionSupportsLinkExisting } from "./includes-relationship";
 import { findTypeNodeByTitle, isTypeTableNode, typeIdsForInstance } from "./node-capabilities";
 import { normalizeRelationshipType } from "./relation-type";
 import { relationshipRuleContextForType } from "./schema-rules/resolve";
@@ -51,14 +51,18 @@ export interface RelationRow {
   cells: Record<string, string>;
 }
 
+export type RelationTableAddMode = "link-existing" | "none";
+
 export interface RelationTableSection {
   type: "relations";
   label: string;
   title: string;
   /** When set, the section title links to this type node. */
   typeNodeId: string | null;
-  /** UI hint: allowed IS_A target type ids for new linked nodes (from schema.json). */
+  /** UI hint: allowed IS_A target type ids for link-existing picker (from schema.json). */
   allowedTargetTypeIds?: string[];
+  /** Inline table add control: link existing record vs none (structural one-to-many). */
+  addMode: RelationTableAddMode;
   columns: string[];
   columnDefs?: DatabaseColumnDef[];
   rows: RelationRow[];
@@ -251,6 +255,7 @@ function buildRelationSections(
       title: sectionTitleForType(db, perspective, typeNodeId),
       typeNodeId,
       allowedTargetTypeIds: ruleContext?.allowedTargetTypeIds,
+      addMode: relationSectionSupportsLinkExisting(perspective) ? "link-existing" : "none",
       columns,
       columnDefs,
       rows,

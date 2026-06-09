@@ -6,6 +6,7 @@
 import { GraphDatabase } from "../packages/marloth-db/src/graph";
 import {
   findMissingTypeMembershipRelationships,
+  findNestedPageSpuriousTypeMembership,
   findSpuriousTypeMembershipRelationships,
   findNodeScalarsOnTypedNodes,
 } from "../packages/marloth-db/src/type-membership-audit";
@@ -15,7 +16,20 @@ const db = new GraphDatabase(dbPath);
 
 const missing = findMissingTypeMembershipRelationships(db);
 const spurious = findSpuriousTypeMembershipRelationships(db);
+const nestedPageSpurious = findNestedPageSpuriousTypeMembership(db);
 const nodeScalars = findNodeScalarsOnTypedNodes(db);
+
+if (nestedPageSpurious.length > 0) {
+  console.error(`Nested-page spurious IS_A connections (${nestedPageSpurious.length}):`);
+  for (const row of nestedPageSpurious.slice(0, 20)) {
+    console.error(
+      `  ${row.title} (${row.nodeId}) ${row.connectionLabel}->${row.databaseTitle} [${row.reason}]`,
+    );
+  }
+  if (nestedPageSpurious.length > 20) {
+    console.error(`  ... and ${nestedPageSpurious.length - 20} more`);
+  }
+}
 
 if (spurious.length > 0) {
   console.error(`Spurious IS_A connections (${spurious.length}):`);
@@ -45,7 +59,12 @@ if (nodeScalars.length > 0) {
 
 db.close();
 
-if (missing.length > 0 || spurious.length > 0 || nodeScalars.length > 0) {
+if (
+  missing.length > 0 ||
+  spurious.length > 0 ||
+  nestedPageSpurious.length > 0 ||
+  nodeScalars.length > 0
+) {
   process.exit(1);
 }
 

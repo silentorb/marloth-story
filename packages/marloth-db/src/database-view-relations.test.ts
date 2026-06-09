@@ -1,92 +1,76 @@
 import { describe, expect, test, afterAll } from "bun:test";
+import { mkdtempSync, rmSync } from "node:fs";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import { GraphDatabase } from "./graph";
 import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { getDatabaseViewDetail } from "./database-view";
-import {
-  createTestContentFixture,
-  destroyTestContentFixture,
-  seedTestCompositeRelationships,
-  seedTestNode,
-  seedTestRelationships,
-  seedTestViews,
-  seedTestDynamicFields,
-} from "./content/test-helpers";
-import { VIEWS_FILE_VERSION } from "./content/views-file";
+import { listRelationConnectionsForRow } from "./database-view-relations";
 
-describe("database-view relation hydration", () => {
-  const fixture = createTestContentFixture("marloth-db-view-rel-");
-  const locationsDb = "df096ab26e8347e6992e95698345aad0";
-  const scenesDb = "204dba198db74611b0b49a98dd53e8f5";
-  const location = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-  const scene = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+describe("database-view-relations", () => {
+  const dir = mkdtempSync(join(tmpdir(), "marloth-db-view-rel-"));
+  const dbPath = join(dir, "test.sqlite");
+  const db = new GraphDatabase(dbPath);
 
-  seedTestNode(fixture, {
-    id: locationsDb,
-    properties: {
-      ...typeTableMarkerProperties("Locations"),
+  const inspirationsDb = "2eea538996934ce8abafc27132e576c1";
+  const inspirationTypesDb = "819dc2fea6cc4cddb5fce9cc4efd0e85";
+  const nestedViewDb = "1149175cc56d45e1b9f96a7455144ae4";
+  const inspirationId = "6c3ea4b72e4e4e6e8f3474bbab490186";
+  const tvSeriesTypeId = "c847c77114e94ca5ba74405c2a088c76";
+
+  test("listRelationConnectionsForRow falls back for prop_type with mismatched via_database", () => {
+    db.upsertNode(inspirationsDb, {
+      ...typeTableMarkerProperties("Inspirations"),
       notion_schema: JSON.stringify({
-        syncedAt: "2026-01-01T00:00:00.000Z",
+        syncedAt: "2024-01-01T00:00:00.000Z",
         properties: {
           Name: { id: "title", name: "Name", type: "title", config: {} },
-          Scenes: {
-            id: "jlOE",
-            name: "Scenes",
+          Type: {
+            id: "fsWJ",
+            name: "Type",
             type: "relation",
-            config: { database_id: "204dba19-8db7-4611-b0b4-9a98dd53e8f5" },
+            config: { database_id: inspirationTypesDb },
           },
         },
       }),
-    },
-  });
-  seedTestViews(fixture, {
-    version: VIEWS_FILE_VERSION,
-    nodes: {
-      [locationsDb]: {
-        sections: {
-          items: {
-            tabs: {
-              kind: "custom",
-              definitions: [{ id: "all", name: "All", sorts: [{ column: "name", direction: "asc" }] }],
-            },
-          },
-        },
-      },
-    },
-  });
-  seedTestDynamicFields(fixture, []);
-  seedTestNode(fixture, { id: scenesDb, properties: typeTableMarkerProperties("Scenes") });
-  seedTestNode(fixture, { id: location, properties: { title: "The Village" } });
-  seedTestNode(fixture, { id: scene, properties: { title: "Opening Scene" } });
+    });
+    db.upsertNode(inspirationTypesDb, { ...typeTableMarkerProperties("Inspiration types") });
+    db.upsertNode(nestedViewDb, { ...typeTableMarkerProperties("Extended story") });
+    db.upsertNode(inspirationId, { title: "Ash vs. the Evil Dead" });
+    db.upsertNode(tvSeriesTypeId, { title: "TV series" });
+    db.upsertRelationship(inspirationId, inspirationsDb, IS_A_TYPE, { row_index: 0 });
+    db.upsertRelationship(tvSeriesTypeId, inspirationTypesDb, IS_A_TYPE, { row_index: 0 });
+    db.upsertRelationship(inspirationId, tvSeriesTypeId, "prop_type_inspirations", {
+      ordinal: 0,
+      via_database: nestedViewDb,
+      via_view: "default",
+    });
 
-  seedTestRelationships(fixture, [
-    { source: location, target: locationsDb, type: IS_A_TYPE, properties: { row_index: 0 } },
-    { source: scene, target: scenesDb, type: IS_A_TYPE, properties: { row_index: 0 } },
-  ]);
-  seedTestCompositeRelationships(fixture, [
-    {
-      a: scene,
-      b: location,
-      typeFromA: "scenes",
-      typeFromB: "location",
-      properties: { ordinal: 0, via_database: scenesDb },
-    },
-  ]);
-
-  test("hydrates Scenes column on Locations table from composite scenes_location", () => {
-    const detail = getDatabaseViewDetail(
-      fixture.ctx.db,
-      locationsDb,
-      undefined,
-      fixture.ctx.store.contentDir,
+    const connections = listRelationConnectionsForRow(
+      db,
+      inspirationId,
+      "prop_type",
+      inspirationsDb,
+      inspirationTypesDb,
     );
-    const row = detail?.rows.find((entry) => entry.nodeId === location);
-    expect(row?.cells.scenes).toBe("Opening Scene");
-    expect(row?.relationCells?.scenes).toEqual([
-      { targetId: scene, title: "Opening Scene" },
+
+    expect(connections).toHaveLength(1);
+    expect(connections[0]!.targetNodeId === tvSeriesTypeId ||
+      connections[0]!.sourceNodeId === tvSeriesTypeId).toBe(true);
+  });
+
+  test("hydrates Type column when via_database points at a nested database CSV", () => {
+    const detail = getDatabaseViewDetail(db, inspirationsDb);
+    const row = detail?.rows.find((r) => r.nodeId === inspirationId);
+    expect(row?.cells.type).toBe("TV series");
+    expect(row?.relationCells?.type).toEqual([
+      { targetId: tvSeriesTypeId, title: "TV series" },
     ]);
   });
 
   afterAll(() => {
-    destroyTestContentFixture(fixture);
+    db.close();
+    rmSync(dir, { recursive: true, force: true });
   });
 });

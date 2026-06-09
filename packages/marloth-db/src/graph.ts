@@ -368,25 +368,24 @@ export class GraphDatabase {
     limit: number,
     allowedTypeIds?: readonly string[],
   ): { id: string; title: string }[] {
-    const rows = this.db
-      .prepare(
-        `SELECT id,
-                COALESCE(
-                  NULLIF(json_extract(properties, '$.title'), ''),
-                  NULLIF(json_extract(properties, '$.alias'), ''),
-                  'Untitled'
-                ) AS title
-         FROM nodes
-         WHERE is_archived = 0
-           AND COALESCE(json_extract(properties, '$.title'), json_extract(properties, '$.alias'), '') LIKE ? ESCAPE '\\'
-         ORDER BY title COLLATE NOCASE
-         LIMIT ?`,
-      )
-      .all(pattern, limit) as { id: string; title: string }[];
+    const fetchBatch = (batchLimit: number) =>
+      this.db
+        .prepare(
+          `SELECT id,
+                  COALESCE(
+                    NULLIF(json_extract(properties, '$.title'), ''),
+                    NULLIF(json_extract(properties, '$.alias'), ''),
+                    'Untitled'
+                  ) AS title
+           FROM nodes
+           WHERE is_archived = 0
+             AND COALESCE(json_extract(properties, '$.title'), json_extract(properties, '$.alias'), '') LIKE ? ESCAPE '\\'
+           ORDER BY title COLLATE NOCASE
+           LIMIT ?`,
+        )
+        .all(pattern, batchLimit) as { id: string; title: string }[];
 
-    if (!allowedTypeIds || allowedTypeIds.length === 0) return rows;
-
-    return rows.filter((row) => this.nodeMatchesAnyAllowedType(row.id, allowedTypeIds));
+    return this.collectTitleOrderedNodes(limit, allowedTypeIds, fetchBatch);
   }
 
   searchNodesByBody(
@@ -394,51 +393,49 @@ export class GraphDatabase {
     limit: number,
     allowedTypeIds?: readonly string[],
   ): { id: string; title: string }[] {
-    const rows = this.db
-      .prepare(
-        `SELECT id,
-                COALESCE(
-                  NULLIF(json_extract(properties, '$.title'), ''),
-                  NULLIF(json_extract(properties, '$.alias'), ''),
-                  'Untitled'
-                ) AS title
-         FROM nodes
-         WHERE is_archived = 0
-           AND COALESCE(json_extract(properties, '$.body'), '') LIKE ? ESCAPE '\\'
-         ORDER BY title COLLATE NOCASE
-         LIMIT ?`,
-      )
-      .all(pattern, limit) as { id: string; title: string }[];
+    const fetchBatch = (batchLimit: number) =>
+      this.db
+        .prepare(
+          `SELECT id,
+                  COALESCE(
+                    NULLIF(json_extract(properties, '$.title'), ''),
+                    NULLIF(json_extract(properties, '$.alias'), ''),
+                    'Untitled'
+                  ) AS title
+           FROM nodes
+           WHERE is_archived = 0
+             AND COALESCE(json_extract(properties, '$.body'), '') LIKE ? ESCAPE '\\'
+           ORDER BY title COLLATE NOCASE
+           LIMIT ?`,
+        )
+        .all(pattern, batchLimit) as { id: string; title: string }[];
 
-    if (!allowedTypeIds || allowedTypeIds.length === 0) return rows;
-
-    return rows.filter((row) => this.nodeMatchesAnyAllowedType(row.id, allowedTypeIds));
+    return this.collectTitleOrderedNodes(limit, allowedTypeIds, fetchBatch);
   }
 
   listNodesByTitle(
     limit: number,
     allowedTypeIds?: readonly string[],
   ): { id: string; title: string }[] {
-    const rows = this.db
-      .prepare(
-        `SELECT id,
-                COALESCE(
-                  NULLIF(json_extract(properties, '$.title'), ''),
-                  NULLIF(json_extract(properties, '$.alias'), ''),
-                  'Untitled'
-                ) AS title
-         FROM nodes
-         WHERE is_archived = 0
-           AND (json_extract(properties, '$.title') IS NOT NULL
-            OR json_extract(properties, '$.alias') IS NOT NULL)
-         ORDER BY title COLLATE NOCASE
-         LIMIT ?`,
-      )
-      .all(limit) as { id: string; title: string }[];
+    const fetchBatch = (batchLimit: number) =>
+      this.db
+        .prepare(
+          `SELECT id,
+                  COALESCE(
+                    NULLIF(json_extract(properties, '$.title'), ''),
+                    NULLIF(json_extract(properties, '$.alias'), ''),
+                    'Untitled'
+                  ) AS title
+           FROM nodes
+           WHERE is_archived = 0
+             AND (json_extract(properties, '$.title') IS NOT NULL
+              OR json_extract(properties, '$.alias') IS NOT NULL)
+           ORDER BY title COLLATE NOCASE
+           LIMIT ?`,
+        )
+        .all(batchLimit) as { id: string; title: string }[];
 
-    if (!allowedTypeIds || allowedTypeIds.length === 0) return rows;
-
-    return rows.filter((row) => this.nodeMatchesAnyAllowedType(row.id, allowedTypeIds));
+    return this.collectTitleOrderedNodes(limit, allowedTypeIds, fetchBatch);
   }
 
   listNodesByModifiedAt(
@@ -475,6 +472,43 @@ export class GraphDatabase {
       }
     }
     return false;
+  }
+
+  private filterTitleOrderedNodesByAllowedType(
+    rows: readonly { id: string; title: string }[],
+    limit: number,
+    allowedTypeIds: readonly string[],
+  ): { id: string; title: string }[] {
+    const matched: { id: string; title: string }[] = [];
+    for (const row of rows) {
+      if (!this.nodeMatchesAnyAllowedType(row.id, allowedTypeIds)) continue;
+      matched.push(row);
+      if (matched.length >= limit) break;
+    }
+    return matched;
+  }
+
+  private collectTitleOrderedNodes(
+    limit: number,
+    allowedTypeIds: readonly string[] | undefined,
+    fetchBatch: (batchLimit: number) => { id: string; title: string }[],
+  ): { id: string; title: string }[] {
+    if (!allowedTypeIds || allowedTypeIds.length === 0) {
+      return fetchBatch(limit);
+    }
+
+    let fetchLimit = limit;
+    const maxFetch = 5000;
+    while (fetchLimit <= maxFetch) {
+      const rows = fetchBatch(fetchLimit);
+      const matched = this.filterTitleOrderedNodesByAllowedType(rows, limit, allowedTypeIds);
+      if (matched.length >= limit || rows.length < fetchLimit) {
+        return matched;
+      }
+      fetchLimit = Math.min(fetchLimit * 2, maxFetch);
+    }
+
+    return this.filterTitleOrderedNodesByAllowedType(fetchBatch(maxFetch), limit, allowedTypeIds);
   }
 
   listNodesWithBodyLike(pattern: string): { id: string; body: string }[] {

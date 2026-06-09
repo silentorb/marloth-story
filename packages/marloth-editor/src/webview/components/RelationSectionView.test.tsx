@@ -45,9 +45,26 @@ describe("RelationSectionView", () => {
     expect(within(priorityHeader).getByRole("button")).toBeTruthy();
   });
 
-  test("renders add row control", () => {
+  test("renders link existing control when addMode is link-existing", () => {
     renderRelationSection();
-    expect(screen.getByRole("button", { name: /\+ New/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Link" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "+ Link Related item" })).toBeTruthy();
+  });
+
+  test("hides add control when addMode is none", () => {
+    const api = makeMockEditorApi();
+    render(
+      <UserSettingsProvider api={api}>
+        <RelationSectionView
+          api={api}
+          nodeId={FIXTURE_PAGE_ID}
+          section={makeRelationSection({ addMode: "none" })}
+        />
+      </UserSettingsProvider>,
+    );
+
+    expect(screen.queryByRole("button", { name: "Link" })).toBeNull();
+    expect(screen.queryByRole("button", { name: /\+ Link/ })).toBeNull();
   });
 
   test("filters rows using search_<label> URL param", () => {
