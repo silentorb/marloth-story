@@ -28,6 +28,7 @@ describe("NodePageView", () => {
           onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
           onArchiveNode={async () => {}}
+          onUnarchiveNode={async () => {}}
           onDeleteNode={async () => {}}
         />
       </UserSettingsProvider>,
@@ -61,6 +62,7 @@ describe("NodePageView", () => {
           onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
           onArchiveNode={async () => {}}
+          onUnarchiveNode={async () => {}}
           onDeleteNode={async () => {}}
         />
       </UserSettingsProvider>,
@@ -95,6 +97,7 @@ describe("NodePageView", () => {
           onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
           onArchiveNode={async () => {}}
+          onUnarchiveNode={async () => {}}
           onDeleteNode={async () => {}}
         />
       </UserSettingsProvider>,
@@ -122,6 +125,7 @@ describe("NodePageView", () => {
           onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
           onArchiveNode={async () => {}}
+          onUnarchiveNode={async () => {}}
           onDeleteNode={async () => {}}
           selectTitleOnMount
         />
@@ -172,6 +176,7 @@ describe("NodePageView", () => {
           onTabSelect={() => {}}
           onOrderedAssociationViewChange={() => {}}
           onArchiveNode={async () => {}}
+          onUnarchiveNode={async () => {}}
           onDeleteNode={async () => {}}
         />
       </UserSettingsProvider>,

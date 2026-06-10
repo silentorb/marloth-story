@@ -43,6 +43,26 @@ describe("node lifecycle API", () => {
     expect(res.status).toBe(409);
   });
 
+  test("POST unarchive restores archived node", async () => {
+    const res = await api.handler(
+      new Request(`http://127.0.0.1/api/nodes/${nodeId}/unarchive`, { method: "POST" }),
+    );
+    expect(res.status).toBe(200);
+
+    const nodeRes = await api.handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}`));
+    const payload = (await nodeRes.json()) as {
+      node: { archived: boolean };
+    };
+    expect(payload.node.archived).toBe(false);
+  });
+
+  test("POST unarchive rejects non-archived node", async () => {
+    const res = await api.handler(
+      new Request(`http://127.0.0.1/api/nodes/${nodeId}/unarchive`, { method: "POST" }),
+    );
+    expect(res.status).toBe(409);
+  });
+
   test("DELETE removes node", async () => {
     const res = await api.handler(new Request(`http://127.0.0.1/api/nodes/${nodeId}`, { method: "DELETE" }));
     expect(res.status).toBe(200);

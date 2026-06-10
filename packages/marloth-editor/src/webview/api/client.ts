@@ -45,6 +45,7 @@ export function createEditorApi(): EditorApi {
     unlinkOutgoingRelationship: rest.unlinkOutgoingRelationship.bind(rest),
     deleteNode: rest.deleteNode.bind(rest),
     archiveNode: rest.archiveNode.bind(rest),
+    unarchiveNode: rest.unarchiveNode.bind(rest),
     getGraphFull: rest.getGraphFull.bind(rest),
     getGraphExplorerLod: rest.getGraphExplorerLod.bind(rest),
     getSchema: rest.getSchema.bind(rest),

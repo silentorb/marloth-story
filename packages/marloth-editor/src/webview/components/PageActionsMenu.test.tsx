@@ -53,4 +53,20 @@ describe("PageActionsMenu", () => {
     fireEvent.click(screen.getByRole("button", { name: "Page actions" }));
     expect(screen.queryByRole("menuitem", { name: "Archive" })).toBeNull();
   });
+
+  test("shows Unarchive when page is archived and onUnarchive is provided", () => {
+    render(
+      <PageActionsMenu
+        recordTitle="Archived page"
+        archived
+        onArchive={async () => {}}
+        onUnarchive={async () => {}}
+        onDelete={async () => {}}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Page actions" }));
+    expect(screen.queryByRole("menuitem", { name: "Archive" })).toBeNull();
+    expect(screen.getByRole("menuitem", { name: "Unarchive" })).toBeTruthy();
+  });
 });

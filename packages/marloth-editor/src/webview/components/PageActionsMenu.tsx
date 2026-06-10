@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { ConfirmDialog } from "./ConfirmDialog";
 import "./page-actions-menu.css";
 
-type PendingAction = "archive" | "delete" | null;
+type PendingAction = "archive" | "unarchive" | "delete" | null;
 
 interface MenuPosition {
   top: number;
@@ -21,6 +21,7 @@ interface PageActionsMenuProps {
   /** Portal + fixed positioning so menus are not clipped by scroll containers. */
   menuPlacement?: "inline" | "portal";
   onArchive: () => Promise<void>;
+  onUnarchive?: () => Promise<void>;
   /** Open relate dialog; page app bar only. */
   onRelate?: () => void;
   /** Unlink from the current table only; shown when provided (table rows, not page app bar). */
@@ -36,6 +37,7 @@ export function PageActionsMenu({
   menuAlign = "right",
   menuPlacement = "inline",
   onArchive,
+  onUnarchive,
   onRelate,
   onRemove,
   onDelete,
@@ -95,6 +97,7 @@ export function PageActionsMenu({
     setBusy(true);
     try {
       if (action === "archive") await onArchive();
+      else if (action === "unarchive") await onUnarchive?.();
       else await onDelete();
       setPendingAction(null);
       setMenuOpen(false);
@@ -142,6 +145,18 @@ export function PageActionsMenu({
           }}
         >
           Archive
+        </button>
+      ) : onUnarchive ? (
+        <button
+          type="button"
+          role="menuitem"
+          className="marloth-page-actions-item"
+          onClick={() => {
+            setMenuOpen(false);
+            setPendingAction("unarchive");
+          }}
+        >
+          Unarchive
         </button>
       ) : null}
       {onRemove ? (
@@ -231,6 +246,16 @@ export function PageActionsMenu({
         busy={busy}
         onCancel={closeConfirm}
         onConfirm={() => void runAction("archive")}
+      />
+
+      <ConfirmDialog
+        open={pendingAction === "unarchive"}
+        title="Unarchive page?"
+        message={`Restore “${displayTitle}” to active views and sync its relationships back into the editor?`}
+        confirmLabel="Unarchive"
+        busy={busy}
+        onCancel={closeConfirm}
+        onConfirm={() => void runAction("unarchive")}
       />
 
       <ConfirmDialog

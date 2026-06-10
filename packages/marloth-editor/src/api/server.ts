@@ -38,6 +38,7 @@ function lifecycleStatus(error: NodeLifecycleError): number {
 function lifecycleMessage(error: NodeLifecycleError): string {
   if (error === "not_found") return "not found";
   if (error === "protected") return "protected node";
+  if (error === "not_archived") return "not archived";
   return "already archived";
 }
 
@@ -209,6 +210,14 @@ export function createApiHandler(
       if (archiveMatch && req.method === "POST") {
         const id = archiveMatch[1]!.toLowerCase();
         const error = db.archiveNode(id);
+        if (error) return json({ error: lifecycleMessage(error) }, lifecycleStatus(error));
+        return json({ ok: true });
+      }
+
+      const unarchiveMatch = /^\/api\/nodes\/([a-f0-9]{32})\/unarchive$/i.exec(path);
+      if (unarchiveMatch && req.method === "POST") {
+        const id = unarchiveMatch[1]!.toLowerCase();
+        const error = db.unarchiveNode(id);
         if (error) return json({ error: lifecycleMessage(error) }, lifecycleStatus(error));
         return json({ ok: true });
       }

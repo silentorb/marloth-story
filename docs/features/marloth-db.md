@@ -87,7 +87,11 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 | `nodes` | Entity property bags; `is_archived` denormalized flag (recomputed on sync) |
 | `meta` | Schema version, content mtime, enum config fingerprint |
 
-**Archive membership:** a page is archived when it has an `includes` relationship to the Archive hub node (`0f558a609a56485185beed4d1fd1cd9f`). The editor `POST /api/nodes/:id/archive` adds that edge only. Search, graph export, and `nodes.is_archived` exclude archived pages and the Archive hub.
+**Archive membership:** a page is archived when it has an `includes` relationship to the Archive hub node (`0f558a609a56485185beed4d1fd1cd9f`). Archiving (`POST /api/nodes/:id/archive`) marks every other incident relationship in `relationships.json` with top-level `"archived": true`, then adds the hub `includes` edge (without `archived`). Unarchiving (`POST /api/nodes/:id/unarchive`) removes the hub `includes` edge and clears `archived` on incident relationships whose other endpoint is not still archived.
+
+**Archived relationships in content:** entries with `"archived": true` are kept in git-tracked `relationships.json` but **skipped** when syncing to SQLite. The hub membership `includes` edge is always synced so `nodes.is_archived` can be recomputed. Search and `nodes.is_archived` exclude archived pages; graph export also excludes archived nodes.
+
+One-time backfill for existing archive members: `bun scripts/migrate-archive-relationship-flags.ts`.
 
 **Enum properties in cache:** keys declared in [`content/model/schema.json`](../../content/model/schema.json) `enums` (e.g. `priority`) are stored in SQLite relationship `properties` JSON as **0-based indices** into the enum’s `options` array. Git-tracked [`content/data/relationships.json`](../../content/data/relationships.json) keeps **string labels**. Encode on cache write and decode on cache read (`packages/marloth-db/src/enum-codec.ts`, `graph.ts`). Changing enum `options` order in `schema.json` triggers a relationship cache re-sync (file watcher + `enum_config_fingerprint` meta check). After pulling enum-cache changes or a `SCHEMA_VERSION` bump, run `bun run content:sync` (or restart the editor API) to rebuild the cache from content.
 
@@ -151,6 +155,7 @@ Writes go to `content/` via `ContentStore`; sync expands to SQLite projections.
 | `scripts/migrate-to-includes.ts` | Migrate associative relationship types to `includes` |
 | `scripts/migrate-remove-via-database.ts` | Strip legacy `via_database` edge properties (scoping uses row `is_a`) |
 | `scripts/migrate-archive-to-includes.ts` | Migrate archive membership from hub links / legacy paths to `includes` on the Archive hub |
+| `scripts/migrate-archive-relationship-flags.ts` | Flag incident relationships `archived: true` for existing archive members |
 | `docs/notion-import-manifest.json` | Import summary (nodes, databases, counts) |
 | `docs/notion-link-report.txt` | Unresolved relation paths |
 

@@ -10,6 +10,8 @@ export interface RelationshipEntry {
   type: string;
   /** Required for directed (non-bidirectional) types — the node id that is the source. */
   directedFrom?: string;
+  /** When true, entry is kept in content but excluded from SQLite cache sync. */
+  archived?: boolean;
   properties?: Properties;
 }
 
@@ -52,6 +54,7 @@ export function parseRelationshipsFile(raw: string): RelationshipsFile {
       row.properties && typeof row.properties === "object" && !Array.isArray(row.properties)
         ? (row.properties as Properties)
         : undefined;
+    const archived = row.archived === true ? true : undefined;
 
     if (typeof row.a === "string" && typeof row.b === "string" && typeof row.type === "string") {
       const { a, b } = sortEndpoints(row.a, row.b);
@@ -64,6 +67,7 @@ export function parseRelationshipsFile(raw: string): RelationshipsFile {
         b,
         type: normalizeRelationshipType(row.type),
         ...(directedFrom ? { directedFrom } : {}),
+        ...(archived ? { archived } : {}),
         ...(properties ? { properties } : {}),
       });
       continue;
@@ -84,6 +88,7 @@ export function parseRelationshipsFile(raw: string): RelationshipsFile {
         b,
         type: normalizeRelationshipType(legacyLabel),
         directedFrom: source,
+        ...(archived ? { archived } : {}),
         ...(properties ? { properties } : {}),
       });
       continue;
@@ -133,6 +138,7 @@ export function serializeRelationshipsFile(file: RelationshipsFile): string {
       b: r.b,
       type: r.type,
       ...(r.directedFrom ? { directedFrom: r.directedFrom } : {}),
+      ...(r.archived === true ? { archived: true } : {}),
       ...(r.properties && Object.keys(r.properties).length > 0 ? { properties: r.properties } : {}),
     })),
   };

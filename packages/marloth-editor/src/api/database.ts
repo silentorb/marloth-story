@@ -2,6 +2,7 @@ import {
   DEFAULT_HOME_NODE_ID,
   applyOrderedAssociationMove,
   archiveNode as archiveNodeInDb,
+  unarchiveNode as unarchiveNodeInDb,
   createNode as createNodeInDb,
   deleteNode as deleteNodeInDb,
   exportExplorerLodGraph,
@@ -117,6 +118,7 @@ export interface EditorDatabase {
   ): import("marloth-db").RelationshipPropertyUpdateError | null;
   deleteNode(id: string): NodeLifecycleError | null;
   archiveNode(id: string): NodeLifecycleError | null;
+  unarchiveNode(id: string): NodeLifecycleError | null;
   createNode(input: CreateNodeInput): CreateNodeResult | CreateNodeError;
   createRelationRow(
     sourceId: string,
@@ -256,6 +258,9 @@ export function openEditorDatabase(
     },
     archiveNode(id: string): NodeLifecycleError | null {
       return archiveNodeInDb(writeCtx, id);
+    },
+    unarchiveNode(id: string): NodeLifecycleError | null {
+      return unarchiveNodeInDb(writeCtx, id);
     },
     createNode(input: CreateNodeInput): CreateNodeResult | CreateNodeError {
       return createNodeInDb(writeCtx, input);

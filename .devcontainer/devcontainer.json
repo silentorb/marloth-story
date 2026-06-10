@@ -6,9 +6,16 @@
     },
     "workspaceFolder": "/workspaces/marloth-story",
     "overrideCommand": false,
-    "forwardPorts": [3847, 5173],
-    // Disable Linux core dumps when bun crashes.  The app has its own diagnostic methods.
-    "runArgs": ["--ulimit", "core=0"],
+    "forwardPorts": [
+        3847,
+        5173
+    ],
+    "runArgs": [
+        // Disable Linux core dumps when bun crashes.  The app has its own diagnostic methods.
+        "--ulimit",
+        "core=0",
+        "--network=host"
+    ],
     "remoteUser": "vscode",
     "mounts": [
         "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"

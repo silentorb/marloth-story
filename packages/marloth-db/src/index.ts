@@ -44,8 +44,15 @@ export type { CreateNodeError, CreateNodeInput, CreateNodeLink, CreateNodeResult
 export type { NodeDetail, NodeSummary } from "./queries";
 export { buildSearchMatchPreview } from "./search-match-preview";
 export type { SearchMatchPreview, SearchMatchPreviewPart } from "./search-match-preview";
-export { archiveNode, deleteNode, isProtectedNodeId } from "./node-lifecycle";
+export { archiveNode, deleteNode, isProtectedNodeId, unarchiveNode } from "./node-lifecycle";
 export type { NodeLifecycleError } from "./node-lifecycle";
+export {
+  filterEntriesForCacheSync,
+  listArchiveMemberIds,
+  listArchiveMemberIdsFromStore,
+  markIncidentRelationshipsArchived,
+  unmarkIncidentRelationshipsArchived,
+} from "./relationship-archive";
 export { getDatabaseViewDetail } from "./database-view";
 export { hydrateRelationCellsForRows } from "./database-view-relations";
 export { relationType, normalizeRelationshipType, stripEmojis } from "./relation-type";

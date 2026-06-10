@@ -28,6 +28,7 @@ interface NodePageViewProps {
   onTabSelect: (tabId: string) => void;
   onOrderedAssociationViewChange: (view: OrderedAssociationViewDetail) => void;
   onArchiveNode: (nodeId: string) => Promise<void>;
+  onUnarchiveNode: (nodeId: string) => Promise<void>;
   onDeleteNode: (nodeId: string) => Promise<void>;
   onTableCellUpdated?: () => void;
   selectTitleOnMount?: boolean;
@@ -46,6 +47,7 @@ export function NodePageView({
   onTabSelect,
   onOrderedAssociationViewChange,
   onArchiveNode,
+  onUnarchiveNode,
   onDeleteNode,
   onTableCellUpdated,
   selectTitleOnMount = false,
@@ -90,6 +92,7 @@ export function NodePageView({
                   disabled={saveState === "saving"}
                   onRelate={() => setRelateOpen(true)}
                   onArchive={() => onArchiveNode(node.id)}
+                  onUnarchive={() => onUnarchiveNode(node.id)}
                   onDelete={() => onDeleteNode(node.id)}
                 />
               ) : null}

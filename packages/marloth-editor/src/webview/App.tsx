@@ -537,6 +537,27 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
     [api, bumpRecentNodes, goHome, loadNode, node],
   );
 
+  const unarchiveCurrentNode = useCallback(
+    async (nodeId: string) => {
+      if (saveTimer.current) {
+        window.clearTimeout(saveTimer.current);
+        saveTimer.current = null;
+      }
+      try {
+        await api.unarchiveNode(nodeId);
+        bumpRecentNodes();
+        if (node?.id === nodeId) {
+          await loadNode(nodeId, { tab: tabFromLocation() });
+        } else if (node) {
+          await loadNode(node.id, { tab: tabFromLocation() });
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : String(err));
+      }
+    },
+    [api, bumpRecentNodes, loadNode, node],
+  );
+
   const deleteCurrentNode = useCallback(
     async (nodeId: string) => {
       if (saveTimer.current) {
@@ -614,6 +635,7 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
             onTabSelect={(tabId) => void selectTab(tabId)}
             onOrderedAssociationViewChange={updateOrderedAssociationView}
             onArchiveNode={archiveCurrentNode}
+            onUnarchiveNode={unarchiveCurrentNode}
             onDeleteNode={deleteCurrentNode}
             onTableCellUpdated={() => void loadNode(node.id, { tab: tabFromLocation() })}
             selectTitleOnMount={selectPageTitleOnMount}

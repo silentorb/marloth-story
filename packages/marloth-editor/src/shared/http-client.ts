@@ -109,6 +109,7 @@ export interface EditorApiClient {
   ): Promise<void>;
   deleteNode(id: string): Promise<void>;
   archiveNode(id: string): Promise<void>;
+  unarchiveNode(id: string): Promise<void>;
   getGraphFull(): Promise<GraphSnapshot>;
   getGraphExplorerLod(options?: GraphExplorerLodOptions): Promise<GraphLodSnapshot>;
   getSchema(): Promise<SchemaFile>;
@@ -388,6 +389,9 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
     },
     async archiveNode(id: string): Promise<void> {
       await fetchJson(`/api/nodes/${id}/archive`, { method: "POST" });
+    },
+    async unarchiveNode(id: string): Promise<void> {
+      await fetchJson(`/api/nodes/${id}/unarchive`, { method: "POST" });
     },
     async getGraphFull(): Promise<GraphSnapshot> {
       const data = await fetchJson<{ graph: GraphSnapshot }>("/api/graph/full");

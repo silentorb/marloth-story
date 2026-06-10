@@ -28,6 +28,7 @@ import {
 import { ContentStore } from "./store";
 import { expandAllRelationships } from "./relationship-sync-expand";
 import { DEFAULT_ARCHIVE_NODE_ID } from "../archive-status";
+import { filterEntriesForCacheSync } from "../relationship-archive";
 
 let cachedDynamicConfig: {
   mtimeMs: number;
@@ -163,7 +164,8 @@ export class CacheSync {
   }
 
   private expandRelationshipsToCache(): void {
-    const entries = this.store.readRelationshipsFile().relationships;
+    const allEntries = this.store.readRelationshipsFile().relationships;
+    const entries = filterEntriesForCacheSync(allEntries);
     const registry = this.store.readRelationshipTypesFile();
     const { records, projections } = expandAllRelationships(entries, registry);
 
