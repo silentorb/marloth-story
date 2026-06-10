@@ -1,8 +1,7 @@
 import type { GraphDatabase } from "./graph";
 import { TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { isTypeTableNode } from "./node-capabilities";
-import { parseNotionSchema } from "./notion-database-schema";
-import type { EvalRow } from "./notion-view-eval";
+import type { EvalRow } from "./row-sort";
 import { applyDynamicFields } from "./dynamic-fields";
 import { hydrateRelationCellsForRows } from "./database-view-relations";
 import { buildDatabaseColumnDefs, normalizeRowCells } from "./database-column-defs";
@@ -125,7 +124,6 @@ function buildCustomViewDetail(
   contentDir: string,
   requestedTabId?: string,
 ): DatabaseViewDetail {
-  const schema = parseNotionSchema(db.getNode(databaseId)?.properties.notion_schema);
   const resolved = resolveCustomTabsForNode(contentDir, databaseId, requestedTabId);
   const tabName = activeTabName(resolved);
 
@@ -157,20 +155,17 @@ function buildCustomViewDetail(
     { contentDir },
   );
 
-  const sorted = sortEvalRowsFromViewSorts(
-    enrichedRows,
-    resolved.activeDefinition.sorts,
-    schema,
-  );
+  const sorted = sortEvalRowsFromViewSorts(enrichedRows, resolved.activeDefinition.sorts);
 
   const mergedColumnDefs = buildDatabaseColumnDefs(
     db,
     databaseId,
     dynamicColumnDefs,
     hiddenColumnKeys,
+    { contentDir },
   );
 
-  hydrateRelationCellsForRows(db, databaseId, schema, mergedColumnDefs, sorted);
+  hydrateRelationCellsForRows(db, databaseId, mergedColumnDefs, sorted);
 
   const defaultColumns =
     mergedColumnDefs.length > 0
@@ -329,14 +324,14 @@ export function getDatabaseViewDetail(
   contentDir?: string,
 ): DatabaseViewDetail | null {
   const database = db.getNode(databaseId);
-  if (!database || !isTypeTableNode(db, databaseId)) return null;
+  const dir = contentDir ?? resolveContentPath();
+  if (!database || !isTypeTableNode(db, databaseId, dir)) return null;
 
   const incoming = TYPE_MEMBERSHIP_TYPES.flatMap((type) =>
     db.listRelationshipsToTarget(databaseId, type),
   );
 
   const title = titleFromProperties(database.properties);
-  const dir = contentDir ?? resolveContentPath();
   const views = loadViewsFromContent(dir);
   const sectionConfig = getSectionTabsConfig(views, databaseId, ITEMS_SECTION_KEY);
 

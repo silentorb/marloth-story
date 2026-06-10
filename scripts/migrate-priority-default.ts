@@ -4,21 +4,24 @@
  * Usage: bun run scripts/migrate-priority-default.ts [--dry-run]
  */
 import { GraphDatabase } from "../packages/marloth-db/src/graph";
-import { hasTypeTableSchema } from "../packages/marloth-db/src/node-capabilities";
+import { resolveContentPath } from "../packages/marloth-db/src/content/paths";
+import { hasTableSchemaEntry } from "../packages/marloth-db/src/table-schemas/load";
 import { TYPE_MEMBERSHIP_LABELS } from "../packages/marloth-db/src/labels";
-import { parseNotionSchema } from "../packages/marloth-db/src/notion-database-schema";
+import { loadTableSchemaForDatabase } from "../packages/marloth-db/src/database-column-defs";
 import { isUnsetPriority, PRIORITY_DEFAULT } from "../packages/marloth-db/src/property-enums";
 
 const dryRun = process.argv.includes("--dry-run");
 const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";
 const db = new GraphDatabase(dbPath);
 
+const contentDir = resolveContentPath();
 const databaseIdsWithPriority = new Set<string>();
 for (const n of db.listNodesForGraphExport()) {
-  const node = db.getNode(n.id);
-  if (!hasTypeTableSchema(node?.properties)) continue;
-  const schema = parseNotionSchema(node?.properties.notion_schema);
-  if (schema?.properties?.Priority) databaseIdsWithPriority.add(n.id);
+  if (!hasTableSchemaEntry(contentDir, n.id)) continue;
+  const columns = loadTableSchemaForDatabase(db, n.id, contentDir);
+  if (columns.some((col) => col.key === "priority" || col.name === "Priority")) {
+    databaseIdsWithPriority.add(n.id);
+  }
 }
 
 let updated = 0;

@@ -16,7 +16,7 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 - This repository contains the Marloth Story project, related to the Marloth series of fantasy novels and overlapping game-design work.
 - Keep updates aligned with the repository's current scope and documentation.
 - The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs live in `./docs/features/` (see Terminology below). The **design ontology** lives at `[docs/ontology.md](./docs/ontology.md)`.
-- The `./content` directory is the **canonical store root**: `content/data/{nodeId}.md` per node (YAML frontmatter + markdown body) plus `relationships.json`; `content/model/` holds `relationship-types.json`, `schema.json`, `views.json`, and `dynamic-fields.json`.
+- The `./content` directory is the **canonical store root**: `content/data/{nodeId}.md` per node (YAML frontmatter + markdown body) plus `relationships.json`; `content/model/` holds `relationship-types.json`, `schema.json`, `table-schemas.json`, `views.json`, and `dynamic-fields.json`.
 - The `./data/marloth.sqlite` file is a **local query cache** (gitignored). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
 - The `./exports/` directory holds **archival** Notion export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
@@ -95,6 +95,7 @@ For **design data** (what nodes mean, how they relate conceptually), read `[docs
 | Ordered associations, scene order, drag-and-drop reorder               | `[docs/features/ordered-associations.md](./docs/features/ordered-associations.md)`                                                                             |
 | Dynamic table view fields, computed columns                            | `[docs/features/dynamic-table-fields.md](./docs/features/dynamic-table-fields.md)` + `[docs/dynamic-fields/](./docs/dynamic-fields/)`                          |
 | Table view tabs, `views.json`                                          | `[docs/features/views.md](./docs/features/views.md)`                                                                                                           |
+| Type table columns, `table-schemas.json`                               | `[docs/features/table-schemas.md](./docs/features/table-schemas.md)`                                                                                           |
 | Static website generation (Astro)                                      | `[docs/features/static-website.md](./docs/features/static-website.md)`                                                                                         |
 
 

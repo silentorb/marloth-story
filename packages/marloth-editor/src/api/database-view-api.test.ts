@@ -7,6 +7,7 @@ import {
   destroyTestContentFixture,
   seedTestNode,
   seedTestRelationships,
+  seedTestTableSchema,
 } from "marloth-db/content/test-helpers";
 import { createTestApiFromContent } from "./test-api-setup";
 
@@ -43,18 +44,12 @@ describe("database view API", () => {
   test("DELETE /api/databases/:id/columns/:key removes column from schema and rows", async () => {
     const dbWithSchema = "55555555555555555555555555555555";
     const rowId = "66666666666666666666666666666666";
+    seedTestTableSchema(fixture, dbWithSchema, [
+      { key: "status", name: "Status", type: "select" },
+    ]);
     seedTestNode(fixture, {
       id: dbWithSchema,
-      properties: {
-        ...typeTableMarkerProperties("Tasks"),
-        notion_schema: JSON.stringify({
-          syncedAt: "2024-01-01T00:00:00.000Z",
-          properties: {
-            Name: { id: "title", name: "Name", type: "title", config: {} },
-            Status: { id: "st", name: "Status", type: "select", config: {} },
-          },
-        }),
-      },
+      properties: typeTableMarkerProperties("Tasks"),
     });
     seedTestNode(fixture, { id: rowId, properties: { title: "Task row" } });
     seedTestRelationships(fixture, [

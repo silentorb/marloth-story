@@ -1,14 +1,14 @@
 ---
 description: Legacy Notion import pipeline — maintenance and export mining only
-globs: packages/notion-importer/**,external/notion/**,docs/notion-import-manifest.json,docs/notion-link-*.txt
+globs: packages/_archive/notion-importer/**,external/notion/**,docs/notion-import-manifest.json,docs/notion-link-*.txt
 alwaysApply: false
 ---
 
 # Notion import (legacy)
 
-You are working on the **legacy** Notion → SQLite import pipeline (`packages/notion-importer/`).
+You are working on the **legacy** Notion → SQLite import pipeline (`packages/_archive/notion-importer/`).
 
-**Do not use full re-import** (`notion:import`, especially `--clean`) to update production graph data. Ongoing edits go directly to `data/marloth.sqlite` — see [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) and root [`AGENTS.md`](../../AGENTS.md).
+**Do not use full re-import** (`notion:import`, especially `--clean`) to update production graph data. Ongoing edits go to `content/` via `ContentStore` or direct file edits — see [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) and root [`AGENTS.md`](../../AGENTS.md). The importer package is for **export-mining reference** only.
 
 Read before changing import behavior:
 

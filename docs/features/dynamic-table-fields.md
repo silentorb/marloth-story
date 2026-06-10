@@ -80,7 +80,7 @@ getDatabaseViewDetail(db, databaseId, view)
        expand dynamic_column_sets → concrete columns
        batch prefetch graph data
        invoke resolvers → merge cells
-  → filterEvalRows / sortEvalRows (Notion view)
+  → sortEvalRowsFromViewSorts (views.json tab sorts)
   → build columnDefs (inject dynamic defs; dynamic wins over stored)
   → DatabaseViewDetail
 ```

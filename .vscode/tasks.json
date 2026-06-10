@@ -20,21 +20,6 @@
       "problemMatcher": []
     },
     {
-      "label": "Notion: legacy full import (--clean, destructive)",
-      "type": "shell",
-      "command": "bun run notion:import -- --clean",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": true
-      },
-      "problemMatcher": []
-    },
-    {
       "label": "Marloth Editor: build",
       "type": "shell",
       "command": "bun run editor:build",

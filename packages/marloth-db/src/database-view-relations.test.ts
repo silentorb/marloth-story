@@ -1,7 +1,11 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { contentModelDir, dynamicFieldsFilePath, tableSchemasFilePath } from "./content/paths";
+import { emptyDynamicFieldsFile, serializeDynamicFieldsFile } from "./content/dynamic-fields-file";
+import { serializeTableSchemasFile } from "./content/table-schemas-file";
+import { invalidateTableSchemasCache } from "./table-schemas/load";
 import { GraphDatabase } from "./graph";
 import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
@@ -10,6 +14,12 @@ import { listRelationConnectionsForRow } from "./database-view-relations";
 
 describe("database-view-relations", () => {
   const dir = mkdtempSync(join(tmpdir(), "marloth-db-view-rel-"));
+  const contentDir = join(dir, "content");
+  mkdirSync(contentModelDir(contentDir), { recursive: true });
+  writeFileSync(
+    dynamicFieldsFilePath(contentDir),
+    serializeDynamicFieldsFile(emptyDynamicFieldsFile()),
+  );
   const dbPath = join(dir, "test.sqlite");
   const db = new GraphDatabase(dbPath);
 
@@ -71,21 +81,27 @@ describe("database-view-relations", () => {
   });
 
   test("hydrates scenes_part column from row is_a without via_database", () => {
-    db.upsertNode(scenesDb, {
-      ...typeTableMarkerProperties("Scenes"),
-      notion_schema: JSON.stringify({
-        syncedAt: "2024-01-01T00:00:00.000Z",
-        properties: {
-          Name: { id: "title", name: "Name", type: "title", config: {} },
-          Part: {
-            id: "OeMk",
-            name: "Part",
-            type: "relation",
-            config: { database_id: partsDb },
+    writeFileSync(
+      tableSchemasFilePath(contentDir),
+      serializeTableSchemasFile({
+        version: 1,
+        tables: {
+          [scenesDb]: {
+            columns: [
+              {
+                key: "part",
+                name: "Part",
+                type: "relation",
+                targetTypeId: partsDb,
+                perspective: "part",
+              },
+            ],
           },
         },
       }),
-    });
+    );
+    invalidateTableSchemasCache();
+    db.upsertNode(scenesDb, { ...typeTableMarkerProperties("Scenes") });
     db.upsertNode(partsDb, { ...typeTableMarkerProperties("Parts") });
     db.upsertNode(sceneId, { title: "Intro scene" });
     db.upsertNode(partId, { title: "Part 1" });
@@ -93,7 +109,7 @@ describe("database-view-relations", () => {
     db.upsertRelationship(partId, partsDb, IS_A_TYPE, { row_index: 0 });
     db.upsertRelationship(sceneId, partId, "scenes_part", { ordinal: 0 });
 
-    const detail = getDatabaseViewDetail(db, scenesDb);
+    const detail = getDatabaseViewDetail(db, scenesDb, undefined, contentDir);
     const row = detail?.rows.find((r) => r.nodeId === sceneId);
     expect(row?.cells.part).toBe("Part 1");
     expect(row?.relationCells?.part).toEqual([{ targetId: partId, title: "Part 1" }]);

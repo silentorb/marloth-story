@@ -1,6 +1,16 @@
 const MARLOTH_LINK_SCHEME = "marloth:";
 const MARLOTH_NODE_URI = /^marloth:\/\/node\/([a-f0-9]{32})$/i;
-const NOTION_ID_IN_PATH = /([a-f0-9]{32})(?:\.(?:md|csv))?$/i;
+const WIKI_LINK = /^\[\[([a-f0-9]{32})\]\]$/i;
+const LEGACY_EXPORT_PATH = /([a-f0-9]{32})(?:\.(?:md|csv))?$/i;
+const warnedLegacyHrefs = new Set<string>();
+
+function warnLegacyHrefResolution(href: string): void {
+  if (warnedLegacyHrefs.has(href)) return;
+  warnedLegacyHrefs.add(href);
+  console.warn(
+    `[markdown-links] legacy export-style href resolved; prefer ./{nodeId}.md or [[{nodeId}]]: ${href}`,
+  );
+}
 const NODE_ID_PATTERN = /^[a-f0-9]{32}$/i;
 const MD_LINK = /\[([^\]]*)\]\(([^)]+)\)/g;
 const NOTION_PAREN_LINK =
@@ -88,10 +98,20 @@ export function resolveMarkdownHrefTarget(href: string): string | null {
     /* keep raw href */
   }
 
+  const wikiMatch = WIKI_LINK.exec(decoded);
+  if (wikiMatch?.[1]) return normalizeRecordId(wikiMatch[1]);
+
+  const canonicalMatch = /^\.\/([a-f0-9]{32})\.md$/i.exec(decoded);
+  if (canonicalMatch?.[1]) return normalizeRecordId(canonicalMatch[1]);
+
   const hashIdx = decoded.indexOf("#");
   const pathOnly = hashIdx >= 0 ? decoded.slice(0, hashIdx) : decoded;
-  const match = NOTION_ID_IN_PATH.exec(pathOnly.trim());
-  return match?.[1] ? normalizeRecordId(match[1]) : null;
+  const legacyMatch = LEGACY_EXPORT_PATH.exec(pathOnly.trim());
+  if (legacyMatch?.[1]) {
+    warnLegacyHrefResolution(trimmed);
+    return normalizeRecordId(legacyMatch[1]);
+  }
+  return null;
 }
 
 /** Rewrite resolvable node links in markdown bodies to `./{nodeId}.md`. */

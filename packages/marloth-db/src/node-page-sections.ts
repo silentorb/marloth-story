@@ -1,7 +1,7 @@
 import type { GraphDatabase, Relationship } from "./graph";
 import { getDatabaseViewDetail, type DatabaseColumnDef, type DatabaseViewDetail } from "./database-view";
 import { coalescePriorityValue, enrichColumnDefs, isPriorityColumnKey } from "./property-enums";
-import { IS_A_TYPE, isTypeMembershipType, LEGACY_IN_DATABASE_TYPE } from "./labels";
+import { IS_A_TYPE, isTypeMembershipType } from "./labels";
 import {
   getConfigByProvider,
   getOrderedAssociationView,
@@ -115,17 +115,11 @@ function ordinalFromProperties(properties: Record<string, unknown>): number {
   return Number.isFinite(parsed) ? parsed : Number.MAX_SAFE_INTEGER;
 }
 
-function normalizeRelationGroupType(type: string): string {
-  if (type === LEGACY_IN_DATABASE_TYPE) return IS_A_TYPE;
-  return type;
-}
-
 function relationGroupKey(
   db: GraphDatabase,
   connection: { type: string; targetNodeId: string },
 ): string {
-  const normalized = normalizeRelationGroupType(connection.type);
-  if (normalizeRelationshipType(normalized) !== INCLUDES_TYPE) return normalized;
+  if (normalizeRelationshipType(connection.type) !== INCLUDES_TYPE) return connection.type;
   const targetTypes = typeIdsForInstance(db, connection.targetNodeId);
   if (targetTypes.length === 1) return `${INCLUDES_TYPE}:${targetTypes[0]}`;
   return INCLUDES_TYPE;

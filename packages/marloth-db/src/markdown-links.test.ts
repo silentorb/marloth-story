@@ -22,6 +22,10 @@ describe("resolveMarkdownHrefTarget", () => {
     expect(resolveMarkdownHrefTarget(`./${TARGET}.md`)).toBe(TARGET);
   });
 
+  test("resolves wiki-style node links", () => {
+    expect(resolveMarkdownHrefTarget(`[[${TARGET}]]`)).toBe(TARGET);
+  });
+
   test("resolves query-only node and record params", () => {
     expect(resolveMarkdownHrefTarget(`?node=${TARGET}`)).toBe(TARGET);
     expect(resolveMarkdownHrefTarget(`?record=${TARGET}`)).toBe(TARGET);

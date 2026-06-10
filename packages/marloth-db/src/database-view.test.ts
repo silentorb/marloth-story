@@ -1,24 +1,51 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { GraphDatabase } from "./graph";
 import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { getDatabaseViewDetail } from "./database-view";
+import { contentModelDir, dynamicFieldsFilePath, tableSchemasFilePath } from "./content/paths";
+import { emptyDynamicFieldsFile, serializeDynamicFieldsFile } from "./content/dynamic-fields-file";
+import { serializeTableSchemasFile } from "./content/table-schemas-file";
+import { invalidateTableSchemasCache } from "./table-schemas/load";
 
 describe("database-view", () => {
   const dir = mkdtempSync(join(tmpdir(), "marloth-db-view-"));
+  const contentDir = join(dir, "content");
+  mkdirSync(contentModelDir(contentDir), { recursive: true });
+  writeFileSync(
+    dynamicFieldsFilePath(contentDir),
+    serializeDynamicFieldsFile(emptyDynamicFieldsFile()),
+  );
   const dbPath = join(dir, "test.sqlite");
   const db = new GraphDatabase(dbPath);
 
+  function writeTableSchema(
+    databaseId: string,
+    columns: Parameters<typeof serializeTableSchemasFile>[0]["tables"][string]["columns"],
+  ): void {
+    writeFileSync(
+      tableSchemasFilePath(contentDir),
+      serializeTableSchemasFile({
+        version: 1,
+        tables: { [databaseId]: { columns } },
+      }),
+    );
+    invalidateTableSchemasCache();
+  }
+
   test("returns null for non-database vertices", () => {
     db.upsertNode("page1", { title: "Alpha" });
-    expect(getDatabaseViewDetail(db, "page1")).toBeNull();
+    expect(getDatabaseViewDetail(db, "page1", undefined, contentDir)).toBeNull();
   });
 
   test("reads IS_A edges for a view", () => {
-    const databaseId = "db12345678901234567890123456789012";
+    const databaseId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    writeTableSchema(databaseId, [
+      { key: "priority", name: "Priority", type: "select", enumId: "priority" },
+    ]);
     db.upsertNode(databaseId, { ...typeTableMarkerProperties("Features") });
     db.upsertNode("page1", { title: "Desperation" });
     db.upsertRelationship("page1", databaseId, IS_A_TYPE, {
@@ -27,7 +54,7 @@ describe("database-view", () => {
       priority: "High",
     });
 
-    const detail = getDatabaseViewDetail(db, databaseId, "all");
+    const detail = getDatabaseViewDetail(db, databaseId, "all", contentDir);
     expect(detail).toMatchObject({
       id: databaseId,
       title: "Features",
@@ -55,7 +82,8 @@ describe("database-view", () => {
   });
 
   test("derives row name from linked page title, not edge row_name", () => {
-    const databaseId = "db22345678901234567890123456789012";
+    const databaseId = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+    writeTableSchema(databaseId, []);
     db.upsertNode(databaseId, { ...typeTableMarkerProperties("Features") });
     db.upsertNode("page2", { title: "Peace in the eye of the storm" });
     db.upsertRelationship("page2", databaseId, IS_A_TYPE, {
@@ -64,29 +92,29 @@ describe("database-view", () => {
       row_name: "Stale CSV label",
     });
 
-    const detail = getDatabaseViewDetail(db, databaseId);
+    const detail = getDatabaseViewDetail(db, databaseId, undefined, contentDir);
     expect(detail?.rows[0]?.name).toBe("Peace in the eye of the storm");
   });
 
   test("hydrates relation columns from row is_a membership", () => {
-    const databaseId = "db42345678901234567890123456789012";
-    const parentId = "parent123456789012345678901234567890";
-    db.upsertNode(databaseId, {
-      ...typeTableMarkerProperties("Features"),
-      notion_schema: JSON.stringify({
-        syncedAt: "2024-01-01T00:00:00.000Z",
-        properties: {
-          Name: { id: "title", name: "Name", type: "title", config: {} },
-          Parents: { id: "HRux", name: "Parents", type: "relation", config: {} },
-        },
-      }),
-    });
+    const databaseId = "cccccccccccccccccccccccccccccccc";
+    const parentId = "dddddddddddddddddddddddddddddddd";
+    writeTableSchema(databaseId, [
+      {
+        key: "parents",
+        name: "Parents",
+        type: "relation",
+        targetTypeId: parentId,
+        perspective: "parents",
+      },
+    ]);
+    db.upsertNode(databaseId, { ...typeTableMarkerProperties("Features") });
     db.upsertNode("page3", { title: "Child feature" });
     db.upsertNode(parentId, { title: "Parent feature" });
     db.upsertRelationship("page3", databaseId, IS_A_TYPE, { row_index: 0 });
     db.upsertRelationship("page3", parentId, "parents", { ordinal: 0 });
 
-    const detail = getDatabaseViewDetail(db, databaseId);
+    const detail = getDatabaseViewDetail(db, databaseId, undefined, contentDir);
     expect(detail?.rows[0]?.cells.parents).toBe("Parent feature");
     expect(detail?.columnDefs?.[0]).toMatchObject({
       type: "relation",
@@ -98,7 +126,8 @@ describe("database-view", () => {
   });
 
   test("ignores orphan_row properties on the database vertex", () => {
-    const databaseId = "db32345678901234567890123456789012";
+    const databaseId = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+    writeTableSchema(databaseId, []);
     db.upsertNode(databaseId, { ...typeTableMarkerProperties("Tasks") });
     db.mergeNodeProperties(databaseId, {
       orphan_row_default_0: JSON.stringify({
@@ -107,7 +136,7 @@ describe("database-view", () => {
       }),
     });
 
-    const detail = getDatabaseViewDetail(db, databaseId);
+    const detail = getDatabaseViewDetail(db, databaseId, undefined, contentDir);
     expect(detail?.rows).toEqual([]);
   });
 

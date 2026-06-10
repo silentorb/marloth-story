@@ -3,18 +3,15 @@ import { applyDynamicFields } from "./dynamic-fields";
 import type { GraphDatabase } from "./graph";
 import { TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { isTypeTableNode } from "./node-capabilities";
-import type { EvalRow } from "./notion-view-eval";
-import {
-  parseNotionSchema,
-  storedScalarColumnDefsFromSchema,
-} from "./notion-database-schema";
+import type { EvalRow } from "./row-sort";
+import { loadTableSchemaForDatabase } from "./database-column-defs";
+import { storedScalarColumns } from "./table-schema";
 import {
   coalescePriorityValue,
   enrichColumnDef,
   enrichColumnDefs,
   isPriorityColumnKey,
 } from "./property-enums";
-
 const ROW_META_KEYS = new Set(["view", "row_index", "row_name", "order"]);
 
 export interface PropertiesSection {
@@ -104,6 +101,21 @@ function mergeStoredAndDynamicColumnDefs(
   return merged;
 }
 
+function storedColumnDefsFromTableSchema(databaseId: string): DatabaseColumnDef[] {
+  const schema = loadTableSchemaForDatabase(databaseId);
+  if (!schema) return [];
+  return enrichColumnDefs(
+    storedScalarColumns(schema).map((col) =>
+      enrichColumnDef({
+        key: col.key,
+        name: col.name,
+        type: col.type,
+        ...(col.enumId ? { enumId: col.enumId } : {}),
+      }),
+    ),
+  );
+}
+
 /** Build typed-node Properties from IS_A membership scalars and dynamic fields. */
 export function buildPropertiesSection(
   db: GraphDatabase,
@@ -125,14 +137,12 @@ export function buildPropertiesSection(
   if (!database || !isTypeTableNode(db, databaseId)) return null;
 
   const typeTitle = titleFromProperties(database.properties);
-  const schema = parseNotionSchema(database.properties.notion_schema);
   const storedCells = cellsFromConnectionProperties(membershipRelationship.properties);
 
   let storedColumnDefs: DatabaseColumnDef[];
-  if (schema) {
-    storedColumnDefs = enrichColumnDefs(
-      storedScalarColumnDefsFromSchema(schema, (def) => enrichColumnDef(def)),
-    );
+  const tableSchema = loadTableSchemaForDatabase(databaseId);
+  if (tableSchema) {
+    storedColumnDefs = storedColumnDefsFromTableSchema(databaseId);
   } else {
     const keys = Object.keys(storedCells).sort((a, b) => a.localeCompare(b));
     storedColumnDefs = enrichColumnDefs(

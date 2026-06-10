@@ -1,12 +1,6 @@
 ---
 title: Desperation
-notion_id: 3c8bb63bea1440cba5eb8b570cecec24
-source_export: exports/e1871eda-1585-4e95-9781-1add0033d51f_ExportBlock-7929816c-16af-4229-9d56-b036ede8360e.zip/Marloth/Features/Desperation 3c8bb63bea1440cba5eb8b570cecec24.md
 alias: Desperation
-created_at: 2023-10-24T04:30:00.000Z
-modified_at: 2026-02-27T07:48:00.000Z
-notion_url: https://www.notion.so/Desperation-3c8bb63bea1440cba5eb8b570cecec24
-notion_archived: false
 ---
 # Desperation
 

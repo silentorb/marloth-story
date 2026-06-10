@@ -50,7 +50,7 @@ Both kinds render through the shared `TableTabsBar` component.
 - **Sort spec**: `{ column: "name" | columnKey, direction: "asc" | "desc" }`.
 - **`columnOrder`** (optional): section-level override for data column order (column keys). When absent, columns use default schema order. Editable in the UI by dragging column headers.
 - **Custom tab order**: implicit array order of `tabs.definitions[]`. Editable in the UI by dragging custom tab buttons (generated tabs are not reorderable).
-- **Columns**: all stored scalar + relation columns from `notion_schema`, plus dynamic fields. No per-tab column visibility or filters.
+- **Columns**: all stored scalar + relation columns from [`table-schemas.json`](./table-schemas.md), plus dynamic fields. No per-tab column visibility or filters.
 
 ## Editor behavior
 

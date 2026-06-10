@@ -3,17 +3,7 @@ import { IS_A_TYPE, TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { findTypeNodeByTitle, isTypeTableNode } from "./node-capabilities";
 
 /** Node properties that are not database row scalars. */
-export const NODE_META_KEYS = new Set([
-  "title",
-  "body",
-  "alias",
-  "notion_id",
-  "source_export",
-  "created_at",
-  "modified_at",
-  "notion_url",
-  "notion_archived",
-]);
+export const NODE_META_KEYS = new Set(["title", "body", "alias"]);
 
 export interface MissingTypeMembership {
   nodeId: string;
@@ -144,11 +134,6 @@ export function folderDepthUnderInstanceRoot(
   return segments.length - 1;
 }
 
-function hasNotionDatabaseMarker(properties: Record<string, unknown>): boolean {
-  const value = properties.notion_database;
-  return typeof value === "string" && value.trim().length > 0;
-}
-
 export function isNestedPageSpuriousTypeMembership(
   pageExport: string | null | undefined,
   databaseSourceExport: string | null | undefined,
@@ -174,15 +159,18 @@ export function isNestedPageSpuriousTypeMembership(
   return { spurious: false };
 }
 
-/** Spurious `is_a` edges on nested Notion sub-pages (or pages outside a database instance folder). */
+/** Spurious `is_a` edges on nested sub-pages (export-path heuristic; no-op when provenance stripped). */
 export function findNestedPageSpuriousTypeMembership(
   db: GraphDatabase,
+  contentDir?: string,
 ): NestedPageSpuriousMembership[] {
   const spurious: NestedPageSpuriousMembership[] = [];
 
   for (const summary of db.listNodesForGraphExport()) {
+    if (!isTypeTableNode(db, summary.id, contentDir)) continue;
+
     const database = db.getNode(summary.id);
-    if (!database || !hasNotionDatabaseMarker(database.properties)) continue;
+    if (!database) continue;
 
     const databaseId = summary.id;
     const databaseTitle = titleFromProperties(database.properties);
@@ -195,7 +183,7 @@ export function findNestedPageSpuriousTypeMembership(
     for (const label of TYPE_MEMBERSHIP_TYPES) {
       for (const connection of db.listRelationshipsToTarget(databaseId, label)) {
         const pageId = connection.sourceNodeId;
-        if (isTypeTableNode(db, pageId)) continue;
+        if (isTypeTableNode(db, pageId, contentDir)) continue;
 
         const page = db.getNode(pageId);
         if (!page) continue;

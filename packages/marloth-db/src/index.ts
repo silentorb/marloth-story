@@ -107,20 +107,14 @@ export type {
   DeleteDatabaseColumnError,
   DeleteDatabaseColumnResult,
 } from "./delete-database-column";
+export { slugifyPropertyKey } from "./table-schema";
+export { sortEvalRows, type EvalRow } from "./row-sort";
 export {
-  parseNotionSchema,
-  parseNotionViews,
-  slugifyPropertyKey,
-  visiblePropertyIdsForView,
-  propertyNameForId,
-} from "./notion-database-schema";
-export type {
-  NotionDatabaseSchema,
-  NotionDatabaseViews,
-  NotionPropertyDefinition,
-  NotionViewDefinition,
-} from "./notion-database-schema";
-export { filterEvalRows, matchesNotionFilter, sortEvalRows } from "./notion-view-eval";
+  loadTableSchemasFromContent,
+  hasTableSchemaEntry,
+  invalidateTableSchemasCache,
+} from "./table-schemas/load";
+export type { TableColumnDef, TableSchemasFile } from "./content/table-schemas-file";
 export {
   canonicalNodeMarkdownHref,
   canonicalizeMarkdownBodyLinks,
@@ -166,11 +160,9 @@ export {
   typeFolderFromPath,
 } from "./type-membership-audit";
 export {
-  findNotionDatabaseByTitle,
   findTypeNodeByTitle,
   graphGroupForNode,
   graphLabelsForNode,
-  hasTypeTableSchema,
   isTypeTableNode,
   primaryTypeTitleForInstance,
   typeTableMarkerProperties,
@@ -228,8 +220,6 @@ export type { DynamicColumnSetRecord, DynamicFieldRecord } from "./dynamic-field
 export {
   IS_A_TYPE,
   IS_A_LABEL,
-  LEGACY_IN_DATABASE_TYPE,
-  LEGACY_IN_DATABASE_LABEL,
   TYPE_MEMBERSHIP_TYPES,
   TYPE_MEMBERSHIP_LABELS,
   isTypeMembershipType,
@@ -274,7 +264,7 @@ export type {
   ViewsFile,
 } from "./content/views-file";
 export type { ResolvedTab, TableTabsDetail, TabKind } from "./views/tabs";
-export { sortEvalRowsFromViewSorts, notionSortToViewSort, viewSortsToNotionSorts } from "./views/sort-spec";
+export { sortEvalRowsFromViewSorts } from "./views/sort-spec";
 export {
   applyColumnOrder,
   applySectionColumnOrder,

@@ -2,17 +2,15 @@ import { listRelationConnectionsForRow } from "./database-view-relations";
 import { loadDynamicFields } from "./dynamic-fields";
 import { TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { isTypeTableNode } from "./node-capabilities";
-import { normalizeNotionId } from "./notion-ids";
-import {
-  parseNotionSchema,
-  slugifyPropertyKey,
-  type NotionDatabaseSchema,
-} from "./notion-database-schema";
 import { unlinkOutgoingRelationship } from "./relationship-link-mutations";
 import { otherEndpoint } from "./relationship-traverse";
 import { relationType } from "./relation-type";
 import type { MarlothWriteContext } from "./content/write-context";
-import { syncAfterNodeWrite, syncAfterRelationshipsWrite } from "./content/write-context";
+import { syncAfterRelationshipsWrite } from "./content/write-context";
+import { TABLE_SCHEMAS_FILENAME } from "./content/paths";
+import type { TableColumnDef, TableSchemasFile } from "./content/table-schemas-file";
+import { findColumnByKey } from "./table-schema";
+import { invalidateTableSchemasCache } from "./table-schemas/load";
 import { ITEMS_SECTION_KEY } from "./views/resolve-tabs";
 import { purgeColumnFromViews } from "./views/mutations";
 
@@ -26,14 +24,6 @@ export type DeleteDatabaseColumnError =
 export interface DeleteDatabaseColumnResult {
   rowsAffected: number;
   relationsUnlinked: number;
-}
-
-function findSchemaPropertyName(schema: NotionDatabaseSchema, columnKey: string): string | null {
-  for (const [name, def] of Object.entries(schema.properties)) {
-    if (name === "Name" || def.type === "title") continue;
-    if (slugifyPropertyKey(name) === columnKey) return name;
-  }
-  return null;
 }
 
 function stripScalarFromMembershipEdges(
@@ -62,19 +52,10 @@ function stripScalarFromMembershipEdges(
 function unlinkRelationColumnFromAllRows(
   ctx: MarlothWriteContext,
   databaseId: string,
-  propertyName: string,
-  schema: NotionDatabaseSchema,
+  column: TableColumnDef & { type: "relation" },
 ): number {
-  const propDef = schema.properties[propertyName];
-  if (!propDef || propDef.type !== "relation") return 0;
-
-  const connectionType = relationType(propertyName);
-  let targetDatabaseId: string | undefined;
-  const rawDbId = propDef.config?.database_id;
-  if (typeof rawDbId === "string") {
-    const normalized = normalizeNotionId(rawDbId);
-    if (normalized) targetDatabaseId = normalized;
-  }
+  const connectionType = column.perspective ?? relationType(column.name);
+  const targetDatabaseId = column.targetTypeId;
 
   const rowIds = new Set<string>();
   for (const type of TYPE_MEMBERSHIP_TYPES) {
@@ -106,6 +87,19 @@ function unlinkRelationColumnFromAllRows(
   return unlinked;
 }
 
+function removeColumnFromTableSchemas(
+  file: TableSchemasFile,
+  databaseId: string,
+  columnKey: string,
+): boolean {
+  const table = file.tables[databaseId];
+  if (!table) return false;
+  const nextColumns = table.columns.filter((col) => col.key !== columnKey);
+  if (nextColumns.length === table.columns.length) return false;
+  file.tables[databaseId] = { columns: nextColumns };
+  return true;
+}
+
 export function deleteDatabaseColumn(
   ctx: MarlothWriteContext,
   databaseId: string,
@@ -116,7 +110,7 @@ export function deleteDatabaseColumn(
     return "column_not_deletable";
   }
 
-  if (!isTypeTableNode(ctx.db, databaseId)) {
+  if (!isTypeTableNode(ctx.db, databaseId, ctx.store.contentDir)) {
     return "database_not_found";
   }
 
@@ -125,35 +119,36 @@ export function deleteDatabaseColumn(
     return "column_not_deletable";
   }
 
-  const database = ctx.db.getNode(databaseId);
-  const schema = parseNotionSchema(database?.properties.notion_schema);
-  if (!schema) {
+  const schemasFile = ctx.store.readTableSchemasFile();
+  const tableSchema = schemasFile.tables[databaseId];
+  if (!tableSchema) {
     return "column_not_found";
   }
 
-  const propertyName = findSchemaPropertyName(schema, normalizedKey);
-  if (!propertyName) {
+  const column = findColumnByKey(tableSchema, normalizedKey);
+  if (!column) {
     return "column_not_found";
   }
 
-  const propDef = schema.properties[propertyName]!;
   let rowsAffected = 0;
   let relationsUnlinked = 0;
 
-  if (propDef.type === "relation") {
-    relationsUnlinked = unlinkRelationColumnFromAllRows(ctx, databaseId, propertyName, schema);
+  if (column.type === "relation") {
+    relationsUnlinked = unlinkRelationColumnFromAllRows(ctx, databaseId, column);
   } else {
     rowsAffected = stripScalarFromMembershipEdges(ctx, databaseId, normalizedKey);
   }
 
-  delete schema.properties[propertyName];
-  ctx.store.mergeNodeProperties(databaseId, {
-    notion_schema: JSON.stringify(schema),
-  });
+  if (!removeColumnFromTableSchemas(schemasFile, databaseId, normalizedKey)) {
+    return "column_not_found";
+  }
+
+  ctx.store.writeTableSchemasFile(schemasFile);
+  invalidateTableSchemasCache();
   purgeColumnFromViews(ctx.store, databaseId, ITEMS_SECTION_KEY, normalizedKey);
 
   syncAfterRelationshipsWrite(ctx);
-  syncAfterNodeWrite(ctx, databaseId);
+  ctx.sync.syncAfterWrite(TABLE_SCHEMAS_FILENAME);
   ctx.sync.syncAfterWrite("views.json");
 
   return { rowsAffected, relationsUnlinked };

@@ -466,7 +466,7 @@ export class GraphDatabase {
   }
 
   private nodeMatchesAnyAllowedType(nodeId: string, allowedTypeIds: readonly string[]): boolean {
-    for (const type of ["is_a", "in_database"] as const) {
+    for (const type of ["is_a"] as const) {
       for (const connection of this.listRelationshipsFromSource(nodeId, type)) {
         if (allowedTypeIds.includes(connection.targetNodeId)) return true;
       }

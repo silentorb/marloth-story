@@ -9,6 +9,7 @@ import {
   seedTestDynamicFields,
   seedTestNode,
   seedTestRelationships,
+  seedTestTableSchema,
   seedTestViews,
 } from "./content/test-helpers";
 import { DEFAULT_CUSTOM_TAB } from "./content/views-file";
@@ -22,18 +23,12 @@ describe("deleteDatabaseColumn", () => {
     const page2 = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
     seedTestNode(fixture, {
       id: databaseId,
-      properties: {
-        ...typeTableMarkerProperties("Features"),
-        notion_schema: JSON.stringify({
-          syncedAt: "2024-01-01T00:00:00.000Z",
-          properties: {
-            Name: { id: "title", name: "Name", type: "title", config: {} },
-            Priority: { id: "pri", name: "Priority", type: "select", config: {} },
-            Status: { id: "st", name: "Status", type: "select", config: {} },
-          },
-        }),
-      },
+      properties: typeTableMarkerProperties("Features"),
     });
+    seedTestTableSchema(fixture, databaseId, [
+      { key: "priority", name: "Priority", type: "select", enumId: "priority" },
+      { key: "status", name: "Status", type: "select" },
+    ]);
     seedTestNode(fixture, { id: page1, properties: { title: "Feature A" } });
     seedTestNode(fixture, { id: page2, properties: { title: "Feature B" } });
     seedTestRelationships(fixture, [
@@ -54,10 +49,8 @@ describe("deleteDatabaseColumn", () => {
     const result = deleteDatabaseColumn(fixture.ctx, databaseId, "priority");
     expect(result).toEqual({ rowsAffected: 2, relationsUnlinked: 0 });
 
-    const schema = JSON.parse(
-      fixture.ctx.db.getNode(databaseId)?.properties.notion_schema as string,
-    ) as { properties: Record<string, unknown> };
-    expect(schema.properties.Priority).toBeUndefined();
+    const tableSchema = fixture.ctx.store.readTableSchemasFile().tables[databaseId];
+    expect(tableSchema?.columns.some((col) => col.key === "priority")).toBe(false);
 
     const edge1 = fixture.ctx.db.listRelationshipsFromSource(page1, IS_A_TYPE)[0];
     expect(edge1?.properties.priority).toBeUndefined();
@@ -75,17 +68,17 @@ describe("deleteDatabaseColumn", () => {
     const parentId = "ffffffffffffffffffffffffffffffff";
     seedTestNode(fixture, {
       id: databaseId,
-      properties: {
-        ...typeTableMarkerProperties("Features"),
-        notion_schema: JSON.stringify({
-          syncedAt: "2024-01-01T00:00:00.000Z",
-          properties: {
-            Name: { id: "title", name: "Name", type: "title", config: {} },
-            Parents: { id: "HRux", name: "Parents", type: "relation", config: {} },
-          },
-        }),
-      },
+      properties: typeTableMarkerProperties("Features"),
     });
+    seedTestTableSchema(fixture, databaseId, [
+      {
+        key: "parents",
+        name: "Parents",
+        type: "relation",
+        targetTypeId: parentId,
+        perspective: "parents",
+      },
+    ]);
     seedTestNode(fixture, { id: pageId, properties: { title: "Child feature" } });
     seedTestNode(fixture, { id: parentId, properties: { title: "Parent feature" } });
     seedTestRelationships(fixture, [
@@ -101,10 +94,8 @@ describe("deleteDatabaseColumn", () => {
     const result = deleteDatabaseColumn(fixture.ctx, databaseId, "parents");
     expect(result).toEqual({ rowsAffected: 0, relationsUnlinked: 1 });
 
-    const schema = JSON.parse(
-      fixture.ctx.db.getNode(databaseId)?.properties.notion_schema as string,
-    ) as { properties: Record<string, unknown> };
-    expect(schema.properties.Parents).toBeUndefined();
+    const tableSchema = fixture.ctx.store.readTableSchemasFile().tables[databaseId];
+    expect(tableSchema?.columns.some((col) => col.key === "parents")).toBe(false);
     expect(fixture.ctx.db.listRelationshipsFromSource(pageId, "parents")).toHaveLength(0);
 
     const detail = getDatabaseViewDetail(fixture.ctx.db, databaseId, undefined, fixture.ctx.store.contentDir);
@@ -116,17 +107,11 @@ describe("deleteDatabaseColumn", () => {
     const pageId = "22222222222222222222222222222222";
     seedTestNode(fixture, {
       id: databaseId,
-      properties: {
-        ...typeTableMarkerProperties("Tasks"),
-        notion_schema: JSON.stringify({
-          syncedAt: "2024-01-01T00:00:00.000Z",
-          properties: {
-            Name: { id: "title", name: "Name", type: "title", config: {} },
-            Status: { id: "st", name: "Status", type: "select", config: {} },
-          },
-        }),
-      },
+      properties: typeTableMarkerProperties("Tasks"),
     });
+    seedTestTableSchema(fixture, databaseId, [
+      { key: "status", name: "Status", type: "select" },
+    ]);
     seedTestNode(fixture, { id: pageId, properties: { title: "Task A" } });
     seedTestRelationships(fixture, [
       { source: pageId, target: databaseId, type: IS_A_TYPE, properties: { status: "Open" } },
@@ -172,6 +157,7 @@ describe("deleteDatabaseColumn", () => {
       id: databaseId,
       properties: typeTableMarkerProperties("Characters"),
     });
+    seedTestTableSchema(fixture, databaseId, []);
     seedTestDynamicFields(fixture, [
       {
         databaseId,
@@ -192,16 +178,9 @@ describe("deleteDatabaseColumn", () => {
     const databaseId = "44444444444444444444444444444444";
     seedTestNode(fixture, {
       id: databaseId,
-      properties: {
-        ...typeTableMarkerProperties("Features"),
-        notion_schema: JSON.stringify({
-          syncedAt: "2024-01-01T00:00:00.000Z",
-          properties: {
-            Name: { id: "title", name: "Name", type: "title", config: {} },
-          },
-        }),
-      },
+      properties: typeTableMarkerProperties("Features"),
     });
+    seedTestTableSchema(fixture, databaseId, []);
 
     expect(deleteDatabaseColumn(fixture.ctx, databaseId, "missing")).toBe("column_not_found");
   });

@@ -30,7 +30,7 @@ Copy when authoring a new field:
 
 ## Database
 
-- **NotionDatabase id:**
+- **Type table node id:**
 - **Column key:**
 - **Column display name:**
 - **Column type:** number | text | …
@@ -45,7 +45,7 @@ Copy when authoring a new field:
 
 ## Replaces legacy field
 
-(If any — Notion formula/rollup key on `IS_A` relationship properties.)
+(If any — legacy computed column key on `IS_A` relationship properties.)
 
 ## Worked example
 

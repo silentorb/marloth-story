@@ -8,17 +8,7 @@ const EMOJI_OR_SYMBOL =
 const WS_RE = /\s+/g;
 const KEY_SAFE = /[^a-z0-9_]+/g;
 
-const RESERVED = new Set([
-  "title",
-  "notion_id",
-  "aliases",
-  "source_export",
-  "notion_database",
-  "notion_url",
-  "tags",
-  "type",
-  "view",
-]);
+const RESERVED = new Set(["title", "aliases", "tags", "type", "view"]);
 
 export function stripEmojis(s: string): string {
   let out = s.replace(EMOJI_OR_SYMBOL, "");

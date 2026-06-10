@@ -1,13 +1,9 @@
 import type { GraphDatabase } from "./graph";
 import type { DatabaseColumnDef } from "./database-view";
-import {
-  parseNotionSchema,
-  slugifyPropertyKey,
-  storedScalarColumnDefsFromSchema,
-  type NotionDatabaseSchema,
-  type NotionPropertyDefinition,
-} from "./notion-database-schema";
-import { normalizeNotionId } from "./notion-ids";
+import { resolveContentPath } from "./content/paths";
+import type { TableColumnDef, TableSchema } from "./content/table-schemas-file";
+import { getTableSchema } from "./table-schema";
+import { loadTableSchemasFromContent } from "./table-schemas/load";
 import { relationType } from "./relation-type";
 import {
   coalescePriorityValue,
@@ -18,24 +14,28 @@ import {
 
 export interface BuildDatabaseColumnDefsOptions {
   excludeKeys?: Set<string>;
+  contentDir?: string;
 }
 
-function enrichRelationColumnDef(
-  col: DatabaseColumnDef,
-  propDef?: NotionPropertyDefinition,
-): DatabaseColumnDef {
-  if (col.type !== "relation") return col;
-  let targetDatabaseId: string | undefined;
-  const rawDbId = propDef?.config?.database_id;
-  if (typeof rawDbId === "string") {
-    const normalized = normalizeNotionId(rawDbId);
-    if (normalized) targetDatabaseId = normalized;
+function databaseColumnFromTableColumn(col: TableColumnDef): DatabaseColumnDef {
+  if (col.type === "relation") {
+    return {
+      key: col.key,
+      name: col.name,
+      type: col.type,
+      relationType: col.perspective ?? relationType(col.name),
+      targetDatabaseId: col.targetTypeId,
+    };
   }
-  return {
-    ...col,
-    relationType: relationType(col.name),
-    targetDatabaseId,
+  const base: DatabaseColumnDef = {
+    key: col.key,
+    name: col.name,
+    type: col.type,
   };
+  if (col.enumId) {
+    base.enumId = col.enumId;
+  }
+  return enrichColumnDef(base);
 }
 
 export function mergeDynamicColumnDefs(
@@ -64,7 +64,7 @@ export function mergeDynamicColumnDefs(
   return merged;
 }
 
-/** Build typed column definitions from notion_schema (all stored scalar columns). */
+/** Build typed column definitions from table-schemas.json. */
 export function buildDatabaseColumnDefs(
   db: GraphDatabase,
   databaseId: string,
@@ -72,47 +72,16 @@ export function buildDatabaseColumnDefs(
   hiddenColumnKeys: Set<string>,
   options?: BuildDatabaseColumnDefsOptions,
 ): DatabaseColumnDef[] {
-  const database = db.getNode(databaseId);
-  const schema = parseNotionSchema(database?.properties.notion_schema);
+  const contentDir = options?.contentDir ?? resolveContentPath();
+  const tableSchemas = loadTableSchemasFromContent(contentDir);
+  const schema = getTableSchema(tableSchemas, databaseId);
   const excludeKeys = options?.excludeKeys ?? new Set<string>();
 
   const columnDefs: DatabaseColumnDef[] = [];
   if (schema) {
-    const scalarDefs = storedScalarColumnDefsFromSchema(schema, (def) =>
-      enrichColumnDef(def),
-    );
-    for (const def of scalarDefs) {
-      const key = slugifyPropertyKey(def.name);
-      if (excludeKeys.has(key)) continue;
-      const propDef = schema.properties[def.name];
-      columnDefs.push(
-        enrichRelationColumnDef(
-          {
-            key,
-            name: def.name,
-            type: def.type,
-          },
-          propDef,
-        ),
-      );
-    }
-
-    for (const [name, def] of Object.entries(schema.properties)) {
-      if (name === "Name" || def.type === "title") continue;
-      if (def.type !== "relation") continue;
-      const key = slugifyPropertyKey(name);
-      if (excludeKeys.has(key)) continue;
-      if (columnDefs.some((col) => col.key === key)) continue;
-      columnDefs.push(
-        enrichRelationColumnDef(
-          enrichColumnDef({
-            key,
-            name,
-            type: def.type,
-          }),
-          def,
-        ),
-      );
+    for (const col of schema.columns) {
+      if (excludeKeys.has(col.key)) continue;
+      columnDefs.push(databaseColumnFromTableColumn(col));
     }
   }
 
@@ -142,9 +111,14 @@ export function normalizeRowCells(
   return out;
 }
 
-export function parseDatabaseSchema(
-  db: GraphDatabase,
+export function loadTableSchemaForDatabase(
   databaseId: string,
-): NotionDatabaseSchema | null {
-  return parseNotionSchema(db.getNode(databaseId)?.properties.notion_schema);
+  contentDir?: string,
+): TableSchema | null {
+  const dir = contentDir ?? resolveContentPath();
+  const tableSchemas = loadTableSchemasFromContent(dir);
+  return getTableSchema(tableSchemas, databaseId);
 }
+
+/** @deprecated Use loadTableSchemaForDatabase */
+export const parseDatabaseSchema = loadTableSchemaForDatabase;

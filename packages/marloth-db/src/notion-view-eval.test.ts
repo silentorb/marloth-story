@@ -6,24 +6,22 @@ import { GraphDatabase } from "./graph";
 import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { getDatabaseViewDetail } from "./database-view";
-import { filterEvalRows, sortEvalRows, type EvalRow } from "./notion-view-eval";
+import { sortEvalRows, type EvalRow } from "./row-sort";
 import { serializeViewsFile, VIEWS_FILE_VERSION } from "./content/views-file";
 import { serializeDynamicFieldsFile, emptyDynamicFieldsFile } from "./content/dynamic-fields-file";
-import { contentModelDir, viewsFilePath, dynamicFieldsFilePath } from "./content/paths";
+import {
+  contentModelDir,
+  viewsFilePath,
+  dynamicFieldsFilePath,
+  tableSchemasFilePath,
+} from "./content/paths";
+import { serializeTableSchemasFile } from "./content/table-schemas-file";
 
-describe("notion-view-eval", () => {
+describe("row-sort", () => {
   const rows: EvalRow[] = [
     { nodeId: "a", name: "Alpha", cells: { status: "Done" }, rowIndex: 0, createdAt: null, modifiedAt: null },
     { nodeId: "b", name: "Beta", cells: { status: "Todo" }, rowIndex: 1, createdAt: null, modifiedAt: null },
   ];
-
-  test("filters select equals", () => {
-    const filtered = filterEvalRows(rows, {
-      property: "status",
-      select: { equals: "Done" },
-    });
-    expect(filtered.map((r) => r.nodeId)).toEqual(["a"]);
-  });
 
   test("sorts by property ascending", () => {
     const sorted = sortEvalRows(rows, [{ property: "status", direction: "ascending" }]);
@@ -87,16 +85,18 @@ describe("getDatabaseViewDetail with custom tabs", () => {
       serializeDynamicFieldsFile(emptyDynamicFieldsFile()),
     );
 
-    db.upsertNode(databaseId, {
-      ...typeTableMarkerProperties("Tasks"),
-      notion_schema: JSON.stringify({
-        syncedAt: "2024-01-01T00:00:00.000Z",
-        properties: {
-          Name: { id: "title", name: "Name", type: "title", config: {} },
-          Status: { id: "status", name: "Status", type: "select", config: {} },
+    writeFileSync(
+      tableSchemasFilePath(contentDir),
+      serializeTableSchemasFile({
+        version: 1,
+        tables: {
+          [databaseId]: {
+            columns: [{ key: "status", name: "Status", type: "select" }],
+          },
         },
       }),
-    });
+    );
+    db.upsertNode(databaseId, { ...typeTableMarkerProperties("Tasks") });
     db.upsertNode("page1", { title: "Zebra" });
     db.upsertNode("page2", { title: "Alpha" });
     db.upsertRelationship("page1", databaseId, IS_A_TYPE, { status: "Done", row_index: 0 });
@@ -149,17 +149,21 @@ describe("getDatabaseViewDetail with custom tabs", () => {
       serializeDynamicFieldsFile(emptyDynamicFieldsFile()),
     );
 
-    db.upsertNode(databaseId, {
-      ...typeTableMarkerProperties("Tasks"),
-      notion_schema: JSON.stringify({
-        syncedAt: "2024-01-01T00:00:00.000Z",
-        properties: {
-          Name: { id: "title", name: "Name", type: "title", config: {} },
-          Status: { id: "status", name: "Status", type: "select", config: {} },
-          Priority: { id: "priority", name: "Priority", type: "select", config: {} },
+    writeFileSync(
+      tableSchemasFilePath(contentDir),
+      serializeTableSchemasFile({
+        version: 1,
+        tables: {
+          [databaseId]: {
+            columns: [
+              { key: "status", name: "Status", type: "select" },
+              { key: "priority", name: "Priority", type: "select", enumId: "priority" },
+            ],
+          },
         },
       }),
-    });
+    );
+    db.upsertNode(databaseId, { ...typeTableMarkerProperties("Tasks") });
     db.upsertNode("page1", { title: "Row" });
     db.upsertRelationship("page1", databaseId, IS_A_TYPE, { row_index: 0 });
 

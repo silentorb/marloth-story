@@ -154,7 +154,7 @@ describe("node-sections", () => {
         },
       }),
     });
-    db.upsertRelationship("page6", databaseId, "in_database", { status: "Draft" });
+    db.upsertRelationship("page6", databaseId, IS_A_TYPE, { status: "Draft" });
 
     const detail = getNodePageDetail(db, "page6");
     const membership = detail?.sections.find(
@@ -170,9 +170,10 @@ describe("node-sections", () => {
   });
 
   test("resolves typeNodeId by matching FEATURES label to NotionDatabase title", () => {
-    const featuresTypeId = "db72345678901234567890123456789012";
+    const featuresTypeId = "f72345678901234567890123456789012";
     db.upsertNode("scene2", { title: "Chase" });
     db.upsertNode(featuresTypeId, { ...typeTableMarkerProperties("Features") });
+    db.upsertRelationship("scene2", featuresTypeId, IS_A_TYPE, { row_index: 0 });
     db.upsertNode("feat2", { title: "Desperation" });
     db.upsertRelationship("scene2", "feat2", "features", { ordinal: 0 });
 
@@ -188,9 +189,10 @@ describe("node-sections", () => {
   });
 
   test("resolves typeNodeId by matching NotionDatabase title to relation label", () => {
-    const inspTypeId = "db82345678901234567890123456789012";
+    const inspTypeId = "f82345678901234567890123456789012";
     db.upsertNode("scene3", { title: "Ball" });
     db.upsertNode(inspTypeId, { ...typeTableMarkerProperties("Inspirations") });
+    db.upsertRelationship("scene3", inspTypeId, IS_A_TYPE, { row_index: 0 });
     db.upsertNode("insp2", { title: "Emma" });
     db.upsertRelationship("scene3", "insp2", "inspirations", { ordinal: 0 });
 

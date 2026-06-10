@@ -11,6 +11,7 @@ export const CONNECTIONS_FILENAME = "connections.json";
 export const DYNAMIC_FIELDS_FILENAME = "dynamic-fields.json";
 export const SCHEMA_FILENAME = "schema.json";
 export const VIEWS_FILENAME = "views.json";
+export const TABLE_SCHEMAS_FILENAME = "table-schemas.json";
 export const NODE_ID_PATTERN = /^[0-9a-f]{32}$/;
 export const NODE_FILE_PATTERN = /^[0-9a-f]{32}\.md$/;
 
@@ -64,6 +65,10 @@ export function schemaFilePath(contentRoot: string): string {
 
 export function viewsFilePath(contentRoot: string): string {
   return resolve(contentModelDir(contentRoot), VIEWS_FILENAME);
+}
+
+export function tableSchemasFilePath(contentRoot: string): string {
+  return resolve(contentModelDir(contentRoot), TABLE_SCHEMAS_FILENAME);
 }
 
 export function resolveContentPath(cwd = process.cwd()): string {

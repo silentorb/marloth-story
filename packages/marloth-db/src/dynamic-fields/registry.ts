@@ -1,5 +1,5 @@
 import type { GraphDatabase } from "../graph";
-import type { EvalRow } from "../notion-view-eval";
+import type { EvalRow } from "../row-sort";
 
 export type DynamicFieldParams = Record<string, unknown>;
 

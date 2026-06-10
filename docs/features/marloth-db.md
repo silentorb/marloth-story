@@ -25,7 +25,7 @@ For **what design nodes mean** (features, inspirations, products, traceability),
 | **Relationship type** | Lower snake_case name (e.g. `is_a`, `inspirations_features`, `part`). Bidirectional Notion pairs use a single composite type. |
 | **Perspective type** | Local type name used in UI/API from one endpoint (e.g. `inspirations` on a Feature page). Mapped to composite storage types via `relationship-types.json`. |
 | **Page** | Editor-facing node view (`getNodePageDetail`, `NodePageView`)—not a Notion export file. |
-| **Type table** | Node that receives `is_a` rows and/or carries table schema metadata (`notion_schema`, etc.). |
+| **Type table** | Node listed in [`table-schemas.json`](./table-schemas.md) and/or receiving `is_a` rows. |
 | **Schema** | Workspace model config in `content/model/schema.json` (relationship rules, enums) — see [schema.md](./schema.md). |
 
 API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodePageDetail`, `GET /api/nodes`, `?node=`. Cache tables: `nodes`, `relationship_records`, `relationship_projections` (`SCHEMA_VERSION` **10**).
@@ -55,6 +55,7 @@ API names: `ContentStore`, `openMarlothWriteContext`, `getNodeDetail`, `getNodeP
 | `content/model/views.json` | UI table tab definitions (custom + generated providers) |
 | `content/model/dynamic-fields.json` | Dynamic table field bindings |
 | `content/model/schema.json` | Relationship rules and property enums |
+| `content/model/table-schemas.json` | Type-table column definitions |
 | `data/marloth.sqlite` | Local query cache (gitignored; default path via `MARLOTH_DB_PATH`) |
 
 - `content/data/` holds only node markdown and `relationships.json` (flat within `data/`).
@@ -107,15 +108,16 @@ Node cross-references in markdown `body` use two storage forms (see `packages/ma
 
 Helpers: `expandDynamicNodeLinks`, `collapseDynamicEditorLinks`, `findMarkdownLinksToTarget` (includes dynamic syntax for backlinks). One-time migration converts static links whose anchor text matches the target node's `properties.title` or `properties.alias` (accent/case-insensitive; markdown emphasis stripped from anchor text). Custom anchor text is left static. Run: `bun scripts/migrate-static-links-to-dynamic.ts [--dry-run]`.
 
-### Notion mapping (legacy initial import)
+### Type tables and rows
 
-| Notion concept | Graph representation |
+| Concept | Graph representation |
 | --- | --- |
-| Page (`.md`) | Node with scalar properties in JSON; markdown body in `body` |
-| Page relation property | Bidirectional or directed relationship; composite type when both sides were imported |
-| Database (CSV export) | Node with `notion_database` / synced `notion_schema` |
-| Database row / type instance | Relationship `(page)-[:is_a {view, row_index, …}]->(type)` |
-| CSV relation column | Relationship from row's page to targets |
+| Type table | Node id in `table-schemas.json` (column defs) + optional `is_a` incoming edges |
+| Row / type instance | Relationship `(page)-[:is_a {view, row_index, …}]->(type)` with scalar props on the edge |
+| Relation column | Outgoing relationships from the row page; scoped by row `is_a` membership |
+| Stored scalars | Keys from `table-schemas.json` columns, values on `is_a` edge properties |
+
+Legacy Notion import mapping (archival): see [notion-import.md](./notion-import.md).
 
 Database table **relation columns** are scoped by the row node's **`is_a` membership** in the viewing database—not by per-edge `via_database` properties (removed; see `scripts/migrate-remove-via-database.ts`).
 
@@ -179,7 +181,8 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 
 - **Unit tests:** `bun test` in `packages/marloth-db/`.
 - **After content edits:** `bun run content:sync` or use the editor API; spot-check via `getNodeDetail` or the editor.
-- **Legacy import only:** `docs/notion-import-manifest.json` and `docs/notion-link-report.txt` (importer tests in `packages/notion-importer/`).
+- **Content model guard:** `bun run validate:content-model` — fails on legacy `notion_*` / `source_export` frontmatter keys.
+- **Legacy import only:** `docs/notion-import-manifest.json` and `docs/notion-link-report.txt` (importer archived under `packages/_archive/notion-importer/`).
 
 ## Implementation pointers
 
@@ -195,7 +198,8 @@ See [notion-import.md](./notion-import.md) for archival export layout (mining on
 | `packages/marloth-db/src/node-page-sections.ts` | Universal page sections |
 | `packages/marloth-db/src/database-view-relations.ts` | Relation-column hydration |
 | `packages/marloth-db/src/ordered-associations.ts` | Ordered association config, view query, move mutation |
-| `packages/notion-importer/src/graph-pipeline.ts` | Notion → graph import (legacy) |
+| `packages/marloth-db/src/table-schemas/load.ts` | `table-schemas.json` loader |
+| `packages/_archive/notion-importer/src/graph-pipeline.ts` | Notion → graph import (legacy, archival) |
 
 ## See also
 

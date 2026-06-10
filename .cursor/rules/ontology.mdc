@@ -1,6 +1,6 @@
 ---
 description: Design ontology — read for domain meaning before editing graph data
-globs: data/**,exports/**
+globs: content/**,exports/**
 alwaysApply: false
 ---
 
@@ -14,7 +14,7 @@ Read the storage-agnostic domain model before interpreting or changing data:
 
 Pair with schema docs when querying or editing the graph:
 
-- [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) — direct edits to `data/marloth.sqlite` (see root [`AGENTS.md`](../../AGENTS.md) **Graph data workflow**)
+- [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) — edit `content/` (see root [`AGENTS.md`](../../AGENTS.md) **Graph data workflow**)
 - [`docs/features/notion-import.md`](../../docs/features/notion-import.md) — legacy export mining only
 
 **Terminology:** “project feature” = `./docs/features/` tooling; “feature” = graph design node; **node** / **relationship** / **page** per root [`AGENTS.md`](../../AGENTS.md).

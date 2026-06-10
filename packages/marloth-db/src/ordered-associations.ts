@@ -7,12 +7,8 @@ import type { DatabaseColumnDef } from "./database-view";
 import type { RelationLink } from "./relation-link";
 import { applyDynamicFields } from "./dynamic-fields";
 import { hydrateRelationCellsForRows } from "./database-view-relations";
-import {
-  buildDatabaseColumnDefs,
-  normalizeRowCells,
-  parseDatabaseSchema,
-} from "./database-column-defs";
-import type { EvalRow } from "./notion-view-eval";
+import { buildDatabaseColumnDefs, normalizeRowCells } from "./database-column-defs";
+import type { EvalRow } from "./row-sort";
 import { resolveGeneratedTabsFromScopes, ITEMS_SECTION_KEY } from "./views/resolve-tabs";
 import { loadViewsFromContent } from "./views/load";
 import { resolveContentPath } from "./content/paths";
@@ -417,7 +413,6 @@ export function getOrderedAssociationView(
     : [];
 
   const excludeKeys = new Set(config.excludedColumnKeys ?? []);
-  const schema = parseDatabaseSchema(db, config.typeDatabaseId);
   const evalRows: EvalRow[] = members.map((member) => ({
     nodeId: member.sceneId,
     name: member.name,
@@ -439,9 +434,9 @@ export function getOrderedAssociationView(
     config.typeDatabaseId,
     dynamicColumnDefs,
     hiddenColumnKeys,
-    { excludeKeys },
+    { excludeKeys, contentDir },
   );
-  hydrateRelationCellsForRows(db, config.typeDatabaseId, schema, mergedColumnDefs, enrichedRows);
+  hydrateRelationCellsForRows(db, config.typeDatabaseId, mergedColumnDefs, enrichedRows);
   const rowBySceneId = new Map(enrichedRows.map((row) => [row.nodeId, row]));
   const enrichedGroups = groups.map((group) => ({
     ...group,

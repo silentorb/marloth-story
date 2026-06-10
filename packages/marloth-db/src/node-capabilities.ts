@@ -1,7 +1,7 @@
 import type { GraphDatabase, Node, Properties } from "./graph";
 import { IS_A_TYPE, TYPE_MEMBERSHIP_TYPES } from "./labels";
-
-const TYPE_TABLE_PROPERTY_KEYS = ["notion_schema", "notion_views", "notion_database"] as const;
+import { resolveContentPath } from "./content/paths";
+import { hasTableSchemaEntry, loadTableSchemasFromContent } from "./table-schemas/load";
 
 function titleFromProperties(properties: Record<string, unknown>): string {
   const title = properties.title;
@@ -11,17 +11,6 @@ function titleFromProperties(properties: Record<string, unknown>): string {
   return "Untitled";
 }
 
-export function hasTypeTableSchema(
-  properties: Properties | Record<string, unknown> | null | undefined,
-): boolean {
-  if (!properties) return false;
-  for (const key of TYPE_TABLE_PROPERTY_KEYS) {
-    const value = properties[key];
-    if (typeof value === "string" && value.trim()) return true;
-  }
-  return false;
-}
-
 export function hasIncomingIsA(db: GraphDatabase, nodeId: string): boolean {
   for (const type of TYPE_MEMBERSHIP_TYPES) {
     if (db.listRelationshipsToTarget(nodeId, type).length > 0) return true;
@@ -29,10 +18,13 @@ export function hasIncomingIsA(db: GraphDatabase, nodeId: string): boolean {
   return false;
 }
 
-export function isTypeTableNode(db: GraphDatabase, nodeId: string): boolean {
-  const node = db.getNode(nodeId);
-  if (!node) return false;
-  if (hasTypeTableSchema(node.properties)) return true;
+export function isTypeTableNode(
+  db: GraphDatabase,
+  nodeId: string,
+  contentDir?: string,
+): boolean {
+  const dir = contentDir ?? resolveContentPath();
+  if (hasTableSchemaEntry(dir, nodeId)) return true;
   return hasIncomingIsA(db, nodeId);
 }
 
@@ -67,27 +59,39 @@ export function isTypeTableCandidate(
   node: Pick<Node, "properties"> & { id?: string },
   db?: GraphDatabase,
   nodeId?: string,
+  contentDir?: string,
 ): boolean {
-  if (hasTypeTableSchema(node.properties)) return true;
+  if (nodeId && hasTableSchemaEntry(contentDir ?? resolveContentPath(), nodeId)) {
+    return true;
+  }
   if (db && nodeId) return hasIncomingIsA(db, nodeId);
   return false;
 }
 
-export function findTypeNodeByTitle(db: GraphDatabase, title: string): string | null {
+export function findTypeNodeByTitle(
+  db: GraphDatabase,
+  title: string,
+  contentDir?: string,
+): string | null {
   const normalized = title.trim().toLowerCase();
   if (!normalized) return null;
 
+  const dir = contentDir ?? resolveContentPath();
+  const schemas = loadTableSchemasFromContent(dir);
+  for (const typeId of Object.keys(schemas.tables)) {
+    const node = db.getNode(typeId);
+    if (!node) continue;
+    if (titleFromProperties(node.properties).toLowerCase() === normalized) return typeId;
+  }
+
   for (const row of db.listNodesForGraphExport()) {
-    if (!isTypeTableCandidate({ properties: db.getNode(row.id)?.properties ?? {} }, db, row.id)) {
+    if (!isTypeTableCandidate({ properties: db.getNode(row.id)?.properties ?? {} }, db, row.id, dir)) {
       continue;
     }
     if (row.title.trim().toLowerCase() === normalized) return row.id;
   }
   return null;
 }
-
-/** @deprecated Use findTypeNodeByTitle */
-export const findNotionDatabaseByTitle = findTypeNodeByTitle;
 
 export function graphGroupForNode(db: GraphDatabase, nodeId: string): string {
   const node = db.getNode(nodeId);
@@ -121,7 +125,7 @@ export function graphLabelsForNode(db: GraphDatabase, nodeId: string): string[] 
 
 /** Minimal properties so tests and tooling can mark a node as a type table without labels. */
 export function typeTableMarkerProperties(title: string): Properties {
-  return { title, notion_schema: '{"syncedAt":"test","properties":{}}' };
+  return { title };
 }
 
 export function nodeMatchesTargetTypes(

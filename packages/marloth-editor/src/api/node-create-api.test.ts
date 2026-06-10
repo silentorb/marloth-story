@@ -4,6 +4,7 @@ import {
   createTestContentFixture,
   destroyTestContentFixture,
   seedTestNode,
+  seedTestTableSchema,
 } from "marloth-db/content/test-helpers";
 import { createTestApiFromContent } from "./test-api-setup";
 
@@ -25,6 +26,7 @@ describe("node create API", () => {
     id: databaseId,
     properties: typeTableMarkerProperties("Features DB"),
   });
+  seedTestTableSchema(fixture, databaseId, []);
 
   const api = createTestApiFromContent(fixture);
 

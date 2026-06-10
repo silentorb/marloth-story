@@ -95,7 +95,12 @@ export function createNode(
   }
   if (input.link?.kind === "database-row") {
     const database = ctx.store.readNode(input.link.databaseId);
-    if (!database || !isTypeTableNode(ctx.db, input.link.databaseId)) return "database_not_found";
+    if (
+      !database ||
+      !isTypeTableNode(ctx.db, input.link.databaseId, ctx.store.contentDir)
+    ) {
+      return "database_not_found";
+    }
   }
 
   const id = allocateNodeId(ctx);

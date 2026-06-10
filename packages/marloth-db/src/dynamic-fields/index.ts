@@ -1,6 +1,6 @@
 import type { DatabaseColumnDef } from "../database-view";
 import type { GraphDatabase } from "../graph";
-import type { EvalRow } from "../notion-view-eval";
+import type { EvalRow } from "../row-sort";
 import { applyDynamicFields as enrichEvalRows, type DynamicEnrichmentResult } from "./enrich";
 import {
   createResolverRegistry,

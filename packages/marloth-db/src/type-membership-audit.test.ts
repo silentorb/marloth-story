@@ -2,6 +2,11 @@ import { describe, expect, test, afterAll } from "bun:test";
 import { resolve } from "node:path";
 import { GraphDatabase } from "./graph";
 import { typeTableMarkerProperties } from "./node-capabilities";
+import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestTableSchema,
+} from "./content/test-helpers";
 import { openMarlothWriteContext } from "./content/write-context";
 import { IS_A_TYPE } from "./labels";
 import {
@@ -23,9 +28,15 @@ describe("type-membership-audit path matching", () => {
   const db = new GraphDatabase(":memory:");
 
   test("typeDatabaseTitleFromPath prefers deepest matching database segment", () => {
-    db.upsertNode("insp-db", { ...typeTableMarkerProperties("Inspirations") });
-    db.upsertNode("tr-db", { ...typeTableMarkerProperties("Traversal reasons") });
-    db.upsertNode("feat-db", { ...typeTableMarkerProperties("Features") });
+    db.upsertNode("2eea538996934ce8abafc27132e576c1", {
+      ...typeTableMarkerProperties("Inspirations"),
+    });
+    db.upsertNode("ec2d335a7cd84ada8911b7585cc05ab1", {
+      ...typeTableMarkerProperties("Traversal reasons"),
+    });
+    db.upsertNode("dd0de9867cc345b898929306bdf9fc83", {
+      ...typeTableMarkerProperties("Features"),
+    });
 
     expect(typeDatabaseTitleFromPath(db, "Marloth/Inspirations")).toBe("Inspirations");
     expect(typeDatabaseTitleFromPath(db, "Marloth/Inspirations/Traversal reasons")).toBe(
@@ -89,22 +100,25 @@ describe("nested page type membership", () => {
     });
   });
 
-  test("findNestedPageSpuriousTypeMembership scans canonical notion_database tables", () => {
-    const db = new GraphDatabase(":memory:");
+  test("findNestedPageSpuriousTypeMembership scans type tables with export paths", () => {
+    const fixture = createTestContentFixture("nested-page-audit-");
+    const db = fixture.ctx.db;
+    const contentDir = fixture.ctx.store.contentDir;
+
+    seedTestTableSchema(fixture, FEATURES_DB, []);
+    seedTestTableSchema(fixture, CHARACTERS_DB, []);
+    seedTestTableSchema(fixture, TRAVERSAL_DB, []);
 
     db.upsertNode(FEATURES_DB, {
       title: "Features",
-      notion_database: FEATURES_DB,
       source_export: featuresCsv,
     });
     db.upsertNode(CHARACTERS_DB, {
       title: "Characters",
-      notion_database: CHARACTERS_DB,
       source_export: charactersCsv,
     });
     db.upsertNode(TRAVERSAL_DB, {
       title: "Traversal reasons",
-      notion_database: TRAVERSAL_DB,
       source_export: traversalCsv,
     });
 
@@ -139,12 +153,14 @@ describe("nested page type membership", () => {
     db.upsertRelationship(questId, TRAVERSAL_DB, IS_A_TYPE, { view: "all", row_index: 3 });
     db.upsertRelationship(nestedCharId, CHARACTERS_DB, IS_A_TYPE, { view: "all", row_index: 35 });
 
-    const spurious = findNestedPageSpuriousTypeMembership(db);
+    const spurious = findNestedPageSpuriousTypeMembership(db, contentDir);
     const ids = spurious.map((row) => row.nodeId);
     expect(ids).toContain(appliedId);
     expect(ids).toContain(nestedCharId);
     expect(ids).not.toContain(surrealId);
     expect(ids).not.toContain(questId);
+
+    destroyTestContentFixture(fixture);
   });
 });
 

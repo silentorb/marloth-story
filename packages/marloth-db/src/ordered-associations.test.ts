@@ -15,6 +15,7 @@ import {
   seedTestNode,
   seedTestViews,
   seedTestDynamicFields,
+  seedTestTableSchema,
 } from "./content/test-helpers";
 import { VIEWS_FILE_VERSION } from "./content/views-file";
 import { firstRelatedNodeId } from "./relationship-traverse";
@@ -34,71 +35,6 @@ const scene2 = "44444444444444444444444444444444";
 const scene3 = "55555555555555555555555555555555";
 const character1 = "77777777777777777777777777777777";
 
-const SCENES_TABLE_METADATA = {
-  notion_schema: JSON.stringify({
-    syncedAt: "2026-01-01T00:00:00.000Z",
-    properties: {
-      Name: { id: "title", name: "Name", type: "title", config: {} },
-      Product: {
-        id: "z>kT",
-        name: "Product",
-        type: "relation",
-        config: { database_id: "4e973268-d347-4f71-bd79-92094fb39663" },
-      },
-      Part: {
-        id: "OeMk",
-        name: "Part",
-        type: "relation",
-        config: { database_id: "5e45eefc-69a1-4f45-b988-ad1f3c9d1ef5" },
-      },
-      Solutions: {
-        id: "Zxzj",
-        name: "Solutions",
-        type: "relation",
-        config: { database_id: "52838494-3746-443a-9c89-699b57e3bbec" },
-      },
-      "📁 Characters": {
-        id: "UIUV",
-        name: "📁 Characters",
-        type: "relation",
-        config: { database_id: "f984a934-ad64-4f84-80b0-f8f51449569f" },
-      },
-      "📁 Location": {
-        id: "s[oN",
-        name: "📁 Location",
-        type: "relation",
-        config: { database_id: "df096ab2-6e83-47e6-992e-95698345aad0" },
-      },
-      Order: { id: "si~w", name: "Order", type: "number", config: {} },
-    },
-  }),
-  notion_views: JSON.stringify({
-    syncedAt: "2026-01-01T00:00:00.000Z",
-    views: [
-      {
-        id: "twold-active",
-        name: "TWOLD Active",
-        type: "table",
-        filter: null,
-        sorts: [],
-        visiblePropertyIds: [],
-        configuration: {
-          type: "table",
-          properties: [
-            { property_id: "title", property_name: "Name", visible: true },
-            { property_id: "z>kT", property_name: "Product", visible: true },
-            { property_id: "OeMk", property_name: "Part", visible: true },
-            { property_id: "Zxzj", property_name: "Solutions", visible: true },
-            { property_id: "UIUV", property_name: "📁 Characters", visible: true },
-            { property_id: "s[oN", property_name: "📁 Location", visible: true },
-            { property_id: "si~w", property_name: "Order", visible: true },
-          ],
-        },
-      },
-    ],
-  }),
-};
-
 describe("ordered-associations", () => {
   const fixture = createTestContentFixture("marloth-ordered-");
 
@@ -107,8 +43,46 @@ describe("ordered-associations", () => {
   seedTestNode(fixture, { id: CHARACTERS_DB, properties: typeTableMarkerProperties("Characters") });
   seedTestNode(fixture, {
     id: SCENES_DB,
-    properties: { ...typeTableMarkerProperties("Scenes"), ...SCENES_TABLE_METADATA },
+    properties: typeTableMarkerProperties("Scenes"),
   });
+  seedTestTableSchema(fixture, SCENES_DB, [
+    {
+      key: "product",
+      name: "Product",
+      type: "relation",
+      targetTypeId: PRODUCTS_DB,
+      perspective: "product",
+    },
+    {
+      key: "part",
+      name: "Part",
+      type: "relation",
+      targetTypeId: PARTS_DB,
+      perspective: "part",
+    },
+    {
+      key: "solutions",
+      name: "Solutions",
+      type: "relation",
+      targetTypeId: "528384943746443a9c89699b57e3bbec",
+      perspective: "solutions",
+    },
+    {
+      key: "characters",
+      name: "📁 Characters",
+      type: "relation",
+      targetTypeId: CHARACTERS_DB,
+      perspective: "characters",
+    },
+    {
+      key: "location",
+      name: "📁 Location",
+      type: "relation",
+      targetTypeId: "df096ab26e8347e6992e95698345aad0",
+      perspective: "location",
+    },
+    { key: "order", name: "Order", type: "number" },
+  ]);
   seedTestNode(fixture, { id: bookA, properties: { title: "Book A" } });
   seedTestNode(fixture, { id: bookB, properties: { title: "Book B" } });
   seedTestNode(fixture, { id: part1, properties: { title: "Part 1" } });

@@ -5,6 +5,12 @@ import type { Node, Properties } from "../graph";
 import { bodyFromNode, serializeNodeFile } from "./node-file";
 import { fileFromSeedInputs } from "./dynamic-fields-file";
 import { serializeViewsFile, type ViewsFile } from "./views-file";
+import {
+  serializeTableSchemasFile,
+  type TableColumnDef,
+  type TableSchemasFile,
+} from "./table-schemas-file";
+import { invalidateTableSchemasCache } from "../table-schemas/load";
 import type { SeedDynamicColumnSetInput, SeedDynamicFieldInput } from "../dynamic-fields/overlay";
 import { invalidateDynamicFieldsCache } from "./sync";
 import { invalidateViewsCache } from "../views/load";
@@ -73,6 +79,22 @@ export function seedTestDynamicFields(
 export function seedTestViews(fixture: TestContentFixture, file: ViewsFile): void {
   fixture.ctx.store.writeViewsFile(file);
   invalidateViewsCache();
+}
+
+export function seedTestTableSchemas(fixture: TestContentFixture, file: TableSchemasFile): void {
+  fixture.ctx.store.writeTableSchemasFile(file);
+  invalidateTableSchemasCache();
+}
+
+export function seedTestTableSchema(
+  fixture: TestContentFixture,
+  databaseId: string,
+  columns: TableColumnDef[],
+): void {
+  const file = fixture.ctx.store.readTableSchemasFile();
+  file.tables[databaseId] = { columns };
+  fixture.ctx.store.writeTableSchemasFile(file);
+  invalidateTableSchemasCache();
 }
 
 function entryFromSeedConnection(connection: {

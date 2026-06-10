@@ -68,6 +68,12 @@ import {
   parseViewsFile,
   serializeViewsFile,
 } from "./views-file";
+import {
+  type TableSchemasFile,
+  emptyTableSchemasFile,
+  parseTableSchemasFile,
+  serializeTableSchemasFile,
+} from "./table-schemas-file";
 import { bodyFromNode, nodeFromFile, serializeNodeFile } from "./node-file";
 import {
   contentDataDir,
@@ -76,6 +82,7 @@ import {
   relationshipTypesFilePath,
   dynamicFieldsFilePath,
   viewsFilePath,
+  tableSchemasFilePath,
   isNodeId,
   nodeFilePath,
   NODE_FILE_PATTERN,
@@ -387,6 +394,22 @@ export class ContentStore {
 
   writeViewsFile(file: ViewsFile): void {
     atomicWrite(viewsFilePath(this.contentDir), serializeViewsFile(file));
+  }
+
+  readTableSchemasFile(): TableSchemasFile {
+    const path = tableSchemasFilePath(this.contentDir);
+    try {
+      return parseTableSchemasFile(readFileSync(path, "utf-8"));
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+        return emptyTableSchemasFile();
+      }
+      throw err;
+    }
+  }
+
+  writeTableSchemasFile(file: TableSchemasFile): void {
+    atomicWrite(tableSchemasFilePath(this.contentDir), serializeTableSchemasFile(file));
   }
 
   mergeNodeProperties(id: string, patch: Properties): boolean {

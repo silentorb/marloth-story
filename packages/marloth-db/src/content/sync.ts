@@ -12,12 +12,14 @@ import { bodyFromNode } from "./node-file";
 import { ENUM_CONFIG_FINGERPRINT_META_KEY, enumConfigFingerprint } from "../enum-config-fingerprint";
 import { invalidateSchemaCache, loadSchemaFromContent } from "../schema-rules/load";
 import { invalidateViewsCache } from "../views/load";
+import { invalidateTableSchemasCache } from "../table-schemas/load";
 import {
   RELATIONSHIPS_FILENAME,
   RELATIONSHIP_TYPES_FILENAME,
   DYNAMIC_FIELDS_FILENAME,
   SCHEMA_FILENAME,
   VIEWS_FILENAME,
+  TABLE_SCHEMAS_FILENAME,
   dynamicFieldsFilePath,
   NODE_FILE_PATTERN,
   contentDataDir,
@@ -270,6 +272,12 @@ export class CacheSync {
 
     if (relativeName === VIEWS_FILENAME) {
       invalidateViewsCache();
+      this.updateCacheMarkers();
+      return;
+    }
+
+    if (relativeName === TABLE_SCHEMAS_FILENAME) {
+      invalidateTableSchemasCache();
       this.updateCacheMarkers();
       return;
     }

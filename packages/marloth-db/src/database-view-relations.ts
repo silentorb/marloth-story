@@ -1,6 +1,5 @@
 import type { GraphDatabase, Relationship } from "./graph";
 import type { DatabaseColumnDef } from "./database-view";
-import type { NotionDatabaseSchema } from "./notion-database-schema";
 import type { RelationLink } from "./relation-link";
 import {
   isIncludesPerspectiveSlug,
@@ -8,7 +7,7 @@ import {
   TAXONOMY_INSPIRATION_PERSPECTIVES,
 } from "./includes-relationship";
 import { relationType } from "./relation-type";
-import type { EvalRow } from "./notion-view-eval";
+import type { EvalRow } from "./row-sort";
 import {
   filterRelationshipsByRowDatabaseContext,
   listIncludesIncident,
@@ -122,7 +121,6 @@ function formatRelationCell(links: RelationLink[]): string {
 export function hydrateRelationCellsForRows(
   db: GraphDatabase,
   databaseId: string,
-  schema: NotionDatabaseSchema | null,
   columnDefs: DatabaseColumnDef[],
   rows: EvalRow[],
 ): void {

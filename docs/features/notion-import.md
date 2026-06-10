@@ -6,7 +6,7 @@
 
 ## Summary
 
-The Notion import feature transforms narrative and database content from a Notion export into a property graph (today: `content/data/` + `content/model/`; historically `data/marloth.sqlite`), plus machine-readable metadata under `docs/`. Implementation lives in `packages/notion-importer`; graph storage in `packages/marloth-db`.
+The Notion import feature transforms narrative and database content from a Notion export into a property graph (today: `content/data/` + `content/model/`; historically `data/marloth.sqlite`), plus machine-readable metadata under `docs/`. Implementation is archived in `packages/_archive/notion-importer`; graph storage in `packages/marloth-db`.
 
 ## When to read this
 
@@ -82,9 +82,9 @@ For each `*.csv` matching Notion database export naming (`Name {database_id}.csv
 When required data exists only under `./exports/`:
 
 1. Locate the page `.md` or database `.csv` in the archive (see **Source resolution** and mapping tables in [marloth-db.md](./marloth-db.md)).
-2. Parse with existing `packages/notion-importer` helpers (`parse`, `relations`, `indexes`, etc.) or equivalent logic in a one-off script.
-3. **Upsert** only the affected nodes/relationships into the current `data/marloth.sqlite` via `GraphDatabase` — no `{ clean: true }`, no whole-tree import.
-4. Spot-check with `getNodeDetail` or SQL; commit the updated sqlite file.
+2. Parse with existing `packages/_archive/notion-importer` helpers (`parse`, `relations`, `indexes`, etc.) or equivalent logic in a one-off script.
+3. **Upsert** only the affected nodes/relationships into `content/data/` via `ContentStore` / `openMarlothWriteContext` — no full re-import.
+4. Spot-check with `getNodeDetail` or the editor; commit changes under `content/`. Run `bun run content:sync` if the editor API is not running.
 
 ## Design rationale
 
@@ -103,7 +103,7 @@ See [marloth-db.md](./marloth-db.md) for graph storage rationale.
 
 ## Behavior / pipeline
 
-High-level stages (see `packages/notion-importer/src/graph-pipeline.ts`):
+High-level stages (see `packages/_archive/notion-importer/src/graph-pipeline.ts`):
 
 1. **Resolve source** — pick export dir/zip; extract zips recursively.
 2. **Open database** — create schema; optional clean rebuild.
@@ -123,9 +123,9 @@ High-level stages (see `packages/notion-importer/src/graph-pipeline.ts`):
 
 ## Quick start
 
-**Preferred:** edit `data/marloth.sqlite` directly — see [marloth-db.md](./marloth-db.md).
+**Preferred:** edit `content/` directly — see [marloth-db.md](./marloth-db.md).
 
-Legacy full import (avoid for routine work; overwrites the graph):
+Legacy full import (deprecated; avoid for routine work; overwrites the graph):
 
 ```bash
 # Uses newest entry in ./exports/ — destructive with --clean
@@ -133,7 +133,7 @@ bun run notion:import -- --clean
 bun run notion:import -- --source ./exports/my-export.zip --clean
 ```
 
-Alternative entry points: `./scripts/notion-importer` or `bun run --cwd packages/notion-importer start`.
+Alternative entry points: `./scripts/notion-importer` or `bun run --cwd packages/_archive/notion-importer start` (archival reference only).
 
 ## Configuration
 
@@ -150,7 +150,7 @@ See `bun run notion:import -- --help` for full flag list.
 
 ## Verification
 
-- **Unit tests:** `bun test` from `packages/notion-importer/`.
+- **Unit tests:** `bun test` from `packages/_archive/notion-importer/` (archival).
 - **Manifest:** after import, `docs/notion-import-manifest.json` lists expected node count.
 - **Link report:** inspect `docs/notion-link-report.txt` for broken relation targets.
 - **Idempotency:** re-run on the same export; logical graph should not change except for intentional parser updates.
@@ -172,5 +172,5 @@ When implementation and this doc disagree, treat **this doc as authoritative** u
 ## See also
 
 - [marloth-db.md](./marloth-db.md) — property graph schema and API
-- [`packages/notion-importer/AGENTS.md`](../../packages/notion-importer/AGENTS.md)
+- [`packages/_archive/notion-importer/AGENTS.md`](../../packages/_archive/notion-importer/AGENTS.md)
 - [`AGENTS.md`](../../AGENTS.md)

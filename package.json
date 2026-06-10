@@ -6,15 +6,15 @@
     "packages/*"
   ],
   "scripts": {
-    "notion:import": "bun run --filter notion-importer start",
-    "notion:sync-metadata": "bun run --filter notion-metadata-sync start",
+    "notion:import": "bun scripts/deprecated-notion-import.ts",
     "editor:dev": "bun run --filter marloth-editor dev",
     "editor:api": "bun run --filter marloth-editor dev:api",
     "editor:build": "bun run --filter marloth-editor build",
     "web:build": "bun run --filter marloth-static-site build",
     "content:export": "bun scripts/export-graph-to-content.ts",
     "content:sync": "bun -e \"import { openMarlothWriteContext, resolveContentPath, defaultDbPathForContent } from 'marloth-db/content'; const c=resolveContentPath(); const ctx=openMarlothWriteContext(c, defaultDbPathForContent(c)); ctx.sync.fullRebuild(); ctx.db.close(); console.log('Synced', c);\"",
-    "test": "bun run --filter marloth-db test && bun run --filter notion-metadata-sync test && bun run --filter marloth-editor test && bun run --filter marloth-static-site test"
+    "test": "bun run --filter marloth-db test && bun run --filter marloth-editor test && bun run --filter marloth-static-site test",
+    "validate:content-model": "bun scripts/validate-content-model.ts"
   },
   "devDependencies": {}
 }
