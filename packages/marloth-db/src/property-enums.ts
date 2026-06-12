@@ -101,7 +101,11 @@ export function isUnsetPriority(value: unknown): boolean {
 
 export function enrichColumnDef(def: DatabaseColumnDef, schema?: SchemaFile): DatabaseColumnDef {
   const resolvedSchema = schema ?? loadSchemaFromContent(resolveContentPath());
-  const enumId = enumIdForColumn(def, resolvedSchema);
+  const explicitEnumId = def.enumId?.trim();
+  const enumId =
+    (explicitEnumId && resolvePropertyEnum(explicitEnumId, resolvedSchema)
+      ? explicitEnumId
+      : null) ?? enumIdForColumn(def, resolvedSchema);
   if (!enumId) {
     return def;
   }

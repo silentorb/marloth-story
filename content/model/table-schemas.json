@@ -113,7 +113,8 @@
         {
           "key": "plot_is_driven_by_mc_desire",
           "name": "Plot is driven by MC desire",
-          "type": "select"
+          "type": "select",
+          "enumId": "yes_no"
         },
         {
           "key": "pacing",
@@ -170,7 +171,8 @@
         {
           "key": "layer",
           "name": "Layer",
-          "type": "select"
+          "type": "select",
+          "enumId": "layer"
         },
         {
           "key": "date",
@@ -385,7 +387,8 @@
         {
           "key": "status",
           "name": "Status",
-          "type": "select"
+          "type": "select",
+          "enumId": "status"
         }
       ]
     },
@@ -419,12 +422,14 @@
         {
           "key": "monsters",
           "name": "Monsters",
-          "type": "select"
+          "type": "select",
+          "enumId": "monsters"
         },
         {
           "key": "survivors",
           "name": "Survivors",
-          "type": "select"
+          "type": "select",
+          "enumId": "monsters"
         }
       ]
     },
@@ -493,7 +498,8 @@
         {
           "key": "status",
           "name": "Status",
-          "type": "select"
+          "type": "select",
+          "enumId": "a0db8db1_status"
         }
       ]
     },
@@ -592,7 +598,8 @@
         {
           "key": "status",
           "name": "Status",
-          "type": "status"
+          "type": "status",
+          "enumId": "a614dbd2_status"
         }
       ]
     },
@@ -635,22 +642,26 @@
         {
           "key": "sound",
           "name": "Sound",
-          "type": "select"
+          "type": "select",
+          "enumId": "sound"
         },
         {
           "key": "sight",
           "name": "Sight",
-          "type": "select"
+          "type": "select",
+          "enumId": "sound"
         },
         {
           "key": "supernatural_sense",
           "name": "Supernatural Sense",
-          "type": "select"
+          "type": "select",
+          "enumId": "sound"
         },
         {
           "key": "smell",
           "name": "Smell",
-          "type": "select"
+          "type": "select",
+          "enumId": "sound"
         }
       ]
     },

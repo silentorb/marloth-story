@@ -44,6 +44,19 @@ See also [marloth-db.md](./marloth-db.md), [views.md](./views.md), and [schema.m
 | **Enums** | `enumId` references [`schema.json`](../../content/model/schema.json) `enums` |
 | **Computed** | Formula/rollup columns are **not** stored here; use [`dynamic-fields.json`](./dynamic-table-fields.md) |
 
+### Editable `select` / `status` columns
+
+`select` and `status` columns are stored on `is_a` relationship properties like other scalars, but the editor only renders **editable enum dropdowns** when the column is wired into the workspace enum system:
+
+1. Define the option list under `schema.json` → `enums` (e.g. shared `yes_no` for `True` / `False`).
+2. Set `enumId` on the column in `table-schemas.json` (the column `key` and enum id may differ — e.g. `plot_is_driven_by_mc_desire` → `yes_no`).
+
+`marloth-db` promotes wired columns to `type: "enum"` with `options` for the UI (`EnumSelectCell`). Bare `select` / `status` columns without a resolvable `enumId` display as **read-only badges**.
+
+Priority is the reference pattern: `enumId: "priority"` plus `schema.json` → `enums.priority`.
+
+**Backfill:** one-time script `bun scripts/seed-select-enums.ts` derives enums from distinct stored values on `is_a` edges and writes `enumId` links (supports `--dry-run`).
+
 ## Type table detection
 
 A node is a **type table** when:
@@ -62,3 +75,5 @@ Row data for instances is stored on `is_a` relationship properties, not on the i
 ## Migration
 
 One-time migration from `notion_schema` frontmatter: `bun scripts/migrate-notion-schema-to-table-schemas.ts` (already run on the corpus). Legacy provenance keys are stripped by `bun scripts/strip-notion-provenance.ts`.
+
+Select/status enum backfill (post-migration): `bun scripts/seed-select-enums.ts` — adds `schema.json` enums and `table-schemas.json` `enumId` for columns that were imported without workspace enum wiring.

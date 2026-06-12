@@ -61,9 +61,6 @@
         "panel": "dedicated",
         "showReuseMessage": false,
         "close": true
-      },
-      "runOptions": {
-        "runOn": "folderOpen"
       }
     },
     {

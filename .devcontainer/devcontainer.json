@@ -13,8 +13,8 @@
     "runArgs": [
         // Disable Linux core dumps when bun crashes.  The app has its own diagnostic methods.
         "--ulimit",
-        "core=0",
-        "--network=host"
+        "core=0"
+        // "--network=host"
     ],
     "remoteUser": "vscode",
     "mounts": [

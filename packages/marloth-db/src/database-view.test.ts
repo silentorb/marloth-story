@@ -6,9 +6,15 @@ import { GraphDatabase } from "./graph";
 import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { getDatabaseViewDetail } from "./database-view";
-import { contentModelDir, dynamicFieldsFilePath, tableSchemasFilePath } from "./content/paths";
+import {
+  contentModelDir,
+  dynamicFieldsFilePath,
+  schemaFilePath,
+  tableSchemasFilePath,
+} from "./content/paths";
 import { emptyDynamicFieldsFile, serializeDynamicFieldsFile } from "./content/dynamic-fields-file";
 import { serializeTableSchemasFile } from "./content/table-schemas-file";
+import { serializeSchemaFile } from "./schema-rules/schema-file";
 import { invalidateTableSchemasCache } from "./table-schemas/load";
 
 describe("database-view", () => {
@@ -21,6 +27,27 @@ describe("database-view", () => {
   );
   const dbPath = join(dir, "test.sqlite");
   const db = new GraphDatabase(dbPath);
+
+  function writeSchema(
+    enums: Record<
+      string,
+      { options: string[]; default: string; defaultOrder?: "asc" | "desc" }
+    >,
+  ): void {
+    writeFileSync(
+      schemaFilePath(contentDir),
+      serializeSchemaFile({
+        version: 1,
+        relationshipRules: [],
+        enums: Object.fromEntries(
+          Object.entries(enums).map(([id, def]) => [
+            id,
+            { defaultOrder: "asc" as const, ...def },
+          ]),
+        ),
+      }),
+    );
+  }
 
   function writeTableSchema(
     databaseId: string,
@@ -123,6 +150,37 @@ describe("database-view", () => {
     expect(detail?.rows[0]?.relationCells?.parents).toEqual([
       { targetId: parentId, title: "Parent feature" },
     ]);
+  });
+
+  test("enriches select column with explicit enumId to editable enum metadata", () => {
+    const databaseId = "2eea538996934ce8abafc27132e576c1";
+    writeSchema({
+      yes_no: { options: ["False", "True"], default: "False" },
+    });
+    writeTableSchema(databaseId, [
+      {
+        key: "plot_is_driven_by_mc_desire",
+        name: "Plot is driven by MC desire",
+        type: "select",
+        enumId: "yes_no",
+      },
+    ]);
+    db.upsertNode(databaseId, { ...typeTableMarkerProperties("Inspirations") });
+    db.upsertNode("insp1", { title: "Example inspiration" });
+    db.upsertRelationship("insp1", databaseId, IS_A_TYPE, {
+      row_index: 0,
+      plot_is_driven_by_mc_desire: "True",
+    });
+
+    const detail = getDatabaseViewDetail(db, databaseId, undefined, contentDir);
+    expect(detail?.columnDefs?.[0]).toMatchObject({
+      key: "plot_is_driven_by_mc_desire",
+      type: "enum",
+      enumId: "yes_no",
+      options: ["False", "True"],
+      defaultValue: "False",
+    });
+    expect(detail?.rows[0]?.cells.plot_is_driven_by_mc_desire).toBe("True");
   });
 
   test("ignores orphan_row properties on the database vertex", () => {

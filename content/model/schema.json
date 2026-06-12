@@ -4,31 +4,37 @@
     {
       "id": "scene-features",
       "sourceTypeId": "204dba198db74611b0b49a98dd53e8f5",
+      "type": "includes",
       "allowedTargetTypeIds": [
         "dd0de9867cc345b898929306bdf9fc83"
-      ],
-      "type": "includes"
+      ]
     },
     {
       "id": "scene-inspirations",
       "sourceTypeId": "204dba198db74611b0b49a98dd53e8f5",
+      "type": "includes",
       "allowedTargetTypeIds": [
         "2eea538996934ce8abafc27132e576c1"
-      ],
-      "type": "includes"
+      ]
     },
     {
       "id": "feature-inspirations",
       "sourceTypeId": "dd0de9867cc345b898929306bdf9fc83",
+      "type": "includes",
       "allowedTargetTypeIds": [
         "2eea538996934ce8abafc27132e576c1"
-      ],
-      "type": "includes"
+      ]
     }
   ],
   "enums": {
     "priority": {
-      "options": ["Consideration", "Low", "Medium", "High", "Primary"],
+      "options": [
+        "Consideration",
+        "Low",
+        "Medium",
+        "High",
+        "Primary"
+      ],
       "default": "Low",
       "defaultOrder": "desc",
       "values": {
@@ -38,6 +44,65 @@
         "Consideration": 0,
         "Primary": 8
       }
+    },
+    "yes_no": {
+      "options": [
+        "False",
+        "True"
+      ],
+      "default": "False",
+      "defaultOrder": "asc"
+    },
+    "layer": {
+      "options": [
+        "Epic",
+        "Primary",
+        "Secondary"
+      ],
+      "default": "Epic",
+      "defaultOrder": "asc"
+    },
+    "status": {
+      "options": [
+        "Partial",
+        "Unresolved"
+      ],
+      "default": "Partial",
+      "defaultOrder": "asc"
+    },
+    "monsters": {
+      "options": [
+        "Common",
+        "Rare",
+        "Uncommon"
+      ],
+      "default": "Common",
+      "defaultOrder": "asc"
+    },
+    "a0db8db1_status": {
+      "options": [
+        "Applicable",
+        "Unapplicable"
+      ],
+      "default": "Applicable",
+      "defaultOrder": "asc"
+    },
+    "a614dbd2_status": {
+      "options": [
+        "Done",
+        "To Do"
+      ],
+      "default": "Done",
+      "defaultOrder": "asc"
+    },
+    "sound": {
+      "options": [
+        "High",
+        "Low",
+        "Medium"
+      ],
+      "default": "Low",
+      "defaultOrder": "asc"
     }
   }
 }

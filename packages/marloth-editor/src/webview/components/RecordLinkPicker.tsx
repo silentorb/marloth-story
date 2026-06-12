@@ -46,6 +46,7 @@ export function RecordLinkPicker({
       : DEFAULT_SEARCH_LIMIT);
   const rootRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const scrollActiveIntoViewRef = useRef(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<NodeSummary[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -57,8 +58,11 @@ export function RecordLinkPicker({
   excluded.current = new Set(excludedIds);
 
   useEffect(() => {
-    setActiveIndex(0);
-  }, [excludedIds]);
+    setActiveIndex((index) => {
+      const count = results.filter((row) => !excluded.current.has(row.id)).length;
+      return Math.min(index, Math.max(0, count - 1));
+    });
+  }, [excludedIds, results]);
 
   useEffect(() => {
     if (embedded) return;
@@ -89,11 +93,13 @@ export function RecordLinkPicker({
   const selectable = results.filter((item) => !excluded.current.has(item.id));
 
   useEffect(() => {
+    if (!scrollActiveIntoViewRef.current) return;
+    scrollActiveIntoViewRef.current = false;
     const list = listRef.current;
     if (!list) return;
     const active = list.querySelector(".marloth-record-link-picker-item.is-active");
     active?.scrollIntoView({ block: "nearest" });
-  }, [activeIndex, selectable]);
+  }, [activeIndex]);
 
   const pick = useCallback(
     async (nodeId: string) => {
@@ -105,9 +111,6 @@ export function RecordLinkPicker({
         await onSelect(nodeId, summary);
         if (closeOnSelect) {
           onClose();
-        } else {
-          setQuery("");
-          setActiveIndex(0);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : String(err));
@@ -143,11 +146,13 @@ export function RecordLinkPicker({
           }
           if (event.key === "ArrowDown") {
             event.preventDefault();
+            scrollActiveIntoViewRef.current = true;
             setActiveIndex((index) => Math.min(index + 1, Math.max(0, selectable.length - 1)));
             return;
           }
           if (event.key === "ArrowUp") {
             event.preventDefault();
+            scrollActiveIntoViewRef.current = true;
             setActiveIndex((index) => Math.max(index - 1, 0));
             return;
           }

@@ -73,4 +73,31 @@ describe("property-enums", () => {
     expect(enriched.defaultValue).toBe("Low");
     expect(enriched.defaultOrder).toBe("desc");
   });
+
+  test("enrichColumnDef honors explicit enumId when column key differs", () => {
+    const schema: SchemaFile = {
+      ...TEST_SCHEMA,
+      enums: {
+        ...TEST_SCHEMA.enums,
+        yes_no: {
+          options: ["True", "False"],
+          default: "False",
+          defaultOrder: "asc",
+        },
+      },
+    };
+    const enriched = enrichColumnDef(
+      {
+        key: "plot_is_driven_by_mc_desire",
+        name: "Plot is driven by MC desire",
+        type: "select",
+        enumId: "yes_no",
+      },
+      schema,
+    );
+    expect(enriched.type).toBe("enum");
+    expect(enriched.enumId).toBe("yes_no");
+    expect(enriched.options).toEqual(["True", "False"]);
+    expect(enriched.defaultValue).toBe("False");
+  });
 });

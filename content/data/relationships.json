@@ -33853,6 +33853,153 @@
       "a": "e13fc17c7fa440db84b67399994f1c17",
       "b": "ec0879edecb14cac922803c13ff88b2c",
       "type": "includes"
+    },
+    {
+      "a": "2eea538996934ce8abafc27132e576c1",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "is_a",
+      "directedFrom": "99279e80ac0e40988e8a561715b359d4",
+      "properties": {
+        "row_index": 70,
+        "view": "Weighted",
+        "plot_is_driven_by_mc_desire": "False"
+      }
+    },
+    {
+      "a": "99279e80ac0e40988e8a561715b359d4",
+      "b": "e6c8c5e7a11041e4a5ae321253aa3392",
+      "type": "prop_type",
+      "directedFrom": "99279e80ac0e40988e8a561715b359d4"
+    },
+    {
+      "a": "901eef0e94024304bb9512fee842e3b3",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "monsters",
+      "directedFrom": "99279e80ac0e40988e8a561715b359d4"
+    },
+    {
+      "a": "99279e80ac0e40988e8a561715b359d4",
+      "b": "faaea9bcaf0f43b5ae79dfa06b96be34",
+      "type": "story_scale",
+      "directedFrom": "99279e80ac0e40988e8a561715b359d4"
+    },
+    {
+      "a": "92a81bedac4640db9d9b6f8ba4046254",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "pacing",
+      "directedFrom": "99279e80ac0e40988e8a561715b359d4"
+    },
+    {
+      "a": "1c6d9213c2aa449390613c20f6f4d71d",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "traversal_types",
+      "directedFrom": "99279e80ac0e40988e8a561715b359d4"
+    },
+    {
+      "a": "08ea5af920c149058a9ce4a2b3d0a098",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "traversal_reasons",
+      "directedFrom": "99279e80ac0e40988e8a561715b359d4"
+    },
+    {
+      "a": "99279e80ac0e40988e8a561715b359d4",
+      "b": "b11bb95047984243aaffb7024af8b77b",
+      "type": "includes"
+    },
+    {
+      "a": "1d458e628ba28026830dfe3db74cba19",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "includes"
+    },
+    {
+      "a": "15258e628ba2805abd70e0c63f03c571",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "includes"
+    },
+    {
+      "a": "99279e80ac0e40988e8a561715b359d4",
+      "b": "e6b7f4b5115f49f18d304c4660f5cbfb",
+      "type": "includes"
+    },
+    {
+      "a": "35c58e628ba280b191dffa33400b7c59",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "includes"
+    },
+    {
+      "a": "99279e80ac0e40988e8a561715b359d4",
+      "b": "f2ec9bb510dc440b96920e4651a259be",
+      "type": "includes"
+    },
+    {
+      "a": "3095477179ab4fd1a6977f151ff2aef8",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "includes"
+    },
+    {
+      "a": "330cda5056f64459b8d0d46a66ed21a2",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "includes"
+    },
+    {
+      "a": "10158e628ba280648510f4544487aab5",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "includes"
+    },
+    {
+      "a": "1d458e628ba280dca6edf1ec4b703759",
+      "b": "99279e80ac0e40988e8a561715b359d4",
+      "type": "includes"
+    },
+    {
+      "a": "99279e80ac0e40988e8a561715b359d4",
+      "b": "ec0879edecb14cac922803c13ff88b2c",
+      "type": "includes"
+    },
+    {
+      "a": "99279e80ac0e40988e8a561715b359d4",
+      "b": "dc101b6438cf43a8b5f1e17212b8c950",
+      "type": "includes"
+    },
+    {
+      "a": "1d458e628ba2803d9f73cd30fd59b6ef",
+      "b": "2d8c154613b34341aa35b740de8045c6",
+      "type": "includes"
+    },
+    {
+      "a": "1d458e628ba2805fbfbde594b4ccc002",
+      "b": "2d8c154613b34341aa35b740de8045c6",
+      "type": "includes"
+    },
+    {
+      "a": "1d458e628ba2808eb64cdd3f14410df6",
+      "b": "2d8c154613b34341aa35b740de8045c6",
+      "type": "includes"
+    },
+    {
+      "a": "2d8c154613b34341aa35b740de8045c6",
+      "b": "31db79f67d82432ca15cc17bbffb2bfd",
+      "type": "includes"
+    },
+    {
+      "a": "2d8c154613b34341aa35b740de8045c6",
+      "b": "9092ace4d11741659a7633ee2707f0a9",
+      "type": "includes"
+    },
+    {
+      "a": "2d8c154613b34341aa35b740de8045c6",
+      "b": "8ad5c0d9bf0b48a6bec8ff3af7a74d08",
+      "type": "includes"
+    },
+    {
+      "a": "2d8c154613b34341aa35b740de8045c6",
+      "b": "35c58e628ba280b191dffa33400b7c59",
+      "type": "includes"
+    },
+    {
+      "a": "10158e628ba280648510f4544487aab5",
+      "b": "2d8c154613b34341aa35b740de8045c6",
+      "type": "includes"
     }
   ]
 }

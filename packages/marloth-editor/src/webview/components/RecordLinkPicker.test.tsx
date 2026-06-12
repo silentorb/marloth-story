@@ -1,9 +1,11 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test, mock } from "bun:test";
-import { render, waitFor } from "@testing-library/react";
+import { useState } from "react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { RecordLinkPicker } from "./RecordLinkPicker";
 import { makeMockEditorApi } from "../test-fixtures/mock-api";
+import type { EditorApi } from "../api/client";
 
 const COMPONENT_DIR = import.meta.dir;
 
@@ -113,5 +115,55 @@ describe("RecordLinkPicker", () => {
 
     await waitFor(() => expect(search).toHaveBeenCalled());
     expect(search).toHaveBeenCalledWith("", 5000, [featuresDbId]);
+  });
+
+  test("preserves list scroll position after multi-add pick", async () => {
+    const items = Array.from({ length: 30 }, (_, index) => ({
+      id: `${index}`.padStart(32, "0"),
+      title: `Record ${String(index + 1).padStart(2, "0")}`,
+      primaryTypeTitle: null,
+    }));
+    const search = mock(async () => items);
+    const onSelect = mock(async () => {});
+    const api = {
+      ...makeMockEditorApi(),
+      search,
+    } as EditorApi;
+
+    function MultiAddPicker() {
+      const [excludedIds, setExcludedIds] = useState<readonly string[]>([]);
+      return (
+        <RecordLinkPicker
+          api={api}
+          embedded
+          closeOnSelect={false}
+          excludedIds={excludedIds}
+          ariaLabel="Search records"
+          onSelect={async (targetId) => {
+            await onSelect(targetId);
+            setExcludedIds((prev) => [...prev, targetId]);
+          }}
+          onClose={() => {}}
+        />
+      );
+    }
+
+    const view = render(<MultiAddPicker />);
+    await waitFor(() => expect(search).toHaveBeenCalled());
+    await waitFor(async () => {
+      expect(await view.findAllByRole("option")).toHaveLength(30);
+    });
+
+    const list = view.container.querySelector(".marloth-record-link-picker-list");
+    expect(list).toBeTruthy();
+    Object.defineProperty(list!, "scrollTop", { value: 200, writable: true, configurable: true });
+    const scrollTopBefore = list!.scrollTop;
+
+    const target = await view.findByRole("option", { name: /Record 15/ });
+    fireEvent.click(target);
+    await waitFor(() => expect(onSelect).toHaveBeenCalled());
+
+    expect(list!.scrollTop).toBe(scrollTopBefore);
+    expect(view.container.querySelector(".marloth-record-link-picker-search")).toBeTruthy();
   });
 });
