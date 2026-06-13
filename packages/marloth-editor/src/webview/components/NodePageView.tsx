@@ -183,6 +183,7 @@ export function NodePageView({
                 />
                 <OrderedAssociationView
                   api={api}
+                  nodeId={node.id}
                   configId={section.configId}
                   view={section.view}
                   onTabSelect={onTabSelect}

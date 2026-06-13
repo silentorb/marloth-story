@@ -66,11 +66,14 @@ export type {
 export { normalizeNotionId } from "./notion-ids";
 export {
   linkOutgoingRelationship,
+  moveRelationshipConnection,
   unlinkOutgoingRelationship,
 } from "./relationship-link-mutations";
 export type {
   LinkOutgoingRelationshipError,
   LinkOutgoingRelationshipInput,
+  MoveRelationshipConnectionError,
+  MoveRelationshipConnectionInput,
   UnlinkOutgoingRelationshipError,
 } from "./relationship-link-mutations";
 export {

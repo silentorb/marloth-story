@@ -107,6 +107,13 @@ export interface EditorApiClient {
     type: string,
     targetId: string,
   ): Promise<void>;
+  moveRelationshipConnection(input: {
+    type: string;
+    oldSourceId: string;
+    oldTargetId: string;
+    newSourceId: string;
+    newTargetId: string;
+  }): Promise<void>;
   deleteNode(id: string): Promise<void>;
   archiveNode(id: string): Promise<void>;
   unarchiveNode(id: string): Promise<void>;
@@ -383,6 +390,19 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         `/api/nodes/${sourceId}/connections/${encodeURIComponent(type)}/${targetId}`,
         { method: "DELETE" },
       );
+    },
+    async moveRelationshipConnection(input: {
+      type: string;
+      oldSourceId: string;
+      oldTargetId: string;
+      newSourceId: string;
+      newTargetId: string;
+    }): Promise<void> {
+      await fetchJson("/api/nodes/connections/move", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
     },
     async deleteNode(id: string): Promise<void> {
       await fetchJson(`/api/nodes/${id}`, { method: "DELETE" });

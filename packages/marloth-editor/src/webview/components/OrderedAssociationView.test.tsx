@@ -52,6 +52,7 @@ describe("OrderedAssociationView", () => {
     const { getByRole, getAllByRole, getAllByText, queryByRole } = render(
       <OrderedAssociationView
         api={api}
+        nodeId="bookaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         configId="scenes-by-book"
         view={view}
         onTabSelect={() => {}}
@@ -77,6 +78,7 @@ describe("OrderedAssociationView", () => {
     const { getByRole, queryByRole, getByText } = render(
       <OrderedAssociationView
         api={api}
+        nodeId="bookaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         configId="scenes-by-book"
         view={view}
         onTabSelect={() => {}}
@@ -103,6 +105,7 @@ describe("OrderedAssociationView", () => {
     const { getByText } = render(
       <OrderedAssociationView
         api={api}
+        nodeId="bookaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         configId="scenes-by-book"
         view={view}
         onTabSelect={() => {}}

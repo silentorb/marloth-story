@@ -19,9 +19,11 @@ import {
   updateDatabaseRowProperty,
   updateOutgoingRelationshipProperty,
   linkOutgoingRelationship,
+  moveRelationshipConnection,
   unlinkOutgoingRelationship,
   type CreateNodeError,
   type LinkOutgoingRelationshipError,
+  type MoveRelationshipConnectionError,
   type UnlinkOutgoingRelationshipError,
   type CreateNodeInput,
   type CreateNodeResult,
@@ -133,6 +135,13 @@ export interface EditorDatabase {
     type: string,
     targetId: string,
   ): UnlinkOutgoingRelationshipError | null;
+  moveRelationshipConnection(input: {
+    type: string;
+    oldSourceId: string;
+    oldTargetId: string;
+    newSourceId: string;
+    newTargetId: string;
+  }): MoveRelationshipConnectionError | null;
   getGraphFull(): GraphSnapshot;
   getGraphExplorerLod(options?: { anchorId?: string; layerCount?: number }): GraphLodSnapshot;
   close(): void;
@@ -302,6 +311,18 @@ export function openEditorDatabase(
       targetId: string,
     ): UnlinkOutgoingRelationshipError | null {
       return unlinkOutgoingRelationship(writeCtx, sourceId, targetId, type);
+    },
+    moveRelationshipConnection(input: {
+      type: string;
+      oldSourceId: string;
+      oldTargetId: string;
+      newSourceId: string;
+      newTargetId: string;
+    }): MoveRelationshipConnectionError | null {
+      return moveRelationshipConnection(writeCtx, {
+        ...input,
+        schema: schema(),
+      });
     },
     getGraphFull(): GraphSnapshot {
       return exportFullGraph(writeCtx.db);

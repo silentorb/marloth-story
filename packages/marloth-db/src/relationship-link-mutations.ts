@@ -14,6 +14,10 @@ export type LinkOutgoingRelationshipError =
 
 export type UnlinkOutgoingRelationshipError = "not_found";
 
+export type MoveRelationshipConnectionError =
+  | "not_found"
+  | LinkOutgoingRelationshipError;
+
 function ordinalFromProperties(properties: Record<string, unknown>): number | null {
   const raw = properties.ordinal;
   if (typeof raw === "number" && Number.isFinite(raw)) return raw;
@@ -69,8 +73,10 @@ export function linkOutgoingRelationship(
   }
 
   const relProps: Properties = { ...properties };
-  const nextOrdinal = nextOutgoingOrdinal(ctx, sourceId, normalizedType);
-  if (nextOrdinal !== undefined) relProps.ordinal = nextOrdinal;
+  if (!("ordinal" in relProps)) {
+    const nextOrdinal = nextOutgoingOrdinal(ctx, sourceId, normalizedType);
+    if (nextOrdinal !== undefined) relProps.ordinal = nextOrdinal;
+  }
 
   ctx.store.upsertRelationship(sourceId, targetId, normalizedType, relProps);
   syncAfterRelationshipsWrite(ctx);
@@ -88,6 +94,39 @@ export function unlinkOutgoingRelationship(
     return "not_found";
   }
   ctx.store.deleteRelationship(sourceId, targetId, normalizedType);
+  syncAfterRelationshipsWrite(ctx);
+  return null;
+}
+
+export interface MoveRelationshipConnectionInput {
+  type: string;
+  oldSourceId: string;
+  oldTargetId: string;
+  newSourceId: string;
+  newTargetId: string;
+  schema?: SchemaFile | null;
+}
+
+export function moveRelationshipConnection(
+  ctx: MarlothWriteContext,
+  input: MoveRelationshipConnectionInput,
+): MoveRelationshipConnectionError | null {
+  const { type, oldSourceId, oldTargetId, newSourceId, newTargetId, schema } = input;
+  const normalizedType = normalizeRelationshipType(type);
+
+  const existing = ctx.store.findRelationship(oldSourceId, oldTargetId, normalizedType);
+  if (!existing) return "not_found";
+
+  const linkError = linkOutgoingRelationship(ctx, {
+    sourceId: newSourceId,
+    targetId: newTargetId,
+    type: normalizedType,
+    properties: { ...existing.properties },
+    schema,
+  });
+  if (linkError) return linkError;
+
+  ctx.store.deleteRelationship(oldSourceId, oldTargetId, normalizedType);
   syncAfterRelationshipsWrite(ctx);
   return null;
 }

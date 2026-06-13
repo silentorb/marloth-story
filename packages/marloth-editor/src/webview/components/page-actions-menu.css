@@ -36,14 +36,15 @@
   right: 0;
 }
 
-.marloth-page-actions-trigger.is-edit {
+.marloth-page-actions-trigger.is-vertical-dots {
   width: 22px;
   height: 22px;
   border-radius: 4px;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  letter-spacing: -0.05em;
 }
 
-.marloth-page-actions-edit-icon {
+.marloth-page-actions-vertical-dots-icon {
   line-height: 1;
 }
 

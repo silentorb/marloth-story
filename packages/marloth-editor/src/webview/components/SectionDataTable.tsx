@@ -20,7 +20,7 @@ import {
   columnLabelFor,
   columnReorderOnDragEnd,
 } from "./SortableDataColumnHeaders";
-import { TableRowActionsCell } from "./TableRowActionsCell";
+import { TableRowActionsCell, type TableRowMoveConfig } from "./TableRowActionsCell";
 import "./section-data-table.css";
 import "./page-actions-menu.css";
 
@@ -32,6 +32,7 @@ interface TableRowPageActions {
   onArchiveNode: (nodeId: string) => Promise<void>;
   onRemoveNode: (nodeId: string) => Promise<void>;
   onDeleteNode: (nodeId: string) => Promise<void>;
+  getMoveConfig?: (rowNodeId: string) => TableRowMoveConfig | undefined;
 }
 
 interface SectionDataTableProps {
@@ -187,6 +188,7 @@ export function SectionDataTable({
                       onArchive={() => rowPageActions.onArchiveNode(nodeId)}
                       onRemove={() => rowPageActions.onRemoveNode(nodeId)}
                       onDelete={() => rowPageActions.onDeleteNode(nodeId)}
+                      move={rowPageActions.getMoveConfig?.(nodeId)}
                     />
                   ) : null}
                 </td>

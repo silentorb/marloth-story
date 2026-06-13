@@ -387,6 +387,45 @@ export function createApiHandler(
         return json(result);
       }
 
+      const connectionsMoveMatch = path === "/api/nodes/connections/move";
+      if (connectionsMoveMatch && req.method === "POST") {
+        const payload = (await req.json()) as {
+          type?: string;
+          oldSourceId?: string;
+          oldTargetId?: string;
+          newSourceId?: string;
+          newTargetId?: string;
+        };
+        if (
+          typeof payload.type !== "string" ||
+          typeof payload.oldSourceId !== "string" ||
+          typeof payload.oldTargetId !== "string" ||
+          typeof payload.newSourceId !== "string" ||
+          typeof payload.newTargetId !== "string"
+        ) {
+          return json(
+            { error: "type, oldSourceId, oldTargetId, newSourceId, and newTargetId required" },
+            400,
+          );
+        }
+        const error = db.moveRelationshipConnection({
+          type: payload.type,
+          oldSourceId: payload.oldSourceId.toLowerCase(),
+          oldTargetId: payload.oldTargetId.toLowerCase(),
+          newSourceId: payload.newSourceId.toLowerCase(),
+          newTargetId: payload.newTargetId.toLowerCase(),
+        });
+        if (error === "not_found") return json({ error: "not found" }, 404);
+        if (error === "source_not_found" || error === "target_not_found") {
+          return json({ error: "not found" }, 404);
+        }
+        if (error === "duplicate") return json({ error: "duplicate" }, 409);
+        if (error === "target_type_not_allowed") {
+          return json({ error: "target type not allowed" }, 400);
+        }
+        return json({ ok: true });
+      }
+
       const connectionsPostMatch = /^\/api\/nodes\/([a-f0-9]{32})\/connections$/i.exec(path);
       if (connectionsPostMatch && req.method === "POST") {
         const sourceId = connectionsPostMatch[1]!.toLowerCase();

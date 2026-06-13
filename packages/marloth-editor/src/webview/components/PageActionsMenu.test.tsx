@@ -9,7 +9,7 @@ describe("PageActionsMenu", () => {
     render(
       <PageActionsMenu
         recordTitle="Row page"
-        trigger="edit"
+        trigger="vertical-dots"
         menuPlacement="inline"
         onArchive={async () => {}}
         onRemove={onRemove}
@@ -21,6 +21,27 @@ describe("PageActionsMenu", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: "Remove" }));
 
     expect(onRemove).toHaveBeenCalledTimes(1);
+  });
+
+  test("shows Move only when onMove is provided", () => {
+    const onMove = mock(() => {});
+
+    render(
+      <PageActionsMenu
+        recordTitle="Row page"
+        trigger="vertical-dots"
+        menuPlacement="inline"
+        onArchive={async () => {}}
+        onRemove={async () => {}}
+        onMove={onMove}
+        onDelete={async () => {}}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Page actions" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Move" }));
+
+    expect(onMove).toHaveBeenCalledTimes(1);
   });
 
   test("omits Remove from the page app bar menu", () => {

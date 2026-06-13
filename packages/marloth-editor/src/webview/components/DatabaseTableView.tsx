@@ -174,9 +174,23 @@ export function DatabaseTableView({
               onCellUpdated?.();
             },
             onDeleteNode,
+            getMoveConfig: (rowNodeId: string) => ({
+              api,
+              excludedIds: [nodeId, rowNodeId],
+              onMove: async (selectedId: string) => {
+                await api.moveRelationshipConnection({
+                  type: "is_a",
+                  oldSourceId: rowNodeId,
+                  oldTargetId: databaseView.id,
+                  newSourceId: rowNodeId,
+                  newTargetId: selectedId,
+                });
+              },
+              onMoved: onCellUpdated,
+            }),
           }
         : undefined,
-    [api, databaseView.id, onArchiveNode, onCellUpdated, onDeleteNode],
+    [api, databaseView.id, nodeId, onArchiveNode, onCellUpdated, onDeleteNode],
   );
 
   return (

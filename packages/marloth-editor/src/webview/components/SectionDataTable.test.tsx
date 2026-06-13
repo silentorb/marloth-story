@@ -81,6 +81,7 @@ describe("SectionDataTable", () => {
     );
 
     expect(screen.getByRole("button", { name: "Page actions" })).toBeTruthy();
+    expect(screen.getByText("⋮")).toBeTruthy();
     expect(screen.getByRole("columnheader", { name: "Row actions" })).toBeTruthy();
     const headerRow = screen.getAllByRole("row")[0]!;
     expect(headerRow.querySelector('[aria-label="Page actions"]')).toBeNull();

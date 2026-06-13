@@ -141,6 +141,20 @@ export function RelationSectionView({
                     onCellUpdated?.();
                   },
                   onDeleteNode,
+                  getMoveConfig: (rowNodeId) => ({
+                    api,
+                    excludedIds: [nodeId, rowNodeId],
+                    onMove: async (selectedId: string) => {
+                      await api.moveRelationshipConnection({
+                        type: section.label,
+                        oldSourceId: nodeId,
+                        oldTargetId: rowNodeId,
+                        newSourceId: selectedId,
+                        newTargetId: rowNodeId,
+                      });
+                    },
+                    onMoved: onCellUpdated,
+                  }),
                 }
               : undefined
           }

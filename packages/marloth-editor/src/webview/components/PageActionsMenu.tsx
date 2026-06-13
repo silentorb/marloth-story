@@ -14,8 +14,8 @@ interface PageActionsMenuProps {
   recordTitle: string;
   archived?: boolean;
   disabled?: boolean;
-  /** `ellipsis` (⋯) for the page app bar; `edit` (✎) for table rows. */
-  trigger?: "ellipsis" | "edit";
+  /** `ellipsis` (⋯) for the page app bar; `vertical-dots` (⋮) for table rows. */
+  trigger?: "ellipsis" | "vertical-dots";
   /** Menu alignment relative to the trigger. */
   menuAlign?: "left" | "right";
   /** Portal + fixed positioning so menus are not clipped by scroll containers. */
@@ -26,6 +26,8 @@ interface PageActionsMenuProps {
   onRelate?: () => void;
   /** Unlink from the current table only; shown when provided (table rows, not page app bar). */
   onRemove?: () => Promise<void>;
+  /** Retarget row relationship; table rows only. */
+  onMove?: () => void;
   onDelete: () => Promise<void>;
 }
 
@@ -40,6 +42,7 @@ export function PageActionsMenu({
   onUnarchive,
   onRelate,
   onRemove,
+  onMove,
   onDelete,
 }: PageActionsMenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -172,6 +175,20 @@ export function PageActionsMenu({
           Remove
         </button>
       ) : null}
+      {onMove ? (
+        <button
+          type="button"
+          role="menuitem"
+          className="marloth-page-actions-item"
+          disabled={busy}
+          onClick={() => {
+            setMenuOpen(false);
+            onMove();
+          }}
+        >
+          Move
+        </button>
+      ) : null}
       <button
         type="button"
         role="menuitem"
@@ -217,16 +234,16 @@ export function PageActionsMenu({
         <button
           ref={triggerRef}
           type="button"
-          className={`marloth-page-actions-trigger${trigger === "edit" ? " is-edit" : ""}`}
+          className={`marloth-page-actions-trigger${trigger === "vertical-dots" ? " is-vertical-dots" : ""}`}
           aria-label="Page actions"
           aria-haspopup="menu"
           aria-expanded={menuOpen}
           disabled={disabled}
           onClick={() => setMenuOpen((open) => !open)}
         >
-          {trigger === "edit" ? (
-            <span className="marloth-page-actions-edit-icon" aria-hidden="true">
-              ✎
+          {trigger === "vertical-dots" ? (
+            <span className="marloth-page-actions-vertical-dots-icon" aria-hidden="true">
+              ⋮
             </span>
           ) : (
             "⋯"

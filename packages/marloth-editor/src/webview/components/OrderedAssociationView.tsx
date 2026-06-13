@@ -22,7 +22,7 @@ import { filterRowsByName } from "../table-name-filter";
 import { itemsTableSearchParamKey } from "../../shared/table-search-url";
 import { useTableSearch } from "../hooks/useTableSearch";
 import { RelationCellEditor } from "./RelationCellEditor";
-import { TableRowActionsCell } from "./TableRowActionsCell";
+import { TableRowActionsCell, type TableRowMoveConfig } from "./TableRowActionsCell";
 import { renderTableCell } from "./table-cell-render";
 import { TableSearchInput } from "./TableSearchInput";
 import { TableUtilityBar } from "./TableUtilityBar";
@@ -34,6 +34,7 @@ const ITEMS_SECTION_KEY = "items";
 
 interface OrderedAssociationViewProps {
   api: EditorApi;
+  nodeId: string;
   configId: string;
   view: OrderedAssociationViewDetail;
   onTabSelect: (tabId: string) => void;
@@ -54,6 +55,7 @@ interface SortableSceneRowProps {
     onArchiveNode: (nodeId: string) => Promise<void>;
     onRemoveNode: (nodeId: string) => Promise<void>;
     onDeleteNode: (nodeId: string) => Promise<void>;
+    getMoveConfig?: (rowNodeId: string) => TableRowMoveConfig | undefined;
   };
 }
 
@@ -126,6 +128,7 @@ function SortableSceneRow({
               onArchive={() => rowPageActions.onArchiveNode(row.sceneId)}
               onRemove={() => rowPageActions.onRemoveNode(row.sceneId)}
               onDelete={() => rowPageActions.onDeleteNode(row.sceneId)}
+              move={rowPageActions.getMoveConfig?.(row.sceneId)}
             />
           ) : null}
         </td>
@@ -148,6 +151,7 @@ interface GroupTableProps {
     onArchiveNode: (nodeId: string) => Promise<void>;
     onRemoveNode: (nodeId: string) => Promise<void>;
     onDeleteNode: (nodeId: string) => Promise<void>;
+    getMoveConfig?: (rowNodeId: string) => TableRowMoveConfig | undefined;
   };
   onColumnsReorder?: (nextColumns: string[]) => void | Promise<void>;
   canDeleteColumn?: (column: string) => boolean;
@@ -241,6 +245,7 @@ function GroupTable({
 
 export function OrderedAssociationView({
   api,
+  nodeId,
   configId,
   view,
   onTabSelect,
@@ -312,9 +317,23 @@ export function OrderedAssociationView({
               onCellUpdated?.();
             },
             onDeleteNode,
+            getMoveConfig: (rowNodeId: string) => ({
+              api,
+              excludedIds: [nodeId, rowNodeId],
+              onMove: async (selectedId: string) => {
+                await api.moveRelationshipConnection({
+                  type: "is_a",
+                  oldSourceId: rowNodeId,
+                  oldTargetId: view.typeDatabaseId,
+                  newSourceId: rowNodeId,
+                  newTargetId: selectedId,
+                });
+              },
+              onMoved: onCellUpdated,
+            }),
           }
         : undefined,
-    [api, onArchiveNode, onCellUpdated, onDeleteNode, view.typeDatabaseId],
+    [api, nodeId, onArchiveNode, onCellUpdated, onDeleteNode, view.typeDatabaseId],
   );
 
   const activeRow = useMemo(() => {
