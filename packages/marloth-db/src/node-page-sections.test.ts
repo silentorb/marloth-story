@@ -78,7 +78,7 @@ describe("node-sections", () => {
     db.upsertRelationship("page4", databaseId, IS_A_TYPE, {
       view: "default",
       row_index: 0,
-      status: "Active",
+      status: "Partial",
     });
 
     const detail = getNodePageDetail(db, databaseId);
@@ -88,7 +88,7 @@ describe("node-sections", () => {
       type: "database",
       databaseView: {
         title: "Features DB",
-        rows: [{ nodeId: "page4", name: "Guest consultant", cells: { status: "Active" } }],
+        rows: [{ nodeId: "page4", name: "Guest consultant", cells: { status: "Partial" } }],
       },
     });
   });
@@ -99,7 +99,7 @@ describe("node-sections", () => {
     expect(detail?.properties).toBeNull();
   });
 
-  test("shows Properties section for IS_A edge scalars and hides IS_A relation section", () => {
+  test("shows Properties and IS_A relation section with scalars split between them", () => {
     const databaseId = "db52345678901234567890123456789012";
     db.upsertNode("page5", { title: "Scene A", body: "Prose" });
     db.upsertNode(databaseId, {
@@ -123,7 +123,15 @@ describe("node-sections", () => {
       (section) => section.type === "relations" && section.label === IS_A_TYPE,
     );
 
-    expect(membership).toBeUndefined();
+    expect(membership).toMatchObject({
+      type: "relations",
+      label: IS_A_TYPE,
+      title: "Scene Archive",
+      typeNodeId: databaseId,
+      addMode: "link-existing",
+      columns: [],
+      rows: [{ targetId: databaseId, name: "Scene Archive", cells: {} }],
+    });
     expect(detail?.properties).toMatchObject({
       type: "properties",
       databaseId,
@@ -154,18 +162,23 @@ describe("node-sections", () => {
         },
       }),
     });
-    db.upsertRelationship("page6", databaseId, IS_A_TYPE, { status: "Draft" });
+    db.upsertRelationship("page6", databaseId, IS_A_TYPE, { status: "Unresolved" });
 
     const detail = getNodePageDetail(db, "page6");
     const membership = detail?.sections.find(
       (section) => section.type === "relations" && section.label === IS_A_TYPE,
     );
 
-    expect(membership).toBeUndefined();
+    expect(membership).toMatchObject({
+      label: IS_A_TYPE,
+      addMode: "link-existing",
+      columns: [],
+      rows: [{ targetId: databaseId, name: "Legacy Features" }],
+    });
     expect(detail?.properties).toMatchObject({
       databaseId,
       typeTitle: "Legacy Features",
-      cells: { status: "Draft" },
+      cells: { status: "Unresolved" },
     });
   });
 

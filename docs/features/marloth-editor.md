@@ -24,7 +24,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 - The editor **must** read and write node bodies via `marloth-db` (`ContentStore` → `content/data/{id}.md`).
 - Every node **must** render as a **universal page** with this block order: **page title** (standalone textarea) → collapsible **metadata** panel → optional **Properties** section → **markdown body** (Milkdown) → optional relationship and database table sections derived from graph relationships.
 - Because the page title is rendered outside the markdown body, heading levels in stored markdown **must** render one level deeper in the page body (`h1` → rendered `h2`, `h2` → rendered `h3`, etc.).
-- Instance pages (`NotionPage` with `(page)-[:IS_A]->(type)`) **must** show a **Properties** section when the type defines one or more stored scalar fields and/or dynamic computed fields for that database. Stored scalars (e.g. Priority) are editable; computed dynamic fields are read-only. When Properties is shown, the redundant `IS_A` relationship table section **must** be omitted.
+- Instance pages (`NotionPage` with `(page)-[:IS_A]->(type)`) **must** show a **Properties** section when the type defines one or more stored scalar fields and/or dynamic computed fields for that database. Stored scalars (e.g. Priority) are editable; computed dynamic fields are read-only. Properties **must** show singular stored scalars and computed fields on the `is_a` edge only — not relationship membership. When Properties is shown, the **`IS_A` relationship table section must still appear** alongside it; type membership is edited there (Link / Remove), not in Properties.
 - Relationship tables **must** group outgoing relationships by label; relationship properties (except import metadata like `ordinal`, `via_view`) **must** appear as table columns.
 - Database table sections **must** appear on `NotionDatabase` nodes, built from incoming `IS_A` relationships (Name from linked pages; scalar columns from `IS_A` properties; relation columns from linked targets on outgoing graph relationships — see [marloth-db.md](./marloth-db.md) `getDatabaseViewDetail`).
 - The API **must** load `content/` on startup (full cache rebuild if stale), watch `content/data/` and `content/model/` for changes, and sync into `MARLOTH_DB_PATH` (see marloth-db).
@@ -89,7 +89,7 @@ Keyboard shortcuts in combobox-style pickers (global search, Relate, record link
 
 ### Out of scope (v0.1)
 
-- Editing relationships from the UI beyond: ordered-association reorder/part moves (see [ordered-associations.md](./ordered-associations.md)), stored type-membership scalars in the Properties section, **create** flows that mint new IS_A type instances (database add row), **link existing targets** (Relate dialog, associative relation table **Link**, database relation columns), and enum/scalar patches on existing edges
+- Editing relationships from the UI beyond: ordered-association reorder/part moves (see [ordered-associations.md](./ordered-associations.md)), stored type-membership scalars in the Properties section, type-membership link/unlink in the `IS_A` relation table section, **create** flows that mint new IS_A type instances (database add row), **link existing targets** (Relate dialog, associative relation table **Link**, database relation columns), and enum/scalar patches on existing edges
 - Weighted relationships or typed link metadata in the editor
 
 ## Design rationale

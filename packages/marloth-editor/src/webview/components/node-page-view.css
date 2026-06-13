@@ -67,14 +67,13 @@
   padding: 0;
 }
 
-.marloth-record-page .marloth-editor-body.is-empty {
+.marloth-record-page .marloth-editor-body {
   min-height: 0;
 }
 
 /* Crepe reset uses 60px vertical padding; node pages already inset via .marloth-record-sections. */
 .marloth-record-page .marloth-editor-body .milkdown .ProseMirror {
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0;
 }
 
 .marloth-record-page .marloth-editor-body .milkdown .ProseMirror p {

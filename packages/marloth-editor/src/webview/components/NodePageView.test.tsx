@@ -8,7 +8,7 @@ mock.module("./MarlothEditor", () => ({
 import { PropertiesSectionView } from "./PropertiesSectionView";
 import { NodePageView } from "./NodePageView";
 import { UserSettingsProvider } from "../hooks/useUserSettings";
-import { makeNodePageDetail, makeDatabaseViewDetail } from "../test-fixtures/node-page";
+import { makeNodePageDetail, makeDatabaseViewDetail, makeRelationSection } from "../test-fixtures/node-page";
 import { makeMockEditorApi } from "../test-fixtures/mock-api";
 
 describe("NodePageView", () => {
@@ -218,5 +218,63 @@ describe("PropertiesSectionView", () => {
     expect(screen.getByText("3")).toBeTruthy();
     expect(screen.getByText(/computed/i)).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Priority" })).toBeNull();
+  });
+});
+
+describe("NodePageView IS_A relation section", () => {
+  test("renders IS_A relation table alongside Properties", () => {
+    const api = makeMockEditorApi();
+    const typeId = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+
+    render(
+      <UserSettingsProvider api={api}>
+        <NodePageView
+          api={api}
+          node={makeNodePageDetail({
+            properties: {
+              type: "properties",
+              databaseId: typeId,
+              typeTitle: "Features",
+              columns: ["priority"],
+              columnDefs: [
+                {
+                  key: "priority",
+                  name: "Priority",
+                  type: "enum",
+                  enumId: "priority",
+                },
+              ],
+              cells: { priority: "Low" },
+            },
+            sections: [
+              { type: "markdown", body: "# Example\n" },
+              makeRelationSection({
+                label: "is_a",
+                title: "Features",
+                typeNodeId: typeId,
+                addMode: "link-existing",
+                columns: [],
+                columnDefs: [],
+                rows: [{ targetId: typeId, name: "Features", cells: {} }],
+              }),
+            ],
+          })}
+          saveState="idle"
+          metadataExpanded={false}
+          onMetadataExpandedChange={() => {}}
+          onBodyChange={() => {}}
+          onTitleChange={() => {}}
+          onTabSelect={() => {}}
+          onOrderedAssociationViewChange={() => {}}
+          onArchiveNode={async () => {}}
+          onUnarchiveNode={async () => {}}
+          onDeleteNode={async () => {}}
+        />
+      </UserSettingsProvider>,
+    );
+
+    expect(screen.getByRole("heading", { name: "Properties", level: 2 })).toBeTruthy();
+    expect(screen.getAllByRole("heading", { name: "Features", level: 2 })).toHaveLength(2);
+    expect(screen.getByRole("button", { name: "Priority" })).toBeTruthy();
   });
 });

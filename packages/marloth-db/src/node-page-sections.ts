@@ -19,6 +19,7 @@ import { resolveContentPath } from "./content/paths";
 import { formatRelationshipTypeLabel } from "./relationship-type-label";
 import { generatedProviderId, ITEMS_SECTION_KEY } from "./views/resolve-tabs";
 import { loadViewsFromContent } from "./views/load";
+import { loadTableSchemasFromContent } from "./table-schemas/load";
 
 const RELATION_META_KEYS = new Set([
   "ordinal",
@@ -157,11 +158,18 @@ function sectionTitleForType(
   return formatRelationshipTypeLabel(label);
 }
 
+function typeTableIdsFromContent(contentDir: string): string[] {
+  return Object.keys(loadTableSchemasFromContent(contentDir).tables);
+}
+
 function buildRelationSections(
   db: GraphDatabase,
   nodeId: string,
-  schema?: SchemaFile,
+  options?: { schema?: SchemaFile; contentDir?: string },
 ): RelationTableSection[] {
+  const schema = options?.schema;
+  const contentDir = options?.contentDir ?? resolveContentPath();
+  const typeTableIds = typeTableIdsFromContent(contentDir);
   const outgoing = db.listRelationshipsFromSource(nodeId);
   const byType = new Map<string, typeof outgoing>();
 
@@ -209,33 +217,47 @@ function buildRelationSections(
       schema && !isTypeMembershipType(perspective)
         ? relationshipRuleContextForType(schema, db, nodeId, perspective)
         : null;
-    const columns = [...columnSet].sort((a, b) => a.localeCompare(b));
-    if (columns.includes("priority")) {
+    const isTypeMembership = isTypeMembershipType(perspective);
+    let columns = [...columnSet].sort((a, b) => a.localeCompare(b));
+    if (isTypeMembership) {
+      for (const row of rows) {
+        row.cells = {};
+      }
+      columns = [];
+    } else if (columns.includes("priority")) {
       for (const row of rows) {
         row.cells.priority = coalescePriorityValue(row.cells.priority);
       }
     }
-    const columnDefs = enrichColumnDefs(
-      columns.map((key) => ({
-        key,
-        name: isPriorityColumnKey(key)
-          ? "Priority"
-          : key
-              .split("_")
-              .filter(Boolean)
-              .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-              .join(" "),
-        type: "text",
-      })),
-    );
+    const columnDefs = isTypeMembership
+      ? []
+      : enrichColumnDefs(
+          columns.map((key) => ({
+            key,
+            name: isPriorityColumnKey(key)
+              ? "Priority"
+              : key
+                  .split("_")
+                  .filter(Boolean)
+                  .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+                  .join(" "),
+            type: "text",
+          })),
+        );
 
     sections.push({
       type: "relations",
       label: perspective,
       title: sectionTitleForType(db, perspective, typeNodeId),
       typeNodeId,
-      allowedTargetTypeIds: ruleContext?.allowedTargetTypeIds,
-      addMode: relationSectionSupportsLinkExisting(perspective) ? "link-existing" : "none",
+      allowedTargetTypeIds: isTypeMembership
+        ? typeTableIds
+        : ruleContext?.allowedTargetTypeIds,
+      addMode: isTypeMembership
+        ? "link-existing"
+        : relationSectionSupportsLinkExisting(perspective)
+          ? "link-existing"
+          : "none",
       columns,
       columnDefs,
       rows,
@@ -291,17 +313,16 @@ export function getNodePageDetail(
     }
   }
 
-  sections.push(...buildRelationSections(db, id, options?.schema));
+  sections.push(
+    ...buildRelationSections(db, id, {
+      schema: options?.schema,
+      contentDir,
+    }),
+  );
 
   const properties = node.isTypeTable ? null : buildPropertiesSection(db, id);
 
   const metadata = getNodePageMetadata(db, id)!;
 
-  const finalSections = properties
-    ? sections.filter(
-        (section) => !(section.type === "relations" && section.label === IS_A_TYPE),
-      )
-    : sections;
-
-  return { ...node, metadata, properties, sections: finalSections };
+  return { ...node, metadata, properties, sections };
 }

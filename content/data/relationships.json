@@ -280,20 +280,6 @@
     },
     {
       "a": "043d2efa0315443da237fe73ec5e0a8a",
-      "b": "dd0de9867cc345b898929306bdf9fc83",
-      "type": "is_a",
-      "directedFrom": "043d2efa0315443da237fe73ec5e0a8a",
-      "properties": {
-        "view": "all",
-        "row_index": 11,
-        "priority": "Medium",
-        "inspiration_count": "0",
-        "weight": "2",
-        "wonderland_count": "0"
-      }
-    },
-    {
-      "a": "043d2efa0315443da237fe73ec5e0a8a",
       "b": "e028aa0786f5449984a4f497c1d746fa",
       "type": "includes",
       "properties": {
@@ -1699,20 +1685,6 @@
       "properties": {
         "ordinal": 4,
         "via_view": "all"
-      }
-    },
-    {
-      "a": "0d0a5d2d6ecb4def9971302738c789ff",
-      "b": "dd0de9867cc345b898929306bdf9fc83",
-      "type": "is_a",
-      "directedFrom": "0d0a5d2d6ecb4def9971302738c789ff",
-      "properties": {
-        "view": "all",
-        "row_index": 51,
-        "priority": "Low",
-        "inspiration_count": "0",
-        "weight": "1",
-        "wonderland_count": "0"
       }
     },
     {
@@ -26469,20 +26441,6 @@
     },
     {
       "a": "4bc0d7e45b104d609e3a6bc359f276b0",
-      "b": "dd0de9867cc345b898929306bdf9fc83",
-      "type": "is_a",
-      "directedFrom": "4bc0d7e45b104d609e3a6bc359f276b0",
-      "properties": {
-        "view": "all",
-        "row_index": 50,
-        "priority": "Low",
-        "inspiration_count": "0",
-        "weight": "1",
-        "wonderland_count": "0"
-      }
-    },
-    {
-      "a": "4bc0d7e45b104d609e3a6bc359f276b0",
       "b": "e028aa0786f5449984a4f497c1d746fa",
       "type": "includes",
       "properties": {
@@ -34024,6 +33982,12 @@
       "a": "0f558a609a56485185beed4d1fd1cd9f",
       "b": "2d558e628ba28080869ecf8b7cb495ed",
       "type": "includes"
+    },
+    {
+      "a": "0d0a5d2d6ecb4def9971302738c789ff",
+      "b": "528384943746443a9c89699b57e3bbec",
+      "type": "is_a",
+      "directedFrom": "0d0a5d2d6ecb4def9971302738c789ff"
     }
   ]
 }

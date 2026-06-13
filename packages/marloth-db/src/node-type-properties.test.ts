@@ -72,7 +72,7 @@ describe("node-type-properties", () => {
     ).toBe("dynamic");
   });
 
-  test("getNodePageDetail exposes properties and omits IS_A relation section", () => {
+  test("getNodePageDetail exposes properties and IS_A relation section", () => {
     new ContentStore(contentDir).writeDynamicFieldsFile(
       fileFromSeedInputs([
         {
@@ -88,11 +88,14 @@ describe("node-type-properties", () => {
     invalidateDynamicFieldsCache();
     const detail = getNodePageDetail(db, character);
     expect(detail?.properties?.cells.all_scene_count).toBe("2");
-    expect(
-      detail?.sections.some(
-        (section) => section.type === "relations" && section.label === IS_A_TYPE,
-      ),
-    ).toBe(false);
+    const membership = detail?.sections.find(
+      (section) => section.type === "relations" && section.label === IS_A_TYPE,
+    );
+    expect(membership).toMatchObject({
+      label: IS_A_TYPE,
+      addMode: "link-existing",
+      columns: [],
+    });
   });
 
   afterAll(() => {
