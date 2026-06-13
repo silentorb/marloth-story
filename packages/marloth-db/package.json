@@ -13,7 +13,8 @@
     "./dynamic-node-links": "./src/dynamic-node-links.ts",
     "./callout": "./src/callout.ts",
     "./schema-file": "./src/schema-rules/schema-file.ts",
-    "./relationship-type-label": "./src/relationship-type-label.ts"
+    "./relationship-type-label": "./src/relationship-type-label.ts",
+    "./row-sort-helpers": "./src/row-sort-helpers.ts"
   },
   "scripts": {
     "test": "bun test"

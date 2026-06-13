@@ -334,7 +334,7 @@
                 "name": "Inspirations",
                 "sorts": [
                   {
-                    "column": "inspiration_count",
+                    "column": "inspirations",
                     "direction": "desc"
                   },
                   {

@@ -115,7 +115,12 @@ export type {
   DeleteDatabaseColumnResult,
 } from "./delete-database-column";
 export { slugifyPropertyKey } from "./table-schema";
-export { sortEvalRows, type EvalRow } from "./row-sort";
+export {
+  isRelationColumnSort,
+  relationLinkCount,
+  sortEvalRows,
+  type EvalRow,
+} from "./row-sort";
 export {
   loadTableSchemasFromContent,
   hasTableSchemaEntry,

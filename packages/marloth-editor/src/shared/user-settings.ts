@@ -1,4 +1,9 @@
 import { compareEnumLabelsForColumn } from "marloth-db/enum-codec";
+import {
+  isRelationColumnSort,
+  relationLinkCount,
+  type RelationSortRow,
+} from "marloth-db/row-sort-helpers";
 import { emptySchemaFile, type SchemaFile } from "marloth-db/schema-file";
 
 /** Local user preferences persisted outside git (see `.marloth/user-settings.json`). */
@@ -202,6 +207,7 @@ export interface SortableTableRow {
   id: string;
   name: string;
   cells: Record<string, string>;
+  relationCells?: RelationSortRow["relationCells"];
 }
 
 function compareColumnValues(
@@ -228,6 +234,11 @@ export function sortTableRows<T extends SortableTableRow>(
   const orderBy = normalizeTableSort(spec).orderBy;
   return [...rows].sort((left, right) => {
     for (const { column, direction } of orderBy) {
+      if (column !== "name" && isRelationColumnSort(left, right, column)) {
+        const cmp = relationLinkCount(left, column) - relationLinkCount(right, column);
+        if (cmp !== 0) return direction === "desc" ? -cmp : cmp;
+        continue;
+      }
       const leftValue = column === "name" ? left.name : (left.cells[column] ?? "");
       const rightValue = column === "name" ? right.name : (right.cells[column] ?? "");
       const cmp = compareColumnValues(column, leftValue, rightValue, schema);

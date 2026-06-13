@@ -139,9 +139,9 @@ export function hydrateRelationCellsForRows(
         col.targetDatabaseId,
       );
       const links = linksFromRelationships(db, row.nodeId, relationships);
+      row.relationCells[col.key] = links;
       if (links.length > 0) {
         row.cells[col.key] = formatRelationCell(links);
-        row.relationCells[col.key] = links;
       }
     }
   }

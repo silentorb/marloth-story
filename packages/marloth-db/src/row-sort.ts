@@ -5,6 +5,9 @@ import {
 import { loadWorkspaceSchema } from "./schema-rules/load";
 import { resolvePropertyEnum } from "./property-enums";
 import type { RelationLink } from "./relation-link";
+import { isRelationColumnSort, relationLinkCount } from "./row-sort-helpers";
+
+export { isRelationColumnSort, relationLinkCount } from "./row-sort-helpers";
 
 export interface EvalRow {
   nodeId: string;
@@ -62,6 +65,12 @@ export function sortEvalRows(rows: EvalRow[], sorts: unknown[]): EvalRow[] {
 
       const property = typeof s.property === "string" ? s.property : null;
       if (!property) continue;
+      if (isRelationColumnSort(a, b, property)) {
+        const cmp =
+          (relationLinkCount(a, property) - relationLinkCount(b, property)) * direction;
+        if (cmp !== 0) return cmp;
+        continue;
+      }
       const av = cellValue(a, property);
       const bv = cellValue(b, property);
       const schema = loadWorkspaceSchema();

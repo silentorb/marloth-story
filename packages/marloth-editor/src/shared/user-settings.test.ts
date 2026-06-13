@@ -118,6 +118,46 @@ describe("user-settings", () => {
     expect(byPriorityAsc.map((row) => row.name)).toEqual(["Gamma", "Alpha", "Beta"]);
   });
 
+  test("sortTableRows sorts relation fields by link count", () => {
+    const rows = [
+      {
+        id: "1",
+        name: "Few",
+        cells: { inspirations: "Alpha, Beta" },
+        relationCells: {
+          inspirations: [
+            { targetId: "a", title: "Alpha" },
+            { targetId: "b", title: "Beta" },
+          ],
+        },
+      },
+      {
+        id: "2",
+        name: "Many",
+        cells: { inspirations: "One, Two, Three" },
+        relationCells: {
+          inspirations: [
+            { targetId: "1", title: "One" },
+            { targetId: "2", title: "Two" },
+            { targetId: "3", title: "Three" },
+          ],
+        },
+      },
+      {
+        id: "3",
+        name: "None",
+        cells: {},
+        relationCells: { inspirations: [] },
+      },
+    ];
+
+    const sorted = sortTableRows(rows, {
+      orderBy: [{ column: "inspirations", direction: "desc" }],
+    });
+
+    expect(sorted.map((row) => row.name)).toEqual(["Many", "Few", "None"]);
+  });
+
   test("applyUserSettingsPatch stores sparse overrides only", () => {
     const base = { version: 1 as const };
     const withOverride = applyUserSettingsPatch(base, {

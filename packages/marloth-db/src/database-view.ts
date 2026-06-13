@@ -155,8 +155,6 @@ function buildCustomViewDetail(
     { contentDir },
   );
 
-  const sorted = sortEvalRowsFromViewSorts(enrichedRows, resolved.activeDefinition.sorts);
-
   const mergedColumnDefs = buildDatabaseColumnDefs(
     db,
     databaseId,
@@ -165,7 +163,9 @@ function buildCustomViewDetail(
     { contentDir },
   );
 
-  hydrateRelationCellsForRows(db, databaseId, mergedColumnDefs, sorted);
+  hydrateRelationCellsForRows(db, databaseId, mergedColumnDefs, enrichedRows);
+
+  const sorted = sortEvalRowsFromViewSorts(enrichedRows, resolved.activeDefinition.sorts);
 
   const defaultColumns =
     mergedColumnDefs.length > 0

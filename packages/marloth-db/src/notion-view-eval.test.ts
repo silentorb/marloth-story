@@ -46,6 +46,51 @@ describe("row-sort", () => {
     const sorted = sortEvalRows(unsorted, [{ property: "Priority", direction: "descending" }]);
     expect(sorted.map((r) => r.name)).toEqual(["High item", "Medium item", "Low item"]);
   });
+
+  test("sorts relation fields by link count descending", () => {
+    const unsorted: EvalRow[] = [
+      {
+        nodeId: "few",
+        name: "Few links",
+        cells: { inspirations: "Alpha, Beta" },
+        relationCells: {
+          inspirations: [
+            { targetId: "a", title: "Alpha" },
+            { targetId: "b", title: "Beta" },
+          ],
+        },
+        rowIndex: 0,
+        createdAt: null,
+        modifiedAt: null,
+      },
+      {
+        nodeId: "many",
+        name: "Many links",
+        cells: { inspirations: "One, Two, Three" },
+        relationCells: {
+          inspirations: [
+            { targetId: "1", title: "One" },
+            { targetId: "2", title: "Two" },
+            { targetId: "3", title: "Three" },
+          ],
+        },
+        rowIndex: 1,
+        createdAt: null,
+        modifiedAt: null,
+      },
+      {
+        nodeId: "none",
+        name: "No links",
+        cells: {},
+        relationCells: { inspirations: [] },
+        rowIndex: 2,
+        createdAt: null,
+        modifiedAt: null,
+      },
+    ];
+    const sorted = sortEvalRows(unsorted, [{ property: "inspirations", direction: "descending" }]);
+    expect(sorted.map((r) => r.name)).toEqual(["Many links", "Few links", "No links"]);
+  });
 });
 
 describe("getDatabaseViewDetail with custom tabs", () => {
@@ -169,6 +214,95 @@ describe("getDatabaseViewDetail with custom tabs", () => {
 
     const view = getDatabaseViewDetail(db, databaseId, undefined, contentDir);
     expect(view?.columns).toEqual(["status", "priority"]);
+
+    db.close();
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  test("sorts relation columns by link count using tab sorts", () => {
+    const dir = mkdtempSync(join(tmpdir(), "marloth-db-view-rel-sort-"));
+    const contentDir = join(dir, "content");
+    mkdirSync(contentModelDir(contentDir), { recursive: true });
+    const db = new GraphDatabase(join(dir, "test.sqlite"), { clean: true });
+    const featuresDb = "dd0de9867cc345b898929306bdf9fc83";
+    const inspirationsDb = "2eea538996934ce8abafc27132e576c1";
+
+    writeFileSync(
+      viewsFilePath(contentDir),
+      serializeViewsFile({
+        version: VIEWS_FILE_VERSION,
+        nodes: {
+          [featuresDb]: {
+            sections: {
+              items: {
+                tabs: {
+                  kind: "custom",
+                  definitions: [
+                    {
+                      id: "by-inspirations",
+                      name: "By inspirations",
+                      sorts: [{ column: "inspirations", direction: "desc" }],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+      }),
+    );
+    writeFileSync(
+      dynamicFieldsFilePath(contentDir),
+      serializeDynamicFieldsFile(emptyDynamicFieldsFile()),
+    );
+    writeFileSync(
+      tableSchemasFilePath(contentDir),
+      serializeTableSchemasFile({
+        version: 1,
+        tables: {
+          [featuresDb]: {
+            columns: [
+              {
+                key: "inspirations",
+                name: "Inspirations",
+                type: "relation",
+                targetTypeId: inspirationsDb,
+                perspective: "inspirations",
+              },
+            ],
+          },
+        },
+      }),
+    );
+
+    db.upsertNode(featuresDb, { ...typeTableMarkerProperties("Features") });
+    db.upsertNode(inspirationsDb, { ...typeTableMarkerProperties("Inspirations") });
+    db.upsertNode("feature-few", { title: "Few inspirations" });
+    db.upsertNode("feature-many", { title: "Many inspirations" });
+    db.upsertNode("feature-none", { title: "No inspirations" });
+    db.upsertNode("insp-a", { title: "Insp A" });
+    db.upsertNode("insp-b", { title: "Insp B" });
+    db.upsertNode("insp-c", { title: "Insp C" });
+
+    db.upsertRelationship("feature-few", featuresDb, IS_A_TYPE, { row_index: 0 });
+    db.upsertRelationship("feature-many", featuresDb, IS_A_TYPE, { row_index: 1 });
+    db.upsertRelationship("feature-none", featuresDb, IS_A_TYPE, { row_index: 2 });
+    db.upsertRelationship("insp-a", inspirationsDb, IS_A_TYPE, { row_index: 0 });
+    db.upsertRelationship("insp-b", inspirationsDb, IS_A_TYPE, { row_index: 1 });
+    db.upsertRelationship("insp-c", inspirationsDb, IS_A_TYPE, { row_index: 2 });
+    db.upsertRelationship("feature-few", "insp-a", "includes");
+    db.upsertRelationship("feature-few", "insp-b", "includes");
+    db.upsertRelationship("feature-many", "insp-a", "includes");
+    db.upsertRelationship("feature-many", "insp-b", "includes");
+    db.upsertRelationship("feature-many", "insp-c", "includes");
+
+    const view = getDatabaseViewDetail(db, featuresDb, "by-inspirations", contentDir);
+    expect(view?.rows.map((row) => row.name)).toEqual([
+      "Many inspirations",
+      "Few inspirations",
+      "No inspirations",
+    ]);
+    expect(view?.rows[2]?.relationCells?.inspirations).toEqual([]);
 
     db.close();
     rmSync(dir, { recursive: true, force: true });
