@@ -49,6 +49,21 @@
       "problemMatcher": []
     },
     {
+      "label": "Marloth: build static website (CI simulation)",
+      "type": "shell",
+      "command": "bash scripts/ci-build-static-site.sh",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Marloth Editor: dev servers",
       "type": "shell",
       "command": "bash scripts/marloth-editor-start",

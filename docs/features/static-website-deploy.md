@@ -123,23 +123,30 @@ If the site is served under a CloudFront path prefix, set `MARLOTH_WEB_BASE` in 
 
 ## Verification
 
+### Simulate CI build (before push)
+
+On the **host** (or WSL) where Docker is installed — not inside a devcontainer that lacks Docker:
+
+```bash
+bun run web:build:ci
+```
+
+Same as `bash scripts/ci-build-static-site.sh`: builds the devcontainer image, bind-mounts the repo, runs tests + `web:build` with the same UID/GID and Bun path as GitHub Actions. VS Code: **Tasks: Run Task** → **Marloth: build static website (CI simulation)**.
+
+For a fast in-container build (not CI parity), use `bun run web:build` instead.
+
+### After deploy hook-up
+
 1. Run workflow via `workflow_dispatch`.
 2. Confirm objects in S3: `index.html`, `nodes/*/index.html`, `_astro/*`.
 3. Open the CloudFront URL; confirm content matches latest `main`.
 4. Push a small `content/` change on `main`; confirm automatic redeploy.
 
-Local parity check (same commands CI uses inside the container):
-
-```bash
-docker build -f .devcontainer/Dockerfile -t marloth-ci:local .
-docker run --rm -v "$PWD:/workspaces/marloth-story" -w /workspaces/marloth-story marloth-ci:local \
-  bash -c 'bun install --frozen-lockfile && bun run --filter marloth-static-site test && bun run web:build'
-```
-
 ## Implementation pointers
 
 | Piece | Path |
 | --- | --- |
+| CI build simulation | `scripts/ci-build-static-site.sh` (`bun run web:build:ci`) |
 | Workflow | `.github/workflows/deploy-static-site.yml` |
 | Devcontainer image | `.devcontainer/Dockerfile` |
 | Docker build context exclusions | `.dockerignore` |

@@ -11,6 +11,7 @@
     "editor:api": "bun run --filter marloth-editor dev:api",
     "editor:build": "bun run --filter marloth-editor build",
     "web:build": "bun run --filter marloth-static-site build",
+    "web:build:ci": "bash scripts/ci-build-static-site.sh",
     "content:export": "bun scripts/export-graph-to-content.ts",
     "content:sync": "bun -e \"import { openMarlothWriteContext, resolveContentPath, defaultDbPathForContent } from 'marloth-db/content'; const c=resolveContentPath(); const ctx=openMarlothWriteContext(c, defaultDbPathForContent(c)); ctx.sync.fullRebuild(); ctx.db.close(); console.log('Synced', c);\"",
     "test": "bun run --filter marloth-db test && bun run --filter marloth-editor test && bun run --filter marloth-static-site test",

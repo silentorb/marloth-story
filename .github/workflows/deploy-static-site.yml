@@ -44,12 +44,7 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Build static site
-        run: |
-          docker run --rm \
-            -v "${{ github.workspace }}:/workspaces/marloth-story" \
-            -w /workspaces/marloth-story \
-            marloth-ci:local \
-            bash -c 'bun install --frozen-lockfile && bun run --filter marloth-static-site test && bun run web:build'
+        run: bash scripts/ci-build-static-site.sh --run-only
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
