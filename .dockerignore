@@ -1,0 +1,21 @@
+# Large paths not needed for devcontainer dependency layer (CI + local image build).
+content/
+exports/
+dist/
+data/
+.git/
+.github/
+
+# Local / ephemeral (also in .gitignore)
+node_modules/
+**/.marloth/
+content/.obsidian/
+.devcontainer/notion.env
+.env
+.env.*
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.md
+!packages/**/*.md

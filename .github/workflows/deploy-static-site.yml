@@ -1,0 +1,67 @@
+name: Deploy static site
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - content/**
+      - packages/marloth-static-site/**
+      - packages/marloth-db/**
+      - package.json
+      - bun.lock
+      - bunfig.toml
+      - .devcontainer/**
+      - .github/workflows/deploy-static-site.yml
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-static-site
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build devcontainer image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: .devcontainer/Dockerfile
+          load: true
+          tags: marloth-ci:local
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build static site
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/workspaces/marloth-story" \
+            -w /workspaces/marloth-story \
+            marloth-ci:local \
+            bash -lc 'bun install --frozen-lockfile && bun run --filter marloth-static-site test && bun run web:build'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Sync to S3
+        run: aws s3 sync dist/web/ "s3://${{ vars.S3_BUCKET }}/" --delete
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}" \
+            --paths "/*"

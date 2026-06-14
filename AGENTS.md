@@ -97,6 +97,7 @@ For **design data** (what nodes mean, how they relate conceptually), read `[docs
 | Table view tabs, `views.json`                                          | `[docs/features/views.md](./docs/features/views.md)`                                                                                                           |
 | Type table columns, `table-schemas.json`                               | `[docs/features/table-schemas.md](./docs/features/table-schemas.md)`                                                                                           |
 | Static website generation (Astro)                                      | `[docs/features/static-website.md](./docs/features/static-website.md)`                                                                                         |
+| Static website deploy (GitHub Actions → S3/CloudFront)                 | `[docs/features/static-website-deploy.md](./docs/features/static-website-deploy.md)`                                                                           |
 
 
 See also `[docs/features/README.md](./docs/features/README.md)` for the feature-doc template and how to add new features.

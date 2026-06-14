@@ -101,6 +101,7 @@ bun run web:build
 
 ## See also
 
+- [`static-website-deploy.md`](./static-website-deploy.md) — GitHub Actions deploy to S3 / CloudFront
 - [`marloth-db.md`](./marloth-db.md) — content store and cache
 - [`marloth-editor.md`](./marloth-editor.md) — editor theme and link conventions
 - [`packages/marloth-static-site/AGENTS.md`](../packages/marloth-static-site/AGENTS.md)

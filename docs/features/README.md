@@ -25,6 +25,7 @@ Each file in this directory is the **authoritative design spec** for one major w
 | Dynamic table fields (computed columns) | [dynamic-table-fields.md](./dynamic-table-fields.md) |
 | Table view tabs (`views.json`) | [views.md](./views.md) |
 | Static website generation (Astro) | [static-website.md](./static-website.md) |
+| Static website deploy (GitHub Actions → S3/CloudFront) | [static-website-deploy.md](./static-website-deploy.md) |
 | Relationship schema rules | [schema.md](./schema.md) |
 
 ## Split of concerns
