@@ -20,7 +20,7 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 - The `./data/marloth.sqlite` file is a **local query cache** (gitignored). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
 - The `./exports/` directory holds **archival** Notion export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
-- All external dependencies and tooling installs should be performed within the devcontainer Dockerfile. On each container start, the image entrypoint runs `bun install --frozen-lockfile` in the workspace and then starts the editor dev servers (`CMD`: `bun run editor:dev`). **Rebuild the container** after changing `package.json` or `bun.lock` — do not run `bun install` manually in a terminal or on the host.
+- All external dependencies and tooling installs should be performed within the devcontainer Dockerfile. On each container start, the image `CMD` runs `bun install --frozen-lockfile` in the workspace and then starts the editor dev servers (`bun run editor:dev`). **Rebuild the container** after changing `package.json` or `bun.lock` — do not run `bun install` manually in a terminal or on the host.
 
 ## Terminology
 

@@ -34,4 +34,5 @@ USER vscode
 RUN bun install
 
 WORKDIR /workspaces/marloth-story
-CMD ["bun", "run", "editor:dev"]
+# Bind-mounted workspace + node_modules volume are empty at first start; sync deps then run dev servers.
+CMD ["/bin/bash", "-c", "cd /workspaces/marloth-story && bun install --frozen-lockfile && exec bun run editor:dev"]
