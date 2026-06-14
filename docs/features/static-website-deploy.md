@@ -133,7 +133,7 @@ Local parity check (same commands CI uses inside the container):
 ```bash
 docker build -f .devcontainer/Dockerfile -t marloth-ci:local .
 docker run --rm -v "$PWD:/workspaces/marloth-story" -w /workspaces/marloth-story marloth-ci:local \
-  bash -lc 'bun install --frozen-lockfile && bun run --filter marloth-static-site test && bun run web:build'
+  bash -c 'bun install --frozen-lockfile && bun run --filter marloth-static-site test && bun run web:build'
 ```
 
 ## Implementation pointers

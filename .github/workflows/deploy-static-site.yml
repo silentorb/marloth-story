@@ -49,7 +49,7 @@ jobs:
             -v "${{ github.workspace }}:/workspaces/marloth-story" \
             -w /workspaces/marloth-story \
             marloth-ci:local \
-            bash -lc 'bun install --frozen-lockfile && bun run --filter marloth-static-site test && bun run web:build'
+            bash -c 'bun install --frozen-lockfile && bun run --filter marloth-static-site test && bun run web:build'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
