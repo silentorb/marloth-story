@@ -18,10 +18,10 @@ apt-get upgrade -y
 rm -rf /var/lib/apt/lists/*
 EOF
 
-# Bun (pin matches root package.json "packageManager"). Installed for the default dev user.
-ENV BUN_INSTALL=/home/vscode/.bun
+# Bun (pin matches root package.json "packageManager"). System-wide so CI can run as bind-mount UID.
+ENV BUN_INSTALL=/usr/local/bun
 ENV PATH="${BUN_INSTALL}/bin:${PATH}"
-USER vscode
+USER root
 RUN curl -fsSL https://bun.sh/install | bash -s "bun-v1.3.13"
 
 # Workspace dependencies (installed at image build; devcontainer syncs into bind-mounted workspace).

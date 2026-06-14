@@ -44,7 +44,7 @@ run_build() {
     -v "${ROOT}:${MARLOTH_CI_WORKSPACE}" \
     -w "${MARLOTH_CI_WORKSPACE}" \
     "${MARLOTH_CI_IMAGE}" \
-    bash -c 'export PATH="/home/vscode/.bun/bin:$PATH" && bun install --frozen-lockfile && bun run --filter marloth-static-site test && bun run web:build'
+    bash -c 'bun install --frozen-lockfile && bun run --filter marloth-static-site test && bun run web:build'
 }
 
 case "${1:-}" in

@@ -131,7 +131,7 @@ On the **host** (or WSL) where Docker is installed — not inside a devcontainer
 bun run web:build:ci
 ```
 
-Same as `bash scripts/ci-build-static-site.sh`: builds the devcontainer image, bind-mounts the repo, runs tests + `web:build` with the same UID/GID and Bun path as GitHub Actions. VS Code: **Tasks: Run Task** → **Marloth: build static website (CI simulation)**.
+Same as `bash scripts/ci-build-static-site.sh`: builds the devcontainer image, bind-mounts the repo, runs as the checkout owner UID/GID (like GitHub Actions), then tests + `web:build`. Bun is installed to `/usr/local/bun` in the image so it is available regardless of container user. VS Code: **Tasks: Run Task** → **Marloth: build static website (CI simulation)**.
 
 For a fast in-container build (not CI parity), use `bun run web:build` instead.
 
