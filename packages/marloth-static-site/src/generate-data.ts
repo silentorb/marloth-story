@@ -1,53 +1,45 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { ContentStore } from "marloth-db/content";
+import { openContentGraph } from "marloth-db/content";
+import { loadSchemaFromContent } from "marloth-db";
 import type { ResolvedConfig } from "./config";
+import type { SiteData, SiteNode } from "./lib/site-types";
+import { buildExtraTabPayloadsAndRoutes, buildSiteNode } from "./lib/static-export";
 
 /** Matches `DEFAULT_HOME_NODE_ID` in marloth-db queries. */
 export const DEFAULT_HOME_NODE_ID = "13458e628ba28073850dea0edb9acde1";
 
-export interface SiteNode {
-  id: string;
-  title: string;
-  body: string;
-}
+export type { SiteData, SiteNode } from "./lib/site-types";
 
-export interface SiteData {
-  homeNodeId: string;
-  base: string;
-  nodes: SiteNode[];
-}
+export function loadNodesFromGraph(config: ResolvedConfig): SiteData {
+  const { store, db } = openContentGraph(config.contentDir, config.dbPath);
+  const schema = loadSchemaFromContent(config.contentDir);
+  const nodes: SiteNode[] = [];
 
-function titleFromProperties(properties: Record<string, unknown>): string {
-  const title = properties.title;
-  if (typeof title === "string" && title.trim()) return title.trim();
-  const alias = properties.alias;
-  if (typeof alias === "string" && alias.trim()) return alias.trim();
-  return "Untitled";
-}
+  for (const id of store.listNodeIds()) {
+    const node = buildSiteNode(db, id, config.contentDir, schema);
+    if (node) nodes.push(node);
+  }
 
-export function loadNodesFromContent(contentDir: string): SiteNode[] {
-  const store = new ContentStore(contentDir);
-  return store.listNodeIds().map((id) => {
-    const node = store.readNode(id);
-    if (!node) throw new Error(`Missing node ${id}`);
-    const props = node.properties as Record<string, unknown>;
-    const body = typeof props.body === "string" ? props.body : "";
-    return {
-      id: node.id,
-      title: titleFromProperties(props),
-      body,
-    };
-  });
-}
+  const { tabItemsPayloads, tabRoutes } = buildExtraTabPayloadsAndRoutes(
+    db,
+    nodes,
+    config.contentDir,
+  );
 
-export function writeSiteData(config: ResolvedConfig, outFile: string): SiteData {
-  const nodes = loadNodesFromContent(config.contentDir);
-  const data: SiteData = {
+  db.close();
+
+  return {
     homeNodeId: DEFAULT_HOME_NODE_ID,
     base: config.base,
     nodes,
+    tabItemsPayloads,
+    tabRoutes,
   };
+}
+
+export function writeSiteData(config: ResolvedConfig, outFile: string): SiteData {
+  const data = loadNodesFromGraph(config);
   mkdirSync(dirname(outFile), { recursive: true });
   writeFileSync(outFile, JSON.stringify(data), "utf8");
   return data;

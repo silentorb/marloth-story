@@ -2,7 +2,7 @@
 
 ## What it is
 
-Astro-based static site generator that exports every node in `content/` to HTML under `dist/web/` (default). Markdown-only pages: title, path, rendered body with internal links rewritten.
+Astro-based static site generator that exports every node in `content/` to HTML under `dist/web/` (default). Each page mirrors the editor’s read-only node view: metadata (with backlinks), properties, markdown body, Items tables, and relation tables with cross-links. Multi-tab type-table hubs get sibling URLs under `nodes/{id}/tabs/{tabId}/`.
 
 ## Run
 
@@ -36,8 +36,9 @@ CLI overrides environment (see `--help`):
 ## Output layout
 
 - `index.html` — node index + link to home node
-- `nodes/{id}/index.html` — one page per content node
-- `_astro/` — bundled assets
+- `nodes/{id}/index.html` — one page per content node (default Items tab)
+- `nodes/{id}/tabs/{tabId}/index.html` — extra tab pages for multi-tab type-table hubs only
+- `_astro/` — bundled assets (includes sort + metadata client script)
 
 ## Repo-wide context
 

@@ -54,6 +54,14 @@ export function nodePagePath(id: string, base = "/"): string {
   return `${prefix}/nodes/${normalizedId}/`;
 }
 
+/** URL path for a tab sibling page on a type-table hub node. */
+export function nodeTabPath(id: string, tabId: string, base = "/"): string {
+  const normalizedId = id.toLowerCase();
+  if (!base || base === "/") return `/nodes/${normalizedId}/tabs/${tabId}/`;
+  const prefix = base.endsWith("/") ? base.slice(0, -1) : base;
+  return `${prefix}/nodes/${normalizedId}/tabs/${tabId}/`;
+}
+
 const MD_LINK = /\[([^\]]*)\]\(([^)]+)\)/g;
 
 /** Rewrite inline markdown links that reference graph nodes to static site URLs. */

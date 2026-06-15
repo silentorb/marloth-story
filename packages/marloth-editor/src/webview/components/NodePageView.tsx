@@ -4,7 +4,6 @@ import { MarlothEditor } from "./MarlothEditor";
 import { OrderedAssociationView } from "./OrderedAssociationView";
 import { PageActionsMenu } from "./PageActionsMenu";
 import { PageTitle } from "./PageTitle";
-import { PropertiesSectionView } from "./PropertiesSectionView";
 import { NodeMetadataPanel } from "./NodeMetadataPanel";
 import { RelationSectionView } from "./RelationSectionView";
 import { AddRelationshipDialog } from "./AddRelationshipDialog";
@@ -106,18 +105,12 @@ export function NodePageView({
         <NodeMetadataPanel
           api={api}
           metadata={node.metadata}
+          nodeId={node.id}
+          properties={node.properties}
           expanded={metadataExpanded}
           onExpandedChange={onMetadataExpandedChange}
+          onCellUpdated={onTableCellUpdated}
         />
-
-        {node.properties ? (
-          <PropertiesSectionView
-            api={api}
-            nodeId={node.id}
-            section={node.properties}
-            onCellUpdated={onTableCellUpdated}
-          />
-        ) : null}
 
         <section
           className={`marloth-record-section marloth-markdown-section${emptyMarkdown ? " is-empty" : ""}`}

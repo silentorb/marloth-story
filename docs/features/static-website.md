@@ -4,7 +4,7 @@ Generate a portable, dark-themed static HTML site from every node in `content/`.
 
 ## Summary
 
-The `marloth-static-site` package reads the git-tracked design corpus via `marloth-db`, builds one page per node with Astro, and writes output to `dist/web/` by default. The primary use case is embedding this output into a larger parent static site.
+The `marloth-static-site` package reads the git-tracked design corpus via `marloth-db`, builds one page per node with Astro, and writes output to `dist/web/` by default. Pages mirror the editor’s read-only node view: metadata, properties, markdown body, Items tables, and relation tables with cross-links. The primary use case is embedding this output into a larger parent static site.
 
 ## When to read this
 
@@ -15,8 +15,8 @@ The `marloth-static-site` package reads the git-tracked design corpus via `marlo
 ## Requirements
 
 - **Must** include every node returned by `ContentStore.listNodeIds()` (~all `content/data/*.md` files).
-- **Must** render title and markdown body per node.
-- **Must** rewrite internal graph links (`./{id}.md`, `marloth:{id}`, and legacy Notion `{32-hex}.md` paths) to static node URLs.
+- **Must** render title, markdown body, metadata (including backlinks), type properties, relation tables, and type-table Items tables per node.
+- **Must** rewrite internal graph links (`./{id}.md`, `marloth:{id}`, `[[id]]`, and legacy Notion `{32-hex}.md` paths) to static node URLs.
 - **Must** use a dark theme consistent with the Marloth editor palette.
 - **Must** write to `dist/web/` by default; output directory **must** be configurable for external tools.
 - **Must** support a configurable Astro `base` path for subdirectory embedding.
@@ -24,28 +24,51 @@ The `marloth-static-site` package reads the git-tracked design corpus via `marlo
 
 ## Design rationale
 
-Astro produces plain static HTML suitable for copying into any host or parent build. Reading `content/` through the SQLite cache reuses existing graph queries (`getNodeDetail`) without duplicating parsing logic. Markdown-core pages keep v1 scope small; relation tables and editor parity can follow later.
+Astro produces plain static HTML suitable for copying into any host or parent build. The Bun generate phase syncs `content/` into SQLite and calls `getNodePageDetail` so export reuses the same graph assembly as the editor. Astro loads generated JSON only (no `bun:sqlite` in the Node build). A small client script adds column sorting and collapsible metadata; table tabs on multi-tab type-table hubs use separate static sibling URLs.
 
 ## Behavior / pipeline
 
 1. `build.ts` parses CLI/env config and sets `MARLOTH_*` env vars.
-2. **Generate (Bun):** `generate-data.ts` reads all nodes from `content/` via `ContentStore` (no SQLite) and writes `src/generated/site-data.json` (gitignored).
-3. **Build (Astro/Node):** Astro loads the generated JSON (avoids `bun:sqlite`, which Node cannot import).
-4. Each node page: strip duplicate title heading, rewrite links, render markdown to HTML.
-5. Index page: sorted node list + link to home node id.
-6. Astro writes `index.html`, `nodes/{id}/index.html`, and `_astro/` assets.
+2. **Generate (Bun):** `generate-data.ts` opens `openContentGraph`, calls `getNodePageDetail` per node, and writes `src/generated/site-data.json` (gitignored). Multi-tab type-table hubs also get per-tab Items payloads for non-default tabs.
+3. **Build (Astro/Node):** Astro loads the generated JSON.
+4. Each node page: metadata panel (with optional properties when expanded), markdown (links rewritten), Items table (default tab), relation sections.
+5. **Tab sibling pages** (multi-tab type-table hubs only): `/nodes/{id}/tabs/{tabId}/` — full page chrome with that tab’s Items table; tab bar links between URLs.
+6. Index page: sorted node list + link to home node id.
+7. Astro writes `index.html`, `nodes/{id}/index.html`, optional `nodes/{id}/tabs/{tabId}/index.html`, and `_astro/` assets.
+
+## Page contents (read-only editor parity)
+
+| Section | Notes |
+| --- | --- |
+| Title + archived badge | From node detail |
+| Metadata | Collapsible; created/modified, relationship count, backlinks, and Properties on instance pages when expanded (`?meta=1` expands) |
+| Markdown body | Callouts, dynamic `[[id]]` links |
+| Items table | Type-table hubs; row name links, relation-cell links, sortable columns |
+| Relation tables | Per outgoing relationship group; name links |
+
+## Client interactivity
+
+- **Sortable columns:** click table headers (client-side; respects tab default sort until overridden).
+- **Metadata:** collapsed by default; `?meta=1` expands on load.
+- **Tabs:** plain links between static pages (no tab JavaScript).
+
+## Not exported (editor-only)
+
+Editing, add-row/link-existing, row actions, drag-reorder, table search, tab/column CRUD, relation-cell editors, enum editing, user-settings persistence.
 
 ## Inputs / outputs / artifacts
 
 | Input | Source |
 | --- | --- |
 | Nodes | `content/data/{id}.md` |
-| Relationships (cache) | `content/data/relationships.json` via SQLite rebuild |
+| Relationships | `content/data/relationships.json` via SQLite rebuild |
+| Workspace model | `content/model/` (`views.json`, `schema.json`, `table-schemas.json`, `dynamic-fields.json`) |
 
 | Output | Default path |
 | --- | --- |
 | Site root | `dist/web/index.html` |
 | Node pages | `dist/web/nodes/{id}/index.html` |
+| Tab pages | `dist/web/nodes/{id}/tabs/{tabId}/index.html` |
 | Assets | `dist/web/_astro/` |
 
 Output is gitignored (`**/dist/`).
@@ -56,7 +79,7 @@ Output is gitignored (`**/dist/`).
 bun run web:build
 ```
 
-VS Code: **Tasks: Run Task** → **Marloth: build static website**.
+VS Code: **Tasks: Run Task** → **Marloth: build static website**, then **Marloth: serve static website** → http://127.0.0.1:8787/ (override port with `MARLOTH_WEB_PORT`).
 
 ## Configuration
 
@@ -66,7 +89,7 @@ Precedence: **CLI flags > environment > defaults**.
 | --- | --- | --- | --- |
 | Output directory | `--out-dir` | `MARLOTH_WEB_OUT_DIR` | `{repoRoot}/dist/web` |
 | Content directory | `--content-dir` | `MARLOTH_CONTENT_PATH` | `./content` |
-| SQLite cache | `--db-path` | `MARLOTH_DB_PATH` | `data/marloth.sqlite` (unused at build; reserved for future graph-aware export) |
+| SQLite cache | `--db-path` | `MARLOTH_DB_PATH` | `data/marloth.sqlite` |
 | Site base (embedding) | `--base` | `MARLOTH_WEB_BASE` | `/` |
 
 Embedding example:
@@ -91,11 +114,14 @@ bun run web:build
 | --- | --- |
 | Package | `packages/marloth-static-site/` |
 | Build entry | `src/build.ts` |
-| Content → JSON (Bun) | `src/generate-data.ts` |
+| Content → JSON (Bun) | `src/generate-data.ts`, `src/lib/static-export.ts` |
 | Generated input | `src/generated/site-data.json` (gitignored) |
 | Config | `src/config.ts` |
 | Astro data loader | `src/lib/content.ts` |
 | Markdown + links | `src/lib/markdown.ts` |
+| Node page shell | `src/components/NodePage.astro` |
+| Client JS | `src/lib/client/page-interactions.ts` |
+| Section styles | `src/lib/node-sections.css` |
 | Astro pages | `src/pages/` |
 | Dark theme | `src/lib/theme.css` |
 

@@ -1,14 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import type { EditorApi } from "../api/client";
-import type { NodePageMetadata } from "../../shared/types";
+import type { NodePageMetadata, PropertiesSection } from "../../shared/types";
 import { NodeNameLink } from "./NodeNameLink";
+import { PropertiesSectionView } from "./PropertiesSectionView";
 import "./node-metadata-panel.css";
 
 interface NodeMetadataPanelProps {
   api: EditorApi;
   metadata: NodePageMetadata;
+  nodeId: string;
+  properties: PropertiesSection | null;
   expanded: boolean;
   onExpandedChange: (expanded: boolean) => void;
+  onCellUpdated?: () => void;
 }
 
 function formatTimestamp(iso: string | null): string {
@@ -27,8 +31,11 @@ function formatTimestamp(iso: string | null): string {
 export function NodeMetadataPanel({
   api,
   metadata,
+  nodeId,
+  properties,
   expanded,
   onExpandedChange,
+  onCellUpdated,
 }: NodeMetadataPanelProps) {
   const [backlinksOpen, setBacklinksOpen] = useState(false);
   const backlinksRef = useRef<HTMLDivElement>(null);
@@ -112,6 +119,16 @@ export function NodeMetadataPanel({
               ) : null}
             </div>
           </div>
+          {properties ? (
+            <div className="marloth-record-metadata-properties">
+              <PropertiesSectionView
+                api={api}
+                nodeId={nodeId}
+                section={properties}
+                onCellUpdated={onCellUpdated}
+              />
+            </div>
+          ) : null}
         </div>
       ) : null}
     </section>

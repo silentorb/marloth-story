@@ -1,0 +1,352 @@
+/* Node page sections — ported from marloth-editor (read-only static subset). */
+
+.marloth-record-page {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.marloth-record-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.marloth-record-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--marloth-border);
+}
+
+.marloth-record-section:last-child {
+  border-bottom: none;
+}
+
+.marloth-page-title-section {
+  border-bottom: 1px solid var(--marloth-border);
+  padding-top: 0;
+}
+
+.marloth-record-page-archived {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--marloth-muted);
+  background: var(--marloth-surface);
+  border: 1px solid var(--marloth-border);
+}
+
+.marloth-markdown-section.is-empty {
+  display: none;
+}
+
+/* Metadata */
+.marloth-record-metadata-panel {
+  margin: 0 -1.5rem;
+  border-bottom: 1px solid var(--marloth-border);
+  background: var(--marloth-surface);
+}
+
+.marloth-record-metadata-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 1.5rem;
+  font-size: 0.85rem;
+  color: var(--marloth-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.marloth-record-metadata-toggle:hover {
+  color: var(--marloth-text);
+}
+
+.marloth-record-metadata-chevron {
+  display: inline-block;
+  width: 1em;
+  transition: transform 0.15s ease;
+}
+
+.marloth-record-metadata-panel.is-expanded .marloth-record-metadata-chevron {
+  transform: rotate(90deg);
+}
+
+.marloth-record-metadata-summary {
+  color: var(--marloth-muted);
+  font-size: 0.8rem;
+}
+
+.marloth-record-metadata-panel:not(.is-expanded) .marloth-record-metadata-body {
+  display: none;
+}
+
+.marloth-record-metadata-panel.is-expanded .marloth-record-metadata-body {
+  padding: 0 1.5rem 12px;
+  display: grid;
+  gap: 8px;
+}
+
+.marloth-record-metadata-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+
+.marloth-record-metadata-label {
+  flex: 0 0 7rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-record-metadata-value {
+  flex: 1;
+  min-width: 0;
+}
+
+.marloth-record-metadata-backlink-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.marloth-record-metadata-backlink-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.marloth-record-metadata-backlink-label {
+  font-size: 0.75rem;
+  color: var(--marloth-muted);
+}
+
+.marloth-record-metadata-backlink-empty {
+  color: var(--marloth-muted);
+}
+
+.marloth-record-metadata-properties {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--marloth-border);
+}
+
+/* Properties */
+.marloth-properties-section {
+  gap: 12px;
+}
+
+.marloth-properties-form {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.marloth-properties-row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 12rem) minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
+  margin: 0;
+}
+
+.marloth-properties-label {
+  margin: 0;
+  color: var(--marloth-muted);
+  font-size: 0.85rem;
+}
+
+.marloth-properties-value {
+  margin: 0;
+  min-width: 0;
+  font-size: 0.9rem;
+}
+
+.marloth-properties-row.is-computed .marloth-properties-value {
+  color: var(--marloth-muted);
+}
+
+.marloth-properties-computed-hint {
+  font-size: 0.75rem;
+  opacity: 0.85;
+}
+
+/* Section titles */
+.marloth-record-section-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.marloth-record-section-title-link {
+  color: var(--marloth-link);
+  text-decoration: none;
+}
+
+.marloth-record-section-title-link:hover {
+  text-decoration: underline;
+}
+
+/* Database / tables */
+.marloth-database-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.marloth-database-view-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.marloth-database-view-tab {
+  border: 1px solid var(--marloth-border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--marloth-muted);
+  padding: 6px 12px;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.marloth-database-view-tab:hover {
+  background: var(--marloth-hover);
+  color: var(--marloth-text);
+}
+
+.marloth-database-view-tab.is-active {
+  background: rgba(108, 182, 255, 0.12);
+  border-color: rgba(108, 182, 255, 0.35);
+  color: var(--marloth-link);
+}
+
+.marloth-database-empty {
+  color: var(--marloth-muted);
+  margin: 0;
+}
+
+.marloth-database-table-wrap {
+  align-self: flex-start;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--marloth-border);
+  border-radius: 8px;
+  background: var(--marloth-surface);
+}
+
+.marloth-database-table {
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.marloth-database-table th,
+.marloth-database-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--marloth-border);
+  text-align: left;
+  vertical-align: top;
+  max-width: 24rem;
+}
+
+.marloth-database-table th {
+  font-weight: 600;
+  color: var(--marloth-muted);
+  background: rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+}
+
+.marloth-database-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.marloth-database-table tbody tr:hover {
+  background: var(--marloth-hover);
+}
+
+.marloth-database-name-link {
+  font-weight: 500;
+}
+
+.marloth-database-cell-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: inherit;
+  background: var(--marloth-bg);
+  border: 1px solid var(--marloth-border);
+}
+
+.marloth-relation-cell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.marloth-relation-cell-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.marloth-table-sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  font-weight: inherit;
+}
+
+.marloth-table-sort-button:hover {
+  color: var(--marloth-text);
+}
+
+.marloth-table-sort-button.is-active {
+  color: var(--marloth-text);
+}
+
+.marloth-table-sort-indicator {
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--marloth-link);
+}
+
+/* Ordered association groups */
+.marloth-ordered-association-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.marloth-ordered-association-group-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--marloth-muted);
+}
+
+.marloth-relation-section {
+  padding-top: 8px;
+}

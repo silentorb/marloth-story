@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   nodePagePath,
+  nodeTabPath,
   prepareNodeMarkdown,
   resolvePageTitleAndContent,
   rewriteMarkdownLinks,
@@ -67,6 +68,18 @@ describe("nodePagePath", () => {
 
   test("embedded base", () => {
     expect(nodePagePath(TARGET, "/design/")).toBe(`/design/nodes/${TARGET}/`);
+  });
+});
+
+describe("nodeTabPath", () => {
+  test("root base", () => {
+    expect(nodeTabPath(TARGET, "book-a", "/")).toBe(`/nodes/${TARGET}/tabs/book-a/`);
+  });
+
+  test("embedded base", () => {
+    expect(nodeTabPath(TARGET, "book-a", "/design/")).toBe(
+      `/design/nodes/${TARGET}/tabs/book-a/`,
+    );
   });
 });
 

@@ -24,6 +24,8 @@ describe("NodeMetadataPanel", () => {
       <NodeMetadataPanel
         api={api}
         metadata={metadata}
+        nodeId="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        properties={null}
         expanded={false}
         onExpandedChange={() => {}}
       />,
@@ -37,6 +39,8 @@ describe("NodeMetadataPanel", () => {
       <NodeMetadataPanel
         api={api}
         metadata={metadata}
+        nodeId="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        properties={null}
         expanded={true}
         onExpandedChange={() => {}}
       />,
@@ -45,5 +49,66 @@ describe("NodeMetadataPanel", () => {
     expect(screen.getByText("Modified")).toBeTruthy();
     expect(screen.getByText("Relationships")).toBeTruthy();
     expect(screen.getByText("3")).toBeTruthy();
+  });
+
+  test("shows properties inside expanded panel", () => {
+    const api = makeMockEditorApi();
+    render(
+      <NodeMetadataPanel
+        api={api}
+        metadata={metadata}
+        nodeId="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        properties={{
+          type: "properties",
+          databaseId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          typeTitle: "Features",
+          columns: ["priority"],
+          columnDefs: [
+            {
+              key: "priority",
+              name: "Priority",
+              type: "enum",
+              enumId: "priority",
+              options: ["Low", "Medium", "High"],
+            },
+          ],
+          cells: { priority: "High" },
+        }}
+        expanded={true}
+        onExpandedChange={() => {}}
+      />,
+    );
+    expect(screen.getByRole("heading", { name: "Properties", level: 2 })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Priority" })).toBeTruthy();
+  });
+
+  test("hides properties when collapsed", () => {
+    const api = makeMockEditorApi();
+    render(
+      <NodeMetadataPanel
+        api={api}
+        metadata={metadata}
+        nodeId="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        properties={{
+          type: "properties",
+          databaseId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          typeTitle: "Features",
+          columns: ["priority"],
+          columnDefs: [
+            {
+              key: "priority",
+              name: "Priority",
+              type: "enum",
+              enumId: "priority",
+              options: ["Low", "Medium", "High"],
+            },
+          ],
+          cells: { priority: "High" },
+        }}
+        expanded={false}
+        onExpandedChange={() => {}}
+      />,
+    );
+    expect(screen.queryByRole("heading", { name: "Properties", level: 2 })).toBeNull();
   });
 });

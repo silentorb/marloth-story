@@ -141,7 +141,58 @@ describe("NodePageView", () => {
     });
   });
 
-  test("renders Properties section when present", () => {
+  test("renders Properties section when metadata is expanded", () => {
+    const api = makeMockEditorApi();
+    const node = makeNodePageDetail({
+      properties: {
+        type: "properties",
+        databaseId: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        typeTitle: "Features",
+        columns: ["priority"],
+        columnDefs: [
+          {
+            key: "priority",
+            name: "Priority",
+            type: "enum",
+            enumId: "priority",
+            options: ["Low", "Medium", "High"],
+            defaultValue: "Low",
+          },
+        ],
+        cells: { priority: "High" },
+      },
+    });
+
+    render(
+      <UserSettingsProvider api={api}>
+        <NodePageView
+          api={api}
+          node={node}
+          saveState="idle"
+          metadataExpanded={true}
+          onMetadataExpandedChange={() => {}}
+          onBodyChange={() => {}}
+          onTitleChange={() => {}}
+          onTabSelect={() => {}}
+          onOrderedAssociationViewChange={() => {}}
+          onArchiveNode={async () => {}}
+          onUnarchiveNode={async () => {}}
+          onDeleteNode={async () => {}}
+        />
+      </UserSettingsProvider>,
+    );
+
+    const metadataPanel = screen.getByRole("region", { name: "Node metadata" });
+    const propertiesHeading = within(metadataPanel).getByRole("heading", {
+      name: "Properties",
+      level: 2,
+    });
+    const propertiesSection = propertiesHeading.closest("section");
+    expect(propertiesSection).toBeTruthy();
+    expect(within(propertiesSection!).getByRole("button", { name: "Priority" })).toBeTruthy();
+  });
+
+  test("hides Properties section when metadata is collapsed", () => {
     const api = makeMockEditorApi();
     const node = makeNodePageDetail({
       properties: {
@@ -182,10 +233,7 @@ describe("NodePageView", () => {
       </UserSettingsProvider>,
     );
 
-    const propertiesHeading = screen.getByRole("heading", { name: "Properties", level: 2 });
-    const propertiesSection = propertiesHeading.closest("section");
-    expect(propertiesSection).toBeTruthy();
-    expect(within(propertiesSection!).getByRole("button", { name: "Priority" })).toBeTruthy();
+    expect(screen.queryByRole("heading", { name: "Properties", level: 2 })).toBeNull();
   });
 });
 
@@ -242,6 +290,7 @@ describe("NodePageView IS_A relation section", () => {
                   name: "Priority",
                   type: "enum",
                   enumId: "priority",
+                  options: ["Low", "Medium", "High"],
                 },
               ],
               cells: { priority: "Low" },
@@ -260,7 +309,7 @@ describe("NodePageView IS_A relation section", () => {
             ],
           })}
           saveState="idle"
-          metadataExpanded={false}
+          metadataExpanded={true}
           onMetadataExpandedChange={() => {}}
           onBodyChange={() => {}}
           onTitleChange={() => {}}
@@ -274,7 +323,7 @@ describe("NodePageView IS_A relation section", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Properties", level: 2 })).toBeTruthy();
-    expect(screen.getAllByRole("heading", { name: "Features", level: 2 })).toHaveLength(2);
+    expect(screen.getByRole("heading", { name: "Features", level: 2 })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Priority" })).toBeTruthy();
   });
 });

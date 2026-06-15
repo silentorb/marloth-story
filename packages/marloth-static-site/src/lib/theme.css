@@ -66,11 +66,8 @@ a:hover {
   padding: 2rem 1.5rem 4rem;
 }
 
-.node-path {
-  display: block;
-  font-size: 0.8125rem;
-  color: var(--marloth-muted);
-  margin-bottom: 0.5rem;
+.page--node {
+  max-width: min(72rem, 100%);
 }
 
 .page-title {
@@ -78,6 +75,13 @@ a:hover {
   font-size: 2rem;
   font-weight: 700;
   line-height: 1.2;
+}
+
+.node-path {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--marloth-muted);
+  margin-bottom: 0.5rem;
 }
 
 .home-intro {

@@ -1,18 +1,42 @@
 import siteData from "../generated/site-data.json";
-import type { SiteNode } from "../generate-data";
+import type { SiteData, SiteNode, TabItemsPayload } from "./site-types";
+import { tabPayloadKey } from "./static-export";
+
+const data = siteData as SiteData;
+
+export function loadSiteData(): SiteData {
+  return data;
+}
 
 export function loadAllNodes(): SiteNode[] {
-  return siteData.nodes;
+  return data.nodes;
+}
+
+export function loadNodeById(id: string): SiteNode | undefined {
+  const normalized = id.toLowerCase();
+  return data.nodes.find((node) => node.id.toLowerCase() === normalized);
 }
 
 export function loadNodeSummaries(): Pick<SiteNode, "id" | "title">[] {
-  return siteData.nodes.map(({ id, title }) => ({ id, title }));
+  return data.nodes.map(({ id, title }) => ({ id, title }));
 }
 
 export function getSiteBase(): string {
-  return siteData.base;
+  return data.base;
 }
 
 export function getHomeNodeId(): string {
-  return siteData.homeNodeId;
+  return data.homeNodeId;
+}
+
+export function loadTabRoutes() {
+  return data.tabRoutes ?? [];
+}
+
+export function loadTabItemsPayload(nodeId: string, tabId: string): TabItemsPayload | undefined {
+  return data.tabItemsPayloads?.[tabPayloadKey(nodeId, tabId)];
+}
+
+export function titleByIdRecord(): Record<string, string> {
+  return Object.fromEntries(data.nodes.map((node) => [node.id.toLowerCase(), node.title]));
 }
