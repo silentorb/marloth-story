@@ -27,7 +27,7 @@ The webview talks to the Bun REST API on `http://127.0.0.1:3847` (proxied as `/a
 
 **Data transport:** webview → REST (`src/shared/http-client.ts`).
 
-**Link/navigation convention (read [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md) § Cross-linking):** stored markdown bodies use `./{nodeId}.md`; markdown passed to Milkdown uses `?node=` display hrefs (`prepareEditorMarkdown` / `normalizeEditorBody`). Navigational UI **must** use `<a href="…">` and native browser link behavior—**never** `onClick` / `onAuxClick` / `preventDefault` / `window.open` on node links for same-tab navigation. Helpers: `nodePageHref()`, `formatEditorNodeMarkdownLink()` in `src/webview/`. Exceptions: Graph Explorer canvas, Milkdown modifier+click for new-tab only, keyboard Enter in combobox pickers.
+**Link/navigation convention (read [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md) § Cross-linking):** stored markdown bodies use `./{nodeId}.md`; markdown passed to Milkdown uses `?node=` display hrefs (`prepareEditorMarkdown` / `normalizeEditorBody`). **App chrome** (sidebar, tables, search rows, metadata backlinks, etc.) **must** use `<a href="…">` with native browser pointer navigation—no `onClick` / `onAuxClick` / `preventDefault` / imperative routing on those anchors. **Milkdown body** is exempt: use Crepe defaults (`LinkTooltip` on) and JS click handling via `editor-link-navigation.ts` (`navigateStandaloneNode` / `openStandaloneNodeInNewTab`). Other exceptions: Graph Explorer canvas (`api.navigate`), keyboard Enter in combobox pickers. Helpers: `nodePageHref()` in `src/webview/node-links.ts`.
 
 ## Run
 

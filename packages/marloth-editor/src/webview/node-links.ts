@@ -122,7 +122,7 @@ export function standaloneViewUrl(
   return url.toString();
 }
 
-/** Href for opening a node page (native navigation; no per-link click handlers). */
+/** Href for opening a node page from app chrome (native navigation; no per-link click handlers). */
 export function nodePageHref(nodeId: string, base?: string | URL): string {
   return standaloneNodeUrl(nodeId, base);
 }

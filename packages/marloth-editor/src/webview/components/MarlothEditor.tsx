@@ -8,13 +8,13 @@ import type { EditorApi } from "../api/client";
 import type { NodeSummary } from "../../shared/types";
 import { buildCalloutSlashMenu } from "../callout-block";
 import { installCalloutCursor } from "../callout-cursor";
+import { attachEditorLinkNavigation } from "../editor-link-navigation";
 import { installLinkCursor } from "../link-cursor";
 import { installCalloutDecoration } from "../callout-decoration";
 import { installDynamicLinkDecoration } from "../dynamic-node-link-decoration";
 import { installDynamicLinkDemote } from "../dynamic-node-link-demote";
 import { resolveDynamicLinkTitles, titleResolverFromMap } from "../dynamic-link-titles";
 import { installMentionSync } from "../mention-sync";
-import { openStandaloneNodeInNewTab, resolveNodePageTarget } from "../node-links";
 import {
   activeMentionRangeAtSelection,
   resolveMentionInsertRange,
@@ -105,8 +105,8 @@ export function MarlothEditor({
     let baselineCaptured = false;
     let editorDom: HTMLElement | null = null;
     let crepe: Crepe | null = null;
-    let onClick: ((event: MouseEvent) => void) | null = null;
     let onKeyDown: ((event: KeyboardEvent) => void) | null = null;
+    let detachEditorLinkNavigation: (() => void) | null = null;
     setInitError(null);
     setIsEmpty(!initialBody.trim());
     root.replaceChildren();
@@ -150,6 +150,8 @@ export function MarlothEditor({
         },
       },
     });
+
+    detachEditorLinkNavigation = attachEditorLinkNavigation(root);
 
     crepe.on((listener) => {
       listener.markdownUpdated((_ctx, markdown, prevMarkdown) => {
@@ -270,25 +272,6 @@ export function MarlothEditor({
       }
     });
 
-    onClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement | null;
-      const anchor = target?.closest("a") as HTMLAnchorElement | null;
-      if (!anchor) return;
-      const recordTarget = resolveNodePageTarget(
-        anchor.getAttribute("href") ?? "",
-        window.location.href,
-      );
-      if (!recordTarget) return;
-
-      const openInNewTab = event.metaKey || event.ctrlKey || event.button === 1;
-      if (!openInNewTab) return;
-      event.preventDefault();
-      event.stopPropagation();
-      openStandaloneNodeInNewTab(recordTarget);
-    };
-
-    root.addEventListener("click", onClick);
-    root.addEventListener("auxclick", onClick);
     })();
 
     return () => {
@@ -296,10 +279,7 @@ export function MarlothEditor({
       if (editorDom && onKeyDown) {
         editorDom.removeEventListener("keydown", onKeyDown, true);
       }
-      if (onClick) {
-        root.removeEventListener("click", onClick);
-        root.removeEventListener("auxclick", onClick);
-      }
+      detachEditorLinkNavigation?.();
       root.replaceChildren();
       void crepe?.destroy();
       crepeRef.current = null;

@@ -39,11 +39,15 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 
 ### Cross-linking and navigation links
 
-**Native link behavior (mandatory).** Any UI that navigates to another node **must** be a real `<a href="…">` anchor. Navigation **must** rely on the browser’s native link behavior (plain click, Ctrl/Cmd+click, middle-click, shift-click, and context-menu actions). **Do not** attach `onClick`, `onAuxClick`, or similar mouse handlers on navigational links; **do not** call `preventDefault()` on link activation for same-tab navigation; **do not** use `window.open()` or imperative routing for mouse-driven navigation. If a widget cannot satisfy this (e.g. no resolvable `href`), **stop and ask** whether an exception is acceptable before adding custom click handling.
+**Native link behavior (app chrome).** Any navigational UI **outside the Milkdown editor body** that opens another node **must** be a real `<a href="…">` anchor. Pointer navigation **must** rely on the browser’s native link behavior (plain click, Ctrl/Cmd+click, middle-click, shift-click, and context-menu actions). **Do not** attach `onClick`, `onAuxClick`, or similar mouse handlers on those anchors; **do not** call `preventDefault()` on link activation for same-tab navigation; **do not** use `window.open()` or imperative routing for mouse-driven navigation. If a widget cannot satisfy this (e.g. no resolvable `href`), **stop and ask** whether an exception is acceptable before adding custom click handling.
+
+Applies to: sidebar nav, **Recent**, global search result rows, database relation column cell labels, edit-popup row links, section table name cells, metadata backlinks, and similar app chrome. Does **not** apply to the Milkdown markdown body (see below).
 
 | Context | `href` for node pages |
 | --- | --- |
-| Browser editor | `?node={id}` (see `standaloneNodeUrl` in `src/webview/node-links.ts`) |
+| Browser editor (display) | `?node={id}` (see `standaloneNodeUrl` in `src/webview/node-links.ts`) |
+
+**Milkdown body links.** The markdown editor is **exempt** from the native-only pointer rule above. Use Crepe/Milkdown defaults unless there is a product reason not to — **`LinkTooltip` enabled** (hover preview, edit/remove). Cross-link navigation in the editor body uses **JS click handling** on the Milkdown root (`handleEditorLinkPointerEvent` in `src/webview/editor-link-navigation.ts`), calling `navigateStandaloneNode` / `openStandaloneNodeInNewTab` from `node-links.ts`. Do not add custom ProseMirror plugins whose goal is to force native browser link behavior inside contenteditable.
 
 Keyboard shortcuts in combobox-style pickers (global search, Relate, record link picker) may simulate anchor clicks on **Enter** when focus is in the search field; result rows themselves remain anchors for pointer navigation.
 
@@ -55,18 +59,18 @@ Keyboard shortcuts in combobox-style pickers (global search, Relate, record link
 - `@` autocomplete **must** search existing nodes by title and insert a **dynamic** link (`formatEditorDynamicNodeLink` → stored as `[[{nodeId}]]` after save).
 - Dynamic links **must** show the same file icon as relation table cells (prefix before the link in Milkdown). Static-titled links do not show the icon.
 - If the user edits the text of a dynamic link in Milkdown, the link **must** demote to a static `[text](./{nodeId}.md)` link on save.
-- Clicking a rendered link **must** navigate via the browser: plain click → same tab; Ctrl/Cmd+click or middle-click → new tab.
+- Clicking a cross-link in the Milkdown body: plain click → same tab via JS (`navigateStandaloneNode`); Ctrl/Cmd+click or middle-click → new tab via JS (`openStandaloneNodeInNewTab`).
 - Legacy Notion export links (32-hex id embedded in path) **should** resolve at navigation time without requiring a bulk migration.
 - **Global search** result rows **must** be `<a href="…">` elements (not `<button>` with `onClick`), using `?node=` URLs.
-- Database relation column cell labels, edit-popup row links, section table name cells, and sidebar nav follow the same rule.
-- **Milkdown body** receives display hrefs in the markdown passed to Crepe (`prepareEditorMarkdown`); persisted bodies use `[[{nodeId}]]` or `./{nodeId}.md`. ProseMirror plugins handle dynamic-link icon decoration and demotion on text edit only — not storage parsing. The editor intercepts modifier+click in the Milkdown root only to open new tabs; do not copy custom click handling elsewhere without an explicit exception.
+- Database relation column cell labels, edit-popup row links, section table name cells, and sidebar nav follow the **native link behavior (app chrome)** rule.
+- **Milkdown body** receives display hrefs in the markdown passed to Crepe (`prepareEditorMarkdown`); persisted bodies use `[[{nodeId}]]` or `./{nodeId}.md`. ProseMirror plugins handle dynamic-link icon decoration and demotion on text edit only — not storage parsing.
 
 ### Entry / navigation
 
 - Default home is the Marloth root page (`72b6fb455b824b78962b0e509cc091c9`) when present in the graph; open via sidebar **Home** or `?node=` for the home id.
 - Node pages use URL query `?node={id}` (32-char hex).
-- A **global search** widget **must** let users find and open any node by title (via `GET /api/nodes/search`). Each result **must** be a native link (`<a href>` per **Native link behavior** above). A configuration bar offers **Search node contents** (markdown body); when enabled, the client passes `includeBody=1` and title matches are listed before body-only matches. When **Search node contents** is on and the query matches a node body, each result may include a `matchPreview` excerpt (up to two lines, match emphasized) below the title; title-only matches show the title line only. The preference is stored in `.marloth/user-settings.json` (`globalSearch.includeBody`). Open via sidebar **Search** or **Ctrl/Cmd+K**. Enter (with focus in the search field) activates the highlighted result via native anchor behavior; Ctrl/Cmd+Enter opens in a new tab. `@` mention and Relate pickers use title-only search (no `includeBody`).
-- A **Recent** sidebar section **must** appear directly below the static database links. It lists the latest nodes by node `modified_at` (set on create and updated on title/body save; relationship-only edits do not affect recency). Archived nodes are excluded. Each row **must** be a native link (`<a href>` per **Native link behavior** above). The list length is configurable via `.marloth/user-settings.json` (`sidebar.recentMaxItems`, default 8). Data comes from `GET /api/nodes/recent?limit=…`.
+- A **global search** widget **must** let users find and open any node by title (via `GET /api/nodes/search`). Each result **must** be a native link (`<a href>` per **Native link behavior (app chrome)** above). A configuration bar offers **Search node contents** (markdown body); when enabled, the client passes `includeBody=1` and title matches are listed before body-only matches. When **Search node contents** is on and the query matches a node body, each result may include a `matchPreview` excerpt (up to two lines, match emphasized) below the title; title-only matches show the title line only. The preference is stored in `.marloth/user-settings.json` (`globalSearch.includeBody`). Open via sidebar **Search** or **Ctrl/Cmd+K**. Enter (with focus in the search field) activates the highlighted result via native anchor behavior; Ctrl/Cmd+Enter opens in a new tab. `@` mention and Relate pickers use title-only search (no `includeBody`).
+- A **Recent** sidebar section **must** appear directly below the static database links. It lists the latest nodes by node `modified_at` (set on create and updated on title/body save; relationship-only edits do not affect recency). Archived nodes are excluded. Each row **must** be a native link (`<a href>` per **Native link behavior (app chrome)** above). The list length is configurable via `.marloth/user-settings.json` (`sidebar.recentMaxItems`, default 8). Data comes from `GET /api/nodes/recent?limit=…`.
 
 ### Presentation
 
@@ -175,7 +179,7 @@ Production UI bundle: `bun run editor:build` → `packages/marloth-editor/dist-w
 | Properties section (stored + dynamic) | `NodePageView.test.tsx`, `node-type-properties.test.ts` |
 
 - Manual: open home → edit → reload → body persisted
-- Manual: `@` search inserts link; click navigates; Ctrl+click opens new tab
+- Manual: `@` search inserts link; click cross-link in Milkdown body navigates (JS-mediated); Ctrl+click opens new tab; sidebar/table links use native browser navigation
 - Manual: open any node with relation sections and confirm tables render
 - Manual: click a section table column header to sort; reload and confirm sort persists in `.marloth/user-settings.json`
 - Manual: switch a database table tab; navigate away and return (or reload without `?tab=`); confirm the same tab is active and `tableTabs` updated in `.marloth/user-settings.json`
