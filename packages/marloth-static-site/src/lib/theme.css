@@ -84,36 +84,6 @@ a:hover {
   margin-bottom: 0.5rem;
 }
 
-.home-intro {
-  margin-bottom: 2rem;
-  color: var(--marloth-muted);
-}
-
-.node-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.node-list li {
-  border-bottom: 1px solid var(--marloth-border);
-}
-
-.node-list li:hover {
-  background: var(--marloth-hover);
-}
-
-.node-list a {
-  display: block;
-  padding: 0.625rem 0;
-}
-
-.node-list .node-list-path {
-  display: block;
-  font-size: 0.8125rem;
-  color: var(--marloth-muted);
-}
-
 .prose {
   line-height: 1.65;
 }

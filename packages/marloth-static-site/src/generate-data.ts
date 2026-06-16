@@ -6,8 +6,8 @@ import type { ResolvedConfig } from "./config";
 import type { SiteData, SiteNode } from "./lib/site-types";
 import { buildExtraTabPayloadsAndRoutes, buildSiteNode } from "./lib/static-export";
 
-/** Matches `DEFAULT_HOME_NODE_ID` in marloth-db queries. */
-export const DEFAULT_HOME_NODE_ID = "13458e628ba28073850dea0edb9acde1";
+/** Static-site landing page; independent of editor `DEFAULT_HOME_NODE_ID` in marloth-db. */
+export const STATIC_SITE_HOME_NODE_ID = "5bfc10918fa24207879d68a030927dd3";
 
 export type { SiteData, SiteNode } from "./lib/site-types";
 
@@ -30,7 +30,7 @@ export function loadNodesFromGraph(config: ResolvedConfig): SiteData {
   db.close();
 
   return {
-    homeNodeId: DEFAULT_HOME_NODE_ID,
+    homeNodeId: STATIC_SITE_HOME_NODE_ID,
     base: config.base,
     nodes,
     tabItemsPayloads,

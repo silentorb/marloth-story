@@ -35,7 +35,7 @@ CLI overrides environment (see `--help`):
 
 ## Output layout
 
-- `index.html` — node index + link to home node
+- `index.html` — landing page (static-site home node; see `STATIC_SITE_HOME_NODE_ID` in `generate-data.ts`)
 - `nodes/{id}/index.html` — one page per content node (default Items tab)
 - `nodes/{id}/tabs/{tabId}/index.html` — extra tab pages for multi-tab type-table hubs only
 - `_astro/` — bundled assets (includes sort + metadata client script)

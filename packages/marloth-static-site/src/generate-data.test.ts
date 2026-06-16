@@ -80,6 +80,8 @@ describe("writeSiteData", () => {
     const outFile = join(outDir, "site-data.json");
     const data = writeSiteData(config, outFile);
 
+    expect(data.homeNodeId).toBe("5bfc10918fa24207879d68a030927dd3");
+
     const instance = data.nodes.find((node) => node.id === instanceId);
     expect(instance).toBeDefined();
     expect(instance?.properties?.typeTitle).toBe("Features DB");
