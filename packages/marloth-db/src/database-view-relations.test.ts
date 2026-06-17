@@ -80,6 +80,91 @@ describe("database-view-relations", () => {
     ]);
   });
 
+  test("hydrates parents and children columns without cross-column bleed", () => {
+    const locationsDb = "df096ab26e8347e6992e95698345aad0";
+    const parentLocationId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    const childLocationId = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+
+    writeFileSync(
+      tableSchemasFilePath(contentDir),
+      serializeTableSchemasFile({
+        version: 1,
+        tables: {
+          [locationsDb]: {
+            columns: [
+              {
+                key: "parents",
+                name: "Parents",
+                type: "relation",
+                targetTypeId: locationsDb,
+                perspective: "parents",
+              },
+              {
+                key: "children",
+                name: "Children",
+                type: "relation",
+                targetTypeId: locationsDb,
+                perspective: "children",
+              },
+            ],
+          },
+        },
+      }),
+    );
+    invalidateTableSchemasCache();
+    db.upsertNode(locationsDb, { ...typeTableMarkerProperties("Locations") });
+    db.upsertNode(parentLocationId, { title: "Marloth" });
+    db.upsertNode(childLocationId, { title: "Dark forest" });
+    db.upsertRelationship(parentLocationId, locationsDb, IS_A_TYPE, { row_index: 0 });
+    db.upsertRelationship(childLocationId, locationsDb, IS_A_TYPE, { row_index: 1 });
+    db.upsertRelationship(parentLocationId, childLocationId, "children", { ordinal: 0 });
+    db.upsertRelationship(childLocationId, parentLocationId, "parents", { ordinal: 0 });
+
+    const parentConnections = listRelationConnectionsForRow(
+      db,
+      parentLocationId,
+      "parents",
+      locationsDb,
+      locationsDb,
+    );
+    const childConnections = listRelationConnectionsForRow(
+      db,
+      childLocationId,
+      "children",
+      locationsDb,
+      locationsDb,
+    );
+    expect(parentConnections).toHaveLength(0);
+    expect(childConnections).toHaveLength(0);
+
+    const parentChildren = listRelationConnectionsForRow(
+      db,
+      parentLocationId,
+      "children",
+      locationsDb,
+      locationsDb,
+    );
+    const childParents = listRelationConnectionsForRow(
+      db,
+      childLocationId,
+      "parents",
+      locationsDb,
+      locationsDb,
+    );
+    expect(parentChildren).toHaveLength(1);
+    expect(childParents).toHaveLength(1);
+    expect(parentChildren[0]!.targetNodeId).toBe(childLocationId);
+    expect(childParents[0]!.targetNodeId).toBe(parentLocationId);
+
+    const detail = getDatabaseViewDetail(db, locationsDb, undefined, contentDir);
+    const parentRow = detail?.rows.find((row) => row.nodeId === parentLocationId);
+    const childRow = detail?.rows.find((row) => row.nodeId === childLocationId);
+    expect(parentRow?.cells.parents).toBeUndefined();
+    expect(parentRow?.cells.children).toBe("Dark forest");
+    expect(childRow?.cells.parents).toBe("Marloth");
+    expect(childRow?.cells.children).toBeUndefined();
+  });
+
   test("hydrates scenes_part column from row is_a without via_database", () => {
     writeFileSync(
       tableSchemasFilePath(contentDir),

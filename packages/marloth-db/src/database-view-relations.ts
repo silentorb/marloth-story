@@ -17,6 +17,7 @@ import {
   rowBelongsToDatabase,
 } from "./relationship-traverse";
 import { compositeTypeForPerspectives } from "./content/relationship-types-file";
+import { normalizeRelationshipType } from "./relation-type";
 
 function titleFromProperties(properties: Record<string, unknown>): string {
   const title = properties.title;
@@ -45,6 +46,20 @@ function scopeForRow(
   return filterRelationshipsByRowDatabaseContext(db, rowId, databaseId, relationships);
 }
 
+/** Keep projections emitted from this row's local perspective (source + type). */
+function filterByOutgoingPerspective(
+  nodeId: string,
+  connectionType: string,
+  relationships: Relationship[],
+): Relationship[] {
+  const normalized = normalizeRelationshipType(connectionType);
+  return relationships.filter(
+    (relationship) =>
+      relationship.sourceNodeId === nodeId &&
+      normalizeRelationshipType(relationship.type) === normalized,
+  );
+}
+
 export function listRelationConnectionsForRow(
   db: GraphDatabase,
   nodeId: string,
@@ -60,21 +75,26 @@ export function listRelationConnectionsForRow(
     if (includesFiltered.length > 0) return includesFiltered;
   }
 
-  if (targetDatabaseId) {
+  if (targetDatabaseId && targetDatabaseId !== databaseId) {
     const byTargetDb = listRelationshipsToDatabaseMembers(db, nodeId, targetDatabaseId);
     const filtered = scopeForRow(db, nodeId, databaseId, byTargetDb);
     if (filtered.length > 0) return filtered;
+  }
 
-    if (!TAXONOMY_INSPIRATION_PERSPECTIVES.has(connectionType)) {
-      const compositeType = compositeTypeForPerspectives(
-        connectionType,
-        inferInverseRelationType(connectionType),
+  if (targetDatabaseId && !TAXONOMY_INSPIRATION_PERSPECTIVES.has(connectionType)) {
+    const compositeType = compositeTypeForPerspectives(
+      connectionType,
+      inferInverseRelationType(connectionType),
+    );
+    if (!isMigratableToIncludesStorageType(compositeType)) {
+      const byComposite = listRelationshipsForComposite(db, nodeId, compositeType);
+      const compositeFiltered = scopeForRow(
+        db,
+        nodeId,
+        databaseId,
+        filterByOutgoingPerspective(nodeId, connectionType, byComposite),
       );
-      if (!isMigratableToIncludesStorageType(compositeType)) {
-        const byComposite = listRelationshipsForComposite(db, nodeId, compositeType);
-        const compositeFiltered = scopeForRow(db, nodeId, databaseId, byComposite);
-        if (compositeFiltered.length > 0) return compositeFiltered;
-      }
+      if (compositeFiltered.length > 0) return compositeFiltered;
     }
   }
 
@@ -88,6 +108,10 @@ function inferInverseRelationType(localType: string): string {
       return "location";
     case "location":
       return "scenes";
+    case "parents":
+      return "children";
+    case "children":
+      return "parents";
     default:
       return localType;
   }
