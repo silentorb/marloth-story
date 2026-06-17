@@ -33,7 +33,7 @@ describe("RecordLinkPicker CSS", () => {
 });
 
 describe("RecordLinkPicker", () => {
-  test("sorts search results by title ascending", async () => {
+  test("preserves API result order without re-sorting", async () => {
     const search = mock(async () => [
       { id: "cccccccccccccccccccccccccccccccc", title: "Zeta", primaryTypeTitle: null },
       { id: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", title: "Alpha", primaryTypeTitle: null },
@@ -60,7 +60,7 @@ describe("RecordLinkPicker", () => {
       expect(await view.findAllByRole("option")).toHaveLength(3);
     });
     const options = await view.findAllByRole("option");
-    expect(options.map((option) => option.textContent)).toEqual(["Alpha", "Mike", "Zeta"]);
+    expect(options.map((option) => option.textContent)).toEqual(["Zeta", "Alpha", "Mike"]);
   });
 
   test("omits excluded ids from search results", async () => {

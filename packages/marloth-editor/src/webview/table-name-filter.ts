@@ -1,3 +1,5 @@
+import { sortBySearchRelevance } from "marloth-db/search-relevance";
+
 export function matchesTableNameFilter(name: string, query: string): boolean {
   const trimmed = query.trim();
   if (!trimmed) return true;
@@ -11,5 +13,6 @@ export function filterRowsByName<T>(
 ): T[] {
   const trimmed = query.trim();
   if (!trimmed) return [...rows];
-  return rows.filter((row) => matchesTableNameFilter(getName(row), trimmed));
+  const filtered = rows.filter((row) => matchesTableNameFilter(getName(row), trimmed));
+  return sortBySearchRelevance(filtered, trimmed, getName);
 }

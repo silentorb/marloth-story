@@ -18,9 +18,18 @@ describe("node page markdown editor layout CSS", () => {
     );
   });
 
-  test("clears Crepe ProseMirror padding on node pages", () => {
+  test("uses stable ProseMirror top padding on node pages", () => {
     expect(nodePageCss).toMatch(
-      /\.marloth-record-page \.marloth-editor-body \.milkdown \.ProseMirror[\s\S]*padding:\s*0/,
+      /\.marloth-record-page \.marloth-editor-body \.milkdown \.ProseMirror[\s\S]*padding:\s*14px\s+0\s+0/,
+    );
+    expect(nodePageCss).not.toMatch(
+      /\.marloth-record-page \.marloth-editor-body \.milkdown \.ProseMirror\s+p[\s\S]*padding-top:\s*14px/,
+    );
+  });
+
+  test("keeps the virtual cursor widget out of document flow", () => {
+    expect(editorCss).toMatch(
+      /\.marloth-editor-body \.milkdown \.ProseMirror \.ProseMirror-widget:has\(> \.prosemirror-virtual-cursor\)[\s\S]*height:\s*0/,
     );
   });
 });

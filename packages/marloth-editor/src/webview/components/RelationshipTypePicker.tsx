@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { formatRelationshipTypeLabel } from "marloth-db/relationship-type-label";
+import { sortBySearchRelevanceMulti } from "marloth-db/search-relevance";
 import type { EditorApi } from "../api/client";
 import "./record-link-picker.css";
 
@@ -8,6 +9,22 @@ interface RelationshipTypePickerProps {
   selectedType: string | null;
   ariaLabel: string;
   onSelect: (type: string) => void;
+}
+
+export function filterAndSortRelationshipTypes(
+  types: readonly string[],
+  query: string,
+): string[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return [...types];
+  const matches = types.filter((type) => {
+    if (type.toLowerCase().includes(q)) return true;
+    return formatRelationshipTypeLabel(type).toLowerCase().includes(q);
+  });
+  return sortBySearchRelevanceMulti(matches, query, (type) => [
+    formatRelationshipTypeLabel(type),
+    type,
+  ]);
 }
 
 export function RelationshipTypePicker({
@@ -36,14 +53,10 @@ export function RelationshipTypePicker({
       .finally(() => setLoading(false));
   }, [api]);
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return types;
-    return types.filter((type) => {
-      if (type.toLowerCase().includes(q)) return true;
-      return formatRelationshipTypeLabel(type).toLowerCase().includes(q);
-    });
-  }, [query, types]);
+  const filtered = useMemo(
+    () => filterAndSortRelationshipTypes(types, query),
+    [query, types],
+  );
 
   useEffect(() => {
     setActiveIndex(0);

@@ -8,6 +8,7 @@ import {
   buildSearchMatchPreview,
   type SearchMatchPreview,
 } from "./search-match-preview";
+import { sortBySearchRelevance } from "./search-relevance";
 
 export type { SearchMatchPreview, SearchMatchPreviewPart } from "./search-match-preview";
 
@@ -81,24 +82,27 @@ export function searchNodes(
     return listRecentNodes(db, cap, allowedTypeIds);
   }
   const pattern = `%${trimmed.replace(/[%_\\]/g, "\\$&")}%`;
-  const titleRows = db.searchNodesByTitle(pattern, cap, allowedTypeIds);
-  const summaries = titleRows.map((row) => toActiveNodeSummary(db, row));
+  const titleRows = db.searchNodesByTitle(pattern, maxCap, allowedTypeIds);
+  let summaries = sortBySearchRelevance(
+    titleRows.map((row) => toActiveNodeSummary(db, row)),
+    trimmed,
+    (row) => row.title,
+  );
 
   if (!options?.includeBody) {
-    return summaries;
+    return summaries.slice(0, cap);
   }
 
-  if (summaries.length < cap) {
-    const seen = new Set(summaries.map((row) => row.id));
-    const bodyFetchLimit = cap + seen.size;
-    const bodyRows = db.searchNodesByBody(pattern, bodyFetchLimit, allowedTypeIds);
-    for (const row of bodyRows) {
-      if (seen.has(row.id)) continue;
-      summaries.push(toActiveNodeSummary(db, row));
-      seen.add(row.id);
-      if (summaries.length >= cap) break;
-    }
-  }
+  const seen = new Set(summaries.map((row) => row.id));
+  const bodyRows = db.searchNodesByBody(pattern, maxCap, allowedTypeIds);
+  const bodyOnlySummaries = sortBySearchRelevance(
+    bodyRows
+      .filter((row) => !seen.has(row.id))
+      .map((row) => toActiveNodeSummary(db, row)),
+    trimmed,
+    (row) => row.title,
+  );
+  summaries = [...summaries, ...bodyOnlySummaries].slice(0, cap);
 
   attachMatchPreviews(db, summaries, trimmed);
   return summaries;

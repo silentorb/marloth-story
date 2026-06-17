@@ -7,12 +7,6 @@ const DEFAULT_SEARCH_LIMIT = 25;
 /** When type-filtered, list all eligible records (API cap matches graph batch fetch). */
 const TYPE_SCOPED_SEARCH_LIMIT = 5000;
 
-function sortNodeSummariesByTitle(items: NodeSummary[]): NodeSummary[] {
-  return [...items].sort((a, b) =>
-    a.title.localeCompare(b.title, undefined, { sensitivity: "base", numeric: true }),
-  );
-}
-
 interface RecordLinkPickerProps {
   api: EditorApi;
   allowedTypeIds?: string[];
@@ -80,7 +74,7 @@ export function RecordLinkPicker({
       setError(null);
       void api
         .search(query, effectiveSearchLimit, allowedTypeIds)
-        .then((items) => setResults(sortNodeSummariesByTitle(items)))
+        .then((items) => setResults(items))
         .catch((err) => {
           setResults([]);
           setError(err instanceof Error ? err.message : String(err));

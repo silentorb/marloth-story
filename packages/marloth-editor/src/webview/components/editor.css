@@ -72,6 +72,23 @@
   margin-top: 0;
 }
 
+/*
+ * prosemirror-virtual-cursor mounts a widget decoration at doc position 0 and
+ * sizes it from the caret rect. Without zeroing the widget wrapper footprint,
+ * caret height changes (e.g. headings vs paragraphs) shift block layout.
+ */
+.marloth-editor-body .milkdown .ProseMirror .ProseMirror-widget:has(> .prosemirror-virtual-cursor) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
 .marloth-editor-body a {
   color: var(--marloth-link);
   text-decoration: underline;

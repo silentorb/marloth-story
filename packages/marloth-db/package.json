@@ -14,7 +14,8 @@
     "./callout": "./src/callout.ts",
     "./schema-file": "./src/schema-rules/schema-file.ts",
     "./relationship-type-label": "./src/relationship-type-label.ts",
-    "./row-sort-helpers": "./src/row-sort-helpers.ts"
+    "./row-sort-helpers": "./src/row-sort-helpers.ts",
+    "./search-relevance": "./src/search-relevance.ts"
   },
   "scripts": {
     "test": "bun test"

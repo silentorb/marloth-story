@@ -42,6 +42,48 @@ describe("queries", () => {
     expect(hits.some((h) => h.id === "123456789abcdef0123456789abcdef0")).toBe(true);
   });
 
+  test("searchNodes ranks exact title matches before longer substring matches", () => {
+    const exactId = "aabbccddeeff00112233445566778899";
+    const longerId = "bbaaccddffee11223344556677889900";
+    seedTestNode(fixture, {
+      id: exactId,
+      properties: { title: "Surreal" },
+    });
+    seedTestNode(fixture, {
+      id: longerId,
+      properties: { title: "Applied Surrealism" },
+    });
+
+    const hits = searchNodes(fixture.ctx.db, "Surreal", 10);
+    expect(hits.map((row) => row.id)).toEqual([exactId, longerId]);
+  });
+
+  test("searchNodes with includeBody lists title matches before body-only matches", () => {
+    const titleMatchId = "ccddaabbeeff00112233445566778899";
+    const bodyOnlyId = "ddccbbaaeeff11223344556677889900";
+    seedTestNode(fixture, {
+      id: titleMatchId,
+      properties: {
+        title: "Surreal Title Match",
+        body: "no marker here",
+      },
+    });
+    seedTestNode(fixture, {
+      id: bodyOnlyId,
+      properties: {
+        title: "Unrelated",
+        body: "contains surreal-body-marker text",
+      },
+    });
+
+    const hits = searchNodes(fixture.ctx.db, "surreal", 10, undefined, {
+      includeBody: true,
+    });
+    expect(hits.map((row) => row.id).indexOf(titleMatchId)).toBeLessThan(
+      hits.map((row) => row.id).indexOf(bodyOnlyId),
+    );
+  });
+
   test("searchNodes matches body when includeBody is enabled", () => {
     const bodyOnlyId = "3456789abcdef0123456789abcdef012";
     seedTestNode(fixture, {

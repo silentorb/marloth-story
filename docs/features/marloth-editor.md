@@ -69,7 +69,7 @@ Keyboard shortcuts in combobox-style pickers (global search, Relate, record link
 
 - Default home is the Marloth root page (`72b6fb455b824b78962b0e509cc091c9`) when present in the graph; open via sidebar **Home** or `?node=` for the home id.
 - Node pages use URL query `?node={id}` (32-char hex).
-- A **global search** widget **must** let users find and open any node by title (via `GET /api/nodes/search`). Each result **must** be a native link (`<a href>` per **Native link behavior (app chrome)** above). A configuration bar offers **Search node contents** (markdown body); when enabled, the client passes `includeBody=1` and title matches are listed before body-only matches. When **Search node contents** is on and the query matches a node body, each result may include a `matchPreview` excerpt (up to two lines, match emphasized) below the title; title-only matches show the title line only. The preference is stored in `.marloth/user-settings.json` (`globalSearch.includeBody`). Open via sidebar **Search** or **Ctrl/Cmd+K**. Enter (with focus in the search field) activates the highlighted result via native anchor behavior; Ctrl/Cmd+Enter opens in a new tab. `@` mention and Relate pickers use title-only search (no `includeBody`).
+- A **global search** widget **must** let users find and open any node by title (via `GET /api/nodes/search`). Each result **must** be a native link (`<a href>` per **Native link behavior (app chrome)** above). A configuration bar offers **Search node contents** (markdown body); when enabled, the client passes `includeBody=1` and title matches are listed before body-only matches. When **Search node contents** is on and the query matches a node body, each result may include a `matchPreview` excerpt (up to two lines, match emphasized) below the title; title-only matches show the title line only. The preference is stored in `.marloth/user-settings.json` (`globalSearch.includeBody`). Open via sidebar **Search** or **Ctrl/Cmd+K**. Enter (with focus in the search field) activates the highlighted result via native anchor behavior; Ctrl/Cmd+Enter opens in a new tab. `@` mention and Relate pickers use title-only search (no `includeBody`). When the search field is empty, node search results are ordered by title ascending; when the user types a query, results are ordered by title relevance (exact and prefix matches, then closer/shorter titles). The same relevance ordering applies to record link pickers, inline table name filters, and the Relate dialog’s relationship-type picker.
 - A **Recent** sidebar section **must** appear directly below the static database links. It lists the latest nodes by node `modified_at` (set on create and updated on title/body save; relationship-only edits do not affect recency). Archived nodes are excluded. Each row **must** be a native link (`<a href>` per **Native link behavior (app chrome)** above). The list length is configurable via `.marloth/user-settings.json` (`sidebar.recentMaxItems`, default 8). Data comes from `GET /api/nodes/recent?limit=…`.
 
 ### Presentation
@@ -122,7 +122,7 @@ Changing nodes is real URL navigation (`?node=`). Browser back/forward use norma
 Search/autocomplete:
 
 ```
-@ query → GET /api/nodes/search?q=… → title summaries
+@ query → GET /api/nodes/search?q=… → title summaries (relevance order when q is non-empty)
 Global search (Ctrl/Cmd+K) → same endpoint; optional `includeBody=1`; empty query lists recent nodes by title
 ```
 

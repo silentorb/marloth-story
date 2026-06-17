@@ -25,4 +25,12 @@ describe("filterRowsByName", () => {
     const rows = [{ name: "Alpha" }, { name: "Beta quest" }];
     expect(filterRowsByName(rows, " quest ", (row) => row.name)).toEqual([{ name: "Beta quest" }]);
   });
+
+  test("sorts filtered rows by relevance when query is non-empty", () => {
+    const rows = [{ name: "Applied Surrealism" }, { name: "Surreal" }, { name: "Unrelated" }];
+    expect(filterRowsByName(rows, "Surreal", (row) => row.name).map((row) => row.name)).toEqual([
+      "Surreal",
+      "Applied Surrealism",
+    ]);
+  });
 });
