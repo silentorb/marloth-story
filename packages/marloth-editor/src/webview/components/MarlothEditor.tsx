@@ -14,6 +14,7 @@ import { installCalloutDecoration } from "../callout-decoration";
 import { installCalloutPaste } from "../callout-paste";
 import { installDynamicLinkDecoration } from "../dynamic-node-link-decoration";
 import { installDynamicLinkDemote } from "../dynamic-node-link-demote";
+import { installListItemDeleteKeymap } from "../list-item-delete-keymap";
 import { resolveDynamicLinkTitles, titleResolverFromMap } from "../dynamic-link-titles";
 import { installMentionSync } from "../mention-sync";
 import {
@@ -183,6 +184,7 @@ export function MarlothEditor({
         installLinkCursor(view);
         installDynamicLinkDecoration(view);
         installDynamicLinkDemote(view);
+        installListItemDeleteKeymap(view);
 
         const syncMentionMenu = () => {
           const { state } = view;
