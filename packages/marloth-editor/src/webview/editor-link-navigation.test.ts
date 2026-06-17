@@ -1,14 +1,19 @@
-import { describe, expect, test, afterEach } from "bun:test";
+import { describe, expect, test, afterEach, beforeEach } from "bun:test";
 import { handleEditorLinkPointerEvent } from "./editor-link-navigation";
 
 const TARGET_ID = "e5cc80dc61ed4c629951cdf472b20b7a";
 const BASE = "http://127.0.0.1:5173/?node=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
 describe("handleEditorLinkPointerEvent", () => {
-  const originalAssign = window.location.assign.bind(window.location);
-  const originalCreateElement = document.createElement.bind(document);
+  let originalAssign: typeof window.location.assign;
+  let originalCreateElement: typeof document.createElement;
   let assignedUrl: string | null = null;
   let newTabHref: string | null = null;
+
+  beforeEach(() => {
+    originalAssign = window.location.assign.bind(window.location);
+    originalCreateElement = document.createElement.bind(document);
+  });
 
   afterEach(() => {
     window.location.assign = originalAssign;
@@ -74,6 +79,24 @@ describe("handleEditorLinkPointerEvent", () => {
     expect(handled).toBe(true);
     expect(assignedUrl).toBeNull();
     expect(newTabHref).toContain(`node=${TARGET_ID}`);
+    root.remove();
+  });
+
+  test("right-click does not navigate", () => {
+    mockNavigation();
+    const { root, anchor } = setupRoot();
+    const event = new MouseEvent("auxclick", {
+      bubbles: true,
+      cancelable: true,
+      button: 2,
+    });
+    Object.defineProperty(event, "target", { value: anchor, configurable: true });
+
+    const handled = handleEditorLinkPointerEvent(event, root, BASE);
+    expect(handled).toBe(false);
+    expect(event.defaultPrevented).toBe(false);
+    expect(assignedUrl).toBeNull();
+    expect(newTabHref).toBeNull();
     root.remove();
   });
 

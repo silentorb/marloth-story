@@ -1,13 +1,19 @@
 import type { Ctx } from "@milkdown/kit/ctx";
 import { commandsCtx, editorViewCtx } from "@milkdown/kit/core";
 import {
-  blockquoteSchema,
   clearTextInCurrentBlockCommand,
   wrapInBlockTypeCommand,
 } from "@milkdown/kit/preset/commonmark";
 import { replaceRange } from "@milkdown/kit/utils";
 import type { BlockEditFeatureConfig } from "@milkdown/crepe/feature/block-edit";
 import { DEFAULT_CALLOUT_PREFIX } from "marloth-db/callout";
+import { TextSelection } from "@milkdown/prose/state";
+import {
+  calloutBlockquoteTypes,
+  caretAfterCalloutPrefix,
+  createCalloutBlockquoteNode,
+  findBlockquoteDepth,
+} from "./callout-nesting";
 
 export const calloutIcon = `
   <svg
@@ -27,20 +33,67 @@ export const calloutIcon = `
   </svg>
 `;
 
+function insertTopLevelCalloutBlock(ctx: Ctx): void {
+  const commands = ctx.get(commandsCtx);
+  const { blockquoteType } = calloutBlockquoteTypes(ctx);
+
+  commands.call(clearTextInCurrentBlockCommand.key);
+  commands.call(wrapInBlockTypeCommand.key, { nodeType: blockquoteType });
+
+  const view = ctx.get(editorViewCtx);
+  const { from, to } = view.state.selection;
+  replaceRange(DEFAULT_CALLOUT_PREFIX, { from, to })(ctx);
+}
+
+function insertNestedCalloutBlock(ctx: Ctx): void {
+  const view = ctx.get(editorViewCtx);
+  const { state } = view;
+  const { $from, from } = state.selection;
+  const { blockquoteType, paragraphType } = calloutBlockquoteTypes(ctx);
+
+  if ($from.parent.type !== paragraphType) {
+    insertTopLevelCalloutBlock(ctx);
+    return;
+  }
+
+  const nested = createCalloutBlockquoteNode(state.schema, blockquoteType, paragraphType);
+  let tr = state.tr;
+  const paragraph = $from.parent;
+  const isEmpty = paragraph.textContent.length === 0;
+  const atEnd = from === $from.end();
+
+  if (isEmpty) {
+    const paraPos = $from.before();
+    const paraEnd = $from.after();
+    tr = tr.replaceWith(paraPos, paraEnd, nested);
+    tr = tr.setSelection(TextSelection.create(tr.doc, caretAfterCalloutPrefix(paraPos)));
+  } else if (atEnd) {
+    const insertPos = $from.after();
+    tr = tr.insert(insertPos, nested);
+    tr = tr.setSelection(TextSelection.create(tr.doc, caretAfterCalloutPrefix(insertPos)));
+  } else {
+    tr = tr.split(from);
+    const splitPos = tr.selection.from;
+    tr = tr.insert(splitPos, nested);
+    tr = tr.setSelection(TextSelection.create(tr.doc, caretAfterCalloutPrefix(splitPos)));
+  }
+
+  view.dispatch(tr.scrollIntoView());
+  view.focus();
+}
+
 /**
  * Insert a callout block. Stored as markdown blockquote for compatibility;
  * the editor renders callouts as tinted panels (see `.marloth-callout` CSS).
  */
 export function insertCalloutBlock(ctx: Ctx): void {
-  const commands = ctx.get(commandsCtx);
-  const blockquote = blockquoteSchema.type(ctx);
-
-  commands.call(clearTextInCurrentBlockCommand.key);
-  commands.call(wrapInBlockTypeCommand.key, { nodeType: blockquote });
-
   const view = ctx.get(editorViewCtx);
-  const { from, to } = view.state.selection;
-  replaceRange(DEFAULT_CALLOUT_PREFIX, { from, to })(ctx);
+  const blockquoteDepth = findBlockquoteDepth(view.state.selection.$from);
+  if (blockquoteDepth >= 0) {
+    insertNestedCalloutBlock(ctx);
+    return;
+  }
+  insertTopLevelCalloutBlock(ctx);
 }
 
 export const buildCalloutSlashMenu: NonNullable<BlockEditFeatureConfig["buildMenu"]> = (

@@ -11,6 +11,7 @@ import { installCalloutCursor } from "../callout-cursor";
 import { attachEditorLinkNavigation } from "../editor-link-navigation";
 import { installLinkCursor } from "../link-cursor";
 import { installCalloutDecoration } from "../callout-decoration";
+import { installCalloutPaste } from "../callout-paste";
 import { installDynamicLinkDecoration } from "../dynamic-node-link-decoration";
 import { installDynamicLinkDemote } from "../dynamic-node-link-demote";
 import { resolveDynamicLinkTitles, titleResolverFromMap } from "../dynamic-link-titles";
@@ -177,6 +178,7 @@ export function MarlothEditor({
         const view = ctx.get(editorViewCtx);
         const dom = view.dom;
         installCalloutDecoration(view);
+        installCalloutPaste(view);
         installCalloutCursor(view);
         installLinkCursor(view);
         installDynamicLinkDecoration(view);

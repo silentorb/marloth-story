@@ -146,6 +146,21 @@
   padding-left: var(--marloth-callout-gutter) !important;
 }
 
+.marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout blockquote.marloth-callout {
+  margin: 8px 0 !important;
+}
+
+.marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout blockquote.marloth-callout > p:first-child {
+  margin-top: 0;
+  padding-left: var(--marloth-callout-gutter) !important;
+  text-indent: calc(-1 * var(--marloth-callout-gutter));
+  overflow: visible;
+}
+
+.marloth-editor-body .milkdown .ProseMirror blockquote.marloth-callout blockquote.marloth-callout > p:last-child {
+  margin-bottom: 0;
+}
+
 /*
  * Virtual cursor uses selection rects that break on callout hanging indents.
  * callout-cursor.ts toggles .marloth-callout-editing while the caret is inside a callout.

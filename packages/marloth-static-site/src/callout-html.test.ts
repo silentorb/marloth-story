@@ -13,4 +13,12 @@ describe("decorateCalloutHtml", () => {
     const html = "<blockquote><p>Someone said this.</p></blockquote>";
     expect(decorateCalloutHtml(html)).toBe(html);
   });
+
+  test("tags nested callout blockquotes independently", () => {
+    const html =
+      "<blockquote><p>💡 Outer</p><blockquote><p>💡 Inner</p></blockquote></blockquote>";
+    expect(decorateCalloutHtml(html)).toBe(
+      '<blockquote class="marloth-callout"><p>💡 Outer</p><blockquote class="marloth-callout"><p>💡 Inner</p></blockquote></blockquote>',
+    );
+  });
 });

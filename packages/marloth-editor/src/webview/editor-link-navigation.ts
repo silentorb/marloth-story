@@ -17,6 +17,9 @@ export function handleEditorLinkPointerEvent(
   const nodeId = resolveNodePageTarget(anchor.getAttribute("href") ?? "", baseHref);
   if (!nodeId) return false;
 
+  // Right-click should show the browser context menu, not navigate.
+  if (event.button === 2) return false;
+
   event.preventDefault();
   event.stopPropagation();
 

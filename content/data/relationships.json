@@ -31950,20 +31950,6 @@
     },
     {
       "a": "dc101b6438cf43a8b5f1e17212b8c950",
-      "b": "dd0de9867cc345b898929306bdf9fc83",
-      "type": "is_a",
-      "directedFrom": "dc101b6438cf43a8b5f1e17212b8c950",
-      "properties": {
-        "view": "all",
-        "row_index": 32,
-        "priority": "High",
-        "inspiration_count": "12",
-        "weight": "4",
-        "wonderland_count": "0"
-      }
-    },
-    {
-      "a": "dc101b6438cf43a8b5f1e17212b8c950",
       "b": "e028aa0786f5449984a4f497c1d746fa",
       "type": "includes",
       "properties": {
@@ -33942,6 +33928,20 @@
       "a": "23358e628ba280ca9e79ebeaa0fa931b",
       "b": "e654f2833b1a4d02b3d76251af2456ae",
       "type": "includes"
+    },
+    {
+      "a": "528384943746443a9c89699b57e3bbec",
+      "b": "dc101b6438cf43a8b5f1e17212b8c950",
+      "type": "is_a",
+      "directedFrom": "dc101b6438cf43a8b5f1e17212b8c950",
+      "properties": {
+        "view": "all",
+        "row_index": 32,
+        "priority": "High",
+        "inspiration_count": "12",
+        "weight": "4",
+        "wonderland_count": "0"
+      }
     }
   ]
 }

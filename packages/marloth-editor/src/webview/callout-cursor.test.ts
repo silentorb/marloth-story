@@ -32,4 +32,36 @@ describe("callout cursor", () => {
 
     await editor.destroy();
   });
+
+  test("enables native caret styling inside nested inner callout", async () => {
+    const root = document.createElement("div");
+    document.body.appendChild(root);
+
+    const editor = await Editor.make()
+      .config((ctx) => {
+        ctx.set(rootCtx, root);
+        ctx.set(defaultValueCtx, "> 💡 Outer\n> > 💡 Inner text");
+      })
+      .use(commonmark)
+      .create();
+
+    await editor.action((ctx) => {
+      const view = ctx.get(editorViewCtx);
+      installCalloutDecoration(view);
+      installCalloutCursor(view);
+      let innerPos = 1;
+      view.state.doc.descendants((node, pos) => {
+        if (node.isText && node.text?.includes("Inner text")) {
+          innerPos = pos + 3;
+        }
+      });
+      view.dispatch(view.state.tr.setSelection(TextSelection.create(view.state.doc, innerPos)));
+      view.focus();
+    });
+
+    const prose = root.querySelector(".ProseMirror");
+    expect(prose?.classList.contains("marloth-callout-editing")).toBe(true);
+
+    await editor.destroy();
+  });
 });

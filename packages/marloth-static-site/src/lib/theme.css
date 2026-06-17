@@ -142,9 +142,24 @@ a:hover {
 }
 
 .prose :where(blockquote.marloth-callout > p ~ p),
+.prose :where(blockquote.marloth-callout > blockquote),
 .prose :where(blockquote.marloth-callout > ul),
 .prose :where(blockquote.marloth-callout > ol) {
   padding-left: var(--marloth-callout-gutter);
+}
+
+.prose :where(blockquote.marloth-callout blockquote.marloth-callout) {
+  margin: 0.75em 0;
+}
+
+.prose :where(blockquote.marloth-callout blockquote.marloth-callout > p:first-child) {
+  margin-top: 0;
+  padding-left: var(--marloth-callout-gutter);
+  text-indent: calc(-1 * var(--marloth-callout-gutter));
+}
+
+.prose :where(blockquote.marloth-callout blockquote.marloth-callout > p:last-child) {
+  margin-bottom: 0;
 }
 
 .prose :where(code) {
