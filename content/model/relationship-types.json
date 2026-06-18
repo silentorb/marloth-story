@@ -60,8 +60,9 @@
       ]
     },
     "neighbor": {
-      "bidirectional": false,
+      "bidirectional": true,
       "perspectives": [
+        "neighbor",
         "neighbor"
       ]
     },

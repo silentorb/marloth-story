@@ -110,10 +110,8 @@ function RelationFieldPopup({
           Done
         </button>
       </header>
-      <div className="marloth-relation-field-popup-links">
-        {sortedLinks.length === 0 ? (
-          <div className="marloth-relation-field-popup-empty">No linked records</div>
-        ) : (
+      {sortedLinks.length > 0 ? (
+        <div className="marloth-relation-field-popup-links">
           <ul className="marloth-relation-field-popup-list">
             {sortedLinks.map((link) => (
               <li key={link.targetId} className="marloth-relation-field-popup-row">
@@ -130,13 +128,20 @@ function RelationFieldPopup({
               </li>
             ))}
           </ul>
-        )}
-      </div>
-      <div className="marloth-relation-field-popup-add">
-        <span className="marloth-relation-field-popup-add-label">Add link</span>
+        </div>
+      ) : null}
+      <div
+        className={[
+          "marloth-relation-field-popup-add",
+          sortedLinks.length === 0 ? "is-first-section" : "",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
         <RecordLinkPicker
           api={api}
           embedded
+          autoFocus
           closeOnSelect={false}
           allowedTypeIds={allowedTypeIds}
           excludedIds={links.map((link) => link.targetId)}

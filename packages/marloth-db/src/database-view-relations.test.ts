@@ -11,6 +11,16 @@ import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
 import { getDatabaseViewDetail } from "./database-view";
 import { listRelationConnectionsForRow } from "./database-view-relations";
+import {
+  createTestContentFixture,
+  destroyTestContentFixture,
+  seedTestNode,
+} from "./content/test-helpers";
+import { RELATIONSHIPS_FILE_VERSION } from "./content/relationships-file";
+import {
+  emptyRelationshipTypesFile,
+  registerTypeDefinition,
+} from "./content/relationship-types-file";
 
 describe("database-view-relations", () => {
   const dir = mkdtempSync(join(tmpdir(), "marloth-db-view-rel-"));
@@ -163,6 +173,72 @@ describe("database-view-relations", () => {
     expect(parentRow?.cells.children).toBe("Dark forest");
     expect(childRow?.cells.parents).toBe("Marloth");
     expect(childRow?.cells.children).toBeUndefined();
+  });
+
+  test("hydrates neighbor column on both locations for symmetric neighbor links", () => {
+    const fixture = createTestContentFixture("marloth-db-view-rel-neighbor-");
+    const locationsDb = "df096ab26e8347e6992e95698345aad0";
+    const locationA = "cccccccccccccccccccccccccccccccc";
+    const locationB = "dddddddddddddddddddddddddddddddd";
+
+    seedTestNode(fixture, { id: locationsDb, properties: typeTableMarkerProperties("Locations") });
+    seedTestNode(fixture, { id: locationA, properties: { title: "North grove" } });
+    seedTestNode(fixture, { id: locationB, properties: { title: "South grove" } });
+    const registry = emptyRelationshipTypesFile();
+    registerTypeDefinition(registry, "neighbor", {
+      bidirectional: true,
+      perspectives: ["neighbor", "neighbor"],
+    });
+    fixture.ctx.store.writeRelationshipTypesFile(registry);
+    fixture.ctx.store.writeRelationshipsFile({
+      version: RELATIONSHIPS_FILE_VERSION,
+      relationships: [
+        {
+          a: locationA,
+          b: locationsDb,
+          type: IS_A_TYPE,
+          directedFrom: locationA,
+          properties: { row_index: 0 },
+        },
+        {
+          a: locationB,
+          b: locationsDb,
+          type: IS_A_TYPE,
+          directedFrom: locationB,
+          properties: { row_index: 1 },
+        },
+        {
+          a: locationA,
+          b: locationB,
+          type: "neighbor",
+          directedFrom: locationA,
+          properties: { ordinal: 0 },
+        },
+      ],
+    });
+    fixture.ctx.sync.syncRelationships();
+
+    const fromA = listRelationConnectionsForRow(
+      fixture.ctx.db,
+      locationA,
+      "neighbor",
+      locationsDb,
+      locationsDb,
+    );
+    const fromB = listRelationConnectionsForRow(
+      fixture.ctx.db,
+      locationB,
+      "neighbor",
+      locationsDb,
+      locationsDb,
+    );
+
+    expect(fromA).toHaveLength(1);
+    expect(fromB).toHaveLength(1);
+    expect(fromA[0]!.targetNodeId).toBe(locationB);
+    expect(fromB[0]!.targetNodeId).toBe(locationA);
+
+    destroyTestContentFixture(fixture);
   });
 
   test("hydrates scenes_part column from row is_a without via_database", () => {

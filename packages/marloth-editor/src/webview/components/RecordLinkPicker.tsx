@@ -20,6 +20,8 @@ interface RecordLinkPickerProps {
   embedded?: boolean;
   /** Max search results to request (default 25). */
   searchLimit?: number;
+  /** Focus the search input on mount (default: true when not embedded). */
+  autoFocus?: boolean;
 }
 
 export function RecordLinkPicker({
@@ -32,13 +34,16 @@ export function RecordLinkPicker({
   closeOnSelect = true,
   embedded = false,
   searchLimit,
+  autoFocus,
 }: RecordLinkPickerProps) {
+  const shouldAutoFocus = autoFocus ?? !embedded;
   const effectiveSearchLimit =
     searchLimit ??
     (allowedTypeIds && allowedTypeIds.length > 0
       ? TYPE_SCOPED_SEARCH_LIMIT
       : DEFAULT_SEARCH_LIMIT);
   const rootRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const scrollActiveIntoViewRef = useRef(false);
   const [query, setQuery] = useState("");
@@ -50,6 +55,11 @@ export function RecordLinkPicker({
   const excluded = useRef(new Set(excludedIds));
 
   excluded.current = new Set(excludedIds);
+
+  useEffect(() => {
+    if (!shouldAutoFocus) return;
+    searchRef.current?.focus();
+  }, [shouldAutoFocus]);
 
   useEffect(() => {
     setActiveIndex((index) => {
@@ -123,11 +133,11 @@ export function RecordLinkPicker({
       aria-label={ariaLabel}
     >
       <input
+        ref={searchRef}
         type="search"
         className="marloth-record-link-picker-search"
         placeholder="Search records…"
         value={query}
-        autoFocus={!embedded}
         disabled={submitting}
         aria-controls="marloth-record-link-picker-listbox"
         onChange={(event) => setQuery(event.target.value)}

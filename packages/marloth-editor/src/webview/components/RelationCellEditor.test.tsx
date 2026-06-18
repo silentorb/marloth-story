@@ -64,6 +64,27 @@ describe("RelationCellEditor", () => {
     expect(container.querySelector(".marloth-relation-cell.is-popup-open")).toBeNull();
   });
 
+  test("hides existing links section when there are no relationships", () => {
+    render(
+      <RelationCellEditor
+        api={makeMockEditorApi()}
+        links={[]}
+        columnName="Parents"
+        onAdd={async () => {}}
+        onRemove={async () => {}}
+      />,
+    );
+
+    fireEvent.mouseEnter(document.querySelector(".marloth-relation-cell")!);
+    fireEvent.click(screen.getByRole("button", { name: "Edit Parents links" }));
+
+    expect(screen.queryByText("No linked records")).toBeNull();
+    expect(document.querySelector(".marloth-relation-field-popup-links")).toBeNull();
+    const search = screen.getByPlaceholderText("Search records…");
+    expect(search).toBeTruthy();
+    expect(document.activeElement).toBe(search);
+  });
+
   test("adds link inside dialog without closing", async () => {
     const search = mock(async () => [
       { id: "cccccccccccccccccccccccccccccccc", title: "Child", primaryTypeTitle: null },
