@@ -13922,15 +13922,6 @@
     },
     {
       "a": "27e58e628ba2801795a5c6553b61bb15",
-      "b": "79bb690186294ddfbd417bfcc108b5ac",
-      "type": "parents_children",
-      "properties": {
-        "ordinal": 0,
-        "via_view": "all"
-      }
-    },
-    {
-      "a": "27e58e628ba2801795a5c6553b61bb15",
       "b": "df096ab26e8347e6992e95698345aad0",
       "type": "is_a",
       "directedFrom": "27e58e628ba2801795a5c6553b61bb15",
@@ -33942,6 +33933,12 @@
         "weight": "4",
         "wonderland_count": "0"
       }
+    },
+    {
+      "a": "27e58e628ba2801795a5c6553b61bb15",
+      "b": "79bb690186294ddfbd417bfcc108b5ac",
+      "type": "parents",
+      "directedFrom": "27e58e628ba2801795a5c6553b61bb15"
     }
   ]
 }
