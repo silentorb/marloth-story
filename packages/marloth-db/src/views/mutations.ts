@@ -254,3 +254,56 @@ export function purgeColumnFromViews(
 
   writeViews(store, file);
 }
+
+/** Rename a column key in section columnOrder and tab sorts. */
+export function renameColumnInViews(
+  store: ContentStore,
+  nodeId: string,
+  sectionKey: string,
+  oldKey: string,
+  newKey: string,
+): void {
+  const file = store.readViewsFile();
+  const node = file.nodes[nodeId];
+  if (!node) return;
+
+  const section = node.sections[sectionKey];
+  if (!section) return;
+
+  if (section.columnOrder) {
+    section.columnOrder = section.columnOrder.map((key) => (key === oldKey ? newKey : key));
+  }
+
+  if (section.tabs.kind === "custom") {
+    for (const tab of section.tabs.definitions) {
+      for (const sort of tab.sorts) {
+        if (sort.column === oldKey) {
+          sort.column = newKey;
+        }
+      }
+    }
+  }
+
+  writeViews(store, file);
+}
+
+/** Append a column key to section columnOrder when a section config exists. */
+export function appendColumnToViewsOrder(
+  store: ContentStore,
+  nodeId: string,
+  sectionKey: string,
+  columnKey: string,
+): void {
+  const file = store.readViewsFile();
+  const node = file.nodes[nodeId];
+  if (!node) return;
+
+  const section = node.sections[sectionKey];
+  if (!section) return;
+
+  const order = section.columnOrder ?? [];
+  if (!order.includes(columnKey)) {
+    section.columnOrder = [...order, columnKey];
+    writeViews(store, file);
+  }
+}

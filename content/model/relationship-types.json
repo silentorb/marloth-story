@@ -59,6 +59,12 @@
         "motivation"
       ]
     },
+    "neighbor": {
+      "bidirectional": false,
+      "perspectives": [
+        "neighbor"
+      ]
+    },
     "pacing": {
       "bidirectional": false,
       "perspectives": [

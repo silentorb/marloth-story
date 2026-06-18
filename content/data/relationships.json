@@ -15993,15 +15993,6 @@
       }
     },
     {
-      "a": "2a758e628ba28032becee29a4fec92d4",
-      "b": "e54012bfd6544f37968a4e9899f53ca0",
-      "type": "parents_children",
-      "properties": {
-        "ordinal": 0,
-        "via_view": "all"
-      }
-    },
-    {
       "a": "2a758e628ba2805db04ace4a277ae696",
       "b": "df096ab26e8347e6992e95698345aad0",
       "type": "is_a",
@@ -33939,6 +33930,12 @@
       "b": "79bb690186294ddfbd417bfcc108b5ac",
       "type": "parents",
       "directedFrom": "27e58e628ba2801795a5c6553b61bb15"
+    },
+    {
+      "a": "2639e47762d1483c9c8619c59575b713",
+      "b": "e54012bfd6544f37968a4e9899f53ca0",
+      "type": "neighbor",
+      "directedFrom": "2639e47762d1483c9c8619c59575b713"
     }
   ]
 }

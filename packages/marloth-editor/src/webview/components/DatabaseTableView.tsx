@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { EditorApi } from "../api/client";
 import type { DatabaseViewDetail } from "../../shared/types";
 import { databaseTableSortKey, viewSortsToTableSort } from "../../shared/user-settings";
@@ -12,6 +12,7 @@ import { RelationCellEditor } from "./RelationCellEditor";
 import { renderTableCell } from "./table-cell-render";
 import { TableSearchInput } from "./TableSearchInput";
 import { TableUtilityBar } from "./TableUtilityBar";
+import { ColumnEditorDialog, type ColumnEditorState } from "./ColumnEditorDialog";
 import "./database-table-view.css";
 
 const ITEMS_SECTION_KEY = "items";
@@ -40,6 +41,7 @@ export function DatabaseTableView({
   onDeleteNode,
 }: DatabaseTableViewProps) {
   const [searchQuery, setSearchQuery] = useTableSearch(itemsTableSearchParamKey());
+  const [columnEditorState, setColumnEditorState] = useState<ColumnEditorState | null>(null);
   const tableKey = databaseTableSortKey(nodeId, databaseView.id, databaseView.tabs.activeTabId);
 
   const tabDefaultSort = useMemo(() => {
@@ -54,7 +56,7 @@ export function DatabaseTableView({
     return Object.fromEntries(databaseView.columnDefs.map((col) => [col.key, col.name]));
   }, [databaseView.columnDefs]);
 
-  const canDeleteColumn = useCallback(
+  const canManageColumn = useCallback(
     (key: string) => {
       const def = databaseView.columnDefs?.find((col) => col.key === key);
       return def != null && def.source !== "dynamic";
@@ -66,6 +68,10 @@ export function DatabaseTableView({
     (key: string) => databaseView.columnDefs?.find((col) => col.key === key)?.type === "relation",
     [databaseView.columnDefs],
   );
+
+  const handleColumnEdit = useCallback((key: string) => {
+    setColumnEditorState({ mode: "edit", columnKey: key });
+  }, []);
 
   const handleColumnDelete = useCallback(
     async (key: string) => {
@@ -215,6 +221,15 @@ export function DatabaseTableView({
             tabs={databaseView.tabs}
             columnDefs={databaseView.columnDefs}
             search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
+            addColumn={
+              <button
+                type="button"
+                className="marloth-table-column-add"
+                onClick={() => setColumnEditorState({ mode: "add" })}
+              >
+                + Column
+              </button>
+            }
             addRow={<TableAddRowTrigger />}
             onTabSelect={onTabSelect}
             onCreateTab={async (input) => {
@@ -255,13 +270,23 @@ export function DatabaseTableView({
               await api.updateSectionColumnOrder(nodeId, ITEMS_SECTION_KEY, columnOrder);
               onTabsUpdated?.();
             }}
-            canDeleteColumn={canDeleteColumn}
+            canManageColumn={canManageColumn}
             isRelationColumn={isRelationColumn}
+            onColumnEdit={handleColumnEdit}
             onColumnDelete={handleColumnDelete}
           />
         )}
         <TableAddRowFooter />
       </div>
+      <ColumnEditorDialog
+        api={api}
+        open={columnEditorState != null}
+        databaseId={databaseView.id}
+        state={columnEditorState}
+        columnDefs={databaseView.columnDefs}
+        onClose={() => setColumnEditorState(null)}
+        onSaved={() => onTabsUpdated?.()}
+      />
     </TableAddRow>
   );
 }

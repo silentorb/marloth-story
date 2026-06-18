@@ -15,36 +15,64 @@ function moveItem<T>(items: T[], fromIndex: number, toIndex: number): T[] {
   return next;
 }
 
-interface ColumnHeaderCellContentProps {
+interface ColumnHeaderManageProps {
   column: string;
   label: string;
-  renderHeader: (column: string, label: string) => ReactNode;
-  canDelete?: boolean;
+  canManage?: boolean;
   isRelation?: boolean;
+  onColumnEdit?: (column: string) => void;
   onColumnDelete?: (column: string) => void | Promise<void>;
 }
 
-function ColumnHeaderCellContent({
-  column,
-  label,
-  renderHeader,
-  canDelete,
-  isRelation,
-  onColumnDelete,
-}: ColumnHeaderCellContentProps) {
-  const content = renderHeader(column, label);
-  if (!canDelete || !onColumnDelete) {
-    return content;
+function wrapManageableColumnHeader(
+  {
+    column,
+    label,
+    canManage,
+    isRelation,
+    onColumnEdit,
+    onColumnDelete,
+  }: ColumnHeaderManageProps,
+  content: ReactNode,
+  innerClassName?: string,
+) {
+  const inner = innerClassName ? <div className={innerClassName}>{content}</div> : content;
+
+  if (!canManage || (!onColumnEdit && !onColumnDelete)) {
+    return inner;
   }
 
   return (
     <ColumnHeaderMenu
       columnLabel={label}
       isRelation={isRelation}
-      onDelete={() => onColumnDelete(column)}
+      onEdit={onColumnEdit ? () => onColumnEdit(column) : undefined}
+      onDelete={() => onColumnDelete?.(column)}
     >
-      {content}
+      {inner}
     </ColumnHeaderMenu>
+  );
+}
+
+interface ColumnHeaderCellContentProps extends ColumnHeaderManageProps {
+  renderHeader: (column: string, label: string) => ReactNode;
+  innerClassName?: string;
+}
+
+function ColumnHeaderCellContent({
+  column,
+  label,
+  renderHeader,
+  innerClassName,
+  canManage,
+  isRelation,
+  onColumnEdit,
+  onColumnDelete,
+}: ColumnHeaderCellContentProps) {
+  return wrapManageableColumnHeader(
+    { column, label, canManage, isRelation, onColumnEdit, onColumnDelete },
+    renderHeader(column, label),
+    innerClassName,
   );
 }
 
@@ -52,8 +80,9 @@ interface SortableColumnHeaderCellProps {
   column: string;
   label: string;
   renderHeader: (column: string, label: string) => ReactNode;
-  canDelete?: boolean;
+  canManage?: boolean;
   isRelation?: boolean;
+  onColumnEdit?: (column: string) => void;
   onColumnDelete?: (column: string) => void | Promise<void>;
   useDragOverlay?: boolean;
   sortableId?: string;
@@ -63,8 +92,9 @@ function SortableColumnHeaderCell({
   column,
   label,
   renderHeader,
-  canDelete,
+  canManage,
   isRelation,
+  onColumnEdit,
   onColumnDelete,
   useDragOverlay = false,
   sortableId,
@@ -90,16 +120,16 @@ function SortableColumnHeaderCell({
       {...attributes}
       {...listeners}
     >
-      <div className="marloth-column-header-inner">
-        <ColumnHeaderCellContent
-          column={column}
-          label={label}
-          renderHeader={renderHeader}
-          canDelete={canDelete}
-          isRelation={isRelation}
-          onColumnDelete={onColumnDelete}
-        />
-      </div>
+      <ColumnHeaderCellContent
+        column={column}
+        label={label}
+        renderHeader={renderHeader}
+        innerClassName="marloth-column-header-inner"
+        canManage={canManage}
+        isRelation={isRelation}
+        onColumnEdit={onColumnEdit}
+        onColumnDelete={onColumnDelete}
+      />
     </th>
   );
 }
@@ -113,8 +143,9 @@ export interface SortableDataColumnHeadersProps {
   useDragOverlay?: boolean;
   /** Prefix for @dnd-kit sortable ids when the same column keys appear in multiple contexts. */
   sortableIdPrefix?: string;
-  canDeleteColumn?: (column: string) => boolean;
+  canManageColumn?: (column: string) => boolean;
   isRelationColumn?: (column: string) => boolean;
+  onColumnEdit?: (column: string) => void;
   onColumnDelete?: (column: string) => void | Promise<void>;
 }
 
@@ -126,8 +157,9 @@ export function SortableDataColumnHeaders({
   reorderable = false,
   useDragOverlay = false,
   sortableIdPrefix,
-  canDeleteColumn,
+  canManageColumn,
   isRelationColumn,
+  onColumnEdit,
   onColumnDelete,
 }: SortableDataColumnHeadersProps) {
   const labelFor = (column: string) => columnLabels?.[column] ?? formatLabel(column);
@@ -144,8 +176,9 @@ export function SortableDataColumnHeaders({
               column={column}
               label={labelFor(column)}
               renderHeader={renderHeader}
-              canDelete={canDeleteColumn?.(column)}
+              canManage={canManageColumn?.(column)}
               isRelation={isRelationColumn?.(column)}
+              onColumnEdit={onColumnEdit}
               onColumnDelete={onColumnDelete}
             />
           </th>
@@ -162,8 +195,9 @@ export function SortableDataColumnHeaders({
           column={column}
           label={labelFor(column)}
           renderHeader={renderHeader}
-          canDelete={canDeleteColumn?.(column)}
+          canManage={canManageColumn?.(column)}
           isRelation={isRelationColumn?.(column)}
+          onColumnEdit={onColumnEdit}
           onColumnDelete={onColumnDelete}
           useDragOverlay={useDragOverlay}
           sortableId={sortableIdFor(column)}

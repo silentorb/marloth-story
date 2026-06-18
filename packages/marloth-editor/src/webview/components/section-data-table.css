@@ -47,10 +47,6 @@
   font-weight: inherit;
 }
 
-.marloth-table-sort-button:hover {
-  color: var(--marloth-text);
-}
-
 .marloth-table-sort-button.is-active {
   color: var(--marloth-text);
 }
@@ -68,8 +64,18 @@
 }
 
 .marloth-column-header-menu-wrap {
-  display: inline-flex;
-  align-items: center;
+  display: block;
+}
+
+.marloth-database-table thead th > .marloth-column-header-menu-wrap {
+  margin: -10px -14px;
+  padding: 10px 14px;
+}
+
+.marloth-database-table thead th:hover:not(.marloth-table-row-actions-col):not(
+    .marloth-ordered-association-drag-col
+  ) {
+  color: var(--marloth-text);
 }
 
 .marloth-column-header.is-reorderable {

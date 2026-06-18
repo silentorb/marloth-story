@@ -85,6 +85,10 @@ export function createApiHandler(
         return json({ schema: db.getSchema() });
       }
 
+      if (path === "/api/type-tables") {
+        return json({ typeTables: db.listTypeTables() });
+      }
+
       if (path === "/api/relationship-types") {
         return json({ types: db.listRelationshipTypes() });
       }
@@ -373,8 +377,81 @@ export function createApiHandler(
         return json({ ok: true });
       }
 
+      const databaseColumnsMatch = /^\/api\/databases\/([a-f0-9]{32})\/columns$/i.exec(path);
+      if (databaseColumnsMatch && req.method === "POST") {
+        const databaseId = databaseColumnsMatch[1]!.toLowerCase();
+        const payload = (await req.json()) as {
+          key?: string;
+          name?: string;
+          type?: string;
+          enumId?: string;
+          targetTypeId?: string;
+          perspective?: string;
+        };
+        if (typeof payload.name !== "string" || typeof payload.type !== "string") {
+          return json({ error: "name and type required" }, 400);
+        }
+        const result = db.createDatabaseColumn(databaseId, {
+          key: payload.key,
+          name: payload.name,
+          type: payload.type as import("marloth-db").TableColumnDef["type"],
+          enumId: payload.enumId,
+          targetTypeId: payload.targetTypeId,
+          perspective: payload.perspective,
+        });
+        if (result === "database_not_found") return json({ error: "not found" }, 404);
+        if (result === "column_key_taken") return json({ error: "column key taken" }, 409);
+        if (
+          result === "invalid_name" ||
+          result === "invalid_key" ||
+          result === "invalid_type" ||
+          result === "invalid_enum" ||
+          result === "invalid_relation_target"
+        ) {
+          return json({ error: result }, 400);
+        }
+        return json(result);
+      }
+
       const databaseColumnMatch =
         /^\/api\/databases\/([a-f0-9]{32})\/columns\/([a-z0-9_]+)$/i.exec(path);
+      if (databaseColumnMatch && req.method === "PATCH") {
+        const databaseId = databaseColumnMatch[1]!.toLowerCase();
+        const columnKey = databaseColumnMatch[2]!.toLowerCase();
+        const payload = (await req.json()) as {
+          name?: string;
+          newKey?: string;
+          type?: string;
+          enumId?: string | null;
+          targetTypeId?: string;
+          perspective?: string;
+        };
+        const result = db.updateDatabaseColumn(databaseId, columnKey, {
+          name: payload.name,
+          newKey: payload.newKey,
+          type: payload.type as import("marloth-db").TableColumnDef["type"] | undefined,
+          enumId: payload.enumId,
+          targetTypeId: payload.targetTypeId,
+          perspective: payload.perspective,
+        });
+        if (result === "database_not_found") return json({ error: "not found" }, 404);
+        if (result === "column_not_found") return json({ error: "column not found" }, 404);
+        if (result === "column_key_taken") return json({ error: "column key taken" }, 409);
+        if (result === "column_not_deletable") {
+          return json({ error: "column not editable" }, 400);
+        }
+        if (
+          result === "invalid_name" ||
+          result === "invalid_key" ||
+          result === "invalid_type" ||
+          result === "invalid_enum" ||
+          result === "invalid_relation_target"
+        ) {
+          return json({ error: result }, 400);
+        }
+        return json(result);
+      }
+
       if (databaseColumnMatch && req.method === "DELETE") {
         const databaseId = databaseColumnMatch[1]!.toLowerCase();
         const columnKey = databaseColumnMatch[2]!.toLowerCase();

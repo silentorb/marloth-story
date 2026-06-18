@@ -26,6 +26,7 @@ import { TableRowActionsCell, type TableRowMoveConfig } from "./TableRowActionsC
 import { renderTableCell } from "./table-cell-render";
 import { TableSearchInput } from "./TableSearchInput";
 import { TableUtilityBar } from "./TableUtilityBar";
+import { ColumnEditorDialog, type ColumnEditorState } from "./ColumnEditorDialog";
 import { SortableDataColumnHeaders, columnLabelFor, moveColumnOrderItem } from "./SortableDataColumnHeaders";
 import "./ordered-association-view.css";
 import "./section-data-table.css";
@@ -154,8 +155,9 @@ interface GroupTableProps {
     getMoveConfig?: (rowNodeId: string) => TableRowMoveConfig | undefined;
   };
   onColumnsReorder?: (nextColumns: string[]) => void | Promise<void>;
-  canDeleteColumn?: (column: string) => boolean;
+  canManageColumn?: (column: string) => boolean;
   isRelationColumn?: (column: string) => boolean;
+  onColumnEdit?: (column: string) => void;
   onColumnDelete?: (column: string) => void | Promise<void>;
 }
 
@@ -179,8 +181,9 @@ function GroupTable({
   renderNameCell,
   rowPageActions,
   onColumnsReorder,
-  canDeleteColumn,
+  canManageColumn,
   isRelationColumn,
+  onColumnEdit,
   onColumnDelete,
 }: GroupTableProps) {
   const itemIds = useMemo(() => group.rows.map((row) => row.sceneId), [group.rows]);
@@ -209,8 +212,9 @@ function GroupTable({
                 reorderable={Boolean(onColumnsReorder)}
                 useDragOverlay={Boolean(onColumnsReorder)}
                 sortableIdPrefix={columnSortablePrefix(group.groupId)}
-                canDeleteColumn={canDeleteColumn}
+                canManageColumn={canManageColumn}
                 isRelationColumn={isRelationColumn}
+                onColumnEdit={onColumnEdit}
                 onColumnDelete={onColumnDelete}
               />
             </tr>
@@ -260,6 +264,7 @@ export function OrderedAssociationView({
   const [moveError, setMoveError] = useState<string | null>(null);
   const [isMoving, setIsMoving] = useState(false);
   const [displayColumns, setDisplayColumns] = useState(view.columns);
+  const [columnEditorState, setColumnEditorState] = useState<ColumnEditorState | null>(null);
 
   useEffect(() => {
     setDisplayColumns(view.columns);
@@ -274,7 +279,7 @@ export function OrderedAssociationView({
     [api, onCellUpdated, view.typeDatabaseId],
   );
 
-  const canDeleteColumn = useCallback(
+  const canManageColumn = useCallback(
     (key: string) => {
       const def = view.columnDefs?.find((col) => col.key === key);
       return def != null && def.source !== "dynamic";
@@ -286,6 +291,10 @@ export function OrderedAssociationView({
     (key: string) => view.columnDefs?.find((col) => col.key === key)?.type === "relation",
     [view.columnDefs],
   );
+
+  const handleColumnEdit = useCallback((key: string) => {
+    setColumnEditorState({ mode: "edit", columnKey: key });
+  }, []);
 
   const handleColumnDelete = useCallback(
     async (key: string) => {
@@ -493,6 +502,15 @@ export function OrderedAssociationView({
         tabs={view.tabs}
         onTabSelect={onTabSelect}
         search={<TableSearchInput value={searchQuery} onChange={setSearchQuery} />}
+        addColumn={
+          <button
+            type="button"
+            className="marloth-table-column-add"
+            onClick={() => setColumnEditorState({ mode: "add" })}
+          >
+            + Column
+          </button>
+        }
       />
 
       {moveError ? <div className="marloth-ordered-association-error">{moveError}</div> : null}
@@ -518,8 +536,9 @@ export function OrderedAssociationView({
               renderNameCell={renderNameCell}
               rowPageActions={rowPageActions}
               onColumnsReorder={handleColumnsReorder}
-              canDeleteColumn={canDeleteColumn}
+              canManageColumn={canManageColumn}
               isRelationColumn={isRelationColumn}
+              onColumnEdit={handleColumnEdit}
               onColumnDelete={handleColumnDelete}
             />
           ))}
@@ -536,6 +555,15 @@ export function OrderedAssociationView({
         </DragOverlay>
       </DndContext>
       )}
+      <ColumnEditorDialog
+        api={api}
+        open={columnEditorState != null}
+        databaseId={view.typeDatabaseId}
+        state={columnEditorState}
+        columnDefs={view.columnDefs}
+        onClose={() => setColumnEditorState(null)}
+        onSaved={() => onCellUpdated?.()}
+      />
     </div>
   );
 }

@@ -43,6 +43,27 @@ export function makeMockEditorApi(): EditorApi {
         sorts: [{ column: "name", direction: "asc" as const }],
       })),
     deleteDatabaseColumn: async () => ({ rowsAffected: 0, relationsUnlinked: 0 }),
+    createDatabaseColumn: async (_databaseId, input) => ({
+      column: {
+        key: input.key ?? "new_column",
+        name: input.name,
+        type: input.type as "text",
+      },
+      rowsMigrated: 0,
+      relationsUnlinked: 0,
+      valuesCleared: 0,
+    }),
+    updateDatabaseColumn: async (_databaseId, columnKey, input) => ({
+      column: {
+        key: input.newKey ?? columnKey,
+        name: input.name ?? columnKey,
+        type: (input.type ?? "text") as "text",
+      },
+      rowsMigrated: 0,
+      relationsUnlinked: 0,
+      valuesCleared: 0,
+    }),
+    listTypeTables: async () => [],
     search: async (_query, _limit, _allowedTypeIds, _options) => [],
     listRecent: async () => [],
     saveBody: async () => {},

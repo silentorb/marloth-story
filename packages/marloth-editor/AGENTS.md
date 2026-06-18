@@ -15,6 +15,20 @@ Browser editor for Marloth design nodes stored in `content/` with a SQLite query
 
 The editor is **dark-first**: it always uses the `:root` palette in `src/webview/styles.css`. Milkdown loads `frame-dark.css`; code blocks use Crepe’s One Dark CodeMirror theme. New UI should use `--marloth-*` tokens (add tokens to `styles.css` rather than hardcoding colors).
 
+## Interaction targets
+
+Pointer handlers **must** match the **full visual box** (header cell, tab, row), not shrink-wrapped label text. Avoid `onContextMenu` / `onClick` on `inline-flex` wrappers inside padded table cells.
+
+**Patterns in this package:**
+
+| Case | Reference |
+| --- | --- |
+| Column header context menu fills `<th>` | `section-data-table.css` → `.marloth-column-header-menu-wrap`; wrapper is direct child of `<th>` in `SortableDataColumnHeaders.tsx` |
+| Relation cell opens editor popup | `relation-cell-editor.css` → `.marloth-relation-cell-hit-area` (`position: absolute; inset: 0`) |
+| Tab select / context menu | `TableUtilityBar.tsx` — `<button>` is the tab chrome |
+
+See [`docs/features/marloth-editor.md`](../../docs/features/marloth-editor.md) § Interaction targets. `database-table-layout.test.tsx` guards the column-header fill CSS.
+
 ## Architecture
 
 | Layer | Path | Runtime |

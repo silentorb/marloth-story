@@ -34,7 +34,7 @@ For Graph Explorer LOD layers and clustering, read [`graph-explorer.md`](./graph
 - Active table view tab per node page **must** persist in `.marloth/user-settings.json` (`tableTabs`, keyed by `records/{nodeId}/tab`). On load, an explicit `?tab=` URL wins over the saved tab; otherwise the saved tab is restored and reflected in the URL.
 - Each node page **must** include a collapsible **metadata** panel below the page title. When expanded, it shows timestamps, backlinks, and optional Properties (instance pages only). Collapsed by default; `?meta=1` expands (not persisted in user settings).
 - **Connections** — total incident graph relationships (in + out). **Backlinks** — prose-only discovery: other pages whose markdown `body` links here (inline `marloth:` or export-style links). Backlinks are a gap-filler for references not already visible in relation/database sections; typed graph relationships are excluded.
-- Database table sections on type-table nodes **must** use tab definitions from [`views.json`](./views.md): **custom** tabs (name + sorts, editable in UI) or **generated** tabs (e.g. Scenes book scope via `scenes-by-book`). Column typing comes from [`table-schemas.json`](./table-schemas.md). Optional section-level **`columnOrder`** in `views.json` overrides default column ordering; users can drag column headers to reorder and persist that override.
+- Database table sections on type-table nodes **must** use tab definitions from [`views.json`](./views.md): **custom** tabs (name + sorts, editable in UI) or **generated** tabs (e.g. Scenes book scope via `scenes-by-book`). Column typing comes from [`table-schemas.json`](./table-schemas.md). Optional section-level **`columnOrder`** in `views.json` overrides default column ordering; users can drag column headers to reorder and persist that override. Stored columns **must** be addable/editable/deletable in the UI via **+ Column** and the column header context menu (`POST`/`PATCH`/`DELETE` `/api/databases/:id/columns…`); dynamic columns stay read-only.
 - Database table **relation columns** (`type: relation` in synced `notion_schema`) **must** be editable in the UI: the cell shows a compact summary (max width `14rem`, ~6 lines) of **inline wrapping navigable links** (outline page icon prefix, off-white text—not pill badges) for visible records, with overflow as `N+` when more links exist. Links use plain `<a href="?node=…">` elements (native navigation). An **edit control** in a fixed column immediately right of the links box (shown on cell hover or focus) opens a popup listing all links (remove per row) plus a searchable add control (filtered by the relation property’s target database when `config.database_id` is present). Linking uses `POST /api/nodes/:rowId/connections`; unlinking uses `DELETE /api/nodes/:rowId/connections/:label/:targetId`. Relation scope is inferred from the row's `is_a` membership in the table database (see [marloth-db.md](./marloth-db.md)).
 
 ### Cross-linking and navigation links
@@ -78,7 +78,16 @@ Keyboard shortcuts in combobox-style pickers (global search, Relate, record link
 - Shared colors **must** live as `--marloth-*` CSS custom properties on `:root` in `src/webview/styles.css`; canvas or library code that cannot use CSS directly should read those tokens (see `src/webview/theme.ts`).
 - Editable **enum** property fields (Properties section and database/relation table cells) **should** use collapsed pill labels that open a popover option list on click (Notion-like), not native `<select>` controls. Empty values **must** show a muted placeholder until the user picks an option—never display a schema default as if it were already stored.
 
-### Dev / agent workflow
+### Interaction targets
+
+Pointer handlers (click, context menu, drag affordances) **must** cover the **full visual box** the user sees—a table header cell, tab, row strip, cell chrome—not just the label text inside it.
+
+- **Do not** attach handlers to `inline-flex` / shrink-wrapped wrappers around labels when the surrounding box has padding or empty space (common with `<th>` / `<td>` padding). Users expect to interact anywhere in that box.
+- **Prefer** making the interactive element itself fill the box (`<button>` spanning a tab, a block-level header wrapper) or add an explicit fill layer.
+- **Table cells with outer padding:** when the handler must be an inner wrapper (e.g. context menu separate from sort/drag on the same `<th>`), extend the wrapper into the cell padding—see `.marloth-column-header-menu-wrap` in `section-data-table.css` (`margin` negates `<th>` padding; `padding` restores layout).
+- **Overlay hit layer:** when nested content must stay pointer-transparent (e.g. native `<a>` links inside a cell), use an absolutely positioned fill control—see `.marloth-relation-cell-hit-area` in `relation-cell-editor.css` (`inset: 0` on a button over the cell content box).
+- **Regression:** column-header context-menu fill is asserted in `database-table-layout.test.tsx`.
+
 
 - Development uses Vite dev server + Bun API (`bun run editor:dev`).
 - The webview calls the REST API directly (via `src/shared/http-client.ts`); Vite proxies `/api` to the editor API port.
@@ -171,7 +180,7 @@ Production UI bundle: `bun run editor:build` → `packages/marloth-editor/dist-w
 | Dynamic computed columns | `packages/marloth-db/src/dynamic-fields/dynamic-fields.test.ts` |
 | Composite relationship traversal | `packages/marloth-db/src/relationship-traverse.test.ts` |
 | Database table UI | `packages/marloth-editor/src/webview/components/DatabaseTableView.test.tsx` |
-| Shared sortable table UI | `packages/marloth-editor/src/webview/components/SectionDataTable.test.tsx` |
+| Shared sortable table UI | `packages/marloth-editor/src/webview/components/SectionDataTable.test.tsx`, `database-table-layout.test.tsx` (column header hit-area CSS) |
 | Relation / enum cell rendering | `table-cell-render.test.tsx`, `RelationSectionView.test.tsx`, `EnumSelectCell.test.tsx` |
 | Database HTTP API | `packages/marloth-editor/src/api/database-view-api.test.ts`, `edge-property-api.test.ts` |
 | Table sort persistence | `packages/marloth-editor/src/shared/user-settings.test.ts`, `user-settings-api.test.ts` |

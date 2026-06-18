@@ -27,7 +27,7 @@ describe("deleteDatabaseColumn", () => {
     });
     seedTestTableSchema(fixture, databaseId, [
       { key: "priority", name: "Priority", type: "select", enumId: "priority" },
-      { key: "status", name: "Status", type: "select" },
+      { key: "task_state", name: "Task state", type: "select" },
     ]);
     seedTestNode(fixture, { id: page1, properties: { title: "Feature A" } });
     seedTestNode(fixture, { id: page2, properties: { title: "Feature B" } });
@@ -36,13 +36,13 @@ describe("deleteDatabaseColumn", () => {
         source: page1,
         target: databaseId,
         type: IS_A_TYPE,
-        properties: { priority: "High", status: "Open", row_index: 0 },
+        properties: { priority: "High", task_state: "Open", row_index: 0 },
       },
       {
         source: page2,
         target: databaseId,
         type: IS_A_TYPE,
-        properties: { priority: "Low", status: "Done", row_index: 1 },
+        properties: { priority: "Low", task_state: "Done", row_index: 1 },
       },
     ]);
 
@@ -54,12 +54,12 @@ describe("deleteDatabaseColumn", () => {
 
     const edge1 = fixture.ctx.db.listRelationshipsFromSource(page1, IS_A_TYPE)[0];
     expect(edge1?.properties.priority).toBeUndefined();
-    expect(edge1?.properties.status).toBe("Open");
+    expect(edge1?.properties.task_state).toBe("Open");
     expect(edge1?.properties.row_index).toBe(0);
 
     const detail = getDatabaseViewDetail(fixture.ctx.db, databaseId, undefined, fixture.ctx.store.contentDir);
     expect(detail?.columns).not.toContain("priority");
-    expect(detail?.columns).toContain("status");
+    expect(detail?.columns).toContain("task_state");
   });
 
   test("removes relation column from schema and unlinks all row edges", () => {
@@ -110,11 +110,11 @@ describe("deleteDatabaseColumn", () => {
       properties: typeTableMarkerProperties("Tasks"),
     });
     seedTestTableSchema(fixture, databaseId, [
-      { key: "status", name: "Status", type: "select" },
+      { key: "task_state", name: "Task state", type: "select" },
     ]);
     seedTestNode(fixture, { id: pageId, properties: { title: "Task A" } });
     seedTestRelationships(fixture, [
-      { source: pageId, target: databaseId, type: IS_A_TYPE, properties: { status: "Open" } },
+      { source: pageId, target: databaseId, type: IS_A_TYPE, properties: { task_state: "Open" } },
     ]);
     seedTestViews(fixture, {
       version: 1,
@@ -127,20 +127,20 @@ describe("deleteDatabaseColumn", () => {
                 definitions: [
                   {
                     ...DEFAULT_CUSTOM_TAB,
-                    id: "by-status",
-                    name: "By status",
-                    sorts: [{ column: "status", direction: "asc" }],
+                    id: "by-task-state",
+                    name: "By task state",
+                    sorts: [{ column: "task_state", direction: "asc" }],
                   },
                 ],
               },
-              columnOrder: ["status"],
+              columnOrder: ["task_state"],
             },
           },
         },
       },
     });
 
-    deleteDatabaseColumn(fixture.ctx, databaseId, "status");
+    deleteDatabaseColumn(fixture.ctx, databaseId, "task_state");
 
     const views = fixture.ctx.store.readViewsFile();
     const section = views.nodes[databaseId]?.sections.items;

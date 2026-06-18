@@ -19,6 +19,7 @@ function loadTableStyles(): HTMLStyleElement {
 
 describe("database table layout CSS", () => {
   const css = readFileSync(join(COMPONENT_DIR, "database-table-view.css"), "utf8");
+  const sectionTableCss = readFileSync(join(COMPONENT_DIR, "section-data-table.css"), "utf8");
 
   test("caps column widths with simple max-width rules", () => {
     expect(css).toContain("max-width: 21rem");
@@ -36,6 +37,23 @@ describe("database table layout CSS", () => {
 
     const mainCss = readFileSync(join(COMPONENT_DIR, "..", "styles.css"), "utf8");
     expect(mainCss).toMatch(/\.marloth-main[\s\S]*overflow:\s*auto/);
+  });
+
+  test("column header context menu fills thead cell padding", () => {
+    expect(sectionTableCss).toMatch(/\.marloth-column-header-menu-wrap[\s\S]*display:\s*block/);
+    expect(sectionTableCss).toMatch(
+      /\.marloth-database-table thead th > \.marloth-column-header-menu-wrap[\s\S]*margin:\s*-10px -14px/,
+    );
+    expect(sectionTableCss).toMatch(
+      /\.marloth-database-table thead th > \.marloth-column-header-menu-wrap[\s\S]*padding:\s*10px 14px/,
+    );
+  });
+
+  test("column header hover highlight applies to full thead cell", () => {
+    expect(sectionTableCss).toMatch(
+      /\.marloth-database-table thead th:hover:not\(\.marloth-table-row-actions-col\):not\([\s\S]*\.marloth-ordered-association-drag-col[\s\S]*\)[\s\S]*color:\s*var\(--marloth-text\)/,
+    );
+    expect(sectionTableCss).not.toMatch(/\.marloth-table-sort-button:hover/);
   });
 });
 
