@@ -47,6 +47,9 @@ describe("node-type-properties", () => {
           resolverId: "characters.allSceneCount",
           docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
           viewNames: ["Hidden View"],
+          params: {
+            scenes_edge_label: "SCENES",
+          },
         },
       ]),
     );
@@ -94,6 +97,9 @@ describe("node-type-properties", () => {
           columnName: "All Scene count",
           resolverId: "characters.allSceneCount",
           docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
+          params: {
+            scenes_edge_label: "SCENES",
+          },
         },
       ]),
     );

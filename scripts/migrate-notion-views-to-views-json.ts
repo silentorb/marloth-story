@@ -2,21 +2,25 @@
 /**
  * One-time migration: notion_views tab names/sorts → content/views.json;
  * strip notion_views from node frontmatter.
+ *
+ * @deprecated Migration already run for Marloth corpus; kept for reference.
  */
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  emptyViewsFile,
   notionSortToViewSort,
   parseNotionSchema,
   parseNotionViews,
+} from "../packages/_archive/legacy-notion-schema";
+import {
+  emptyViewsFile,
   serializeViewsFile,
   slugifyTabId,
   uniqueTabId,
   type CustomTabDefinition,
   type ViewsFile,
-} from "tome-db";
-import { contentDataDir, resolveContentPath, viewsFilePath } from "tome-db/content";
+} from "../packages/tome-db/src/content/views-file";
+import { contentDataDir, resolveContentPath, viewsFilePath } from "../packages/tome-db/src/content/paths";
 
 const SCENES_DB = "204dba198db74611b0b49a98dd53e8f5";
 

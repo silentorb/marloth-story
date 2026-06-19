@@ -30,6 +30,19 @@ For per-field logic, read the spec in [`docs/dynamic-fields/`](../dynamic-fields
 - Bindings **must** live in `content/dynamic-fields.json` (`fields[]` and `columnSets[]`).
 - Seed starter bindings: `bun scripts/seed-dynamic-fields.ts`.
 
+### Params contract
+
+Resolver **algorithms** live in TypeScript; `params` in `dynamic-fields.json` supply workspace-specific graph vocabulary only (composite type names, edge labels, anchor node ids). Resolvers **must not** default to workspace-specific composite or edge strings when a param is omitted — empty param means skip that traversal path.
+
+| `resolver_id` | Param keys | Purpose |
+| --- | --- | --- |
+| `characters.allSceneCount` | `characters_scene_composite`, `scenes_edge_label` | Composite character↔scene links; legacy SCENES edges |
+| `characters.sceneCountByProduct` | `characters_scene_composite`, `scene_product_composite`, `scenes_edge_label`, `product_edge_label`, `hide_legacy_keys` | Scene/product traversals; hide stale stored columns |
+| `inspirations.weightedUse` | `inspiration_feature_composite`, `features_edge_label`, `features_database_id` | Feature links; Features DB for priority weights |
+| `inspirations.wonder` | `inspiration_feature_composite`, `features_edge_label`, `theme_edge_label`, `theme_target_id` | Feature links; theme anchor for wonder count |
+
+Per-field semantics and worked examples: [`docs/dynamic-fields/`](../dynamic-fields/README.md).
+
 ### Column kinds
 
 | Kind | JSON section | Behavior |

@@ -1,6 +1,10 @@
+/**
+ * Validation/migration tooling for Notion export layout — not used by editor runtime.
+ */
 import type { GraphDatabase, Relationship, Properties } from "./graph";
 import { IS_A_TYPE, TYPE_MEMBERSHIP_TYPES } from "./labels";
 import { findTypeNodeByTitle, isTypeTableNode } from "./node-capabilities";
+import { legacyExportPathPrefix } from "./workspace/resolve";
 
 /** Node properties that are not database row scalars. */
 export const NODE_META_KEYS = new Set(["title", "body", "alias"]);
@@ -58,25 +62,29 @@ function stringProperty(value: unknown): string | null {
   return null;
 }
 
-/** First folder segment after `Marloth/` (e.g. `Marloth/Features/Community` → `Features`). */
-export function typeFolderFromPath(path: string | null | undefined): string | null {
+/** First folder segment after `{exportPathPrefix}/` (e.g. `{prefix}/Features/Community` → `Features`). */
+export function typeFolderFromPath(
+  path: string | null | undefined,
+  exportPathPrefix: string = legacyExportPathPrefix(),
+): string | null {
   if (!path || typeof path !== "string") return null;
   const segments = path.split("/").filter(Boolean);
-  if (segments.length < 2 || segments[0] !== "Marloth") return null;
+  if (segments.length < 2 || segments[0] !== exportPathPrefix) return null;
   return segments[1]!;
 }
 
 /**
- * Deepest path segment after `Marloth/` that matches a NotionDatabase title.
- * e.g. `Marloth/Inspirations/Traversal reasons` → `Traversal reasons`, not `Inspirations`.
+ * Deepest path segment after `{exportPathPrefix}/` that matches a NotionDatabase title.
+ * e.g. `{prefix}/Inspirations/Traversal reasons` → `Traversal reasons`, not `Inspirations`.
  */
 export function typeDatabaseTitleFromPath(
   db: GraphDatabase,
   path: string | null | undefined,
+  exportPathPrefix: string = legacyExportPathPrefix(),
 ): string | null {
   if (!path || typeof path !== "string") return null;
   const segments = path.split("/").filter(Boolean);
-  if (segments.length < 2 || segments[0] !== "Marloth") return null;
+  if (segments.length < 2 || segments[0] !== exportPathPrefix) return null;
 
   let match: string | null = null;
   for (let i = 1; i < segments.length; i++) {
@@ -93,7 +101,7 @@ export function expectedTypeDatabaseForPage(
   return null;
 }
 
-/** Strip export archive prefix so paths compare as `Marloth/...`. */
+/** Strip export archive prefix so paths compare as `{exportPathPrefix}/...`. */
 export function notionPathFromSourceExport(sourceExport: string): string | null {
   if (!sourceExport.trim()) return null;
   const zipIdx = sourceExport.indexOf(".zip/");
@@ -103,7 +111,7 @@ export function notionPathFromSourceExport(sourceExport: string): string | null 
 
 /**
  * Instance folder for CSV-imported rows: `dirname(csv) + "/" + displayName + "/"`.
- * e.g. `Marloth/Features {id}_all.csv` → `Marloth/Features/`.
+ * e.g. `{prefix}/Features {id}_all.csv` → `{prefix}/Features/`.
  */
 export function instanceRootFromTypeTableExport(sourceExport: string): string | null {
   const path = notionPathFromSourceExport(sourceExport);

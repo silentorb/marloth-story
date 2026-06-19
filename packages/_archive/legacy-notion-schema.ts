@@ -1,3 +1,10 @@
+/**
+ * Legacy Notion `notion_schema` / `notion_views` parsing for one-time migration scripts.
+ * Not used by editor runtime — production columns use `content/model/table-schemas.json`.
+ */
+import { slugifyPropertyKey } from "../tome-db/src/table-schema";
+import type { ViewSortSpec } from "../tome-db/src/content/views-file";
+
 export interface NotionPropertyDefinition {
   id: string;
   name: string;
@@ -131,14 +138,7 @@ export function storedScalarColumnDefsFromSchema(
   return columnDefs;
 }
 
-export function slugifyPropertyKey(label: string): string {
-  let s = label.trim().toLowerCase();
-  s = s.replace(/[^a-z0-9_]+/g, "_");
-  s = s.replace(/^_+|_+$/g, "").replace(/__+/g, "_");
-  if (!s) s = "property";
-  if (/^\d/.test(s)) s = `prop_${s}`;
-  return s;
-}
+export { slugifyPropertyKey };
 
 interface NotionViewTableProperty {
   property_id?: string;
@@ -178,4 +178,22 @@ export function resolveViewByKey(
     views.find((v) => slugifyPropertyKey(v.name) === normalized) ??
     views[0]!
   );
+}
+
+/** Map a Notion view sort entry to views.json `ViewSortSpec` (legacy migration helper). */
+export function notionSortToViewSort(
+  sort: { property?: string; direction?: string },
+  schema: NotionDatabaseSchema | null,
+): ViewSortSpec | null {
+  const property = sort.property?.trim();
+  if (!property) return null;
+  const direction = sort.direction?.toLowerCase() === "descending" ? "desc" : "asc";
+  if (schema) {
+    const idToName = propertyNamesById(schema);
+    const name = propertyNameForId(idToName, property);
+    if (name) {
+      return { column: slugifyPropertyKey(name), direction };
+    }
+  }
+  return { column: slugifyPropertyKey(property), direction };
 }

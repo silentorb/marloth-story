@@ -31,6 +31,10 @@ export function starterDynamicFieldSeeds(): {
         columnType: "number",
         resolverId: "characters.allSceneCount",
         docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
+        params: {
+          characters_scene_composite: "scenes_characters",
+          scenes_edge_label: "SCENES",
+        },
       },
       {
         id: "inspirations-weighted-use",
@@ -41,6 +45,7 @@ export function starterDynamicFieldSeeds(): {
         resolverId: "inspirations.weightedUse",
         docsPath: "docs/dynamic-fields/inspirations.weighted-use.md",
         params: {
+          inspiration_feature_composite: "inspirations_features",
           features_edge_label: "FEATURES",
           features_database_id: FEATURES_DB,
         },
@@ -54,6 +59,7 @@ export function starterDynamicFieldSeeds(): {
         resolverId: "inspirations.wonder",
         docsPath: "docs/dynamic-fields/inspirations.wonder.md",
         params: {
+          inspiration_feature_composite: "inspirations_features",
           features_edge_label: "FEATURES",
           theme_edge_label: "THEME",
           theme_target_id: "3cbc40d2ba2a4c76b4b9dc370452fcfe",
@@ -70,6 +76,8 @@ export function starterDynamicFieldSeeds(): {
         resolverId: "characters.sceneCountByProduct",
         docsPath: "docs/dynamic-fields/characters.scene-count-by-product.md",
         params: {
+          characters_scene_composite: "scenes_characters",
+          scene_product_composite: "scenes_product",
           scenes_edge_label: "SCENES",
           product_edge_label: "PRODUCT",
           hide_legacy_keys: ["twold_scene_count"],

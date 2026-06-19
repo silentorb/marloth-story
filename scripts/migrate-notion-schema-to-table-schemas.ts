@@ -12,7 +12,8 @@ import {
   type TableSchemasFile,
 } from "../packages/tome-db/src/content/table-schemas-file";
 import { parseNodeFile, serializeNodeFile } from "../packages/tome-db/src/content/node-file";
-import { parseNotionSchema, slugifyPropertyKey } from "../packages/tome-db/src/notion-database-schema";
+import { parseNotionSchema } from "../packages/_archive/legacy-notion-schema";
+import { slugifyPropertyKey } from "../packages/tome-db/src/table-schema";
 import { isStoredScalarColumnType } from "../packages/tome-db/src/table-schema";
 import type { TableColumnScalarType } from "../packages/tome-db/src/content/table-schemas-file";
 import { relationType } from "../packages/tome-db/src/relation-type";

@@ -19,6 +19,7 @@ import {
   instanceRootFromTypeTableExport,
   isNestedPageSpuriousTypeMembership,
   typeDatabaseTitleFromPath,
+  typeFolderFromPath,
 } from "./type-membership-audit";
 
 const EXPORT_PREFIX =
@@ -44,6 +45,16 @@ describe("type-membership-audit path matching", () => {
     );
     expect(typeDatabaseTitleFromPath(db, "Marloth/Features/Community")).toBe("Features");
     expect(typeDatabaseTitleFromPath(db, "Marloth/Archive/Lab")).toBeNull();
+  });
+
+  test("typeDatabaseTitleFromPath accepts custom export path prefix", () => {
+    db.upsertNode("2eea538996934ce8abafc27132e576c1", {
+      ...typeTableMarkerProperties("Inspirations"),
+    });
+    expect(typeDatabaseTitleFromPath(db, "Acme/Inspirations", "Acme")).toBe("Inspirations");
+    expect(typeDatabaseTitleFromPath(db, "Marloth/Inspirations", "Acme")).toBeNull();
+    expect(typeFolderFromPath("Acme/Features/Community", "Acme")).toBe("Features");
+    expect(typeFolderFromPath("Marloth/Features/Community", "Acme")).toBeNull();
   });
 
   test("expectedTypeDatabaseForPage no longer infers from legacy paths", () => {

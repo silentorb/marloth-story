@@ -45,7 +45,7 @@ function buildFixedPrefetch(
 ): unknown {
   switch (resolverId) {
     case "characters.allSceneCount":
-      return buildAllSceneCountPrefetch(ctx);
+      return buildAllSceneCountPrefetch(ctx, params);
     case "inspirations.weightedUse":
       return buildWeightedUsePrefetch(ctx, params);
     case "inspirations.wonder":

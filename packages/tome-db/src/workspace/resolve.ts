@@ -17,3 +17,7 @@ export function protectedNodeIds(contentDir?: string): ReadonlySet<string> {
 export function legacyArchivePathPrefix(contentDir?: string): string | undefined {
   return resolveWorkspace(contentDir).legacy?.archivePathPrefix;
 }
+
+export function legacyExportPathPrefix(contentDir?: string): string {
+  return resolveWorkspace(contentDir).legacy?.exportPathPrefix ?? "Marloth";
+}

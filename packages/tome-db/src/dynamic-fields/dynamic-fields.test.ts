@@ -29,6 +29,27 @@ import {
   resolveWonder,
 } from "./resolvers/index";
 
+const LEGACY_CHARACTER_SCENE_PARAMS = {
+  scenes_edge_label: "SCENES",
+};
+
+const LEGACY_CHARACTER_PRODUCT_PARAMS = {
+  scenes_edge_label: "SCENES",
+  product_edge_label: "product",
+  hide_legacy_keys: ["twold_scene_count"],
+};
+
+const LEGACY_INSPIRATION_WEIGHTED_PARAMS = {
+  features_edge_label: "features",
+  features_database_id: "dd0de9867cc345b898929306bdf9fc83",
+};
+
+const LEGACY_INSPIRATION_WONDER_PARAMS = {
+  features_edge_label: "features",
+  theme_edge_label: "THEME",
+  theme_target_id: "3cbc40d2ba2a4c76b4b9dc370452fcfe",
+};
+
 describe("dynamic-fields resolvers", () => {
   const dir = mkdtempSync(join(tmpdir(), "marloth-df-"));
   const dbPath = join(dir, "test.sqlite");
@@ -64,6 +85,7 @@ describe("dynamic-fields resolvers", () => {
             columnName: "All Scene count",
             resolverId: "characters.allSceneCount",
             docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
+            params: LEGACY_CHARACTER_SCENE_PARAMS,
           },
           {
             id: "test-weighted-use",
@@ -72,7 +94,7 @@ describe("dynamic-fields resolvers", () => {
             columnName: "Weighted Use",
             resolverId: "inspirations.weightedUse",
             docsPath: "docs/dynamic-fields/inspirations.weighted-use.md",
-            params: { features_database_id: FEAT_DB },
+            params: { ...LEGACY_INSPIRATION_WEIGHTED_PARAMS, features_database_id: FEAT_DB },
           },
           {
             id: "test-wonder",
@@ -81,7 +103,7 @@ describe("dynamic-fields resolvers", () => {
             columnName: "Wonder",
             resolverId: "inspirations.wonder",
             docsPath: "docs/dynamic-fields/inspirations.wonder.md",
-            params: { theme_target_id: WONDERLAND },
+            params: { ...LEGACY_INSPIRATION_WONDER_PARAMS, theme_target_id: WONDERLAND },
           },
         ],
         [
@@ -92,7 +114,7 @@ describe("dynamic-fields resolvers", () => {
             columnNamePattern: "{productTitle} Scene count",
             resolverId: "characters.sceneCountByProduct",
             docsPath: "docs/dynamic-fields/characters.scene-count-by-product.md",
-            params: { hide_legacy_keys: ["twold_scene_count"] },
+            params: LEGACY_CHARACTER_PRODUCT_PARAMS,
           },
         ],
       ),
@@ -128,32 +150,51 @@ describe("dynamic-fields resolvers", () => {
     db.upsertRelationship(inspiration, featureWonder, "features", {});
     db.upsertRelationship(inspiration, featurePlain, "features", {});
     db.upsertRelationship(featureWonder, WONDERLAND, "THEME", {});
-
   });
 
   test("all scene count", () => {
     const ctx = { db, databaseId: CHAR_DB, viewName: "All", rowNodeIds: [character] };
-    const prefetch = buildAllSceneCountPrefetch(ctx);
+    const prefetch = buildAllSceneCountPrefetch(ctx, LEGACY_CHARACTER_SCENE_PARAMS);
     expect(resolveAllSceneCount(ctx, {}, character, prefetch)).toBe("3");
   });
 
   test("scene count by product", () => {
     const ctx = { db, databaseId: CHAR_DB, viewName: "All", rowNodeIds: [character] };
-    const prefetch = buildSceneCountByProductPrefetch(ctx, {});
+    const prefetch = buildSceneCountByProductPrefetch(ctx, LEGACY_CHARACTER_PRODUCT_PARAMS);
     expect(resolveSceneCountByProduct(ctx, {}, character, TWOLD, prefetch)).toBe("2");
     expect(resolveSceneCountByProduct(ctx, {}, character, OTHER_PRODUCT, prefetch)).toBe("1");
   });
 
   test("weighted use", () => {
     const ctx = { db, databaseId: INSP_DB, viewName: "Weighted", rowNodeIds: [inspiration] };
-    const prefetch = buildWeightedUsePrefetch(ctx, { features_database_id: FEAT_DB });
+    const params = { ...LEGACY_INSPIRATION_WEIGHTED_PARAMS, features_database_id: FEAT_DB };
+    const prefetch = buildWeightedUsePrefetch(ctx, params);
     expect(resolveWeightedUse(ctx, {}, inspiration, prefetch)).toBe("6");
   });
 
   test("wonder count", () => {
     const ctx = { db, databaseId: INSP_DB, viewName: "Wonder", rowNodeIds: [inspiration] };
-    const prefetch = buildWonderPrefetch(ctx, { theme_target_id: WONDERLAND });
+    const params = { ...LEGACY_INSPIRATION_WONDER_PARAMS, theme_target_id: WONDERLAND };
+    const prefetch = buildWonderPrefetch(ctx, params);
     expect(resolveWonder(ctx, {}, inspiration, prefetch)).toBe("1");
+  });
+
+  test("returns zero when composite param omitted despite composite edges in graph", () => {
+    const ctx = { db, databaseId: INSP_DB, viewName: "Weighted", rowNodeIds: [inspiration] };
+    expect(
+      resolveWeightedUse(
+        ctx,
+        {},
+        inspiration,
+        buildWeightedUsePrefetch(ctx, { features_database_id: FEAT_DB }),
+      ),
+    ).toBe("0");
+  });
+
+  test("returns zero for scene count when edge label param omitted", () => {
+    const ctx = { db, databaseId: CHAR_DB, viewName: "All", rowNodeIds: [character] };
+    const prefetch = buildAllSceneCountPrefetch(ctx, {});
+    expect(resolveAllSceneCount(ctx, {}, character, prefetch)).toBe("0");
   });
 
   test("database view integration for characters", () => {
@@ -217,6 +258,7 @@ describe("dynamic-fields with composite relationships", () => {
         resolverId: "inspirations.weightedUse",
         docsPath: "docs/dynamic-fields/inspirations.weighted-use.md",
         params: {
+          inspiration_feature_composite: "inspirations_features",
           features_edge_label: "FEATURES",
           features_database_id: FEAT_DB,
         },
@@ -229,6 +271,7 @@ describe("dynamic-fields with composite relationships", () => {
         resolverId: "inspirations.wonder",
         docsPath: "docs/dynamic-fields/inspirations.wonder.md",
         params: {
+          inspiration_feature_composite: "inspirations_features",
           features_edge_label: "FEATURES",
           theme_edge_label: "THEME",
           theme_target_id: WONDERLAND,
@@ -270,6 +313,124 @@ describe("dynamic-fields with composite relationships", () => {
     const row = detail?.rows.find((entry) => entry.nodeId === inspiration);
     expect(row?.cells.weighted_use).toBe("6");
     expect(row?.cells.wonder).toBe("1");
+  });
+
+  test("weighted_use returns zero when inspiration_feature_composite omitted", () => {
+    const ctx = {
+      db: fixture.ctx.db,
+      databaseId: INSP_DB,
+      viewName: "Weighted",
+      rowNodeIds: [inspiration],
+    };
+    expect(
+      resolveWeightedUse(
+        ctx,
+        {},
+        inspiration,
+        buildWeightedUsePrefetch(ctx, { features_database_id: FEAT_DB }),
+      ),
+    ).toBe("0");
+  });
+
+  afterAll(() => {
+    delete process.env.MARLOTH_CONTENT_PATH;
+    invalidateDynamicFieldsCache();
+    destroyTestContentFixture(fixture);
+  });
+});
+
+describe("dynamic-fields character composite relationships", () => {
+  const fixture = createTestContentFixture("marloth-df-char-composite-");
+  const CHAR_DB = "f984a934ad644f8480b0f8f51449569f";
+  const TWOLD = "e028aa0786f5449984a4f497c1d746fa";
+  const OTHER_PRODUCT = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+  const character = "cccccccccccccccccccccccccccccccc";
+  const scene1 = "11111111111111111111111111111111";
+  const scene2 = "22222222222222222222222222222222";
+  const scene3 = "33333333333333333333333333333333";
+
+  const productionParams = {
+    characters_scene_composite: "scenes_characters",
+    scene_product_composite: "scenes_product",
+    scenes_edge_label: "SCENES",
+    product_edge_label: "PRODUCT",
+  };
+
+  beforeAll(() => {
+    process.env.MARLOTH_CONTENT_PATH = fixture.ctx.store.contentDir;
+    seedTestDynamicFields(
+      fixture,
+      [
+        {
+          id: "characters-all-scene-count",
+          databaseId: CHAR_DB,
+          columnKey: "all_scene_count",
+          columnName: "All Scene count",
+          resolverId: "characters.allSceneCount",
+          docsPath: "docs/dynamic-fields/characters.all-scene-count.md",
+          params: {
+            characters_scene_composite: "scenes_characters",
+            scenes_edge_label: "SCENES",
+          },
+        },
+      ],
+      [
+        {
+          id: "characters-scene-count-by-product",
+          databaseId: CHAR_DB,
+          columnKeyPattern: "scene_count__{productId}",
+          columnNamePattern: "{productTitle} Scene count",
+          columnType: "number",
+          resolverId: "characters.sceneCountByProduct",
+          docsPath: "docs/dynamic-fields/characters.scene-count-by-product.md",
+          params: productionParams,
+        },
+      ],
+    );
+    seedTestNode(fixture, { id: CHAR_DB, properties: typeTableMarkerProperties("Characters") });
+    seedTestNode(fixture, { id: TWOLD, properties: { title: "TWOLD" } });
+    seedTestNode(fixture, { id: OTHER_PRODUCT, properties: { title: "Other Book" } });
+    seedTestNode(fixture, { id: character, properties: { title: "James" } });
+    seedTestNode(fixture, { id: scene1, properties: { title: "Scene A" } });
+    seedTestNode(fixture, { id: scene2, properties: { title: "Scene B" } });
+    seedTestNode(fixture, { id: scene3, properties: { title: "Scene C" } });
+    seedTestRelationships(fixture, [
+      { source: character, target: CHAR_DB, type: IS_A_TYPE, properties: { row_index: 0 } },
+    ]);
+    seedTestCompositeRelationships(fixture, [
+      { a: character, b: scene1, typeFromA: "characters", typeFromB: "scenes", properties: {} },
+      { a: character, b: scene2, typeFromA: "characters", typeFromB: "scenes", properties: {} },
+      { a: character, b: scene3, typeFromA: "characters", typeFromB: "scenes", properties: {} },
+      { a: scene1, b: TWOLD, typeFromA: "scenes", typeFromB: "product", properties: {} },
+      { a: scene2, b: TWOLD, typeFromA: "scenes", typeFromB: "product", properties: {} },
+      { a: scene3, b: OTHER_PRODUCT, typeFromA: "scenes", typeFromB: "product", properties: {} },
+    ]);
+  });
+
+  test("all scene count and per-product columns via composite edges", () => {
+    const ctx = { db: fixture.ctx.db, databaseId: CHAR_DB, viewName: "All", rowNodeIds: [character] };
+    const allScenePrefetch = buildAllSceneCountPrefetch(ctx, {
+      characters_scene_composite: "scenes_characters",
+      scenes_edge_label: "SCENES",
+    });
+    expect(resolveAllSceneCount(ctx, {}, character, allScenePrefetch)).toBe("3");
+
+    const productPrefetch = buildSceneCountByProductPrefetch(ctx, productionParams);
+    expect(resolveSceneCountByProduct(ctx, {}, character, TWOLD, productPrefetch)).toBe("2");
+    expect(resolveSceneCountByProduct(ctx, {}, character, OTHER_PRODUCT, productPrefetch)).toBe("1");
+  });
+
+  test("database view integration with composite character edges", () => {
+    const detail = getDatabaseViewDetail(
+      fixture.ctx.db,
+      CHAR_DB,
+      undefined,
+      fixture.ctx.store.contentDir,
+    );
+    const james = detail?.rows.find((row) => row.nodeId === character);
+    expect(james?.cells.all_scene_count).toBe("3");
+    expect(james?.cells[`scene_count__${TWOLD}`]).toBe("2");
+    expect(james?.cells[`scene_count__${OTHER_PRODUCT}`]).toBe("1");
   });
 
   afterAll(() => {

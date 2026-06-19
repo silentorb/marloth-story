@@ -32,7 +32,7 @@ export function getDefaultResolverRegistry(): ResolverRegistry {
 
 function registerStarterResolvers(registry: ResolverRegistry): void {
   registerFixedResolver(registry, "characters.allSceneCount", (ctx, params, nodeId, prefetch) =>
-    resolveAllSceneCount(ctx, params, nodeId, prefetch ?? buildAllSceneCountPrefetch(ctx)),
+    resolveAllSceneCount(ctx, params, nodeId, prefetch ?? buildAllSceneCountPrefetch(ctx, params)),
   );
 
   registerColumnSetResolver(registry, "characters.sceneCountByProduct", {
