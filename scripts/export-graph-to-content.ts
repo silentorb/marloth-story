@@ -4,7 +4,7 @@ import {
   GraphDatabase,
   loadDynamicColumnSets,
   loadDynamicFields,
-} from "marloth-db";
+} from "tome-db";
 import {
   ContentStore,
   RELATIONSHIPS_FILE_VERSION,
@@ -13,7 +13,7 @@ import {
   entryFromSeedField,
   fileFromSeedInputs,
   bodyFromNode,
-} from "marloth-db/content";
+} from "tome-db/content";
 import { starterDynamicFieldSeeds } from "./seed-dynamic-fields.ts";
 
 const REPO_ROOT = resolve(import.meta.dir, "..");

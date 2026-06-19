@@ -5,8 +5,8 @@
     "": {
       "name": "marloth-story",
     },
-    "packages/marloth-db": {
-      "name": "marloth-db",
+    "packages/tome-db": {
+      "name": "tome-db",
       "version": "0.1.0",
       "dependencies": {
         "yaml": "2.8.0",
@@ -16,18 +16,18 @@
         "typescript": "5.8.2",
       },
     },
-    "packages/marloth-editor": {
-      "name": "marloth-editor",
+    "packages/tome-editor": {
+      "name": "tome-editor",
       "version": "0.1.0",
       "dependencies": {
         "@dnd-kit/core": "6.3.1",
         "@dnd-kit/sortable": "10.0.0",
         "@dnd-kit/utilities": "3.2.2",
         "@milkdown/crepe": "7.20.0",
-        "marloth-db": "workspace:*",
         "react": "19.0.0",
         "react-dom": "19.0.0",
         "react-force-graph-2d": "^1.29.1",
+        "tome-db": "workspace:*",
       },
       "devDependencies": {
         "@happy-dom/global-registrator": "17.4.4",
@@ -41,13 +41,13 @@
         "vite": "6.2.2",
       },
     },
-    "packages/marloth-static-site": {
-      "name": "marloth-static-site",
+    "packages/tome-static-site": {
+      "name": "tome-static-site",
       "version": "0.1.0",
       "dependencies": {
         "astro": "5.7.10",
         "marked": "15.0.12",
-        "marloth-db": "workspace:*",
+        "tome-db": "workspace:*",
       },
       "devDependencies": {
         "@types/bun": "1.2.23",
@@ -798,12 +798,6 @@
 
     "marked": ["marked@15.0.12", "", { "bin": { "marked": "bin/marked.js" } }, "sha512-8dD6FusOQSrpv9Z1rdNMdlSgQOIP880DHqnohobOmYLElGEqAL/JvxvuxZO16r4HtjTlfPRDC1hbvxC9dPN2nA=="],
 
-    "marloth-db": ["marloth-db@workspace:packages/marloth-db"],
-
-    "marloth-editor": ["marloth-editor@workspace:packages/marloth-editor"],
-
-    "marloth-static-site": ["marloth-static-site@workspace:packages/marloth-static-site"],
-
     "mdast-util-definitions": ["mdast-util-definitions@6.0.0", "", { "dependencies": { "@types/mdast": "^4.0.0", "@types/unist": "^3.0.0", "unist-util-visit": "^5.0.0" } }, "sha512-scTllyX6pnYNZH/AIp/0ePz6s4cZtARxImwoPJ7kS42n+MnVsI4XbnG6d4ibehRIldYMWM2LD7ImQblVhUejVQ=="],
 
     "mdast-util-find-and-replace": ["mdast-util-find-and-replace@3.0.2", "", { "dependencies": { "@types/mdast": "^4.0.0", "escape-string-regexp": "^5.0.0", "unist-util-is": "^6.0.0", "unist-util-visit-parents": "^6.0.0" } }, "sha512-Tmd1Vg/m3Xz43afeNxDIhWRtFZgM2VLyaf4vSTYwudTyeuTneoL3qtWMA5jeLyz/O1vDJmmV4QuScFCA2tBPwg=="],
@@ -1081,6 +1075,12 @@
     "tinyexec": ["tinyexec@0.3.2", "", {}, "sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA=="],
 
     "tinyglobby": ["tinyglobby@0.2.17", "", { "dependencies": { "fdir": "^6.5.0", "picomatch": "^4.0.4" } }, "sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g=="],
+
+    "tome-db": ["tome-db@workspace:packages/tome-db"],
+
+    "tome-editor": ["tome-editor@workspace:packages/tome-editor"],
+
+    "tome-static-site": ["tome-static-site@workspace:packages/tome-static-site"],
 
     "tr46": ["tr46@0.0.3", "", {}, "sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw=="],
 

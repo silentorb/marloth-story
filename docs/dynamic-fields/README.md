@@ -5,7 +5,7 @@ Authoritative logic for **dynamic table view columns** — computed at read time
 When adding or changing a dynamic field:
 
 1. Write or update the spec file here first (requirements trump implementation).
-2. Implement the resolver in `packages/marloth-db/src/dynamic-fields/resolvers/`.
+2. Implement the resolver in `packages/tome-db/src/dynamic-fields/resolvers/`.
 3. Seed overlay configuration via `scripts/seed-dynamic-fields.ts`.
 
 See [dynamic-table-fields.md](../features/dynamic-table-fields.md) for the system feature spec.

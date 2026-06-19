@@ -8,11 +8,11 @@ alwaysApply: false
 
 You are working on the **legacy** Notion → SQLite import pipeline (`packages/_archive/notion-importer/`).
 
-**Do not use full re-import** (`notion:import`, especially `--clean`) to update production graph data. Ongoing edits go to `content/` via `ContentStore` or direct file edits — see [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) and root [`AGENTS.md`](../../AGENTS.md). The importer package is for **export-mining reference** only.
+**Do not use full re-import** (`notion:import`, especially `--clean`) to update production graph data. Ongoing edits go to `content/` via `ContentStore` or direct file edits — see [`docs/features/tome-db.md`](../../docs/features/tome-db.md) and root [`AGENTS.md`](../../AGENTS.md). The importer package is for **export-mining reference** only.
 
 Read before changing import behavior:
 
 - [`docs/features/notion-import.md`](../../docs/features/notion-import.md)
-- [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md) (mapping rules for export mining)
+- [`docs/features/tome-db.md`](../../docs/features/tome-db.md) (mapping rules for export mining)
 
 Configuration precedence: **CLI flags > environment > defaults**.

@@ -13,7 +13,7 @@ Read this doc when your task involves:
 - Anchor scoping, archive exclusion, branch bundling, relevance scoring
 - Changing clustering or zoom-layer behavior
 
-Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth-db.md`](./marloth-db.md) (graph storage), [`../ontology.md`](../ontology.md) (node semantics).
+Cross-read: [`tome-editor.md`](./tome-editor.md) (editor shell), [`tome-db.md`](./tome-db.md) (graph storage), [`../ontology.md`](../ontology.md) (node semantics).
 
 ## Requirements
 
@@ -44,13 +44,13 @@ Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth
 - Toolbar **must** provide a control to return to a coarser layer when not on layer 1 (Layers mode only).
 - Toolbar **must** show current layer label (`Layer N/M`), node/relationship counts, and a **Settings** dropdown. All explorer preferences **must** live in Settings—not in the top bar.
 - Settings dropdown **must** include:
-  - **Show labels** — persist canvas node labels (`localStorage` key `marloth.graph.showNodeLabels`).
-  - **Show relevance diagnostics** — enrich node hover tooltips with relevance key/value lines (`localStorage` key `marloth.graph.showRelevanceDiagnostics`).
-  - **Explorer mode** — `layers` (default) or `relative` (`localStorage` key `marloth.graph.explorerMode`):
+  - **Show labels** — persist canvas node labels (`localStorage` key `tome.graph.showNodeLabels`; legacy `marloth.graph.showNodeLabels` is still read when the new key is absent).
+  - **Show relevance diagnostics** — enrich node hover tooltips with relevance key/value lines (`localStorage` key `tome.graph.showRelevanceDiagnostics`; legacy `marloth.graph.showRelevanceDiagnostics` dual-read).
+  - **Explorer mode** — `layers` (default) or `relative` (`localStorage` key `tome.graph.explorerMode`; legacy `marloth.graph.explorerMode` dual-read):
     - **Layers** — precomputed LOD layers; click clusters to drill down within the same anchor; **← Out** returns to a coarser layer.
     - **Relative** — shows the configured detail layer (default layer 2 of N) for the current anchor; click clusters to **re-anchor** the graph to that cluster's gateway node; **← Back** returns to the previous anchor when navigation history exists.
-  - **Layer depth** — number of LOD layers to precompute (default **3**, range 2–10; `localStorage` key `marloth.graph.layerDepth`). Changing depth refetches the graph.
-  - **Relative detail** — which precomputed layer Relative mode displays (1 = coarsest … N = finest; default **2**; `localStorage` key `marloth.graph.relativeDetail`). Clamped to layer depth.
+  - **Layer depth** — number of LOD layers to precompute (default **3**, range 2–10; `localStorage` key `tome.graph.layerDepth`; legacy dual-read). Changing depth refetches the graph.
+  - **Relative detail** — which precomputed layer Relative mode displays (1 = coarsest … N = finest; default **2**; `localStorage` key `tome.graph.relativeDetail`; legacy dual-read). Clamped to layer depth.
 - All graph settings **must** persist in browser `localStorage` (global across Graph Explorer views, not the git-tracked user settings file).
 - With diagnostics enabled, hovering a **design node** **must** show a multiline tooltip: title plus `key: value` lines for score components; hovering a **cluster node** **must** show bundle summary (`members`, `gateway`, `layer`).
 - Aggregated layers **should** show combined relationship weights (label + count) and thicker strokes proportional to weight.
@@ -158,11 +158,11 @@ The following describes how the server subdivides the scoped graph into detail l
 | --- | --- |
 | `GET /api/graph/explorer-lod` | LOD graph payload (`levels[].relationships`) |
 | `?view=explorer&anchor=` | Standalone deep link |
-| `localStorage` `marloth.graph.showNodeLabels` | Show canvas labels |
-| `localStorage` `marloth.graph.showRelevanceDiagnostics` | Show relevance hover diagnostics |
-| `localStorage` `marloth.graph.explorerMode` | Explorer mode (`layers` or `relative`) |
-| `localStorage` `marloth.graph.layerDepth` | LOD layer count (2–10, default 3) |
-| `localStorage` `marloth.graph.relativeDetail` | Relative mode detail layer (1–N, default 2) |
+| `localStorage` `tome.graph.showNodeLabels` | Show canvas labels (legacy `marloth.graph.*` dual-read) |
+| `localStorage` `tome.graph.showRelevanceDiagnostics` | Show relevance hover diagnostics |
+| `localStorage` `tome.graph.explorerMode` | Explorer mode (`layers` or `relative`) |
+| `localStorage` `tome.graph.layerDepth` | LOD layer count (2–10, default 3) |
+| `localStorage` `tome.graph.relativeDetail` | Relative mode detail layer (1–N, default 2) |
 
 ## Quick start
 
@@ -184,29 +184,29 @@ The following describes how the server subdivides the scoped graph into detail l
 
 ## Verification
 
-- `bun test packages/marloth-db/src/graph-export.test.ts` — archive exclusion, LOD layers, anchor filtering
-- `bun test packages/marloth-db/src/graph-lod-cluster.test.ts` — anchor visibility, relevance ranking, branch bundling
-- `bun test packages/marloth-editor/src/webview/graph-lod.test.ts` — layer navigation, openable nodes
-- `bun test packages/marloth-editor/src/webview/graph-preferences.test.ts` — settings persistence
-- `bun test packages/marloth-editor/src/webview/graph-node-label.test.ts` — hover diagnostic formatting
+- `bun test packages/tome-db/tests/graph-export.test.ts` — archive exclusion, LOD layers, anchor filtering
+- `bun test packages/tome-db/tests/graph-lod-cluster.test.ts` — anchor visibility, relevance ranking, branch bundling
+- `bun test packages/tome-editor/tests/webview/graph-lod.test.ts` — layer navigation, openable nodes
+- `bun test packages/tome-editor/tests/webview/graph-preferences.test.ts` — settings persistence
+- `bun test packages/tome-editor/tests/webview/graph-node-label.test.ts` — hover diagnostic formatting
 - Manual: open Graph Explorer → coarse layer shows anchor-centric view → click clusters to reveal more nodes → diagnostics toggle shows score breakdown on hover
 
 ## Implementation pointers
 
 | Module | Responsibility |
 | --- | --- |
-| `packages/marloth-db/src/graph-export.ts` | Export entry, anchor BFS, archive filter, `GraphRelationship` |
-| `packages/marloth-db/src/graph-lod-cluster.ts` | Anchor-centric layer subdivision + relevance metadata |
-| `packages/marloth-editor/src/api/server.ts` | `/api/graph/explorer-lod` route |
-| `packages/marloth-editor/src/webview/components/GraphView.tsx` | Force graph UI + settings dropdown |
-| `packages/marloth-editor/src/webview/graph-lod.ts` | Layer navigation helpers |
-| `packages/marloth-editor/src/webview/graph-node-label.ts` | Hover label formatting |
-| `packages/marloth-editor/src/webview/graph-preferences.ts` | localStorage settings |
+| `packages/tome-db/src/graph-export.ts` | Export entry, anchor BFS, archive filter, `GraphRelationship` |
+| `packages/tome-db/src/graph-lod-cluster.ts` | Anchor-centric layer subdivision + relevance metadata |
+| `packages/tome-editor/src/api/server.ts` | `/api/graph/explorer-lod` route |
+| `packages/tome-editor/src/webview/components/GraphView.tsx` | Force graph UI + settings dropdown |
+| `packages/tome-editor/src/webview/graph-lod.ts` | Layer navigation helpers |
+| `packages/tome-editor/src/webview/graph-node-label.ts` | Hover label formatting |
+| `packages/tome-editor/src/webview/graph-preferences.ts` | localStorage settings |
 
 ## See also
 
-- [marloth-editor.md](./marloth-editor.md)
-- [marloth-db.md](./marloth-db.md)
+- [tome-editor.md](./tome-editor.md)
+- [tome-db.md](./tome-db.md)
 - [`../ontology.md`](../ontology.md)
-- [`packages/marloth-editor/AGENTS.md`](../../packages/marloth-editor/AGENTS.md)
-- [`packages/marloth-db/AGENTS.md`](../../packages/marloth-db/AGENTS.md)
+- [`packages/tome-editor/AGENTS.md`](../../packages/tome-editor/AGENTS.md)
+- [`packages/tome-db/AGENTS.md`](../../packages/tome-db/AGENTS.md)

@@ -6,8 +6,8 @@ on:
       - main
     paths:
       - content/**
-      - packages/marloth-static-site/**
-      - packages/marloth-db/**
+      - packages/tome-static-site/**
+      - packages/tome-db/**
       - package.json
       - bun.lock
       - bunfig.toml

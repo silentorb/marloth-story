@@ -47,7 +47,9 @@ James has 113 outgoing `SCENES` relationships in the current graph.
 ## Resolver and overlay
 
 - **resolver_id:** `characters.allSceneCount`
-- **Overlay params:** none
+- **Overlay params:**
+  - `characters_scene_composite`: composite relationship type for character↔scene links (e.g. `"scenes_characters"`). When set, tried before legacy edge label.
+  - `scenes_edge_label`: legacy unidirectional relationship label (e.g. `"SCENES"`). Used only when param is non-empty and composite path yields no edges.
 
 ## Verification
 

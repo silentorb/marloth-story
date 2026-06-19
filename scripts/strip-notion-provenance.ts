@@ -4,8 +4,8 @@
  */
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { parseNodeFile, serializeNodeFile } from "../packages/marloth-db/src/content/node-file";
-import { contentDataDir, resolveContentPath } from "../packages/marloth-db/src/content/paths";
+import { parseNodeFile, serializeNodeFile } from "../packages/tome-db/src/content/node-file";
+import { contentDataDir, resolveContentPath } from "../packages/tome-db/src/content/paths";
 
 const PROVENANCE_KEYS = [
   "notion_id",

@@ -4,9 +4,9 @@
  * Usage: bun scripts/remove-scenes-status.ts [--dry-run]
  */
 import { resolve } from "node:path";
-import { ContentStore } from "../packages/marloth-db/src/content/store";
-import { bodyFromNode } from "../packages/marloth-db/src/content/node-file";
-import type { NotionDatabaseSchema } from "../packages/marloth-db/src/notion-database-schema";
+import { ContentStore } from "../packages/tome-db/src/content/store";
+import { bodyFromNode } from "../packages/tome-db/src/content/node-file";
+import type { NotionDatabaseSchema } from "../packages/_archive/legacy-notion-schema";
 
 const SCENES_DB = "204dba198db74611b0b49a98dd53e8f5";
 const REPO_ROOT = resolve(import.meta.dir, "..");

@@ -13,7 +13,7 @@ import {
   relationshipTypesFilePath,
   schemaFilePath,
   resolveContentPath,
-} from "../packages/marloth-db/src/content/paths";
+} from "../packages/tome-db/src/content/paths";
 import {
   compositeTypeForPerspectives,
   emptyRelationshipTypesFile,
@@ -21,14 +21,14 @@ import {
   registerTypeDefinition,
   registerUnidirectionalType,
   serializeRelationshipTypesFile,
-} from "../packages/marloth-db/src/content/relationship-types-file";
+} from "../packages/tome-db/src/content/relationship-types-file";
 import {
   RELATIONSHIPS_FILE_VERSION,
   type RelationshipEntry,
   serializeRelationshipsFile,
   sortEndpoints,
-} from "../packages/marloth-db/src/content/relationships-file";
-import { normalizeRelationshipType } from "../packages/marloth-db/src/relation-type";
+} from "../packages/tome-db/src/content/relationships-file";
+import { normalizeRelationshipType } from "../packages/tome-db/src/relation-type";
 
 const contentRoot = resolveContentPath(resolve(import.meta.dir, ".."));
 const dryRun = process.argv.includes("--dry-run");

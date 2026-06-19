@@ -6,17 +6,17 @@
  */
 import { readFileSync } from "node:fs";
 import {
-  DEFAULT_ARCHIVE_NODE_ID,
   isLegacyArchivedNotionPath,
-} from "marloth-db";
+  loadWorkspaceFromContent,
+} from "tome-db";
 import {
-  openMarlothWriteContext,
+  openTomeWriteContext,
   parseNodeFile,
   resolveContentPath,
   defaultDbPathForContent,
   nodeFilePath,
   sortEndpoints,
-} from "marloth-db/content";
+} from "tome-db/content";
 const INCLUDES_TYPE = "includes";
 
 const LINK_RE = /\[[^\]]*\]\(([^)]+)\)/g;
@@ -46,9 +46,10 @@ function pathFromProperties(properties: Record<string, unknown>): string | null 
 
 function hasIncludesToArchive(
   relationships: { a: string; b: string; type: string }[],
+  archiveNodeId: string,
   memberId: string,
 ): boolean {
-  const { a, b } = sortEndpoints(DEFAULT_ARCHIVE_NODE_ID, memberId);
+  const { a, b } = sortEndpoints(archiveNodeId, memberId);
   return relationships.some((entry) => entry.a === a && entry.b === b && entry.type === INCLUDES_TYPE);
 }
 
@@ -60,14 +61,15 @@ export function migrateArchiveToIncludes(contentDir: string): {
   archiveBodyCleared: boolean;
   missingHubLinkIds: string[];
 } {
-  const ctx = openMarlothWriteContext(contentDir, defaultDbPathForContent(contentDir));
+  const ctx = openTomeWriteContext(contentDir, defaultDbPathForContent(contentDir));
   const { store } = ctx;
+  const archiveNodeId = loadWorkspaceFromContent(contentDir).archiveNodeId;
 
   let hubRelationshipsAdded = 0;
   const missingHubLinkIds: string[] = [];
 
-  const archiveRaw = readFileSync(nodeFilePath(contentDir, DEFAULT_ARCHIVE_NODE_ID), "utf-8");
-  const archiveParsed = parseNodeFile(DEFAULT_ARCHIVE_NODE_ID, archiveRaw);
+  const archiveRaw = readFileSync(nodeFilePath(contentDir, archiveNodeId), "utf-8");
+  const archiveParsed = parseNodeFile(archiveNodeId, archiveRaw);
   const hubLinkIds = linkIdsFromMarkdown(archiveParsed.body);
 
   let relationships = store.readRelationshipsFile().relationships;
@@ -77,9 +79,9 @@ export function migrateArchiveToIncludes(contentDir: string): {
       missingHubLinkIds.push(targetId);
       continue;
     }
-    if (targetId === DEFAULT_ARCHIVE_NODE_ID) continue;
-    if (hasIncludesToArchive(relationships, targetId)) continue;
-    store.upsertRelationship(DEFAULT_ARCHIVE_NODE_ID, targetId, INCLUDES_TYPE);
+    if (targetId === archiveNodeId) continue;
+    if (hasIncludesToArchive(relationships, archiveNodeId, targetId)) continue;
+    store.upsertRelationship(archiveNodeId, targetId, INCLUDES_TYPE);
     relationships = store.readRelationshipsFile().relationships;
     hubRelationshipsAdded++;
   }
@@ -88,21 +90,21 @@ export function migrateArchiveToIncludes(contentDir: string): {
   let pathNodesScanned = 0;
 
   for (const id of store.listNodeIds()) {
-    if (id === DEFAULT_ARCHIVE_NODE_ID) continue;
+    if (id === archiveNodeId) continue;
     const node = store.readNode(id);
     if (!node) continue;
     const path = pathFromProperties(node.properties);
     if (!isLegacyArchivedNotionPath(path)) continue;
     pathNodesScanned++;
-    if (hasIncludesToArchive(relationships, id)) continue;
-    store.upsertRelationship(DEFAULT_ARCHIVE_NODE_ID, id, INCLUDES_TYPE);
+    if (hasIncludesToArchive(relationships, archiveNodeId, id)) continue;
+    store.upsertRelationship(archiveNodeId, id, INCLUDES_TYPE);
     relationships = store.readRelationshipsFile().relationships;
     pathRelationshipsAdded++;
   }
 
   const { body: _removed, ...props } = archiveParsed.properties;
-  store.writeNode({ id: DEFAULT_ARCHIVE_NODE_ID, properties: props }, "");
-  ctx.sync.syncNode(DEFAULT_ARCHIVE_NODE_ID);
+  store.writeNode({ id: archiveNodeId, properties: props }, "");
+  ctx.sync.syncNode(archiveNodeId);
   ctx.sync.syncRelationships();
   ctx.db.close();
 

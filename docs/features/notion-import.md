@@ -2,11 +2,11 @@
 
 ## Status
 
-**Legacy / archival.** This pipeline was used to build the initial graph from Notion exports. **Ongoing work must not rely on full re-imports.** Edit `content/` directly ([marloth-db.md](./marloth-db.md)); use `./exports/` only to **mine** missing data into content files. To migrate an old SQLite file: `bun run content:export`.
+**Legacy / archival.** This pipeline was used to build the initial graph from Notion exports. **Ongoing work must not rely on full re-imports.** Edit `content/` directly ([tome-db.md](./tome-db.md)); use `./exports/` only to **mine** missing data into content files. To migrate an old SQLite file: `bun run content:export`.
 
 ## Summary
 
-The Notion import feature transforms narrative and database content from a Notion export into a property graph (today: `content/data/` + `content/model/`; historically `data/marloth.sqlite`), plus machine-readable metadata under `docs/`. Implementation is archived in `packages/_archive/notion-importer`; graph storage in `packages/marloth-db`.
+The Notion import feature transforms narrative and database content from a Notion export into a property graph (today: `content/data/` + `content/model/`; historically `data/marloth.sqlite`), plus machine-readable metadata under `docs/`. Implementation is archived in `packages/_archive/notion-importer`; graph storage in `packages/tome-db`.
 
 ## When to read this
 
@@ -17,9 +17,9 @@ Read this doc when your task involves:
 - Import manifest or unresolved relation reports from a past import
 - Notion → graph mapping conventions (for export mining scripts)
 
-**Do not read this for routine graph edits** — use [marloth-db.md](./marloth-db.md) and root [`AGENTS.md`](../../AGENTS.md) (**Graph data workflow**).
+**Do not read this for routine graph edits** — use [tome-db.md](./tome-db.md) and root [`AGENTS.md`](../../AGENTS.md) (**Graph data workflow**).
 
-For graph schema, storage, and query API, see [marloth-db.md](./marloth-db.md).
+For graph schema, storage, and query API, see [tome-db.md](./tome-db.md).
 
 ## Requirements
 
@@ -81,9 +81,9 @@ For each `*.csv` matching Notion database export naming (`Name {database_id}.csv
 
 When required data exists only under `./exports/`:
 
-1. Locate the page `.md` or database `.csv` in the archive (see **Source resolution** and mapping tables in [marloth-db.md](./marloth-db.md)).
+1. Locate the page `.md` or database `.csv` in the archive (see **Source resolution** and mapping tables in [tome-db.md](./tome-db.md)).
 2. Parse with existing `packages/_archive/notion-importer` helpers (`parse`, `relations`, `indexes`, etc.) or equivalent logic in a one-off script.
-3. **Upsert** only the affected nodes/relationships into `content/data/` via `ContentStore` / `openMarlothWriteContext` — no full re-import.
+3. **Upsert** only the affected nodes/relationships into `content/data/` via `ContentStore` / `openTomeWriteContext` — no full re-import.
 4. Spot-check with `getNodeDetail` or the editor; commit changes under `content/`. Run `bun run content:sync` if the editor API is not running.
 
 ## Design rationale
@@ -94,7 +94,7 @@ When required data exists only under `./exports/`:
 - **Rejected:** continuing flat `content/*.md` as the primary store — relation-heavy corpus was outgrowing file-based navigation.
 - **Trade-off:** no longer optimized for Obsidian-style markdown vault browsing; markdown body remains on nodes for reading/export.
 
-See [marloth-db.md](./marloth-db.md) for graph storage rationale.
+See [tome-db.md](./tome-db.md) for graph storage rationale.
 
 ### Emoji stripping on names only
 
@@ -123,7 +123,7 @@ High-level stages (see `packages/_archive/notion-importer/src/graph-pipeline.ts`
 
 ## Quick start
 
-**Preferred:** edit `content/` directly — see [marloth-db.md](./marloth-db.md).
+**Preferred:** edit `content/` directly — see [tome-db.md](./tome-db.md).
 
 Legacy full import (deprecated; avoid for routine work; overwrites the graph):
 
@@ -171,6 +171,6 @@ When implementation and this doc disagree, treat **this doc as authoritative** u
 
 ## See also
 
-- [marloth-db.md](./marloth-db.md) — property graph schema and API
+- [tome-db.md](./tome-db.md) — property graph schema and API
 - [`packages/_archive/notion-importer/AGENTS.md`](../../packages/_archive/notion-importer/AGENTS.md)
 - [`AGENTS.md`](../../AGENTS.md)

@@ -10,24 +10,24 @@ import { resolve } from "node:path";
 import {
   MIGRATE_TO_INCLUDES_STORAGE_TYPES,
   INCLUDES_TYPE,
-} from "../packages/marloth-db/src/includes-relationship";
+} from "../packages/tome-db/src/includes-relationship";
 import {
   relationshipsFilePath,
   relationshipTypesFilePath,
   resolveContentPath,
-} from "../packages/marloth-db/src/content/paths";
+} from "../packages/tome-db/src/content/paths";
 import {
   emptyRelationshipTypesFile,
   registerIncludesType,
   serializeRelationshipTypesFile,
-} from "../packages/marloth-db/src/content/relationship-types-file";
+} from "../packages/tome-db/src/content/relationship-types-file";
 import {
   RELATIONSHIPS_FILE_VERSION,
   type RelationshipEntry,
   serializeRelationshipsFile,
   sortEndpoints,
-} from "../packages/marloth-db/src/content/relationships-file";
-import { normalizeRelationshipType } from "../packages/marloth-db/src/relation-type";
+} from "../packages/tome-db/src/content/relationships-file";
+import { normalizeRelationshipType } from "../packages/tome-db/src/relation-type";
 
 const contentRoot = resolveContentPath(resolve(import.meta.dir, ".."));
 const dryRun = process.argv.includes("--dry-run");

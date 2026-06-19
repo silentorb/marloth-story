@@ -64,8 +64,11 @@ James has 113 total scenes; 28 of those scenes have `PRODUCT → TWOLD`.
 
 - **resolver_id:** `characters.sceneCountByProduct`
 - **Overlay params:**
-  - `scenes_edge_label`: `"SCENES"` (relationship label; param name unchanged)
-  - `product_edge_label`: `"PRODUCT"` (relationship label; param name unchanged)
+  - `characters_scene_composite`: composite type for character↔scene links (e.g. `"scenes_characters"`)
+  - `scene_product_composite`: composite type for scene↔product links (e.g. `"scenes_product"`)
+  - `scenes_edge_label`: legacy unidirectional SCENES label (e.g. `"SCENES"`)
+  - `product_edge_label`: legacy unidirectional PRODUCT label (e.g. `"PRODUCT"`)
+  - `hide_legacy_keys`: column keys to hide from stored scalars (e.g. `["twold_scene_count"]`)
 
 Registered as a **dynamic column set** in overlay table `dynamic_column_sets`.
 

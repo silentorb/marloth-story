@@ -6,18 +6,18 @@
 import {
   listArchiveMemberIdsFromStore,
   markIncidentRelationshipsArchived,
-} from "marloth-db";
+} from "tome-db";
 import {
   defaultDbPathForContent,
-  openMarlothWriteContext,
+  openTomeWriteContext,
   resolveContentPath,
-} from "marloth-db/content";
+} from "tome-db/content";
 
 export function migrateArchiveRelationshipFlags(contentDir: string): {
   archiveMembers: number;
   relationshipsMarked: number;
 } {
-  const ctx = openMarlothWriteContext(contentDir, defaultDbPathForContent(contentDir));
+  const ctx = openTomeWriteContext(contentDir, defaultDbPathForContent(contentDir));
   const memberIds = listArchiveMemberIdsFromStore(ctx.store);
   let relationshipsMarked = 0;
 

@@ -74,7 +74,7 @@ Filtered Notion views were dropped (Features → Unresolved, Solutions → Incom
 
 | Area | Path |
 | --- | --- |
-| File format | `packages/marloth-db/src/content/views-file.ts` |
-| Resolution | `packages/marloth-db/src/views/resolve-tabs.ts` |
-| Mutations | `packages/marloth-db/src/views/mutations.ts` |
-| UI | `packages/marloth-editor/src/webview/components/TableTabsBar.tsx` |
+| File format | `packages/tome-db/src/content/views-file.ts` |
+| Resolution | `packages/tome-db/src/views/resolve-tabs.ts` |
+| Mutations | `packages/tome-db/src/views/mutations.ts` |
+| UI | `packages/tome-editor/src/webview/components/TableTabsBar.tsx` |

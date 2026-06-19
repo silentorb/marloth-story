@@ -4,8 +4,8 @@
  * Usage: bun scripts/seed-part-numbers.ts [--dry-run]
  */
 import { resolve } from "node:path";
-import { ContentStore } from "../packages/marloth-db/src/content/store";
-import { partNumberFromTitle } from "../packages/marloth-db/src/part-number";
+import { ContentStore } from "../packages/tome-db/src/content/store";
+import { partNumberFromTitle } from "../packages/tome-db/src/part-number";
 
 const PARTS_DB = "5e45eefc69a14f45b988ad1f3c9d1ef5";
 const REPO_ROOT = resolve(import.meta.dir, "..");

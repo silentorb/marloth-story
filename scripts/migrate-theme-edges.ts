@@ -1,5 +1,5 @@
 import { resolve } from "node:path";
-import { GraphDatabase, TYPE_MEMBERSHIP_LABELS } from "marloth-db";
+import { GraphDatabase, TYPE_MEMBERSHIP_LABELS } from "tome-db";
 
 const DEFAULT_DB = resolve(import.meta.dir, "../data/marloth.sqlite");
 

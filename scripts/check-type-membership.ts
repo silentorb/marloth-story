@@ -3,20 +3,34 @@
  *
  * Usage: bun run scripts/check-type-membership.ts
  */
-import { GraphDatabase } from "../packages/marloth-db/src/graph";
+import { existsSync } from "node:fs";
+import {
+  defaultDbPathForContent,
+  legacyDbPathForContent,
+  readEnv,
+  resolveContentPath,
+} from "../packages/tome-db/src/content/paths";
+import { openTomeWriteContext } from "../packages/tome-db/src/content/write-context";
 import {
   findMissingTypeMembershipRelationships,
   findNestedPageSpuriousTypeMembership,
   findSpuriousTypeMembershipRelationships,
   findNodeScalarsOnTypedNodes,
-} from "../packages/marloth-db/src/type-membership-audit";
+} from "../packages/tome-db/src/type-membership-audit";
 
-const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";
-const db = new GraphDatabase(dbPath);
+const contentDir = resolveContentPath();
+const defaultDbPath = defaultDbPathForContent(contentDir);
+const legacyDbPath = legacyDbPathForContent(contentDir);
+const dbPath =
+  readEnv("TOME_DB_PATH", "MARLOTH_DB_PATH") ??
+  (existsSync(defaultDbPath) ? defaultDbPath : legacyDbPath);
+
+const ctx = openTomeWriteContext(contentDir, dbPath);
+const { db } = ctx;
 
 const missing = findMissingTypeMembershipRelationships(db);
 const spurious = findSpuriousTypeMembershipRelationships(db);
-const nestedPageSpurious = findNestedPageSpuriousTypeMembership(db);
+const nestedPageSpurious = findNestedPageSpuriousTypeMembership(db, contentDir);
 const nodeScalars = findNodeScalarsOnTypedNodes(db);
 
 if (nestedPageSpurious.length > 0) {

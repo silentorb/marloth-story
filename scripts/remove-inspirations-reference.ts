@@ -4,9 +4,9 @@
  * Usage: bun scripts/remove-inspirations-reference.ts [--dry-run]
  */
 import { resolve } from "node:path";
-import { ContentStore } from "../packages/marloth-db/src/content/store";
-import { bodyFromNode } from "../packages/marloth-db/src/content/node-file";
-import type { NotionDatabaseSchema } from "../packages/marloth-db/src/notion-database-schema";
+import { ContentStore } from "../packages/tome-db/src/content/store";
+import { bodyFromNode } from "../packages/tome-db/src/content/node-file";
+import type { NotionDatabaseSchema } from "../packages/_archive/legacy-notion-schema";
 
 const INSPIRATIONS_DB = "2eea538996934ce8abafc27132e576c1";
 const REPO_ROOT = resolve(import.meta.dir, "..");

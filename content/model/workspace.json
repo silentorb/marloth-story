@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "homeNodeId": "13458e628ba28073850dea0edb9acde1",
+  "archiveNodeId": "0f558a609a56485185beed4d1fd1cd9f",
+  "protectedNodeIds": [
+    "13458e628ba28073850dea0edb9acde1",
+    "0f558a609a56485185beed4d1fd1cd9f"
+  ],
+  "graphExplorer": {
+    "defaultAnchorNodeId": "e028aa0786f5449984a4f497c1d746fa"
+  },
+  "staticSite": {
+    "homeNodeId": "5bfc10918fa24207879d68a030927dd3"
+  },
+  "sidebar": {
+    "links": [
+      { "nodeId": "dd0de9867cc345b898929306bdf9fc83", "label": "Features", "icon": "★" },
+      { "nodeId": "528384943746443a9c89699b57e3bbec", "label": "Solutions", "icon": "✓" },
+      { "nodeId": "204dba198db74611b0b49a98dd53e8f5", "label": "Scenes", "icon": "▶" },
+      { "nodeId": "2eea538996934ce8abafc27132e576c1", "label": "Inspirations", "icon": "✦" },
+      { "nodeId": "5a585a2a311c4768be4a81f27bdcdfb4", "label": "Articles", "icon": "§" },
+      { "nodeId": "f984a934ad644f8480b0f8f51449569f", "label": "Characters", "icon": "◎" },
+      { "nodeId": "df096ab26e8347e6992e95698345aad0", "label": "Locations", "icon": "⌖" }
+    ]
+  },
+  "branding": {
+    "appTitle": "Tome",
+    "defaultDocumentIcon": "M",
+    "staticSiteHeader": "Marloth design corpus"
+  },
+  "legacy": {
+    "exportPathPrefix": "Marloth",
+    "archivePathPrefix": "Marloth/Archive"
+  }
+}

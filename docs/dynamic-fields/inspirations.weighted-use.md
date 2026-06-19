@@ -61,8 +61,9 @@ Sum of priority weights across all linked features for this inspiration equals 3
 
 - **resolver_id:** `inspirations.weightedUse`
 - **Overlay params:**
-  - `features_edge_label`: `"FEATURES"` (relationship label; param name unchanged)
-  - `features_database_id`: `"dd0de9867cc345b898929306bdf9fc83"`
+  - `inspiration_feature_composite`: composite type for inspiration↔feature links (e.g. `"inspirations_features"`)
+  - `features_edge_label`: legacy unidirectional FEATURES label (e.g. `"FEATURES"`)
+  - `features_database_id`: Features type-table node id for priority lookup
 
 ## Verification
 

@@ -58,9 +58,10 @@ Seven linked features have `THEME → Wonderland` after theme-relationship migra
 
 - **resolver_id:** `inspirations.wonder`
 - **Overlay params:**
-  - `features_edge_label`: `"FEATURES"` (relationship label; param name unchanged)
-  - `theme_edge_label`: `"THEME"` (relationship label; param name unchanged)
-  - `theme_target_id`: `"3cbc40d2ba2a4c76b4b9dc370452fcfe"`
+  - `inspiration_feature_composite`: composite type for inspiration↔feature links (e.g. `"inspirations_features"`)
+  - `features_edge_label`: legacy unidirectional FEATURES label (e.g. `"FEATURES"`)
+  - `theme_edge_label`: legacy unidirectional THEME label (e.g. `"THEME"`)
+  - `theme_target_id`: Wonderland (or other theme anchor) page node id
 
 ## Verification
 
