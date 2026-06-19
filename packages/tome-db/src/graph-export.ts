@@ -1,11 +1,12 @@
 import { type GraphDatabase } from "./graph";
-import { DEFAULT_ARCHIVE_NODE_ID } from "./archive-status";
 import { graphGroupForNode, graphLabelsForNode } from "./node-capabilities";
 import {
   buildHeuristicLodLevels,
-  DEFAULT_EXPLORER_LOD_LAYER_COUNT,
   normalizeExplorerLayerCount,
 } from "./graph-lod-cluster";
+import { archiveNodeId, resolveWorkspace } from "./workspace/resolve";
+
+export { DEFAULT_GRAPH_EXPLORER_ANCHOR_ID } from "./workspace/deprecated-shims";
 
 export interface GraphNodeRelevance {
   score: number;
@@ -57,9 +58,6 @@ export interface GraphLodSnapshot {
   levels: GraphSnapshot[];
 }
 
-/** Default graph explorer anchor: TWOLD product record. */
-export const DEFAULT_GRAPH_EXPLORER_ANCHOR_ID = "e028aa0786f5449984a4f497c1d746fa";
-
 const GRAPH_CLUSTER_PREFIX = "lod:c:";
 
 export function isGraphClusterNode(node: Pick<GraphNode, "id" | "isCluster">): boolean {
@@ -80,12 +78,12 @@ interface ActiveGraphRelationship {
   type: string;
 }
 
-function collectActiveGraphData(db: GraphDatabase): {
+function collectActiveGraphData(db: GraphDatabase, contentDir?: string): {
   nodes: ActiveGraphNode[];
   relationships: ActiveGraphRelationship[];
 } {
   const allNodes = db.listNodesForGraphExport();
-  const excludedIds = new Set<string>([DEFAULT_ARCHIVE_NODE_ID]);
+  const excludedIds = new Set<string>([archiveNodeId(contentDir)]);
   for (const node of allNodes) {
     if (db.isNodeArchived(node.id)) excludedIds.add(node.id);
   }
@@ -152,8 +150,8 @@ function filterActiveGraphByAnchor(
   };
 }
 
-export function exportFullGraph(db: GraphDatabase): GraphSnapshot {
-  const { nodes, relationships } = collectActiveGraphData(db);
+export function exportFullGraph(db: GraphDatabase, contentDir?: string): GraphSnapshot {
+  const { nodes, relationships } = collectActiveGraphData(db, contentDir);
 
   const graphNodes: GraphNode[] = nodes.map((node) => ({
     id: node.id,
@@ -177,11 +175,14 @@ export function exportExplorerLodGraph(
   options?: {
     layerCount?: number;
     anchorId?: string;
+    contentDir?: string;
   },
 ): GraphLodSnapshot {
+  const contentDir = options?.contentDir;
   const layerCount = normalizeExplorerLayerCount(options?.layerCount);
-  let { nodes, relationships } = collectActiveGraphData(db);
-  const anchorId = options?.anchorId ?? DEFAULT_GRAPH_EXPLORER_ANCHOR_ID;
+  let { nodes, relationships } = collectActiveGraphData(db, contentDir);
+  const anchorId =
+    options?.anchorId ?? resolveWorkspace(contentDir).graphExplorer.defaultAnchorNodeId;
   if (anchorId) {
     ({ nodes, relationships } = filterActiveGraphByAnchor(nodes, relationships, anchorId));
   }

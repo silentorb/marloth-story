@@ -5,6 +5,11 @@ import { tmpdir } from "node:os";
 import { ContentStore } from "./content/store";
 import { fileFromSeedInputs } from "./content/dynamic-fields-file";
 import { invalidateDynamicFieldsCache } from "./content/sync";
+import { contentModelDir, workspaceFilePath } from "./content/paths";
+import { defaultTestWorkspaceFile } from "./content/test-helpers";
+import { serializeWorkspaceFile } from "./workspace/workspace-file";
+import { invalidateWorkspaceCache } from "./workspace/load";
+import { writeFileSync } from "node:fs";
 import { GraphDatabase } from "./graph";
 import { IS_A_TYPE } from "./labels";
 import { typeTableMarkerProperties } from "./node-capabilities";
@@ -17,6 +22,13 @@ describe("node-type-properties", () => {
   const db = new GraphDatabase(dbPath);
   const contentDir = join(dir, "content");
   mkdirSync(contentDir, { recursive: true });
+  mkdirSync(contentModelDir(contentDir), { recursive: true });
+  writeFileSync(
+    workspaceFilePath(contentDir),
+    serializeWorkspaceFile(defaultTestWorkspaceFile()),
+    "utf-8",
+  );
+  invalidateWorkspaceCache();
   process.env.MARLOTH_CONTENT_PATH = contentDir;
 
   const CHAR_DB = "f984a934ad644f8480b0f8f51449569f";
@@ -101,6 +113,7 @@ describe("node-type-properties", () => {
   afterAll(() => {
     delete process.env.MARLOTH_CONTENT_PATH;
     invalidateDynamicFieldsCache();
+    invalidateWorkspaceCache();
     db.close();
     rmSync(dir, { recursive: true, force: true });
   });

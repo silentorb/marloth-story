@@ -1,10 +1,11 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { DEFAULT_HOME_NODE_ID, typeTableMarkerProperties } from "tome-db";
+import { typeTableMarkerProperties } from "tome-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
   seedTestNode,
   seedTestTableSchema,
+  TEST_HOME_NODE_ID,
 } from "tome-db/content/test-helpers";
 import { createTestApiFromContent } from "./test-api-setup";
 
@@ -15,7 +16,7 @@ describe("node create API", () => {
   const fixture = createTestContentFixture("tome-create-api-");
 
   seedTestNode(fixture, {
-    id: DEFAULT_HOME_NODE_ID,
+    id: TEST_HOME_NODE_ID,
     properties: { title: "Home" },
   });
   seedTestNode(fixture, {

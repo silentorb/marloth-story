@@ -6,6 +6,7 @@ import {
   DYNAMIC_FIELDS_FILENAME,
   SCHEMA_FILENAME,
   VIEWS_FILENAME,
+  WORKSPACE_FILENAME,
   NODE_FILE_PATTERN,
   contentDataDir,
   contentModelDir,
@@ -60,7 +61,8 @@ export class ContentWatcher {
       name === RELATIONSHIP_TYPES_FILENAME ||
       name === SCHEMA_FILENAME ||
       name === DYNAMIC_FIELDS_FILENAME ||
-      name === VIEWS_FILENAME
+      name === VIEWS_FILENAME ||
+      name === WORKSPACE_FILENAME
     );
   }
 

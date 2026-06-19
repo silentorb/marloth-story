@@ -56,6 +56,7 @@ API names: `ContentStore`, `openTomeWriteContext`, `getNodeDetail`, `getNodePage
 | `content/model/dynamic-fields.json` | Dynamic table field bindings |
 | `content/model/schema.json` | Relationship rules and property enums |
 | `content/model/table-schemas.json` | Type-table column definitions |
+| `content/model/workspace.json` | Home, archive, protected nodes, sidebar, branding, legacy path prefixes |
 | `data/marloth.sqlite` | Local query cache (gitignored; default path via `MARLOTH_DB_PATH`) |
 
 - `content/data/` holds only node markdown and `relationships.json` (flat within `data/`).

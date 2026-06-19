@@ -1,5 +1,4 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { DEFAULT_ARCHIVE_NODE_ID } from "./archive-status";
 import {
   filterEntriesForCacheSync,
   isArchiveMembershipEntry,
@@ -11,10 +10,11 @@ import type { RelationshipEntry } from "./content/relationships-file";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
+  TEST_ARCHIVE_NODE_ID,
   type TestContentFixture,
 } from "./content/test-helpers";
 
-const HUB = DEFAULT_ARCHIVE_NODE_ID;
+const HUB = TEST_ARCHIVE_NODE_ID;
 const NODE_A = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 const NODE_B = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 const NODE_C = "cccccccccccccccccccccccccccccccc";
@@ -30,19 +30,18 @@ function entry(
 
 describe("relationship-archive helpers", () => {
   test("isArchiveMembershipEntry detects hub includes", () => {
-    expect(isArchiveMembershipEntry(entry(HUB, NODE_A, "includes"))).toBe(true);
-    expect(isArchiveMembershipEntry(entry(NODE_A, NODE_B, "includes"))).toBe(false);
-    expect(isArchiveMembershipEntry(entry(HUB, NODE_A, "is_a", { directedFrom: NODE_A }))).toBe(
-      false,
-    );
+    expect(isArchiveMembershipEntry(entry(HUB, NODE_A, "includes"), HUB)).toBe(true);
+    expect(isArchiveMembershipEntry(entry(NODE_A, NODE_B, "includes"), HUB)).toBe(false);
+    expect(
+      isArchiveMembershipEntry(entry(HUB, NODE_A, "is_a", { directedFrom: NODE_A }), HUB),
+    ).toBe(false);
   });
 
   test("listArchiveMemberIds returns non-hub endpoints", () => {
-    const ids = listArchiveMemberIds([
-      entry(HUB, NODE_A, "includes"),
-      entry(HUB, NODE_B, "includes"),
-      entry(NODE_A, NODE_C, "includes"),
-    ]);
+    const ids = listArchiveMemberIds(
+      [entry(HUB, NODE_A, "includes"), entry(HUB, NODE_B, "includes"), entry(NODE_A, NODE_C, "includes")],
+      HUB,
+    );
     expect(ids.sort()).toEqual([NODE_A, NODE_B].sort());
   });
 
@@ -70,7 +69,7 @@ describe("relationship-archive store mutations", () => {
       ],
     });
 
-    const changed = markIncidentRelationshipsArchived(store, NODE_A);
+    const changed = markIncidentRelationshipsArchived(store, NODE_A, HUB);
     expect(changed).toBe(2);
 
     const file = store.readRelationshipsFile();
@@ -90,7 +89,7 @@ describe("relationship-archive store mutations", () => {
     });
 
     const stillArchived = new Set([NODE_B]);
-    const changed = unmarkIncidentRelationshipsArchived(store, NODE_A, stillArchived);
+    const changed = unmarkIncidentRelationshipsArchived(store, NODE_A, stillArchived, HUB);
     expect(changed).toBe(0);
     expect(store.readRelationshipsFile().relationships[0]?.archived).toBe(true);
   });
@@ -104,7 +103,7 @@ describe("relationship-archive store mutations", () => {
       ],
     });
 
-    const changed = unmarkIncidentRelationshipsArchived(store, NODE_A, new Set());
+    const changed = unmarkIncidentRelationshipsArchived(store, NODE_A, new Set(), HUB);
     expect(changed).toBe(2);
     for (const rel of store.readRelationshipsFile().relationships) {
       expect(rel.archived).toBeUndefined();

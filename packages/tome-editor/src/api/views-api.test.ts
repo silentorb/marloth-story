@@ -3,14 +3,20 @@ import { mkdtempSync, rmSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { createApiHandler } from "./server";
-import { serializeViewsFile, VIEWS_FILE_VERSION } from "tome-db";
-import { contentModelDir, viewsFilePath } from "tome-db/content";
+import { serializeViewsFile, serializeWorkspaceFile, VIEWS_FILE_VERSION } from "tome-db";
+import { contentModelDir, viewsFilePath, workspaceFilePath } from "tome-db/content";
+import { defaultTestWorkspaceFile } from "tome-db/content/test-helpers";
 
 describe("views API", () => {
   test("POST and PATCH section tabs", async () => {
     const dir = mkdtempSync(join(tmpdir(), "tome-views-api-"));
     const contentDir = join(dir, "content");
     mkdirSync(contentModelDir(contentDir), { recursive: true });
+    writeFileSync(
+      workspaceFilePath(contentDir),
+      serializeWorkspaceFile(defaultTestWorkspaceFile()),
+      "utf-8",
+    );
     const nodeId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     writeFileSync(
       viewsFilePath(contentDir),

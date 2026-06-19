@@ -3,9 +3,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, test } from "bun:test";
 import { exportExplorerLodGraph, exportFullGraph } from "./graph-export";
-import { DEFAULT_ARCHIVE_NODE_ID } from "./archive-status";
 import { DEFAULT_EXPLORER_LOD_LAYER_COUNT } from "./graph-lod-cluster";
 import { GraphDatabase } from "./graph";
+import { TEST_ARCHIVE_NODE_ID } from "./content/test-helpers";
 
 describe("graph export", () => {
   let tempDir: string;
@@ -48,10 +48,10 @@ describe("graph export", () => {
 
     db.upsertNode("active", { title: "Active scene" });
     db.upsertNode("archived", { title: "Old foil" });
-    db.upsertNode(DEFAULT_ARCHIVE_NODE_ID, { title: "Archive" });
+    db.upsertNode(TEST_ARCHIVE_NODE_ID, { title: "Archive" });
     db.upsertRelationship("active", "archived", "inspirations");
-    db.upsertRelationship(DEFAULT_ARCHIVE_NODE_ID, "archived", "includes");
-    db.recomputeArchivedFlags(DEFAULT_ARCHIVE_NODE_ID);
+    db.upsertRelationship(TEST_ARCHIVE_NODE_ID, "archived", "includes");
+    db.recomputeArchivedFlags(TEST_ARCHIVE_NODE_ID);
 
     const snapshot = exportFullGraph(db);
     db.close();

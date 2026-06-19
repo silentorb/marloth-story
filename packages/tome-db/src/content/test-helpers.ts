@@ -14,9 +14,15 @@ import { invalidateTableSchemasCache } from "../table-schemas/load";
 import type { SeedDynamicColumnSetInput, SeedDynamicFieldInput } from "../dynamic-fields/overlay";
 import { invalidateDynamicFieldsCache } from "./sync";
 import { invalidateViewsCache } from "../views/load";
+import { invalidateWorkspaceCache } from "../workspace/load";
+import {
+  serializeWorkspaceFile,
+  type WorkspaceFile,
+  WORKSPACE_FILE_VERSION,
+} from "../workspace/workspace-file";
 import { openTomeWriteContext, type TomeWriteContext } from "./write-context";
 import { writeFileSync } from "node:fs";
-import { nodeFilePath } from "./paths";
+import { contentModelDir, nodeFilePath, workspaceFilePath } from "./paths";
 import {
   entryFromRelationship,
   RELATIONSHIPS_FILE_VERSION,
@@ -31,20 +37,61 @@ import {
 } from "./relationship-types-file";
 import { INCLUDES_TYPE } from "../includes-relationship";
 
+/** Marloth workspace ids — match committed content/model/workspace.json. */
+export const TEST_HOME_NODE_ID = "13458e628ba28073850dea0edb9acde1";
+export const TEST_ARCHIVE_NODE_ID = "0f558a609a56485185beed4d1fd1cd9f";
+export const TEST_GRAPH_ANCHOR_NODE_ID = "e028aa0786f5449984a4f497c1d746fa";
+export const TEST_STATIC_SITE_HOME_NODE_ID = "5bfc10918fa24207879d68a030927dd3";
+
 export interface TestContentFixture {
   tempDir: string;
   ctx: TomeWriteContext;
+}
+
+export function defaultTestWorkspaceFile(): WorkspaceFile {
+  return {
+    version: WORKSPACE_FILE_VERSION,
+    homeNodeId: TEST_HOME_NODE_ID,
+    archiveNodeId: TEST_ARCHIVE_NODE_ID,
+    protectedNodeIds: [TEST_HOME_NODE_ID, TEST_ARCHIVE_NODE_ID],
+    graphExplorer: { defaultAnchorNodeId: TEST_GRAPH_ANCHOR_NODE_ID },
+    staticSite: { homeNodeId: TEST_STATIC_SITE_HOME_NODE_ID },
+    sidebar: { links: [] },
+    legacy: { exportPathPrefix: "Marloth", archivePathPrefix: "Marloth/Archive" },
+  };
+}
+
+export function seedTestWorkspace(
+  fixture: TestContentFixture,
+  overrides?: Partial<WorkspaceFile>,
+): void {
+  const file = { ...defaultTestWorkspaceFile(), ...overrides };
+  mkdirSync(contentModelDir(fixture.ctx.store.contentDir), { recursive: true });
+  writeFileSync(
+    workspaceFilePath(fixture.ctx.store.contentDir),
+    serializeWorkspaceFile(file),
+    "utf-8",
+  );
+  invalidateWorkspaceCache();
 }
 
 export function createTestContentFixture(prefix = "marloth-content-test-"): TestContentFixture {
   const tempDir = mkdtempSync(join(tmpdir(), prefix));
   const contentDir = join(tempDir, "content");
   mkdirSync(contentDir, { recursive: true });
+  mkdirSync(contentModelDir(contentDir), { recursive: true });
+  writeFileSync(
+    workspaceFilePath(contentDir),
+    serializeWorkspaceFile(defaultTestWorkspaceFile()),
+    "utf-8",
+  );
+  invalidateWorkspaceCache();
   const dbPath = join(tempDir, "test.sqlite");
   const ctx = openTomeWriteContext(contentDir, dbPath);
+  const fixture = { tempDir, ctx };
   ctx.store.writeDynamicFieldsFile(fileFromSeedInputs([], []));
   invalidateDynamicFieldsCache();
-  return { tempDir, ctx };
+  return fixture;
 }
 
 export function destroyTestContentFixture(fixture: TestContentFixture): void {

@@ -38,7 +38,7 @@ function bodyFromProperties(properties: Record<string, unknown>): string {
   return typeof body === "string" ? body : "";
 }
 
-export const DEFAULT_HOME_NODE_ID = "13458e628ba28073850dea0edb9acde1";
+export { DEFAULT_HOME_NODE_ID } from "./workspace/deprecated-shims";
 
 export function getNodeDetail(db: GraphDatabase, id: string): NodeDetail | null {
   const node = db.getNode(id);

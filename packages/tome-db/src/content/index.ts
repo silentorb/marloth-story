@@ -51,6 +51,7 @@ export {
   DYNAMIC_FIELDS_FILENAME,
   SCHEMA_FILENAME,
   VIEWS_FILENAME,
+  WORKSPACE_FILENAME,
   NODE_FILE_PATTERN,
   NODE_ID_PATTERN,
   contentDataDir,
@@ -65,6 +66,7 @@ export {
   dynamicFieldsFilePath,
   schemaFilePath,
   viewsFilePath,
+  workspaceFilePath,
   isNodeId,
   nodeFileName,
   nodeFilePath,
@@ -82,9 +84,15 @@ export { ContentWatcher } from "./watcher";
 export {
   createTestContentFixture,
   destroyTestContentFixture,
+  defaultTestWorkspaceFile,
   seedTestRelationships,
   seedTestNode,
   seedTestViews,
+  seedTestWorkspace,
+  TEST_ARCHIVE_NODE_ID,
+  TEST_GRAPH_ANCHOR_NODE_ID,
+  TEST_HOME_NODE_ID,
+  TEST_STATIC_SITE_HOME_NODE_ID,
 } from "./test-helpers";
 export type { TestContentFixture } from "./test-helpers";
 export type { TomeWriteContext, MarlothWriteContext } from "./write-context";

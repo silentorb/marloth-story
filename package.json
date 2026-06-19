@@ -15,7 +15,8 @@
     "content:export": "bun scripts/export-graph-to-content.ts",
     "content:sync": "bun -e \"import { openTomeWriteContext, resolveContentPath, defaultDbPathForContent } from 'tome-db/content'; const c=resolveContentPath(); const ctx=openTomeWriteContext(c, defaultDbPathForContent(c)); ctx.sync.fullRebuild(); ctx.db.close(); console.log('Synced', c);\"",
     "test": "bun run --filter tome-db test && bun run --filter tome-editor test && bun run --filter tome-static-site test",
-    "validate:content-model": "bun scripts/validate-content-model.ts"
+    "validate:content-model": "bun scripts/validate-content-model.ts",
+    "validate:workspace": "bun scripts/validate-workspace.ts"
   },
   "devDependencies": {}
 }

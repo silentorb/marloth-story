@@ -1,12 +1,14 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { archiveNode, DEFAULT_ARCHIVE_NODE_ID, deleteNode } from "./node-lifecycle";
+import { archiveNode, deleteNode } from "./node-lifecycle";
 import { isArchivedNode } from "./archive-status";
-import { DEFAULT_HOME_NODE_ID, getNodeDetail, searchNodes } from "./queries";
+import { getNodeDetail, searchNodes } from "./queries";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
   seedTestIncludes,
   seedTestNode,
+  TEST_ARCHIVE_NODE_ID,
+  TEST_HOME_NODE_ID,
 } from "./content/test-helpers";
 
 const PAGE_ACTIVE = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
@@ -15,13 +17,14 @@ const PAGE_DELETE = "cccccccccccccccccccccccccccccccc";
 
 describe("record lifecycle", () => {
   const fixture = createTestContentFixture("tome-db-lifecycle-");
+  const contentDir = fixture.ctx.store.contentDir;
 
   seedTestNode(fixture, {
-    id: DEFAULT_HOME_NODE_ID,
+    id: TEST_HOME_NODE_ID,
     properties: { title: "Marloth" },
   });
   seedTestNode(fixture, {
-    id: DEFAULT_ARCHIVE_NODE_ID,
+    id: TEST_ARCHIVE_NODE_ID,
     properties: { title: "Archive" },
   });
   seedTestNode(fixture, {
@@ -33,17 +36,17 @@ describe("record lifecycle", () => {
     properties: { title: "Old Scene" },
   });
 
-  seedTestIncludes(fixture, [{ a: DEFAULT_ARCHIVE_NODE_ID, b: PAGE_ARCHIVED }]);
+  seedTestIncludes(fixture, [{ a: TEST_ARCHIVE_NODE_ID, b: PAGE_ARCHIVED }]);
 
   test("archiveNode links page to Archive via includes", () => {
     expect(archiveNode(fixture.ctx, PAGE_ACTIVE)).toBeNull();
     const detail = getNodeDetail(fixture.ctx.db, PAGE_ACTIVE);
     expect(detail?.archived).toBe(true);
-    expect(isArchivedNode(fixture.ctx.db, PAGE_ACTIVE)).toBe(true);
+    expect(isArchivedNode(fixture.ctx.db, PAGE_ACTIVE, contentDir)).toBe(true);
   });
 
   test("archiveNode rejects protected and already archived pages", () => {
-    expect(archiveNode(fixture.ctx, DEFAULT_HOME_NODE_ID)).toBe("protected");
+    expect(archiveNode(fixture.ctx, TEST_HOME_NODE_ID)).toBe("protected");
     expect(archiveNode(fixture.ctx, PAGE_ARCHIVED)).toBe("already_archived");
   });
 
@@ -54,7 +57,7 @@ describe("record lifecycle", () => {
     });
     expect(deleteNode(fixture.ctx, PAGE_DELETE)).toBeNull();
     expect(getNodeDetail(fixture.ctx.db, PAGE_DELETE)).toBeNull();
-    expect(deleteNode(fixture.ctx, DEFAULT_HOME_NODE_ID)).toBe("protected");
+    expect(deleteNode(fixture.ctx, TEST_HOME_NODE_ID)).toBe("protected");
   });
 
   test("searchNodes excludes archived pages", () => {

@@ -1,13 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import {
-  DEFAULT_ARCHIVE_NODE_ID,
-  isArchivedNode,
-  isLegacyArchivedNotionPath,
-} from "./archive-status";
+import { isArchivedNode, isLegacyArchivedNotionPath } from "./archive-status";
 import { GraphDatabase } from "./graph";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { TEST_ARCHIVE_NODE_ID } from "./content/test-helpers";
 
 describe("archive-status", () => {
   test("isLegacyArchivedNotionPath matches archive root and nested pages", () => {
@@ -24,13 +21,13 @@ describe("archive-status", () => {
 
     db.upsertNode("active", { title: "Active" });
     db.upsertNode("archived", { title: "Archived member" });
-    db.upsertNode(DEFAULT_ARCHIVE_NODE_ID, { title: "Archive" });
-    db.upsertRelationship(DEFAULT_ARCHIVE_NODE_ID, "archived", "includes");
-    db.recomputeArchivedFlags(DEFAULT_ARCHIVE_NODE_ID);
+    db.upsertNode(TEST_ARCHIVE_NODE_ID, { title: "Archive" });
+    db.upsertRelationship(TEST_ARCHIVE_NODE_ID, "archived", "includes");
+    db.recomputeArchivedFlags(TEST_ARCHIVE_NODE_ID);
 
     expect(isArchivedNode(db, "archived")).toBe(true);
     expect(isArchivedNode(db, "active")).toBe(false);
-    expect(isArchivedNode(db, DEFAULT_ARCHIVE_NODE_ID)).toBe(false);
+    expect(isArchivedNode(db, TEST_ARCHIVE_NODE_ID)).toBe(false);
 
     db.close();
     rmSync(tempDir, { recursive: true, force: true });

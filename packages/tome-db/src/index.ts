@@ -254,6 +254,27 @@ export {
 export { loadSchemaFromContent, loadWorkspaceSchema, invalidateSchemaCache } from "./schema-rules/load";
 export { loadViewsFromContent, invalidateViewsCache } from "./views/load";
 export {
+  loadWorkspaceFromContent,
+  loadWorkspace,
+  invalidateWorkspaceCache,
+} from "./workspace/load";
+export { resolveWorkspace, archiveNodeId, protectedNodeIds } from "./workspace/resolve";
+export type {
+  WorkspaceFile,
+  WorkspaceBranding,
+  WorkspaceLegacy,
+  WorkspaceGraphExplorer,
+  WorkspaceStaticSite,
+  WorkspaceSidebar,
+  SidebarLink,
+} from "./workspace/workspace-file";
+export {
+  parseWorkspaceFile,
+  serializeWorkspaceFile,
+  emptyWorkspaceFile,
+  WORKSPACE_FILE_VERSION,
+} from "./workspace/workspace-file";
+export {
   ITEMS_SECTION_KEY,
   resolveCustomTabs,
   resolveCustomTabsForNode,

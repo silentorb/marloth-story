@@ -12,6 +12,7 @@ export const DYNAMIC_FIELDS_FILENAME = "dynamic-fields.json";
 export const SCHEMA_FILENAME = "schema.json";
 export const VIEWS_FILENAME = "views.json";
 export const TABLE_SCHEMAS_FILENAME = "table-schemas.json";
+export const WORKSPACE_FILENAME = "workspace.json";
 export const NODE_ID_PATTERN = /^[0-9a-f]{32}$/;
 export const NODE_FILE_PATTERN = /^[0-9a-f]{32}\.md$/;
 
@@ -69,6 +70,10 @@ export function viewsFilePath(contentRoot: string): string {
 
 export function tableSchemasFilePath(contentRoot: string): string {
   return resolve(contentModelDir(contentRoot), TABLE_SCHEMAS_FILENAME);
+}
+
+export function workspaceFilePath(contentRoot: string): string {
+  return resolve(contentModelDir(contentRoot), WORKSPACE_FILENAME);
 }
 
 export const DEFAULT_DB_FILENAME = "tome.sqlite";

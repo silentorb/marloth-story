@@ -1,5 +1,5 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { archiveNode, DEFAULT_ARCHIVE_NODE_ID, unarchiveNode } from "./node-lifecycle";
+import { archiveNode, unarchiveNode } from "./node-lifecycle";
 import { IS_A_TYPE } from "./labels";
 import { isArchiveMembershipEntry } from "./relationship-archive";
 import { getDatabaseViewDetail } from "./database-view";
@@ -12,10 +12,12 @@ import {
   seedTestNode,
   seedTestRelationships,
   seedTestTableSchema,
+  TEST_ARCHIVE_NODE_ID,
+  TEST_HOME_NODE_ID,
 } from "./content/test-helpers";
 
-const HUB = DEFAULT_ARCHIVE_NODE_ID;
-const HOME = "13458e628ba28073850dea0edb9acde1";
+const HUB = TEST_ARCHIVE_NODE_ID;
+const HOME = TEST_HOME_NODE_ID;
 const TYPE_DB = "dddddddddddddddddddddddddddddddd";
 const PAGE = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 const OTHER = "ffffffffffffffffffffffffffffffff";
@@ -50,7 +52,7 @@ describe("archive relationship flags", () => {
     expect(membership?.archived).toBeUndefined();
 
     const incident = file.relationships.filter(
-      (e) => !isArchiveMembershipEntry(e) && (e.a === PAGE || e.b === PAGE),
+      (e) => !isArchiveMembershipEntry(e, HUB) && (e.a === PAGE || e.b === PAGE),
     );
     expect(incident.length).toBeGreaterThanOrEqual(2);
     for (const entry of incident) {

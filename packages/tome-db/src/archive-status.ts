@@ -1,44 +1,52 @@
 import type { GraphDatabase } from "./graph";
 import { INCLUDES_TYPE } from "./includes-relationship";
+import { resolveContentPath } from "./content/paths";
+import { archiveNodeId, legacyArchivePathPrefix } from "./workspace/resolve";
 
-export const DEFAULT_ARCHIVE_NODE_ID = "0f558a609a56485185beed4d1fd1cd9f";
+export {
+  ARCHIVE_NOTION_PATH_PREFIX,
+  DEFAULT_ARCHIVE_NODE_ID,
+} from "./workspace/deprecated-shims";
 
-/** Legacy path prefix used only for one-time content migration. */
-export const ARCHIVE_NOTION_PATH_PREFIX = "Marloth/Archive";
-
-export function isLegacyArchivedNotionPath(path: string | null): boolean {
+export function isLegacyArchivedNotionPath(path: string | null, contentDir?: string): boolean {
   if (!path) return false;
-  return (
-    path === ARCHIVE_NOTION_PATH_PREFIX ||
-    path.startsWith(`${ARCHIVE_NOTION_PATH_PREFIX}/`)
-  );
+  const prefix = legacyArchivePathPrefix(contentDir);
+  if (!prefix) return false;
+  return path === prefix || path.startsWith(`${prefix}/`);
 }
 
 function includesArchiveHub(
-  db: GraphDatabase,
+  archiveId: string,
   nodeId: string,
   connection: { sourceNodeId: string; targetNodeId: string },
 ): boolean {
   const other =
     connection.sourceNodeId === nodeId ? connection.targetNodeId : connection.sourceNodeId;
-  return other === DEFAULT_ARCHIVE_NODE_ID;
+  return other === archiveId;
 }
 
 /** True when the node has an `includes` edge to the Archive hub (not the hub itself). */
-export function isArchivedNode(db: GraphDatabase, nodeId: string): boolean {
-  if (nodeId === DEFAULT_ARCHIVE_NODE_ID) return false;
+export function isArchivedNode(
+  db: GraphDatabase,
+  nodeId: string,
+  contentDir?: string,
+): boolean {
+  const dir = contentDir ?? resolveContentPath();
+  const archiveId = archiveNodeId(dir);
+  if (nodeId === archiveId) return false;
   if (db.isNodeArchived(nodeId)) return true;
   for (const connection of db.listRelationshipsFromSource(nodeId, INCLUDES_TYPE)) {
-    if (includesArchiveHub(db, nodeId, connection)) return true;
+    if (includesArchiveHub(archiveId, nodeId, connection)) return true;
   }
   for (const connection of db.listRelationshipsToTarget(nodeId, INCLUDES_TYPE)) {
-    if (includesArchiveHub(db, nodeId, connection)) return true;
+    if (includesArchiveHub(archiveId, nodeId, connection)) return true;
   }
   return false;
 }
 
-export function listArchivedNodeIds(db: GraphDatabase): string[] {
-  const archiveId = DEFAULT_ARCHIVE_NODE_ID;
+export function listArchivedNodeIds(db: GraphDatabase, contentDir?: string): string[] {
+  const dir = contentDir ?? resolveContentPath();
+  const archiveId = archiveNodeId(dir);
   const rows = db.listIncludesArchiveMemberIds(archiveId);
   return rows.filter((id) => id !== archiveId);
 }

@@ -13,6 +13,7 @@ import { ENUM_CONFIG_FINGERPRINT_META_KEY, enumConfigFingerprint } from "../enum
 import { invalidateSchemaCache, loadSchemaFromContent } from "../schema-rules/load";
 import { invalidateViewsCache } from "../views/load";
 import { invalidateTableSchemasCache } from "../table-schemas/load";
+import { invalidateWorkspaceCache, loadWorkspaceFromContent } from "../workspace/load";
 import {
   RELATIONSHIPS_FILENAME,
   RELATIONSHIP_TYPES_FILENAME,
@@ -20,6 +21,7 @@ import {
   SCHEMA_FILENAME,
   VIEWS_FILENAME,
   TABLE_SCHEMAS_FILENAME,
+  WORKSPACE_FILENAME,
   dynamicFieldsFilePath,
   NODE_FILE_PATTERN,
   contentDataDir,
@@ -27,7 +29,6 @@ import {
 } from "./paths";
 import { ContentStore } from "./store";
 import { expandAllRelationships } from "./relationship-sync-expand";
-import { DEFAULT_ARCHIVE_NODE_ID } from "../archive-status";
 import { filterEntriesForCacheSync } from "../relationship-archive";
 
 let cachedDynamicConfig: {
@@ -135,6 +136,7 @@ export class CacheSync {
     scanFile(modelDir, DYNAMIC_FIELDS_FILENAME);
     scanFile(modelDir, SCHEMA_FILENAME);
     scanFile(modelDir, VIEWS_FILENAME);
+    scanFile(modelDir, WORKSPACE_FILENAME);
     try {
       for (const name of readdirSync(dataDir)) {
         if (NODE_FILE_PATTERN.test(name)) {
@@ -189,7 +191,8 @@ export class CacheSync {
   }
 
   recomputeArchivedFlags(): void {
-    this.db.recomputeArchivedFlags(DEFAULT_ARCHIVE_NODE_ID);
+    const archiveId = loadWorkspaceFromContent(this.contentDir).archiveNodeId;
+    this.db.recomputeArchivedFlags(archiveId);
   }
 
   fullRebuild(): void {
@@ -280,6 +283,13 @@ export class CacheSync {
 
     if (relativeName === TABLE_SCHEMAS_FILENAME) {
       invalidateTableSchemasCache();
+      this.updateCacheMarkers();
+      return;
+    }
+
+    if (relativeName === WORKSPACE_FILENAME) {
+      invalidateWorkspaceCache();
+      this.recomputeArchivedFlags();
       this.updateCacheMarkers();
       return;
     }

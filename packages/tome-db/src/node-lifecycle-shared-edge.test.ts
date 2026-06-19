@@ -1,14 +1,16 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { archiveNode, DEFAULT_ARCHIVE_NODE_ID, unarchiveNode } from "./node-lifecycle";
+import { archiveNode, unarchiveNode } from "./node-lifecycle";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
   seedTestIncludes,
   seedTestNode,
+  TEST_ARCHIVE_NODE_ID,
+  TEST_HOME_NODE_ID,
 } from "./content/test-helpers";
 
-const HUB = DEFAULT_ARCHIVE_NODE_ID;
-const HOME = "13458e628ba28073850dea0edb9acde1";
+const HUB = TEST_ARCHIVE_NODE_ID;
+const HOME = TEST_HOME_NODE_ID;
 const NODE_A = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 const NODE_B = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 

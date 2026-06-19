@@ -1,19 +1,25 @@
-import { DEFAULT_ARCHIVE_NODE_ID } from "./archive-status";
 import type { ContentStore } from "./content/store";
 import type { RelationshipEntry } from "./content/relationships-file";
 import { INCLUDES_TYPE } from "./includes-relationship";
+import { archiveNodeId } from "./workspace/resolve";
 
-export function isArchiveMembershipEntry(entry: RelationshipEntry): boolean {
+export function isArchiveMembershipEntry(
+  entry: RelationshipEntry,
+  archiveHubId: string,
+): boolean {
   if (entry.type !== INCLUDES_TYPE) return false;
-  return entry.a === DEFAULT_ARCHIVE_NODE_ID || entry.b === DEFAULT_ARCHIVE_NODE_ID;
+  return entry.a === archiveHubId || entry.b === archiveHubId;
 }
 
-export function listArchiveMemberIds(entries: readonly RelationshipEntry[]): string[] {
+export function listArchiveMemberIds(
+  entries: readonly RelationshipEntry[],
+  archiveHubId: string,
+): string[] {
   const members = new Set<string>();
   for (const entry of entries) {
-    if (!isArchiveMembershipEntry(entry)) continue;
-    const memberId = entry.a === DEFAULT_ARCHIVE_NODE_ID ? entry.b : entry.a;
-    if (memberId !== DEFAULT_ARCHIVE_NODE_ID) members.add(memberId);
+    if (!isArchiveMembershipEntry(entry, archiveHubId)) continue;
+    const memberId = entry.a === archiveHubId ? entry.b : entry.a;
+    if (memberId !== archiveHubId) members.add(memberId);
   }
   return [...members];
 }
@@ -30,14 +36,18 @@ export function filterEntriesForCacheSync(entries: readonly RelationshipEntry[])
   return entries.filter((entry) => entry.archived !== true);
 }
 
-export function markIncidentRelationshipsArchived(store: ContentStore, nodeId: string): number {
+export function markIncidentRelationshipsArchived(
+  store: ContentStore,
+  nodeId: string,
+  archiveHubId: string,
+): number {
   const file = store.readRelationshipsFile();
   let changed = 0;
 
   for (let i = 0; i < file.relationships.length; i++) {
     const entry = file.relationships[i]!;
     if (!isIncidentEntry(entry, nodeId)) continue;
-    if (isArchiveMembershipEntry(entry)) continue;
+    if (isArchiveMembershipEntry(entry, archiveHubId)) continue;
     if (entry.archived === true) continue;
     file.relationships[i] = { ...entry, archived: true };
     changed++;
@@ -51,6 +61,7 @@ export function unmarkIncidentRelationshipsArchived(
   store: ContentStore,
   nodeId: string,
   stillArchivedIds: ReadonlySet<string>,
+  archiveHubId: string,
 ): number {
   const file = store.readRelationshipsFile();
   let changed = 0;
@@ -58,7 +69,7 @@ export function unmarkIncidentRelationshipsArchived(
   for (let i = 0; i < file.relationships.length; i++) {
     const entry = file.relationships[i]!;
     if (!isIncidentEntry(entry, nodeId)) continue;
-    if (isArchiveMembershipEntry(entry)) continue;
+    if (isArchiveMembershipEntry(entry, archiveHubId)) continue;
     if (entry.archived !== true) continue;
 
     const other = otherEndpoint(entry, nodeId);
@@ -73,6 +84,7 @@ export function unmarkIncidentRelationshipsArchived(
   return changed;
 }
 
-export function listArchiveMemberIdsFromStore(store: ContentStore): string[] {
-  return listArchiveMemberIds(store.readRelationshipsFile().relationships);
+export function listArchiveMemberIdsFromStore(store: ContentStore, archiveHubId?: string): string[] {
+  const hubId = archiveHubId ?? archiveNodeId(store.contentDir);
+  return listArchiveMemberIds(store.readRelationshipsFile().relationships, hubId);
 }

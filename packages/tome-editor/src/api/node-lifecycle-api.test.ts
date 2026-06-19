@@ -1,9 +1,10 @@
 import { describe, expect, test, afterAll } from "bun:test";
-import { DEFAULT_ARCHIVE_NODE_ID, DEFAULT_HOME_NODE_ID } from "tome-db";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
   seedTestNode,
+  TEST_ARCHIVE_NODE_ID,
+  TEST_HOME_NODE_ID,
 } from "tome-db/content/test-helpers";
 import { createTestApiFromContent } from "./test-api-setup";
 
@@ -13,11 +14,11 @@ describe("node lifecycle API", () => {
   const fixture = createTestContentFixture("tome-lifecycle-api-");
 
   seedTestNode(fixture, {
-    id: DEFAULT_HOME_NODE_ID,
+    id: TEST_HOME_NODE_ID,
     properties: { title: "Home" },
   });
   seedTestNode(fixture, {
-    id: DEFAULT_ARCHIVE_NODE_ID,
+    id: TEST_ARCHIVE_NODE_ID,
     properties: { title: "Archive" },
   });
   seedTestNode(fixture, {
@@ -73,7 +74,7 @@ describe("node lifecycle API", () => {
 
   test("DELETE rejects protected node", async () => {
     const res = await api.handler(
-      new Request(`http://127.0.0.1/api/nodes/${DEFAULT_HOME_NODE_ID}`, { method: "DELETE" }),
+      new Request(`http://127.0.0.1/api/nodes/${TEST_HOME_NODE_ID}`, { method: "DELETE" }),
     );
     expect(res.status).toBe(403);
   });

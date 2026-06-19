@@ -9,6 +9,7 @@ import {
   seedTestNode,
   seedTestRelationships,
   seedTestViews,
+  TEST_STATIC_SITE_HOME_NODE_ID,
   type TestContentFixture,
 } from "tome-db/content";
 import { writeSiteData, defaultSiteDataPath } from "./generate-data";
@@ -80,7 +81,7 @@ describe("writeSiteData", () => {
     const outFile = join(outDir, "site-data.json");
     const data = writeSiteData(config, outFile);
 
-    expect(data.homeNodeId).toBe("5bfc10918fa24207879d68a030927dd3");
+    expect(data.homeNodeId).toBe(TEST_STATIC_SITE_HOME_NODE_ID);
 
     const instance = data.nodes.find((node) => node.id === instanceId);
     expect(instance).toBeDefined();

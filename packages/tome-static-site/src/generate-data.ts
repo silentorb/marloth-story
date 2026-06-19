@@ -1,19 +1,17 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { openContentGraph } from "tome-db/content";
-import { loadSchemaFromContent } from "tome-db";
+import { loadSchemaFromContent, loadWorkspaceFromContent } from "tome-db";
 import type { ResolvedConfig } from "./config";
 import type { SiteData, SiteNode } from "./lib/site-types";
 import { buildExtraTabPayloadsAndRoutes, buildSiteNode } from "./lib/static-export";
-
-/** Static-site landing page; independent of editor `DEFAULT_HOME_NODE_ID` in tome-db. */
-export const STATIC_SITE_HOME_NODE_ID = "5bfc10918fa24207879d68a030927dd3";
 
 export type { SiteData, SiteNode } from "./lib/site-types";
 
 export function loadNodesFromGraph(config: ResolvedConfig): SiteData {
   const { store, db } = openContentGraph(config.contentDir, config.dbPath);
   const schema = loadSchemaFromContent(config.contentDir);
+  const workspace = loadWorkspaceFromContent(config.contentDir);
   const nodes: SiteNode[] = [];
 
   for (const id of store.listNodeIds()) {
@@ -30,7 +28,7 @@ export function loadNodesFromGraph(config: ResolvedConfig): SiteData {
   db.close();
 
   return {
-    homeNodeId: STATIC_SITE_HOME_NODE_ID,
+    homeNodeId: workspace.staticSite.homeNodeId,
     base: config.base,
     nodes,
     tabItemsPayloads,

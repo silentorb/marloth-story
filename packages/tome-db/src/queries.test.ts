@@ -12,8 +12,8 @@ import {
   seedTestIncludes,
   seedTestNode,
   seedTestRelationships,
+  TEST_ARCHIVE_NODE_ID,
 } from "./content/test-helpers";
-import { DEFAULT_ARCHIVE_NODE_ID } from "./archive-status";
 
 describe("queries", () => {
   const fixture = createTestContentFixture("tome-db-queries-");
@@ -264,7 +264,7 @@ describe("queries", () => {
     const activeId = "cdef0123456789abcdef012345678901";
     const archivedId = "def0123456789abcdef0123456789012";
     seedTestNode(fixture, {
-      id: DEFAULT_ARCHIVE_NODE_ID,
+      id: TEST_ARCHIVE_NODE_ID,
       properties: { title: "Archive" },
     });
     seedTestNode(fixture, {
@@ -281,7 +281,7 @@ describe("queries", () => {
         modified_at: "2024-08-01T00:00:00.000Z",
       },
     });
-    seedTestIncludes(fixture, [{ a: DEFAULT_ARCHIVE_NODE_ID, b: archivedId }]);
+    seedTestIncludes(fixture, [{ a: TEST_ARCHIVE_NODE_ID, b: archivedId }]);
 
     const recent = listRecentNodesByModifiedAt(fixture.ctx.db, 100);
     expect(recent.some((row) => row.id === activeId)).toBe(true);
