@@ -29,7 +29,6 @@ content/.obsidian/
 .marloth/
 
 # SQLite cache (source of truth is content/)
-data/marloth.sqlite
 data/tome.sqlite
 data/*.sqlite-wal
 data/*.sqlite-shm

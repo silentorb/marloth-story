@@ -102,6 +102,14 @@ For **design data** (what nodes mean, how they relate conceptually), read `[docs
 
 See also `[docs/features/README.md](./docs/features/README.md)` for the feature-doc template and how to add new features.
 
+## Refactoring guides
+
+Multi-session migration specs (agent-oriented). Start at the overview; do not read every session doc by default.
+
+| If your task involves… | Read |
+| --- | --- |
+| Marloth → Tome decoupling (workspace config migration) | [`docs/refactoring/00-overview.md`](./docs/refactoring/00-overview.md) |
+
 ## Future Expansion
 
 - Architecture overview
