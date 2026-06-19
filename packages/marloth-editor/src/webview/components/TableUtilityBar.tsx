@@ -35,6 +35,7 @@ interface TableUtilityBarProps {
   tabs?: TableTabsDetail;
   search?: ReactNode;
   addRow?: ReactNode;
+  addColumn?: ReactNode;
   columnDefs?: DatabaseColumnDef[];
   onTabSelect?: (tabId: string) => void;
   onCreateTab?: (input: { name: string; sorts?: ViewSortSpec[] }) => Promise<void>;
@@ -118,6 +119,7 @@ export function TableUtilityBar({
   tabs,
   search,
   addRow,
+  addColumn,
   columnDefs,
   onTabSelect,
   onCreateTab,
@@ -185,7 +187,7 @@ export function TableUtilityBar({
     (displayTabItems.length > 1 || editable || draftTab != null) &&
     (displayTabItems.length > 0 || draftTab != null);
 
-  if (!showTabs && !search && !addRow) return null;
+  if (!showTabs && !search && !addRow && !addColumn) return null;
 
   const definitionFor = (tabId: string) =>
     tabs?.customDefinitions?.find((definition) => definition.id === tabId);
@@ -329,9 +331,10 @@ export function TableUtilityBar({
     <div className="marloth-table-utility-bar" ref={rootRef}>
       <div className="marloth-table-utility-row">
         {tabsContent ? <div className="marloth-table-utility-tabs">{tabsContent}</div> : null}
-        {search || addRow ? (
+        {search || addRow || addColumn ? (
           <div className="marloth-table-utility-actions">
             {search}
+            {addColumn}
             {addRow}
           </div>
         ) : null}

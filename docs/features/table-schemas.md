@@ -68,8 +68,11 @@ Row data for instances is stored on `is_a` relationship properties, not on the i
 
 ## Editing
 
+- **Editor UI:** type-table Items sections support **add**, **edit**, **delete**, and **reorder** for stored columns (`table-schemas.json`). Use **+ Column** in the table utility bar or right-click anywhere in a column header cell → **Edit** / **Delete**. Dynamic/computed columns (`dynamic-fields.json`) remain read-only in the UI.
+- **Create / update API:** `POST /api/databases/:id/columns`, `PATCH /api/databases/:id/columns/:key` (see [marloth-editor.md](./marloth-editor.md)).
+- **Destructive schema edits** (key rename, type change, relation target/perspective change) migrate or clear row data on `is_a` edges; the UI confirms before applying.
+- **`select` / `status`:** the editor can wire an **existing** `schema.json` enum via `enumId`. Creating new enum definitions remains a manual / script workflow (`bun scripts/seed-select-enums.ts`, edit `schema.json`).
 - **Manual:** edit `table-schemas.json` directly (validate with `bun run validate:content-model`)
-- **Editor:** column delete via API mutates `table-schemas.json` through `ContentStore`
 - **Sync:** `bun run content:sync` or editor API startup rebuilds the SQLite cache
 
 ## Migration

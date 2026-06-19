@@ -72,6 +72,40 @@ export interface EditorApiClient {
     databaseId: string,
     columnKey: string,
   ): Promise<{ rowsAffected: number; relationsUnlinked: number }>;
+  createDatabaseColumn(
+    databaseId: string,
+    input: {
+      key?: string;
+      name: string;
+      type: string;
+      enumId?: string;
+      targetTypeId?: string;
+      perspective?: string;
+    },
+  ): Promise<{
+    column: import("marloth-db").TableColumnDef;
+    rowsMigrated: number;
+    relationsUnlinked: number;
+    valuesCleared: number;
+  }>;
+  updateDatabaseColumn(
+    databaseId: string,
+    columnKey: string,
+    input: {
+      name?: string;
+      newKey?: string;
+      type?: string;
+      enumId?: string | null;
+      targetTypeId?: string;
+      perspective?: string;
+    },
+  ): Promise<{
+    column: import("marloth-db").TableColumnDef;
+    rowsMigrated: number;
+    relationsUnlinked: number;
+    valuesCleared: number;
+  }>;
+  listTypeTables(): Promise<{ id: string; title: string }[]>;
   moveOrderedAssociation(
     configId: string,
     params: OrderedAssociationMoveParams,
@@ -289,6 +323,60 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
         `/api/databases/${databaseId}/columns/${encodeURIComponent(columnKey)}`,
         { method: "DELETE" },
       );
+    },
+    async createDatabaseColumn(
+      databaseId: string,
+      input: {
+        key?: string;
+        name: string;
+        type: string;
+        enumId?: string;
+        targetTypeId?: string;
+        perspective?: string;
+      },
+    ): Promise<{
+      column: import("marloth-db").TableColumnDef;
+      rowsMigrated: number;
+      relationsUnlinked: number;
+      valuesCleared: number;
+    }> {
+      return fetchJson(`/api/databases/${databaseId}/columns`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+    },
+    async updateDatabaseColumn(
+      databaseId: string,
+      columnKey: string,
+      input: {
+        name?: string;
+        newKey?: string;
+        type?: string;
+        enumId?: string | null;
+        targetTypeId?: string;
+        perspective?: string;
+      },
+    ): Promise<{
+      column: import("marloth-db").TableColumnDef;
+      rowsMigrated: number;
+      relationsUnlinked: number;
+      valuesCleared: number;
+    }> {
+      return fetchJson(
+        `/api/databases/${databaseId}/columns/${encodeURIComponent(columnKey)}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(input),
+        },
+      );
+    },
+    async listTypeTables(): Promise<{ id: string; title: string }[]> {
+      const data = await fetchJson<{ typeTables: { id: string; title: string }[] }>(
+        "/api/type-tables",
+      );
+      return data.typeTables;
     },
     async moveOrderedAssociation(
       configId: string,

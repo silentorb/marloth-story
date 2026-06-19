@@ -16,6 +16,13 @@ import {
   updateNodeBody,
   updateNodeTitle,
   deleteDatabaseColumn as deleteDatabaseColumnInDb,
+  createDatabaseColumn as createDatabaseColumnInDb,
+  updateDatabaseColumn as updateDatabaseColumnInDb,
+  loadTableSchemasFromContent,
+  type CreateDatabaseColumnInput,
+  type UpdateDatabaseColumnInput,
+  type DatabaseColumnMutationError,
+  type DatabaseColumnMutationResult,
   updateDatabaseRowProperty,
   updateOutgoingRelationshipProperty,
   linkOutgoingRelationship,
@@ -86,6 +93,16 @@ export interface EditorDatabase {
     databaseId: string,
     columnKey: string,
   ): import("marloth-db").DeleteDatabaseColumnResult | import("marloth-db").DeleteDatabaseColumnError;
+  createDatabaseColumn(
+    databaseId: string,
+    input: CreateDatabaseColumnInput,
+  ): DatabaseColumnMutationResult | DatabaseColumnMutationError;
+  updateDatabaseColumn(
+    databaseId: string,
+    columnKey: string,
+    input: UpdateDatabaseColumnInput,
+  ): DatabaseColumnMutationResult | DatabaseColumnMutationError;
+  listTypeTables(): { id: string; title: string }[];
   getSchema(): SchemaFile;
   listRelationshipTypes(): string[];
   getRelationshipLinkOptions(
@@ -202,6 +219,32 @@ export function openEditorDatabase(
     },
     deleteDatabaseColumn(databaseId: string, columnKey: string) {
       return deleteDatabaseColumnInDb(writeCtx, databaseId, columnKey);
+    },
+    createDatabaseColumn(databaseId: string, input: CreateDatabaseColumnInput) {
+      return createDatabaseColumnInDb(writeCtx, databaseId, input);
+    },
+    updateDatabaseColumn(
+      databaseId: string,
+      columnKey: string,
+      input: UpdateDatabaseColumnInput,
+    ) {
+      return updateDatabaseColumnInDb(writeCtx, databaseId, columnKey, input);
+    },
+    listTypeTables() {
+      const schemas = loadTableSchemasFromContent(writeCtx.store.contentDir);
+      const entries: { id: string; title: string }[] = [];
+      for (const id of Object.keys(schemas.tables)) {
+        const node = writeCtx.db.getNode(id);
+        const title =
+          typeof node?.properties.title === "string" && node.properties.title.trim()
+            ? node.properties.title.trim()
+            : "Untitled";
+        entries.push({ id, title });
+      }
+      entries.sort((a, b) =>
+        a.title.localeCompare(b.title, undefined, { sensitivity: "base" }),
+      );
+      return entries;
     },
     getSchema(): SchemaFile {
       return schema();

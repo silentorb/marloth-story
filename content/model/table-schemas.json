@@ -581,6 +581,13 @@
           "type": "relation",
           "targetTypeId": "204dba198db74611b0b49a98dd53e8f5",
           "perspective": "scenes"
+        },
+        {
+          "key": "neighbor",
+          "name": "Neighbor",
+          "type": "relation",
+          "targetTypeId": "df096ab26e8347e6992e95698345aad0",
+          "perspective": "neighbor"
         }
       ]
     },

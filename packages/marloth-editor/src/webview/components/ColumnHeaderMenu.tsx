@@ -7,7 +7,8 @@ interface ColumnHeaderMenuProps {
   columnLabel: string;
   isRelation?: boolean;
   children: ReactNode;
-  onDelete: () => void | Promise<void>;
+  onEdit?: () => void;
+  onDelete?: () => void | Promise<void>;
 }
 
 interface MenuPosition {
@@ -19,6 +20,7 @@ export function ColumnHeaderMenu({
   columnLabel,
   isRelation = false,
   children,
+  onEdit,
   onDelete,
 }: ColumnHeaderMenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -81,17 +83,32 @@ export function ColumnHeaderMenu({
           left: menuPosition.left,
         }}
       >
-        <button
-          type="button"
-          role="menuitem"
-          className="marloth-page-actions-item is-danger"
-          onClick={() => {
-            setMenuOpen(false);
-            setConfirmOpen(true);
-          }}
-        >
-          Delete
-        </button>
+        {onEdit ? (
+          <button
+            type="button"
+            role="menuitem"
+            className="marloth-page-actions-item"
+            onClick={() => {
+              setMenuOpen(false);
+              onEdit();
+            }}
+          >
+            Edit
+          </button>
+        ) : null}
+        {onDelete ? (
+          <button
+            type="button"
+            role="menuitem"
+            className="marloth-page-actions-item is-danger"
+            onClick={() => {
+              setMenuOpen(false);
+              setConfirmOpen(true);
+            }}
+          >
+            Delete
+          </button>
+        ) : null}
       </div>
     ) : null;
 
@@ -107,14 +124,16 @@ export function ColumnHeaderMenu({
       {menuPanel ? createPortal(menuPanel, document.body) : null}
 
       <ConfirmDialog
-        open={confirmOpen}
+        open={confirmOpen && Boolean(onDelete)}
         title="Delete column?"
         message={confirmMessage}
         confirmLabel="Delete column"
         confirmTone="danger"
         busy={busy}
         onCancel={closeConfirm}
-        onConfirm={() => void runDelete()}
+        onConfirm={() => {
+          if (onDelete) void runDelete();
+        }}
       />
     </>
   );

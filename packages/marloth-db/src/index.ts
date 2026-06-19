@@ -117,6 +117,16 @@ export type {
   DeleteDatabaseColumnError,
   DeleteDatabaseColumnResult,
 } from "./delete-database-column";
+export {
+  createDatabaseColumn,
+  updateDatabaseColumn,
+} from "./database-column-mutations";
+export type {
+  CreateDatabaseColumnInput,
+  DatabaseColumnMutationError,
+  DatabaseColumnMutationResult,
+  UpdateDatabaseColumnInput,
+} from "./database-column-mutations";
 export { slugifyPropertyKey } from "./table-schema";
 export {
   isRelationColumnSort,

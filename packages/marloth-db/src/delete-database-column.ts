@@ -1,20 +1,18 @@
-import { listRelationConnectionsForRow } from "./database-view-relations";
 import { loadDynamicFields } from "./dynamic-fields";
-import { TYPE_MEMBERSHIP_TYPES } from "./labels";
+import {
+  ROW_META_KEYS,
+  stripScalarFromMembershipEdges,
+  unlinkRelationColumnFromAllRows,
+} from "./database-column-data";
 import { isTypeTableNode } from "./node-capabilities";
-import { unlinkOutgoingRelationship } from "./relationship-link-mutations";
-import { otherEndpoint } from "./relationship-traverse";
-import { relationType } from "./relation-type";
 import type { MarlothWriteContext } from "./content/write-context";
 import { syncAfterRelationshipsWrite } from "./content/write-context";
 import { TABLE_SCHEMAS_FILENAME } from "./content/paths";
-import type { TableColumnDef, TableSchemasFile } from "./content/table-schemas-file";
+import type { TableSchemasFile } from "./content/table-schemas-file";
 import { findColumnByKey } from "./table-schema";
 import { invalidateTableSchemasCache } from "./table-schemas/load";
 import { ITEMS_SECTION_KEY } from "./views/resolve-tabs";
 import { purgeColumnFromViews } from "./views/mutations";
-
-const ROW_META_KEYS = new Set(["view", "row_index", "row_name", "order"]);
 
 export type DeleteDatabaseColumnError =
   | "database_not_found"
@@ -24,67 +22,6 @@ export type DeleteDatabaseColumnError =
 export interface DeleteDatabaseColumnResult {
   rowsAffected: number;
   relationsUnlinked: number;
-}
-
-function stripScalarFromMembershipEdges(
-  ctx: MarlothWriteContext,
-  databaseId: string,
-  propertyKey: string,
-): number {
-  let count = 0;
-  for (const type of TYPE_MEMBERSHIP_TYPES) {
-    for (const connection of ctx.db.listRelationshipsToTarget(databaseId, type)) {
-      if (!(propertyKey in connection.properties)) continue;
-      const props = { ...connection.properties };
-      delete props[propertyKey];
-      ctx.store.replaceRelationshipProperties(
-        connection.sourceNodeId,
-        connection.targetNodeId,
-        type,
-        props,
-      );
-      count++;
-    }
-  }
-  return count;
-}
-
-function unlinkRelationColumnFromAllRows(
-  ctx: MarlothWriteContext,
-  databaseId: string,
-  column: TableColumnDef & { type: "relation" },
-): number {
-  const connectionType = column.perspective ?? relationType(column.name);
-  const targetDatabaseId = column.targetTypeId;
-
-  const rowIds = new Set<string>();
-  for (const type of TYPE_MEMBERSHIP_TYPES) {
-    for (const connection of ctx.db.listRelationshipsToTarget(databaseId, type)) {
-      rowIds.add(connection.sourceNodeId);
-    }
-  }
-
-  const toUnlink: Array<{ rowId: string; targetId: string }> = [];
-  for (const rowId of rowIds) {
-    const relationships = listRelationConnectionsForRow(
-      ctx.db,
-      rowId,
-      connectionType,
-      databaseId,
-      targetDatabaseId,
-    );
-    for (const relationship of relationships) {
-      toUnlink.push({ rowId, targetId: otherEndpoint(relationship, rowId) });
-    }
-  }
-
-  let unlinked = 0;
-  for (const { rowId, targetId } of toUnlink) {
-    if (unlinkOutgoingRelationship(ctx, rowId, targetId, connectionType) === null) {
-      unlinked++;
-    }
-  }
-  return unlinked;
 }
 
 function removeColumnFromTableSchemas(

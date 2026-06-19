@@ -117,6 +117,30 @@ describe("RecordLinkPicker", () => {
     expect(search).toHaveBeenCalledWith("", 5000, [featuresDbId]);
   });
 
+  test("focuses search input when autoFocus is set on embedded picker", async () => {
+    const search = mock(async () => []);
+    const api = {
+      ...makeMockEditorApi(),
+      search,
+    };
+
+    const view = render(
+      <RecordLinkPicker
+        api={api}
+        embedded
+        autoFocus
+        excludedIds={[]}
+        ariaLabel="Search records"
+        onSelect={async () => {}}
+        onClose={() => {}}
+      />,
+    );
+
+    await waitFor(() => expect(search).toHaveBeenCalled());
+    const input = view.container.querySelector(".marloth-record-link-picker-search");
+    expect(document.activeElement).toBe(input);
+  });
+
   test("preserves list scroll position after multi-add pick", async () => {
     const items = Array.from({ length: 30 }, (_, index) => ({
       id: `${index}`.padStart(32, "0"),

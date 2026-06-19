@@ -208,12 +208,6 @@
   overscroll-behavior: contain;
 }
 
-.marloth-relation-field-popup-empty {
-  padding: 12px;
-  color: var(--marloth-muted);
-  font-size: 0.85rem;
-}
-
 .marloth-relation-field-popup-list {
   list-style: none;
   margin: 0;
@@ -281,13 +275,8 @@
   padding: 8px 0 0;
 }
 
-.marloth-relation-field-popup-add-label {
-  display: block;
-  padding: 0 12px 6px;
-  font-size: 0.75rem;
-  color: var(--marloth-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+.marloth-relation-field-popup-add.is-first-section {
+  border-top: 0;
 }
 
 .marloth-relation-field-popup-add .marloth-record-link-picker.is-embedded {
