@@ -17,7 +17,7 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 - Keep updates aligned with the repository's current scope and documentation.
 - The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs live in `./docs/features/` (see Terminology below). The **design ontology** lives at `[docs/ontology.md](./docs/ontology.md)`.
 - The `./content` directory is the **canonical store root**: `content/data/{nodeId}.md` per node (YAML frontmatter + markdown body) plus `relationships.json`; `content/model/` holds `relationship-types.json`, `schema.json`, `table-schemas.json`, `views.json`, and `dynamic-fields.json`.
-- The `./data/marloth.sqlite` file is a **local query cache** (gitignored). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
+- The `./data/tome.sqlite` file is a **local query cache** (gitignored; legacy `data/marloth.sqlite` may still exist). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
 - TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
 - The `./exports/` directory holds **archival** Notion export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
 - All external dependencies and tooling installs should be performed within the devcontainer Dockerfile. On each container start, the image `CMD` runs `bun install --frozen-lockfile` in the workspace and then starts the editor dev servers (`bun run editor:dev`). **Rebuild the container** after changing `package.json` or `bun.lock` — do not run `bun install` manually in a terminal or on the host.
@@ -27,7 +27,7 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 
 | Term                      | Meaning                                                                                                                                                           |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Project feature**       | A workspace capability documented in `./docs/features/` (e.g. notion import, marloth-db). Use this phrase when discussing tooling or agent specs—not graph nodes. |
+| **Project feature**       | A workspace capability documented in `./docs/features/` (e.g. notion import, tome-db). Use this phrase when discussing tooling or agent specs—not graph nodes. |
 | **Node**                  | Any entity in the design graph (SQLite `nodes` table). Replaces legacy *record* / *vertex* in docs and API.                                                       |
 | **Relationship**          | A link between two nodes with a **relationship type** and properties. Stored compactly in `relationships.json`; SQLite cache expands to directed projections.     |
 | **Page**                  | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a Notion export file.                      |
@@ -44,21 +44,21 @@ Imported Notion data already separates nodes somewhat by **product** (books, gam
 
 ## Graph data workflow
 
-The `./content/` tree is **authoritative and git-tracked**. Notion import was a one-time migration path; ongoing work **must** edit content files (or use tooling that writes them). `MARLOTH_CONTENT_PATH` points at the **content root** (`./content`), not `content/data`.
+The `./content/` tree is **authoritative and git-tracked**. Notion import was a one-time migration path; ongoing work **must** edit content files (or use tooling that writes them). `TOME_CONTENT_PATH` (or legacy `MARLOTH_CONTENT_PATH`) points at the **content root** (`./content`), not `content/data`.
 
 
 | Task                                 | Do                                                                                                                            | Do not                                           |
 | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| Add or edit nodes, bodies, titles    | Edit `content/data/{nodeId}.md` or use the marloth editor / `ContentStore` (`packages/marloth-db`)                            | Edit `data/marloth.sqlite` directly              |
+| Add or edit nodes, bodies, titles    | Edit `content/data/{nodeId}.md` or use the Tome editor / `ContentStore` (`packages/tome-db`)                            | Edit `data/tome.sqlite` (or legacy `data/marloth.sqlite`) directly              |
 | Add or edit relationships            | Edit `content/data/relationships.json`, `content/model/relationship-types.json`, or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files   |
 | Dynamic field bindings               | Edit `content/model/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts`                                          | Use removed `dynamic_`* SQLite overlay tables    |
 | Table view tabs (custom / generated) | Edit `content/model/views.json` or use editor tab CRUD                                                                        | Edit `notion_views` on node frontmatter (legacy) |
-| Refresh local cache                  | `bun run content:sync` or start `editor:api` (rebuilds cache + watches `./content`)                                           | Commit `data/marloth.sqlite`                     |
-| One-time SQLite → content            | `bun run content:export` (from existing `data/marloth.sqlite` if present)                                                     | —                                                |
+| Refresh local cache                  | `bun run content:sync` or start `editor:api` (rebuilds cache + watches `./content`)                                           | Commit `data/tome.sqlite`                     |
+| One-time SQLite → content            | `bun run content:export` (from existing `data/tome.sqlite` or legacy `data/marloth.sqlite` if present)                                                     | —                                                |
 | Data only in `./exports/`            | Mine archive and upsert into `./content` (same mapping rules as legacy import)                                                | Run `bun run notion:import` / `--clean`          |
 
 
-See `[docs/features/marloth-db.md](./docs/features/marloth-db.md)` for file formats and API. `[docs/features/notion-import.md](./docs/features/notion-import.md)` documents the **legacy** import pipeline for reference and export mining only.
+See `[docs/features/tome-db.md](./docs/features/tome-db.md)` for file formats and API. `[docs/features/notion-import.md](./docs/features/notion-import.md)` documents the **legacy** import pipeline for reference and export mining only.
 
 ## Working Conventions
 
@@ -87,10 +87,10 @@ For **design data** (what nodes mean, how they relate conceptually), read `[docs
 | If your task involves…                                                 | Read                                                                                                                                                           |
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Design domain model, node types, relationships, traceability           | `[docs/ontology.md](./docs/ontology.md)`                                                                                                                       |
-| SQLite property graph, `data/marloth.sqlite`, `packages/marloth-db/`   | `[docs/features/marloth-db.md](./docs/features/marloth-db.md)` (+ ontology when interpreting data)                                                             |
-| Web markdown editor, `packages/marloth-editor/` | `[docs/features/marloth-editor.md](./docs/features/marloth-editor.md)`                                                                                         |
+| SQLite property graph, `data/tome.sqlite`, `packages/tome-db/`   | `[docs/features/tome-db.md](./docs/features/tome-db.md)` (+ ontology when interpreting data)                                                             |
+| Web markdown editor, `packages/tome-editor/` | `[docs/features/tome-editor.md](./docs/features/tome-editor.md)`                                                                                         |
 | Graph Explorer, LOD layers, anchor-scoped graph viz                    | `[docs/features/graph-explorer.md](./docs/features/graph-explorer.md)`                                                                                         |
-| Editing story/design content in the graph                              | `[docs/ontology.md](./docs/ontology.md)` + `[docs/features/marloth-db.md](./docs/features/marloth-db.md)` (direct DB edits; see **Graph data workflow** above) |
+| Editing story/design content in the graph                              | `[docs/ontology.md](./docs/ontology.md)` + `[docs/features/tome-db.md](./docs/features/tome-db.md)` (direct DB edits; see **Graph data workflow** above) |
 | Legacy Notion import / mining `./exports/`                             | `[docs/features/notion-import.md](./docs/features/notion-import.md)`                                                                                           |
 | Ordered associations, scene order, drag-and-drop reorder               | `[docs/features/ordered-associations.md](./docs/features/ordered-associations.md)`                                                                             |
 | Dynamic table view fields, computed columns                            | `[docs/features/dynamic-table-fields.md](./docs/features/dynamic-table-fields.md)` + `[docs/dynamic-fields/](./docs/dynamic-fields/)`                          |

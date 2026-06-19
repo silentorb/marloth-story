@@ -9,7 +9,7 @@
     "test": "bun test"
   },
   "dependencies": {
-    "marloth-db": "workspace:*"
+    "tome-db": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "1.2.23",

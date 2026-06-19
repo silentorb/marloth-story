@@ -5,7 +5,7 @@
  */
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import { ContentStore, bodyFromNode, resolveContentPath } from "marloth-db/content";
+import { ContentStore, bodyFromNode, resolveContentPath } from "tome-db/content";
 
 const dryRun = process.argv.includes("--dry-run");
 

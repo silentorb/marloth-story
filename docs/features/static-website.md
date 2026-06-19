@@ -4,7 +4,7 @@ Generate a portable, dark-themed static HTML site from every node in `content/`.
 
 ## Summary
 
-The `marloth-static-site` package reads the git-tracked design corpus via `marloth-db`, builds one page per node with Astro, and writes output to `dist/web/` by default. Pages mirror the editor’s read-only node view: metadata, properties, markdown body, Items tables, and relation tables with cross-links. The primary use case is embedding this output into a larger parent static site.
+The `tome-static-site` package reads the git-tracked design corpus via `tome-db`, builds one page per node with Astro, and writes output to `dist/web/` by default. Pages mirror the editor’s read-only node view: metadata, properties, markdown body, Items tables, and relation tables with cross-links. The primary use case is embedding this output into a larger parent static site.
 
 ## When to read this
 
@@ -103,7 +103,7 @@ Copy the output directory into the parent project's static assets; internal link
 ## Verification
 
 ```bash
-bun run --cwd packages/marloth-static-site test
+bun run --cwd packages/tome-static-site test
 bun run web:build
 # open dist/web/index.html or serve dist/web locally
 ```
@@ -112,7 +112,7 @@ bun run web:build
 
 | Piece | Path |
 | --- | --- |
-| Package | `packages/marloth-static-site/` |
+| Package | `packages/tome-static-site/` |
 | Build entry | `src/build.ts` |
 | Content → JSON (Bun) | `src/generate-data.ts`, `src/lib/static-export.ts` |
 | Generated input | `src/generated/site-data.json` (gitignored) |
@@ -128,6 +128,6 @@ bun run web:build
 ## See also
 
 - [`static-website-deploy.md`](./static-website-deploy.md) — GitHub Actions deploy to S3 / CloudFront
-- [`marloth-db.md`](./marloth-db.md) — content store and cache
-- [`marloth-editor.md`](./marloth-editor.md) — editor theme and link conventions
-- [`packages/marloth-static-site/AGENTS.md`](../packages/marloth-static-site/AGENTS.md)
+- [`tome-db.md`](./tome-db.md) — content store and cache
+- [`tome-editor.md`](./tome-editor.md) — editor theme and link conventions
+- [`packages/tome-static-site/AGENTS.md`](../packages/tome-static-site/AGENTS.md)

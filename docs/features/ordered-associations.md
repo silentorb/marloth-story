@@ -13,7 +13,7 @@ Read this doc when your task involves:
 - The `order` relationship property on `IS_A` membership relationships
 - Extending ordered-association configuration to new node types
 
-For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor UI, read [marloth-editor.md](./marloth-editor.md). For domain semantics (Scene, Part, Product), read [`../ontology.md`](../ontology.md).
+For graph storage basics, read [tome-db.md](./tome-db.md). For the editor UI, read [tome-editor.md](./tome-editor.md). For domain semantics (Scene, Part, Product), read [`../ontology.md`](../ontology.md).
 
 ## Requirements
 
@@ -25,7 +25,7 @@ For graph storage basics, read [marloth-db.md](./marloth-db.md). For the editor 
 - **Grouping** (Part) is a display dimension only; all scenes in a book share one global sequence. Part subsections sort scenes by that book-wide order.
 - Part subsections **must** sort by the Parts database `number` property (with **Unassigned** always last), not by table row index.
 - Part membership **must** resolve when import created duplicate part nodes: match scene→`part` to the canonical Parts-database row by title.
-- Configurations **must** be registered in code (`packages/marloth-db/src/ordered-associations.ts`); v1 has no UI for adding new configs.
+- Configurations **must** be registered in code (`packages/tome-db/src/ordered-associations.ts`); v1 has no UI for adding new configs.
 
 ### Scenes configuration (`scenes-by-book`)
 
@@ -80,7 +80,7 @@ Scenes are the only known use case. A typed configuration registry keeps the fir
 ```
 User drag-drop (webview)
   → PATCH /api/ordered-associations/scenes-by-book/move
-  → applyOrderedAssociationMove (marloth-db)
+  → applyOrderedAssociationMove (tome-db)
   → upsert is_a {order} + part relationship
   → SQLite data/marloth.sqlite
 ```
@@ -103,22 +103,22 @@ GET /api/nodes/:scenesDbId?scope=:productId
 
 ## Verification
 
-- `bun test packages/marloth-db/src` — ordered-association query and move tests
-- `bun test packages/marloth-editor/src` — API and UI tests
+- `bun test packages/tome-db/src` — ordered-association query and move tests
+- `bun test packages/tome-editor/src` — API and UI tests
 - Manual: open Scenes database → book tabs → drag within/across parts → reload → order persists
 
 ## Implementation pointers
 
 | Module | Responsibility |
 | --- | --- |
-| `packages/marloth-db/src/ordered-associations.ts` | Config registry, view query, move mutation, schema-driven column defs |
-| `packages/marloth-db/src/database-column-defs.ts` | Shared column-def builder used by database and ordered-association views |
-| `packages/marloth-db/src/node-page-sections.ts` | Emits `ordered-association` section for configured databases |
-| `packages/marloth-editor/src/api/server.ts` | PATCH move endpoint, `scope` query param |
-| `packages/marloth-editor/src/webview/components/OrderedAssociationView.tsx` | Book tabs + DnD part tables |
+| `packages/tome-db/src/ordered-associations.ts` | Config registry, view query, move mutation, schema-driven column defs |
+| `packages/tome-db/src/database-column-defs.ts` | Shared column-def builder used by database and ordered-association views |
+| `packages/tome-db/src/node-page-sections.ts` | Emits `ordered-association` section for configured databases |
+| `packages/tome-editor/src/api/server.ts` | PATCH move endpoint, `scope` query param |
+| `packages/tome-editor/src/webview/components/OrderedAssociationView.tsx` | Book tabs + DnD part tables |
 
 ## See also
 
-- [marloth-db.md](./marloth-db.md)
-- [marloth-editor.md](./marloth-editor.md)
+- [tome-db.md](./tome-db.md)
+- [tome-editor.md](./tome-editor.md)
 - [`../ontology.md`](../ontology.md)

@@ -1,11 +1,11 @@
 import { resolve } from "node:path";
-import { GraphDatabase, seedDynamicColumnSet, seedDynamicField } from "marloth-db";
-import type { SeedDynamicColumnSetInput, SeedDynamicFieldInput } from "marloth-db";
+import { GraphDatabase, seedDynamicColumnSet, seedDynamicField } from "tome-db";
+import type { SeedDynamicColumnSetInput, SeedDynamicFieldInput } from "tome-db";
 import {
   ContentStore,
   fileFromSeedInputs,
   resolveContentPath,
-} from "marloth-db/content";
+} from "tome-db/content";
 
 const DEFAULT_DB = resolve(import.meta.dir, "../data/marloth.sqlite");
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-**Removed.** This package synced read-only metadata from the Notion web API into the graph. The canonical store is `content/`; type-table columns live in [`content/model/table-schemas.json`](../../content/model/table-schemas.json). Edit schemas and nodes directly — see [marloth-db.md](./marloth-db.md) and [table-schemas.md](./table-schemas.md).
+**Removed.** This package synced read-only metadata from the Notion web API into the graph. The canonical store is `content/`; type-table columns live in [`content/model/table-schemas.json`](../../content/model/table-schemas.json). Edit schemas and nodes directly — see [tome-db.md](./tome-db.md) and [table-schemas.md](./table-schemas.md).
 
 ## Historical reference
 

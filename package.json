@@ -7,14 +7,14 @@
   ],
   "scripts": {
     "notion:import": "bun scripts/deprecated-notion-import.ts",
-    "editor:dev": "bun run --filter marloth-editor dev",
-    "editor:api": "bun run --filter marloth-editor dev:api",
-    "editor:build": "bun run --filter marloth-editor build",
-    "web:build": "bun run --filter marloth-static-site build",
+    "editor:dev": "bun run --filter tome-editor dev",
+    "editor:api": "bun run --filter tome-editor dev:api",
+    "editor:build": "bun run --filter tome-editor build",
+    "web:build": "bun run --filter tome-static-site build",
     "web:build:ci": "bash scripts/ci-build-static-site.sh",
     "content:export": "bun scripts/export-graph-to-content.ts",
-    "content:sync": "bun -e \"import { openMarlothWriteContext, resolveContentPath, defaultDbPathForContent } from 'marloth-db/content'; const c=resolveContentPath(); const ctx=openMarlothWriteContext(c, defaultDbPathForContent(c)); ctx.sync.fullRebuild(); ctx.db.close(); console.log('Synced', c);\"",
-    "test": "bun run --filter marloth-db test && bun run --filter marloth-editor test && bun run --filter marloth-static-site test",
+    "content:sync": "bun -e \"import { openTomeWriteContext, resolveContentPath, defaultDbPathForContent } from 'tome-db/content'; const c=resolveContentPath(); const ctx=openTomeWriteContext(c, defaultDbPathForContent(c)); ctx.sync.fullRebuild(); ctx.db.close(); console.log('Synced', c);\"",
+    "test": "bun run --filter tome-db test && bun run --filter tome-editor test && bun run --filter tome-static-site test",
     "validate:content-model": "bun scripts/validate-content-model.ts"
   },
   "devDependencies": {}

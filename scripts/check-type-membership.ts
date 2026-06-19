@@ -3,13 +3,13 @@
  *
  * Usage: bun run scripts/check-type-membership.ts
  */
-import { GraphDatabase } from "../packages/marloth-db/src/graph";
+import { GraphDatabase } from "../packages/tome-db/src/graph";
 import {
   findMissingTypeMembershipRelationships,
   findNestedPageSpuriousTypeMembership,
   findSpuriousTypeMembershipRelationships,
   findNodeScalarsOnTypedNodes,
-} from "../packages/marloth-db/src/type-membership-audit";
+} from "../packages/tome-db/src/type-membership-audit";
 
 const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";
 const db = new GraphDatabase(dbPath);

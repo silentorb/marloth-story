@@ -7,31 +7,31 @@
  *   bun scripts/seed-select-enums.ts [--dry-run]
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { IS_A_TYPE } from "../packages/marloth-db/src/labels";
+import { IS_A_TYPE } from "../packages/tome-db/src/labels";
 import {
   parseTableSchemasFile,
   serializeTableSchemasFile,
   type TableColumnDef,
   type TableScalarColumn,
   type TableSchemasFile,
-} from "../packages/marloth-db/src/content/table-schemas-file";
+} from "../packages/tome-db/src/content/table-schemas-file";
 import {
   parseRelationshipsFile,
   type RelationshipEntry,
-} from "../packages/marloth-db/src/content/relationships-file";
+} from "../packages/tome-db/src/content/relationships-file";
 import {
   parseSchemaFile,
   serializeSchemaFile,
   type EnumDefinition,
   type SchemaFile,
-} from "../packages/marloth-db/src/schema-rules/schema-file";
+} from "../packages/tome-db/src/schema-rules/schema-file";
 import {
   contentModelDir,
   relationshipsFilePath,
   resolveContentPath,
   tableSchemasFilePath,
   schemaFilePath,
-} from "../packages/marloth-db/src/content/paths";
+} from "../packages/tome-db/src/content/paths";
 
 const dryRun = process.argv.includes("--dry-run");
 const contentRoot = resolveContentPath();

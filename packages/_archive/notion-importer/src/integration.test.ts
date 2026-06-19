@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, readdirSync, rmSync, statSync, writeFileSync } 
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterAll, describe, expect, test } from "bun:test";
-import { GraphDatabase } from "marloth-db";
+import { GraphDatabase } from "tome-db";
 import { run } from "./pipeline";
 
 const tempRepo = mkdtempSync(join(tmpdir(), "notion-importer-test-"));

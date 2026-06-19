@@ -16,11 +16,11 @@ On pushes to `main` (and manual dispatch), a GitHub Actions workflow builds the 
 
 - **Must** build with the same devcontainer image used for local development (Bun + pinned lockfile).
 - **Must** run `bun run web:build` to produce `dist/web/` (see [`static-website.md`](./static-website.md)).
-- **Must** deploy on relevant changes to `main` via path filters (content, static-site package, marloth-db, lockfiles, devcontainer, workflow).
+- **Must** deploy on relevant changes to `main` via path filters (content, static-site package, tome-db, lockfiles, devcontainer, workflow).
 - **Must** replace bucket contents on each deploy (`aws s3 sync --delete`).
 - **Must** invalidate CloudFront after each successful sync (`/*`).
 - **Must** authenticate to AWS via GitHub OIDC (no long-lived access keys in the repository).
-- **Should** run `marloth-static-site` tests before build in CI.
+- **Should** run `tome-static-site` tests before build in CI.
 - **May** support manual `workflow_dispatch` for first deploy and debugging.
 
 ## Design rationale
@@ -44,7 +44,7 @@ Concurrency group `deploy-static-site` with `cancel-in-progress: true` so overla
 | Input | Source |
 | --- | --- |
 | Design corpus | `content/` (git-tracked) |
-| Build tooling | `packages/marloth-static-site/`, `packages/marloth-db/` |
+| Build tooling | `packages/tome-static-site/`, `packages/tome-db/` |
 | Devcontainer image | `.devcontainer/Dockerfile` |
 
 | Output | Destination |
@@ -117,7 +117,7 @@ Actions → **Deploy static site** → **Run workflow**.
 | --- | --- | --- |
 | Deploy branch | Workflow | `main` |
 | Site base path | `MARLOTH_WEB_BASE` at build time | `/` |
-| Path filters | Workflow | content, static-site, marloth-db, lockfiles, devcontainer, workflow |
+| Path filters | Workflow | content, static-site, tome-db, lockfiles, devcontainer, workflow |
 
 If the site is served under a CloudFront path prefix, set `MARLOTH_WEB_BASE` in the workflow build step.
 
@@ -155,4 +155,4 @@ For a fast in-container build (not CI parity), use `bun run web:build` instead.
 ## See also
 
 - [`static-website.md`](./static-website.md) — Astro build and output layout
-- [`marloth-db.md`](./marloth-db.md) — content store read at build time
+- [`tome-db.md`](./tome-db.md) — content store read at build time

@@ -9,11 +9,11 @@ import {
   findNestedPageSpuriousTypeMembership,
   openMarlothWriteContext,
   syncAfterRelationshipsWrite,
-} from "marloth-db";
+} from "tome-db";
 import {
   defaultDbPathForContent,
   resolveContentPath,
-} from "marloth-db/content";
+} from "tome-db/content";
 
 const apply = process.argv.includes("--apply");
 const dryRun = !apply || process.argv.includes("--dry-run");

@@ -10,7 +10,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve } from "node:path";
-import { GraphDatabase, IS_A_LABEL } from "marloth-db";
+import { GraphDatabase, IS_A_LABEL } from "tome-db";
 import { findExportFiles, readExportText } from "./export-fs";
 import { extractNotionId } from "./ids";
 import * as indexes from "./indexes";

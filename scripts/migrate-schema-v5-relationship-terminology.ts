@@ -5,7 +5,7 @@
  */
 import { Database } from "bun:sqlite";
 import { resolve } from "node:path";
-import { GraphDatabase, SCHEMA_VERSION } from "marloth-db";
+import { GraphDatabase, SCHEMA_VERSION } from "tome-db";
 
 const dbPath = resolve(
   process.argv.includes("--db")

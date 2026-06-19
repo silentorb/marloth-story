@@ -5,8 +5,8 @@
  */
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
-import { canonicalizeMarkdownBodyLinks } from "marloth-db/markdown-links";
-import { ContentStore, bodyFromNode, resolveContentPath } from "marloth-db/content";
+import { canonicalizeMarkdownBodyLinks } from "tome-db/markdown-links";
+import { ContentStore, bodyFromNode, resolveContentPath } from "tome-db/content";
 
 const dryRun = process.argv.includes("--dry-run");
 

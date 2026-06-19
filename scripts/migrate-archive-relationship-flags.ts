@@ -6,12 +6,12 @@
 import {
   listArchiveMemberIdsFromStore,
   markIncidentRelationshipsArchived,
-} from "marloth-db";
+} from "tome-db";
 import {
   defaultDbPathForContent,
   openMarlothWriteContext,
   resolveContentPath,
-} from "marloth-db/content";
+} from "tome-db/content";
 
 export function migrateArchiveRelationshipFlags(contentDir: string): {
   archiveMembers: number;

@@ -1,8 +1,8 @@
 ---
 description: Dynamic table view fields — computed database columns
 globs:
-  - packages/marloth-db/src/dynamic-fields/**
-  - packages/marloth-db/src/database-view.ts
+  - packages/tome-db/src/dynamic-fields/**
+  - packages/tome-db/src/database-view.ts
   - docs/dynamic-fields/**
   - scripts/seed-dynamic-fields.ts
   - scripts/migrate-theme-edges.ts
@@ -16,4 +16,4 @@ Read the authoritative feature spec before making changes:
 
 Per-field logic specs: [`docs/dynamic-fields/`](../../docs/dynamic-fields/)
 
-For graph node semantics: [`docs/ontology.md`](../../docs/ontology.md) and [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md). Core tables: `nodes`, `connections`.
+For graph node semantics: [`docs/ontology.md`](../../docs/ontology.md) and [`docs/features/tome-db.md`](../../docs/features/tome-db.md). Core tables: `nodes`, `connections`.

@@ -11,13 +11,13 @@ import { resolve } from "node:path";
 import {
   relationshipsFilePath,
   resolveContentPath,
-} from "../packages/marloth-db/src/content/paths";
+} from "../packages/tome-db/src/content/paths";
 import {
   RELATIONSHIPS_FILE_VERSION,
   type RelationshipEntry,
   serializeRelationshipsFile,
-} from "../packages/marloth-db/src/content/relationships-file";
-import { IS_A_TYPE } from "../packages/marloth-db/src/labels";
+} from "../packages/tome-db/src/content/relationships-file";
+import { IS_A_TYPE } from "../packages/tome-db/src/labels";
 
 const contentRoot = resolveContentPath(resolve(import.meta.dir, ".."));
 const relPath = relationshipsFilePath(contentRoot);

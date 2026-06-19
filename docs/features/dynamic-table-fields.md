@@ -10,16 +10,16 @@ Read this doc when your task involves:
 
 - Computed/formula/rollup columns in database table views
 - `content/dynamic-fields.json` bindings
-- `packages/marloth-db/src/dynamic-fields/`
+- `packages/tome-db/src/dynamic-fields/`
 - Adding or changing dynamic field resolvers
 
-For per-field logic, read the spec in [`docs/dynamic-fields/`](../dynamic-fields/README.md). For graph storage, read [marloth-db.md](./marloth-db.md). For editor table rendering, read [marloth-editor.md](./marloth-editor.md).
+For per-field logic, read the spec in [`docs/dynamic-fields/`](../dynamic-fields/README.md). For graph storage, read [tome-db.md](./tome-db.md). For editor table rendering, read [tome-editor.md](./tome-editor.md).
 
 ## Requirements
 
 ### Core model
 
-- Dynamic values **must** be computed in `marloth-db` when building `DatabaseViewDetail`, before Notion view filter/sort evaluation.
+- Dynamic values **must** be computed in `tome-db` when building `DatabaseViewDetail`, before Notion view filter/sort evaluation.
 - Dynamic values **must** override stale `IS_A` relationship properties when column keys match.
 - Core graph files **must not** store dynamic field configuration; `dynamic-fields.json` only.
 - Each dynamic field **must** have an authoritative spec under `docs/dynamic-fields/`.
@@ -48,10 +48,10 @@ For per-field logic, read the spec in [`docs/dynamic-fields/`](../dynamic-fields
 ### Agent workflow
 
 1. Write/update `docs/dynamic-fields/<field>.md`.
-2. Implement resolver in `packages/marloth-db/src/dynamic-fields/resolvers/`.
+2. Implement resolver in `packages/tome-db/src/dynamic-fields/resolvers/`.
 3. Register resolver id in `registry.ts`.
 4. Update bindings in `content/dynamic-fields.json` (or `bun scripts/seed-dynamic-fields.ts`).
-5. Add tests in `packages/marloth-db/src/dynamic-fields/`.
+5. Add tests in `packages/tome-db/src/dynamic-fields/`.
 6. Run graph migration scripts if new relationships are required (e.g. `scripts/migrate-theme-edges.ts`).
 
 No manual UI for field configuration in v1.
@@ -91,7 +91,7 @@ getDatabaseViewDetail(db, databaseId, view)
 | --- | --- |
 | `docs/dynamic-fields/*.md` | Authoritative field logic |
 | `content/dynamic-fields.json` | Runtime bindings |
-| `packages/marloth-db/src/dynamic-fields/` | Resolver registry and enrichment |
+| `packages/tome-db/src/dynamic-fields/` | Resolver registry and enrichment |
 | `scripts/seed-dynamic-fields.ts` | Write starter bindings to content |
 | `scripts/migrate-theme-edges.ts` | Create THEME relationships from legacy tags |
 
@@ -105,12 +105,12 @@ bun run scripts/migrate-theme-edges.ts
 bun run scripts/seed-dynamic-fields.ts
 
 # Run tests
-cd packages/marloth-db && bun test src/dynamic-fields
+cd packages/tome-db && bun test src/dynamic-fields
 ```
 
 ## Verification
 
-- `bun test` in `packages/marloth-db` — dynamic-fields unit and integration tests
+- `bun test` in `packages/tome-db` — dynamic-fields unit and integration tests
 - Open Characters database in editor — `all_scene_count` and per-product columns populated
 - Open Inspirations database — `weighted_use` and `wonder` match doc examples
 
@@ -118,15 +118,15 @@ cd packages/marloth-db && bun test src/dynamic-fields
 
 | Component | Path |
 | --- | --- |
-| Schema / overlay DDL | `packages/marloth-db/src/schema.ts` |
-| Overlay read API | `packages/marloth-db/src/dynamic-fields/overlay.ts` |
-| Enrichment hook | `packages/marloth-db/src/dynamic-fields/enrich.ts` |
-| View integration | `packages/marloth-db/src/database-view.ts` |
-| Resolvers | `packages/marloth-db/src/dynamic-fields/resolvers/` |
+| Schema / overlay DDL | `packages/tome-db/src/schema.ts` |
+| Overlay read API | `packages/tome-db/src/dynamic-fields/overlay.ts` |
+| Enrichment hook | `packages/tome-db/src/dynamic-fields/enrich.ts` |
+| View integration | `packages/tome-db/src/database-view.ts` |
+| Resolvers | `packages/tome-db/src/dynamic-fields/resolvers/` |
 
 ## See also
 
 - [Dynamic field specs index](../dynamic-fields/README.md)
-- [marloth-db.md](./marloth-db.md)
-- [marloth-editor.md](./marloth-editor.md)
+- [tome-db.md](./tome-db.md)
+- [tome-editor.md](./tome-editor.md)
 - [ontology.md](../ontology.md)

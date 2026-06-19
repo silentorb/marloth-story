@@ -1,5 +1,7 @@
-Git-tracked SQLite property graph. Canonical file: `marloth.sqlite`.
+# Local query cache
 
-Edit this database in place (marloth editor, `GraphDatabase`, or focused migrations). Do not rebuild from Notion for routine changes. Archival exports live in `./exports/` for targeted mining only.
+Gitignored SQLite cache rebuilt from `./content/` by `bun run content:sync` or the Tome editor API on startup.
 
-See [`docs/features/marloth-db.md`](../docs/features/marloth-db.md) and root [`AGENTS.md`](../AGENTS.md) (**Graph data workflow**).
+Default path: `data/tome.sqlite` (legacy `data/marloth.sqlite` is still used when present and `tome.sqlite` is absent).
+
+See [`docs/features/tome-db.md`](../docs/features/tome-db.md) and root [`AGENTS.md`](../AGENTS.md) (**Graph data workflow**).

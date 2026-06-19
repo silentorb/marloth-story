@@ -8,7 +8,7 @@ import { readFileSync } from "node:fs";
 import {
   DEFAULT_ARCHIVE_NODE_ID,
   isLegacyArchivedNotionPath,
-} from "marloth-db";
+} from "tome-db";
 import {
   openMarlothWriteContext,
   parseNodeFile,
@@ -16,7 +16,7 @@ import {
   defaultDbPathForContent,
   nodeFilePath,
   sortEndpoints,
-} from "marloth-db/content";
+} from "tome-db/content";
 const INCLUDES_TYPE = "includes";
 
 const LINK_RE = /\[[^\]]*\]\(([^)]+)\)/g;

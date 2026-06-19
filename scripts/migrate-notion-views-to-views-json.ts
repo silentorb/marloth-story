@@ -15,8 +15,8 @@ import {
   uniqueTabId,
   type CustomTabDefinition,
   type ViewsFile,
-} from "marloth-db";
-import { contentDataDir, resolveContentPath, viewsFilePath } from "marloth-db/content";
+} from "tome-db";
+import { contentDataDir, resolveContentPath, viewsFilePath } from "tome-db/content";
 
 const SCENES_DB = "204dba198db74611b0b49a98dd53e8f5";
 

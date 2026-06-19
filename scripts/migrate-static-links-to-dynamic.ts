@@ -10,8 +10,8 @@ import { join } from "node:path";
 import {
   linkTextMatchesNodeTitle,
   migrateStaticLinksInBodies,
-} from "marloth-db/dynamic-node-links";
-import { ContentStore, bodyFromNode, resolveContentPath } from "marloth-db/content";
+} from "tome-db/dynamic-node-links";
+import { ContentStore, bodyFromNode, resolveContentPath } from "tome-db/content";
 
 const dryRun = process.argv.includes("--dry-run");
 

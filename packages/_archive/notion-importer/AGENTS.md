@@ -2,7 +2,7 @@
 
 ## What it is
 - TypeScript + **Bun**: **legacy** pipeline that imported Notion exports into `data/marloth.sqlite` and wrote manifest/report files under `docs/`. **Not the ongoing update path** — edit the graph directly; reuse parsing helpers to mine `./exports/` when needed.
-- Graph storage API: `marloth-db` workspace package.
+- Graph storage API: `tome-db` workspace package.
 - Source lives in `src/`; bundled output in repo root `dist/notion-importer/` (run `bun run build` after meaningful changes if you rely on the bundle).
 
 ## Run
@@ -21,5 +21,5 @@
 
 ## Repo-wide context
 - **Feature spec (requirements, rationale, behavior):** [`docs/features/notion-import.md`](../../docs/features/notion-import.md)
-- **Graph database:** [`docs/features/marloth-db.md`](../../docs/features/marloth-db.md)
+- **Graph database:** [`docs/features/tome-db.md`](../../docs/features/tome-db.md)
 - Global conventions and feature routing: repository root [`AGENTS.md`](../../AGENTS.md)

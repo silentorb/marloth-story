@@ -1,0 +1,16 @@
+---
+description: Tome browser markdown editor and graph API
+globs:
+  - packages/tome-editor/**
+  - docs/features/tome-editor.md
+---
+
+# Tome Editor
+
+Read the authoritative feature spec before making changes:
+
+[`docs/features/tome-editor.md`](../../docs/features/tome-editor.md)
+
+Package agent notes: [`packages/tome-editor/AGENTS.md`](../../packages/tome-editor/AGENTS.md)
+
+For graph node semantics, also read [`docs/ontology.md`](../../docs/ontology.md) and [`docs/features/tome-db.md`](../../docs/features/tome-db.md). API: `/api/nodes`, `?node=`.

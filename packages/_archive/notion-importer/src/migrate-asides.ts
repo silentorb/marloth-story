@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
-import { GraphDatabase } from "marloth-db";
-import { updateRecordBody } from "marloth-db";
+import { GraphDatabase } from "tome-db";
+import { updateRecordBody } from "tome-db";
 import { convertNotionAsidesToBlockquotes, normalizeCalloutBlockquotes } from "./textutil";
 
 const DEFAULT_DB = resolve(import.meta.dir, "../../../data/marloth.sqlite");

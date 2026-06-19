@@ -20,7 +20,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Marloth Editor: build",
+      "label": "Tome Editor: build",
       "type": "shell",
       "command": "bun run editor:build",
       "options": {
@@ -35,7 +35,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Marloth: build static website",
+      "label": "Tome: build static website",
       "type": "shell",
       "command": "bun run web:build",
       "options": {
@@ -49,7 +49,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Marloth: serve static website",
+      "label": "Tome: serve static website",
       "type": "shell",
       "command": "bash scripts/serve-static-site.sh",
       "options": {
@@ -57,7 +57,7 @@
       },
       "isBackground": true,
       "problemMatcher": {
-        "owner": "marloth-static-site",
+        "owner": "tome-static-site",
         "pattern": {
           "regexp": "."
         },
@@ -74,7 +74,7 @@
       }
     },
     {
-      "label": "Marloth: build static website (CI simulation)",
+      "label": "Tome: build static website (CI simulation)",
       "type": "shell",
       "command": "bash scripts/ci-build-static-site.sh",
       "options": {
@@ -89,9 +89,9 @@
       "problemMatcher": []
     },
     {
-      "label": "Marloth Editor: dev servers",
+      "label": "Tome Editor: dev servers",
       "type": "shell",
-      "command": "bash scripts/marloth-editor-start",
+      "command": "bash scripts/tome-editor-start",
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -104,7 +104,7 @@
       }
     },
     {
-      "label": "Marloth Editor: dev (API + webview)",
+      "label": "Tome Editor: dev (API + webview)",
       "type": "shell",
       "command": "bun run editor:dev",
       "options": {

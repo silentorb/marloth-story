@@ -3,12 +3,12 @@
  *
  * Usage: bun run scripts/migrate-priority-default.ts [--dry-run]
  */
-import { GraphDatabase } from "../packages/marloth-db/src/graph";
-import { resolveContentPath } from "../packages/marloth-db/src/content/paths";
-import { hasTableSchemaEntry } from "../packages/marloth-db/src/table-schemas/load";
-import { TYPE_MEMBERSHIP_LABELS } from "../packages/marloth-db/src/labels";
-import { loadTableSchemaForDatabase } from "../packages/marloth-db/src/database-column-defs";
-import { isUnsetPriority, PRIORITY_DEFAULT } from "../packages/marloth-db/src/property-enums";
+import { GraphDatabase } from "../packages/tome-db/src/graph";
+import { resolveContentPath } from "../packages/tome-db/src/content/paths";
+import { hasTableSchemaEntry } from "../packages/tome-db/src/table-schemas/load";
+import { TYPE_MEMBERSHIP_LABELS } from "../packages/tome-db/src/labels";
+import { loadTableSchemaForDatabase } from "../packages/tome-db/src/database-column-defs";
+import { isUnsetPriority, PRIORITY_DEFAULT } from "../packages/tome-db/src/property-enums";
 
 const dryRun = process.argv.includes("--dry-run");
 const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";

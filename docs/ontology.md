@@ -4,7 +4,7 @@
 
 This document describes the **domain model** of the Marloth design corpus in human-friendly terms: what kinds of things exist, what they mean, and how they relate. It is **storage-agnostic**—agents should treat it as the conceptual source of truth for *what the data is about*, independent of SQLite tables or Notion export quirks.
 
-For how nodes are stored, queried, and imported, see [`docs/features/marloth-db.md`](./features/marloth-db.md) and [`docs/features/notion-import.md`](./features/notion-import.md).
+For how nodes are stored, queried, and imported, see [`docs/features/tome-db.md`](./features/tome-db.md) and [`docs/features/notion-import.md`](./features/notion-import.md).
 
 ## When to read this
 
@@ -187,7 +187,7 @@ The corpus is moving away from Notion’s split between “database rows” and 
 
 Scalar values that belonged to a database row in Notion (except Name/title) **belong on the `IS_A` relationship**, not duplicated on the page node, unless the value is clearly intrinsic to the referenced node itself.
 
-Full DDL and import rules: [`docs/features/marloth-db.md`](./features/marloth-db.md).
+Full DDL and import rules: [`docs/features/tome-db.md`](./features/tome-db.md).
 
 ## Evolution
 
@@ -200,5 +200,5 @@ This ontology will grow with the trilogy and game work. When adding entity or re
 ## See also
 
 - [`AGENTS.md`](../AGENTS.md) — project purpose, terminology, modeling direction
-- [`docs/features/marloth-db.md`](./features/marloth-db.md) — property graph schema and API
+- [`docs/features/tome-db.md`](./features/tome-db.md) — property graph schema and API
 - [`docs/features/notion-import.md`](./features/notion-import.md) — Notion → graph import

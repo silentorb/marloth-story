@@ -6,8 +6,8 @@
  */
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
-import { parseNodeFile } from "../packages/marloth-db/src/content/node-file";
-import { contentDataDir, resolveContentPath } from "../packages/marloth-db/src/content/paths";
+import { parseNodeFile } from "../packages/tome-db/src/content/node-file";
+import { contentDataDir, resolveContentPath } from "../packages/tome-db/src/content/paths";
 
 const FORBIDDEN_KEYS = [
   "notion_id",

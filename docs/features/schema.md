@@ -6,7 +6,7 @@ Git-tracked [`content/model/schema.json`](../../content/model/schema.json) decla
 
 This is separate from:
 
-- SQLite DDL (`SCHEMA_VERSION` in `packages/marloth-db/src/schema.ts`)
+- SQLite DDL (`SCHEMA_VERSION` in `packages/tome-db/src/schema.ts`)
 - Per-type-table column definitions in [`table-schemas.json`](./table-schemas.md)
 - UI tab configuration in [`views.json`](./views.md)
 - Composite storage types in [`content/model/relationship-types.json`](../../content/model/relationship-types.json)
@@ -61,7 +61,7 @@ Types are identified by **stable node id**, not display names.
 | `defaultOrder` | Optional `"asc"` (default) or `"desc"`. Controls **dropdown display order** only; `options` array order remains canonical for storage and table sorting. |
 | `values` | Optional map from option label → number; meaning is **consumer-defined** |
 
-**Storage:** `content/data/relationships.json` stores enum properties as **labels** (e.g. `"priority": "Medium"`). The SQLite cache stores the same properties as **integer indices** into `options` (see [marloth-db.md](./marloth-db.md)). Table sorts use **index order**, not `values`.
+**Storage:** `content/data/relationships.json` stores enum properties as **labels** (e.g. `"priority": "Medium"`). The SQLite cache stores the same properties as **integer indices** into `options` (see [tome-db.md](./tome-db.md)). Table sorts use **index order**, not `values`.
 
 For `priority`, `values` are interpreted as numeric **weights** by `priorityWeight()` and the [`inspirations.weightedUse`](../../docs/dynamic-fields/inspirations.weighted-use.md) dynamic field only — not for table sorting. Other enums may use `values` differently or omit them when only labels matter for UI dropdowns.
 
@@ -81,12 +81,12 @@ For `priority`, `values` are interpreted as numeric **weights** by `priorityWeig
 
 | Module | Role |
 | --- | --- |
-| `packages/marloth-db/src/schema-rules/schema-file.ts` | Parse/serialize `schema.json` |
-| `packages/marloth-db/src/schema-rules/resolve.ts` | Match rules to source node + type |
-| `packages/marloth-db/src/enum-codec.ts` | Label ↔ index encode/decode for SQLite cache |
-| `packages/marloth-db/src/enum-config-fingerprint.ts` | Detect enum option-order changes for cache invalidation |
-| `packages/marloth-db/src/property-enums.ts` | Resolve enums from schema; priority helpers |
-| `packages/marloth-db/src/node-page-sections.ts` | Embeds `allowedTargetTypeIds` on relation sections |
+| `packages/tome-db/src/schema-rules/schema-file.ts` | Parse/serialize `schema.json` |
+| `packages/tome-db/src/schema-rules/resolve.ts` | Match rules to source node + type |
+| `packages/tome-db/src/enum-codec.ts` | Label ↔ index encode/decode for SQLite cache |
+| `packages/tome-db/src/enum-config-fingerprint.ts` | Detect enum option-order changes for cache invalidation |
+| `packages/tome-db/src/property-enums.ts` | Resolve enums from schema; priority helpers |
+| `packages/tome-db/src/node-page-sections.ts` | Embeds `allowedTargetTypeIds` on relation sections |
 
 ## Future direction
 
@@ -94,7 +94,7 @@ The long-term goal is a **user-configured model**: enums, types, relationship ru
 
 ## See also
 
-- [marloth-db.md](./marloth-db.md)
+- [tome-db.md](./tome-db.md)
 - [ontology.md](../ontology.md)
 - [ordered-associations.md](./ordered-associations.md)
 - [inspirations.weighted-use.md](../dynamic-fields/inspirations.weighted-use.md)

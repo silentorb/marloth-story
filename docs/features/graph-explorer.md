@@ -13,7 +13,7 @@ Read this doc when your task involves:
 - Anchor scoping, archive exclusion, branch bundling, relevance scoring
 - Changing clustering or zoom-layer behavior
 
-Cross-read: [`marloth-editor.md`](./marloth-editor.md) (editor shell), [`marloth-db.md`](./marloth-db.md) (graph storage), [`../ontology.md`](../ontology.md) (node semantics).
+Cross-read: [`tome-editor.md`](./tome-editor.md) (editor shell), [`tome-db.md`](./tome-db.md) (graph storage), [`../ontology.md`](../ontology.md) (node semantics).
 
 ## Requirements
 
@@ -184,29 +184,29 @@ The following describes how the server subdivides the scoped graph into detail l
 
 ## Verification
 
-- `bun test packages/marloth-db/src/graph-export.test.ts` — archive exclusion, LOD layers, anchor filtering
-- `bun test packages/marloth-db/src/graph-lod-cluster.test.ts` — anchor visibility, relevance ranking, branch bundling
-- `bun test packages/marloth-editor/src/webview/graph-lod.test.ts` — layer navigation, openable nodes
-- `bun test packages/marloth-editor/src/webview/graph-preferences.test.ts` — settings persistence
-- `bun test packages/marloth-editor/src/webview/graph-node-label.test.ts` — hover diagnostic formatting
+- `bun test packages/tome-db/src/graph-export.test.ts` — archive exclusion, LOD layers, anchor filtering
+- `bun test packages/tome-db/src/graph-lod-cluster.test.ts` — anchor visibility, relevance ranking, branch bundling
+- `bun test packages/tome-editor/src/webview/graph-lod.test.ts` — layer navigation, openable nodes
+- `bun test packages/tome-editor/src/webview/graph-preferences.test.ts` — settings persistence
+- `bun test packages/tome-editor/src/webview/graph-node-label.test.ts` — hover diagnostic formatting
 - Manual: open Graph Explorer → coarse layer shows anchor-centric view → click clusters to reveal more nodes → diagnostics toggle shows score breakdown on hover
 
 ## Implementation pointers
 
 | Module | Responsibility |
 | --- | --- |
-| `packages/marloth-db/src/graph-export.ts` | Export entry, anchor BFS, archive filter, `GraphRelationship` |
-| `packages/marloth-db/src/graph-lod-cluster.ts` | Anchor-centric layer subdivision + relevance metadata |
-| `packages/marloth-editor/src/api/server.ts` | `/api/graph/explorer-lod` route |
-| `packages/marloth-editor/src/webview/components/GraphView.tsx` | Force graph UI + settings dropdown |
-| `packages/marloth-editor/src/webview/graph-lod.ts` | Layer navigation helpers |
-| `packages/marloth-editor/src/webview/graph-node-label.ts` | Hover label formatting |
-| `packages/marloth-editor/src/webview/graph-preferences.ts` | localStorage settings |
+| `packages/tome-db/src/graph-export.ts` | Export entry, anchor BFS, archive filter, `GraphRelationship` |
+| `packages/tome-db/src/graph-lod-cluster.ts` | Anchor-centric layer subdivision + relevance metadata |
+| `packages/tome-editor/src/api/server.ts` | `/api/graph/explorer-lod` route |
+| `packages/tome-editor/src/webview/components/GraphView.tsx` | Force graph UI + settings dropdown |
+| `packages/tome-editor/src/webview/graph-lod.ts` | Layer navigation helpers |
+| `packages/tome-editor/src/webview/graph-node-label.ts` | Hover label formatting |
+| `packages/tome-editor/src/webview/graph-preferences.ts` | localStorage settings |
 
 ## See also
 
-- [marloth-editor.md](./marloth-editor.md)
-- [marloth-db.md](./marloth-db.md)
+- [tome-editor.md](./tome-editor.md)
+- [tome-db.md](./tome-db.md)
 - [`../ontology.md`](../ontology.md)
-- [`packages/marloth-editor/AGENTS.md`](../../packages/marloth-editor/AGENTS.md)
-- [`packages/marloth-db/AGENTS.md`](../../packages/marloth-db/AGENTS.md)
+- [`packages/tome-editor/AGENTS.md`](../../packages/tome-editor/AGENTS.md)
+- [`packages/tome-db/AGENTS.md`](../../packages/tome-db/AGENTS.md)

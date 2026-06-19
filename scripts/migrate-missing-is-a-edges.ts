@@ -5,8 +5,8 @@
  *   bun run scripts/migrate-missing-is-a-edges.ts --dry-run
  *   bun run scripts/migrate-missing-is-a-edges.ts
  */
-import { GraphDatabase } from "../packages/marloth-db/src/graph";
-import { isTypeTableNode } from "../packages/marloth-db/src/node-capabilities";
+import { GraphDatabase } from "../packages/tome-db/src/graph";
+import { isTypeTableNode } from "../packages/tome-db/src/node-capabilities";
 import {
   expectedTypeDatabaseForPage,
   findMissingTypeMembershipRelationships,
@@ -19,8 +19,8 @@ import {
   scalarPropertiesFromNode,
   setNodeProperties,
   nodePropertiesWithoutScalars,
-} from "../packages/marloth-db/src/type-membership-audit";
-import { coalescePriorityValue } from "../packages/marloth-db/src/property-enums";
+} from "../packages/tome-db/src/type-membership-audit";
+import { coalescePriorityValue } from "../packages/tome-db/src/property-enums";
 
 const dryRun = process.argv.includes("--dry-run");
 const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";

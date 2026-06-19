@@ -1,0 +1,23 @@
+---
+description: Tome content-first graph — edit content/, not SQLite cache
+globs:
+  - packages/tome-db/**
+  - content/**
+  - docs/features/tome-db.md
+alwaysApply: false
+---
+
+# Tome database
+
+You are working on the git-tracked design corpus (`content/`) or `packages/tome-db/`.
+
+Read before making changes:
+
+- [`docs/features/tome-db.md`](../../docs/features/tome-db.md)
+- Root [`AGENTS.md`](../../AGENTS.md) — **Graph data workflow**
+
+**Default:** edit `content/data/` (`{id}.md`, `relationships.json`) and `content/model/` (`schema.json`, `views.json`, etc.) or use `ContentStore` / the editor API. **Do not** edit `data/tome.sqlite` (or legacy `data/marloth.sqlite`) directly or run `bun run notion:import` / `--clean` for routine work.
+
+**Archival exports:** if data exists only in `./exports/`, mine the relevant files and upsert into `content/` — see [`docs/features/notion-import.md`](../../docs/features/notion-import.md) (legacy).
+
+For design node semantics: [`docs/ontology.md`](../../docs/ontology.md). Terminology: **node**, **relationship**, **page** (see root [`AGENTS.md`](../../AGENTS.md)).
