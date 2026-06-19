@@ -1,15 +1,21 @@
 import type { AppView } from "../shared/types";
 
-const APP_TITLE = "Tome";
-
-export function formatDocumentTitle(view: AppView, recordTitle?: string | null): string {
-  if (view === "graph-explorer") return `Graph Explorer · ${APP_TITLE}`;
+export function formatDocumentTitle(
+  view: AppView,
+  recordTitle?: string | null,
+  appTitle = "Tome",
+): string {
+  if (view === "graph-explorer") return `Graph Explorer · ${appTitle}`;
   if (recordTitle) {
-    return recordTitle === APP_TITLE ? APP_TITLE : `${recordTitle} · ${APP_TITLE}`;
+    return recordTitle === appTitle ? appTitle : `${recordTitle} · ${appTitle}`;
   }
-  return APP_TITLE;
+  return appTitle;
 }
 
-export function syncDocumentTitle(view: AppView, recordTitle?: string | null): void {
-  document.title = formatDocumentTitle(view, recordTitle);
+export function syncDocumentTitle(
+  view: AppView,
+  recordTitle?: string | null,
+  appTitle = "Tome",
+): void {
+  document.title = formatDocumentTitle(view, recordTitle, appTitle);
 }

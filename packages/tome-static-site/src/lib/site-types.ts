@@ -73,6 +73,7 @@ export interface TabRoute {
 
 export interface SiteData {
   homeNodeId: string;
+  staticSiteHeader: string;
   base: string;
   nodes: SiteNode[];
   tabItemsPayloads: Record<string, TabItemsPayload>;

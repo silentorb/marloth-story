@@ -108,16 +108,16 @@ Keep **read** support; deprecate names over time. Do not remove without a migrat
 
 Use this when the full refactor series is done:
 
-- [ ] `content/model/workspace.json` exists and is loaded by `tome-db`
-- [ ] No duplicate home/archive/anchor IDs in `tome-editor` source (only via workspace/API)
-- [ ] Sidebar links come from workspace config, not hardcoded `sidebar-nav.ts` array
-- [ ] `content/model/ordered-associations.json` drives ordered-association configs
-- [ ] Static site home reads from workspace config
-- [ ] Dynamic resolvers use params only (no unparameterized composite type strings)
-- [ ] Type membership audit uses configurable export path prefix
-- [ ] Root [`AGENTS.md`](../../AGENTS.md) links this overview
-- [ ] `bun test` passes
-- [ ] `bun run validate:content-model` passes
+- [x] `content/model/workspace.json` exists and is loaded by `tome-db`
+- [x] No duplicate home/archive/anchor IDs in `tome-editor` source (only via workspace/API)
+- [x] Sidebar links come from workspace config, not hardcoded `sidebar-nav.ts` array
+- [x] `content/model/ordered-associations.json` drives ordered-association configs
+- [x] Static site home reads from workspace config
+- [x] Dynamic resolvers use params only (no unparameterized composite type strings)
+- [x] Type membership audit uses configurable export path prefix
+- [x] Root [`AGENTS.md`](../../AGENTS.md) links this overview
+- [x] `bun test` passes
+- [x] `bun run validate:content-model` passes
 
 ## Out of scope
 

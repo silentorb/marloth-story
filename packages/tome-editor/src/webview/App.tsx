@@ -353,7 +353,8 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
   }, [bumpRecentNodes, saveState]);
 
   useEffect(() => {
-    syncDocumentTitle(view, node?.title);
+    const appTitle = workspace?.branding?.appTitle ?? "Tome";
+    syncDocumentTitle(view, node?.title, appTitle);
     const urlNodeId = nodeFromLocation();
     syncDocumentIcon({
       view,
@@ -374,6 +375,7 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
     node?.body,
     node?.isTypeTable,
     homeId,
+    workspace?.branding?.appTitle,
     workspace?.branding?.defaultDocumentIcon,
     sidebarIconMaps.byLabel,
     sidebarIconMaps.byNodeId,

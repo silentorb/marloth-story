@@ -29,6 +29,7 @@ export function loadNodesFromGraph(config: ResolvedConfig): SiteData {
 
   return {
     homeNodeId: workspace.staticSite.homeNodeId,
+    staticSiteHeader: workspace.branding?.staticSiteHeader ?? "Tome",
     base: config.base,
     nodes,
     tabItemsPayloads,

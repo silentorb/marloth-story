@@ -117,11 +117,11 @@ Manual smoke:
 
 ## Done when
 
-- [ ] Legacy compat documented in feature docs
-- [ ] Graph Explorer localStorage dual-read (if implemented) tested
-- [ ] Static site header and editor app title use workspace branding
-- [ ] Global checklist in [00-overview.md](./00-overview.md) all checked
-- [ ] `bun test` green
+- [x] Legacy compat documented in feature docs
+- [x] Graph Explorer localStorage dual-read (if implemented) tested
+- [x] Static site header and editor app title use workspace branding
+- [x] Global checklist in [00-overview.md](./00-overview.md) all checked
+- [x] `bun test` green
 
 ## Out of scope
 

@@ -1,8 +1,14 @@
-export const GRAPH_SHOW_NODE_LABELS_KEY = "marloth.graph.showNodeLabels";
-export const GRAPH_SHOW_RELEVANCE_DIAGNOSTICS_KEY = "marloth.graph.showRelevanceDiagnostics";
-export const GRAPH_EXPLORER_MODE_KEY = "marloth.graph.explorerMode";
-export const GRAPH_EXPLORER_LAYER_DEPTH_KEY = "marloth.graph.layerDepth";
-export const GRAPH_EXPLORER_RELATIVE_DETAIL_KEY = "marloth.graph.relativeDetail";
+export const GRAPH_SHOW_NODE_LABELS_KEY = "tome.graph.showNodeLabels";
+export const GRAPH_SHOW_RELEVANCE_DIAGNOSTICS_KEY = "tome.graph.showRelevanceDiagnostics";
+export const GRAPH_EXPLORER_MODE_KEY = "tome.graph.explorerMode";
+export const GRAPH_EXPLORER_LAYER_DEPTH_KEY = "tome.graph.layerDepth";
+export const GRAPH_EXPLORER_RELATIVE_DETAIL_KEY = "tome.graph.relativeDetail";
+
+export const LEGACY_GRAPH_SHOW_NODE_LABELS_KEY = "marloth.graph.showNodeLabels";
+export const LEGACY_GRAPH_SHOW_RELEVANCE_DIAGNOSTICS_KEY = "marloth.graph.showRelevanceDiagnostics";
+export const LEGACY_GRAPH_EXPLORER_MODE_KEY = "marloth.graph.explorerMode";
+export const LEGACY_GRAPH_EXPLORER_LAYER_DEPTH_KEY = "marloth.graph.layerDepth";
+export const LEGACY_GRAPH_EXPLORER_RELATIVE_DETAIL_KEY = "marloth.graph.relativeDetail";
 
 export const DEFAULT_GRAPH_EXPLORER_LAYER_DEPTH = 3;
 export const DEFAULT_GRAPH_EXPLORER_RELATIVE_DETAIL = 2;
@@ -11,6 +17,16 @@ export const MAX_GRAPH_EXPLORER_LAYER_DEPTH = 10;
 export const MIN_GRAPH_EXPLORER_RELATIVE_DETAIL = 1;
 
 export type GraphExplorerMode = "layers" | "relative";
+
+function readStorageItem(key: string, legacyKey: string): string | null {
+  return localStorage.getItem(key) ?? localStorage.getItem(legacyKey);
+}
+
+function readBool(key: string, legacyKey: string, defaultValue: boolean): boolean {
+  const raw = readStorageItem(key, legacyKey);
+  if (raw === null) return defaultValue;
+  return raw === "1";
+}
 
 export function normalizeGraphExplorerRelativeDetail(
   value: number,
@@ -25,7 +41,7 @@ export function normalizeGraphExplorerRelativeDetail(
 
 export function readGraphShowNodeLabels(): boolean {
   try {
-    return localStorage.getItem(GRAPH_SHOW_NODE_LABELS_KEY) === "1";
+    return readBool(GRAPH_SHOW_NODE_LABELS_KEY, LEGACY_GRAPH_SHOW_NODE_LABELS_KEY, false);
   } catch {
     return false;
   }
@@ -41,7 +57,11 @@ export function writeGraphShowNodeLabels(value: boolean): void {
 
 export function readGraphShowRelevanceDiagnostics(): boolean {
   try {
-    return localStorage.getItem(GRAPH_SHOW_RELEVANCE_DIAGNOSTICS_KEY) === "1";
+    return readBool(
+      GRAPH_SHOW_RELEVANCE_DIAGNOSTICS_KEY,
+      LEGACY_GRAPH_SHOW_RELEVANCE_DIAGNOSTICS_KEY,
+      false,
+    );
   } catch {
     return false;
   }
@@ -57,7 +77,7 @@ export function writeGraphShowRelevanceDiagnostics(value: boolean): void {
 
 export function readGraphExplorerMode(): GraphExplorerMode {
   try {
-    const value = localStorage.getItem(GRAPH_EXPLORER_MODE_KEY);
+    const value = readStorageItem(GRAPH_EXPLORER_MODE_KEY, LEGACY_GRAPH_EXPLORER_MODE_KEY);
     if (value === "relative") return "relative";
     return "layers";
   } catch {
@@ -75,7 +95,10 @@ export function writeGraphExplorerMode(value: GraphExplorerMode): void {
 
 export function readGraphExplorerLayerDepth(): number {
   try {
-    const raw = localStorage.getItem(GRAPH_EXPLORER_LAYER_DEPTH_KEY);
+    const raw = readStorageItem(
+      GRAPH_EXPLORER_LAYER_DEPTH_KEY,
+      LEGACY_GRAPH_EXPLORER_LAYER_DEPTH_KEY,
+    );
     if (raw === null) return DEFAULT_GRAPH_EXPLORER_LAYER_DEPTH;
     return normalizeGraphExplorerLayerDepth(Number.parseInt(raw, 10));
   } catch {
@@ -105,7 +128,10 @@ export function writeGraphExplorerLayerDepth(value: number): void {
 export function readGraphExplorerRelativeDetail(layerDepth?: number): number {
   try {
     const depth = layerDepth ?? readGraphExplorerLayerDepth();
-    const raw = localStorage.getItem(GRAPH_EXPLORER_RELATIVE_DETAIL_KEY);
+    const raw = readStorageItem(
+      GRAPH_EXPLORER_RELATIVE_DETAIL_KEY,
+      LEGACY_GRAPH_EXPLORER_RELATIVE_DETAIL_KEY,
+    );
     if (raw === null) return normalizeGraphExplorerRelativeDetail(DEFAULT_GRAPH_EXPLORER_RELATIVE_DETAIL, depth);
     return normalizeGraphExplorerRelativeDetail(Number.parseInt(raw, 10), depth);
   } catch {

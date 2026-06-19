@@ -1,6 +1,7 @@
 ---
 import "../lib/theme.css";
 import "../lib/node-sections.css";
+import { getStaticSiteHeader } from "../lib/content";
 
 interface Props {
   title: string;
@@ -8,6 +9,7 @@ interface Props {
 
 const { title } = Astro.props;
 const pageTitle = title;
+const siteHeader = getStaticSiteHeader();
 ---
 
 <!doctype html>
@@ -20,7 +22,7 @@ const pageTitle = title;
   </head>
   <body>
     <header class="site-header">
-      <a href={import.meta.env.BASE_URL}>Marloth design corpus</a>
+      <a href={import.meta.env.BASE_URL}>{siteHeader}</a>
     </header>
     <main class="page page--node">
       <slot />

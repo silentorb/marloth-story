@@ -17,4 +17,10 @@ describe("formatDocumentTitle", () => {
   test("labels graph views", () => {
     expect(formatDocumentTitle("graph-explorer")).toBe("Graph Explorer · Tome");
   });
+
+  test("uses custom app title from workspace branding", () => {
+    expect(formatDocumentTitle("node-page", "Scene One", "Marloth")).toBe("Scene One · Marloth");
+    expect(formatDocumentTitle("graph-explorer", null, "Marloth")).toBe("Graph Explorer · Marloth");
+    expect(formatDocumentTitle("node-page", "Marloth", "Marloth")).toBe("Marloth");
+  });
 });

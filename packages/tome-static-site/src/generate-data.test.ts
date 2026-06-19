@@ -82,6 +82,7 @@ describe("writeSiteData", () => {
     const data = writeSiteData(config, outFile);
 
     expect(data.homeNodeId).toBe(TEST_STATIC_SITE_HOME_NODE_ID);
+    expect(data.staticSiteHeader).toBe("Tome");
 
     const instance = data.nodes.find((node) => node.id === instanceId);
     expect(instance).toBeDefined();

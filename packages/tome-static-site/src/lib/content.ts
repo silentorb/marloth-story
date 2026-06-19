@@ -29,6 +29,10 @@ export function getHomeNodeId(): string {
   return data.homeNodeId;
 }
 
+export function getStaticSiteHeader(): string {
+  return data.staticSiteHeader ?? "Tome";
+}
+
 export function loadTabRoutes() {
   return data.tabRoutes ?? [];
 }
