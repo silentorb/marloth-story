@@ -6,8 +6,6 @@ import {
 } from "./graph-lod-cluster";
 import { archiveNodeId, resolveWorkspace } from "./workspace/resolve";
 
-export { DEFAULT_GRAPH_EXPLORER_ANCHOR_ID } from "./workspace/deprecated-shims";
-
 export interface GraphNodeRelevance {
   score: number;
   hop: number;

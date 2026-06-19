@@ -15,7 +15,7 @@ const NODE_A = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 const NODE_B = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 
 describe("shared archived edge unarchive", () => {
-  const fixture = createTestContentFixture("marloth-lifecycle-shared-");
+  const fixture = createTestContentFixture("tome-lifecycle-shared-");
 
   seedTestNode(fixture, { id: HOME, properties: { title: "Home" } });
   seedTestNode(fixture, { id: HUB, properties: { title: "Archive" } });

@@ -77,7 +77,6 @@ Non-breaking read support for Marloth-era names. Do not remove without a migrati
 | `data/marloth.sqlite` | Legacy cache path; used when `data/tome.sqlite` is absent | [`packages/tome-db/src/content/paths.ts`](../../packages/tome-db/src/content/paths.ts) |
 | `.marloth/user-settings.json` | Legacy settings directory | [`packages/tome-editor/src/api/paths.ts`](../../packages/tome-editor/src/api/paths.ts) |
 | `marloth.graph.*` browser `localStorage` | Dual-read for Graph Explorer prefs; writes use `tome.graph.*` | [`packages/tome-editor/src/webview/graph-preferences.ts`](../../packages/tome-editor/src/webview/graph-preferences.ts) |
-| `@deprecated` TS aliases (`marlothHref`, `MarlothWriteContext`, `openMarlothWriteContext`, …) | Kept until grep-clean across the repo | Various exports from `tome-db` / `tome-editor` |
 
 Prefer `TOME_*` env vars and `data/tome.sqlite` for new setups. See also [tome-editor.md](./tome-editor.md) for editor-specific env fallbacks.
 

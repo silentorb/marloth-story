@@ -8,7 +8,7 @@ import { VIEWS_FILE_VERSION } from "../../src/content/views-file";
 import { createTab, deleteTab, reorderSectionTabs, updateTab, updateSectionColumnOrder } from "../../src/views/mutations";
 
 describe("views mutations", () => {
-  const fixture = createTestContentFixture("marloth-views-mut-");
+  const fixture = createTestContentFixture("tome-views-mut-");
   const nodeId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
   seedTestViews(fixture, {
@@ -53,7 +53,7 @@ describe("views mutations", () => {
   });
 
   test("reorders custom tabs", () => {
-    const reorderFixture = createTestContentFixture("marloth-views-reorder-");
+    const reorderFixture = createTestContentFixture("tome-views-reorder-");
     seedTestViews(reorderFixture, {
       version: VIEWS_FILE_VERSION,
       nodes: {
@@ -86,7 +86,7 @@ describe("views mutations", () => {
   });
 
   test("refuses to delete the last tab", () => {
-    const soloFixture = createTestContentFixture("marloth-views-last-tab-");
+    const soloFixture = createTestContentFixture("tome-views-last-tab-");
     seedTestViews(soloFixture, {
       version: VIEWS_FILE_VERSION,
       nodes: {

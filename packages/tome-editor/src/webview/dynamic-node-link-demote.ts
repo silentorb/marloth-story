@@ -1,7 +1,7 @@
 import { resolveMarkdownHrefTarget } from "tome-db/markdown-links";
 import { Plugin, PluginKey } from "@milkdown/prose/state";
 import type { EditorView } from "@milkdown/prose/view";
-import { dynamicTitleRefreshMetaKey, isDynamicEditorHref } from "./dynamic-node-link-decoration";
+import { isDynamicEditorHref, transactionHasDynamicTitleRefresh } from "./dynamic-node-link-decoration";
 import { standaloneEditorNodeHref } from "./standalone-markdown";
 
 const dynamicLinkDemoteKey = new PluginKey("tome-dynamic-link-demote");
@@ -19,7 +19,7 @@ export function createDynamicLinkDemotePlugin(): Plugin {
     key: dynamicLinkDemoteKey,
     appendTransaction(transactions, oldState, newState) {
       if (!transactions.some((tr) => tr.docChanged)) return null;
-      if (transactions.some((tr) => tr.getMeta(dynamicTitleRefreshMetaKey))) return null;
+      if (transactions.some((tr) => transactionHasDynamicTitleRefresh(tr))) return null;
 
       let tr = newState.tr;
       let changed = false;

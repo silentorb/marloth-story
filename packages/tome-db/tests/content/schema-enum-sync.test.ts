@@ -36,13 +36,13 @@ const SCHEMA_V2 = {
 };
 
 describe("CacheSync schema enum causality", () => {
-  const fixture = createTestContentFixture("marloth-schema-enum-sync-");
+  const fixture = createTestContentFixture("tome-schema-enum-sync-");
   const pageId = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
   const databaseId = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
   let recordId: string;
 
   beforeAll(() => {
-    process.env.MARLOTH_CONTENT_PATH = fixture.ctx.store.contentDir;
+    process.env.TOME_CONTENT_PATH = fixture.ctx.store.contentDir;
     writeFileSync(
       schemaFilePath(fixture.ctx.store.contentDir),
       serializeSchemaFile(SCHEMA_V1),
@@ -100,7 +100,7 @@ describe("CacheSync schema enum causality", () => {
   });
 
   afterAll(() => {
-    delete process.env.MARLOTH_CONTENT_PATH;
+    delete process.env.TOME_CONTENT_PATH;
     destroyTestContentFixture(fixture);
   });
 });

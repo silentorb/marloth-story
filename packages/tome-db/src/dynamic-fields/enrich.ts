@@ -25,7 +25,7 @@ export interface DynamicEnrichmentResult {
 export interface ApplyDynamicFieldsOptions {
   /** When true, include all overlay-bound fields regardless of view-tab bindings. */
   allViews?: boolean;
-  /** Content directory for dynamic-fields.json (defaults to MARLOTH_CONTENT_PATH / repo content/). */
+  /** Content directory for dynamic-fields.json (defaults to TOME_CONTENT_PATH / repo content/). */
   contentDir?: string;
 }
 

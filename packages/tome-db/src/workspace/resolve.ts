@@ -19,5 +19,5 @@ export function legacyArchivePathPrefix(contentDir?: string): string | undefined
 }
 
 export function legacyExportPathPrefix(contentDir?: string): string {
-  return resolveWorkspace(contentDir).legacy?.exportPathPrefix ?? "Marloth";
+  return resolveWorkspace(contentDir).legacy?.exportPathPrefix ?? "";
 }

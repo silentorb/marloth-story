@@ -51,7 +51,7 @@ const LEGACY_INSPIRATION_WONDER_PARAMS = {
 };
 
 describe("dynamic-fields resolvers", () => {
-  const dir = mkdtempSync(join(tmpdir(), "marloth-df-"));
+  const dir = mkdtempSync(join(tmpdir(), "tome-df-"));
   const dbPath = join(dir, "test.sqlite");
   const db = new GraphDatabase(dbPath);
 
@@ -73,7 +73,7 @@ describe("dynamic-fields resolvers", () => {
   beforeAll(() => {
     const contentDir = join(dir, "content");
     mkdirSync(contentDir, { recursive: true });
-    process.env.MARLOTH_CONTENT_PATH = contentDir;
+    process.env.TOME_CONTENT_PATH = contentDir;
     const store = new ContentStore(contentDir);
     store.writeDynamicFieldsFile(
       fileFromSeedInputs(
@@ -216,7 +216,7 @@ describe("dynamic-fields resolvers", () => {
   });
 
   afterAll(() => {
-    delete process.env.MARLOTH_CONTENT_PATH;
+    delete process.env.TOME_CONTENT_PATH;
     invalidateDynamicFieldsCache();
     db.close();
     rmSync(dir, { recursive: true, force: true });
@@ -224,7 +224,7 @@ describe("dynamic-fields resolvers", () => {
 });
 
 describe("dynamic-fields with composite relationships", () => {
-  const fixture = createTestContentFixture("marloth-df-composite-");
+  const fixture = createTestContentFixture("tome-df-composite-");
   const INSP_DB = "2eea538996934ce8abafc27132e576c1";
   const FEAT_DB = "dd0de9867cc345b898929306bdf9fc83";
   const WONDERLAND = "3cbc40d2ba2a4c76b4b9dc370452fcfe";
@@ -233,7 +233,7 @@ describe("dynamic-fields with composite relationships", () => {
   const featurePlain = "cccccccccccccccccccccccccccccccc";
 
   beforeAll(() => {
-    process.env.MARLOTH_CONTENT_PATH = fixture.ctx.store.contentDir;
+    process.env.TOME_CONTENT_PATH = fixture.ctx.store.contentDir;
     writeFileSync(
       join(fixture.ctx.store.contentDir, "model", "schema.json"),
       JSON.stringify({
@@ -333,14 +333,14 @@ describe("dynamic-fields with composite relationships", () => {
   });
 
   afterAll(() => {
-    delete process.env.MARLOTH_CONTENT_PATH;
+    delete process.env.TOME_CONTENT_PATH;
     invalidateDynamicFieldsCache();
     destroyTestContentFixture(fixture);
   });
 });
 
 describe("dynamic-fields character composite relationships", () => {
-  const fixture = createTestContentFixture("marloth-df-char-composite-");
+  const fixture = createTestContentFixture("tome-df-char-composite-");
   const CHAR_DB = "f984a934ad644f8480b0f8f51449569f";
   const TWOLD = "e028aa0786f5449984a4f497c1d746fa";
   const OTHER_PRODUCT = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
@@ -357,7 +357,7 @@ describe("dynamic-fields character composite relationships", () => {
   };
 
   beforeAll(() => {
-    process.env.MARLOTH_CONTENT_PATH = fixture.ctx.store.contentDir;
+    process.env.TOME_CONTENT_PATH = fixture.ctx.store.contentDir;
     seedTestDynamicFields(
       fixture,
       [
@@ -434,7 +434,7 @@ describe("dynamic-fields character composite relationships", () => {
   });
 
   afterAll(() => {
-    delete process.env.MARLOTH_CONTENT_PATH;
+    delete process.env.TOME_CONTENT_PATH;
     invalidateDynamicFieldsCache();
     destroyTestContentFixture(fixture);
   });

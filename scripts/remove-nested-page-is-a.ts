@@ -7,7 +7,7 @@
  */
 import {
   findNestedPageSpuriousTypeMembership,
-  openMarlothWriteContext,
+  openTomeWriteContext,
   syncAfterRelationshipsWrite,
 } from "tome-db";
 import {
@@ -23,7 +23,7 @@ if (!apply && !process.argv.includes("--dry-run")) {
 }
 
 const contentDir = resolveContentPath();
-const ctx = openMarlothWriteContext(contentDir, defaultDbPathForContent(contentDir));
+const ctx = openTomeWriteContext(contentDir, defaultDbPathForContent(contentDir));
 const spurious = findNestedPageSpuriousTypeMembership(ctx.db);
 
 if (spurious.length === 0) {

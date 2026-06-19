@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   formatNodeMarkdownLink,
-  marlothHref,
+  tomeHref,
   nodeIdFromHref,
   nodeIdFromUri,
   nodeMarkdownHref,
@@ -10,9 +10,9 @@ import {
 } from "../../src/shared/types";
 
 describe("link helpers", () => {
-  test("marloth href round-trip", () => {
+  test("tome href round-trip", () => {
     const id = "72b6fb455b824b78962b0e509cc091c9";
-    expect(nodeIdFromHref(marlothHref(id))).toBe(id);
+    expect(nodeIdFromHref(tomeHref(id))).toBe(id);
   });
 
   test("node markdown href for stored content", () => {

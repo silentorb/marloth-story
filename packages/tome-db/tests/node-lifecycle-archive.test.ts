@@ -23,7 +23,7 @@ const PAGE = "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 const OTHER = "ffffffffffffffffffffffffffffffff";
 
 describe("archive relationship flags", () => {
-  const fixture = createTestContentFixture("marloth-lifecycle-archive-");
+  const fixture = createTestContentFixture("tome-lifecycle-archive-");
 
   seedTestNode(fixture, { id: HOME, properties: { title: "Home" } });
   seedTestNode(fixture, { id: HUB, properties: { title: "Archive" } });

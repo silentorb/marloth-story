@@ -7,9 +7,6 @@ import {
 
 export { LEGACY_MARLOTH_LINK_SCHEME, TOME_LINK_SCHEME };
 
-/** @deprecated Use {@link TOME_LINK_SCHEME} */
-export const MARLOTH_LINK_SCHEME = LEGACY_MARLOTH_LINK_SCHEME;
-
 export function isProtectedEditorNode(
   id: string,
   protectedIds: ReadonlySet<string> | readonly string[],
@@ -51,15 +48,9 @@ export function tomeHref(nodeId: string): string {
   return `${TOME_LINK_SCHEME}${nodeId}`;
 }
 
-/** @deprecated Use {@link tomeHref} */
-export const marlothHref = tomeHref;
-
 export function isTomeHref(href: string): boolean {
   return href.startsWith(TOME_LINK_SCHEME) || href.startsWith(LEGACY_MARLOTH_LINK_SCHEME);
 }
-
-/** @deprecated Use {@link isTomeHref} */
-export const isMarlothHref = isTomeHref;
 
 export function nodeIdFromHref(href: string): string | null {
   if (!isTomeHref(href)) return null;
@@ -80,11 +71,6 @@ export function nodeMarkdownHref(nodeId: string): string {
 
 export function formatNodeMarkdownLink(title: string, nodeId: string): string {
   return `[${title}](${nodeMarkdownHref(nodeId)})`;
-}
-
-/** @deprecated Use formatNodeMarkdownLink for stored markdown. */
-export function formatMarlothLink(title: string, nodeId: string): string {
-  return formatNodeMarkdownLink(title, nodeId);
 }
 
 export function nodeUri(nodeId: string): string {

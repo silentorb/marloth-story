@@ -17,7 +17,7 @@ import { buildPropertiesSection } from "../src/node-type-properties";
 import { getNodePageDetail } from "../src/node-page-sections";
 
 describe("node-type-properties", () => {
-  const dir = mkdtempSync(join(tmpdir(), "marloth-page-props-"));
+  const dir = mkdtempSync(join(tmpdir(), "tome-page-props-"));
   const dbPath = join(dir, "test.sqlite");
   const db = new GraphDatabase(dbPath);
   const contentDir = join(dir, "content");
@@ -29,7 +29,7 @@ describe("node-type-properties", () => {
     "utf-8",
   );
   invalidateWorkspaceCache();
-  process.env.MARLOTH_CONTENT_PATH = contentDir;
+  process.env.TOME_CONTENT_PATH = contentDir;
 
   const CHAR_DB = "f984a934ad644f8480b0f8f51449569f";
   const character = "cccccccccccccccccccccccccccccccc";
@@ -117,7 +117,7 @@ describe("node-type-properties", () => {
   });
 
   afterAll(() => {
-    delete process.env.MARLOTH_CONTENT_PATH;
+    delete process.env.TOME_CONTENT_PATH;
     invalidateDynamicFieldsCache();
     invalidateWorkspaceCache();
     db.close();

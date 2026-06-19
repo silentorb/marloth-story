@@ -20,7 +20,7 @@ describe("graph export", () => {
   });
 
   test("exportFullGraph returns active vertices and edges", () => {
-    tempDir = mkdtempSync(join(tmpdir(), "marloth-graph-export-"));
+    tempDir = mkdtempSync(join(tmpdir(), "tome-graph-export-"));
     dbPath = join(tempDir, "test.sqlite");
     const db = new GraphDatabase(dbPath);
 
@@ -42,7 +42,7 @@ describe("graph export", () => {
   });
 
   test("exportFullGraph excludes archived pages and their links", () => {
-    tempDir = mkdtempSync(join(tmpdir(), "marloth-graph-export-"));
+    tempDir = mkdtempSync(join(tmpdir(), "tome-graph-export-"));
     dbPath = join(tempDir, "archive.sqlite");
     const db = new GraphDatabase(dbPath);
 
@@ -62,7 +62,7 @@ describe("graph export", () => {
   });
 
   test("exportExplorerLodGraph builds heuristic layers", () => {
-    tempDir = mkdtempSync(join(tmpdir(), "marloth-graph-export-"));
+    tempDir = mkdtempSync(join(tmpdir(), "tome-graph-export-"));
     dbPath = join(tempDir, "lod.sqlite");
     const db = new GraphDatabase(dbPath);
 
@@ -82,7 +82,7 @@ describe("graph export", () => {
   });
 
   test("exportExplorerLodGraph filters to anchor connected component", () => {
-    tempDir = mkdtempSync(join(tmpdir(), "marloth-graph-export-"));
+    tempDir = mkdtempSync(join(tmpdir(), "tome-graph-export-"));
     dbPath = join(tempDir, "anchor.sqlite");
     const db = new GraphDatabase(dbPath);
 

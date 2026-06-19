@@ -18,7 +18,7 @@ import type { RelationshipEntry } from "../src/content/relationships-file";
 import { RELATIONSHIPS_FILE_VERSION, sortEndpoints } from "../src/content/relationships-file";
 
 describe("relationship-traverse", () => {
-  const fixture = createTestContentFixture("marloth-rel-traverse-");
+  const fixture = createTestContentFixture("tome-rel-traverse-");
   const scene = "11111111111111111111111111111111";
   const product = "22222222222222222222222222222222";
   const part = "33333333333333333333333333333333";

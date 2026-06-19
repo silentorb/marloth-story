@@ -7,7 +7,7 @@ import {
   destroyTestContentFixture,
   seedTestTableSchema,
 } from "../src/content/test-helpers";
-import { openMarlothWriteContext } from "../src/content/write-context";
+import { openTomeWriteContext } from "../src/content/write-context";
 import { IS_A_TYPE } from "../src/labels";
 import {
   expectedTypeDatabaseForPage,
@@ -179,7 +179,7 @@ const productionContentDir = resolve(import.meta.dir, "../../../content");
 const productionDbPath = resolve(import.meta.dir, "../../../data/marloth.sqlite");
 /** Run manually: `bun test src/type-membership-audit.test.ts` with production block un-skipped after `bun run content:sync`. */
 describe.skip("type-membership-audit (production graph)", () => {
-  const ctx = openMarlothWriteContext(productionContentDir, productionDbPath);
+  const ctx = openTomeWriteContext(productionContentDir, productionDbPath);
   const db = ctx.db;
 
   test("every typed page has an IS_A edge to its expected database", () => {

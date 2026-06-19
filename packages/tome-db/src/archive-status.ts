@@ -3,11 +3,6 @@ import { INCLUDES_TYPE } from "./includes-relationship";
 import { resolveContentPath } from "./content/paths";
 import { archiveNodeId, legacyArchivePathPrefix } from "./workspace/resolve";
 
-export {
-  ARCHIVE_NOTION_PATH_PREFIX,
-  DEFAULT_ARCHIVE_NODE_ID,
-} from "./workspace/deprecated-shims";
-
 export function isLegacyArchivedNotionPath(path: string | null, contentDir?: string): boolean {
   if (!path) return false;
   const prefix = legacyArchivePathPrefix(contentDir);

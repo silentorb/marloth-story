@@ -99,11 +99,10 @@ export {
   TEST_STATIC_SITE_HOME_NODE_ID,
 } from "./test-helpers";
 export type { TestContentFixture } from "./test-helpers";
-export type { TomeWriteContext, MarlothWriteContext } from "./write-context";
+export type { TomeWriteContext } from "./write-context";
 export {
   mergeNodePropertiesOnContent,
   openTomeWriteContext,
-  openMarlothWriteContext,
   syncAfterRelationshipsWrite,
   syncAfterNodeWrite,
 } from "./write-context";

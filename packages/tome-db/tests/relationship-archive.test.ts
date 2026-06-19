@@ -56,7 +56,7 @@ describe("relationship-archive helpers", () => {
 });
 
 describe("relationship-archive store mutations", () => {
-  const fixture: TestContentFixture = createTestContentFixture("marloth-rel-archive-");
+  const fixture: TestContentFixture = createTestContentFixture("tome-rel-archive-");
   const { store } = fixture.ctx;
 
   test("markIncidentRelationshipsArchived flags incident edges but not hub includes", () => {

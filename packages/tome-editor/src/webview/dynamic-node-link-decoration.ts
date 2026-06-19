@@ -7,7 +7,14 @@ import { createNodeLinkIconElement } from "./node-link-icon";
 
 export { isDynamicEditorHref } from "tome-db/dynamic-node-links";
 
-export const dynamicTitleRefreshMetaKey = "marlothDynamicTitleRefresh";
+export const dynamicTitleRefreshMetaKey = "tomeDynamicTitleRefresh";
+export const LEGACY_DYNAMIC_TITLE_REFRESH_META_KEY = "marlothDynamicTitleRefresh";
+
+export function transactionHasDynamicTitleRefresh(
+  tr: { getMeta: (key: string) => unknown },
+): boolean {
+  return Boolean(tr.getMeta(dynamicTitleRefreshMetaKey) ?? tr.getMeta(LEGACY_DYNAMIC_TITLE_REFRESH_META_KEY));
+}
 
 function linkMarkHref(node: ProseNode): string | null {
   if (!node.isText) return null;
@@ -41,7 +48,7 @@ export function createDynamicLinkDecorationPlugin(): Plugin {
     state: {
       init: (_, { doc }) => buildDynamicLinkDecorations(doc),
       apply(tr, set) {
-        if (tr.docChanged || tr.getMeta(dynamicTitleRefreshMetaKey)) {
+        if (tr.docChanged || transactionHasDynamicTitleRefresh(tr)) {
           return buildDynamicLinkDecorations(tr.doc);
         }
         return set.map(tr.mapping, tr.doc);

@@ -18,7 +18,7 @@ describe("createNode", () => {
   });
 
   test("creates standalone node", () => {
-    fixture = createTestContentFixture("marloth-create-");
+    fixture = createTestContentFixture("tome-create-");
     const result = createNode(fixture.ctx, { title: "New idea", body: "Notes here" });
     expect(result).toEqual({ id: expect.any(String), title: "New idea" });
     if (typeof result === "string") throw new Error("unexpected error");
@@ -31,12 +31,12 @@ describe("createNode", () => {
   });
 
   test("rejects empty title", () => {
-    fixture = createTestContentFixture("marloth-create-");
+    fixture = createTestContentFixture("tome-create-");
     expect(createNode(fixture.ctx, { title: "   " })).toBe("invalid_title");
   });
 
   test("creates outgoing relation row", () => {
-    fixture = createTestContentFixture("marloth-create-");
+    fixture = createTestContentFixture("tome-create-");
     const sourceId = "a1111111111111111111111111111111";
     seedTestNode(fixture, {
       id: sourceId,
@@ -63,7 +63,7 @@ describe("createNode", () => {
   });
 
   test("creates database IS_A row", () => {
-    fixture = createTestContentFixture("marloth-create-");
+    fixture = createTestContentFixture("tome-create-");
     const databaseId = "c1111111111111111111111111111111";
     seedTestNode(fixture, {
       id: databaseId,
@@ -91,7 +91,7 @@ describe("createNode", () => {
   });
 
   test("returns source_not_found for missing parent", () => {
-    fixture = createTestContentFixture("marloth-create-");
+    fixture = createTestContentFixture("tome-create-");
     expect(
       createNode(fixture.ctx, {
         title: "X",

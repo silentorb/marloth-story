@@ -11,18 +11,12 @@ export interface TomeWriteContext {
   db: GraphDatabase;
 }
 
-/** @deprecated Use {@link TomeWriteContext} */
-export type MarlothWriteContext = TomeWriteContext;
-
 export function openTomeWriteContext(
   contentDir: string,
   dbPath: string,
 ): TomeWriteContext {
   return openContentGraph(contentDir, dbPath);
 }
-
-/** @deprecated Use {@link openTomeWriteContext} */
-export const openMarlothWriteContext = openTomeWriteContext;
 
 export function syncAfterNodeWrite(ctx: TomeWriteContext, id: string): void {
   ctx.sync.syncAfterWrite(nodeFileName(id));

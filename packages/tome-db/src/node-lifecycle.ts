@@ -9,8 +9,6 @@ import {
 } from "./relationship-archive";
 import { archiveNodeId, protectedNodeIds } from "./workspace/resolve";
 
-export { DEFAULT_ARCHIVE_NODE_ID } from "./workspace/deprecated-shims";
-
 export type NodeLifecycleError = "not_found" | "protected" | "already_archived" | "not_archived";
 
 export function isProtectedNodeId(id: string, contentDir?: string): boolean {

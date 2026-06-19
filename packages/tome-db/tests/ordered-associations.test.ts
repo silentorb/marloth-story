@@ -36,7 +36,7 @@ const scene3 = "55555555555555555555555555555555";
 const character1 = "77777777777777777777777777777777";
 
 describe("ordered-associations", () => {
-  const fixture = createTestContentFixture("marloth-ordered-");
+  const fixture = createTestContentFixture("tome-ordered-");
 
   seedTestNode(fixture, { id: PRODUCTS_DB, properties: typeTableMarkerProperties("Products") });
   seedTestNode(fixture, { id: PARTS_DB, properties: typeTableMarkerProperties("Parts database") });

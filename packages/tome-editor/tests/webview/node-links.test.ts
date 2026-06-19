@@ -11,12 +11,12 @@ import {
 } from "../../src/webview/node-links";
 import { TEST_GRAPH_ANCHOR_NODE_ID } from "tome-db/content/test-helpers";
 import { editorDynamicNodeHref } from "tome-db/dynamic-node-links";
-import { marlothHref, standaloneNodeUrl } from "../../src/shared/types";
+import { tomeHref, standaloneNodeUrl } from "../../src/shared/types";
 
 describe("node-links", () => {
   test("resolveNodeLinkTarget accepts marloth, relative, and legacy notion hrefs", () => {
     const id = "72b6fb455b824b78962b0e509cc091c9";
-    expect(resolveNodeLinkTarget(marlothHref(id))).toBe(id);
+    expect(resolveNodeLinkTarget(tomeHref(id))).toBe(id);
     expect(resolveNodeLinkTarget(`./${id}.md`)).toBe(id);
     expect(resolveNodeLinkTarget("Marloth/Page%20abc.md")).toBeNull();
     expect(resolveNodeLinkTarget("Marloth/Features%20dd0de9867cc345b898929306bdf9fc83.csv")).toBe(
@@ -72,7 +72,7 @@ describe("node-links", () => {
         "http://127.0.0.1:5173/?node=72b6fb455b824b78962b0e509cc091c9",
       ),
     ).toBe("72b6fb455b824b78962b0e509cc091c9");
-    expect(resolveNodePageTarget(marlothHref("72b6fb455b824b78962b0e509cc091c9"))).toBe(
+    expect(resolveNodePageTarget(tomeHref("72b6fb455b824b78962b0e509cc091c9"))).toBe(
       "72b6fb455b824b78962b0e509cc091c9",
     );
     expect(resolveNodePageTarget("marloth://node/72b6fb455b824b78962b0e509cc091c9")).toBe(

@@ -12,7 +12,7 @@ import {
 } from "../src/content/test-helpers";
 
 describe("relationship-link-mutations", () => {
-  const fixture = createTestContentFixture("marloth-link-");
+  const fixture = createTestContentFixture("tome-link-");
   const ctx = fixture.ctx;
 
   const sourceId = "a1111111111111111111111111111111";

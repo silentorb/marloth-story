@@ -15,7 +15,7 @@ describe("archive-status", () => {
   });
 
   test("isArchivedNode uses includes edge to Archive hub", () => {
-    const tempDir = mkdtempSync(join(tmpdir(), "marloth-archive-status-"));
+    const tempDir = mkdtempSync(join(tmpdir(), "tome-archive-status-"));
     const dbPath = join(tempDir, "test.sqlite");
     const db = new GraphDatabase(dbPath);
 

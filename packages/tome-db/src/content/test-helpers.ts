@@ -43,7 +43,7 @@ import {
   WORKSPACE_FILE_VERSION,
 } from "../workspace/workspace-file";
 
-/** Marloth workspace ids — match committed content/model/workspace.json. */
+/** Test workspace ids — match committed content/model/workspace.json. */
 export const TEST_HOME_NODE_ID = "13458e628ba28073850dea0edb9acde1";
 export const TEST_ARCHIVE_NODE_ID = "0f558a609a56485185beed4d1fd1cd9f";
 export const TEST_GRAPH_ANCHOR_NODE_ID = "e028aa0786f5449984a4f497c1d746fa";
@@ -117,7 +117,7 @@ export function seedTestOrderedAssociations(
   invalidateOrderedAssociationsCache();
 }
 
-export function createTestContentFixture(prefix = "marloth-content-test-"): TestContentFixture {
+export function createTestContentFixture(prefix = "tome-content-test-"): TestContentFixture {
   const tempDir = mkdtempSync(join(tmpdir(), prefix));
   const contentDir = join(tempDir, "content");
   mkdirSync(contentDir, { recursive: true });

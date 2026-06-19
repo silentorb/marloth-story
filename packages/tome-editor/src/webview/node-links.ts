@@ -32,7 +32,7 @@ export function resolveNodeLinkTarget(href: string): string | null {
   return resolveMarkdownHrefTarget(href) ?? nodeIdFromHref(href);
 }
 
-/** Resolve a navigable node id from any in-app link href (?node=, marloth://, legacy). */
+/** Resolve a navigable node id from any in-app link href (?node=, tome:// / marloth://, legacy export paths). */
 export function resolveNodePageTarget(href: string, base?: string | URL): string | null {
   if (typeof window !== "undefined" && isStandaloneNodeHref(href, base)) {
     try {

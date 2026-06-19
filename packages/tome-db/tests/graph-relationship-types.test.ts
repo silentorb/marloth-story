@@ -7,7 +7,7 @@ import {
 } from "../src/content/test-helpers";
 
 describe("listDistinctRelationshipTypes", () => {
-  const fixture = createTestContentFixture("marloth-distinct-types-");
+  const fixture = createTestContentFixture("tome-distinct-types-");
   const nodeA = "a1111111111111111111111111111111";
   const nodeB = "b1111111111111111111111111111111";
   const nodeC = "c1111111111111111111111111111111";
