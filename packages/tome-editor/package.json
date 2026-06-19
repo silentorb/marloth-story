@@ -10,7 +10,7 @@
     "dev:webview": "vite",
     "build": "bun run build:webview",
     "build:webview": "vite build",
-    "test": "bun run typecheck && bun test --preload ./src/test-setup.ts src",
+    "test": "bun run typecheck && bun test --preload ./tests/test-setup.ts tests",
     "typecheck": "tsc -p tsconfig.check.json --noEmit"
   },
   "dependencies": {

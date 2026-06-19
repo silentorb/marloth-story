@@ -184,11 +184,11 @@ The following describes how the server subdivides the scoped graph into detail l
 
 ## Verification
 
-- `bun test packages/tome-db/src/graph-export.test.ts` — archive exclusion, LOD layers, anchor filtering
-- `bun test packages/tome-db/src/graph-lod-cluster.test.ts` — anchor visibility, relevance ranking, branch bundling
-- `bun test packages/tome-editor/src/webview/graph-lod.test.ts` — layer navigation, openable nodes
-- `bun test packages/tome-editor/src/webview/graph-preferences.test.ts` — settings persistence
-- `bun test packages/tome-editor/src/webview/graph-node-label.test.ts` — hover diagnostic formatting
+- `bun test packages/tome-db/tests/graph-export.test.ts` — archive exclusion, LOD layers, anchor filtering
+- `bun test packages/tome-db/tests/graph-lod-cluster.test.ts` — anchor visibility, relevance ranking, branch bundling
+- `bun test packages/tome-editor/tests/webview/graph-lod.test.ts` — layer navigation, openable nodes
+- `bun test packages/tome-editor/tests/webview/graph-preferences.test.ts` — settings persistence
+- `bun test packages/tome-editor/tests/webview/graph-node-label.test.ts` — hover diagnostic formatting
 - Manual: open Graph Explorer → coarse layer shows anchor-centric view → click clusters to reveal more nodes → diagnostics toggle shows score breakdown on hover
 
 ## Implementation pointers

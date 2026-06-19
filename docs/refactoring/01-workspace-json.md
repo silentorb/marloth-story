@@ -126,11 +126,11 @@ Avoid calling `loadWorkspaceFromContent` on every graph edge check in hot paths 
 
 - Remove `STATIC_SITE_HOME_NODE_ID` constant
 - Set `homeNodeId` from `loadWorkspaceFromContent(config.contentDir).staticSite.homeNodeId`
-- Update [`generate-data.test.ts`](../../packages/tome-static-site/src/generate-data.test.ts) to seed workspace.json in test content dir
+- Update [`generate-data.test.ts`](../../packages/tome-static-site/tests/generate-data.test.ts) to seed workspace.json in test content dir
 
 ### 5. Tests
 
-- Add `packages/tome-db/src/workspace/workspace-file.test.ts` — parse valid/invalid JSON
+- Add `packages/tome-db/tests/workspace/workspace-file.test.ts` — parse valid/invalid JSON
 - Update fixtures in:
   - `archive-status.test.ts`
   - `node-lifecycle.test.ts`

@@ -62,15 +62,15 @@ Build webview: **Tasks: Run Task** → **Tome Editor: build**, or `bun run edito
 ## Tests
 
 ```bash
-bun test packages/tome-editor/src
-bun test packages/tome-db/src
+bun test packages/tome-editor/tests
+bun test packages/tome-db/tests
 ```
 
 ### Regression tests
 
 When fixing table-view bugs, add a regression test in the same change. Prefer `seedTestCompositeRelationships` (or full `ContentStore` sync) for graph traversal bugs so tests match production `relationships.json` composite types. Do not close a bug fix without a test unless the user explicitly waives it.
 
-**Table layout / column width / horizontal scroll:** extend [`src/webview/components/database-table-layout.test.tsx`](src/webview/components/database-table-layout.test.tsx). It checks CSS max-width values and scroll-container rules.
+**Table layout / column width / horizontal scroll:** extend [`tests/webview/components/database-table-layout.test.tsx`](tests/webview/components/database-table-layout.test.tsx). It checks CSS max-width values and scroll-container rules.
 
 ## Repo-wide context
 

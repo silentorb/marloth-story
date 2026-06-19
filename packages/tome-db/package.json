@@ -18,7 +18,7 @@
     "./search-relevance": "./src/search-relevance.ts"
   },
   "scripts": {
-    "test": "bun test"
+    "test": "bun test tests"
   },
   "dependencies": {
     "yaml": "2.8.0"

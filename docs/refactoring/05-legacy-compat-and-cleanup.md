@@ -48,7 +48,7 @@ function readBool(key: string, legacyKey: string, defaultValue: boolean): boolea
 
 On write, persist to `tome.graph.*` only.
 
-Update [`graph-preferences.test.ts`](../../packages/tome-editor/src/webview/graph-preferences.test.ts).
+Update [`graph-preferences.test.ts`](../../packages/tome-editor/tests/webview/graph-preferences.test.ts).
 
 ## Branding from workspace
 

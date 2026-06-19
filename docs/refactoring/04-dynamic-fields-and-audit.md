@@ -60,7 +60,7 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
 
 5. **Registry unchanged** — resolver **ids** (`characters.allSceneCount`, etc.) remain stable plugin names; only JSON bindings change.
 
-6. **Tests** — [`dynamic-fields.test.ts`](../../packages/tome-db/src/dynamic-fields/dynamic-fields.test.ts): fixtures must include params; add regression test that fails if resolver uses default composite when param omitted.
+6. **Tests** — [`dynamic-fields.test.ts`](../../packages/tome-db/tests/dynamic-fields/dynamic-fields.test.ts): fixtures must include params; add regression test that fails if resolver uses default composite when param omitted.
 
 ### Done (Part A)
 
@@ -93,7 +93,7 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
    - Prefer `TOME_CONTENT_PATH` / `resolveContentPath()` over `MARLOTH_DB_PATH` only
    - Open graph via content store or `openTomeWriteContext` when possible
 
-5. Tests in [`type-membership-audit.test.ts`](../../packages/tome-db/src/type-membership-audit.test.ts) — pass custom prefix in unit tests where paths are constructed.
+5. Tests in [`type-membership-audit.test.ts`](../../packages/tome-db/tests/type-membership-audit.test.ts) — pass custom prefix in unit tests where paths are constructed.
 
 ### Done (Part B)
 
@@ -108,7 +108,7 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
 
 1. `grep` for imports of `notion-database-schema` across repo
 2. If only tests reference it, delete file and migrate any test helpers to `table-schemas.json`
-3. If orphaned test file [`notion-view-eval.test.ts`](../../packages/tome-db/src/notion-view-eval.test.ts) only tests removed code, delete or rewrite against `table-schemas.json`
+3. If orphaned test file [`notion-view-eval.test.ts`](../../packages/tome-db/tests/notion-view-eval.test.ts) only tests removed code, delete or rewrite against `table-schemas.json`
 
 ### Done (Part C)
 

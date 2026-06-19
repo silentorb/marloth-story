@@ -177,16 +177,16 @@ Production UI bundle: `bun run editor:build` → `packages/tome-editor/dist-webv
 
 | Requirement | Primary tests |
 | --- | --- |
-| Database table assembly (`getDatabaseViewDetail`) | `packages/tome-db/src/database-view.test.ts`, `database-view-relations.test.ts` |
-| Ordered-association part tables | `packages/tome-db/src/ordered-associations.test.ts` |
-| Dynamic computed columns | `packages/tome-db/src/dynamic-fields/dynamic-fields.test.ts` |
-| Composite relationship traversal | `packages/tome-db/src/relationship-traverse.test.ts` |
-| Database table UI | `packages/tome-editor/src/webview/components/DatabaseTableView.test.tsx` |
-| Shared sortable table UI | `packages/tome-editor/src/webview/components/SectionDataTable.test.tsx`, `database-table-layout.test.tsx` (column header hit-area CSS) |
+| Database table assembly (`getDatabaseViewDetail`) | `packages/tome-db/tests/database-view.test.ts`, `database-view-relations.test.ts` |
+| Ordered-association part tables | `packages/tome-db/tests/ordered-associations.test.ts` |
+| Dynamic computed columns | `packages/tome-db/tests/dynamic-fields/dynamic-fields.test.ts` |
+| Composite relationship traversal | `packages/tome-db/tests/relationship-traverse.test.ts` |
+| Database table UI | `packages/tome-editor/tests/webview/components/DatabaseTableView.test.tsx` |
+| Shared sortable table UI | `packages/tome-editor/tests/webview/components/SectionDataTable.test.tsx`, `database-table-layout.test.tsx` (column header hit-area CSS) |
 | Relation / enum cell rendering | `table-cell-render.test.tsx`, `RelationSectionView.test.tsx`, `EnumSelectCell.test.tsx` |
-| Database HTTP API | `packages/tome-editor/src/api/database-view-api.test.ts`, `edge-property-api.test.ts` |
-| Table sort persistence | `packages/tome-editor/src/shared/user-settings.test.ts`, `user-settings-api.test.ts` |
-| Recent sidebar panel | `packages/tome-db/src/queries.test.ts`, `packages/tome-editor/src/api/recent-nodes-api.test.ts`, `RecentNodesPanel.test.tsx` |
+| Database HTTP API | `packages/tome-editor/tests/api/database-view-api.test.ts`, `edge-property-api.test.ts` |
+| Table sort persistence | `packages/tome-editor/tests/shared/user-settings.test.ts`, `user-settings-api.test.ts` |
+| Recent sidebar panel | `packages/tome-db/tests/queries.test.ts`, `packages/tome-editor/tests/api/recent-nodes-api.test.ts`, `RecentNodesPanel.test.tsx` |
 | Properties section (stored + dynamic) | `NodePageView.test.tsx`, `node-type-properties.test.ts` |
 
 - Manual: open home → edit → reload → body persisted

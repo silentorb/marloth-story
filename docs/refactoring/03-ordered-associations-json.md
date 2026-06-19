@@ -117,8 +117,8 @@ Backend interface `OrderedAssociationRow.sceneId` can remain for v1 to minimize 
 
 ### 5. Tests
 
-- [`ordered-associations.test.ts`](../../packages/tome-db/src/ordered-associations.test.ts) — write JSON into fixture content dir
-- [`ordered-associations-api.test.ts`](../../packages/tome-editor/src/api/ordered-associations-api.test.ts) — ensure fixture includes config file
+- [`ordered-associations.test.ts`](../../packages/tome-db/tests/ordered-associations.test.ts) — write JSON into fixture content dir
+- [`ordered-associations-api.test.ts`](../../packages/tome-editor/tests/api/ordered-associations-api.test.ts) — ensure fixture includes config file
 - Add `ordered-associations-file.test.ts` for parse validation
 
 ### 6. Documentation

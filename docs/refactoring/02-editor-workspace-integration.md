@@ -104,12 +104,12 @@ Example message: `Archive "${displayTitle}"? It will be moved under ${archiveHub
 | Test file | Update |
 | --- | --- |
 | New `workspace-api.test.ts` | `GET /api/workspace` returns seeded fixture |
-| [`SidePanel.test.tsx`](../../packages/tome-editor/src/webview/components/SidePanel.test.tsx) | Pass mock workspace links |
-| [`document-icon.test.ts`](../../packages/tome-editor/src/webview/document-icon.test.ts) | Use workspace branding + links |
-| [`node-lifecycle-api.test.ts`](../../packages/tome-editor/src/api/node-lifecycle-api.test.ts) | Seed `workspace.json` in fixture |
-| [`shared/types.test.ts`](../../packages/tome-editor/src/shared/types.test.ts) | Remove reliance on `HOME_NODE_ID` if deleted |
+| [`SidePanel.test.tsx`](../../packages/tome-editor/tests/webview/components/SidePanel.test.tsx) | Pass mock workspace links |
+| [`document-icon.test.ts`](../../packages/tome-editor/tests/webview/document-icon.test.ts) | Use workspace branding + links |
+| [`node-lifecycle-api.test.ts`](../../packages/tome-editor/tests/api/node-lifecycle-api.test.ts) | Seed `workspace.json` in fixture |
+| [`shared/types.test.ts`](../../packages/tome-editor/tests/shared/types.test.ts) | Remove reliance on `HOME_NODE_ID` if deleted |
 
-Ensure test API setup ([`test-api-setup.ts`](../../packages/tome-editor/src/api/test-api-setup.ts)) writes default `workspace.json` into test content dirs.
+Ensure test API setup ([`test-api-setup.ts`](../../packages/tome-editor/tests/api/test-api-setup.ts)) writes default `workspace.json` into test content dirs.
 
 ### 9. Documentation fixes
 

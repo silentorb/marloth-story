@@ -118,7 +118,7 @@ bun run scripts/migrate-theme-edges.ts
 bun run scripts/seed-dynamic-fields.ts
 
 # Run tests
-cd packages/tome-db && bun test src/dynamic-fields
+cd packages/tome-db && bun test tests/dynamic-fields
 ```
 
 ## Verification

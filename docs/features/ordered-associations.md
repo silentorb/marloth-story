@@ -103,8 +103,8 @@ GET /api/nodes/:scenesDbId?scope=:productId
 
 ## Verification
 
-- `bun test packages/tome-db/src` — ordered-association query and move tests
-- `bun test packages/tome-editor/src` — API and UI tests
+- `bun test packages/tome-db/tests` — ordered-association query and move tests
+- `bun test packages/tome-editor/tests` — API and UI tests
 - Manual: open Scenes database → book tabs → drag within/across parts → reload → order persists
 
 ## Implementation pointers
