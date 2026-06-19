@@ -2,12 +2,14 @@ import { describe, expect, test } from "bun:test";
 import {
   metadataExpandedFromLocation,
   replaceStandaloneHistory,
+  resolveGraphExplorerAnchor,
   resolveNodeLinkTarget,
   resolveNodePageTarget,
   standaloneCreatePageUrl,
   standaloneViewUrl,
   syncMetadataExpandedParam,
 } from "./node-links";
+import { TEST_GRAPH_ANCHOR_NODE_ID } from "tome-db/content/test-helpers";
 import { editorDynamicNodeHref } from "tome-db/dynamic-node-links";
 import { marlothHref, standaloneNodeUrl } from "../shared/types";
 
@@ -26,7 +28,15 @@ describe("node-links", () => {
   });
 
   test("standaloneViewUrl maps app views to query params", () => {
-    expect(standaloneViewUrl("graph-explorer", null, "http://127.0.0.1:5173/")).toBe(
+    expect(
+      standaloneViewUrl(
+        "graph-explorer",
+        null,
+        "http://127.0.0.1:5173/",
+        null,
+        "e028aa0786f5449984a4f497c1d746fa",
+      ),
+    ).toBe(
       "http://127.0.0.1:5173/?view=explorer&anchor=e028aa0786f5449984a4f497c1d746fa",
     );
     expect(
@@ -79,5 +89,20 @@ describe("node-links", () => {
     expect(
       standaloneNodeUrl("72b6fb455b824b78962b0e509cc091c9", "http://127.0.0.1:5173/?meta=1"),
     ).toBe("http://127.0.0.1:5173/?node=72b6fb455b824b78962b0e509cc091c9");
+  });
+
+  test("resolveGraphExplorerAnchor uses explicit anchor when valid", () => {
+    expect(
+      resolveGraphExplorerAnchor(
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        TEST_GRAPH_ANCHOR_NODE_ID,
+      ),
+    ).toBe("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+  });
+
+  test("resolveGraphExplorerAnchor falls back to workspace default", () => {
+    expect(resolveGraphExplorerAnchor(undefined, TEST_GRAPH_ANCHOR_NODE_ID)).toBe(
+      TEST_GRAPH_ANCHOR_NODE_ID,
+    );
   });
 });

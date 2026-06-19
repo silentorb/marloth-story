@@ -1,11 +1,18 @@
 import type { EditorApi } from "../api/client";
 import { emptySchemaFile } from "tome-db/schema-file";
 import { emptyUserSettings } from "../../shared/user-settings";
+import { defaultTestWorkspaceFile } from "tome-db/content/test-helpers";
 import { makeGraphLodSnapshot } from "./graph-lod";
 import { makeDatabaseViewDetail } from "./node-page";
 
 export function makeMockEditorApi(): EditorApi {
+  const workspace = {
+    ...defaultTestWorkspaceFile(),
+    archiveNodeTitle: "Archive",
+  };
+
   return {
+    getWorkspace: async () => workspace,
     getHomeId: async () => "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
     createNode: async (input) => ({ id: "cccccccccccccccccccccccccccccccc", title: input.title }),
     createRelationRow: async (_sourceId, input) => ({

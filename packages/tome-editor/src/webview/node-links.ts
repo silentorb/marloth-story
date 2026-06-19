@@ -7,7 +7,6 @@ import {
 } from "../shared/types";
 import { DYNAMIC_NODE_EDITOR_QUERY_PARAM } from "tome-db/dynamic-node-links";
 import { resolveMarkdownHrefTarget } from "tome-db/markdown-links";
-import { DEFAULT_GRAPH_EXPLORER_ANCHOR_ID } from "../shared/graph-explorer";
 
 const RECORD_ID_PATTERN = /^[a-f0-9]{32}$/i;
 
@@ -15,9 +14,12 @@ export function isNodeId(value: string): boolean {
   return RECORD_ID_PATTERN.test(value);
 }
 
-export function resolveGraphExplorerAnchor(anchorId?: string | null): string {
+export function resolveGraphExplorerAnchor(
+  anchorId: string | null | undefined,
+  defaultAnchorId: string,
+): string {
   if (anchorId && isNodeId(anchorId)) return anchorId.toLowerCase();
-  return DEFAULT_GRAPH_EXPLORER_ANCHOR_ID;
+  return defaultAnchorId.toLowerCase();
 }
 
 export function anchorFromLocation(): string | undefined {
@@ -109,11 +111,12 @@ export function standaloneViewUrl(
   nodeId?: string | null,
   base?: string | URL,
   anchorId?: string | null,
+  defaultAnchorId = "",
 ): string {
   const url = base instanceof URL ? new URL(base.href) : new URL(base ?? window.location.href);
   if (view === "graph-explorer") {
     url.searchParams.set("view", "explorer");
-    url.searchParams.set("anchor", resolveGraphExplorerAnchor(anchorId));
+    url.searchParams.set("anchor", resolveGraphExplorerAnchor(anchorId, defaultAnchorId));
   } else url.searchParams.delete("view");
   if (nodeId) url.searchParams.set("node", nodeId);
   else url.searchParams.delete("node");

@@ -10,11 +10,13 @@ export { LEGACY_MARLOTH_LINK_SCHEME, TOME_LINK_SCHEME };
 /** @deprecated Use {@link TOME_LINK_SCHEME} */
 export const MARLOTH_LINK_SCHEME = LEGACY_MARLOTH_LINK_SCHEME;
 
-export const HOME_NODE_ID = "13458e628ba28073850dea0edb9acde1";
-export const ARCHIVE_NODE_ID = "0f558a609a56485185beed4d1fd1cd9f";
-
-export function isProtectedEditorNode(id: string): boolean {
-  return id === HOME_NODE_ID || id === ARCHIVE_NODE_ID;
+export function isProtectedEditorNode(
+  id: string,
+  protectedIds: ReadonlySet<string> | readonly string[],
+): boolean {
+  const normalized = id.toLowerCase();
+  const ids = Array.isArray(protectedIds) ? protectedIds : [...protectedIds];
+  return ids.some((protectedId) => protectedId.toLowerCase() === normalized);
 }
 
 export type {

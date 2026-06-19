@@ -33,7 +33,8 @@ import {
   normalizeEditorBody,
   titleNeedsSave,
 } from "./editor-save";
-import { SIDEBAR_NODE_LINKS } from "./sidebar-nav";
+import { buildSidebarIconMaps } from "./sidebar-nav";
+import { useWorkspace } from "./useWorkspace";
 import {
   readGraphExplorerLayerDepth,
   readGraphExplorerMode,
@@ -99,6 +100,7 @@ export function App() {
 
 function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
   const { ready: userSettingsReady, getTableTab, setTableTab } = useUserSettings();
+  const { workspace, error: workspaceError } = useWorkspace(api);
   const [view, setView] = useState<AppView>(() => viewFromLocation());
   const [node, setNode] = useState<NodePageDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -119,9 +121,7 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
   const [selectPageTitleOnMount, setSelectPageTitleOnMount] = useState(false);
   const [recentNodesRefreshKey, setRecentNodesRefreshKey] = useState(0);
   const [homeId, setHomeId] = useState<string | null>(null);
-  const [explorerAnchorId, setExplorerAnchorId] = useState(() =>
-    resolveGraphExplorerAnchor(anchorFromLocation()),
-  );
+  const [explorerAnchorId, setExplorerAnchorId] = useState("");
   const pendingBody = useRef<string | null>(null);
   const pendingTitle = useRef<string | null>(null);
   const savedBody = useRef<string | null>(null);
@@ -139,14 +139,23 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
     [view],
   );
 
+  const defaultGraphAnchorId = workspace?.graphExplorer.defaultAnchorNodeId ?? "";
+  const protectedNodeIds = workspace?.protectedNodeIds ?? [];
+  const archiveHubTitle = workspace?.archiveNodeTitle ?? "Archive";
+  const sidebarIconMaps = useMemo(
+    () => buildSidebarIconMaps(workspace?.sidebar.links ?? []),
+    [workspace?.sidebar.links],
+  );
+
   const changeExplorerAnchor = useCallback(
     (nextAnchorId: string) => {
-      const resolved = resolveGraphExplorerAnchor(nextAnchorId);
+      if (!defaultGraphAnchorId) return;
+      const resolved = resolveGraphExplorerAnchor(nextAnchorId, defaultGraphAnchorId);
       setExplorerAnchorStack((current) => [...current, explorerAnchorId]);
       setExplorerAnchorId(resolved);
       syncExplorerAnchorUrl(resolved);
     },
-    [explorerAnchorId, syncExplorerAnchorUrl],
+    [defaultGraphAnchorId, explorerAnchorId, syncExplorerAnchorUrl],
   );
 
   const navigateExplorerAnchorBack = useCallback(() => {
@@ -189,17 +198,23 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
   );
 
   const standaloneUrls = useMemo(() => {
-    if (!homeId) return undefined;
+    if (!homeId || !workspace) return undefined;
     const nodes = Object.fromEntries(
-      SIDEBAR_NODE_LINKS.map(({ id }) => [id, standaloneNodeUrl(id)]),
+      workspace.sidebar.links.map(({ nodeId }) => [nodeId, standaloneNodeUrl(nodeId)]),
     );
     return {
       home: standaloneNodeUrl(homeId),
-      explorer: standaloneViewUrl("graph-explorer", null, undefined, explorerAnchorId),
+      explorer: standaloneViewUrl(
+        "graph-explorer",
+        null,
+        undefined,
+        explorerAnchorId,
+        defaultGraphAnchorId,
+      ),
       create: standaloneCreatePageUrl(),
       nodes,
     };
-  }, [explorerAnchorId, homeId]);
+  }, [defaultGraphAnchorId, explorerAnchorId, homeId, workspace]);
 
   const syncStandaloneUrl = useCallback(
     (nextView: AppView, nodeId?: string | null, options?: GetNodeOptions) => {
@@ -284,17 +299,21 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
   }, [api, bumpRecentNodes, loadNode]);
 
   const bootstrap = useCallback(async () => {
-    if (!userSettingsReady) return;
+    if (!userSettingsReady || !workspace) return;
     try {
       const home = await api.getHomeId();
       setHomeId(home);
+      const graphAnchor = resolveGraphExplorerAnchor(
+        anchorFromLocation(),
+        workspace.graphExplorer.defaultAnchorNodeId,
+      );
+      setExplorerAnchorId(graphAnchor);
       if (isStandaloneCreatePageUrl()) {
         await createNewPage();
         return;
       }
       const initialView = viewFromLocation();
       setView(initialView);
-      setExplorerAnchorId(resolveGraphExplorerAnchor(anchorFromLocation()));
       if (initialView !== "node-page") return;
 
       const urlTab = tabFromLocation();
@@ -313,7 +332,7 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
           : "Could not reach the Tome editor API. Start it with: bun run editor:dev",
       );
     }
-  }, [api, createNewPage, getTableTab, loadNode, userSettingsReady]);
+  }, [api, createNewPage, getTableTab, loadNode, userSettingsReady, workspace]);
 
   useEffect(() => {
     void bootstrap();
@@ -343,8 +362,22 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
       recordBody: node?.body,
       isTypeTable: node?.isTypeTable,
       homeId,
+      defaultDocumentIcon: workspace?.branding?.defaultDocumentIcon,
+      sidebarIconByNodeId: sidebarIconMaps.byNodeId,
+      sidebarIconByLabel: sidebarIconMaps.byLabel,
     });
-  }, [view, node?.id, node?.title, node?.primaryTypeTitle, node?.body, node?.isTypeTable, homeId]);
+  }, [
+    view,
+    node?.id,
+    node?.title,
+    node?.primaryTypeTitle,
+    node?.body,
+    node?.isTypeTable,
+    homeId,
+    workspace?.branding?.defaultDocumentIcon,
+    sidebarIconMaps.byLabel,
+    sidebarIconMaps.byNodeId,
+  ]);
 
   const syncEditorBaseline = useCallback(
     (markdown: string) => {
@@ -424,10 +457,11 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
           node?.id ?? nodeFromLocation(),
           undefined,
           nextView === "graph-explorer" ? explorerAnchorId : undefined,
+          defaultGraphAnchorId,
         ),
       );
     },
-    [explorerAnchorId, node?.id],
+    [defaultGraphAnchorId, explorerAnchorId, node?.id],
   );
 
   const openNodeFromGraph = useCallback(
@@ -592,10 +626,15 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
         onOpenSearch={() => setGlobalSearchOpen(true)}
         standaloneUrls={standaloneUrls}
         recentNodesRefreshKey={recentNodesRefreshKey}
+        sidebarLinks={workspace?.sidebar.links ?? []}
       />
       <div className={`tome-main${view === "graph-explorer" ? " tome-main-graph" : ""}`}>
         {creatingPage ? (
           <div className="tome-loading">Creating page…</div>
+        ) : workspaceError ? (
+          <div className="tome-error">{workspaceError}</div>
+        ) : !workspace ? (
+          <div className="tome-loading">Loading…</div>
         ) : view === "graph-explorer" ? (
           <GraphView
             api={api}
@@ -640,6 +679,8 @@ function AppInner({ api }: { api: ReturnType<typeof createEditorApi> }) {
             onTableCellUpdated={() => void loadNode(node.id, { tab: tabFromLocation() })}
             selectTitleOnMount={selectPageTitleOnMount}
             onTitleSelected={() => setSelectPageTitleOnMount(false)}
+            protectedNodeIds={protectedNodeIds}
+            archiveHubTitle={archiveHubTitle}
           />
         )}
       </div>

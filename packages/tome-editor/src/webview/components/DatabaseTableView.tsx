@@ -27,6 +27,8 @@ interface DatabaseTableViewProps {
   onCellUpdated?: () => void;
   onArchiveNode?: (nodeId: string) => Promise<void>;
   onDeleteNode?: (nodeId: string) => Promise<void>;
+  protectedNodeIds?: readonly string[];
+  archiveHubTitle?: string;
 }
 
 export function DatabaseTableView({
@@ -39,6 +41,8 @@ export function DatabaseTableView({
   onCellUpdated,
   onArchiveNode,
   onDeleteNode,
+  protectedNodeIds,
+  archiveHubTitle,
 }: DatabaseTableViewProps) {
   const [searchQuery, setSearchQuery] = useTableSearch(itemsTableSearchParamKey());
   const [columnEditorState, setColumnEditorState] = useState<ColumnEditorState | null>(null);
@@ -274,6 +278,8 @@ export function DatabaseTableView({
             isRelationColumn={isRelationColumn}
             onColumnEdit={handleColumnEdit}
             onColumnDelete={handleColumnDelete}
+            protectedNodeIds={protectedNodeIds}
+            archiveHubTitle={archiveHubTitle}
           />
         )}
         <TableAddRowFooter />

@@ -1,5 +1,4 @@
 import {
-  DEFAULT_HOME_NODE_ID,
   applyOrderedAssociationMove,
   archiveNode as archiveNodeInDb,
   unarchiveNode as unarchiveNodeInDb,
@@ -45,6 +44,8 @@ import {
   type SchemaFile,
   type ViewSortSpec,
   type NodeViewConfig,
+  type WorkspaceFile,
+  loadWorkspaceFromContent,
 } from "tome-db";
 import {
   ContentWatcher,
@@ -62,7 +63,10 @@ import {
   updateSectionTab,
 } from "./views";
 
+export type WorkspacePublic = WorkspaceFile & { archiveNodeTitle?: string };
+
 export interface EditorDatabase {
+  getWorkspace(): WorkspacePublic;
   getHomeId(): string;
   getNode(id: string, options?: { tabId?: string; databaseView?: string; scopeId?: string }): NodePageDetail | null;
   getDatabaseView(id: string, tabId?: string): DatabaseViewDetail | null;
@@ -177,11 +181,20 @@ export function openEditorDatabase(
   const schema = () => loadSchemaFromContent(contentPath);
 
   return {
+    getWorkspace(): WorkspacePublic {
+      const ws = loadWorkspaceFromContent(contentPath);
+      const archivePage = getNodePageDetail(writeCtx.db, ws.archiveNodeId, { schema: schema() });
+      return {
+        ...ws,
+        archiveNodeTitle: archivePage?.title ?? "Archive",
+      };
+    },
     getHomeId(): string {
-      const home = getNodePageDetail(writeCtx.db, DEFAULT_HOME_NODE_ID, { schema: schema() });
-      if (home) return DEFAULT_HOME_NODE_ID;
+      const homeId = loadWorkspaceFromContent(contentPath).homeNodeId;
+      const home = getNodePageDetail(writeCtx.db, homeId, { schema: schema() });
+      if (home) return homeId;
       const recent = searchNodes(writeCtx.db, "", 1);
-      return recent[0]?.id ?? DEFAULT_HOME_NODE_ID;
+      return recent[0]?.id ?? homeId;
     },
     getNode(id: string, options?: { tabId?: string; databaseView?: string; scopeId?: string }): NodePageDetail | null {
       const tabId = options?.tabId ?? options?.scopeId ?? options?.databaseView;

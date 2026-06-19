@@ -1,8 +1,9 @@
 import { useState } from "react";
+import type { SidebarLink } from "tome-db";
 import type { AppView } from "../../shared/types";
 import type { EditorApi } from "../api/client";
 import { nodePageHref } from "../node-links";
-import { SIDEBAR_NODE_LINKS } from "../sidebar-nav";
+import { HOME_ICON, VIEW_ICONS } from "../sidebar-nav";
 import { RecentNodesPanel } from "./RecentNodesPanel";
 import "./side-panel.css";
 
@@ -32,6 +33,7 @@ interface SidePanelProps {
   onOpenSearch: () => void;
   standaloneUrls?: SidePanelStandaloneUrls;
   recentNodesRefreshKey?: number;
+  sidebarLinks?: readonly SidebarLink[];
 }
 
 function NavItem({
@@ -80,6 +82,7 @@ export function SidePanel({
   onOpenSearch,
   standaloneUrls,
   recentNodesRefreshKey = 0,
+  sidebarLinks = [],
 }: SidePanelProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pageBase = typeof window !== "undefined" ? window.location.href : undefined;
@@ -111,7 +114,7 @@ export function SidePanel({
         <NavItem
           active={isHomeNavActive(activeView, activeNodeId, homeNodeId)}
           title="Home"
-          icon="⌂"
+          icon={HOME_ICON}
           label="Home"
           href={homeHref}
         />
@@ -125,7 +128,7 @@ export function SidePanel({
         <NavItem
           active={activeView === "graph-explorer"}
           title="Graph Explorer"
-          icon="⊕"
+          icon={VIEW_ICONS["graph-explorer"]}
           label="Graph Explorer"
           href={standaloneUrls?.explorer}
           onClick={standaloneUrls ? undefined : () => onViewChange("graph-explorer")}
@@ -139,14 +142,14 @@ export function SidePanel({
           onClick={standaloneUrls ? undefined : onNewPage}
         />
         <div className="tome-side-panel-divider" role="presentation" />
-        {SIDEBAR_NODE_LINKS.map(({ id, label, icon }) => (
+        {sidebarLinks.map(({ nodeId, label, icon }) => (
           <NavItem
-            key={id}
-            active={activeView === "node-page" && activeNodeId === id}
+            key={nodeId}
+            active={activeView === "node-page" && activeNodeId === nodeId}
             title={label}
             icon={icon}
             label={label}
-            href={standaloneUrls?.nodes[id] ?? nodePageHref(id, pageBase)}
+            href={standaloneUrls?.nodes[nodeId] ?? nodePageHref(nodeId, pageBase)}
           />
         ))}
         <RecentNodesPanel

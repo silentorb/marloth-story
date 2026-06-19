@@ -1,19 +1,20 @@
 import { describe, expect, test } from "bun:test";
-import { HOME_NODE_ID } from "../../shared/types";
-import { SIDEBAR_NODE_LINKS } from "../sidebar-nav";
+import { TEST_HOME_NODE_ID } from "tome-db/content/test-helpers";
 import { isHomeNavActive } from "./SidePanel";
 
-describe("isHomeNavActive", () => {
-  test("is true only on the home node page", () => {
-    expect(
-      isHomeNavActive("node-page", HOME_NODE_ID, HOME_NODE_ID),
-    ).toBe(true);
-    expect(
-      isHomeNavActive("node-page", SIDEBAR_NODE_LINKS[0]!.id, HOME_NODE_ID),
-    ).toBe(false);
-    expect(isHomeNavActive("graph-explorer", HOME_NODE_ID, HOME_NODE_ID)).toBe(
+describe("SidePanel home nav", () => {
+  const featuresNodeId = "dd0de9867cc345b898929306bdf9fc83";
+
+  test("isHomeNavActive matches home node only on node-page view", () => {
+    expect(isHomeNavActive("node-page", TEST_HOME_NODE_ID, TEST_HOME_NODE_ID)).toBe(
+      true,
+    );
+    expect(isHomeNavActive("node-page", featuresNodeId, TEST_HOME_NODE_ID)).toBe(
       false,
     );
-    expect(isHomeNavActive("node-page", HOME_NODE_ID, null)).toBe(false);
+    expect(isHomeNavActive("graph-explorer", TEST_HOME_NODE_ID, TEST_HOME_NODE_ID)).toBe(
+      false,
+    );
+    expect(isHomeNavActive("node-page", TEST_HOME_NODE_ID, null)).toBe(false);
   });
 });

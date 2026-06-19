@@ -25,6 +25,8 @@ interface RelationSectionViewProps {
   onCellUpdated?: () => void;
   onArchiveNode?: (nodeId: string) => Promise<void>;
   onDeleteNode?: (nodeId: string) => Promise<void>;
+  protectedNodeIds?: readonly string[];
+  archiveHubTitle?: string;
 }
 
 export function RelationSectionView({
@@ -34,6 +36,8 @@ export function RelationSectionView({
   onCellUpdated,
   onArchiveNode,
   onDeleteNode,
+  protectedNodeIds,
+  archiveHubTitle,
 }: RelationSectionViewProps) {
   const [searchQuery, setSearchQuery] = useTableSearch(relationTableSearchParamKey(section.label));
   const tableKey = relationTableSortKey(nodeId, section.label);
@@ -158,6 +162,8 @@ export function RelationSectionView({
                 }
               : undefined
           }
+          protectedNodeIds={protectedNodeIds}
+          archiveHubTitle={archiveHubTitle}
         />
       )}
       {section.addMode === "link-existing" ? <TableLinkExistingRowFooter /> : null}

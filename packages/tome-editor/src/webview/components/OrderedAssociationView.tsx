@@ -43,6 +43,8 @@ interface OrderedAssociationViewProps {
   onCellUpdated?: () => void;
   onArchiveNode?: (nodeId: string) => Promise<void>;
   onDeleteNode?: (nodeId: string) => Promise<void>;
+  protectedNodeIds?: readonly string[];
+  archiveHubTitle?: string;
 }
 
 interface SortableSceneRowProps {
@@ -58,6 +60,8 @@ interface SortableSceneRowProps {
     onDeleteNode: (nodeId: string) => Promise<void>;
     getMoveConfig?: (rowNodeId: string) => TableRowMoveConfig | undefined;
   };
+  protectedNodeIds?: readonly string[];
+  archiveHubTitle?: string;
 }
 
 function groupDropId(groupId: string): string {
@@ -92,6 +96,8 @@ function SortableSceneRow({
   renderCell,
   renderNameCell,
   rowPageActions,
+  protectedNodeIds = [],
+  archiveHubTitle,
 }: SortableSceneRowProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: row.sceneId,
@@ -123,9 +129,10 @@ function SortableSceneRow({
       </td>
       {rowPageActions ? (
         <td className="tome-table-row-actions-col">
-          {!isProtectedEditorNode(row.sceneId) ? (
+          {!isProtectedEditorNode(row.sceneId, protectedNodeIds) ? (
             <TableRowActionsCell
               recordTitle={row.name}
+              archiveHubTitle={archiveHubTitle}
               onArchive={() => rowPageActions.onArchiveNode(row.sceneId)}
               onRemove={() => rowPageActions.onRemoveNode(row.sceneId)}
               onDelete={() => rowPageActions.onDeleteNode(row.sceneId)}
@@ -159,6 +166,8 @@ interface GroupTableProps {
   isRelationColumn?: (column: string) => boolean;
   onColumnEdit?: (column: string) => void;
   onColumnDelete?: (column: string) => void | Promise<void>;
+  protectedNodeIds?: readonly string[];
+  archiveHubTitle?: string;
 }
 
 function formatColumnLabel(key: string): string {
@@ -185,6 +194,8 @@ function GroupTable({
   isRelationColumn,
   onColumnEdit,
   onColumnDelete,
+  protectedNodeIds,
+  archiveHubTitle,
 }: GroupTableProps) {
   const itemIds = useMemo(() => group.rows.map((row) => row.sceneId), [group.rows]);
   const { setNodeRef } = useDroppable({
@@ -236,6 +247,8 @@ function GroupTable({
                     renderCell={renderCell}
                     renderNameCell={renderNameCell}
                     rowPageActions={rowPageActions}
+                    protectedNodeIds={protectedNodeIds}
+                    archiveHubTitle={archiveHubTitle}
                   />
                 ))
               )}
@@ -257,6 +270,8 @@ export function OrderedAssociationView({
   onCellUpdated,
   onArchiveNode,
   onDeleteNode,
+  protectedNodeIds,
+  archiveHubTitle,
 }: OrderedAssociationViewProps) {
   const [searchQuery, setSearchQuery] = useTableSearch(itemsTableSearchParamKey());
   const [activeSceneId, setActiveSceneId] = useState<string | null>(null);
@@ -540,6 +555,8 @@ export function OrderedAssociationView({
               isRelationColumn={isRelationColumn}
               onColumnEdit={handleColumnEdit}
               onColumnDelete={handleColumnDelete}
+              protectedNodeIds={protectedNodeIds}
+              archiveHubTitle={archiveHubTitle}
             />
           ))}
         </div>

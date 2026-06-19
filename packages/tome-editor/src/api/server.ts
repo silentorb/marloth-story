@@ -65,6 +65,10 @@ export function createApiHandler(
         return json({ id: db.getHomeId() });
       }
 
+      if (path === "/api/workspace") {
+        return json(db.getWorkspace());
+      }
+
       if (path === "/api/graph/full") {
         return json({ graph: db.getGraphFull() });
       }

@@ -1,6 +1,12 @@
 import { describe, expect, test } from "bun:test";
-import { HOME_NODE_ID } from "../shared/types";
+import { TEST_HOME_NODE_ID } from "tome-db/content/test-helpers";
+import { buildSidebarIconMaps } from "./sidebar-nav";
 import { iconToFaviconHref, resolveDocumentIcon } from "./document-icon";
+
+const sidebarIconMaps = buildSidebarIconMaps([
+  { nodeId: "204dba198db74611b0b49a98dd53e8f5", label: "Scenes", icon: "▶" },
+  { nodeId: "dd0de9867cc345b898929306bdf9fc83", label: "Features", icon: "★" },
+]);
 
 describe("resolveDocumentIcon", () => {
   test("uses graph view icons", () => {
@@ -11,8 +17,8 @@ describe("resolveDocumentIcon", () => {
     expect(
       resolveDocumentIcon({
         view: "node-page",
-        nodeId: HOME_NODE_ID,
-        homeId: HOME_NODE_ID,
+        nodeId: TEST_HOME_NODE_ID,
+        homeId: TEST_HOME_NODE_ID,
       }),
     ).toBe("⌂");
   });
@@ -23,6 +29,7 @@ describe("resolveDocumentIcon", () => {
         view: "node-page",
         primaryTypeTitle: "Scenes",
         recordBody: "💡\n\n# Opening scene",
+        sidebarIconByLabel: sidebarIconMaps.byLabel,
       }),
     ).toBe("💡");
   });
@@ -32,6 +39,7 @@ describe("resolveDocumentIcon", () => {
       resolveDocumentIcon({
         view: "node-page",
         primaryTypeTitle: "Features",
+        sidebarIconByLabel: sidebarIconMaps.byLabel,
       }),
     ).toBe("★");
   });
@@ -41,6 +49,7 @@ describe("resolveDocumentIcon", () => {
       resolveDocumentIcon({
         view: "node-page",
         nodeId: "204dba198db74611b0b49a98dd53e8f5",
+        sidebarIconByNodeId: sidebarIconMaps.byNodeId,
       }),
     ).toBe("▶");
   });
@@ -54,8 +63,11 @@ describe("resolveDocumentIcon", () => {
     ).toBe("▦");
   });
 
-  test("falls back to default Marloth icon", () => {
+  test("falls back to default branding icon", () => {
     expect(resolveDocumentIcon({ view: "node-page" })).toBe("M");
+    expect(
+      resolveDocumentIcon({ view: "node-page", defaultDocumentIcon: "T" }),
+    ).toBe("T");
   });
 });
 

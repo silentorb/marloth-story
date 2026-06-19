@@ -90,4 +90,24 @@ describe("PageActionsMenu", () => {
     expect(screen.queryByRole("menuitem", { name: "Archive" })).toBeNull();
     expect(screen.getByRole("menuitem", { name: "Unarchive" })).toBeTruthy();
   });
+
+  test("archive confirm uses archive hub title", async () => {
+    render(
+      <PageActionsMenu
+        recordTitle="Draft page"
+        archiveHubTitle="Archive hub"
+        onArchive={async () => {}}
+        onDelete={async () => {}}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Page actions" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: "Archive" }));
+
+    expect(
+      screen.getByText(
+        'Archive “Draft page”? It will be moved under Archive hub and hidden from most views.',
+      ),
+    ).toBeTruthy();
+  });
 });

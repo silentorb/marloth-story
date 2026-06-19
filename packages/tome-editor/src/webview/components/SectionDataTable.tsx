@@ -51,6 +51,8 @@ interface SectionDataTableProps {
   isRelationColumn?: (column: string) => boolean;
   onColumnEdit?: (column: string) => void;
   onColumnDelete?: (column: string) => void | Promise<void>;
+  protectedNodeIds?: readonly string[];
+  archiveHubTitle?: string;
 }
 
 function rowNodeId(row: SectionDataTableRow): string {
@@ -86,6 +88,8 @@ export function SectionDataTable({
   isRelationColumn,
   onColumnEdit,
   onColumnDelete,
+  protectedNodeIds = [],
+  archiveHubTitle,
 }: SectionDataTableProps) {
   const { getTableSort, hasTableSortOverride, toggleTableSortColumn, schema } = useUserSettings();
   const [displayColumns, setDisplayColumns] = useState(columns);
@@ -179,7 +183,7 @@ export function SectionDataTable({
         {sortedRows.map((row) => {
           const nodeId = rowNodeId(row);
           const showRowActions =
-            rowPageActions !== undefined && !isProtectedEditorNode(nodeId);
+            rowPageActions !== undefined && !isProtectedEditorNode(nodeId, protectedNodeIds);
 
           return (
             <tr key={row.id}>
@@ -188,6 +192,7 @@ export function SectionDataTable({
                   {showRowActions ? (
                     <TableRowActionsCell
                       recordTitle={row.name}
+                      archiveHubTitle={archiveHubTitle}
                       onArchive={() => rowPageActions.onArchiveNode(nodeId)}
                       onRemove={() => rowPageActions.onRemoveNode(nodeId)}
                       onDelete={() => rowPageActions.onDeleteNode(nodeId)}

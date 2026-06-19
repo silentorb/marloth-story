@@ -32,6 +32,8 @@ interface NodePageViewProps {
   onTableCellUpdated?: () => void;
   selectTitleOnMount?: boolean;
   onTitleSelected?: () => void;
+  protectedNodeIds?: readonly string[];
+  archiveHubTitle?: string;
 }
 
 export function NodePageView({
@@ -51,11 +53,13 @@ export function NodePageView({
   onTableCellUpdated,
   selectTitleOnMount = false,
   onTitleSelected,
+  protectedNodeIds = [],
+  archiveHubTitle,
 }: NodePageViewProps) {
   const { content } = resolvePageTitleAndContent(node.body, node.title);
   const emptyMarkdown = isEffectivelyEmptyMarkdown(node.body, node.title);
   const editorBody = emptyMarkdown ? "" : content;
-  const showPageActions = !isProtectedEditorNode(node.id);
+  const showPageActions = !isProtectedEditorNode(node.id, protectedNodeIds);
   const [relateOpen, setRelateOpen] = useState(false);
 
   const saveStatusLabel =
@@ -89,6 +93,7 @@ export function NodePageView({
                   recordTitle={node.title}
                   archived={node.archived}
                   disabled={saveState === "saving"}
+                  archiveHubTitle={archiveHubTitle}
                   onRelate={() => setRelateOpen(true)}
                   onArchive={() => onArchiveNode(node.id)}
                   onUnarchive={() => onUnarchiveNode(node.id)}
@@ -157,6 +162,8 @@ export function NodePageView({
                   onCellUpdated={onTableCellUpdated}
                   onArchiveNode={onArchiveNode}
                   onDeleteNode={onDeleteNode}
+                  protectedNodeIds={protectedNodeIds}
+                  archiveHubTitle={archiveHubTitle}
                 />
               </section>
             );
@@ -184,6 +191,8 @@ export function NodePageView({
                   onCellUpdated={onTableCellUpdated}
                   onArchiveNode={onArchiveNode}
                   onDeleteNode={onDeleteNode}
+                  protectedNodeIds={protectedNodeIds}
+                  archiveHubTitle={archiveHubTitle}
                 />
               </section>
             );
@@ -197,6 +206,8 @@ export function NodePageView({
               onCellUpdated={onTableCellUpdated}
               onArchiveNode={onArchiveNode}
               onDeleteNode={onDeleteNode}
+              protectedNodeIds={protectedNodeIds}
+              archiveHubTitle={archiveHubTitle}
             />
           );
         })}

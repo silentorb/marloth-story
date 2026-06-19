@@ -8,7 +8,9 @@ import type {
 } from "./types";
 import type { UserSettings, UserSettingsPatch } from "./user-settings";
 import type { SchemaFile } from "tome-db/schema-file";
-import type { OrderedAssociationMoveParams } from "tome-db";
+import type { OrderedAssociationMoveParams, WorkspaceFile } from "tome-db";
+
+export type WorkspacePublic = WorkspaceFile & { archiveNodeTitle?: string };
 
 export type { GraphRelationship, GraphNode, GraphSnapshot, GraphLodSnapshot, DatabaseViewDetail } from "tome-db";
 export type { OrderedAssociationViewDetail } from "tome-db";
@@ -34,6 +36,7 @@ export interface CreateNodeResponse {
 }
 
 export interface EditorApiClient {
+  getWorkspace(): Promise<WorkspacePublic>;
   getHomeId(): Promise<string>;
   createNode(input: { title: string; body?: string }): Promise<CreateNodeResponse>;
   createRelationRow(
@@ -186,6 +189,9 @@ export function createHttpEditorClient(baseUrl: string): EditorApiClient {
   }
 
   return {
+    async getWorkspace(): Promise<WorkspacePublic> {
+      return fetchJson<WorkspacePublic>("/api/workspace");
+    },
     async getHomeId(): Promise<string> {
       const data = await fetchJson<{ id: string }>("/api/home");
       return data.id;

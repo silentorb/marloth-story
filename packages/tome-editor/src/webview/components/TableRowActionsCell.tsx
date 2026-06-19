@@ -17,6 +17,7 @@ interface TableRowActionsCellProps {
   onRemove: () => Promise<void>;
   onDelete: () => Promise<void>;
   move?: TableRowMoveConfig;
+  archiveHubTitle?: string;
 }
 
 export function TableRowActionsCell({
@@ -25,6 +26,7 @@ export function TableRowActionsCell({
   onRemove,
   onDelete,
   move,
+  archiveHubTitle,
 }: TableRowActionsCellProps) {
   const [moveOpen, setMoveOpen] = useState(false);
 
@@ -35,6 +37,7 @@ export function TableRowActionsCell({
         trigger="vertical-dots"
         menuAlign="left"
         menuPlacement="portal"
+        archiveHubTitle={archiveHubTitle}
         onArchive={onArchive}
         onRemove={onRemove}
         onDelete={onDelete}

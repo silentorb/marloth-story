@@ -29,6 +29,7 @@ interface PageActionsMenuProps {
   /** Retarget row relationship; table rows only. */
   onMove?: () => void;
   onDelete: () => Promise<void>;
+  archiveHubTitle?: string;
 }
 
 export function PageActionsMenu({
@@ -44,6 +45,7 @@ export function PageActionsMenu({
   onRemove,
   onMove,
   onDelete,
+  archiveHubTitle = "Archive",
 }: PageActionsMenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [pendingAction, setPendingAction] = useState<PendingAction>(null);
@@ -258,7 +260,7 @@ export function PageActionsMenu({
       <ConfirmDialog
         open={pendingAction === "archive"}
         title="Archive page?"
-        message={`Archive “${displayTitle}”? It will be moved under Archive and hidden from most views.`}
+        message={`Archive “${displayTitle}”? It will be moved under ${archiveHubTitle} and hidden from most views.`}
         confirmLabel="Archive"
         busy={busy}
         onCancel={closeConfirm}
