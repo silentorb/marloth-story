@@ -25,7 +25,7 @@ For graph storage basics, read [tome-db.md](./tome-db.md). For the editor UI, re
 - **Grouping** (Part) is a display dimension only; all scenes in a book share one global sequence. Part subsections sort scenes by that book-wide order.
 - Part subsections **must** sort by the Parts database `number` property (with **Unassigned** always last), not by table row index.
 - Part membership **must** resolve when import created duplicate part nodes: match scene→`part` to the canonical Parts-database row by title.
-- Configurations **must** be registered in code (`packages/tome-db/src/ordered-associations.ts`); v1 has no UI for adding new configs.
+- Configurations **must** be defined in [`content/model/ordered-associations.json`](../../content/model/ordered-associations.json); v1 has no UI for adding new configs.
 
 ### Scenes configuration (`scenes-by-book`)
 
@@ -73,7 +73,7 @@ Scene order is meaningful per book (Product). Parts organize the narrative struc
 
 ### Code registry over generic UI
 
-Scenes are the only known use case. A typed configuration registry keeps the first implementation focused and avoids premature abstraction.
+Scenes are the only known use case. Config lives in git-tracked JSON; the engine in `packages/tome-db/src/ordered-associations.ts` stays domain-agnostic. See [session 03](../refactoring/03-ordered-associations-json.md) for the file schema.
 
 ## Behavior / pipeline
 
@@ -111,7 +111,9 @@ GET /api/nodes/:scenesDbId?scope=:productId
 
 | Module | Responsibility |
 | --- | --- |
-| `packages/tome-db/src/ordered-associations.ts` | Config registry, view query, move mutation, schema-driven column defs |
+| `content/model/ordered-associations.json` | Ordered-association config entries (provider ids, composites, column rules) |
+| `packages/tome-db/src/ordered-associations-config/` | Parse/load/invalidate config file |
+| `packages/tome-db/src/ordered-associations.ts` | View query, move mutation, schema-driven column defs |
 | `packages/tome-db/src/database-column-defs.ts` | Shared column-def builder used by database and ordered-association views |
 | `packages/tome-db/src/node-page-sections.ts` | Emits `ordered-association` section for configured databases |
 | `packages/tome-editor/src/api/server.ts` | PATCH move endpoint, `scope` query param |

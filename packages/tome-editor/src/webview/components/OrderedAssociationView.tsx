@@ -47,13 +47,13 @@ interface OrderedAssociationViewProps {
   archiveHubTitle?: string;
 }
 
-interface SortableSceneRowProps {
+interface SortableOrderedRowProps {
   row: OrderedAssociationGroup["rows"][number];
   groupId: string;
   index: number;
   columns: string[];
   renderCell: (column: string, row: OrderedAssociationGroup["rows"][number]) => ReactNode;
-  renderNameCell: (sceneId: string, name: string) => ReactNode;
+  renderNameCell: (rowId: string, name: string) => ReactNode;
   rowPageActions?: {
     onArchiveNode: (nodeId: string) => Promise<void>;
     onRemoveNode: (nodeId: string) => Promise<void>;
@@ -88,7 +88,7 @@ function resolveDropTarget(
   return null;
 }
 
-function SortableSceneRow({
+function SortableOrderedRow({
   row,
   groupId,
   index,
@@ -98,10 +98,10 @@ function SortableSceneRow({
   rowPageActions,
   protectedNodeIds = [],
   archiveHubTitle,
-}: SortableSceneRowProps) {
+}: SortableOrderedRowProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: row.sceneId,
-    data: { groupId, index, type: "scene" },
+    data: { groupId, index, type: "ordered-row" },
   });
 
   const style = {
@@ -114,7 +114,7 @@ function SortableSceneRow({
       ref={setNodeRef}
       style={style}
       className={isDragging ? "is-dragging" : undefined}
-      data-scene-id={row.sceneId}
+      data-row-id={row.sceneId}
     >
       <td className="tome-ordered-association-drag-cell">
         <button
@@ -154,7 +154,7 @@ interface GroupTableProps {
   columns: string[];
   columnLabels: Record<string, string>;
   renderCell: (column: string, row: OrderedAssociationGroup["rows"][number]) => ReactNode;
-  renderNameCell: (sceneId: string, name: string) => ReactNode;
+  renderNameCell: (rowId: string, name: string) => ReactNode;
   rowPageActions?: {
     onArchiveNode: (nodeId: string) => Promise<void>;
     onRemoveNode: (nodeId: string) => Promise<void>;
@@ -234,11 +234,11 @@ function GroupTable({
             <tbody ref={setNodeRef}>
               {group.rows.length === 0 ? (
                 <tr className="tome-ordered-association-empty-row">
-                  <td colSpan={columns.length + 2 + (rowPageActions ? 1 : 0)}>Drop scenes here</td>
+                  <td colSpan={columns.length + 2 + (rowPageActions ? 1 : 0)}>Drop rows here</td>
                 </tr>
               ) : (
                 group.rows.map((row, index) => (
-                  <SortableSceneRow
+                  <SortableOrderedRow
                     key={row.sceneId}
                     row={row}
                     groupId={group.groupId}
@@ -274,7 +274,7 @@ export function OrderedAssociationView({
   archiveHubTitle,
 }: OrderedAssociationViewProps) {
   const [searchQuery, setSearchQuery] = useTableSearch(itemsTableSearchParamKey());
-  const [activeSceneId, setActiveSceneId] = useState<string | null>(null);
+  const [activeRowId, setActiveRowId] = useState<string | null>(null);
   const [activeColumnId, setActiveColumnId] = useState<string | null>(null);
   const [moveError, setMoveError] = useState<string | null>(null);
   const [isMoving, setIsMoving] = useState(false);
@@ -336,8 +336,8 @@ export function OrderedAssociationView({
       onArchiveNode && onDeleteNode
         ? {
             onArchiveNode,
-            onRemoveNode: async (sceneId: string) => {
-              await api.unlinkOutgoingRelationship(sceneId, "is_a", view.typeDatabaseId);
+            onRemoveNode: async (rowId: string) => {
+              await api.unlinkOutgoingRelationship(rowId, "is_a", view.typeDatabaseId);
               onCellUpdated?.();
             },
             onDeleteNode,
@@ -361,18 +361,18 @@ export function OrderedAssociationView({
   );
 
   const activeRow = useMemo(() => {
-    if (!activeSceneId) return null;
+    if (!activeRowId) return null;
     for (const group of view.groups) {
-      const row = group.rows.find((entry) => entry.sceneId === activeSceneId);
+      const row = group.rows.find((entry) => entry.sceneId === activeRowId);
       if (row) return row;
     }
     return null;
-  }, [activeSceneId, view.groups]);
+  }, [activeRowId, view.groups]);
 
   const renderNameCell = useCallback(
-    (sceneId: string, name: string) => (
+    (rowId: string, name: string) => (
       <a
-        href={nodePageHref(sceneId, window.location.href)}
+        href={nodePageHref(rowId, window.location.href)}
         className="tome-database-name-link"
       >
         {name}
@@ -417,10 +417,10 @@ export function OrderedAssociationView({
     [api, onCellUpdated, view.columnDefs, view.typeDatabaseId],
   );
 
-  const handleSceneDragEnd = useCallback(
+  const handleRowDragEnd = useCallback(
     async (event: DragEndEvent) => {
       const { active, over } = event;
-      setActiveSceneId(null);
+      setActiveRowId(null);
       if (!over || active.id === over.id) return;
 
       const target = resolveDropTarget(view.groups, String(over.id));
@@ -471,7 +471,7 @@ export function OrderedAssociationView({
       setActiveColumnId(columnMatch[1]!);
       return;
     }
-    setActiveSceneId(activeId);
+    setActiveRowId(activeId);
   }, []);
 
   const handleDragEnd = useCallback(
@@ -480,13 +480,13 @@ export function OrderedAssociationView({
         handleColumnDragEnd(event);
         return;
       }
-      void handleSceneDragEnd(event);
+      void handleRowDragEnd(event);
     },
-    [handleColumnDragEnd, handleSceneDragEnd],
+    [handleColumnDragEnd, handleRowDragEnd],
   );
 
   const handleDragCancel = useCallback(() => {
-    setActiveSceneId(null);
+    setActiveRowId(null);
     setActiveColumnId(null);
   }, []);
 
@@ -508,7 +508,7 @@ export function OrderedAssociationView({
   const hasActiveSearch = searchQuery.trim().length > 0;
 
   if (view.tabs.items.length === 0) {
-    return <div className="tome-database-empty">No scenes in this database.</div>;
+    return <div className="tome-database-empty">No items in this database.</div>;
   }
 
   return (

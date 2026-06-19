@@ -294,7 +294,7 @@ export function getNodePageDetail(
   if (node.isTypeTable) {
     const provider = generatedProviderId(views, id, ITEMS_SECTION_KEY);
     if (provider) {
-      const config = getConfigByProvider(provider);
+      const config = getConfigByProvider(provider, contentDir);
       if (config) {
         const orderedView = getOrderedAssociationView(db, config.id, tabId, contentDir);
         if (orderedView) {

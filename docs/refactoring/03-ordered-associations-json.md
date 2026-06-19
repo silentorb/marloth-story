@@ -93,7 +93,7 @@ function loadConfigs(contentDir?: string): OrderedAssociationConfig[] {
 }
 ```
 
-- `getConfigByProvider`, `getConfigByTypeDatabaseId`, `getConfigById` search loaded configs
+- `getConfigByProvider`, `getOrderedAssociationConfigForDatabase`, `getConfig` search loaded configs
 - Pass `contentDir` through from `getOrderedAssociationView` / move mutations (already available via `resolveContentPath()`)
 
 **Scope discovery:** If `PRODUCTS_DATABASE_ID` was only used to enumerate product tabs, derive scopes from graph traversal via `scopeCompositeType` — do not hardcode a products database id.

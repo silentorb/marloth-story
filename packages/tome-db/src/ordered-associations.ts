@@ -2,7 +2,7 @@ import type { GraphDatabase, Relationship, Properties } from "./graph";
 import type { TomeWriteContext } from "./content/write-context";
 import { syncAfterRelationshipsWrite } from "./content/write-context";
 import { relationshipId } from "./graph";
-import { IS_A_TYPE, TYPE_MEMBERSHIP_TYPES } from "./labels";
+import { TYPE_MEMBERSHIP_TYPES } from "./labels";
 import type { DatabaseColumnDef } from "./database-view";
 import type { RelationLink } from "./relation-link";
 import { applyDynamicFields } from "./dynamic-fields";
@@ -19,11 +19,13 @@ import {
   listRelationshipsForComposite,
   relatedNodeIds,
 } from "./relationship-traverse";
+import type { OrderedAssociationConfig } from "./ordered-associations-config/ordered-associations-file";
+import { loadOrderedAssociationsFromContent } from "./ordered-associations-config/load";
 
-/** Synthetic group id for scenes with no Part association. */
+export type { OrderedAssociationConfig } from "./ordered-associations-config/ordered-associations-file";
+
+/** Synthetic group id for members with no group association. */
 export const UNASSIGNED_GROUP_ID = "__unassigned__";
-
-const PRODUCTS_DATABASE_ID = "4e973268d3474f71bd7992094fb39663";
 
 const ORDERED_ASSOCIATION_META_KEYS = new Set([
   "ordinal",
@@ -33,25 +35,8 @@ const ORDERED_ASSOCIATION_META_KEYS = new Set([
   "row_name",
 ]);
 
-export interface OrderedAssociationConfig {
-  id: string;
-  typeDatabaseId: string;
-  membershipEdgeType: string;
-  orderProperty: string;
-  /** Composite relationship type for scene ↔ product scope (e.g. scenes_product). */
-  scopeCompositeType: string;
-  /** Composite relationship type for scene ↔ part grouping (e.g. scenes_part). */
-  groupCompositeType: string;
-  /** Composite relationship type for part ↔ product scope filter (e.g. products_parts_database). */
-  partProductCompositeType: string;
-  groupTypeDatabaseId: string;
-  unassignedGroupTitle: string;
-  /** Notion view name used internally for column visibility (no view tabs in UI). */
-  columnViewName?: string;
-  /** Slugified column keys excluded from table columns (UI-redundant or deprecated). */
-  excludedColumnKeys?: string[];
-  /** Membership property on Part rows used for subsection sort order. */
-  partNumberProperty?: string;
+function loadConfigs(contentDir?: string): OrderedAssociationConfig[] {
+  return loadOrderedAssociationsFromContent(contentDir ?? resolveContentPath()).configs;
 }
 
 export interface OrderedAssociationScope {
@@ -60,6 +45,7 @@ export interface OrderedAssociationScope {
 }
 
 export interface OrderedAssociationRow {
+  /** Member node id in the type database (e.g. a scene). */
   sceneId: string;
   name: string;
   cells: Record<string, string>;
@@ -88,23 +74,6 @@ export interface OrderedAssociationMoveParams {
   targetGroupId: string;
   targetIndex: number;
 }
-
-const SCENES_BY_BOOK: OrderedAssociationConfig = {
-  id: "scenes-by-book",
-  typeDatabaseId: "204dba198db74611b0b49a98dd53e8f5",
-  membershipEdgeType: IS_A_TYPE,
-  orderProperty: "order",
-  scopeCompositeType: "scenes_product",
-  groupCompositeType: "scenes_part",
-  partProductCompositeType: "products_parts_database",
-  groupTypeDatabaseId: "5e45eefc69a14f45b988ad1f3c9d1ef5",
-  unassignedGroupTitle: "Unassigned",
-  columnViewName: "TWOLD Active",
-  excludedColumnKeys: ["order", "product", "part", "status"],
-  partNumberProperty: "number",
-};
-
-const CONFIGS: OrderedAssociationConfig[] = [SCENES_BY_BOOK];
 
 interface MemberInfo {
   sceneId: string;
@@ -149,18 +118,22 @@ function cellsFromMembershipRelationship(
   return cells;
 }
 
-function getConfig(configId: string): OrderedAssociationConfig | null {
-  return CONFIGS.find((config) => config.id === configId) ?? null;
+function getConfig(configId: string, contentDir?: string): OrderedAssociationConfig | null {
+  return loadConfigs(contentDir).find((config) => config.id === configId) ?? null;
 }
 
-export function getConfigByProvider(provider: string): OrderedAssociationConfig | null {
-  return CONFIGS.find((config) => config.id === provider) ?? null;
+export function getConfigByProvider(
+  provider: string,
+  contentDir?: string,
+): OrderedAssociationConfig | null {
+  return loadConfigs(contentDir).find((config) => config.id === provider) ?? null;
 }
 
 export function getOrderedAssociationConfigForDatabase(
   databaseId: string,
+  contentDir?: string,
 ): OrderedAssociationConfig | null {
-  return CONFIGS.find((config) => config.typeDatabaseId === databaseId) ?? null;
+  return loadConfigs(contentDir).find((config) => config.typeDatabaseId === databaseId) ?? null;
 }
 
 function scopeRelationshipTarget(
@@ -183,10 +156,9 @@ function membershipRelationships(db: GraphDatabase, config: OrderedAssociationCo
   return db.listRelationshipsToTarget(config.typeDatabaseId, config.membershipEdgeType);
 }
 
-function productSortKey(db: GraphDatabase, productId: string): number {
+function scopeMembershipSortKey(db: GraphDatabase, scopeNodeId: string): number {
   for (const label of TYPE_MEMBERSHIP_TYPES) {
-    const edge = db.getRelationship(relationshipId(productId, label, PRODUCTS_DATABASE_ID));
-    if (edge) {
+    for (const edge of db.listRelationshipsFromSource(scopeNodeId, label)) {
       return numericSortKey(edge.properties.order, numericSortKey(edge.properties.row_index, 999));
     }
   }
@@ -382,8 +354,8 @@ function discoverScopes(
   }
 
   scopes.sort((a, b) => {
-    const keyA = productSortKey(db, a.id);
-    const keyB = productSortKey(db, b.id);
+    const keyA = scopeMembershipSortKey(db, a.id);
+    const keyB = scopeMembershipSortKey(db, b.id);
     if (keyA !== keyB) return keyA - keyB;
     return a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
   });
@@ -397,7 +369,8 @@ export function getOrderedAssociationView(
   requestedTabId?: string,
   contentDir?: string,
 ): OrderedAssociationViewDetail | null {
-  const config = getConfig(configId);
+  const dir = contentDir ?? resolveContentPath();
+  const config = getConfig(configId, dir);
   if (!config) return null;
 
   const database = db.getNode(config.typeDatabaseId);
@@ -427,14 +400,14 @@ export function getOrderedAssociationView(
     "default",
     evalRows,
     undefined,
-    contentDir ? { contentDir } : undefined,
+    contentDir ? { contentDir: dir } : undefined,
   );
   const mergedColumnDefs = buildDatabaseColumnDefs(
     db,
     config.typeDatabaseId,
     dynamicColumnDefs,
     hiddenColumnKeys,
-    { excludeKeys, contentDir },
+    { excludeKeys, contentDir: dir },
   );
   hydrateRelationCellsForRows(db, config.typeDatabaseId, mergedColumnDefs, enrichedRows);
   const rowBySceneId = new Map(enrichedRows.map((row) => [row.nodeId, row]));
@@ -456,7 +429,6 @@ export function getOrderedAssociationView(
       ? mergedColumnDefs.map((col) => col.key)
       : collectColumns(members);
 
-  const dir = contentDir ?? resolveContentPath();
   const views = loadViewsFromContent(dir);
   const { columns, columnDefs } = applySectionColumnOrder(
     defaultColumns,
@@ -534,7 +506,8 @@ export function applyOrderedAssociationMove(
   params: OrderedAssociationMoveParams,
 ): OrderedAssociationViewDetail | null {
   const db = ctx.db;
-  const config = getConfig(configId);
+  const contentDir = ctx.store.contentDir;
+  const config = getConfig(configId, contentDir);
   if (!config) return null;
 
   const members = collectMembersInScope(db, config, params.scopeId);
@@ -604,5 +577,5 @@ export function applyOrderedAssociationMove(
   }
 
   syncAfterRelationshipsWrite(ctx);
-  return getOrderedAssociationView(db, configId, params.scopeId);
+  return getOrderedAssociationView(db, configId, params.scopeId, contentDir);
 }

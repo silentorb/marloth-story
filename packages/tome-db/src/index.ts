@@ -258,6 +258,10 @@ export {
   loadWorkspace,
   invalidateWorkspaceCache,
 } from "./workspace/load";
+export {
+  loadOrderedAssociationsFromContent,
+  invalidateOrderedAssociationsCache,
+} from "./ordered-associations-config/load";
 export { resolveWorkspace, archiveNodeId, protectedNodeIds } from "./workspace/resolve";
 export type {
   WorkspaceFile,
@@ -274,6 +278,13 @@ export {
   emptyWorkspaceFile,
   WORKSPACE_FILE_VERSION,
 } from "./workspace/workspace-file";
+export {
+  parseOrderedAssociationsFile,
+  serializeOrderedAssociationsFile,
+  emptyOrderedAssociationsFile,
+  ORDERED_ASSOCIATIONS_FILE_VERSION,
+} from "./ordered-associations-config/ordered-associations-file";
+export type { OrderedAssociationsFile } from "./ordered-associations-config/ordered-associations-file";
 export {
   ITEMS_SECTION_KEY,
   resolveCustomTabs,

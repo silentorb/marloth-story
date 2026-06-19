@@ -15,14 +15,15 @@ import type { SeedDynamicColumnSetInput, SeedDynamicFieldInput } from "../dynami
 import { invalidateDynamicFieldsCache } from "./sync";
 import { invalidateViewsCache } from "../views/load";
 import { invalidateWorkspaceCache } from "../workspace/load";
+import { invalidateOrderedAssociationsCache } from "../ordered-associations-config/load";
 import {
-  serializeWorkspaceFile,
-  type WorkspaceFile,
-  WORKSPACE_FILE_VERSION,
-} from "../workspace/workspace-file";
+  serializeOrderedAssociationsFile,
+  type OrderedAssociationsFile,
+  ORDERED_ASSOCIATIONS_FILE_VERSION,
+} from "../ordered-associations-config/ordered-associations-file";
 import { openTomeWriteContext, type TomeWriteContext } from "./write-context";
 import { writeFileSync } from "node:fs";
-import { contentModelDir, nodeFilePath, workspaceFilePath } from "./paths";
+import { contentModelDir, nodeFilePath, orderedAssociationsFilePath, workspaceFilePath } from "./paths";
 import {
   entryFromRelationship,
   RELATIONSHIPS_FILE_VERSION,
@@ -36,6 +37,11 @@ import {
   registerUnidirectionalType,
 } from "./relationship-types-file";
 import { INCLUDES_TYPE } from "../includes-relationship";
+import {
+  serializeWorkspaceFile,
+  type WorkspaceFile,
+  WORKSPACE_FILE_VERSION,
+} from "../workspace/workspace-file";
 
 /** Marloth workspace ids — match committed content/model/workspace.json. */
 export const TEST_HOME_NODE_ID = "13458e628ba28073850dea0edb9acde1";
@@ -75,6 +81,42 @@ export function seedTestWorkspace(
   invalidateWorkspaceCache();
 }
 
+export function defaultTestOrderedAssociationsFile(): OrderedAssociationsFile {
+  return {
+    version: ORDERED_ASSOCIATIONS_FILE_VERSION,
+    configs: [
+      {
+        id: "scenes-by-book",
+        typeDatabaseId: "204dba198db74611b0b49a98dd53e8f5",
+        membershipEdgeType: "is_a",
+        orderProperty: "order",
+        scopeCompositeType: "scenes_product",
+        groupCompositeType: "scenes_part",
+        partProductCompositeType: "products_parts_database",
+        groupTypeDatabaseId: "5e45eefc69a14f45b988ad1f3c9d1ef5",
+        unassignedGroupTitle: "Unassigned",
+        columnViewName: "TWOLD Active",
+        excludedColumnKeys: ["order", "product", "part", "status"],
+        partNumberProperty: "number",
+      },
+    ],
+  };
+}
+
+export function seedTestOrderedAssociations(
+  fixture: TestContentFixture,
+  overrides?: Partial<OrderedAssociationsFile>,
+): void {
+  const file = { ...defaultTestOrderedAssociationsFile(), ...overrides };
+  mkdirSync(contentModelDir(fixture.ctx.store.contentDir), { recursive: true });
+  writeFileSync(
+    orderedAssociationsFilePath(fixture.ctx.store.contentDir),
+    serializeOrderedAssociationsFile(file),
+    "utf-8",
+  );
+  invalidateOrderedAssociationsCache();
+}
+
 export function createTestContentFixture(prefix = "marloth-content-test-"): TestContentFixture {
   const tempDir = mkdtempSync(join(tmpdir(), prefix));
   const contentDir = join(tempDir, "content");
@@ -91,6 +133,7 @@ export function createTestContentFixture(prefix = "marloth-content-test-"): Test
   const fixture = { tempDir, ctx };
   ctx.store.writeDynamicFieldsFile(fileFromSeedInputs([], []));
   invalidateDynamicFieldsCache();
+  seedTestOrderedAssociations(fixture);
   return fixture;
 }
 
