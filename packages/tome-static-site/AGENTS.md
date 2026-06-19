@@ -26,12 +26,12 @@ Help: `bun run web:build -- --help`
 
 CLI overrides environment (see `--help`):
 
-| Flag | Env (primary) | Default |
+| Flag | Env | Default |
 | --- | --- | --- |
-| `--out-dir` | `TOME_WEB_OUT_DIR` (`MARLOTH_WEB_OUT_DIR` fallback) | `{repoRoot}/dist/web` |
-| `--content-dir` | `TOME_CONTENT_PATH` (`MARLOTH_CONTENT_PATH` fallback) | `./content` |
-| `--db-path` | `TOME_DB_PATH` (`MARLOTH_DB_PATH` fallback) | `data/tome.sqlite` |
-| `--base` | `TOME_WEB_BASE` (`MARLOTH_WEB_BASE` fallback) | `/` |
+| `--out-dir` | `TOME_WEB_OUT_DIR` | `{repoRoot}/dist/web` |
+| `--content-dir` | `TOME_CONTENT_PATH` | `./content` |
+| `--db-path` | `TOME_DB_PATH` | `data/tome.sqlite` |
+| `--base` | `TOME_WEB_BASE` | `/` |
 
 ## Output layout
 

@@ -17,12 +17,8 @@ function normalizeBase(value) {
   return value.endsWith("/") ? value : `${value}/`;
 }
 
-const outDir = resolveOutDir(
-  process.env.TOME_WEB_OUT_DIR ?? process.env.MARLOTH_WEB_OUT_DIR,
-);
-const base = normalizeBase(
-  process.env.TOME_WEB_BASE ?? process.env.MARLOTH_WEB_BASE,
-);
+const outDir = resolveOutDir(process.env.TOME_WEB_OUT_DIR);
+const base = normalizeBase(process.env.TOME_WEB_BASE);
 
 export default defineConfig({
   srcDir: "src",

@@ -1,11 +1,6 @@
-import { existsSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import {
-  defaultDbPathForContent,
-  legacyDbPathForContent,
-  resolveContentPath,
-} from "tome-db/content";
+import { defaultDbPathForContent, resolveContentPath } from "tome-db/content";
 
 export interface ResolvedConfig {
   repoRoot: string;
@@ -18,18 +13,8 @@ export interface ResolvedConfig {
 const PACKAGE_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 export const DEFAULT_REPO = resolve(PACKAGE_ROOT, "../..");
 
-function envString(
-  primary: string,
-  fallback: string | undefined,
-  env: NodeJS.ProcessEnv = process.env,
-): string | undefined {
-  const primaryVal = env[primary];
-  if (primaryVal) return primaryVal;
-  if (fallback) {
-    const fallbackVal = env[fallback];
-    if (fallbackVal) return fallbackVal;
-  }
-  return undefined;
+function envString(name: string, env: NodeJS.ProcessEnv = process.env): string | undefined {
+  return env[name];
 }
 
 export interface ArgParseResult {
@@ -85,13 +70,6 @@ function normalizeBase(base: string): string {
   return base.endsWith("/") ? base : `${base}/`;
 }
 
-function resolveDefaultDbPath(contentDir: string): string {
-  const primary = defaultDbPathForContent(contentDir);
-  const legacy = legacyDbPathForContent(contentDir);
-  if (!existsSync(primary) && existsSync(legacy)) return legacy;
-  return primary;
-}
-
 function buildResolvedConfig(
   kv: Map<string, string | boolean>,
   env: NodeJS.ProcessEnv = process.env,
@@ -103,8 +81,7 @@ function buildResolvedConfig(
   const rawContent = kv.get("content-dir");
   const contentFromCli = typeof rawContent === "string" ? rawContent : undefined;
   const contentDir = resolvePathArg(
-    contentFromCli ??
-      envString("TOME_CONTENT_PATH", "MARLOTH_CONTENT_PATH", env),
+    contentFromCli ?? envString("TOME_CONTENT_PATH", env),
     repoRoot,
   ) ?? resolveContentPath(repoRoot);
 
@@ -112,22 +89,18 @@ function buildResolvedConfig(
   const dbFromCli = typeof rawDb === "string" ? rawDb : undefined;
   const dbPath =
     resolvePathArg(dbFromCli, repoRoot) ??
-    envString("TOME_DB_PATH", "MARLOTH_DB_PATH", env) ??
-    resolveDefaultDbPath(contentDir);
+    envString("TOME_DB_PATH", env) ??
+    defaultDbPathForContent(contentDir);
 
   const rawOut = kv.get("out-dir");
   const outFromCli = typeof rawOut === "string" ? rawOut : undefined;
   const outDir =
-    resolvePathArg(
-      outFromCli ?? envString("TOME_WEB_OUT_DIR", "MARLOTH_WEB_OUT_DIR", env),
-      repoRoot,
-    ) ?? resolve(repoRoot, "dist/web");
+    resolvePathArg(outFromCli ?? envString("TOME_WEB_OUT_DIR", env), repoRoot) ??
+    resolve(repoRoot, "dist/web");
 
   const rawBase = kv.get("base");
   const baseFromCli = typeof rawBase === "string" ? rawBase : undefined;
-  const base = normalizeBase(
-    baseFromCli ?? envString("TOME_WEB_BASE", "MARLOTH_WEB_BASE", env) ?? "/",
-  );
+  const base = normalizeBase(baseFromCli ?? envString("TOME_WEB_BASE", env) ?? "/");
 
   return { repoRoot, contentDir, dbPath, outDir, base };
 }
@@ -141,22 +114,12 @@ export function readConfig(
   return { help: false, config: buildResolvedConfig(kv, env) };
 }
 
-function setEnvPair(
-  env: NodeJS.ProcessEnv,
-  primary: string,
-  fallback: string,
-  value: string,
-): void {
-  env[primary] = value;
-  env[fallback] = value;
-}
-
 /** Set process env for Astro build and content loader. */
 export function applyBuildEnv(config: ResolvedConfig, env: NodeJS.ProcessEnv = process.env): void {
-  setEnvPair(env, "TOME_CONTENT_PATH", "MARLOTH_CONTENT_PATH", config.contentDir);
-  setEnvPair(env, "TOME_DB_PATH", "MARLOTH_DB_PATH", config.dbPath);
-  setEnvPair(env, "TOME_WEB_OUT_DIR", "MARLOTH_WEB_OUT_DIR", config.outDir);
-  setEnvPair(env, "TOME_WEB_BASE", "MARLOTH_WEB_BASE", config.base);
+  env.TOME_CONTENT_PATH = config.contentDir;
+  env.TOME_DB_PATH = config.dbPath;
+  env.TOME_WEB_OUT_DIR = config.outDir;
+  env.TOME_WEB_BASE = config.base;
 }
 
 export function printHelp(): void {
@@ -166,14 +129,14 @@ export function printHelp(): void {
     "Usage: web:build [options]",
     "",
     "Options (CLI overrides environment):",
-    "  --repo <path>          Repository root (default: marloth-story repo root)",
+    "  --repo <path>          Repository root (default: repository root)",
     "  --content-dir <path>   Content directory (default: ./content)",
     "  --db-path <path>       SQLite cache path (default: data/tome.sqlite)",
     "  --out-dir <path>       Output directory (default: dist/web)",
     "  --base <path>          Site base path for embedding (default: /)",
     "  -h, --help",
     "",
-    "Environment (TOME_* preferred; MARLOTH_* accepted as fallback):",
+    "Environment:",
     "  TOME_CONTENT_PATH      Content directory when --content-dir is omitted",
     "  TOME_DB_PATH           SQLite cache path when --db-path is omitted",
     "  TOME_WEB_OUT_DIR       Output directory when --out-dir is omitted",

@@ -1,9 +1,6 @@
 export const TOME_LINK_SCHEME = "tome:";
-/** @deprecated Legacy scheme; still accepted when resolving links. */
-export const LEGACY_MARLOTH_LINK_SCHEME = "marloth:";
 
 const TOME_NODE_URI = /^tome:\/\/node\/([a-f0-9]{32})$/i;
-const LEGACY_MARLOTH_NODE_URI = /^marloth:\/\/node\/([a-f0-9]{32})$/i;
 const WIKI_LINK = /^\[\[([a-f0-9]{32})\]\]$/i;
 const LEGACY_EXPORT_PATH = /([a-f0-9]{32})(?:\.(?:md|csv))?$/i;
 const warnedLegacyHrefs = new Set<string>();
@@ -68,21 +65,15 @@ function resolveNodeIdFromQueryOnlyHref(href: string): string | null {
 }
 
 function resolveNodeIdFromInternalUri(trimmed: string): string | null {
-  for (const re of [TOME_NODE_URI, LEGACY_MARLOTH_NODE_URI]) {
-    const match = re.exec(trimmed);
-    if (match?.[1]) return normalizeRecordId(match[1]);
-  }
+  const match = TOME_NODE_URI.exec(trimmed);
+  if (match?.[1]) return normalizeRecordId(match[1]);
   return null;
 }
 
 function resolveNodeIdFromInternalScheme(trimmed: string): string | null {
-  for (const scheme of [TOME_LINK_SCHEME, LEGACY_MARLOTH_LINK_SCHEME]) {
-    if (trimmed.startsWith(scheme)) {
-      const id = trimmed.slice(scheme.length).trim();
-      return id && NODE_ID_PATTERN.test(id) ? normalizeRecordId(id) : null;
-    }
-  }
-  return null;
+  if (!trimmed.startsWith(TOME_LINK_SCHEME)) return null;
+  const id = trimmed.slice(TOME_LINK_SCHEME.length).trim();
+  return id && NODE_ID_PATTERN.test(id) ? normalizeRecordId(id) : null;
 }
 
 /** Canonical relative href for a node markdown file in `content/data/`. */

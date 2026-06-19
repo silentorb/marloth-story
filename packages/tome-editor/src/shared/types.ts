@@ -1,11 +1,10 @@
 import {
   canonicalNodeMarkdownHref,
-  LEGACY_MARLOTH_LINK_SCHEME,
   resolveMarkdownHrefTarget,
   TOME_LINK_SCHEME,
 } from "tome-db/markdown-links";
 
-export { LEGACY_MARLOTH_LINK_SCHEME, TOME_LINK_SCHEME };
+export { TOME_LINK_SCHEME };
 
 export function isProtectedEditorNode(
   id: string,
@@ -49,14 +48,12 @@ export function tomeHref(nodeId: string): string {
 }
 
 export function isTomeHref(href: string): boolean {
-  return href.startsWith(TOME_LINK_SCHEME) || href.startsWith(LEGACY_MARLOTH_LINK_SCHEME);
+  return href.startsWith(TOME_LINK_SCHEME);
 }
 
 export function nodeIdFromHref(href: string): string | null {
   if (!isTomeHref(href)) return null;
-  const id = href.startsWith(TOME_LINK_SCHEME)
-    ? href.slice(TOME_LINK_SCHEME.length).trim()
-    : href.slice(LEGACY_MARLOTH_LINK_SCHEME.length).trim();
+  const id = href.slice(TOME_LINK_SCHEME.length).trim();
   return id || null;
 }
 
@@ -78,7 +75,7 @@ export function nodeUri(nodeId: string): string {
 }
 
 export function nodeIdFromUri(uri: string): string | null {
-  const m = /^(?:tome|marloth):\/\/node\/([a-f0-9]{32})$/i.exec(uri);
+  const m = /^tome:\/\/node\/([a-f0-9]{32})$/i.exec(uri);
   return m?.[1]?.toLowerCase() ?? null;
 }
 

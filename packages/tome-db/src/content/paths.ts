@@ -82,18 +82,13 @@ export function orderedAssociationsFilePath(contentRoot: string): string {
 }
 
 export const DEFAULT_DB_FILENAME = "tome.sqlite";
-export const LEGACY_DB_FILENAME = "marloth.sqlite";
 
-/** Read an env var, falling back to a legacy name when the primary is unset. */
-export function readEnv(primary: string, fallback?: string): string | undefined {
-  const primaryVal = process.env[primary];
-  if (primaryVal) return primaryVal;
-  if (fallback) return process.env[fallback];
-  return undefined;
+export function readEnv(name: string): string | undefined {
+  return process.env[name];
 }
 
 export function resolveContentPath(cwd = process.cwd()): string {
-  const fromEnv = readEnv("TOME_CONTENT_PATH", "MARLOTH_CONTENT_PATH");
+  const fromEnv = readEnv("TOME_CONTENT_PATH");
   if (fromEnv) {
     return resolve(fromEnv);
   }
@@ -112,8 +107,4 @@ export function resolveContentPath(cwd = process.cwd()): string {
 
 export function defaultDbPathForContent(contentRoot: string): string {
   return resolve(contentRoot, "..", "data", DEFAULT_DB_FILENAME);
-}
-
-export function legacyDbPathForContent(contentRoot: string): string {
-  return resolve(contentRoot, "..", "data", LEGACY_DB_FILENAME);
 }

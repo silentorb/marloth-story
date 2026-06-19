@@ -8,12 +8,11 @@ import { createNodeLinkIconElement } from "./node-link-icon";
 export { isDynamicEditorHref } from "tome-db/dynamic-node-links";
 
 export const dynamicTitleRefreshMetaKey = "tomeDynamicTitleRefresh";
-export const LEGACY_DYNAMIC_TITLE_REFRESH_META_KEY = "marlothDynamicTitleRefresh";
 
 export function transactionHasDynamicTitleRefresh(
   tr: { getMeta: (key: string) => unknown },
 ): boolean {
-  return Boolean(tr.getMeta(dynamicTitleRefreshMetaKey) ?? tr.getMeta(LEGACY_DYNAMIC_TITLE_REFRESH_META_KEY));
+  return Boolean(tr.getMeta(dynamicTitleRefreshMetaKey));
 }
 
 function linkMarkHref(node: ProseNode): string | null {

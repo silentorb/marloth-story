@@ -3,10 +3,8 @@
  *
  * Usage: bun run scripts/check-type-membership.ts
  */
-import { existsSync } from "node:fs";
 import {
   defaultDbPathForContent,
-  legacyDbPathForContent,
   readEnv,
   resolveContentPath,
 } from "../packages/tome-db/src/content/paths";
@@ -20,10 +18,7 @@ import {
 
 const contentDir = resolveContentPath();
 const defaultDbPath = defaultDbPathForContent(contentDir);
-const legacyDbPath = legacyDbPathForContent(contentDir);
-const dbPath =
-  readEnv("TOME_DB_PATH", "MARLOTH_DB_PATH") ??
-  (existsSync(defaultDbPath) ? defaultDbPath : legacyDbPath);
+const dbPath = readEnv("TOME_DB_PATH") ?? defaultDbPath;
 
 const ctx = openTomeWriteContext(contentDir, dbPath);
 const { db } = ctx;

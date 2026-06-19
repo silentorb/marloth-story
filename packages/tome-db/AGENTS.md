@@ -3,7 +3,7 @@
 ## What it is
 - TypeScript + **Bun**: `content/data/` (nodes + relationships) and `content/model/` (workspace JSON) + SQLite cache for queries.
 - Uses Bun's built-in `bun:sqlite` (no extra native deps).
-- Content default: `content/` at repo root. Cache default: `data/tome.sqlite` (gitignored; legacy `data/marloth.sqlite` still read when present).
+- Content default: `content/` at repo root. Cache default: `data/tome.sqlite` (gitignored).
 
 ## Terminology
 

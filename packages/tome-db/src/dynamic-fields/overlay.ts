@@ -47,7 +47,7 @@ function parseParams(rows: { param_key: string; param_value: string }[]): Record
 }
 
 function contentDirForDynamicFields(explicit?: string): string | null {
-  const dir = explicit ?? readEnv("TOME_CONTENT_PATH", "MARLOTH_CONTENT_PATH") ?? resolveContentPath();
+  const dir = explicit ?? readEnv("TOME_CONTENT_PATH") ?? resolveContentPath();
   if (existsSync(dynamicFieldsFilePath(dir))) return dir;
   return null;
 }

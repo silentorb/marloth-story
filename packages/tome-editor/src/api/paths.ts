@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 import { Database } from "bun:sqlite";
 import {
   defaultDbPathForContent,
-  legacyDbPathForContent,
   readEnv,
   resolveContentPath as resolveContentPathFromDb,
 } from "tome-db/content";
@@ -14,20 +13,15 @@ const moduleDir = dirname(fileURLToPath(import.meta.url));
 
 function dbPathCandidates(contentPath: string): string[] {
   const canonicalTome = resolve(moduleDir, "../../../data/tome.sqlite");
-  const canonicalLegacy = resolve(moduleDir, "../../../data/marloth.sqlite");
-  const candidates: string[] = [
-    defaultDbPathForContent(contentPath),
-    legacyDbPathForContent(contentPath),
-  ];
+  const candidates: string[] = [defaultDbPathForContent(contentPath)];
   let dir = process.cwd();
   for (let depth = 0; depth < 6; depth += 1) {
     candidates.push(resolve(dir, "data/tome.sqlite"));
-    candidates.push(resolve(dir, "data/marloth.sqlite"));
     const parent = resolve(dir, "..");
     if (parent === dir) break;
     dir = parent;
   }
-  candidates.push(canonicalTome, canonicalLegacy);
+  candidates.push(canonicalTome);
 
   const seen = new Set<string>();
   return candidates.filter((candidate) => {
@@ -65,7 +59,7 @@ export function pickExistingDbPath(candidates: string[], fallback: string): stri
 }
 
 export function resolveContentPath(): string {
-  const fromEnv = readEnv("TOME_CONTENT_PATH", "MARLOTH_CONTENT_PATH");
+  const fromEnv = readEnv("TOME_CONTENT_PATH");
   if (fromEnv) {
     return resolve(fromEnv);
   }
@@ -73,7 +67,7 @@ export function resolveContentPath(): string {
 }
 
 export function resolveDbPath(): string {
-  const fromEnv = readEnv("TOME_DB_PATH", "MARLOTH_DB_PATH");
+  const fromEnv = readEnv("TOME_DB_PATH");
   if (fromEnv) {
     return resolve(fromEnv);
   }
@@ -85,26 +79,20 @@ export function resolveDbPath(): string {
 }
 
 export function resolveApiPort(): number {
-  const raw =
-    readEnv("TOME_EDITOR_API_PORT", "MARLOTH_EDITOR_API_PORT") ?? String(DEFAULT_PORT);
+  const raw = readEnv("TOME_EDITOR_API_PORT") ?? String(DEFAULT_PORT);
   const port = Number.parseInt(raw, 10);
   return Number.isFinite(port) ? port : DEFAULT_PORT;
 }
 
 export function resolveUserSettingsPath(): string {
-  const fromEnv = readEnv("TOME_USER_SETTINGS_PATH", "MARLOTH_USER_SETTINGS_PATH");
+  const fromEnv = readEnv("TOME_USER_SETTINGS_PATH");
   if (fromEnv) {
     return resolve(fromEnv);
   }
 
   const contentPath = resolveContentPath();
   const repoRoot = resolve(contentPath, "..");
-  const primary = resolve(repoRoot, ".tome/user-settings.json");
-  const legacy = resolve(repoRoot, ".marloth/user-settings.json");
-  if (!existsSync(primary) && existsSync(legacy)) {
-    return legacy;
-  }
-  return primary;
+  return resolve(repoRoot, ".tome/user-settings.json");
 }
 
 export { resolveContentPathFromDb };

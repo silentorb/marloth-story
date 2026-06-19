@@ -13,8 +13,7 @@ export interface EditorApi extends EditorApiClient {
 }
 
 function resolveWebviewApiBaseUrl(): string {
-  const fromEnv =
-    import.meta.env.VITE_TOME_API_URL ?? import.meta.env.VITE_MARLOTH_API_URL;
+  const fromEnv = import.meta.env.VITE_TOME_API_URL;
   if (typeof fromEnv === "string" && fromEnv.trim()) return fromEnv.trim();
   if (typeof window !== "undefined") return window.location.origin;
   return DEFAULT_API_BASE_URL;
