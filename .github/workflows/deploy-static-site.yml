@@ -6,8 +6,6 @@ on:
       - main
     paths:
       - content/**
-      - packages/tome-static-site/**
-      - packages/tome-db/**
       - package.json
       - bun.lock
       - bunfig.toml

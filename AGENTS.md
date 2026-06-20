@@ -15,19 +15,19 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 
 - This repository contains the Marloth Story project, related to the Marloth series of fantasy novels and overlapping game-design work.
 - Keep updates aligned with the repository's current scope and documentation.
-- The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs live in `./docs/features/` (see Terminology below). The **design ontology** lives at `[docs/ontology.md](./docs/ontology.md)`.
+- The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs for Tome tooling live in the sibling **`tome`** repo at `../tome/docs/features/` (or `repos/tome/docs/features/` from silentorb-workbench). Marloth-specific deploy docs remain in [`docs/features/static-website-deploy.md`](./docs/features/static-website-deploy.md). The **design ontology** lives at [`docs/ontology.md`](./docs/ontology.md).
 - The `./content` directory is the **canonical store root**: `content/data/{nodeId}.md` per node (YAML frontmatter + markdown body) plus `relationships.json`; `content/model/` holds `relationship-types.json`, `schema.json`, `table-schemas.json`, `views.json`, and `dynamic-fields.json`.
 - The `./data/tome.sqlite` file is a **local query cache** (gitignored; legacy `data/marloth.sqlite` may still exist). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
-- TypeScript tooling lives under `./packages/`; ephemeral build output and dependencies live at the repo root (`./dist/`, `./node_modules/`), not under `./packages/`.
+- TypeScript domain scripts live under `./scripts/`; Tome packages (`tome-db`, `tome-editor`, `tome-static-site`) live in the sibling **`tome`** repository. In silentorb-workbench, open the devcontainer and use the **`tome` Compose service** for `editor:dev` (not this repo directly).
 - The `./exports/` directory holds **archival** Notion export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
-- All external dependencies and tooling installs should be performed within the devcontainer Dockerfile. On each container start, the image `CMD` runs `bun install --frozen-lockfile` in the workspace and then starts the editor dev servers (`bun run editor:dev`). **Rebuild the container** after changing `package.json` or `bun.lock` — do not run `bun install` manually in a terminal or on the host.
+- All external dependencies and tooling installs should be performed within the silentorb-workbench devcontainer. The **`tome` Compose service** runs the editor against this repo's `content/`. **Rebuild the container** after changing `package.json` or `bun.lock` in workbench or tome — do not run `bun install` manually in a terminal or on the host.
 
 ## Terminology
 
 
 | Term                      | Meaning                                                                                                                                                           |
 | ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Project feature**       | A workspace capability documented in `./docs/features/` (e.g. notion import, tome-db). Use this phrase when discussing tooling or agent specs—not graph nodes. |
+| **Project feature**       | A workspace capability documented in the sibling **`tome`** repo under `docs/features/` (e.g. tome-db, tome-editor). Use this phrase when discussing tooling or agent specs—not graph nodes. |
 | **Node**                  | Any entity in the design graph (SQLite `nodes` table). Replaces legacy *record* / *vertex* in docs and API.                                                       |
 | **Relationship**          | A link between two nodes with a **relationship type** and properties. Stored compactly in `relationships.json`; SQLite cache expands to directed projections.     |
 | **Page**                  | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a Notion export file.                      |
@@ -49,7 +49,7 @@ The `./content/` tree is **authoritative and git-tracked**. Notion import was a 
 
 | Task                                 | Do                                                                                                                            | Do not                                           |
 | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| Add or edit nodes, bodies, titles    | Edit `content/data/{nodeId}.md` or use the Tome editor / `ContentStore` (`packages/tome-db`)                            | Edit `data/tome.sqlite` (or legacy `data/marloth.sqlite`) directly              |
+| Add or edit nodes, bodies, titles    | Edit `content/data/{nodeId}.md` or use the Tome editor / `ContentStore` (`tome-db` in sibling **tome** repo)                            | Edit `data/tome.sqlite` (or legacy `data/marloth.sqlite`) directly              |
 | Add or edit relationships            | Edit `content/data/relationships.json`, `content/model/relationship-types.json`, or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files   |
 | Dynamic field bindings               | Edit `content/model/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts`                                          | Use removed `dynamic_`* SQLite overlay tables    |
 | Table view tabs (custom / generated) | Edit `content/model/views.json` or use editor tab CRUD                                                                        | Edit `notion_views` on node frontmatter (legacy) |
@@ -58,7 +58,7 @@ The `./content/` tree is **authoritative and git-tracked**. Notion import was a 
 | Data only in `./exports/`            | Mine archive and upsert into `./content` (same mapping rules as legacy import)                                                | Run `bun run notion:import` / `--clean`          |
 
 
-See `[docs/features/tome-db.md](./docs/features/tome-db.md)` for file formats and API. `[docs/features/notion-import.md](./docs/features/notion-import.md)` documents the **legacy** import pipeline for reference and export mining only.
+See the sibling **tome** repo [`docs/features/tome-db.md`](../tome/docs/features/tome-db.md) for file formats and API. [`docs/features/notion-import.md`](../tome/docs/features/notion-import.md) documents the **legacy** import pipeline for reference and export mining only.
 
 ## Working Conventions
 
@@ -77,7 +77,7 @@ See `[docs/features/tome-db.md](./docs/features/tome-db.md)` for file formats an
 
 ## Feature documentation
 
-Authoritative design specs for **project features** live in `./docs/features/` (one file per major workspace capability). They state requirements, design rationale, and behavior so agents need not re-analyze the repo for basics.
+Authoritative design specs for **project features** live in the sibling **`tome`** repo (`../tome/docs/features/`). Marloth-specific deploy documentation stays in [`docs/features/static-website-deploy.md`](./docs/features/static-website-deploy.md).
 
 **Do not read all feature docs by default.** When your task matches a row, read only that file (and the package `AGENTS.md` if editing that package). Treat the feature doc as the source of truth over implementation when they disagree—update code or the doc explicitly.
 
@@ -87,20 +87,20 @@ For **design data** (what nodes mean, how they relate conceptually), read `[docs
 | If your task involves…                                                 | Read                                                                                                                                                           |
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Design domain model, node types, relationships, traceability           | `[docs/ontology.md](./docs/ontology.md)`                                                                                                                       |
-| SQLite property graph, `data/tome.sqlite`, `packages/tome-db/`   | `[docs/features/tome-db.md](./docs/features/tome-db.md)` (+ ontology when interpreting data)                                                             |
-| Web markdown editor, `packages/tome-editor/` | `[docs/features/tome-editor.md](./docs/features/tome-editor.md)`                                                                                         |
-| Graph Explorer, LOD layers, anchor-scoped graph viz                    | `[docs/features/graph-explorer.md](./docs/features/graph-explorer.md)`                                                                                         |
-| Editing story/design content in the graph                              | `[docs/ontology.md](./docs/ontology.md)` + `[docs/features/tome-db.md](./docs/features/tome-db.md)` (direct DB edits; see **Graph data workflow** above) |
-| Legacy Notion import / mining `./exports/`                             | `[docs/features/notion-import.md](./docs/features/notion-import.md)`                                                                                           |
-| Ordered associations, scene order, drag-and-drop reorder               | `[docs/features/ordered-associations.md](./docs/features/ordered-associations.md)`                                                                             |
-| Dynamic table view fields, computed columns                            | `[docs/features/dynamic-table-fields.md](./docs/features/dynamic-table-fields.md)` + `[docs/dynamic-fields/](./docs/dynamic-fields/)`                          |
-| Table view tabs, `views.json`                                          | `[docs/features/views.md](./docs/features/views.md)`                                                                                                           |
-| Type table columns, `table-schemas.json`                               | `[docs/features/table-schemas.md](./docs/features/table-schemas.md)`                                                                                           |
-| Static website generation (Astro)                                      | `[docs/features/static-website.md](./docs/features/static-website.md)`                                                                                         |
-| Static website deploy (GitHub Actions → S3/CloudFront)                 | `[docs/features/static-website-deploy.md](./docs/features/static-website-deploy.md)`                                                                           |
+| SQLite property graph, `data/tome.sqlite`, `tome-db` | [`../tome/docs/features/tome-db.md`](../tome/docs/features/tome-db.md) (+ ontology when interpreting data) |
+| Web markdown editor, `tome-editor` | [`../tome/docs/features/tome-editor.md`](../tome/docs/features/tome-editor.md) |
+| Graph Explorer, LOD layers, anchor-scoped graph viz | [`../tome/docs/features/graph-explorer.md`](../tome/docs/features/graph-explorer.md) |
+| Editing story/design content in the graph | [`docs/ontology.md`](./docs/ontology.md) + [`../tome/docs/features/tome-db.md`](../tome/docs/features/tome-db.md) |
+| Legacy Notion import / mining `./exports/` | [`../tome/docs/features/notion-import.md`](../tome/docs/features/notion-import.md) |
+| Ordered associations, scene order, drag-and-drop reorder | [`../tome/docs/features/ordered-associations.md`](../tome/docs/features/ordered-associations.md) |
+| Dynamic table view fields, computed columns | [`../tome/docs/features/dynamic-table-fields.md`](../tome/docs/features/dynamic-table-fields.md) + [`../tome/docs/dynamic-fields/`](../tome/docs/dynamic-fields/) |
+| Table view tabs, `views.json` | [`../tome/docs/features/views.md`](../tome/docs/features/views.md) |
+| Type table columns, `table-schemas.json` | [`../tome/docs/features/table-schemas.md`](../tome/docs/features/table-schemas.md) |
+| Static website generation (Astro) | [`../tome/docs/features/static-website.md`](../tome/docs/features/static-website.md) |
+| Static website deploy (GitHub Actions → S3/CloudFront) | [`docs/features/static-website-deploy.md`](./docs/features/static-website-deploy.md) |
 
 
-See also `[docs/features/README.md](./docs/features/README.md)` for the feature-doc template and how to add new features.
+See also [`../tome/docs/features/README.md`](../tome/docs/features/README.md) for the feature-doc template.
 
 ## Refactoring guides
 

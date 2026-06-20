@@ -1,10 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+WORKBENCH_ROOT="${WORKBENCH_ROOT:-/workspaces/silentorb-workbench}"
+TOME_EDITOR="${TOME_EDITOR_ROOT:-$WORKBENCH_ROOT/repos/tome}/packages/tome-editor"
 API_PORT="${TOME_EDITOR_API_PORT:-${MARLOTH_EDITOR_API_PORT:-3847}}"
 API_BASE="http://127.0.0.1:${API_PORT}"
 WEBVIEW_URL="${TOME_EDITOR_WEBVIEW_URL:-${MARLOTH_EDITOR_WEBVIEW_URL:-http://127.0.0.1:5173}}"
 WEBVIEW_BASE="${WEBVIEW_URL%/}"
+
+export TOME_CONTENT_PATH="${TOME_CONTENT_PATH:-$ROOT/content}"
+export TOME_DB_PATH="${TOME_DB_PATH:-$ROOT/data/tome.sqlite}"
+
+if [[ ! -d "$TOME_EDITOR" ]]; then
+  echo "tome-editor not found at $TOME_EDITOR" >&2
+  echo "Open silentorb-workbench devcontainer with repos/tome mounted." >&2
+  exit 1
+fi
 
 wait_for_url() {
   local url="$1"
@@ -26,7 +37,7 @@ start_api() {
     return 0
   fi
   local log="${TOME_API_LOG:-${MARLOTH_API_LOG:-/tmp/tome-api.log}}"
-  nohup bun run --cwd "$ROOT/packages/tome-editor" dev:api >>"$log" 2>&1 &
+  nohup bun run --cwd "$TOME_EDITOR" dev:api >>"$log" 2>&1 &
   disown 2>/dev/null || true
   wait_for_url "${API_BASE}/api/health" "Tome API" || {
     echo "See ${log}" >&2
@@ -40,7 +51,7 @@ start_webview() {
     return 0
   fi
   local log="${TOME_WEBVIEW_LOG:-${MARLOTH_WEBVIEW_LOG:-/tmp/tome-webview.log}}"
-  nohup bun run --cwd "$ROOT/packages/tome-editor" dev:webview >>"$log" 2>&1 &
+  nohup bun run --cwd "$TOME_EDITOR" dev:webview >>"$log" 2>&1 &
   disown 2>/dev/null || true
   wait_for_url "${WEBVIEW_BASE}/" "Tome webview dev server" || {
     echo "See ${log}" >&2

@@ -9,24 +9,20 @@ usage() {
   cat <<EOF
 Usage: ci-build-static-site.sh [--run-only | -h | --help]
 
-Build the static site the same way GitHub Actions does: devcontainer image,
-bind-mounted repo, host UID/GID, frozen lockfile, tests, then web:build.
+Build the static site the same way GitHub Actions does.
+
+NOTE: Static site packages now live in the sibling tome repo. This script
+requires a Phase 2 update (checkout tome alongside marloth). Use
+silentorb-workbench scripts/ci-build-static-site.sh for devcontainer CI parity.
 
   (default)   docker build + docker run
   --run-only  docker run only (CI after build-push-action)
-
-Requires Docker on PATH (host/WSL — not available inside all devcontainers).
-
-Environment:
-  MARLOTH_CI_IMAGE       Image tag (default: marloth-ci:local)
-  MARLOTH_CI_WORKSPACE   Mount path inside container (default: /workspaces/marloth-story)
 EOF
 }
 
 require_docker() {
   if ! command -v docker >/dev/null 2>&1; then
     echo "docker not found on PATH." >&2
-    echo "Run this script on the host (or WSL) where Docker is installed." >&2
     exit 1
   fi
 }
@@ -37,14 +33,9 @@ build_image() {
 }
 
 run_build() {
-  echo "Building static site in container (bind mount ${ROOT})"
-  docker run --rm \
-    --user "$(id -u):$(id -g)" \
-    -e HOME=/tmp \
-    -v "${ROOT}:${MARLOTH_CI_WORKSPACE}" \
-    -w "${MARLOTH_CI_WORKSPACE}" \
-    "${MARLOTH_CI_IMAGE}" \
-    bash -c 'bun install --frozen-lockfile && bun run --filter tome-static-site test && bun run web:build'
+  echo "ERROR: marloth-only static site CI requires the tome repo (Phase 2)." >&2
+  echo "Use silentorb-workbench with both repos mounted, or update this script to checkout tome." >&2
+  exit 1
 }
 
 case "${1:-}" in
