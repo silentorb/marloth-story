@@ -15,8 +15,13 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 
 - This repository contains the Marloth Story project, related to the Marloth series of fantasy novels and overlapping game-design work.
 - Keep updates aligned with the repository's current scope and documentation.
+<<<<<<< Updated upstream
 - The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs for Tome tooling live in the sibling **`tome`** repo at `../tome/docs/features/` (or `repos/tome/docs/features/` from silentorb-workbench). Marloth-specific deploy docs remain in [`docs/features/static-website-deploy.md`](./docs/features/static-website-deploy.md). The **design ontology** lives at [`docs/ontology.md`](./docs/ontology.md).
 - The `./content` directory is the **canonical store root**: `content/data/{nodeId}.md` per node (YAML frontmatter + markdown body) plus `relationships.json`; `content/model/` holds `relationship-types.json`, `schema.json`, `table-schemas.json`, `views.json`, and `dynamic-fields.json`.
+=======
+- The `./docs` directory contains meta information about the design of this workspace, mostly intended for AI agents. Authoritative **project feature** specs live in `./docs/features/` (see Terminology below). The **design ontology** lives at `[docs/ontology.md](./docs/ontology.md)`.
+- The `./content` directory is the **canonical store root**: `content/data/{nodeId}.md` per node (YAML frontmatter + markdown body) plus `relationships.json`; `content/model/` holds `relationship-types.json`, `schema.json`, `table-schemas.json`, `views.json`, `dynamic-fields.json`, and `extensions.json`.
+>>>>>>> Stashed changes
 - The `./data/tome.sqlite` file is a **local query cache** (gitignored; legacy `data/marloth.sqlite` may still exist). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
 - TypeScript domain scripts live under `./scripts/`; Tome packages (`tome-db`, `tome-editor`, `tome-static-site`) live in the sibling **`tome`** repository. In silentorb-workbench, open the devcontainer and use the **`tome` Compose service** for `editor:dev` (not this repo directly).
 - The `./exports/` directory holds **archival** Notion export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
@@ -52,6 +57,7 @@ The `./content/` tree is **authoritative and git-tracked**. Notion import was a 
 | Add or edit nodes, bodies, titles    | Edit `content/data/{nodeId}.md` or use the Tome editor / `ContentStore` (`tome-db` in sibling **tome** repo)                            | Edit `data/tome.sqlite` (or legacy `data/marloth.sqlite`) directly              |
 | Add or edit relationships            | Edit `content/data/relationships.json`, `content/model/relationship-types.json`, or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files   |
 | Dynamic field bindings               | Edit `content/model/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts`                                          | Use removed `dynamic_`* SQLite overlay tables    |
+| Extension registration               | Edit `content/model/extensions.json` ([extensions.md](../tome/docs/features/extensions.md))                                  | Hard-code extension modules in tome-editor       |
 | Table view tabs (custom / generated) | Edit `content/model/views.json` or use editor tab CRUD                                                                        | Edit `notion_views` on node frontmatter (legacy) |
 | Refresh local cache                  | `bun run content:sync` or start `editor:api` (rebuilds cache + watches `./content`)                                           | Commit `data/tome.sqlite`                     |
 | One-time SQLite → content            | `bun run content:export` (from existing `data/tome.sqlite` or legacy `data/marloth.sqlite` if present)                                                     | —                                                |
