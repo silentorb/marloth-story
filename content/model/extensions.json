@@ -1,5 +1,23 @@
 {
   "version": 1,
-  "extensions": [],
-  "components": []
+  "extensions": [
+    {
+      "id": "spatial-graph",
+      "enabled": true,
+      "editorModule": "tome-spatial-graph/editor",
+      "htmlModule": "tome-spatial-graph/html",
+      "serverModule": "tome-spatial-graph/server"
+    }
+  ],
+  "components": [
+    {
+      "id": "spatial-graph.block",
+      "extensionId": "spatial-graph",
+      "kind": "page-block",
+      "implementationId": "spatial-graph",
+      "label": "Spatial graph",
+      "enabled": true,
+      "slashMenu": { "group": "custom", "order": 20 }
+    }
+  ]
 }
