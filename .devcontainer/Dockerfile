@@ -7,7 +7,10 @@ EOF
 
 RUN <<EOF
 apt-get update
-apt-get install -y --no-install-recommends ca-certificates curl unzip python3
+apt-get install -y --no-install-recommends \
+  ca-certificates curl unzip python3 \
+  build-essential pkg-config \
+  libcairo2-dev libjpeg-dev libpango1.0-dev libgif-dev librsvg2-dev libpixman-1-dev
 apt-get upgrade -y
 rm -rf /var/lib/apt/lists/*
 EOF

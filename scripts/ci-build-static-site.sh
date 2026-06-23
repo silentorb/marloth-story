@@ -75,7 +75,7 @@ run_build() {
     "${MARLOTH_CI_IMAGE}" \
     bash -c "
       set -euo pipefail
-      bun install --frozen-lockfile --filter tome-static-site
+      bun install --frozen-lockfile --filter tome-static-site --filter tome-spatial-graph
       bun run --filter tome-static-site test
       bun run web:build -- \
         --repo ${TOME_CI_WORKSPACE} \
