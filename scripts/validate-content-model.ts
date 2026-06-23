@@ -6,8 +6,7 @@
  */
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
-import { parseNodeFile } from "../packages/tome-db/src/content/node-file";
-import { contentDataDir, resolveContentPath } from "../packages/tome-db/src/content/paths";
+import { contentDataDir, parseNodeFile, resolveContentPath } from "tome-db/content";
 
 const FORBIDDEN_KEYS = [
   "notion_id",

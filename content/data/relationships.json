@@ -34038,6 +34038,34 @@
       "b": "da39167ef3484baaae2675dfa331ec31",
       "type": "neighbor",
       "directedFrom": "da39167ef3484baaae2675dfa331ec31"
+    },
+    {
+      "a": "87874a6823f44a1282b7acfcc62833bb",
+      "b": "df096ab26e8347e6992e95698345aad0",
+      "type": "is_a",
+      "directedFrom": "87874a6823f44a1282b7acfcc62833bb",
+      "properties": {
+        "row_index": 19,
+        "view": "Untitled"
+      }
+    },
+    {
+      "a": "6bbd4ac7830c44f78d2e4eff5a725bb6",
+      "b": "87874a6823f44a1282b7acfcc62833bb",
+      "type": "children",
+      "directedFrom": "87874a6823f44a1282b7acfcc62833bb"
+    },
+    {
+      "a": "2639e47762d1483c9c8619c59575b713",
+      "b": "87874a6823f44a1282b7acfcc62833bb",
+      "type": "children",
+      "directedFrom": "87874a6823f44a1282b7acfcc62833bb"
+    },
+    {
+      "a": "2a758e628ba2802f956ce4732a520dfa",
+      "b": "87874a6823f44a1282b7acfcc62833bb",
+      "type": "children",
+      "directedFrom": "87874a6823f44a1282b7acfcc62833bb"
     }
   ]
 }

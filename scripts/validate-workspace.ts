@@ -6,8 +6,8 @@
  */
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
-import { contentDataDir, resolveContentPath } from "../packages/tome-db/src/content/paths";
-import { parseWorkspaceFile } from "../packages/tome-db/src/workspace/workspace-file";
+import { contentDataDir, resolveContentPath } from "tome-db/content";
+import { parseWorkspaceFile } from "tome-db";
 
 const contentRoot = resolveContentPath();
 const workspacePath = resolve(contentRoot, "model", "workspace.json");

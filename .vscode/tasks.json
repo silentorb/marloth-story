@@ -2,9 +2,22 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Test: full suite",
+      "label": "Marloth: sync content cache",
       "type": "shell",
-      "command": "bun run test",
+      "command": "bun run content:sync",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Marloth: validate content model",
+      "type": "shell",
+      "command": "bun run validate:content-model",
       "options": {
         "cwd": "${workspaceFolder}"
       },
@@ -20,102 +33,18 @@
       "problemMatcher": []
     },
     {
-      "label": "Tome Editor: build",
+      "label": "Marloth: validate workspace",
       "type": "shell",
-      "command": "bun run editor:build",
+      "command": "bun run validate:workspace",
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Tome: build static website",
-      "type": "shell",
-      "command": "bun run web:build",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": "build",
+      "group": "test",
       "presentation": {
         "reveal": "always",
         "panel": "shared"
       },
       "problemMatcher": []
-    },
-    {
-      "label": "Tome: serve static website",
-      "type": "shell",
-      "command": "bash scripts/serve-static-site.sh",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "tome-static-site",
-        "pattern": {
-          "regexp": "."
-        },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "^",
-          "endsPattern": "Marloth static site →"
-        }
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated",
-        "showReuseMessage": false
-      }
-    },
-    {
-      "label": "Tome: build static website (CI simulation)",
-      "type": "shell",
-      "command": "bash scripts/ci-build-static-site.sh",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "group": "build",
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": true
-      },
-      "problemMatcher": []
-    },
-    {
-      "label": "Tome Editor: dev servers",
-      "type": "shell",
-      "command": "bash scripts/tome-editor-start",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "silent",
-        "panel": "dedicated",
-        "showReuseMessage": false,
-        "close": true
-      }
-    },
-    {
-      "label": "Tome Editor: dev (API + webview)",
-      "type": "shell",
-      "command": "bun run editor:dev",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "isBackground": true,
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "dedicated"
-      }
     }
   ]
 }
