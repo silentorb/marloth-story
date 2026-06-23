@@ -64,13 +64,15 @@ run_build() {
     --user "$(id -u):$(id -g)" \
     -v "${ROOT}:${MARLOTH_CI_WORKSPACE}:rw" \
     -v "${TOME_ROOT}:${TOME_CI_WORKSPACE}:rw" \
+    -e "BUN_INSTALL=/usr/local/bun" \
+    -e "PATH=/usr/local/bun/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
     -e "TOME_CONTENT_PATH=${MARLOTH_CI_WORKSPACE}/content" \
     -e "TOME_DB_PATH=${MARLOTH_CI_WORKSPACE}/data/tome.sqlite" \
     -e "TOME_WEB_BASE=${web_base}" \
     -e "MARLOTH_WEB_BASE=${web_base}" \
     -w "${TOME_CI_WORKSPACE}" \
     "${MARLOTH_CI_IMAGE}" \
-    bash -lc "
+    bash -c "
       set -euo pipefail
       bun install --frozen-lockfile
       bun run --filter tome-static-site test
