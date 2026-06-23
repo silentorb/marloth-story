@@ -64,6 +64,7 @@ run_build() {
     --user "$(id -u):$(id -g)" \
     -v "${ROOT}:${MARLOTH_CI_WORKSPACE}:rw" \
     -v "${TOME_ROOT}:${TOME_CI_WORKSPACE}:rw" \
+    -e "HOME=/tmp" \
     -e "BUN_INSTALL=/usr/local/bun" \
     -e "PATH=/usr/local/bun/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
     -e "TOME_CONTENT_PATH=${MARLOTH_CI_WORKSPACE}/content" \
@@ -74,7 +75,7 @@ run_build() {
     "${MARLOTH_CI_IMAGE}" \
     bash -c "
       set -euo pipefail
-      bun install --frozen-lockfile
+      bun install --frozen-lockfile --filter tome-static-site
       bun run --filter tome-static-site test
       bun run web:build -- \
         --repo ${TOME_CI_WORKSPACE} \
