@@ -155,7 +155,7 @@ For a fast in-workbench build (not CI parity), use `bash scripts/build-static-si
 ### After deploy hook-up
 
 1. Run workflow via `workflow_dispatch`.
-2. Confirm objects in S3: `index.html`, `nodes/*/index.html`, `_astro/*`.
+2. Confirm objects in S3: `index.html`, `{id}/index.html`, `_astro/*`.
 3. Open the CloudFront URL; confirm content matches latest `main`.
 4. Push a small `content/` change on `main`; confirm automatic redeploy.
 

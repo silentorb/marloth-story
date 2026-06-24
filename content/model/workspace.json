@@ -26,7 +26,8 @@
   "branding": {
     "appTitle": "Tome",
     "defaultDocumentIcon": "M",
-    "staticSiteHeader": "Marloth design corpus"
+    "staticSiteHeader": "Marloth design corpus",
+    "staticSiteFooterOrganization": "Silent Orb"
   },
   "legacy": {
     "exportPathPrefix": "Marloth",
