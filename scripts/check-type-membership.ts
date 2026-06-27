@@ -1,5 +1,5 @@
 /**
- * Fail if typed nodes are missing IS_A connections or still store row scalars on nodes.
+ * Fail if typed nodes are missing member_of connections or still store row scalars on nodes.
  *
  * Usage: bun run scripts/check-type-membership.ts
  */
@@ -29,7 +29,7 @@ const nestedPageSpurious = findNestedPageSpuriousTypeMembership(db, contentDir);
 const nodeScalars = findNodeScalarsOnTypedNodes(db);
 
 if (nestedPageSpurious.length > 0) {
-  console.error(`Nested-page spurious IS_A connections (${nestedPageSpurious.length}):`);
+  console.error(`Nested-page spurious member_of connections (${nestedPageSpurious.length}):`);
   for (const row of nestedPageSpurious.slice(0, 20)) {
     console.error(
       `  ${row.title} (${row.nodeId}) ${row.connectionLabel}->${row.databaseTitle} [${row.reason}]`,
@@ -41,7 +41,7 @@ if (nestedPageSpurious.length > 0) {
 }
 
 if (spurious.length > 0) {
-  console.error(`Spurious IS_A connections (${spurious.length}):`);
+  console.error(`Spurious member_of connections (${spurious.length}):`);
   for (const row of spurious.slice(0, 20)) {
     console.error(
       `  ${row.title} (${row.nodeId}) has ${row.connectionLabel}->${row.spuriousDatabaseTitle}, expected ${row.expectedDatabaseTitle}`,
@@ -51,7 +51,7 @@ if (spurious.length > 0) {
 }
 
 if (missing.length > 0) {
-  console.error(`Missing IS_A connections (${missing.length}):`);
+  console.error(`Missing member_of connections (${missing.length}):`);
   for (const row of missing.slice(0, 20)) {
     console.error(`  ${row.title} (${row.nodeId}) path=${row.path} expected=${row.expectedDatabaseTitle}`);
   }

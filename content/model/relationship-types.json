@@ -34,13 +34,6 @@
         "includes"
       ]
     },
-    "is_a": {
-      "bidirectional": true,
-      "perspectives": [
-        "is_a",
-        "members"
-      ]
-    },
     "monsters": {
       "bidirectional": false,
       "perspectives": [
@@ -209,6 +202,13 @@
       "perspectives": [
         "inspirations",
         "traversal_types"
+      ]
+    },
+    "member_of": {
+      "bidirectional": true,
+      "perspectives": [
+        "member_of",
+        "members"
       ]
     }
   }

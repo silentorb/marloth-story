@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Remove legacy via_database relationship properties; scoping uses row is_a membership.
+ * Remove legacy via_database relationship properties; scoping uses row member_of membership.
  *
  * Usage:
  *   bun scripts/migrate-remove-via-database.ts --audit

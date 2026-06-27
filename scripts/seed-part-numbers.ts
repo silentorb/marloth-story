@@ -23,7 +23,7 @@ function titleFromNodeProperties(properties: Record<string, unknown>): string {
 }
 
 function isPartsMembership(entry: { a: string; b: string; type: string; directedFrom?: string }): boolean {
-  if (entry.type !== "is_a") return false;
+  if (entry.type !== "member_of") return false;
   return entry.a === PARTS_DB || entry.b === PARTS_DB;
 }
 

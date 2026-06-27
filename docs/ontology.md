@@ -93,7 +93,7 @@ Types below are **semantic**. In the graph, type is inferred from title, `IS_A` 
 | Type | Description | Notes |
 | --- | --- | --- |
 | **Task** | Action item from planning; may reference features or arcs. | `Task List/` |
-| **Archive** | Superseded or experimental material kept for reference. Hub node links members via **set membership (`is_a`)** (not path prefix). Incident relationships are flagged `"archived": true` in content and omitted from the SQLite cache until unarchived. | Archive hub `0f558a609a56485185beed4d1fd1cd9f`; legacy paths under `Marloth/Archive/` |
+| **Archive** | Superseded or experimental material kept for reference. Hub node links members via **set membership (`member_of`)** (not path prefix). Incident relationships are flagged `"archived": true` in content and omitted from the SQLite cache until unarchived. | Archive hub `0f558a609a56485185beed4d1fd1cd9f`; legacy paths under `Marloth/Archive/` |
 
 Not every node fits one type cleanly. Composite and cross-linked nodes are expected—use **relationships** and **dimensions** rather than forcing a single label.
 
@@ -105,7 +105,7 @@ Relationships express **meaning**, not just linkage. Imported Notion relation pr
 
 | Relationship | Typical meaning | Example |
 | --- | --- | --- |
-| **IS_A** | Member belongs to a set (type table, Archive hub, future collections); scalars on edge | `is_a` storage with `members` inverse perspective — see [set-membership.md](../../tome/docs/features/set-membership.md) |
+| **MEMBER_OF** | Member belongs to a set (type table, Archive hub, future collections); scalars on edge | `member_of` storage with `members` inverse perspective — see [set-membership.md](../../tome/docs/features/set-membership.md) |
 | **INCLUDES** | Symmetric cross-entity association (scene↔character, inspiration↔feature, etc.); which column you see depends on the current row and target database | Scene ↔ character in cast |
 | **INSPIRATIONS** | *(legacy composite on taxonomy rows)* B references external work A | Monster type ↔ inspiration |
 | **FEATURES** | *(legacy perspective; storage is often `includes`)* B engages design feature A | Scene uses *Desperation* |
@@ -168,12 +168,12 @@ This section is a **hint**, not the authoritative schema spec.
 | Ontology | Current storage (SCHEMA_VERSION 6) |
 | --- | --- |
 | Node | `nodes` row; JSON `properties` |
-| Node type (semantic) | title, body; `IS_A` targets |
-| Type table | `IS_A` target and/or `notion_schema` metadata (`isTypeTableNode`) |
+| Node type (semantic) | title, body; `member_of` targets |
+| Type table | `member_of` target and/or `notion_schema` metadata (`isTypeTableNode`) |
 | Relationship rules | `content/model/schema.json` |
 | Relationship | `relationships` row with `label` + JSON `properties` |
 | Prose / notes | Node property `body` (markdown) — **first section** on every page |
-| Database row scalars | Relationship properties on `(page)-[:IS_A]->(type)` — not on the page node |
+| Database row scalars | Relationship properties on `(page)-[:member_of]->(type)` — not on the page node |
 | Relation metadata | Relationship properties on labeled relationships (e.g. `ordinal`, future `weight`) |
 | Stable identity | 32-hex Notion id (pages) or database id (CSVs) |
 
@@ -182,10 +182,12 @@ This section is a **hint**, not the authoritative schema spec.
 The corpus is moving away from Notion’s split between “database rows” and “markdown pages.” **Every design node has a page in the editor** that may combine:
 
 1. **Markdown section** — primary prose and notes (`body` on the node).
-2. **Relationship sections** — one table per outgoing relationship label, listing linked nodes plus any properties stored on those relationships.
-3. **Database table section** — for type-table nodes, incoming `IS_A` instances rendered as a table (Name from the linked page; other columns from relationship properties).
+2. **Relationship sections** — one table per outgoing association label (not set membership; see below).
+3. **Members table section** — for type-table / set nodes, members listed via incoming `members` perspective with full column schema (tabs, sorts, editing).
 
-Scalar values that belonged to a database row in Notion (except Name/title) **belong on the `IS_A` relationship**, not duplicated on the page node, unless the value is clearly intrinsic to the referenced node itself.
+Instance nodes show **Properties** (scalars from the `member_of` edge) instead of a membership relation table.
+
+Scalar values that belonged to a database row in Notion (except Name/title) **belong on the `member_of` relationship**, not duplicated on the page node, unless the value is clearly intrinsic to the referenced node itself.
 
 Full DDL and import rules: [`docs/features/tome-db.md`](./features/tome-db.md).
 

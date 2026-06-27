@@ -44,7 +44,7 @@ const relationshipsFile = store.readRelationshipsFile();
 let relationshipUpdates = 0;
 
 for (const entry of relationshipsFile.relationships) {
-  if (entry.type !== "is_a") continue;
+  if (entry.type !== "member_of") continue;
   if (entry.a !== INSPIRATIONS_DB && entry.b !== INSPIRATIONS_DB) continue;
   const props = entry.properties;
   if (!props || !("reference" in props)) continue;
