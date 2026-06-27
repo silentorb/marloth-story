@@ -32,5 +32,11 @@
   "legacy": {
     "exportPathPrefix": "Marloth",
     "archivePathPrefix": "Marloth/Archive"
+  },
+  "spatialGraph": {
+    "nodeDimensionScale": {
+      "x": 2.0,
+      "y": 1.0
+    }
   }
 }
