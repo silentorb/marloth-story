@@ -35,9 +35,10 @@
       ]
     },
     "is_a": {
-      "bidirectional": false,
+      "bidirectional": true,
       "perspectives": [
-        "is_a"
+        "is_a",
+        "members"
       ]
     },
     "monsters": {

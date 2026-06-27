@@ -93,7 +93,7 @@ Types below are **semantic**. In the graph, type is inferred from title, `IS_A` 
 | Type | Description | Notes |
 | --- | --- | --- |
 | **Task** | Action item from planning; may reference features or arcs. | `Task List/` |
-| **Archive** | Superseded or experimental material kept for reference. Hub node links to members via **`includes`** (not path prefix). Incident relationships are flagged `"archived": true` in content and omitted from the SQLite cache until unarchived. | Archive hub `0f558a609a56485185beed4d1fd1cd9f`; legacy paths under `Marloth/Archive/` |
+| **Archive** | Superseded or experimental material kept for reference. Hub node links members via **set membership (`is_a`)** (not path prefix). Incident relationships are flagged `"archived": true` in content and omitted from the SQLite cache until unarchived. | Archive hub `0f558a609a56485185beed4d1fd1cd9f`; legacy paths under `Marloth/Archive/` |
 
 Not every node fits one type cleanly. Composite and cross-linked nodes are expected—use **relationships** and **dimensions** rather than forcing a single label.
 
@@ -105,7 +105,7 @@ Relationships express **meaning**, not just linkage. Imported Notion relation pr
 
 | Relationship | Typical meaning | Example |
 | --- | --- | --- |
-| **IS_A** | Page is an instance of a type (imported from Notion database membership) | Scene → *Scene Archive* type |
+| **IS_A** | Member belongs to a set (type table, Archive hub, future collections); scalars on edge | `is_a` storage with `members` inverse perspective — see [set-membership.md](../../tome/docs/features/set-membership.md) |
 | **INCLUDES** | Symmetric cross-entity association (scene↔character, inspiration↔feature, etc.); which column you see depends on the current row and target database | Scene ↔ character in cast |
 | **INSPIRATIONS** | *(legacy composite on taxonomy rows)* B references external work A | Monster type ↔ inspiration |
 | **FEATURES** | *(legacy perspective; storage is often `includes`)* B engages design feature A | Scene uses *Desperation* |

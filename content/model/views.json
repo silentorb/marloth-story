@@ -777,6 +777,22 @@
           }
         }
       }
+    },
+    "6f330e7947c94764a26456f93cfedaa4": {
+      "sections": {
+        "items": {
+          "tabs": {
+            "kind": "custom",
+            "definitions": [
+              {
+                "id": "all",
+                "name": "All",
+                "sorts": []
+              }
+            ]
+          }
+        }
+      }
     }
   }
 }
