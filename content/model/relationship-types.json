@@ -178,6 +178,12 @@
         "theme"
       ]
     },
+    "themes": {
+      "bidirectional": false,
+      "perspectives": [
+        "themes"
+      ]
+    },
     "traversal_reasons": {
       "bidirectional": false,
       "perspectives": [

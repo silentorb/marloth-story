@@ -1,6 +1,9 @@
 {
   "version": 1,
   "tables": {
+    "6f330e7947c94764a26456f93cfedaa4": {
+      "columns": []
+    },
     "99d81b0ce6ab42daa4b7b1ea590a1860": {
       "columns": [
         {
@@ -588,6 +591,13 @@
           "type": "relation",
           "targetTypeId": "df096ab26e8347e6992e95698345aad0",
           "perspective": "neighbor"
+        },
+        {
+          "key": "themes",
+          "name": "Themes",
+          "type": "relation",
+          "targetTypeId": "6f330e7947c94764a26456f93cfedaa4",
+          "perspective": "themes"
         }
       ]
     },

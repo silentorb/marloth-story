@@ -562,7 +562,8 @@
             "parents",
             "children",
             "neighbor",
-            "scenes"
+            "scenes",
+            "themes"
           ]
         }
       }
