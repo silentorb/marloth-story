@@ -59,7 +59,7 @@ Create `content/model/workspace.json` with Marloth corpus values:
 | `protectedNodeIds` | yes | Delete/archive protection (`node-lifecycle.ts`) |
 | `graphExplorer.defaultAnchorNodeId` | yes | Graph Explorer LOD anchor default |
 | `staticSite.homeNodeId` | yes | Astro landing page (`generate-data.ts`) |
-| `sidebar.links` | yes (may be `[]`) | Session 02 editor sidebar |
+| `quickLinks` | yes (may be `[]`) | Session 02 editor sidebar |
 | `branding` | no | Session 02/05 UI strings and favicon |
 | `legacy.exportPathPrefix` | no | Session 04 type-membership audit |
 | `legacy.archivePathPrefix` | no | Legacy migration scripts, `isLegacyArchivedNotionPath` |
@@ -72,7 +72,7 @@ Node ids must match `^[0-9a-f]{32}$`.
 
 **`workspace-file.ts`**
 
-- Types: `WorkspaceFile`, `SidebarLink`, `WorkspaceBranding`, `WorkspaceLegacy`, etc.
+- Types: `WorkspaceFile`, `WorkspaceQuickLink`, `WorkspaceBranding`, `WorkspaceLegacy`, etc.
 - `WORKSPACE_FILE_VERSION = 1`
 - `parseWorkspaceFile(json: string): WorkspaceFile` — validate version, node ids, required fields
 - `emptyWorkspaceFile(): WorkspaceFile` — only for tests; production should require the file

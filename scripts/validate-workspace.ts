@@ -20,7 +20,7 @@ const nodeIds = new Set<string>([
   ...workspace.protectedNodeIds,
   workspace.graphExplorer.defaultAnchorNodeId,
   workspace.staticSite.homeNodeId,
-  ...workspace.sidebar.links.map((link) => link.nodeId),
+  ...workspace.quickLinks.map((link) => link.nodeId),
 ]);
 
 const dataDir = contentDataDir(contentRoot);

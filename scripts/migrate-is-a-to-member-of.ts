@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 /**
- * Migrate set membership slug is_a → member_of and views sections.items → sections.members.
+ * Migrate set membership slug is_a → member_of, views sections.items → sections.members,
+ * and ordered-associations.json membershipEdgeType is_a → member_of.
  *
  * Usage: bun scripts/migrate-is-a-to-member-of.ts [--dry-run]
  */
@@ -11,6 +12,7 @@ const CONTENT_ROOT = join(import.meta.dir, "../content");
 const RELATIONSHIPS_PATH = join(CONTENT_ROOT, "data/relationships.json");
 const RELATIONSHIP_TYPES_PATH = join(CONTENT_ROOT, "model/relationship-types.json");
 const VIEWS_PATH = join(CONTENT_ROOT, "model/views.json");
+const ORDERED_ASSOCIATIONS_PATH = join(CONTENT_ROOT, "model/ordered-associations.json");
 
 const dryRun = process.argv.includes("--dry-run");
 
@@ -26,6 +28,11 @@ interface RelationshipEntry {
 interface ViewsNodeSection {
   tabs?: unknown;
   columnOrder?: string[];
+  [key: string]: unknown;
+}
+
+interface OrderedAssociationConfigEntry {
+  membershipEdgeType?: string;
   [key: string]: unknown;
 }
 
@@ -86,8 +93,22 @@ function main(): void {
     }
   }
 
+  const orderedAssociationsFile = loadJson<{
+    version: number;
+    configs: OrderedAssociationConfigEntry[];
+  }>(ORDERED_ASSOCIATIONS_PATH);
+
+  let orderedAssociationsRenamed = 0;
+  for (const config of orderedAssociationsFile.configs) {
+    if (config.membershipEdgeType === "is_a") {
+      config.membershipEdgeType = "member_of";
+      orderedAssociationsRenamed++;
+    }
+  }
+
   console.log(`Relationships is_a → member_of: ${typeRenamed}`);
   console.log(`views.json sections.items → members: ${viewsSectionsRenamed} nodes`);
+  console.log(`ordered-associations.json membershipEdgeType: ${orderedAssociationsRenamed} configs`);
   console.log(`relationship-types.json: member_of registered`);
 
   if (dryRun) {
@@ -98,6 +119,10 @@ function main(): void {
   writeFileSync(RELATIONSHIPS_PATH, `${JSON.stringify(relFile, null, 2)}\n`);
   writeFileSync(RELATIONSHIP_TYPES_PATH, `${JSON.stringify(typesFile, null, 2)}\n`);
   writeFileSync(VIEWS_PATH, `${JSON.stringify(viewsFile, null, 2)}\n`);
+  writeFileSync(
+    ORDERED_ASSOCIATIONS_PATH,
+    `${JSON.stringify(orderedAssociationsFile, null, 2)}\n`,
+  );
   console.log("Migration complete.");
 }
 

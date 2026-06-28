@@ -31,7 +31,7 @@ Implementation: `loadWorkspaceFromContent(contentPath)` from `tome-db`.
 **Response shape:** Return the parsed workspace file (or a subset). Minimum fields needed by the webview:
 
 - `homeNodeId`, `archiveNodeId`, `protectedNodeIds`
-- `sidebar.links`
+- `quickLinks`
 - `branding`
 - `graphExplorer.defaultAnchorNodeId`
 
@@ -69,7 +69,7 @@ Update all test imports of `HOME_NODE_ID` to use fixture workspace values or tes
 
 ### 5. Sidebar navigation
 
-Replace hardcoded array in [`sidebar-nav.ts`](../../packages/tome-editor/src/webview/sidebar-nav.ts):
+Replace hardcoded array in [`quick-links-nav.ts`](../../packages/tome-editor/src/webview/quick-links-nav.ts):
 
 **Before:** `SIDEBAR_NODE_LINKS` constant with seven Marloth database ids.
 
@@ -77,9 +77,9 @@ Replace hardcoded array in [`sidebar-nav.ts`](../../packages/tome-editor/src/web
 
 - Keep `HOME_ICON`, `VIEW_ICONS`, and `SidebarNodeLink` type
 - Export helpers:
-  - `buildSidebarIconMaps(links: SidebarLink[]): { byNodeId, byLabel }`
+  - `buildQuickLinkIconMaps(links: WorkspaceQuickLink[]): { byNodeId, byLabel }`
   - Default empty maps when links missing
-- [`SidePanel.tsx`](../../packages/tome-editor/src/webview/components/SidePanel.tsx) maps `workspace.sidebar.links` → `NavItem` list (field rename: `nodeId` → component `id` prop)
+- [`SidePanel.tsx`](../../packages/tome-editor/src/webview/components/SidePanel.tsx) maps `workspace.quickLinks` → `QuickLinksPanel` (field rename: `nodeId` → component `id` prop)
 
 Remove `SIDEBAR_NODE_LINKS` export once all callers use workspace data.
 

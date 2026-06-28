@@ -2,6 +2,7 @@ node_modules/
 **/dist/
 .DS_Store
 Thumbs.db
+.tome
 
 # Secrets / local env (keep examples tracked)
 .env

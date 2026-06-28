@@ -12,17 +12,48 @@
   "staticSite": {
     "homeNodeId": "5bfc10918fa24207879d68a030927dd3"
   },
-  "sidebar": {
-    "links": [
-      { "nodeId": "dd0de9867cc345b898929306bdf9fc83", "label": "Features", "icon": "★" },
-      { "nodeId": "528384943746443a9c89699b57e3bbec", "label": "Solutions", "icon": "✓" },
-      { "nodeId": "204dba198db74611b0b49a98dd53e8f5", "label": "Scenes", "icon": "▶" },
-      { "nodeId": "2eea538996934ce8abafc27132e576c1", "label": "Inspirations", "icon": "✦" },
-      { "nodeId": "5a585a2a311c4768be4a81f27bdcdfb4", "label": "Articles", "icon": "§" },
-      { "nodeId": "f984a934ad644f8480b0f8f51449569f", "label": "Characters", "icon": "◎" },
-      { "nodeId": "df096ab26e8347e6992e95698345aad0", "label": "Locations", "icon": "⌖" }
-    ]
-  },
+  "quickLinks": [
+    {
+      "nodeId": "dd0de9867cc345b898929306bdf9fc83",
+      "label": "Features",
+      "icon": "★"
+    },
+    {
+      "nodeId": "528384943746443a9c89699b57e3bbec",
+      "label": "Solutions",
+      "icon": "✓"
+    },
+    {
+      "nodeId": "204dba198db74611b0b49a98dd53e8f5",
+      "label": "Scenes",
+      "icon": "▶"
+    },
+    {
+      "nodeId": "2eea538996934ce8abafc27132e576c1",
+      "label": "Inspirations",
+      "icon": "✦"
+    },
+    {
+      "nodeId": "f984a934ad644f8480b0f8f51449569f",
+      "label": "Characters",
+      "icon": "◎"
+    },
+    {
+      "nodeId": "df096ab26e8347e6992e95698345aad0",
+      "label": "Locations",
+      "icon": "⌖"
+    },
+    {
+      "nodeId": "6f330e7947c94764a26456f93cfedaa4",
+      "label": "Themes",
+      "icon": "▦"
+    },
+    {
+      "nodeId": "5a585a2a311c4768be4a81f27bdcdfb4",
+      "label": "Articles",
+      "icon": "§"
+    }
+  ],
   "branding": {
     "appTitle": "Tome",
     "defaultDocumentIcon": "M",
@@ -35,8 +66,8 @@
   },
   "spatialGraph": {
     "nodeDimensionScale": {
-      "x": 2.0,
-      "y": 1.0
+      "x": 2,
+      "y": 1
     }
   }
 }

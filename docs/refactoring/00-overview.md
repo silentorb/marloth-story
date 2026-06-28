@@ -57,7 +57,7 @@ Domain-specific **data** already lives in the workspace model. Do not re-embed t
 | Protected nodes | `packages/tome-db/src/node-lifecycle.ts` | `workspace.json` → `protectedNodeIds` |
 | Graph Explorer default anchor | `packages/tome-db/src/graph-export.ts`; duplicate in `tome-editor/src/shared/graph-explorer.ts` | `workspace.json` → `graphExplorer.defaultAnchorNodeId` |
 | Static site home | `packages/tome-static-site/src/generate-data.ts` (`STATIC_SITE_HOME_NODE_ID`) | `workspace.json` → `staticSite.homeNodeId` |
-| Sidebar quick links | `packages/tome-editor/src/webview/sidebar-nav.ts` | `workspace.json` → `sidebar.links` |
+| Quick links | `packages/tome-editor/src/webview/quick-links-nav.ts` | `workspace.json` → `quickLinks` |
 | Default document icon | `packages/tome-editor/src/webview/document-icon.ts` (`DEFAULT_ICON = "M"`) | `workspace.json` → `branding.defaultDocumentIcon` |
 | Legacy archive export path | `packages/tome-db/src/archive-status.ts` (`ARCHIVE_NOTION_PATH_PREFIX = "Marloth/Archive"`) | `workspace.json` → `legacy.archivePathPrefix` |
 
