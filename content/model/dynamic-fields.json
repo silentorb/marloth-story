@@ -45,7 +45,8 @@
       "enabled": true,
       "params": {
         "characters_scene_composite": "scenes_characters",
-        "scenes_edge_label": "SCENES"
+        "scenes_edge_label": "SCENES",
+        "scenes_database_id": "204dba198db74611b0b49a98dd53e8f5"
       },
       "viewNames": []
     }
@@ -65,6 +66,8 @@
         "scene_product_composite": "scenes_product",
         "scenes_edge_label": "SCENES",
         "product_edge_label": "PRODUCT",
+        "scenes_database_id": "204dba198db74611b0b49a98dd53e8f5",
+        "products_database_id": "4e973268d3474f71bd7992094fb39663",
         "hide_legacy_keys": [
           "twold_scene_count"
         ]

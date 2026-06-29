@@ -12,6 +12,8 @@ const DEFAULT_DB = resolve(import.meta.dir, "../data/marloth.sqlite");
 const CHARACTERS_DB = "f984a934ad644f8480b0f8f51449569f";
 const INSPIRATIONS_DB = "2eea538996934ce8abafc27132e576c1";
 const FEATURES_DB = "dd0de9867cc345b898929306bdf9fc83";
+const SCENES_DB = "204dba198db74611b0b49a98dd53e8f5";
+const PRODUCTS_DB = "4e973268d3474f71bd7992094fb39663";
 
 function dbPath(): string {
   return process.env.MARLOTH_DB_PATH ?? DEFAULT_DB;
@@ -34,6 +36,7 @@ export function starterDynamicFieldSeeds(): {
         params: {
           characters_scene_composite: "scenes_characters",
           scenes_edge_label: "SCENES",
+          scenes_database_id: SCENES_DB,
         },
       },
       {
@@ -80,6 +83,8 @@ export function starterDynamicFieldSeeds(): {
           scene_product_composite: "scenes_product",
           scenes_edge_label: "SCENES",
           product_edge_label: "PRODUCT",
+          scenes_database_id: SCENES_DB,
+          products_database_id: PRODUCTS_DB,
           hide_legacy_keys: ["twold_scene_count"],
         },
       },

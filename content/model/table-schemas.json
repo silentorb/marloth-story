@@ -530,11 +530,6 @@
           "perspective": "characters"
         },
         {
-          "key": "date",
-          "name": "Date",
-          "type": "date"
-        },
-        {
           "key": "solutions",
           "name": "Solutions",
           "type": "relation",
