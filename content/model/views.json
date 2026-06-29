@@ -50,7 +50,14 @@
           "plot_is_driven_by_mc_desire",
           "traversal_reasons"
         ]
-      }
+      },
+      "hiddenColumns": [
+        "wonder",
+        "monsters",
+        "story_scale",
+        "plot_is_driven_by_mc_desire",
+        "traversal_reasons"
+      ]
     },
     {
       "id": "name",
@@ -505,7 +512,16 @@
           "column": "name",
           "direction": "asc"
         }
-      ]
+      ],
+      "properties": {
+        "columnOrder": [
+          "products",
+          "scenes",
+          "scene_count__e028aa0786f5449984a4f497c1d746fa",
+          "all_scene_count",
+          "scene_count__c368a02eabb74a47ab322615f2769723"
+        ]
+      }
     },
     {
       "id": "drama",
@@ -517,7 +533,16 @@
           "column": "name",
           "direction": "asc"
         }
-      ]
+      ],
+      "properties": {
+        "columnOrder": [
+          "products",
+          "scenes",
+          "scene_count__e028aa0786f5449984a4f497c1d746fa",
+          "all_scene_count",
+          "scene_count__c368a02eabb74a47ab322615f2769723"
+        ]
+      }
     },
     {
       "id": "frequency",
@@ -529,6 +554,21 @@
           "column": "twold_scene_count",
           "direction": "desc"
         }
+      ],
+      "properties": {
+        "columnOrder": [
+          "products",
+          "scenes",
+          "scene_count__e028aa0786f5449984a4f497c1d746fa",
+          "all_scene_count",
+          "scene_count__c368a02eabb74a47ab322615f2769723"
+        ]
+      },
+      "hiddenColumns": [
+        "groups",
+        "personality",
+        "character_attributes",
+        "variants"
       ]
     },
     {

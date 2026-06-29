@@ -1,9 +1,9 @@
 ---
 title: Desperation
 alias: Desperation
+modified_at: 2026-06-29T20:08:01.004Z
+created_at: 2026-06-29T20:04:04.815Z
 ---
-# Desperation
-
 > 💡 I keep waffling between calling this just “Desperation” vs. “Wicked desperation”.
 > I think the challenge is I’m somewhere in the middle.
 > In general, this feature isn’t the sort of desperation I want heroes to have, but it doesn’t have to be full blown evil.
@@ -27,9 +27,13 @@ This topic has nothing to do with bad people doing bad things.  It’s about nic
 
 The main catalyst in TWOLD is [[dc101b6438cf43a8b5f1e17212b8c950]].
 
+# Contrived scenarios
+
+[[28358e628ba2809bacf9eec6bf192d63]]
+
 # Scoping
 
-[[29258e628ba28036a3fdd7873be99cbd]]
+[Desperation scoping](./29258e628ba28036a3fdd7873be99cbd.md)
 
 # Taking a stand
 
