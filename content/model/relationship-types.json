@@ -209,7 +209,13 @@
       "perspectives": [
         "member_of",
         "members"
-      ]
+      ],
+      "perspectiveLabels": {
+        "member_of": {
+          "title": "Membership",
+          "linkAdd": "Link type table"
+        }
+      }
     }
   }
 }
