@@ -7,6 +7,13 @@
       "editorModule": "tome-spatial-graph/editor",
       "htmlModule": "tome-spatial-graph/html",
       "serverModule": "tome-spatial-graph/server"
+    },
+    {
+      "id": "schema-diagram",
+      "enabled": true,
+      "editorModule": "tome-schema-diagram/editor",
+      "htmlModule": "tome-schema-diagram/html",
+      "serverModule": "tome-schema-diagram/server"
     }
   ],
   "components": [
@@ -18,6 +25,15 @@
       "label": "Spatial graph",
       "enabled": true,
       "slashMenu": { "group": "custom", "order": 20 }
+    },
+    {
+      "id": "schema-diagram.block",
+      "extensionId": "schema-diagram",
+      "kind": "page-block",
+      "implementationId": "schema-diagram",
+      "label": "Schema diagram",
+      "enabled": true,
+      "slashMenu": { "group": "custom", "order": 30 }
     }
   ]
 }
