@@ -19,7 +19,6 @@ import {
   emptyRelationshipTypesFile,
   registerBidirectionalType,
   registerTypeDefinition,
-  registerUnidirectionalType,
   serializeRelationshipTypesFile,
 } from "../packages/tome-db/src/content/relationship-types-file";
 import {
@@ -90,7 +89,6 @@ function main(): void {
   }
 
   let pairsMerged = 0;
-  let orphansKept = 0;
 
   for (const [, group] of byPair) {
     const unmatched = [...group];
@@ -114,7 +112,6 @@ function main(): void {
         const composite = compositeTypeForPerspectives(typeFromA, typeFromB);
 
         registerTypeDefinition(registry, composite, {
-          bidirectional: true,
           perspectives: [typeFromA, typeFromB],
         });
 
@@ -126,19 +123,11 @@ function main(): void {
         });
         pairsMerged++;
       } else {
-        used.add(edgeKey(forward.source, forward.target, forward.type));
-        const { a, b } = sortEndpoints(forward.source, forward.target);
-        const normalized = forward.type;
-
-        registerUnidirectionalType(registry, normalized);
-        v2.push({
-          a,
-          b,
-          type: normalized,
-          directedFrom: forward.source,
-          properties: forward.properties,
-        });
-        orphansKept++;
+        throw new Error(
+          `Unpaired directed edge ${forward.source}->${forward.target} (${forward.type}): ` +
+            `unidirectional relationships are no longer supported. Map this edge to includes ` +
+            `or a dual-perspective composite before consolidating.`,
+        );
       }
     }
   }
@@ -149,7 +138,6 @@ function main(): void {
 
   console.log(`v1 edges: ${v1.length}`);
   console.log(`pairs merged: ${pairsMerged}`);
-  console.log(`unidirectional kept: ${orphansKept}`);
   console.log(`v2 records: ${v2.length}`);
   console.log(`registry types: ${Object.keys(registry.types).length}`);
 

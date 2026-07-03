@@ -2,28 +2,24 @@
   "version": 1,
   "types": {
     "blocking_blocked_by": {
-      "bidirectional": true,
       "perspectives": [
         "blocked_by",
         "blocking"
       ]
     },
     "enemies_enemies": {
-      "bidirectional": true,
       "perspectives": [
         "enemies",
         "enemies"
       ]
     },
     "includes": {
-      "bidirectional": true,
       "perspectives": [
         "includes",
         "includes"
       ]
     },
     "member_of": {
-      "bidirectional": true,
       "perspectives": [
         "member_of",
         "members"
@@ -36,98 +32,84 @@
       }
     },
     "monsters_inspirations": {
-      "bidirectional": true,
       "perspectives": [
         "inspirations",
         "monsters"
       ]
     },
     "neighbor": {
-      "bidirectional": true,
       "perspectives": [
         "neighbor",
         "neighbor"
       ]
     },
     "pacing_inspirations": {
-      "bidirectional": true,
       "perspectives": [
         "inspirations",
         "pacing"
       ]
     },
     "parents_children": {
-      "bidirectional": true,
       "perspectives": [
         "children",
         "parents"
       ]
     },
     "products_parts_database": {
-      "bidirectional": true,
       "perspectives": [
         "products",
         "parts_database"
       ]
     },
     "prop_type_inspirations": {
-      "bidirectional": true,
       "perspectives": [
         "prop_type",
         "inspirations"
       ]
     },
     "scenes_arcs": {
-      "bidirectional": true,
       "perspectives": [
         "scenes",
         "arcs"
       ]
     },
     "scenes_features_test": {
-      "bidirectional": true,
       "perspectives": [
         "features_test",
         "scenes"
       ]
     },
     "scenes_part": {
-      "bidirectional": true,
       "perspectives": [
         "scenes",
         "part"
       ]
     },
     "scenes_parts_test": {
-      "bidirectional": true,
       "perspectives": [
         "scenes",
         "parts_test"
       ]
     },
     "scenes_product": {
-      "bidirectional": true,
       "perspectives": [
         "scenes",
         "product"
       ]
     },
     "story_scale_inspirations": {
-      "bidirectional": true,
       "perspectives": [
         "story_scale",
         "inspirations"
       ]
     },
     "traversal_reasons_inspirations": {
-      "bidirectional": true,
       "perspectives": [
         "inspirations",
         "traversal_reasons"
       ]
     },
     "traversal_types_inspirations": {
-      "bidirectional": true,
       "perspectives": [
         "inspirations",
         "traversal_types"
