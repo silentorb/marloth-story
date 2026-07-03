@@ -1,5 +1,5 @@
 /**
- * Remove spurious IS_A edges on nested Notion sub-pages (and pages outside a database instance folder).
+ * Remove spurious IS_A edges on nested sub-pages (and pages outside a database instance folder).
  *
  * Usage:
  *   bun run scripts/remove-nested-page-is-a.ts --dry-run

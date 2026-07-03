@@ -21,7 +21,7 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 - The `./content` directory is the **canonical store root**: `content/data/{nodeId}.md` per node (YAML frontmatter + markdown body) plus `relationships.json`; `content/model/` holds `relationship-types.json`, `schema.json`, `table-schemas.json`, `views.json`, `dynamic-fields.json`, and `extensions.json`.
 - The `./data/tome.sqlite` file is a **local query cache** (gitignored; legacy `data/marloth.sqlite` may still exist). It is rebuilt from `./content` on editor API startup and via `bun run content:sync`.
 - TypeScript domain scripts live under `./scripts/`; Tome packages (`tome-db`, `tome-editor`, `tome-static-site`) live in the sibling **`tome`** repository. In silentorb-workbench, open the devcontainer and use the **`tome` Compose service** for `editor:dev` (not this repo directly).
-- The `./exports/` directory holds **archival** Notion export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
+- The `./exports/` directory holds **archival** legacy export archives (`.zip` or unpacked trees). Use them only as a reference when data is missing from the graph—not as the primary update path (see **Graph data workflow** below).
 - All external dependencies and tooling installs should be performed within the silentorb-workbench devcontainer. The **`tome` Compose service** runs the editor against this repo's `content/`. **Rebuild the container** after changing `package.json` or `bun.lock` in workbench or tome — do not run `bun install` manually in a terminal or on the host.
 
 ## Terminology
@@ -32,21 +32,21 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 | **Project feature**       | A workspace capability documented in the sibling **`tome`** repo under `docs/features/` (e.g. tome-db, tome-editor). Use this phrase when discussing tooling or agent specs—not graph nodes. |
 | **Node**                  | Any entity in the design graph (SQLite `nodes` table). Replaces legacy *record* / *vertex* in docs and API.                                                       |
 | **Relationship**          | A link between two nodes with a **relationship type** and properties. Stored compactly in `relationships.json`; SQLite cache expands to directed projections.     |
-| **Page**                  | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a Notion export file.                      |
+| **Page**                  | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a raw export file.                      |
 | **Feature** (unqualified) | A **design node** (story/game feature idea), usually under `Marloth/Features/`, unless context clearly means a project feature.                                   |
 | **Schema**                | Git-tracked relationship rules in `content/model/schema.json` (allowed target types per relationship type). Not SQLite DDL.                                       |
-| **Type table**            | Any node used as an `IS_A` target and/or with `notion_schema` / `notion_database` metadata—not a permanent import label.                                          |
+| **Type table**            | Any node used as an `IS_A` target and/or declared in `content/model/table-schemas.json`—not a permanent import label.                                          |
 
 
 ## Data modeling direction
 
-Imported Notion data already separates nodes somewhat by **product** (books, game design, and related work share inspirations and structure). Expect the graph to be sliced along **multiple dimensions** over time—not only product.
+The design corpus already separates nodes somewhat by **product** (books, game design, and related work share inspirations and structure). Expect the graph to be sliced along **multiple dimensions** over time—not only product.
 
 **Future (not yet implemented):** some relationships should be **weighted**, not boolean. Example: a feature–inspiration link might be strong for one inspiration and weak for another. Current relationships are all-or-nothing; weighted associations will likely live as numeric properties on relationships (e.g. `weight`) when implemented.
 
 ## Graph data workflow
 
-The `./content/` tree is **authoritative and git-tracked**. Notion import was a one-time migration path; ongoing work **must** edit content files (or use tooling that writes them). `TOME_CONTENT_PATH` (or legacy `MARLOTH_CONTENT_PATH`) points at the **content root** (`./content`), not `content/data`.
+The `./content/` tree is **authoritative and git-tracked**. The original import was a one-time migration path; ongoing work **must** edit content files (or use tooling that writes them). `TOME_CONTENT_PATH` (or legacy `MARLOTH_CONTENT_PATH`) points at the **content root** (`./content`), not `content/data`.
 
 
 | Task                                 | Do                                                                                                                            | Do not                                           |
@@ -55,10 +55,10 @@ The `./content/` tree is **authoritative and git-tracked**. Notion import was a 
 | Add or edit relationships            | Edit `content/data/relationships.json`, `content/model/relationship-types.json`, or use editor / `ContentStore` mutation APIs | Duplicate relationships in node markdown files   |
 | Dynamic field bindings               | Edit `content/model/dynamic-fields.json` or run `bun scripts/seed-dynamic-fields.ts`                                          | Use removed `dynamic_`* SQLite overlay tables    |
 | Extension registration               | Edit `content/model/extensions.json` ([extensions.md](../tome/docs/features/extensions.md))                                  | Hard-code extension modules in tome-editor       |
-| Table view tabs (custom / generated) | Edit `content/model/views.json` or use editor tab CRUD                                                                        | Edit `notion_views` on node frontmatter (legacy) |
+| Table view tabs (custom / generated) | Edit `content/model/views.json` or use editor tab CRUD                                                                        | Rely on removed per-node view frontmatter (legacy) |
 | Refresh local cache                  | `bun run content:sync` or start `editor:api` (rebuilds cache + watches `./content`)                                           | Commit `data/tome.sqlite`                     |
 | One-time SQLite → content            | `bun run content:export` (from existing `data/tome.sqlite` or legacy `data/marloth.sqlite` if present)                                                     | —                                                |
-| Data only in `./exports/`            | Mine archive and upsert into `./content` (same mapping rules as legacy import)                                                | Run `bun run notion:import` / `--clean`          |
+| Data only in `./exports/`            | Mine archive and upsert into `./content` (same mapping rules as legacy import)                                                | Run a bulk re-import / `--clean`          |
 
 
 See the sibling **tome** repo [`docs/features/tome-db.md`](../tome/docs/features/tome-db.md) for file formats and API.

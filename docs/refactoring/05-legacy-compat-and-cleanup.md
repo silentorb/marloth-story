@@ -99,7 +99,6 @@ Run from repo root:
 
 ```bash
 bun test
-bun run validate:content-model
 ```
 
 Optional after session 04:

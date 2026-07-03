@@ -2,7 +2,7 @@
 
 ## Summary
 
-This document describes the **domain model** of the Marloth design corpus in human-friendly terms: what kinds of things exist, what they mean, and how they relate. It is **storage-agnostic**—agents should treat it as the conceptual source of truth for *what the data is about*, independent of SQLite tables or Notion export quirks.
+This document describes the **domain model** of the Marloth design corpus in human-friendly terms: what kinds of things exist, what they mean, and how they relate. It is **storage-agnostic**—agents should treat it as the conceptual source of truth for *what the data is about*, independent of SQLite tables or legacy export quirks.
 
 For how nodes are stored and queried, see [`docs/features/tome-db.md`](./features/tome-db.md).
 
@@ -36,12 +36,11 @@ When ontology and storage disagree, **update one explicitly**—usually the onto
 | **Project feature** | Workspace tooling documented in `./docs/features/` (import pipeline, database package, etc.). Never use “feature” alone for this. |
 | **Node** | Any entity in the design graph unless context specifies otherwise. |
 | **Relationship** | Directed labeled relationship between nodes (e.g. `INSPIRATIONS`, `IS_A`). |
-| **Page** | Editor UI for a node (`NodePageView`, page title, sections)—not a raw Notion export file. |
+| **Page** | Editor UI for a node (`NodePageView`, page title, sections)—not a raw export file. |
 | **Feature** | A **design node**: a story, world, or craft idea the author may implement (e.g. *Desperation*, *Guest consultant*, *Dark forest*). Lives in the graph under `Marloth/Features/` and related paths. |
 | **Product** | A **deliverable umbrella**: a book, game, or related work that consumes and organizes design (e.g. *TWOLD*, *A Child's Fairytale World*, *The Shadowhood*). Products share inspirations and structural patterns. |
 | **Inspiration** | An external or reference work that informs design (novel, film, game, trope cluster). |
 | **Scene** | A unit of story action—often the bridge between high-level design and eventual prose. |
-| **NotionPage** / **NotionDatabase** | Removed import labels. Historical mapping only. |
 
 ## Entity types
 
@@ -49,7 +48,7 @@ Types below are **semantic**. In the graph, type is inferred from title, `IS_A` 
 
 ### Creative outputs and scope
 
-| Type | Description | Typical location (legacy Notion path) |
+| Type | Description | Typical location (legacy path) |
 | --- | --- | --- |
 | **Product** | Top-level deliverable: a book in the trilogy, a game, or adjacent work. Primary **scope** dimension. | `Marloth/Data/Products/` |
 | **Part** | Major division within a book's structure (e.g. *The Orphanage*, *The Castle*). | `Marloth/TWOLD Plot/.../Parts database/` |
@@ -99,7 +98,7 @@ Not every node fits one type cleanly. Composite and cross-linked nodes are expec
 
 ## Relationship types
 
-Relationships express **meaning**, not just linkage. Imported Notion relation properties become directed relationships; labels are uppercase slug forms of the property name (e.g. `Inspirations` → `INSPIRATIONS`).
+Relationships express **meaning**, not just linkage. Imported relation properties become directed relationships; labels are uppercase slug forms of the property name (e.g. `Inspirations` → `INSPIRATIONS`).
 
 ### Common semantic relationships
 
@@ -169,17 +168,17 @@ This section is a **hint**, not the authoritative schema spec.
 | --- | --- |
 | Node | `nodes` row; JSON `properties` |
 | Node type (semantic) | title, body; `member_of` targets |
-| Type table | `member_of` target and/or `notion_schema` metadata (`isTypeTableNode`) |
+| Type table | `member_of` target and/or declared in `table-schemas.json` (`isTypeTableNode`) |
 | Relationship rules | `content/model/schema.json` |
 | Relationship | `relationships` row with `label` + JSON `properties` |
 | Prose / notes | Node property `body` (markdown) — **first section** on every page |
 | Database row scalars | Relationship properties on `(page)-[:member_of]->(type)` — not on the page node |
 | Relation metadata | Relationship properties on labeled relationships (e.g. `ordinal`, future `weight`) |
-| Stable identity | 32-hex Notion id (pages) or database id (CSVs) |
+| Stable identity | 32-hex node id (pages) or database id (CSVs) |
 
 ### Universal pages (direction)
 
-The corpus is moving away from Notion’s split between “database rows” and “markdown pages.” **Every design node has a page in the editor** that may combine:
+The corpus is moving away from the legacy split between “database rows” and “markdown pages.” **Every design node has a page in the editor** that may combine:
 
 1. **Markdown section** — primary prose and notes (`body` on the node).
 2. **Relationship sections** — one table per outgoing association label (not set membership; see below).
@@ -187,7 +186,7 @@ The corpus is moving away from Notion’s split between “database rows” and 
 
 Instance nodes show **Properties** (scalars from the `member_of` edge) instead of a membership relation table.
 
-Scalar values that belonged to a database row in Notion (except Name/title) **belong on the `member_of` relationship**, not duplicated on the page node, unless the value is clearly intrinsic to the referenced node itself.
+Scalar values that belonged to a database row (except Name/title) **belong on the `member_of` relationship**, not duplicated on the page node, unless the value is clearly intrinsic to the referenced node itself.
 
 Full DDL and import rules: [`docs/features/tome-db.md`](./features/tome-db.md).
 

@@ -97,7 +97,7 @@ Pass `contentDir` where callers already have it; otherwise use `loadWorkspace()`
 | File | Change |
 | --- | --- |
 | [`queries.ts`](../../packages/tome-db/src/queries.ts) | Replace `DEFAULT_HOME_NODE_ID` with workspace lookup; keep deprecated export alias pointing at loader for one release if needed |
-| [`archive-status.ts`](../../packages/tome-db/src/archive-status.ts) | Archive id + `ARCHIVE_NOTION_PATH_PREFIX` from `legacy.archivePathPrefix` |
+| [`archive-status.ts`](../../packages/tome-db/src/archive-status.ts) | Archive id + legacy archive path prefix from `legacy.archivePathPrefix` |
 | [`node-lifecycle.ts`](../../packages/tome-db/src/node-lifecycle.ts) | `PROTECTED_NODE_IDS` from `protectedNodeIds` |
 | [`relationship-archive.ts`](../../packages/tome-db/src/relationship-archive.ts) | Archive hub id from workspace (via shared helper) |
 | [`graph-export.ts`](../../packages/tome-db/src/graph-export.ts) | `DEFAULT_GRAPH_EXPLORER_ANCHOR_ID` from workspace |
@@ -141,7 +141,7 @@ Use `createTestContentFixture` and write `workspace.json` into `fixture.ctx.stor
 
 ### 6. Validation (optional v1)
 
-Either extend [`scripts/validate-content-model.ts`](../../scripts/validate-content-model.ts) or add `scripts/validate-workspace.ts`:
+Add `scripts/validate-workspace.ts`:
 
 - Structural: file parses
 - Optional: every node id in workspace exists under `content/data/{id}.md`

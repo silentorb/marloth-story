@@ -4,7 +4,7 @@
 
 1. Remove **unparameterized** Marloth composite type strings from dynamic field resolvers — behavior driven by [`content/model/dynamic-fields.json`](../../content/model/dynamic-fields.json) params.
 2. Make type-membership audit path rules use **workspace legacy prefix** instead of hardcoded `Marloth/`.
-3. Remove or archive dead Notion schema parsing code.
+3. Remove or archive dead legacy schema parsing code.
 
 ## Depends on
 
@@ -74,7 +74,7 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
 
 ### Current state
 
-[`packages/tome-db/src/type-membership-audit.ts`](../../packages/tome-db/src/type-membership-audit.ts) assumes Notion export paths under `Marloth/`:
+[`packages/tome-db/src/type-membership-audit.ts`](../../packages/tome-db/src/type-membership-audit.ts) assumes legacy export paths under `Marloth/`:
 
 - `typeFolderFromPath` — `segments[0] !== "Marloth"`
 - `typeDatabaseTitleFromPath` — same
@@ -86,7 +86,7 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
 
 2. Replace literal `"Marloth"` comparisons with configurable prefix segment.
 
-3. Module docstring: **“Validation/migration tooling for Notion export layout — not used by editor runtime.”**
+3. Module docstring: **“Validation/migration tooling for legacy export layout — not used by editor runtime.”**
 
 4. Update [`scripts/check-type-membership.ts`](../../scripts/check-type-membership.ts):
 
@@ -102,22 +102,8 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
 
 ---
 
-## Part C — Dead code: `notion-database-schema.ts`
-
-[`packages/tome-db/src/notion-database-schema.ts`](../../packages/tome-db/src/notion-database-schema.ts) parses `notion_schema` / `notion_views` from node properties. Production column defs use [`table-schemas.json`](../../content/model/table-schemas.json) via [`database-column-defs.ts`](../../packages/tome-db/src/database-column-defs.ts).
-
-1. `grep` for imports of `notion-database-schema` across repo
-2. If only tests reference it, delete file and migrate any test helpers to `table-schemas.json`
-3. If orphaned test file [`notion-view-eval.test.ts`](../../packages/tome-db/tests/notion-view-eval.test.ts) only tests removed code, delete or rewrite against `table-schemas.json`
-
-### Done (Part C)
-
-- [ ] No unused Notion schema module in production path, or moved to `packages/_archive/`
-
----
-
 ## Session done when
 
-- [ ] Parts A, B, and C checklists complete
+- [ ] Parts A and B checklists complete
 - [ ] `bun test` passes
 - [ ] Field spec docs updated under `docs/dynamic-fields/` where params changed

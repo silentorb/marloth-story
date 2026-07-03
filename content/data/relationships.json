@@ -651,8 +651,8 @@
       "properties": {
         "view": "all",
         "row_index": 6,
-        "traversal_types": "https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d",
-        "story_scale": "https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34",
+        "traversal_types": "49dd89633f684d91a8d2ed2cd9bdf09e,49dd89633f684d91a8d2ed2cd9bdf09e,19344185392b46c7bd17f5017474cc1d, 1c6d9213c2aa449390613c20f6f4d71d,19344185392b46c7bd17f5017474cc1d, 49dd89633f684d91a8d2ed2cd9bdf09e,19344185392b46c7bd17f5017474cc1d, 1c6d9213c2aa449390613c20f6f4d71d,19344185392b46c7bd17f5017474cc1d, 1c6d9213c2aa449390613c20f6f4d71d,19344185392b46c7bd17f5017474cc1d, 1c6d9213c2aa449390613c20f6f4d71d,1c6d9213c2aa449390613c20f6f4d71d,19344185392b46c7bd17f5017474cc1d, 1c6d9213c2aa449390613c20f6f4d71d",
+        "story_scale": "86324f5585d84ca0a6a36deafd6b91fc,86324f5585d84ca0a6a36deafd6b91fc,86324f5585d84ca0a6a36deafd6b91fc,86324f5585d84ca0a6a36deafd6b91fc,86324f5585d84ca0a6a36deafd6b91fc,86324f5585d84ca0a6a36deafd6b91fc,86324f5585d84ca0a6a36deafd6b91fc,86324f5585d84ca0a6a36deafd6b91fc,faaea9bcaf0f43b5ae79dfa06b96be34",
         "notes": "Usually extended story.  Mission-based story-telling scales well over long periods.",
         "inspiration_count": "9"
       }
@@ -26317,8 +26317,8 @@
       "properties": {
         "view": "all",
         "row_index": 0,
-        "traversal_types": "https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d",
-        "story_scale": "https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc",
+        "traversal_types": "19344185392b46c7bd17f5017474cc1d, 1c6d9213c2aa449390613c20f6f4d71d",
+        "story_scale": "86324f5585d84ca0a6a36deafd6b91fc",
         "inspiration_count": "1"
       }
     },
@@ -28440,8 +28440,8 @@
       "properties": {
         "view": "all",
         "row_index": 1,
-        "traversal_types": "https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e",
-        "story_scale": "https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc",
+        "traversal_types": "1c6d9213c2aa449390613c20f6f4d71d,49dd89633f684d91a8d2ed2cd9bdf09e",
+        "story_scale": "86324f5585d84ca0a6a36deafd6b91fc,86324f5585d84ca0a6a36deafd6b91fc",
         "inspiration_count": "2"
       }
     },
@@ -29494,8 +29494,8 @@
       "properties": {
         "view": "all",
         "row_index": 2,
-        "traversal_types": "https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d",
-        "story_scale": "https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc",
+        "traversal_types": "19344185392b46c7bd17f5017474cc1d, 49dd89633f684d91a8d2ed2cd9bdf09e,49dd89633f684d91a8d2ed2cd9bdf09e,19344185392b46c7bd17f5017474cc1d, 49dd89633f684d91a8d2ed2cd9bdf09e,1c6d9213c2aa449390613c20f6f4d71d, 49dd89633f684d91a8d2ed2cd9bdf09e,1c6d9213c2aa449390613c20f6f4d71d,49dd89633f684d91a8d2ed2cd9bdf09e,49dd89633f684d91a8d2ed2cd9bdf09e,19344185392b46c7bd17f5017474cc1d, 1c6d9213c2aa449390613c20f6f4d71d,1c6d9213c2aa449390613c20f6f4d71d,1c6d9213c2aa449390613c20f6f4d71d,1c6d9213c2aa449390613c20f6f4d71d,1c6d9213c2aa449390613c20f6f4d71d,1c6d9213c2aa449390613c20f6f4d71d",
+        "story_scale": "86324f5585d84ca0a6a36deafd6b91fc,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,86324f5585d84ca0a6a36deafd6b91fc,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,86324f5585d84ca0a6a36deafd6b91fc",
         "notes": "Usually full story.  It is hard to maintain ad-hoc traversal indefinitely.  Extended stories need more of a template so the author isn’t continually re-inventing the wheel.",
         "inspiration_count": "13"
       }
@@ -30694,8 +30694,8 @@
       "properties": {
         "view": "all",
         "row_index": 4,
-        "traversal_types": "https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e",
-        "story_scale": "https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/23fb1de9231040839d01375c9a0b5619,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34",
+        "traversal_types": "49dd89633f684d91a8d2ed2cd9bdf09e,49dd89633f684d91a8d2ed2cd9bdf09e,49dd89633f684d91a8d2ed2cd9bdf09e",
+        "story_scale": "faaea9bcaf0f43b5ae79dfa06b96be34,23fb1de9231040839d01375c9a0b5619,faaea9bcaf0f43b5ae79dfa06b96be34",
         "inspiration_count": "3"
       }
     },
@@ -31470,8 +31470,8 @@
       "properties": {
         "view": "all",
         "row_index": 3,
-        "traversal_types": "https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e",
-        "story_scale": "https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/86324f5585d84ca0a6a36deafd6b91fc,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34",
+        "traversal_types": "1c6d9213c2aa449390613c20f6f4d71d,49dd89633f684d91a8d2ed2cd9bdf09e,1c6d9213c2aa449390613c20f6f4d71d,1c6d9213c2aa449390613c20f6f4d71d,1c6d9213c2aa449390613c20f6f4d71d, 49dd89633f684d91a8d2ed2cd9bdf09e,1c6d9213c2aa449390613c20f6f4d71d,19344185392b46c7bd17f5017474cc1d, 49dd89633f684d91a8d2ed2cd9bdf09e,49dd89633f684d91a8d2ed2cd9bdf09e,49dd89633f684d91a8d2ed2cd9bdf09e,1c6d9213c2aa449390613c20f6f4d71d, 49dd89633f684d91a8d2ed2cd9bdf09e",
+        "story_scale": "faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,86324f5585d84ca0a6a36deafd6b91fc,faaea9bcaf0f43b5ae79dfa06b96be34,86324f5585d84ca0a6a36deafd6b91fc,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34",
         "notes": "Usually full story.  A single quest is stretched thin across an extended story.",
         "inspiration_count": "10"
       }
@@ -31978,8 +31978,8 @@
       "properties": {
         "view": "all",
         "row_index": 5,
-        "traversal_types": "https://www.notion.so/19344185392b46c7bd17f5017474cc1d, https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e,https://www.notion.so/1c6d9213c2aa449390613c20f6f4d71d,https://www.notion.so/49dd89633f684d91a8d2ed2cd9bdf09e",
-        "story_scale": "https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34,https://www.notion.so/faaea9bcaf0f43b5ae79dfa06b96be34",
+        "traversal_types": "19344185392b46c7bd17f5017474cc1d, 49dd89633f684d91a8d2ed2cd9bdf09e,1c6d9213c2aa449390613c20f6f4d71d,49dd89633f684d91a8d2ed2cd9bdf09e",
+        "story_scale": "faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34,faaea9bcaf0f43b5ae79dfa06b96be34",
         "inspiration_count": "4"
       }
     },

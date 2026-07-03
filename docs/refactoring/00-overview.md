@@ -59,7 +59,7 @@ Domain-specific **data** already lives in the workspace model. Do not re-embed t
 | Static site home | `packages/tome-static-site/src/generate-data.ts` (`STATIC_SITE_HOME_NODE_ID`) | `workspace.json` → `staticSite.homeNodeId` |
 | Quick links | `packages/tome-editor/src/webview/quick-links-nav.ts` | `workspace.json` → `quickLinks` |
 | Default document icon | `packages/tome-editor/src/webview/document-icon.ts` (`DEFAULT_ICON = "M"`) | `workspace.json` → `branding.defaultDocumentIcon` |
-| Legacy archive export path | `packages/tome-db/src/archive-status.ts` (`ARCHIVE_NOTION_PATH_PREFIX = "Marloth/Archive"`) | `workspace.json` → `legacy.archivePathPrefix` |
+| Legacy archive export path | `packages/tome-db/src/archive-status.ts` (legacy archive path prefix `"Marloth/Archive"`) | `workspace.json` → `legacy.archivePathPrefix` |
 
 Current Marloth values (for seeding `workspace.json` in session 01):
 
@@ -77,7 +77,6 @@ Current Marloth values (for seeding `workspace.json` in session 01):
 | Ordered associations (`scenes-by-book`) | `packages/tome-db/src/ordered-associations.ts` (`SCENES_BY_BOOK`, `CONFIGS`) | `content/model/ordered-associations.json` |
 | Dynamic resolver composite fallbacks | `packages/tome-db/src/dynamic-fields/resolvers/index.ts` | Params in `dynamic-fields.json` |
 | Type membership audit path rules | `packages/tome-db/src/type-membership-audit.ts` (`Marloth/` prefix) | `workspace.json` → `legacy.exportPathPrefix` |
-| Unused Notion schema parser | `packages/tome-db/src/notion-database-schema.ts` | Remove or archive (columns use `table-schemas.json`) |
 
 ### Tier 3 — legacy compatibility (session 05)
 
@@ -102,7 +101,7 @@ Keep **read** support; deprecate names over time. Do not remove without a migrat
 
 ## Known doc bug (fix in session 02)
 
-[`docs/features/tome-editor.md`](../features/tome-editor.md) cites home node `72b6fb455b824b78962b0e509cc091c9`. Runtime uses `13458e628ba28073850dea0edb9acde1` (`DEFAULT_HOME_NODE_ID` in `queries.ts`). The older id still resolves via legacy Notion export path suffix matching in link resolution.
+[`docs/features/tome-editor.md`](../features/tome-editor.md) cites home node `72b6fb455b824b78962b0e509cc091c9`. Runtime uses `13458e628ba28073850dea0edb9acde1` (`DEFAULT_HOME_NODE_ID` in `queries.ts`). The older id still resolves via legacy export path suffix matching in link resolution.
 
 ## Global completion checklist
 
@@ -117,19 +116,16 @@ Use this when the full refactor series is done:
 - [x] Type membership audit uses configurable export path prefix
 - [x] Root [`AGENTS.md`](../../AGENTS.md) links this overview
 - [x] `bun test` passes
-- [x] `bun run validate:content-model` passes
 
 ## Out of scope
 
 - Rewriting [`content/model/schema.json`](../content/model/schema.json) enums/rules to be domain-neutral (node IDs in content are fine).
-- Replacing Notion-import terminology in [`packages/_archive/notion-importer`](../../packages/_archive/notion-importer).
 - Weighted relationship properties (future ontology work).
 
 ## Verification commands
 
 ```bash
 bun test
-bun run validate:content-model
 # After session 04:
 # bun run scripts/check-type-membership.ts
 ```

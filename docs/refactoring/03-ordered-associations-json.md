@@ -62,7 +62,7 @@ Must match the interface in `ordered-associations.ts`:
 | `partProductCompositeType` | Composite linking parts to products |
 | `groupTypeDatabaseId` | Parts database node id |
 | `unassignedGroupTitle` | Display title for rows with no part |
-| `columnViewName` | View name for column visibility (Notion legacy name ok in config) |
+| `columnViewName` | View name for column visibility (legacy name ok in config) |
 | `excludedColumnKeys` | Column keys hidden from ordered-association tables |
 | `partNumberProperty` | Parts row property for subsection sort order |
 
