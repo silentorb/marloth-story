@@ -6,7 +6,7 @@
  */
 import { readFileSync } from "node:fs";
 import {
-  isLegacyArchivedNotionPath,
+  isLegacyArchivedPath,
   loadWorkspaceFromContent,
 } from "tome-db";
 import {
@@ -94,7 +94,7 @@ export function migrateArchiveToIncludes(contentDir: string): {
     const node = store.readNode(id);
     if (!node) continue;
     const path = pathFromProperties(node.properties);
-    if (!isLegacyArchivedNotionPath(path)) continue;
+    if (!isLegacyArchivedPath(path)) continue;
     pathNodesScanned++;
     if (hasIncludesToArchive(relationships, archiveNodeId, id)) continue;
     store.upsertRelationship(archiveNodeId, id, INCLUDES_TYPE);

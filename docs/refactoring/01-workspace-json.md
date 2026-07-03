@@ -62,7 +62,7 @@ Create `content/model/workspace.json` with Marloth corpus values:
 | `quickLinks` | yes (may be `[]`) | Session 02 editor sidebar |
 | `branding` | no | Session 02/05 UI strings and favicon |
 | `legacy.exportPathPrefix` | no | Session 04 type-membership audit |
-| `legacy.archivePathPrefix` | no | Legacy migration scripts, `isLegacyArchivedNotionPath` |
+| `legacy.archivePathPrefix` | no | Legacy migration scripts, `isLegacyArchivedPath` |
 
 Node ids must match `^[0-9a-f]{32}$`.
 
