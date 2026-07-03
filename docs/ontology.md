@@ -4,7 +4,7 @@
 
 This document describes the **domain model** of the Marloth design corpus in human-friendly terms: what kinds of things exist, what they mean, and how they relate. It is **storage-agnostic**—agents should treat it as the conceptual source of truth for *what the data is about*, independent of SQLite tables or Notion export quirks.
 
-For how nodes are stored, queried, and imported, see [`docs/features/tome-db.md`](./features/tome-db.md) and [`docs/features/notion-import.md`](./features/notion-import.md).
+For how nodes are stored and queried, see [`docs/features/tome-db.md`](./features/tome-db.md).
 
 ## When to read this
 
@@ -41,7 +41,7 @@ When ontology and storage disagree, **update one explicitly**—usually the onto
 | **Product** | A **deliverable umbrella**: a book, game, or related work that consumes and organizes design (e.g. *TWOLD*, *A Child's Fairytale World*, *The Shadowhood*). Products share inspirations and structural patterns. |
 | **Inspiration** | An external or reference work that informs design (novel, film, game, trope cluster). |
 | **Scene** | A unit of story action—often the bridge between high-level design and eventual prose. |
-| **NotionPage** / **NotionDatabase** | Removed import labels. Historical Notion mapping only; see [notion-import.md](./features/notion-import.md). |
+| **NotionPage** / **NotionDatabase** | Removed import labels. Historical mapping only. |
 
 ## Entity types
 
@@ -203,4 +203,3 @@ This ontology will grow with the trilogy and game work. When adding entity or re
 
 - [`AGENTS.md`](../AGENTS.md) — project purpose, terminology, modeling direction
 - [`docs/features/tome-db.md`](./features/tome-db.md) — property graph schema and API
-- [`docs/features/notion-import.md`](./features/notion-import.md) — Notion → graph import

@@ -61,7 +61,7 @@ The `./content/` tree is **authoritative and git-tracked**. Notion import was a 
 | Data only in `./exports/`            | Mine archive and upsert into `./content` (same mapping rules as legacy import)                                                | Run `bun run notion:import` / `--clean`          |
 
 
-See the sibling **tome** repo [`docs/features/tome-db.md`](../tome/docs/features/tome-db.md) for file formats and API. [`docs/features/notion-import.md`](../tome/docs/features/notion-import.md) documents the **legacy** import pipeline for reference and export mining only.
+See the sibling **tome** repo [`docs/features/tome-db.md`](../tome/docs/features/tome-db.md) for file formats and API.
 
 ## Working Conventions
 
@@ -94,7 +94,6 @@ For **design data** (what nodes mean, how they relate conceptually), read `[docs
 | Web markdown editor, `tome-editor` | [`../tome/docs/features/tome-editor.md`](../tome/docs/features/tome-editor.md) |
 | Graph Explorer, LOD layers, anchor-scoped graph viz | [`../tome/docs/features/graph-explorer.md`](../tome/docs/features/graph-explorer.md) |
 | Editing story/design content in the graph | [`docs/ontology.md`](./docs/ontology.md) + [`../tome/docs/features/tome-db.md`](../tome/docs/features/tome-db.md) |
-| Legacy Notion import / mining `./exports/` | [`../tome/docs/features/notion-import.md`](../tome/docs/features/notion-import.md) |
 | Ordered associations, scene order, drag-and-drop reorder | [`../tome/docs/features/ordered-associations.md`](../tome/docs/features/ordered-associations.md) |
 | Dynamic table view fields, computed columns | [`../tome/docs/features/dynamic-table-fields.md`](../tome/docs/features/dynamic-table-fields.md) + [`../tome/docs/dynamic-fields/`](../tome/docs/dynamic-fields/) |
 | Table view tabs, `views.json` | [`../tome/docs/features/views.md`](../tome/docs/features/views.md) |
