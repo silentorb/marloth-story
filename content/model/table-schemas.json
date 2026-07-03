@@ -195,13 +195,6 @@
           "type": "relation",
           "targetTypeId": "15158e628ba2809089a0d84a430acc2e",
           "perspective": "blocking"
-        },
-        {
-          "key": "scenes",
-          "name": "Scenes",
-          "type": "relation",
-          "targetTypeId": "204dba198db74611b0b49a98dd53e8f5",
-          "perspective": "scenes"
         }
       ]
     },
@@ -508,13 +501,6 @@
     },
     "204dba198db74611b0b49a98dd53e8f5": {
       "columns": [
-        {
-          "key": "arcs",
-          "name": "Arcs",
-          "type": "relation",
-          "targetTypeId": "15158e628ba2809089a0d84a430acc2e",
-          "perspective": "arcs"
-        },
         {
           "key": "part",
           "name": "Part",
