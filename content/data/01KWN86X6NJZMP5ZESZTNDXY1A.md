@@ -1,0 +1,43 @@
+---
+title: Femininity and Epic Wonderland
+alias: Femininity and Epic Wonderland
+---
+# Femininity and Epic Wonderland
+
+I want to harmonize [[01KWN86X6NJZMP5ZESZTNDXXXV]] and [[01KWN86X6NJZMP5ZESZTNDXY63]] 
+
+# Strategy
+
+In order to accomplish the above goal, I need to execute the following steps:
+
+1. Define femininity (at least its attributes that relate to the issues at hand)
+2. Harmonize femininity with epic
+3. Harmonize femininity with wonderland
+4. Merge the two harmonies
+
+# Woke feminism
+
+An essential point here is to avoid feminism, particularly [[01KWN86X6NJZMP5ZESZTNDXY68]].
+
+It is easier to harmonize masculinity with [[01KWN86X6NJZMP5ZESZTNDXY63]], so the common solution is to make women more masculine.
+
+# Blindside
+
+Increasingly, I’m starting to suspect that there is nothing inherently easier about harmonizing masculinity and [[01KWN86X6NJZMP5ZESZTNDXY63]].  Instead, the modern notions of Epic and Wonderland which I am adapting are inherently skewed toward masculinity.  In other words, more fleshed out notions of masculinity are baked into the models, leaving out equivalent feminine notions.
+
+Part of this effect stems from feminism.  So many of my reference points are shaped by a [post-feminist](./01KWN86X6NJZMP5ZESZTNDXY68.md) culture.
+
+Part of the effect is pre-feminism.  So many of my reference points are defined by men who devalued feminine roles.
+
+In that respect, male authors haven’t changed much.  They went from devaluing both woman and their roles, to elevating women and still devaluing their roles.  Men elevated women by giving them men’s roles, continuing to devalue their natural roles.
+
+> “I don’t like you, but I’ll like you more if you become more like me.”
+
+> 💡 Even though the protagonist of Alice in Wonderland is a female, and she is very feminine, she is also a child.  She is an immature female.  She does not perform the roles of a mature woman.
+> Carroll side-steps most of the issues of feminism by having Alice be a girl instead of a woman.  While there is nothing inherently wrong with that, it is a common theme with Carroll’s designs, relying on slight-of-hand to achieve his effects.  The end result is largely style-over-substance.
+
+# Countering the blindside
+
+Maybe I don’t need as much of an interface for harmony as I need to reconstruct Epic and Wonderland to be more compatible with femininity.
+
+Some interface is needed, since I still need some interface for male characters as well, but the interface becomes more straightforward and less of a miracle-working-dust-of-a-unicorn-horn.

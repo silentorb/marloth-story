@@ -1,0 +1,10 @@
+---
+title: Angel
+alias: Angel
+---
+# Angel
+
+> 💡 I would rate this as having a [[01KWN86X6NJZMP5ZESZTNDXXVX]], except it relies too frequently on overly depressing arcs to keep things fresh.
+
+> 💡 While this was the earliest inspiration I had for adventuring as a business, now that I have more experience with agency life, I feel like Angel is a very thin, unrealistic example of agency life.
+> It feels like it is written by people with no first-hand experience and seems more influenced by other shows they have seen than real life.

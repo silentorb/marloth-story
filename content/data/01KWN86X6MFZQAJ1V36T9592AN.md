@@ -1,0 +1,45 @@
+---
+title: Forest features
+alias: Forest features
+---
+# Forest features
+
+# Overview
+
+This is a list of possible features to integrate into forest storylines.
+
+This is a child of [[01KWN86X6MFZQAJ1V36T9592AX]].
+
+# Buildings
+
+I have little interest in forest as a pure wilderness.  For me, a forest is uninteresting unless it has some mixture of civilization.
+
+I envision forests as a sea of trees dotted with buildings as islands.
+
+ [[01KWN86X6NJZMP5ZESZTNDXY8M]] 
+
+# Trees and bushes
+
+I love trees, and I would be incorporating trees more in my art except that they have rarely been conducive with other aspects of my artistic style.
+
+# Gardens and farms
+
+# Streams, rivers, and ponds
+
+# Roads and paths
+
+# Fences and walls
+
+# Bridges
+
+# Docks and boats
+
+# Stones, hills, and caves
+
+# Statues
+
+This is not a standard forest feature, but I think a slightly excessive presence of statues can give a unique flavor and add depth to the forest.
+
+# Swamp
+
+# Fog

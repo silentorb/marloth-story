@@ -1,0 +1,48 @@
+---
+title: Good stewardship
+alias: Good stewardship
+---
+# Good stewardship
+
+# Adam in the Garden
+
+When God created Adam, he didn’t send him on a quest.
+
+God commissioned Adam to be a good steward.
+
+A steward of the garden God created.
+
+> The Lord God took the man and put him in the garden of Eden to work it and keep it. - Genesis 2:15
+
+# Calls to stewardship
+
+> When they had finished breakfast, Jesus said to Simon Peter, “Simon, son of John, do you love me more than these?” He said to him, “Yes, Lord; you know that I love you.” He said to him, “Feed my lambs.” He said to him a second time, “Simon, son of John, do you love me?” He said to him, “Yes, Lord; you know that I love you.” He said to him, “Tend my sheep.” He said to him the third time, “Simon, son of John, do you love me?” Peter was grieved because he said to him the third time, “Do you love me?” and he said to him, “Lord, you know everything; you know that I love you.” Jesus said to him, “Feed my sheep. Truly, truly, I say to you, when you were young, you used to dress yourself and walk wherever you wanted, but when you 
+are old, you will stretch out your hands, and another will dress you and carry you where you do not want to go.” (This he said to show by what kind of death he was to glorify God.) And after saying this he said to him, “Follow me.” - John 21:15-19
+
+> But the Lord said to him, “Go, for he is a chosen instrument of mine to carry my name before the Gentiles and kings and the children of Israel. For I will show him how much he must suffer for the sake of my name.” - Acts 9:15-16
+
+# Good stewards in the Bible
+
+> The Lord was with Joseph, and he became a successful man, and he was in the house of his Egyptian master.  His master saw that the Lord was with him and that the Lord caused all that he did to succeed in his hands.  So Joseph found favor in his sight and attended him, and he made him overseer of his house and put him in charge of all that he had.  From the time that he made him overseer in his house and over all that he had, the Lord blessed the Egyptian's house for Joseph's sake; the blessing of the Lord was on all that he had, in house and field.  So he left all that he had in Joseph's charge, and because of him he had no concern about anything but the food he ate. - Genesis 39: 2-6a
+
+> And David went out and was successful wherever Saul sent him, so that Saul set him over the men of war. And this was good in the sight of all the people and also in the sight of Saul's servants. - 1 Samuel 18:5
+
+> Then this Daniel became distinguished above all the other high officials and satraps, because an excellent spirit was in him. And the king planned to set him over the whole kingdom - Daniel 6:3
+
+> 💡 Note that the above example of Daniel was after his previous master was overthrown.  There was likely a violent house cleaning which Daniel survived.  Through the Lord’s blessing and Daniel’s faithfulness, Daniel was able to thrive in humanly impossible circumstances.
+
+> His master said to him, “Well done, good and faithful servant.  You have been faithful over a little; I will set you over much. Enter into the joy of your master.” - Matthew 25:21
+
+> For I am already being poured out as a drink offering, and the time of my departure has come. I have fought the good fight, I have finished the race, I have kept the faith. 8 Henceforth there is laid up for me the crown of righteousness, which the Lord, the righteous judge, will award to me on that day, and not only to me but also to all who have loved his appearing. - 2 Timothy 4:6-8
+
+# Appointment
+
+This idea is not about “With great power comes great responsibility” or any other self-imposed responsibility.
+
+This is about a person or group of people appointing someone to a position of authority and responsibility.
+
+This is about having people the character is accountable to.
+
+# James’ work
+
+I want [[01KWN86X6MFZQAJ1V36T9592A4]] to be a good steward, particularly in his [[01KWN86X6MFZQAJ1V36T9592E0]].

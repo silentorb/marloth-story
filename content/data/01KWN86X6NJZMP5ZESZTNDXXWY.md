@@ -1,0 +1,27 @@
+---
+title: Adventure and peace
+alias: Adventure and peace
+---
+# Adventure and peace
+
+Adventure in Marloth narratives should be fun, but it should not be about pursuing fun.
+
+Adventure should not be a means of escaping responsibility, it should happen *because of* responsibility.
+
+In other words, adventure should not be about avoiding things a character doesn’t want to do, it is a counter-intuitive thrill in the midst of trials.
+
+Adventures are an exciting bother.
+
+# Motivation
+
+## Optimization
+
+There’s nothing inherently wrong with happy-go-lucky adventure, but with everything I am trying to accomplish with Marloth, any adventure which doesn’t invest in [[01KWN86X6NJZMP5ZESZTNDXXYS]] is a missed opportunity.
+
+It’s a matter of optimization.  Marloth is an ambitious recipe and requires efficient use of its ingredients.
+
+# Responsibility
+
+While there may not be anything *inherently* wrong with happy-go-lucky adventure, it is still dangerous.
+
+[[01KWN86X6MFZQAJ1V36T9592FN]]

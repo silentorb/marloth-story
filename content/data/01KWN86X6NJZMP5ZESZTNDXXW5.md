@@ -1,0 +1,40 @@
+---
+title: Adelle
+alias: Adelle
+modified_at: 2026-07-02T00:57:28.895Z
+created_at: 2026-06-24T20:36:22.785Z
+---
+The Queen
+The Maid
+Personality: ESFJ
+
+# SSS
+
+[[01KWN86X6MFZQAJ1V36T9592CA]]
+
+## Earthly values
+
+1. [[01KWN86X6MFZQAJ1V36T9592A4]]
+2. Stability / security
+3. Beauty / quality
+4. Community / friendships
+
+# Community
+
+Adelle is a [communal](./01KWN86X6NJZMP5ZESZTNDXY6J.md) character.
+
+Her personality won’t fully thrive without community.
+
+This in contrast with [[01KWN86X6MFZQAJ1V36T9592A4]], who is less communal.
+
+# Personality Shift
+
+As Adelle matures, I’m going to adjust her personality a little.
+
+The Adelle of the first book was a spoiled and naive princess.  She was very outgoing, spontaneous, and opinionated.
+
+Now I want Adelle to be a little more subdued and considerate.  This is a good opportunity to create a complex character where I can still throw in splashes of the younger Adelle, but the personality shift will still be a little greater than age can account for.
+
+Also, while in the first book I was aiming for Adelle being an ENFJ, now I’m redesigning adult Adelle as an ESFJ.  That’s not too much of a stretch since child Adelle can be loosely interpreted as an ESFJ already.
+
+> 💡 Part of this shift in direction is also due to marriage.  Early Adelle was my imagined wife—now I want to impart in Adelle some of the qualities I cherish in my real wife.

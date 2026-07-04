@@ -1,0 +1,58 @@
+---
+title: Geometry at a human scale
+created_at: 2026-06-17T21:44:36.823Z
+modified_at: 2026-06-21T07:13:00.440Z
+---
+An interesting idea that shook out of [[01KWN86X6NJZMP5ZESZTNDXY7K]] is:
+
+> You can draw a map of *The Lord of the Rings*, but the exact shape of a hallway in Minas Tirith rarely matters.
+>
+> By contrast, in a well-designed *Dark Souls* area, changing a staircase location might completely alter the narrative experience.
+>
+> The geometry is operating at a human scale where every connection matters.
+
+The Lord of the Rings places a lot of weight on geography, but not at a human scale.
+
+What I am most interested in is the *human scale*.
+
+# Analogies
+
+## Metric and Imperial
+
+While:
+
+1. The metric measurement system is more ideal
+2. The imperial metric system maps closer to practical human units.
+
+## Warhammer and Mordheim
+
+While:
+
+1. Warhammer and Warhammer 40K are the flagship Games Workshop products
+2. I prefer the smaller scale of [[01KWN86X6NJZMP5ZESZTNDXY8Q]].
+
+# Intimacy
+
+A key part of the appeal for me is intimacy.
+
+A smaller environment feels more personal.
+
+# Huge backdrop
+
+This ties in with the general game level design aesthetic I've always gravitated toward:
+
+> Small, cozy interior spaces with windows leading out to grand exterior spaces
+
+[[01KWN86X6PZXQP43T36924KCTG]]
+
+## Spiritual
+
+There's a parallel between that dynamic and the relationship between God and man.
+
+Man has a tiny perspective on the world, but through God's creation and His Word, we can see a glimpse of vast expanses beyond our comprehension.
+
+# Conclusions
+
+Make local space comprehensive, and remote space incomprehensible.
+
+Apply depth-of-field to spatial layout.

@@ -1,0 +1,43 @@
+---
+title: Asylum job - mixed realities
+alias: Asylum job - mixed realities
+---
+# Asylum job - mixed realities
+
+> 🚫 This idea has now been replaced by [[01KWN86X6NJZMP5ZESZTNDXY67]].
+
+# Overview
+
+> 💡 I have another idea: what if I combine both storylines?  The scenes cut between two conflicting Asylum jobs?  James experiences both realities and can sort them out.
+
+> 💡 This is the second iteration of asylum job ideation.  The first attempt was [[01KWN86X6NJZMP5ZESZTNDXXYD]].
+
+All my initial ideas for this have been destructive, but what about something more constructive?
+
+Part of my original vision for James job was [for it to be more positive](./01KWN86X6MFZQAJ1V36T9592E0.md).
+
+Instead of a doctor having a problem that needs fixing, what if the doctors want assistance with an experiment?
+
+What if the morality of the experiment is questionable?
+
+What if the experiment goes horribly wrong, and the agency is partially to blame in supporting it?
+
+That is far closer to where I was wanting to go with the earlier depictions of agency life.
+
+# The Experiment
+
+So what is the experiment?
+
+One of the main pursuits of the Asylum doctors is to “cure madness”.
+
+What if they created a treatment that used magic?
+
+What if that use of magic was subtle and indirect, like leveraging some hip, new magic technology?
+
+# Magic tech
+
+What sort of magical technology could it be?
+
+I’d like it to be embodied by some distinctive object.  The object would act as a sort of symbol, and have a particular theme.  It would be light, portable, and have a high monetary value.
+
+> 💡 It might be good to start pulling together a set of themes and symbols for magic in Marloth.

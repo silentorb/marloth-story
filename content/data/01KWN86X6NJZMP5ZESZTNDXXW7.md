@@ -1,0 +1,49 @@
+---
+title: Ideological contests
+alias: Ideological contests
+---
+# Ideological contests
+
+# Background
+
+While Marloth is not about [personal contests](./01KWN86X6NJZMP5ZESZTNDXXW4.md), it is about contests between ideologies.
+
+# Rules
+
+## Volume
+
+A Marloth narrative must be filled with ideological conflicts.
+
+Every spectacle should make a point about an ideological conflict.
+
+> 💡 Each spectacle should effectively be a “mic drop”.
+
+### Duration
+
+Ideological conflicts should not be resolved quickly.
+
+An ideological conflict should never be resolved over the course of a single scene.
+
+They should resolve over at least a part's worth of time.
+
+### Audience
+
+Each narrative should have multiple scenes with public forums.  The world is the stage.
+
+### Notes
+
+> 💡 Ideologies are mostly defined by what a person worships.
+
+# Motivation
+
+Ideological conflict is one of the greatest ways to add depth and significance to a storyline.
+
+## Faith
+
+Ideological conflicts are not about personal demonstration, they are about faith.
+
+It is like betting on a horse and then seeing which horse wins.
+
+The people betting may be participants in the race, but it is not their individual qualities that determine the winning horse.
+
+> 💡 Those who trust in God will always win.

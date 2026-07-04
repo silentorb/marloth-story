@@ -1,0 +1,40 @@
+---
+title: Isolation
+alias: Isolation
+---
+# Isolation
+
+Isolation can add a distinct and valuable flavor of surrealism.
+
+Isolation is important for introspection.
+
+Isolation provides contrast to society.
+
+# Solo agent
+
+This feature is for a solo agent.  The main character can be periodically bumping into other characters, but is largely walking around unaccompanied.
+
+# Introspection
+
+A key part of this feature is having times to be alone with one’s own thoughts.
+
+# In the wild
+
+The main character is not a part of some larger social system.
+
+> 💡 Dark City takes place in a city, but much of the time its residents slumber.
+> Dark City strikes a fine balance between a city that feels both populated and deserted.
+
+Isolation takes place more often in the [[01KWN86X6MFZQAJ1V36T9592HA]].
+
+# Mind screw
+
+A key part of this feature is emphasizing subjective experience.
+
+Companions provide sanity checks.  Without that, extra doubt can be cast on the player’s perception.
+
+> 💡 This distinction stands out in single-player vs. multiplayer games.  It is far easier to employ Escher-like spatial tricks in a single player, because so many of those tricks are subjective and the effect is broken when there are multiple vantage points.
+
+> 💡 Technically, [[01KWN86X6NJZMP5ZESZTNDXY7D]] revolve around an isolated character, but I’m not tagging that inspiration with this feature because the aspects of isolation I am interested in here are generally not leveraged in those games.
+> The Witcher is left to his thoughts, but we rarely hear his thoughts unless he is talking to someone.
+> The Witcher’s experiences are rarely subjective.

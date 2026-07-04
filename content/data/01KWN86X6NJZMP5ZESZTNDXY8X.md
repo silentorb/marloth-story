@@ -1,0 +1,47 @@
+---
+title: Campaign against magic
+alias: Campaign against magic
+---
+# Campaign against magic
+
+A political movement against magic.
+
+[[01KWN86X6NJZMP5ZESZTNDXXZX]] are used as a straw man argument and a case that all magic is bad.
+
+# De-emphasis on Nivana
+
+In earlier versions of this idea, I had[[01KWN86X6NJZMP5ZESZTNDXY3Z]] as the most audience-visible proponent of this movement in TWOLD, but I don’t like that now.
+
+The focus on Nivana was partially why I first cancelled this arc.
+
+The idea in its original form felt to pretentious.  It was unrealistic in bad ways.
+
+I may still be able to achieve everything I wanted out of this arc without Nivana being the figurehead.
+
+Maybe Nivana can still be a part of the movement without being unrealistically leading it.
+
+> 💡 While Nivana shouldn’t be the figurehead for the campaign, she still can be the story’s *protagonist* for the campaign—the main representative of the campaign *for the audience.*
+
+# Minimal political intrigue
+
+[[01KWN86X6MFZQAJ1V36T9592K9]] 
+
+# Vilifying magic
+
+The way these designs are going, it looks like a charismatic spin doctor is needed to assist Nivana in her campaign.
+
+Without creating a new character for the role, Miles is the best off-the-shelf option.  Miles fits the role well because:
+
+1. I’ve been looking for some reason for him and Nivana to interact with each other early in the story.
+2. Not simply have I wanted Nivana and Miles to interact, but for him to also hurt her.  In this case, she won’t realize at the time that he has hurt her, though there may be a sense of abandonment as her world falls apart.
+3. He is the king of lies, showmanship, and manipulation.
+4. He is a magic user, and would have inside knowledge of magic societies and practices.  (He could be betraying them as a power move to reduce competition.  Also, his betrayal has some intrinsic emotional weight, though I may not be able to cast a lens on that area without damaging some of the mystery and suspense.)
+5. This resurrects my original vision for the character, where Miles starts off looking like one of the good guys and later betrays them.  Here he looks like *sort* of a good guy.  Him later revealing his evil intentions need not be a surprise to the audience, but could be a surprise to some of the characters.
+
+> 💡 Maybe a tragic event occurs which Miles promptly capitalizes on to vilify magic, and in a later part it is revealed that Miles caused the event.  Maybe in doing so he “kills two birds with one stone”, such as magically murdering someone who was about to reveal Miles’ own crimes.  (Though if Miles is planning on disappearing soon, revealing his crimes has less punch.  It might be better if the revelation somehow involves his larger plans and some of the more transcendent—TBD—mechanisms he is scheming to leverage.)
+
+> 💡 When everything hits the fan and Nivana finds herself accused, there is no scene between her and Miles where Miles refuses to help her.  There is no scene period—Miles is simply gone.
+
+# Archive
+
+> 💡 ~~This is an interesting idea, but it never completely fit my requirements, and I’m cutting it for now.  This idea is too grand in the wrong ways.  It draws attention to things I want to be more subtle about.~~

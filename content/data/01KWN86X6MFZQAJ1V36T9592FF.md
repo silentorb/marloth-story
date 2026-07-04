@@ -1,0 +1,11 @@
+---
+title: Max Payne movie
+alias: Max Payne movie
+---
+# Max Payne movie
+
+It’s a dumb movie, but there is a sequence near the beginning where Payne visits a party and somehow the movie accidentally captures the Wonderland flow I am looking for.
+
+The Wonderland vibe quickly disintegrates into incredibly bad storytelling.
+
+> 💡 While this is a notable mention, it this movie is too odious to list in the [TWOLD inspirations](./01KWN86X6NJZMP5ZESZTNDXXW0.md)  table.

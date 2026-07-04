@@ -1,0 +1,37 @@
+---
+title: Vulnerable to light
+alias: Vulnerable to light
+modified_at: 2026-06-28T07:15:31.101Z
+created_at: 2026-06-28T07:12:53.402Z
+---
+This idea is about monsters that are vulnerable to light.
+
+Making light a weakness turns it into a shield of protection and weapon that can be wielded.
+
+> 💡I'm more interested in this as a defense than an offense, more as a means of fending off monsters than destroying them.
+
+Adding survival weight to light also supports [[01KWN86X6NJZMP5ZESZTNDXY8M]].
+
+[[01KWN86X6MFZQAJ1V36T9592DS]]
+
+# Shades and other monster types
+
+In [[01KWN86X6NJZMP5ZESZTNDXY6D]], Shades were the main monster type which were vulnerable to light.
+
+I’m not as interested in Shades in particular in later books but they may still have them.
+
+I’d kind of like light vulnerability to be a common weakness for multiple monster types.
+
+> 💡 It’s sort of like a CRPG with different damage types, and each creature type has different resistances and vulnerabilities.
+
+# Daylight
+
+In terms of linking inspirations, this idea doesn’t apply to Vampires and their weakness to sunlight, or creatures that only come out at night.
+
+> 💡 Underworld featured solar bullets, which is a cool idea, but that’s also not what I’m going for here.
+>
+> I’m interested in ordinary, wholesome elements being used as a weapon.
+>
+> I’m not interested in them actually being *weaponized*.
+
+This idea is about light in the midst of darkness.  It is about creatures that can be fended off by light *during the night*.

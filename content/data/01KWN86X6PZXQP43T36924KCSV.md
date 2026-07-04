@@ -1,0 +1,32 @@
+---
+title: Dangerous city
+alias: Dangerous city
+---
+# Dangerous city
+
+# Feature requirements
+
+For this feature the city itself needs to feel dangerous, not just be a city with dangers in it.
+
+The danger is intrinsic to the city.
+
+This usually means the city needs to have an enumerable variety of dangers instead of a single danger.
+
+A part of the intrinsic quality is the danger needs to persistent, ruling out cases where temporary events cause the city to be dangerous, such as war breaking out.
+
+This is a constant danger the city’s inhabitants live with.
+
+# Motivation
+
+The main point of this feature is to create an extreme tension between stable community and a war zone.
+
+A city that is so dangerous that it is almost inhabitable, yet its society still has a routine and has adapted to the chaos.
+
+# Dark City
+
+[[01KWN86X6NJZMP5ZESZTNDXXZG]] technically only has one group of villains but the city still manages to feel generally threatening.
+
+The city is so generally ominous and foreboding that the danger feels broader than the particular group of villains.
+
+> 💡 For that matter, Dark City would have been 3x more awesome if it *did* have one or more additional villainous forces.
+> Fans probably prefer the focus, but I personally feel like the movie would have been more effective if the villains had been given half of their allocated screen time, leaving room for other villains and conceptual exploration from further angles.

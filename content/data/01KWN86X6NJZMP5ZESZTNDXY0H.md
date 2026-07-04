@@ -1,0 +1,12 @@
+---
+title: Minimal monster hunting
+alias: Minimal monster hunting
+---
+# Minimal monster hunting
+
+There can be some [[01KWN86X6NJZMP5ZESZTNDXY20]], but it should not be a primary goal, nor a primary occupation of main characters.
+
+Where monster hunting is included, it should be presented in a questionable light.
+
+> 💡 I have nothing inherently against monster hunting, I just believe it is overused in media without enough consideration of the moral implications, and doesn’t fit the direction I want to take Marloth.
+> Marloth isn’t about slaying with monsters—it’s about co-existing with them.

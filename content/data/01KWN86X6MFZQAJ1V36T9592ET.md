@@ -1,0 +1,13 @@
+---
+title: James physical combat suffering
+alias: James physical combat suffering
+---
+# James physical combat suffering
+
+I want James’ to have suffering in the later books, except I have wanted him to be a less physical character.
+
+However, the forms of physical suffering James’ experienced in the first book are so visual and iconic.
+
+In particular, I’m referring to his suffering during combat.
+
+[[01KWN86X6MFZQAJ1V36T9592ER]].

@@ -1,0 +1,19 @@
+---
+title: Haunted home - Ancestry
+alias: Haunted home - Ancestry
+---
+# Haunted home - Ancestry
+
+> 💡 This is an archived sub-idea under [[01KWN86X6MFZQAJ1V36T95929P]].
+
+At least for a haunted house inside the forest ([[01KWN86X6MFZQAJ1V36T9592DX]]), I would like the haunting to have something to do with ancestry.
+
+Ancestry is something my present culture disregards, yet ancestry has been important to most cultures throughout history.
+
+> 💡 God Himself puts much weight upon ancestry in the Bible.
+
+I want to have examples of good and bad approaches to ancestry.  Ancestors should neither be ignored nor worshiped.
+
+> 💡 Sometimes it seems like people worship their ancestors because they themselves wants to be worshiped and in some sense live forever when they are dead.
+
+> 💡 In a way this idea works well, and in a way, it is too over-the-top for how I’d like to employ ancestral themes.  Part of the purpose of the haunted home idea is to zoom in, where I want to explore ancestral themes in broader, more communal settings.

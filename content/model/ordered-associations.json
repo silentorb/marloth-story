@@ -3,13 +3,13 @@
   "configs": [
     {
       "id": "scenes-by-book",
-      "typeDatabaseId": "204dba198db74611b0b49a98dd53e8f5",
+      "typeDatabaseId": "01KWN86X6MFZQAJ1V36T9592EA",
       "membershipEdgeType": "member_of",
       "orderProperty": "order",
       "scopeCompositeType": "scenes_product",
       "groupCompositeType": "scenes_part",
       "partProductCompositeType": "products_parts_database",
-      "groupTypeDatabaseId": "5e45eefc69a14f45b988ad1f3c9d1ef5",
+      "groupTypeDatabaseId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
       "unassignedGroupTitle": "Unassigned",
       "columnViewName": "TWOLD Active",
       "excludedColumnKeys": ["order", "product", "part", "status"],

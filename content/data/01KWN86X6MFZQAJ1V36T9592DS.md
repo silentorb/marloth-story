@@ -1,0 +1,15 @@
+---
+title: Scarce light sources
+alias: Scarce light sources
+---
+# Scarce light sources
+
+In the more dangerous areas of Marloth, many monsters thrive in darkness and shirk from the light.
+
+In the spirit of survival, this places much value on light sources.
+
+Most of the light sources in Marloth are consumable.
+
+Thus, light sources are a sought after commodity, and a back bone of many economies.
+
+[[01KWN86X6MFZQAJ1V36T9592DR]]

@@ -1,0 +1,23 @@
+---
+title: Magical symbols
+alias: Magical symbols
+---
+# Magical symbols
+
+# Overview
+
+This page is a collection of magical symbols used in Marloth.
+
+[[01KWN86X6NJZMP5ZESZTNDXXWC]]
+
+[[01KWN86X6PZXQP43T36924KCT2]]
+
+[[01KWN86X6NJZMP5ZESZTNDXXZR]]
+
+[[01KWN86X6NJZMP5ZESZTNDXXXG]]
+
+[[01KWN86X6NJZMP5ZESZTNDXY8B]]
+
+[[01KWN86X6NJZMP5ZESZTNDXY7F]]
+
+[[01KWN86X6MFZQAJ1V36T9592JT]]

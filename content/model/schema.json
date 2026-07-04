@@ -3,26 +3,26 @@
   "relationshipRules": [
     {
       "id": "scene-features",
-      "sourceTypeId": "204dba198db74611b0b49a98dd53e8f5",
+      "sourceTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
       "type": "includes",
       "allowedTargetTypeIds": [
-        "dd0de9867cc345b898929306bdf9fc83"
+        "01KWN86X6NJZMP5ZESZTNDXY7W"
       ]
     },
     {
       "id": "scene-inspirations",
-      "sourceTypeId": "204dba198db74611b0b49a98dd53e8f5",
+      "sourceTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
       "type": "includes",
       "allowedTargetTypeIds": [
-        "2eea538996934ce8abafc27132e576c1"
+        "01KWN86X6NJZMP5ZESZTNDXXW0"
       ]
     },
     {
       "id": "feature-inspirations",
-      "sourceTypeId": "dd0de9867cc345b898929306bdf9fc83",
+      "sourceTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
       "type": "includes",
       "allowedTargetTypeIds": [
-        "2eea538996934ce8abafc27132e576c1"
+        "01KWN86X6NJZMP5ZESZTNDXXW0"
       ]
     }
   ],

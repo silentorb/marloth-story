@@ -1,0 +1,35 @@
+---
+title: Dreamlike
+alias: Dreamlike
+---
+# Dreamlike
+
+# Overview
+
+Dreamlike is a subset of [[01KWN86X6NJZMP5ZESZTNDXY71]].
+
+Dreamlike surrealism is any surrealism that is a common pattern in dreams.
+
+Half of its value is it is surrealism which some readers will have personal first-hand experience with.
+
+> 💡 If an inspiration is dreamlike then it is also surreal, so I am treating them as mutually exclusive and restricting each inspiration to only be associated with one feature or the other.
+
+# My dreams
+
+The other half of its value is: one of the major inspirations for Marloth are my own dreams.
+
+Not all of my dreams inspire Marloth.  There are particular kinds of dreams I have every now and then that drive me to write.
+
+# Qualities
+
+Below are a list of qualities that make a narrative dreamlike.
+
+A narrative does not need every one of these qualities to be dreamlike, only one or more of them.
+
+## Transitions and flow
+
+When a narrative has surreal transitions between scenes and events.
+
+## Projected introspection
+
+When the dreamers internal thoughts and emotions manifest in the surrounding environment and events.

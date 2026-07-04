@@ -1,0 +1,15 @@
+---
+title: Neighboring locations
+alias: Neighboring locations
+---
+# Neighboring locations
+
+Scene locations that are right next to each other and have some degree of real-time relationship.
+
+It is easy for stories to become like a stage play, where every location is discrete and has only a loose relationship to other locations.
+
+Some of the most engaging narrative dynamics are when multiple neighboring locations have a direct relationship.
+
+In the same sense that character relationships are a key part of storytelling, location relationships may not be as essential but can add a lot of depth and quality to the story.
+
+[[01KWN86X6MFZQAJ1V36T9592F8]]

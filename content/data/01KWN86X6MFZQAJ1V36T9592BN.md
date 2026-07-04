@@ -1,0 +1,17 @@
+---
+title: Horror survival timing conflicts
+alias: Horror survival timing conflicts
+---
+# Horror survival timing conflicts
+
+If I am to have a [[01KWN86X6MFZQAJ1V36T9592BD]] , it would be great for [[01KWN86X6NJZMP5ZESZTNDXY3Z]] to be included because her arc and themes would work so well with the survival elements.
+
+However, pacing-wise it feels like the survival horror arc would work best right after the Asylum, and currently I’m leaning toward having the Asylum job finish *before* the Market job where Nivana resumes the stage.
+
+> 💡 I need to analyze the motivations I’m feeling and determine what needs to give.
+
+# Motivation for survival horror placement
+
+Usually survival horror starts early in a narrative.  Either the narrative begins in the dangerous setting, builds up to it as the primary focus (such as in Battle Royale stories), or drops the characters into it quickly.
+
+I can’t put my finger on it, but a late survival horror feels anti-climactic.

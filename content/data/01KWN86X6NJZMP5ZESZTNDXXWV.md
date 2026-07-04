@@ -1,0 +1,19 @@
+---
+title: Don’t push fear
+alias: Don’t push fear
+---
+# Don’t push fear
+
+Marloth falls under the horror genre.
+
+However, there are different forms of horror, and fear is not one of the forms of horror that work well with Marloth.
+
+> 💡 I’ve never been a fan of fear, which may indirectly lead to a composition that doesn’t lend itself to fear.
+
+Characters can be afraid of things, and if the audience happens to be scared by something, that’s okay.
+
+Problems arise when I try to force fear into the story as a focal point.
+
+For example, it has never worked well to have scenes where I am trying to scare the audience.
+
+> 💡 I tried that several times over the course of writing [[01KWN86X6NJZMP5ZESZTNDXY6D]] and scrapped all of those attempts.

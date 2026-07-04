@@ -1,0 +1,81 @@
+---
+title: Sapphire and Steel
+alias: Sapphire and Steel
+---
+# Sapphire and Steel
+
+# Overview
+
+Sapphire & Steel is a little known sci-fi/fantasy British TV serial.
+
+It is similar to Doctor Who.
+
+It has the kind of storytelling I've been wanting in the Marloth game.
+
+# Cerebral
+
+The stories involve battles but the battles do not involve traditional weapons.
+
+Enemies can occupy the same room without the need to engage in combat, leaving them free to discussion.
+
+- Though some enemies are so powerful that the protagonists can not survive long in the same room with them.
+
+Entity power is not single dimensional.
+
+- In the show, an entity can be powerful enough to overpower any human within its reach, yet be incapable of opening a closed door.
+
+The pacing is very slow and methodical, yet it isn't boring.
+
+# Spatial
+
+Each storyline takes place in a distinct location.
+
+- Each location is partitioned into multiple interconnected rooms and passageways.
+- Each location is urban yet has lots of atmosphere.
+- Each location is dense and utilizes every square inch.
+
+Even though the storylines are cerebral, the spatial environment is continually pivotal to the plot.
+
+Similar to Dark Souls, the locations are effectively central characters.
+
+As each storyline progresses, the focus of the plot shifts from one or more sub-locations at a time.
+
+As each storyline progresses, the audience becomes familiar with each sub-location.
+
+- Sub-locations that initially appear to just be forgettable background eventually become immediately recognizable landmarks, associated with one or more key scenes and plot developments in the story.
+
+Sub-locations begin to develop their own personalities and themes.
+
+Much of this resembles multiplayer FPS maps, particularly class-based team FPS maps.
+
+- Each twist and turn of the map is carefully fine-tuned to cleanly support a wide variety of gameplay situations.
+- Players become deeply acquainted with the tactical implications of each contour of the map.
+
+# Traps
+
+A common element in the show are hidden traps.
+
+The existence of traps forces the protagonists to proceed carefully and deliberately.
+
+When a trap is sprung, the protagonists are not simply injured, but are placed in predicaments that they must escape, usually with some added cost that is either immediately paid or paid over time.
+
+- For example, in the first storyline, Steel freezes himself to rescue Sapphire from a trap, which leaves Steel debilitated for some time after the rescue.
+
+# Ordinary items with extraordinary properties
+
+- It makes due with minimal special effects, instead imbuing ordinary objects with extraordinary properties
+
+# Antagonists
+
+The primary enemy is time, which is a sentient and malicious force trying to enter our world and corrupt it.
+
+The premise doesn’t make any sense but is a lot of fun, especially in the first story.
+
+Enemies are abstract, yet still threatening and iconic.
+
+# Miscellaneous Mechanics
+
+- Implied fantasy rules
+- Nonsensical fantasy rules
+- Alien agents, knowledgeable of the world but not of it.  [[01KWN86X6NJZMP5ZESZTNDXY06]] toward humans.
+- Mixing mystic superstition with science fiction

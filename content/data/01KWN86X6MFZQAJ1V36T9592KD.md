@@ -1,0 +1,130 @@
+---
+title: Sorceress arc scoping
+alias: Sorceress arc scoping
+---
+# Sorceress arc scoping
+
+This page contains the rough ideation for [[01KWN86X6NJZMP5ZESZTNDXY5K]].
+
+# Alice - Madness Returns
+
+
+Maybe Nivana meets the Raven in the forest?
+
+# Of men and magic
+
+Nivana’s beef is with men, but the surface theme of the arc is magic.
+
+At first glance this seems like a disconnect, but they may work well as two layers.  In the same way that violence was used as a metaphor for sex in the first book, perhaps magic can somehow be used as a metaphor for gender-conflict.
+
+[[01KWN86X6NJZMP5ZESZTNDXY1J]].
+
+# Backing up
+
+I think I’m getting too fixated on gender conflict.  That isn’t the root issue here.
+
+The root problem is Nivana wants to live a life that is different than the one given her.  She isn’t submitted to God, and is striving to realize her own agenda.
+
+I’ve been trying to come up with all sorts of emotional vectors to accentuate these dynamics, but I don’t need them—they’ve just been getting in the way.  Nivana wants something and can’t get it, simple.
+
+So what does she want?
+
+Look at the Adelle storyline, what have you struggled the most with not letting her have?  Adventure.  It’s so much fun to have her and James going on adventures, but there is something off about that.
+
+Marloth has multiple settings, and here I have gotten too hung up on the Jane Austen setting for Nivana.  She may still start out in that setting, but where she wants to be is in the fantasy gamer side of Marloth.
+
+But Nivana wanting to go on adventures sounds too childish and romantic for Nivana.  Can the tone be shifted?  Something more grown-up?
+
+Maybe fighting evil?  Monster hunting?
+
+# Backing up even further
+
+While Nivana isn’t sentimental, she is passionate.  She cares deeply for things and doesn’t do anything half-way.  She’s obsessive and driven.
+
+And she’s very judgemental.  She may joke about morality but at heart she sees the world black-and-white.
+
+Nivana is a fixer.  She wants to fix things.
+
+What if she wants to fix things that no else sees as broken?
+
+# And back to magic
+
+What if Nivana can see the future?  See the damage magic causes her family?
+
+What if I shifted the initial political tone of the Nameless City, where magic was cool, and Nivana is uncool in campaigning against it?  She finds allies within the scientific community, who stand to gain the most from pushing out magic.
+
+She and her allies succeed in vilifying magic.
+
+Then the future still comes true, her family is damaged, and she unwittingly becomes associated with magic.  The negative press turns on her. 
+
+> 💡 When Nivana appeals, pointing to how she was the primary opponent of magic, people will say they don’t know or care about that, all they know are the prominent men who championed her cause and became the faces of the movement.
+
+> 💡 Lord Mediev warns his daughter to stop her campaigning and stay away from magic.  Don’t embrace it, don’t oppose it—avoid the subject altogether.  This may be me trying to have my cake and eat it too, and it may also be a great opportunity for fine nuances.
+
+# Nivana’s uncle
+
+This direction opens up new possibilities for Nivana’s uncle, the Merchant of Sorcerers.  Before there was no place for him in the first part, but now he could be present in the Nameless City as one of many peddlers of magic.
+
+Maybe magic is still somewhat controversial at the start.  Maybe it isn’t seen as evil but seen as lowly.  Maybe it could be seen as a novel diversion with no practical application.  Magic users aren’t seen as dangerous but as not having a *real* job.
+
+That way, Nivana’s uncle could both be present but [still be the black sheep of the Mediev family](./01KWN86X6MFZQAJ1V36T9592KA.md).
+
+When Nivana succeeds in vilifying magic, she is partially responsible for driving her uncle and his associates out of the Nameless City.
+
+He has every worldly reason to be bitter toward her.
+
+Yet Nivana was at least partially justified.  Behind the scenes, her uncle and his associates were using magic for evil.  It is organized crime.
+
+> 💡 Maybe there is a character who has been spending years trying to find hard evidence and expose the magicians, but they would use their connections and magic to undermine his attempts.  Then Mediev and her associates manage to expose the magicians out-of-nowhere using clever marketing and trumped up scandal.
+
+All of this adds new layers of irony to Nivana later working for her uncle, and far more context to make that relationship significant.  Not only would she be working for the man she temporarily ruined, but because of his lowlife status, he is one of the few people who will give her a job when she is likewise brought low.
+
+# After the storm
+
+All of this casts Part 2 in a fresh light.
+
+The idea of Nivana having nightmares of losing control and going on a magical power trip is gone.  Such fears are no longer on the table.  This story is no longer about immense and uncontrollable power.
+
+Gone is the option of relying on premonitions to pre-tell Nivana’s Part 2 story and leave Part 2 for other threads.  With a first part like what I have now, the audience would be begging to see the next stages in the Nivana arc in detail.
+
+Nivana is more sympathetic now.  She has made mistakes, and will make more mistakes, but her heart is in the right place and she has a rich combination of standing for righteousness and being the source and target of much injustice.
+
+> 💡 I need to be careful not to overdo the injustice.  My intuition is telling me this is one of those cases where it could easily overdue the melodrama, simply because there are so many angles I could milk drama from.
+
+# Impetus
+
+Nivana is never simply a survivor.  She is always a woman with a larger plan.
+
+What is her larger plan here?
+
+I don’t want it to be revenge.  I’m done even toying with elements of a revenge story.
+
+Nivana is a fixer.  She always wants to fix things, and her knee-jerk method of fixing things is to take control.
+
+If I go that direction here, how does she attempt to take control of her situation?
+
+Nivana needs to promptly form a strategy.  A multi-step plan that will solve all of her problems.
+
+And like most of Nivana’s plans, it has some amazing successes before ending horribly.
+
+# Nivana’s restoration plan
+
+So what is the plan?
+
+Unless I radically change some other premises, the first step would be working for her uncle.
+
+I’ve gone through several revisions of the motivation of why she works for her uncle.
+
+# Getting back to her plan
+
+Nivana’s decision to work for her uncle needs to be about more than just survival and making ends meet.  It needs some larger strategic value.
+
+What is that strategic value?
+
+What is her end game?
+
+# Foils
+
+- [[01KWN86X6NJZMP5ZESZTNDXY4Z]]
+- [[01KWN86X6NJZMP5ZESZTNDXXXM]]
+- [[01KWN86X6MFZQAJ1V36T959288]]

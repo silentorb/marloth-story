@@ -1,0 +1,13 @@
+---
+title: What to do about Nivana?
+alias: What to do about Nivana?
+date_created: September 7, 2023 8:23 PM
+status: Done
+---
+# What to do about Nivana?
+
+For many years, Nivana’s was the outstanding storyline of TWOLD, but so much of it’s foundation was unBiblical and has gradually disintegrated as I’ve found a better foundation.
+
+Now I’m not sure how much of that storyline to salvage, and whether I should just scrap it all and start fresh with how to integrate her as a supporting character.
+
+[[01KWN86X6NJZMP5ZESZTNDXY5K]]

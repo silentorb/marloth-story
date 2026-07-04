@@ -1,0 +1,32 @@
+---
+title: Minimize exceptional circumstances
+alias: Minimize exceptional circumstances
+modified_at: 2026-07-01T14:38:56.045Z
+created_at: 2026-07-01T14:36:54.475Z
+---
+I want to explore timeless, common situations.
+
+> What has been is what will be,
+> and what has been done is what will be done,
+> and there is nothing new under the sun.
+> Is there a thing of which it is said,
+> “See, this is new”?
+> It has been already
+> in the ages before us.
+> Ecclesiastes 1:9-10
+
+Occasionally it is useful to explore exceptional circumstances, but that should be carefully rationed.
+
+Cheap reliance on exceptional circumstances leads to [phantasy](./01KWN86X6NJZMP5ZESZTNDXXWX.md).
+
+# Justification for sin
+
+Exceptional circumstances quickly become an excuse for exceptional behavior.
+
+People use them to justify rule-breaking.
+
+While there is truth to the Spider-man adage of “With great power comes great responsibility”, it’s fictional context distorts the meaning of those words:
+
+> “Normally people need to live a certain way, but I have been cursed with super powers, so I have to live differently from everyone else in the world.”
+
+That mentality is dangerous.

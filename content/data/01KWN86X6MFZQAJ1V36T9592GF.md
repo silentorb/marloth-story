@@ -1,0 +1,15 @@
+---
+title: Millennial narcissism
+alias: Millennial narcissism
+---
+# Millennial narcissism
+
+Millennial culture has a tendency to exalt self-determined callings as though they were missions from God.
+
+Such callings can be used as an excuse to shirk [duty](./01KWN86X6MFZQAJ1V36T9592FN.md) and love.
+
+This is similar to the pharisees exalting man-made laws over God’s laws.
+
+> For God commanded, ‘Honor your father and your mother,’ and, ‘Whoever reviles father or mother must surely die.’ But you say, ‘If anyone tells his father or his mother, “What you would have gained from me is given to God,” he need not honor his father.’ So for the sake of your tradition you have made void the word of God. - Matthew 15:4-6
+
+> Millennial narcissism: Whoever you are and whatever you are passionate about, it is a calling from God and more important than anything anyone else is doing.
