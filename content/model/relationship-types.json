@@ -21,9 +21,12 @@
     },
     "member_of": {
       "perspectives": [
-        "member_of",
-        "members"
+        "members",
+        "member_of"
       ],
+      "traits": {
+        "set": true
+      },
       "perspectiveLabels": {
         "member_of": {
           "title": "Membership",
