@@ -1,31 +1,5 @@
 {
   "version": 1,
-  "relationshipRules": [
-    {
-      "id": "scene-features",
-      "sourceTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
-      "type": "includes",
-      "allowedTargetTypeIds": [
-        "01KWN86X6NJZMP5ZESZTNDXY7W"
-      ]
-    },
-    {
-      "id": "scene-inspirations",
-      "sourceTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
-      "type": "includes",
-      "allowedTargetTypeIds": [
-        "01KWN86X6NJZMP5ZESZTNDXXW0"
-      ]
-    },
-    {
-      "id": "feature-inspirations",
-      "sourceTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "type": "includes",
-      "allowedTargetTypeIds": [
-        "01KWN86X6NJZMP5ZESZTNDXXW0"
-      ]
-    }
-  ],
   "enums": {
     "priority": {
       "options": [

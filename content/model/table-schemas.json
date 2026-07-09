@@ -10,29 +10,25 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY3J",
-          "perspective": "children"
+          "relationshipType": "children_children"
         },
         {
           "key": "characters",
           "name": "👥 Characters",
           "type": "relation",
-          "targetTypeId": "01KWN86X6PZXQP43T36924KCTB",
-          "perspective": "characters"
+          "relationshipType": "groups_characters"
         },
         {
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY3J",
-          "perspective": "parents"
+          "relationshipType": "parents_children"
         },
         {
           "key": "enemies",
           "name": "Enemies",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY3J",
-          "perspective": "enemies"
+          "relationshipType": "enemies_children"
         },
         {
           "key": "type",
@@ -47,14 +43,12 @@
       ]
     },
     "01KWN86X6NJZMP5ZESZTNDXXYT": {
-      "membershipComposite": "ordered_member_of",
       "columns": [
         {
           "key": "parts_database",
           "name": "Parts database",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
-          "perspective": "parts_database"
+          "relationshipType": "products_parts_database"
         },
         {
           "key": "order",
@@ -70,31 +64,28 @@
           "key": "characters",
           "name": "👥 Characters",
           "type": "relation",
-          "targetTypeId": "01KWN86X6PZXQP43T36924KCTB",
-          "perspective": "characters"
+          "relationshipType": "products_characters"
         },
         {
           "key": "features",
           "name": "☑️ Features",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-          "perspective": "features"
+          "relationshipType": "products_features"
         },
         {
           "key": "solutions",
           "name": "🦄 Solutions",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-          "perspective": "solutions"
+          "relationshipType": "solutions_products"
         },
         {
           "key": "scenes",
           "name": "🌌 Scenes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
-          "perspective": "scenes"
+          "relationshipType": "scenes_product"
         }
-      ]
+      ],
+      "membershipComposite": "ordered_member_of"
     },
     "01KWN86X6NJZMP5ZESZTNDXY69": {
       "columns": [
@@ -111,8 +102,7 @@
           "key": "monsters",
           "name": "Monsters",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY3V",
-          "perspective": "monsters"
+          "relationshipType": "monsters_inspirations"
         },
         {
           "key": "plot_is_driven_by_mc_desire",
@@ -124,43 +114,37 @@
           "key": "pacing",
           "name": "Pacing",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYK",
-          "perspective": "pacing"
+          "relationshipType": "pacing_inspirations"
         },
         {
           "key": "traversal_reasons",
           "name": "Traversal reasons",
           "type": "relation",
-          "targetTypeId": "01KWN86X6PZXQP43T36924KCSH",
-          "perspective": "traversal_reasons"
+          "relationshipType": "traversal_reasons_inspirations"
         },
         {
           "key": "story_scale",
           "name": "Story scale",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXWN",
-          "perspective": "story_scale"
+          "relationshipType": "story_scale_inspirations"
         },
         {
           "key": "type",
           "name": "Type",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY1W",
-          "perspective": "prop_type"
+          "relationshipType": "prop_type_inspirations"
         },
         {
           "key": "traversal_types",
           "name": "Traversal types",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY1K",
-          "perspective": "traversal_types"
+          "relationshipType": "traversal_types_inspirations"
         },
         {
           "key": "features",
           "name": "Features",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-          "perspective": "features"
+          "relationshipType": "inspirations_features"
         }
       ]
     },
@@ -187,15 +171,13 @@
           "key": "blocked_by",
           "name": "Blocked by",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592A9",
-          "perspective": "blocked_by"
+          "relationshipType": "blocked_by_blocked_by"
         },
         {
           "key": "blocking",
           "name": "Blocking",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592A9",
-          "perspective": "blocking"
+          "relationshipType": "blocking_blocked_by"
         }
       ]
     },
@@ -205,8 +187,7 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-          "perspective": "children"
+          "relationshipType": "XXYZ_children_XXYZ"
         },
         {
           "key": "priority",
@@ -218,36 +199,31 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-          "perspective": "parents"
+          "relationshipType": "XXYZ_parents_XXYZ"
         },
         {
           "key": "features",
           "name": "Features",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-          "perspective": "features"
+          "relationshipType": "solutions_features"
         },
         {
           "key": "scenes",
           "name": "🌌 Scenes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
-          "perspective": "scenes"
+          "relationshipType": "solutions_scenes"
         },
         {
           "key": "products",
           "name": "Products",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYT",
-          "perspective": "products"
+          "relationshipType": "solutions_products"
         },
         {
           "key": "scenes_2",
           "name": "Scenes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
-          "perspective": "scenes"
+          "relationshipType": "solutions_scenes"
         }
       ]
     },
@@ -257,8 +233,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-          "perspective": "inspirations"
+          "relationshipType": "KCSH_inspirations_XXW0"
         },
         {
           "key": "notes",
@@ -273,8 +248,7 @@
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY4Q",
-          "perspective": "scenes"
+          "relationshipType": "scenes_parts_test"
         },
         {
           "key": "tags",
@@ -299,8 +273,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-          "perspective": "inspirations"
+          "relationshipType": "XXYK_inspirations_XXW0"
         }
       ]
     },
@@ -310,8 +283,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-          "perspective": "inspirations"
+          "relationshipType": "XY1K_inspirations_XXW0"
         }
       ]
     },
@@ -321,36 +293,31 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-          "perspective": "children"
+          "relationshipType": "XY7W_children_XY7W"
         },
         {
           "key": "products",
           "name": "Products",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYT",
-          "perspective": "products"
+          "relationshipType": "products_features"
         },
         {
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-          "perspective": "parents"
+          "relationshipType": "XY7W_parents_XY7W"
         },
         {
           "key": "conflicts",
           "name": "Conflicts",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-          "perspective": "conflicts"
+          "relationshipType": "conflicts_children"
         },
         {
           "key": "bible_passages",
           "name": "Bible passages",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592H3",
-          "perspective": "bible_passages"
+          "relationshipType": "features_bible_passages"
         },
         {
           "key": "priority",
@@ -362,15 +329,13 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-          "perspective": "inspirations"
+          "relationshipType": "inspirations_features"
         },
         {
           "key": "solutions",
           "name": "Solutions",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-          "perspective": "solutions"
+          "relationshipType": "solutions_features"
         },
         {
           "key": "tags",
@@ -404,8 +369,7 @@
           "key": "features",
           "name": "☑️ Features",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-          "perspective": "features"
+          "relationshipType": "features_bible_passages"
         },
         {
           "key": "verses",
@@ -436,8 +400,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-          "perspective": "inspirations"
+          "relationshipType": "story_scale_inspirations"
         }
       ]
     },
@@ -447,8 +410,7 @@
           "key": "products",
           "name": "Products",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYT",
-          "perspective": "products"
+          "relationshipType": "products_characters"
         },
         {
           "key": "variants",
@@ -459,15 +421,13 @@
           "key": "character_attributes",
           "name": "Character Attributes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592CD",
-          "perspective": "character_attributes"
+          "relationshipType": "characters_character_attributes"
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
-          "perspective": "scenes"
+          "relationshipType": "scenes_characters"
         },
         {
           "key": "personality",
@@ -478,8 +438,7 @@
           "key": "groups",
           "name": "Groups",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY3J",
-          "perspective": "groups"
+          "relationshipType": "groups_characters"
         }
       ]
     },
@@ -489,8 +448,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-          "perspective": "inspirations"
+          "relationshipType": "XY3V_inspirations_XXW0"
         },
         {
           "key": "status",
@@ -501,35 +459,30 @@
       ]
     },
     "01KWN86X6MFZQAJ1V36T9592EA": {
-      "membershipComposite": "ordered_member_of",
       "columns": [
         {
           "key": "part",
           "name": "Part",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
-          "perspective": "part"
+          "relationshipType": "scenes_part"
         },
         {
           "key": "characters",
           "name": "📁 Characters",
           "type": "relation",
-          "targetTypeId": "01KWN86X6PZXQP43T36924KCTB",
-          "perspective": "characters"
+          "relationshipType": "scenes_characters"
         },
         {
           "key": "solutions",
           "name": "Solutions",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-          "perspective": "solutions"
+          "relationshipType": "solutions_scenes"
         },
         {
           "key": "location",
           "name": "📁 Location",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7Z",
-          "perspective": "location"
+          "relationshipType": "scenes_location"
         },
         {
           "key": "order",
@@ -540,10 +493,10 @@
           "key": "product",
           "name": "Product",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYT",
-          "perspective": "product"
+          "relationshipType": "scenes_product"
         }
-      ]
+      ],
+      "membershipComposite": "ordered_member_of"
     },
     "01KWN86X6NJZMP5ZESZTNDXY7Z": {
       "columns": [
@@ -551,36 +504,31 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7Z",
-          "perspective": "parents"
+          "relationshipType": "parents_parents"
         },
         {
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7Z",
-          "perspective": "children"
+          "relationshipType": "XY7Z_children_XY7Z"
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
-          "perspective": "scenes"
+          "relationshipType": "scenes_location"
         },
         {
           "key": "neighbor",
           "name": "Neighbor",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7Z",
-          "perspective": "neighbor"
+          "relationshipType": "parents_neighbor"
         },
         {
           "key": "themes",
           "name": "Themes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY0N",
-          "perspective": "themes"
+          "relationshipType": "themes_includes"
         }
       ]
     },
@@ -609,15 +557,13 @@
           "key": "features_test",
           "name": "Features test",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY8C",
-          "perspective": "features_test"
+          "relationshipType": "scenes_features_test"
         },
         {
           "key": "parts_test",
           "name": "Parts test",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY3T",
-          "perspective": "parts_test"
+          "relationshipType": "scenes_parts_test"
         },
         {
           "key": "tags",
@@ -632,8 +578,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-          "perspective": "inspirations"
+          "relationshipType": "prop_type_inspirations"
         }
       ]
     },
@@ -666,23 +611,21 @@
       ]
     },
     "01KWN86X6NJZMP5ZESZTNDXXZQ": {
-      "membershipComposite": "ordered_member_of",
       "columns": [
         {
           "key": "products",
           "name": "📚 Products",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXXYT",
-          "perspective": "products"
+          "relationshipType": "XXZQ_products_XXYT"
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
-          "perspective": "scenes"
+          "relationshipType": "XXZQ_scenes_92EA"
         }
-      ]
+      ],
+      "membershipComposite": "ordered_member_of"
     },
     "01KWN86X6MFZQAJ1V36T9592CD": {
       "columns": [
@@ -690,8 +633,7 @@
           "key": "characters",
           "name": "👥 Characters",
           "type": "relation",
-          "targetTypeId": "01KWN86X6PZXQP43T36924KCTB",
-          "perspective": "characters"
+          "relationshipType": "characters_character_attributes"
         }
       ]
     },
@@ -701,8 +643,7 @@
           "key": "motivation",
           "name": "☑️ Motivation",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-          "perspective": "motivation"
+          "relationshipType": "motivation_includes"
         },
         {
           "key": "priority",
@@ -738,8 +679,7 @@
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "targetTypeId": "01KWN86X6NJZMP5ZESZTNDXY4Q",
-          "perspective": "scenes"
+          "relationshipType": "scenes_features_test"
         },
         {
           "key": "tags",

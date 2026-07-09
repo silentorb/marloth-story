@@ -1,11 +1,257 @@
 {
   "version": 1,
   "types": {
+    "92EA_includes_XXW0": {
+      "perspectives": [
+        "includes",
+        "includes"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592EA"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        }
+      }
+    },
+    "KCSH_inspirations_XXW0": {
+      "perspectives": [
+        "inspirations",
+        "traversal_reasons"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6PZXQP43T36924KCSH"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        }
+      }
+    },
+    "XXYK_inspirations_XXW0": {
+      "perspectives": [
+        "inspirations",
+        "pacing"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYK"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        }
+      }
+    },
+    "XXYZ_children_XXYZ": {
+      "perspectives": [
+        "children",
+        "children"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
+        }
+      }
+    },
+    "XXYZ_parents_XXYZ": {
+      "perspectives": [
+        "parents",
+        "children"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
+        }
+      }
+    },
+    "XXZQ_products_XXYT": {
+      "perspectives": [
+        "products",
+        "parts_database"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXZQ"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYT"
+        }
+      }
+    },
+    "XXZQ_scenes_92EA": {
+      "perspectives": [
+        "scenes",
+        "part"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXZQ"
+        },
+        "1": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592EA"
+        }
+      }
+    },
+    "XY1K_inspirations_XXW0": {
+      "perspectives": [
+        "inspirations",
+        "traversal_types"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY1K"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        }
+      }
+    },
+    "XY3V_inspirations_XXW0": {
+      "perspectives": [
+        "inspirations",
+        "monsters"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3V"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        }
+      }
+    },
+    "XY7W_children_XY7W": {
+      "perspectives": [
+        "children",
+        "children"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        }
+      }
+    },
+    "XY7W_parents_XY7W": {
+      "perspectives": [
+        "parents",
+        "children"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        }
+      }
+    },
+    "XY7Z_children_XY7Z": {
+      "perspectives": [
+        "children",
+        "parents"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
+        }
+      }
+    },
+    "blocked_by_blocked_by": {
+      "perspectives": [
+        "blocked_by",
+        "blocked_by"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592A9"
+        },
+        "1": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592A9"
+        }
+      }
+    },
     "blocking_blocked_by": {
       "perspectives": [
         "blocked_by",
         "blocking"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592A9"
+        },
+        "1": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592A9"
+        }
+      }
+    },
+    "characters_character_attributes": {
+      "perspectives": [
+        "character_attributes",
+        "characters"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6PZXQP43T36924KCTB"
+        },
+        "1": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592CD"
+        }
+      }
+    },
+    "children_children": {
+      "perspectives": [
+        "children",
+        "children"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
+        }
+      }
+    },
+    "conflicts_children": {
+      "perspectives": [
+        "conflicts",
+        "children"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        }
+      }
+    },
+    "enemies_children": {
+      "perspectives": [
+        "enemies",
+        "children"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
+        }
+      }
     },
     "enemies_enemies": {
       "perspectives": [
@@ -13,43 +259,124 @@
         "enemies"
       ]
     },
+    "features_bible_passages": {
+      "perspectives": [
+        "bible_passages",
+        "features"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        },
+        "1": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592H3"
+        }
+      }
+    },
+    "groups_characters": {
+      "perspectives": [
+        "characters",
+        "groups"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
+        },
+        "1": {
+          "typeId": "01KWN86X6PZXQP43T36924KCTB"
+        }
+      }
+    },
     "includes": {
       "perspectives": [
         "includes",
         "includes"
       ]
     },
+    "includes_features": {
+      "perspectives": [
+        "includes",
+        "features"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        }
+      }
+    },
+    "includes_includes": {
+      "perspectives": [
+        "includes",
+        "includes"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592EA"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        }
+      }
+    },
+    "inspirations_features": {
+      "perspectives": [
+        "features",
+        "inspirations"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        }
+      }
+    },
     "member_of": {
       "perspectives": [
         "members",
         "member_of"
       ],
-      "traits": ["set"],
       "perspectiveLabels": {
         "member_of": {
           "title": "Membership",
           "linkAdd": "Link type table"
         }
-      }
-    },
-    "ordered_member_of": {
-      "perspectives": [
-        "ordered_members",
-        "ordered_member_of"
-      ],
-      "traits": ["set", "ordered"],
-      "perspectiveLabels": {
-        "ordered_member_of": {
-          "title": "Ordered membership",
-          "linkAdd": "Link ordered type table"
-        }
-      }
+      },
+      "traits": [
+        "set"
+      ]
     },
     "monsters_inspirations": {
       "perspectives": [
         "inspirations",
         "monsters"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3V"
+        }
+      }
+    },
+    "motivation_includes": {
+      "perspectives": [
+        "motivation",
+        "includes"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592A8"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        }
+      }
     },
     "neighbor": {
       "perspectives": [
@@ -57,29 +384,133 @@
         "neighbor"
       ]
     },
+    "ordered_member_of": {
+      "perspectives": [
+        "ordered_members",
+        "ordered_member_of"
+      ],
+      "perspectiveLabels": {
+        "ordered_member_of": {
+          "title": "Ordered membership",
+          "linkAdd": "Link ordered type table"
+        }
+      },
+      "traits": [
+        "ordered",
+        "set"
+      ]
+    },
     "pacing_inspirations": {
       "perspectives": [
         "inspirations",
         "pacing"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYK"
+        }
+      }
     },
     "parents_children": {
       "perspectives": [
         "children",
         "parents"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
+        }
+      }
+    },
+    "parents_neighbor": {
+      "perspectives": [
+        "neighbor",
+        "parents"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
+        }
+      }
+    },
+    "parents_parents": {
+      "perspectives": [
+        "parents",
+        "parents"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
+        }
+      }
+    },
+    "products_characters": {
+      "perspectives": [
+        "characters",
+        "products"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYT"
+        },
+        "1": {
+          "typeId": "01KWN86X6PZXQP43T36924KCTB"
+        }
+      }
+    },
+    "products_features": {
+      "perspectives": [
+        "features",
+        "products"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYT"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        }
+      }
     },
     "products_parts_database": {
       "perspectives": [
         "products",
         "parts_database"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYT"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXZQ"
+        }
+      }
     },
     "prop_type_inspirations": {
       "perspectives": [
         "prop_type",
         "inspirations"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY1W"
+        }
+      }
     },
     "scenes_arcs": {
       "perspectives": [
@@ -87,47 +518,187 @@
         "arcs"
       ]
     },
+    "scenes_characters": {
+      "perspectives": [
+        "scenes",
+        "characters"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6PZXQP43T36924KCTB"
+        },
+        "1": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592EA"
+        }
+      }
+    },
     "scenes_features_test": {
       "perspectives": [
         "features_test",
         "scenes"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY4Q"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY8C"
+        }
+      }
+    },
+    "scenes_location": {
+      "perspectives": [
+        "location",
+        "scenes"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592EA"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
+        }
+      }
     },
     "scenes_part": {
       "perspectives": [
         "scenes",
         "part"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592EA"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXZQ"
+        }
+      }
     },
     "scenes_parts_test": {
       "perspectives": [
         "scenes",
         "parts_test"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3T"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY4Q"
+        }
+      }
     },
     "scenes_product": {
       "perspectives": [
         "scenes",
         "product"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYT"
+        },
+        "1": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592EA"
+        }
+      }
+    },
+    "solutions_features": {
+      "perspectives": [
+        "features",
+        "solutions"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        }
+      }
+    },
+    "solutions_products": {
+      "perspectives": [
+        "solutions",
+        "products"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYT"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
+        }
+      }
+    },
+    "solutions_scenes": {
+      "perspectives": [
+        "scenes",
+        "solutions"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
+        },
+        "1": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592EA"
+        }
+      }
     },
     "story_scale_inspirations": {
       "perspectives": [
         "story_scale",
         "inspirations"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXWN"
+        }
+      }
+    },
+    "themes_includes": {
+      "perspectives": [
+        "themes",
+        "includes"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY0N"
+        }
+      }
     },
     "traversal_reasons_inspirations": {
       "perspectives": [
         "inspirations",
         "traversal_reasons"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        },
+        "1": {
+          "typeId": "01KWN86X6PZXQP43T36924KCSH"
+        }
+      }
     },
     "traversal_types_inspirations": {
       "perspectives": [
         "inspirations",
         "traversal_types"
-      ]
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXY1K"
+        }
+      }
     }
   }
 }
