@@ -24,13 +24,24 @@
         "members",
         "member_of"
       ],
-      "traits": {
-        "set": true
-      },
+      "traits": ["set"],
       "perspectiveLabels": {
         "member_of": {
           "title": "Membership",
           "linkAdd": "Link type table"
+        }
+      }
+    },
+    "ordered_member_of": {
+      "perspectives": [
+        "ordered_members",
+        "ordered_member_of"
+      ],
+      "traits": ["set", "ordered"],
+      "perspectiveLabels": {
+        "ordered_member_of": {
+          "title": "Ordered membership",
+          "linkAdd": "Link ordered type table"
         }
       }
     },

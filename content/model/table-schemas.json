@@ -47,6 +47,7 @@
       ]
     },
     "01KWN86X6NJZMP5ZESZTNDXXYT": {
+      "membershipComposite": "ordered_member_of",
       "columns": [
         {
           "key": "parts_database",
@@ -500,6 +501,7 @@
       ]
     },
     "01KWN86X6MFZQAJ1V36T9592EA": {
+      "membershipComposite": "ordered_member_of",
       "columns": [
         {
           "key": "part",
@@ -664,6 +666,7 @@
       ]
     },
     "01KWN86X6NJZMP5ZESZTNDXXZQ": {
+      "membershipComposite": "ordered_member_of",
       "columns": [
         {
           "key": "products",
@@ -678,11 +681,6 @@
           "type": "relation",
           "targetTypeId": "01KWN86X6MFZQAJ1V36T9592EA",
           "perspective": "scenes"
-        },
-        {
-          "key": "number",
-          "name": "Number",
-          "type": "number"
         }
       ]
     },

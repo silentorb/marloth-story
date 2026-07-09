@@ -7,22 +7,26 @@
  */
 import { GraphDatabase } from "../packages/tome-db/src/graph";
 import { isTypeTableNode } from "../packages/tome-db/src/node-capabilities";
+import { ORDERED_MEMBER_OF_TYPE } from "../packages/tome-db/src/labels";
+import { maxOrderAtSet } from "../packages/tome-db/src/ordered-relationships";
+import { membershipCompositeForSet } from "../packages/tome-db/src/relationship-type-traits";
 import {
   expectedTypeDatabaseForPage,
   findMissingTypeMembershipRelationships,
   findSpuriousTypeMembershipRelationships,
   findTypeMembershipRelationship,
   findNodeScalarsOnTypedNodes,
-  IS_A_LABEL,
-  maxRowIndexForDatabase,
   mergeNodeScalarsOntoRelationshipProperties,
   scalarPropertiesFromNode,
   setNodeProperties,
   nodePropertiesWithoutScalars,
 } from "../packages/tome-db/src/type-membership-audit";
 import { coalescePriorityValue } from "../packages/tome-db/src/property-enums";
+import { resolve } from "node:path";
 
 const dryRun = process.argv.includes("--dry-run");
+const contentDir = resolve(import.meta.dir, "../content");
+process.env.TOME_CONTENT_PATH = contentDir;
 const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";
 const db = new GraphDatabase(dbPath);
 
@@ -42,15 +46,23 @@ for (const row of spuriousBefore) {
   }
 }
 
-const nextRowIndexByDatabase = new Map<string, number>();
-function allocateRowIndex(databaseId: string): number {
-  let next = nextRowIndexByDatabase.get(databaseId);
+const nextOrderByDatabase = new Map<string, number>();
+function allocateOrder(databaseId: string): number {
+  let next = nextOrderByDatabase.get(databaseId);
   if (next === undefined) {
-    next = maxRowIndexForDatabase(db, databaseId) + 1;
+    next = maxOrderAtSet(db, databaseId, contentDir) + 1;
   }
   const assigned = next;
-  nextRowIndexByDatabase.set(databaseId, next + 1);
+  nextOrderByDatabase.set(databaseId, next + 1);
   return assigned;
+}
+
+function membershipPropsForDatabase(databaseId: string): Record<string, unknown> {
+  const composite = membershipCompositeForSet(databaseId, contentDir);
+  if (composite === ORDERED_MEMBER_OF_TYPE) {
+    return { order: String(allocateOrder(databaseId)) };
+  }
+  return {};
 }
 
 let connectionsCreated = 0;
@@ -70,11 +82,9 @@ for (const node of db.listNodesForGraphExport()) {
   let connection = findTypeMembershipRelationship(db, node.id, expected.databaseId);
 
   if (!connection) {
+    const membershipType = membershipCompositeForSet(expected.databaseId, contentDir);
     const connectionProps = mergeNodeScalarsOntoRelationshipProperties(
-      {
-        view: "all",
-        row_index: allocateRowIndex(expected.databaseId),
-      },
+      membershipPropsForDatabase(expected.databaseId),
       nodeScalars,
     );
     if ("priority" in connectionProps) {
@@ -87,7 +97,7 @@ for (const node of db.listNodesForGraphExport()) {
         `[dry-run] create IS_A ${node.title} (${node.id}) -> ${expected.databaseTitle}: ${JSON.stringify(connectionProps)}`,
       );
     } else {
-      db.upsertRelationship(node.id, expected.databaseId, IS_A_LABEL, connectionProps);
+      db.upsertRelationship(node.id, expected.databaseId, membershipType, connectionProps);
       connection = findTypeMembershipRelationship(db, node.id, expected.databaseId);
     }
   } else if (Object.keys(nodeScalars).length > 0) {

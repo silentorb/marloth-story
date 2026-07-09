@@ -597,7 +597,7 @@
     },
     {
       "nodeId": "01KWN86X6MFZQAJ1V36T9592EA",
-      "relationshipType": "members",
+      "relationshipType": "ordered_members",
       "generator": "scenes-by-book"
     },
     {
