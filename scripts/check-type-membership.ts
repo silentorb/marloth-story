@@ -4,29 +4,30 @@
  * Usage: bun run scripts/check-type-membership.ts
  */
 import {
-  defaultDbPathForContent,
-  readEnv,
-  resolveContentPath,
-} from "../packages/tome-db/src/content/paths";
-import { openTomeWriteContext } from "../packages/tome-db/src/content/write-context";
-import {
   findMissingTypeMembershipRelationships,
   findNestedPageSpuriousTypeMembership,
   findSpuriousTypeMembershipRelationships,
   findNodeScalarsOnTypedNodes,
-} from "../packages/tome-db/src/type-membership-audit";
+  type GraphDatabase,
+} from "tome-db";
+import {
+  defaultDbPathForContent,
+  openContentGraph,
+  readEnv,
+  resolveContentPath,
+} from "tome-db/content";
 
 const contentDir = resolveContentPath();
 const defaultDbPath = defaultDbPathForContent(contentDir);
 const dbPath = readEnv("TOME_DB_PATH") ?? defaultDbPath;
 
-const ctx = openTomeWriteContext(contentDir, dbPath);
-const { db } = ctx;
+const ctx = openContentGraph(contentDir, dbPath);
+const cache = ctx.cache as GraphDatabase;
 
-const missing = findMissingTypeMembershipRelationships(db);
-const spurious = findSpuriousTypeMembershipRelationships(db);
-const nestedPageSpurious = findNestedPageSpuriousTypeMembership(db, contentDir);
-const nodeScalars = findNodeScalarsOnTypedNodes(db);
+const missing = findMissingTypeMembershipRelationships(cache);
+const spurious = findSpuriousTypeMembershipRelationships(cache);
+const nestedPageSpurious = findNestedPageSpuriousTypeMembership(cache, contentDir);
+const nodeScalars = findNodeScalarsOnTypedNodes(cache);
 
 if (nestedPageSpurious.length > 0) {
   console.error(`Nested-page spurious "member_of" connections (${nestedPageSpurious.length}):`);
@@ -66,7 +67,7 @@ if (nodeScalars.length > 0) {
   if (nodeScalars.length > 20) console.error(`  ... and ${nodeScalars.length - 20} more`);
 }
 
-db.close();
+cache.close();
 
 if (
   missing.length > 0 ||

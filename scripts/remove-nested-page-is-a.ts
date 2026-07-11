@@ -7,11 +7,12 @@
  */
 import {
   findNestedPageSpuriousTypeMembership,
-  openTomeWriteContext,
   syncAfterRelationshipsWrite,
+  type GraphDatabase,
 } from "tome-db";
 import {
   defaultDbPathForContent,
+  openContentGraph,
   resolveContentPath,
 } from "tome-db/content";
 
@@ -23,12 +24,13 @@ if (!apply && !process.argv.includes("--dry-run")) {
 }
 
 const contentDir = resolveContentPath();
-const ctx = openTomeWriteContext(contentDir, defaultDbPathForContent(contentDir));
-const spurious = findNestedPageSpuriousTypeMembership(ctx.db);
+const ctx = openContentGraph(contentDir, defaultDbPathForContent(contentDir));
+const cache = ctx.cache as GraphDatabase;
+const spurious = findNestedPageSpuriousTypeMembership(cache);
 
 if (spurious.length === 0) {
   console.log("No nested-page spurious IS_A edges found.");
-  ctx.db.close();
+  cache.close();
   process.exit(0);
 }
 
@@ -63,4 +65,4 @@ if (!dryRun) {
   console.log("\nWrote content/data/relationships.json — run: bun run content:sync");
 }
 
-ctx.db.close();
+cache.close();

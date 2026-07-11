@@ -3,7 +3,7 @@
  *
  * Usage: bun scripts/canonicalize-markdown-links.ts [--dry-run]
  */
-import { canonicalizeMarkdownBodyLinks } from "tome-db/markdown-links";
+import { canonicalizeMarkdownBodyLinks } from "tome-store-flatfile/markdown-links";
 import { ContentStore, bodyFromNode, resolveContentPath } from "tome-db/content";
 
 const dryRun = process.argv.includes("--dry-run");

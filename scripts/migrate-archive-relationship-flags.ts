@@ -9,7 +9,7 @@ import {
 } from "tome-db";
 import {
   defaultDbPathForContent,
-  openTomeWriteContext,
+  openContentGraph,
   resolveContentPath,
 } from "tome-db/content";
 
@@ -17,7 +17,7 @@ export function migrateArchiveRelationshipFlags(contentDir: string): {
   archiveMembers: number;
   relationshipsMarked: number;
 } {
-  const ctx = openTomeWriteContext(contentDir, defaultDbPathForContent(contentDir));
+  const ctx = openContentGraph(contentDir, defaultDbPathForContent(contentDir));
   const memberIds = listArchiveMemberIdsFromStore(ctx.store);
   let relationshipsMarked = 0;
 
@@ -26,7 +26,7 @@ export function migrateArchiveRelationshipFlags(contentDir: string): {
   }
 
   ctx.sync.syncRelationships();
-  ctx.db.close();
+  ctx.cache.close();
 
   return {
     archiveMembers: memberIds.length,

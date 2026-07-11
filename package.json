@@ -4,7 +4,7 @@
   "packageManager": "bun@1.3.13",
   "scripts": {
     "content:export": "bun scripts/export-graph-to-content.ts",
-    "content:sync": "bun -e \"import { openTomeWriteContext, resolveContentPath, defaultDbPathForContent } from 'tome-db/content'; const c=resolveContentPath(); const ctx=openTomeWriteContext(c, defaultDbPathForContent(c)); ctx.sync.fullRebuild(); ctx.db.close(); console.log('Synced', c);\"",
+    "content:sync": "bun -e \"import { openContentGraph, resolveContentPath, defaultDbPathForContent } from 'tome-db/content'; const c=resolveContentPath(); const ctx=openContentGraph(c, defaultDbPathForContent(c)); ctx.sync.fullRebuild(); ctx.cache.close(); console.log('Synced', c);\"",
     "validate:workspace": "bun scripts/validate-workspace.ts",
     "web:build:ci": "bash scripts/ci-build-static-site.sh"
   },
