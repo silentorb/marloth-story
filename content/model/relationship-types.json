@@ -147,20 +147,6 @@
         }
       }
     },
-    "includes_features": {
-      "perspectives": [
-        "includes",
-        "features"
-      ],
-      "endpoints": {
-        "0": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
-        },
-        "1": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
-        }
-      }
-    },
     "includes_includes": {
       "perspectives": [
         "includes",
