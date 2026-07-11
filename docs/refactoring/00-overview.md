@@ -12,7 +12,7 @@ This directory holds **session guides** for that migration. Each numbered doc is
 | --- | --- | --- | --- |
 | 1 | [01-workspace-json.md](./01-workspace-json.md) | — | `tome-db`, `tome-static-site` |
 | 2 | [02-editor-workspace-integration.md](./02-editor-workspace-integration.md) | 01 | `tome-editor` |
-| 3 | [03-ordered-associations-json.md](./03-ordered-associations-json.md) | 01 | `tome-db`, `tome-editor` |
+| 3 | [03-ordered-collections-json.md](./03-ordered-collections-json.md) | 01 | `tome-db`, `tome-editor` |
 | 4 | [04-dynamic-fields-and-audit.md](./04-dynamic-fields-and-audit.md) | 01 | `tome-db`, `scripts/` |
 | 5 | [05-legacy-compat-and-cleanup.md](./05-legacy-compat-and-cleanup.md) | 02–04 (incremental OK) | all packages, docs |
 
@@ -23,7 +23,7 @@ flowchart LR
   R[00-overview]
   S1[01-workspace-json]
   S2[02-editor-integration]
-  S3[03-ordered-associations]
+  S3[03-ordered-collections]
   S4[04-dynamic-fields-audit]
   S5[05-legacy-cleanup]
   R --> S1 --> S2
@@ -44,7 +44,7 @@ Domain-specific **data** already lives in the workspace model. Do not re-embed t
 | [`content/model/table-schemas.json`](../content/model/table-schemas.json) | Per–type-table column definitions |
 | [`content/model/views.json`](../content/model/views.json) | Table tab configs; Scenes DB references ordered-association provider `scenes-by-book` only |
 | [`content/model/dynamic-fields.json`](../content/model/dynamic-fields.json) | Computed column bindings and resolver params |
-| [`content/model/relationship-types.json`](../content/model/relationship-types.json) | Composite relationship type registry |
+| [`content/model/associations.json`](../content/model/associations.json) | Composite relationship type registry |
 
 ## Still hardcoded in packages (inventory)
 
@@ -74,7 +74,7 @@ Current Marloth values (for seeding `workspace.json` in session 01):
 
 | Concern | Current location | Target |
 | --- | --- | --- |
-| Ordered associations (`scenes-by-book`) | `packages/tome-db/src/ordered-associations.ts` (`SCENES_BY_BOOK`, `CONFIGS`) | `content/model/ordered-associations.json` |
+| Ordered associations (`scenes-by-book`) | `packages/tome-db/src/ordered-collections.ts` (`SCENES_BY_BOOK`, `CONFIGS`) | `content/model/ordered-collections.json` |
 | Dynamic resolver composite fallbacks | `packages/tome-db/src/dynamic-fields/resolvers/index.ts` | Params in `dynamic-fields.json` |
 | Type membership audit path rules | `packages/tome-db/src/type-membership-audit.ts` (`Marloth/` prefix) | `workspace.json` → `legacy.exportPathPrefix` |
 
@@ -110,7 +110,7 @@ Use this when the full refactor series is done:
 - [x] `content/model/workspace.json` exists and is loaded by `tome-db`
 - [x] No duplicate home/archive/anchor IDs in `tome-editor` source (only via workspace/API)
 - [x] Sidebar links come from workspace config, not hardcoded `sidebar-nav.ts` array
-- [x] `content/model/ordered-associations.json` drives ordered-association configs
+- [x] `content/model/ordered-collections.json` drives ordered-association configs
 - [x] Static site home reads from workspace config
 - [x] Dynamic resolvers use params only (no unparameterized composite type strings)
 - [x] Type membership audit uses configurable export path prefix

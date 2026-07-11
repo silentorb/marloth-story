@@ -10,7 +10,7 @@ import { join } from "node:path";
 
 const CONTENT_ROOT = join(import.meta.dir, "../content");
 const RELATIONSHIPS_PATH = join(CONTENT_ROOT, "data/relationships.json");
-const RELATIONSHIP_TYPES_PATH = join(CONTENT_ROOT, "model/relationship-types.json");
+const ASSOCIATIONS_PATH = join(CONTENT_ROOT, "model/associations.json");
 const WORKSPACE_PATH = join(CONTENT_ROOT, "model/workspace.json");
 const TABLE_SCHEMAS_PATH = join(CONTENT_ROOT, "model/table-schemas.json");
 const VIEWS_PATH = join(CONTENT_ROOT, "model/views.json");
@@ -91,10 +91,10 @@ function main(): void {
     }
   }
 
-  const typesFile = loadJson<{ version: number; types: Record<string, unknown> }>(
-    RELATIONSHIP_TYPES_PATH,
+  const typesFile = loadJson<{ version: number; associations: Record<string, unknown> }>(
+    ASSOCIATIONS_PATH,
   );
-  typesFile.types.is_a = {
+  typesFile.associations.is_a = {
     bidirectional: true,
     perspectives: ["is_a", "members"],
   };
@@ -138,7 +138,7 @@ function main(): void {
   if (dryRun) return;
 
   writeFileSync(RELATIONSHIPS_PATH, `${JSON.stringify(relFile, null, 2)}\n`);
-  writeFileSync(RELATIONSHIP_TYPES_PATH, `${JSON.stringify(typesFile, null, 2)}\n`);
+  writeFileSync(ASSOCIATIONS_PATH, `${JSON.stringify(typesFile, null, 2)}\n`);
   writeFileSync(VIEWS_PATH, `${JSON.stringify(viewsFile, null, 2)}\n`);
   console.log("Migration complete.");
 }

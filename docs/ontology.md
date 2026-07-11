@@ -119,7 +119,7 @@ Relationships express **meaning**, not just linkage. Imported relation propertie
 
 ### Relationship strength (future)
 
-Today, relationships are **boolean**: linked or not. The author intends **weighted** associations for many pairs—especially **feature ↔ inspiration**, where some inspirations strongly shape a feature and others only weakly apply. Weights are not implemented yet; when added they will be numeric relationship properties (e.g. `weight`) without changing the underlying ontology.
+Today, relationships are **boolean**: linked or not. The author intends **weighted relationships** for many pairs—especially **feature ↔ inspiration**, where some inspirations strongly shape a feature and others only weakly apply. Weights are not implemented yet; when added they will be numeric relationship properties (e.g. `weight`) without changing the underlying ontology.
 
 ## Dimensions
 

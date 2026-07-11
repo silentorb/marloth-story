@@ -10,25 +10,25 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "relationshipType": "children_children"
+          "association": "children_children"
         },
         {
           "key": "characters",
           "name": "👥 Characters",
           "type": "relation",
-          "relationshipType": "groups_characters"
+          "association": "groups_characters"
         },
         {
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "relationshipType": "parents_children"
+          "association": "parents_children"
         },
         {
           "key": "enemies",
           "name": "Enemies",
           "type": "relation",
-          "relationshipType": "enemies_children"
+          "association": "enemies_children"
         },
         {
           "key": "type",
@@ -48,7 +48,7 @@
           "key": "parts_database",
           "name": "Parts database",
           "type": "relation",
-          "relationshipType": "products_parts_database"
+          "association": "products_parts_database"
         },
         {
           "key": "order",
@@ -64,25 +64,25 @@
           "key": "characters",
           "name": "👥 Characters",
           "type": "relation",
-          "relationshipType": "products_characters"
+          "association": "products_characters"
         },
         {
           "key": "features",
           "name": "☑️ Features",
           "type": "relation",
-          "relationshipType": "products_features"
+          "association": "products_features"
         },
         {
           "key": "solutions",
           "name": "🦄 Solutions",
           "type": "relation",
-          "relationshipType": "solutions_products"
+          "association": "solutions_products"
         },
         {
           "key": "scenes",
           "name": "🌌 Scenes",
           "type": "relation",
-          "relationshipType": "scenes_product"
+          "association": "scenes_product"
         }
       ],
       "membershipComposite": "ordered_member_of"
@@ -102,7 +102,7 @@
           "key": "monsters",
           "name": "Monsters",
           "type": "relation",
-          "relationshipType": "monsters_inspirations"
+          "association": "monsters_inspirations"
         },
         {
           "key": "plot_is_driven_by_mc_desire",
@@ -114,37 +114,37 @@
           "key": "pacing",
           "name": "Pacing",
           "type": "relation",
-          "relationshipType": "pacing_inspirations"
+          "association": "pacing_inspirations"
         },
         {
           "key": "traversal_reasons",
           "name": "Traversal reasons",
           "type": "relation",
-          "relationshipType": "traversal_reasons_inspirations"
+          "association": "traversal_reasons_inspirations"
         },
         {
           "key": "story_scale",
           "name": "Story scale",
           "type": "relation",
-          "relationshipType": "story_scale_inspirations"
+          "association": "story_scale_inspirations"
         },
         {
           "key": "type",
           "name": "Type",
           "type": "relation",
-          "relationshipType": "prop_type_inspirations"
+          "association": "prop_type_inspirations"
         },
         {
           "key": "traversal_types",
           "name": "Traversal types",
           "type": "relation",
-          "relationshipType": "traversal_types_inspirations"
+          "association": "traversal_types_inspirations"
         },
         {
           "key": "features",
           "name": "Features",
           "type": "relation",
-          "relationshipType": "inspirations_features"
+          "association": "inspirations_features"
         }
       ]
     },
@@ -171,13 +171,13 @@
           "key": "blocked_by",
           "name": "Blocked by",
           "type": "relation",
-          "relationshipType": "blocked_by_blocked_by"
+          "association": "blocked_by_blocked_by"
         },
         {
           "key": "blocking",
           "name": "Blocking",
           "type": "relation",
-          "relationshipType": "blocking_blocked_by"
+          "association": "blocking_blocked_by"
         }
       ]
     },
@@ -187,7 +187,7 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "relationshipType": "solutions_children"
+          "association": "solutions_children"
         },
         {
           "key": "priority",
@@ -199,31 +199,31 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "relationshipType": "solutions_parents"
+          "association": "solutions_parents"
         },
         {
           "key": "features",
           "name": "Features",
           "type": "relation",
-          "relationshipType": "solutions_features"
+          "association": "solutions_features"
         },
         {
           "key": "scenes",
           "name": "🌌 Scenes",
           "type": "relation",
-          "relationshipType": "solutions_scenes"
+          "association": "solutions_scenes"
         },
         {
           "key": "products",
           "name": "Products",
           "type": "relation",
-          "relationshipType": "solutions_products"
+          "association": "solutions_products"
         },
         {
           "key": "scenes_2",
           "name": "Scenes",
           "type": "relation",
-          "relationshipType": "solutions_scenes"
+          "association": "solutions_scenes"
         }
       ]
     },
@@ -233,7 +233,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "traversal_reasons_inspirations"
+          "association": "traversal_reasons_inspirations"
         },
         {
           "key": "notes",
@@ -248,7 +248,7 @@
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "relationshipType": "scenes_parts_test"
+          "association": "scenes_parts_test"
         },
         {
           "key": "tags",
@@ -273,7 +273,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "pacing_inspirations"
+          "association": "pacing_inspirations"
         }
       ]
     },
@@ -283,7 +283,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "traversal_types_inspirations"
+          "association": "traversal_types_inspirations"
         }
       ]
     },
@@ -293,31 +293,31 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "relationshipType": "features_children"
+          "association": "features_children"
         },
         {
           "key": "products",
           "name": "Products",
           "type": "relation",
-          "relationshipType": "products_features"
+          "association": "products_features"
         },
         {
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "relationshipType": "features_parents"
+          "association": "features_parents"
         },
         {
           "key": "conflicts",
           "name": "Conflicts",
           "type": "relation",
-          "relationshipType": "conflicts_children"
+          "association": "conflicts_children"
         },
         {
           "key": "bible_passages",
           "name": "Bible passages",
           "type": "relation",
-          "relationshipType": "features_bible_passages"
+          "association": "features_bible_passages"
         },
         {
           "key": "priority",
@@ -329,13 +329,13 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "inspirations_features"
+          "association": "inspirations_features"
         },
         {
           "key": "solutions",
           "name": "Solutions",
           "type": "relation",
-          "relationshipType": "solutions_features"
+          "association": "solutions_features"
         },
         {
           "key": "tags",
@@ -369,7 +369,7 @@
           "key": "features",
           "name": "☑️ Features",
           "type": "relation",
-          "relationshipType": "features_bible_passages"
+          "association": "features_bible_passages"
         },
         {
           "key": "verses",
@@ -400,7 +400,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "story_scale_inspirations"
+          "association": "story_scale_inspirations"
         }
       ]
     },
@@ -410,7 +410,7 @@
           "key": "products",
           "name": "Products",
           "type": "relation",
-          "relationshipType": "products_characters"
+          "association": "products_characters"
         },
         {
           "key": "variants",
@@ -421,13 +421,13 @@
           "key": "character_attributes",
           "name": "Character Attributes",
           "type": "relation",
-          "relationshipType": "characters_character_attributes"
+          "association": "characters_character_attributes"
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "relationshipType": "scenes_characters"
+          "association": "scenes_characters"
         },
         {
           "key": "personality",
@@ -438,7 +438,7 @@
           "key": "groups",
           "name": "Groups",
           "type": "relation",
-          "relationshipType": "groups_characters"
+          "association": "groups_characters"
         }
       ]
     },
@@ -448,7 +448,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "monsters_inspirations"
+          "association": "monsters_inspirations"
         },
         {
           "key": "status",
@@ -464,25 +464,25 @@
           "key": "part",
           "name": "Part",
           "type": "relation",
-          "relationshipType": "scenes_part"
+          "association": "scenes_part"
         },
         {
           "key": "characters",
           "name": "📁 Characters",
           "type": "relation",
-          "relationshipType": "scenes_characters"
+          "association": "scenes_characters"
         },
         {
           "key": "solutions",
           "name": "Solutions",
           "type": "relation",
-          "relationshipType": "solutions_scenes"
+          "association": "solutions_scenes"
         },
         {
           "key": "location",
           "name": "📁 Location",
           "type": "relation",
-          "relationshipType": "scenes_location"
+          "association": "scenes_location"
         },
         {
           "key": "order",
@@ -493,7 +493,7 @@
           "key": "product",
           "name": "Product",
           "type": "relation",
-          "relationshipType": "scenes_product"
+          "association": "scenes_product"
         }
       ],
       "membershipComposite": "ordered_member_of"
@@ -504,31 +504,31 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "relationshipType": "parents_parents"
+          "association": "parents_parents"
         },
         {
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "relationshipType": "location_children"
+          "association": "location_children"
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "relationshipType": "scenes_location"
+          "association": "scenes_location"
         },
         {
           "key": "neighbor",
           "name": "Neighbor",
           "type": "relation",
-          "relationshipType": "parents_neighbor"
+          "association": "parents_neighbor"
         },
         {
           "key": "themes",
           "name": "Themes",
           "type": "relation",
-          "relationshipType": "themes_includes"
+          "association": "themes_includes"
         }
       ]
     },
@@ -557,13 +557,13 @@
           "key": "features_test",
           "name": "Features test",
           "type": "relation",
-          "relationshipType": "scenes_features_test"
+          "association": "scenes_features_test"
         },
         {
           "key": "parts_test",
           "name": "Parts test",
           "type": "relation",
-          "relationshipType": "scenes_parts_test"
+          "association": "scenes_parts_test"
         },
         {
           "key": "tags",
@@ -578,7 +578,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "prop_type_inspirations"
+          "association": "prop_type_inspirations"
         }
       ]
     },
@@ -616,13 +616,13 @@
           "key": "products",
           "name": "📚 Products",
           "type": "relation",
-          "relationshipType": "products_parts_database"
+          "association": "products_parts_database"
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "relationshipType": "scenes_part"
+          "association": "scenes_part"
         }
       ],
       "membershipComposite": "ordered_member_of"
@@ -633,7 +633,7 @@
           "key": "characters",
           "name": "👥 Characters",
           "type": "relation",
-          "relationshipType": "characters_character_attributes"
+          "association": "characters_character_attributes"
         }
       ]
     },
@@ -643,7 +643,7 @@
           "key": "motivation",
           "name": "☑️ Motivation",
           "type": "relation",
-          "relationshipType": "motivation_includes"
+          "association": "motivation_includes"
         },
         {
           "key": "priority",
@@ -679,7 +679,7 @@
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "relationshipType": "scenes_features_test"
+          "association": "scenes_features_test"
         },
         {
           "key": "tags",

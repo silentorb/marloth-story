@@ -159,7 +159,7 @@ Export from [`packages/tome-db/src/index.ts`](../../packages/tome-db/src/index.t
 ## Do not do in this session
 
 - `GET /api/workspace` or webview sidebar changes ([session 02](./02-editor-workspace-integration.md))
-- `ordered-associations.json` ([session 03](./03-ordered-associations-json.md))
+- `ordered-collections.json` ([session 03](./03-ordered-collections-json.md))
 - Renaming `MARLOTH_*` env vars ([session 05](./05-legacy-compat-and-cleanup.md))
 
 ## Done when

@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 /**
  * Consolidate v1 directed relationship pairs into v2 bidirectional records,
- * normalize types to lower snake_case, and emit relationship-types.json.
+ * normalize types to lower snake_case, and emit associations.json.
  *
  * Usage: bun scripts/consolidate-relationships.ts [--dry-run]
  */

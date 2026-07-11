@@ -32,7 +32,7 @@ const ORPHAN_FEATURES = [
 const dryRun = process.argv.includes("--dry-run");
 const contentRoot = resolve(import.meta.dir, "../content");
 const relationshipsPath = resolve(contentRoot, "data/relationships.json");
-const typesPath = resolve(contentRoot, "model/relationship-types.json");
+const typesPath = resolve(contentRoot, "model/associations.json");
 
 function membersOf(relationships: RelationshipEntry[], setId: string): Set<string> {
   const out = new Set<string>();
@@ -222,5 +222,5 @@ console.log(
 if (!dryRun) {
   writeFileSync(relationshipsPath, serializeRelationshipsFile(raw));
   writeFileSync(typesPath, serializeRelationshipTypesFile(typesFile));
-  console.log("Wrote relationships.json and relationship-types.json");
+  console.log("Wrote relationships.json and associations.json");
 }

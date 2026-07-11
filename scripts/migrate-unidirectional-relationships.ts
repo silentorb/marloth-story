@@ -3,7 +3,7 @@
  * Migrate all remaining unidirectional relationship records to bidirectional
  * composites (includes or named dual-perspective types), strip directedFrom
  * from all entries, and remove single-perspective type definitions from
- * relationship-types.json.
+ * associations.json.
  *
  * Resolution rules:
  *  1. scenes, scenes_2, themes, theme, motivation, bible_passages → includes

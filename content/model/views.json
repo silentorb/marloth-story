@@ -4,28 +4,28 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY3J",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYT",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "board-view",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY69",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Board view",
       "sorts": []
     },
     {
       "id": "weighted",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Weighted",
       "sorts": [
         {
@@ -62,7 +62,7 @@
     {
       "id": "name",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Name",
       "sorts": [
         {
@@ -88,7 +88,7 @@
     {
       "id": "traversal",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Traversal",
       "sorts": [
         {
@@ -114,7 +114,7 @@
     {
       "id": "mobile",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Mobile",
       "sorts": [
         {
@@ -140,7 +140,7 @@
     {
       "id": "images",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Images",
       "sorts": [],
       "properties": {
@@ -161,7 +161,7 @@
     {
       "id": "extended",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Extended",
       "sorts": [
         {
@@ -187,7 +187,7 @@
     {
       "id": "pacing",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Pacing",
       "sorts": [],
       "properties": {
@@ -208,7 +208,7 @@
     {
       "id": "desire",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Desire",
       "sorts": [],
       "properties": {
@@ -229,7 +229,7 @@
     {
       "id": "wonder",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Wonder",
       "sorts": [
         {
@@ -259,7 +259,7 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -275,7 +275,7 @@
     {
       "id": "primary-timeline",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Primary timeline",
       "sorts": [
         {
@@ -291,7 +291,7 @@
     {
       "id": "name",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Name",
       "sorts": [
         {
@@ -303,7 +303,7 @@
     {
       "id": "priority",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Priority",
       "sorts": [
         {
@@ -315,7 +315,7 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6PZXQP43T36924KCSH",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -327,14 +327,14 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY3T",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYK",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -346,14 +346,14 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY1K",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "name",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Name",
       "sorts": [
         {
@@ -378,7 +378,7 @@
     {
       "id": "prioritized",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Prioritized",
       "sorts": [
         {
@@ -407,7 +407,7 @@
     {
       "id": "inspirations",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Inspirations",
       "sorts": [
         {
@@ -436,7 +436,7 @@
     {
       "id": "harmony",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Harmony",
       "sorts": [
         {
@@ -465,14 +465,14 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592DE",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY49",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -484,28 +484,28 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592H3",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592HE",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXWN",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "all",
       "nodeId": "01KWN86X6PZXQP43T36924KCTB",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "All",
       "sorts": [
         {
@@ -526,7 +526,7 @@
     {
       "id": "drama",
       "nodeId": "01KWN86X6PZXQP43T36924KCTB",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Drama",
       "sorts": [
         {
@@ -547,7 +547,7 @@
     {
       "id": "frequency",
       "nodeId": "01KWN86X6PZXQP43T36924KCTB",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Frequency",
       "sorts": [
         {
@@ -574,7 +574,7 @@
     {
       "id": "applicable",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY3V",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Applicable",
       "sorts": [
         {
@@ -586,7 +586,7 @@
     {
       "id": "unapplicable",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY3V",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Unapplicable",
       "sorts": [
         {
@@ -597,13 +597,13 @@
     },
     {
       "nodeId": "01KWN86X6MFZQAJ1V36T9592EA",
-      "relationshipType": "ordered_members",
+      "perspective": "ordered_members",
       "generator": "scenes-by-book"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7Z",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -624,28 +624,28 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T95927Z",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "board-view",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY48",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Board View",
       "sorts": []
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY4Q",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY1W",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -657,14 +657,14 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592HY",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "twold",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "TWOLD",
       "sorts": [
         {
@@ -676,7 +676,7 @@
     {
       "id": "marloth",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Marloth",
       "sorts": [
         {
@@ -688,14 +688,14 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592CD",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A8",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -711,7 +711,7 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592DV",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -723,21 +723,21 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY8C",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY6M",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "Untitled",
       "sorts": []
     },
     {
       "id": "all",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY0N",
-      "relationshipType": "members",
+      "perspective": "members",
       "name": "All",
       "sorts": []
     }

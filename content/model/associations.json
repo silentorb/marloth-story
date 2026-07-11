@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "types": {
+  "associations": {
     "blocked_by_blocked_by": {
       "perspectives": [
         "blocked_by",

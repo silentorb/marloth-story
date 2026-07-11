@@ -32,7 +32,7 @@ function migrateV1ToV2(v1: V1File): ViewsFile {
   const views: ViewRecord[] = [];
 
   for (const [nodeId, nodeConfig] of Object.entries(v1.nodes)) {
-    for (const [relationshipType, section] of Object.entries(nodeConfig.sections)) {
+    for (const [perspective, section] of Object.entries(nodeConfig.sections)) {
       const properties =
         section.columnOrder && section.columnOrder.length > 0
           ? { columnOrder: [...section.columnOrder] }
@@ -41,7 +41,7 @@ function migrateV1ToV2(v1: V1File): ViewsFile {
       if (section.tabs.kind === "generated") {
         views.push({
           nodeId: nodeId.toLowerCase(),
-          relationshipType,
+          perspective,
           generator: section.tabs.provider,
         });
         continue;
@@ -51,7 +51,7 @@ function migrateV1ToV2(v1: V1File): ViewsFile {
         views.push({
           id: definition.id,
           nodeId: nodeId.toLowerCase(),
-          relationshipType,
+          perspective,
           name: definition.name,
           sorts: definition.sorts.map((sort) => ({
             column: sort.column,

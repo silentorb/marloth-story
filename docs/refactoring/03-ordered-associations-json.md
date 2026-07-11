@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Move the `scenes-by-book` ordered-association configuration from TypeScript into [`content/model/ordered-associations.json`](../../content/model/ordered-associations.json). Keep the **engine** generic; Marloth domain values live in config only.
+Move the `scenes-by-book` ordered-association configuration from TypeScript into [`content/model/ordered-collections.json`](../../content/model/ordered-collections.json). Keep the **engine** generic; Marloth domain values live in config only.
 
 ## Depends on
 
@@ -12,18 +12,18 @@ Move the `scenes-by-book` ordered-association configuration from TypeScript into
 
 Today:
 
-- Full config is hardcoded as `SCENES_BY_BOOK` in [`packages/tome-db/src/ordered-associations.ts`](../../packages/tome-db/src/ordered-associations.ts)
+- Full config is hardcoded as `SCENES_BY_BOOK` in [`packages/tome-db/src/ordered-collections.ts`](../../packages/tome-db/src/ordered-collections.ts)
 - [`content/model/views.json`](../../content/model/views.json) only references the provider id for Scenes DB (`204dba198…`):
 
 ```json
 "tabs": { "kind": "generated", "provider": "scenes-by-book" }
 ```
 
-See [`docs/features/ordered-associations.md`](../features/ordered-associations.md) for behavior requirements.
+See [`../tome/docs/features/ordered-collections.md`](../../../tome/docs/features/ordered-collections.md) for behavior requirements.
 
 ## Target schema (v1)
 
-Create `content/model/ordered-associations.json`:
+Create `content/model/ordered-collections.json`:
 
 ```json
 {
@@ -49,7 +49,7 @@ Create `content/model/ordered-associations.json`:
 
 ### `OrderedAssociationConfig` fields
 
-Must match the interface in `ordered-associations.ts`:
+Must match the interface in `ordered-collections.ts`:
 
 | Field | Description |
 | --- | --- |
@@ -70,19 +70,19 @@ Must match the interface in `ordered-associations.ts`:
 
 ### 1. New loader module
 
-`packages/tome-db/src/ordered-associations-config/` (or colocate with existing file):
+`packages/tome-db/src/ordered-collections-config/` (or colocate with existing file):
 
-- `ordered-associations-file.ts` — types, `ORDERED_ASSOCIATIONS_FILE_VERSION`, `parseOrderedAssociationsFile`
+- `ordered-collections-file.ts` — types, `ORDERED_ASSOCIATIONS_FILE_VERSION`, `parseOrderedAssociationsFile`
 - `load.ts` — `loadOrderedAssociationsFromContent`, `invalidateOrderedAssociationsCache`
 
 Paths in [`content/paths.ts`](../../packages/tome-db/src/content/paths.ts):
 
-- `ORDERED_ASSOCIATIONS_FILENAME = "ordered-associations.json"`
+- `ORDERED_ASSOCIATIONS_FILENAME = "ordered-collections.json"`
 - `orderedAssociationsFilePath(contentRoot)`
 
 ### 2. Wire engine
 
-In [`ordered-associations.ts`](../../packages/tome-db/src/ordered-associations.ts):
+In [`ordered-collections.ts`](../../packages/tome-db/src/ordered-collections.ts):
 
 - Remove `SCENES_BY_BOOK`, `CONFIGS`, and hardcoded `PRODUCTS_DATABASE_ID` if scope discovery no longer needs it
 - Replace with:
@@ -100,7 +100,7 @@ function loadConfigs(contentDir?: string): OrderedAssociationConfig[] {
 
 ### 3. Cache sync
 
-Add `ordered-associations.json` to `contentSnapshotMtime()` in [`content/sync.ts`](../../packages/tome-db/src/content/sync.ts) and invalidate cache on model file watch.
+Add `ordered-collections.json` to `contentSnapshotMtime()` in [`content/sync.ts`](../../packages/tome-db/src/content/sync.ts) and invalidate cache on model file watch.
 
 ### 4. UI genericization (same PR or immediate follow-up)
 
@@ -117,29 +117,29 @@ Backend interface `OrderedAssociationRow.sceneId` can remain for v1 to minimize 
 
 ### 5. Tests
 
-- [`ordered-associations.test.ts`](../../packages/tome-db/tests/ordered-associations.test.ts) — write JSON into fixture content dir
-- [`ordered-associations-api.test.ts`](../../packages/tome-editor/tests/api/ordered-associations-api.test.ts) — ensure fixture includes config file
-- Add `ordered-associations-file.test.ts` for parse validation
+- [`ordered-collections.test.ts`](../../packages/tome-db/tests/ordered-collections.test.ts) — write JSON into fixture content dir
+- [`ordered-collections-api.test.ts`](../../packages/tome-editor/tests/api/ordered-collections-api.test.ts) — ensure fixture includes config file
+- Add `ordered-collections-file.test.ts` for parse validation
 
 ### 6. Documentation
 
-Update [`docs/features/ordered-associations.md`](../features/ordered-associations.md):
+Update [`../../tome/docs/features/ordered-collections.md`](../../../tome/docs/features/ordered-collections.md):
 
-- Change “registered in code” → “defined in `content/model/ordered-associations.json`”
+- Change “registered in code” → “defined in `content/model/ordered-collections.json`”
 - Document file schema and link to this session guide
 
-Update [`docs/features/tome-db.md`](../features/tome-db.md) model table with `ordered-associations.json`.
+Update [`../../tome/docs/features/tome-db.md`](../../../tome/docs/features/tome-db.md) model table with `ordered-collections.json`.
 
 ## Done when
 
-- [ ] `content/model/ordered-associations.json` committed
-- [ ] No Marloth node ids in `ordered-associations.ts` (logic only — tests may use ids)
+- [ ] `content/model/ordered-collections.json` committed
+- [ ] No Marloth node ids in `ordered-collections.ts` (logic only — tests may use ids)
 - [ ] Scenes page still shows book tabs, part groups, drag-and-drop reorder
-- [ ] `POST /api/ordered-associations/scenes-by-book/move` tests pass
-- [ ] `bun run --filter tome-db test` and editor ordered-association tests pass
+- [ ] `POST /api/ordered-collections/scenes-by-book/move` tests pass
+- [ ] `bun run --filter tome-db test` and editor ordered-collection tests pass
 
 ## Adding a second config (future)
 
-1. Append entry to `ordered-associations.json`
+1. Append entry to `ordered-collections.json`
 2. Set `"provider": "<id>"` on the target database’s `views.json` Items tabs (`kind: "generated"`)
 3. No code changes required if composites and property names match the generic engine

@@ -78,8 +78,8 @@ Update [`graph-preferences.test.ts`](../../packages/tome-editor/tests/webview/gr
 ## Documentation pass
 
 1. **[`docs/features/tome-editor.md`](../features/tome-editor.md)** — workspace.json, `/api/workspace`, corrected home id, sidebar from config
-2. **[`docs/features/tome-db.md`](../features/tome-db.md)** — full model file list including `workspace.json`, `ordered-associations.json`; legacy compat subsection
-3. **[`docs/features/ordered-associations.md`](../features/ordered-associations.md)** — JSON config location (if session 03 done)
+2. **[`docs/features/tome-db.md`](../features/tome-db.md)** — full model file list including `workspace.json`, `ordered-collections.json`; legacy compat subsection
+3. **[`docs/features/ordered-collections.md`](../features/ordered-collections.md)** — JSON config location (if session 03 done)
 4. **[`docs/features/graph-explorer.md`](../features/graph-explorer.md)** — update localStorage key names if migrated to `tome.graph.*`
 5. **[00-overview.md](./00-overview.md)** — check off global completion checklist items
 
