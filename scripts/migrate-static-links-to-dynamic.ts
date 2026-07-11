@@ -8,7 +8,7 @@
 import {
   linkTextMatchesNodeTitle,
   migrateStaticLinksInBodies,
-} from "tome-store-flatfile/dynamic-node-links";
+} from "tome-flatfile/dynamic-node-links";
 import { ContentStore, bodyFromNode, resolveContentPath } from "tome-db/content";
 
 const dryRun = process.argv.includes("--dry-run");
