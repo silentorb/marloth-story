@@ -187,7 +187,7 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "relationshipType": "XXYZ_children_XXYZ"
+          "relationshipType": "solutions_children"
         },
         {
           "key": "priority",
@@ -199,7 +199,7 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "relationshipType": "XXYZ_parents_XXYZ"
+          "relationshipType": "solutions_parents"
         },
         {
           "key": "features",
@@ -233,7 +233,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "KCSH_inspirations_XXW0"
+          "relationshipType": "traversal_reasons_inspirations"
         },
         {
           "key": "notes",
@@ -273,7 +273,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "XXYK_inspirations_XXW0"
+          "relationshipType": "pacing_inspirations"
         }
       ]
     },
@@ -283,7 +283,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "XY1K_inspirations_XXW0"
+          "relationshipType": "traversal_types_inspirations"
         }
       ]
     },
@@ -293,7 +293,7 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "relationshipType": "XY7W_children_XY7W"
+          "relationshipType": "features_children"
         },
         {
           "key": "products",
@@ -305,7 +305,7 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "relationshipType": "XY7W_parents_XY7W"
+          "relationshipType": "features_parents"
         },
         {
           "key": "conflicts",
@@ -448,7 +448,7 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "relationshipType": "XY3V_inspirations_XXW0"
+          "relationshipType": "monsters_inspirations"
         },
         {
           "key": "status",
@@ -510,7 +510,7 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "relationshipType": "XY7Z_children_XY7Z"
+          "relationshipType": "location_children"
         },
         {
           "key": "scenes",
@@ -616,13 +616,13 @@
           "key": "products",
           "name": "📚 Products",
           "type": "relation",
-          "relationshipType": "XXZQ_products_XXYT"
+          "relationshipType": "products_parts_database"
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "relationshipType": "XXZQ_scenes_92EA"
+          "relationshipType": "scenes_part"
         }
       ],
       "membershipComposite": "ordered_member_of"
