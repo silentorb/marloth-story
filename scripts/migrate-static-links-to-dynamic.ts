@@ -5,8 +5,6 @@
  * Usage:
  *   bun scripts/migrate-static-links-to-dynamic.ts [--dry-run]
  */
-import { readdirSync } from "node:fs";
-import { join } from "node:path";
 import {
   linkTextMatchesNodeTitle,
   migrateStaticLinksInBodies,
@@ -31,7 +29,6 @@ function displayNamesFromProperties(properties: Record<string, unknown>): string
 
 const contentDir = resolveContentPath();
 const store = new ContentStore(contentDir);
-const dataDir = join(contentDir, "data");
 
 const nameCache = new Map<string, string[]>();
 
@@ -45,9 +42,7 @@ function namesForId(nodeId: string): string[] {
 }
 
 const entries: Array<{ id: string; body: string }> = [];
-for (const name of readdirSync(dataDir)) {
-  if (!name.endsWith(".md")) continue;
-  const id = name.slice(0, -3);
+for (const id of store.listNodeIds()) {
   const node = store.readNode(id);
   if (!node) continue;
   entries.push({ id, body: bodyFromNode(node) });

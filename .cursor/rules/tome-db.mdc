@@ -16,7 +16,7 @@ Read before making changes:
 - [`docs/features/tome-db.md`](../../docs/features/tome-db.md)
 - Root [`AGENTS.md`](../../AGENTS.md) — **Graph data workflow**
 
-**Default:** edit `content/data/` (`{id}.md`, `relationships.json`) and `content/model/` (`schema.json`, `views.json`, etc.) or use `ContentStore` / the editor API. **Do not** edit `data/tome.sqlite` (or legacy `data/marloth.sqlite`) directly or run `bun run notion:import` / `--clean` for routine work.
+**Default:** edit `content/data/` (`{shard}/{id}.md`, `relationships.json`) and `content/model/` (`schema.json`, `views.json`, etc.) or use `ContentStore` / the editor API. **Do not** edit `data/tome.sqlite` (or legacy `data/marloth.sqlite`) directly or run `bun run notion:import` / `--clean` for routine work.
 
 **Archival exports:** if data exists only in `./exports/`, mine the relevant files and upsert into `content/` — see [`docs/features/notion-import.md`](../../docs/features/notion-import.md) (legacy).
 

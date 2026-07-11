@@ -4,9 +4,9 @@
  *
  * Usage: bun run validate:workspace
  */
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { contentDataDir, resolveContentPath } from "tome-db/content";
+import { nodeFilePath, resolveContentPath } from "tome-db/content";
 import { parseWorkspaceFile } from "tome-db";
 
 const contentRoot = resolveContentPath();
@@ -23,12 +23,10 @@ const nodeIds = new Set<string>([
   ...workspace.quickLinks.map((link) => link.nodeId),
 ]);
 
-const dataDir = contentDataDir(contentRoot);
 const missing: string[] = [];
 
 for (const id of nodeIds) {
-  const path = resolve(dataDir, `${id}.md`);
-  if (!existsSync(path)) {
+  if (!existsSync(nodeFilePath(contentRoot, id))) {
     missing.push(id);
   }
 }
