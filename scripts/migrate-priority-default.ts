@@ -6,7 +6,8 @@
 import { GraphDatabase } from "../packages/tome-db/src/graph";
 import { resolveContentPath } from "../packages/tome-db/src/content/paths";
 import { hasTableSchemaEntry } from "../packages/tome-db/src/table-schemas/load";
-import { TYPE_MEMBERSHIP_LABELS } from "../packages/tome-db/src/labels";
+import { loadRelationshipTypesFromContent } from "../packages/tome-db/src/relationship-types/load";
+import { setTraitPerspectives } from "../packages/tome-db/src/relationship-type-traits";
 import { loadTableSchemaForDatabase } from "../packages/tome-db/src/database-column-defs";
 import { isUnsetPriority, PRIORITY_DEFAULT } from "../packages/tome-db/src/property-enums";
 
@@ -15,6 +16,7 @@ const dbPath = process.env.MARLOTH_DB_PATH ?? "data/marloth.sqlite";
 const db = new GraphDatabase(dbPath);
 
 const contentDir = resolveContentPath();
+const membershipLabels = setTraitPerspectives(loadRelationshipTypesFromContent(contentDir));
 const databaseIdsWithPriority = new Set<string>();
 for (const n of db.listNodesForGraphExport()) {
   if (!hasTableSchemaEntry(contentDir, n.id)) continue;
@@ -26,7 +28,7 @@ for (const n of db.listNodesForGraphExport()) {
 
 let updated = 0;
 for (const databaseId of databaseIdsWithPriority) {
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
+  for (const label of membershipLabels) {
     for (const connection of db.listRelationshipsToTarget(databaseId, label)) {
       if (!isUnsetPriority(connection.properties.priority)) continue;
       updated += 1;

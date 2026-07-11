@@ -1,5 +1,9 @@
 import { resolve } from "node:path";
-import { GraphDatabase, TYPE_MEMBERSHIP_LABELS } from "tome-db";
+import {
+  GraphDatabase,
+  loadRelationshipTypesFromContent,
+  setTraitPerspectives,
+} from "tome-db";
 
 const DEFAULT_DB = resolve(import.meta.dir, "../data/marloth.sqlite");
 
@@ -22,8 +26,10 @@ function hasWonderlandTag(properties: Record<string, unknown>): boolean {
 export function migrateThemeEdges(db: GraphDatabase): { created: number; scanned: number } {
   let created = 0;
   let scanned = 0;
+  const contentDir = resolve(import.meta.dir, "../content");
+  const membershipLabels = setTraitPerspectives(loadRelationshipTypesFromContent(contentDir));
 
-  for (const label of TYPE_MEMBERSHIP_LABELS) {
+  for (const label of membershipLabels) {
     for (const connection of db.listRelationshipsToTarget(FEATURES_DB, label)) {
       scanned++;
       if (!hasWonderlandTag(connection.properties)) continue;

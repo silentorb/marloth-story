@@ -7,7 +7,7 @@
  *   bun scripts/seed-select-enums.ts [--dry-run]
  */
 import { readFileSync, writeFileSync } from "node:fs";
-import { IS_A_TYPE } from "../packages/tome-db/src/labels";
+import { MEMBER_OF_TYPE } from "../packages/tome-db/src/labels";
 import {
   parseTableSchemasFile,
   serializeTableSchemasFile,
@@ -41,7 +41,7 @@ function isScalarSelectColumn(col: TableColumnDef): col is TableScalarColumn {
 }
 
 function membershipTypeTableId(entry: RelationshipEntry): string | null {
-  if (entry.type !== IS_A_TYPE || entry.archived) return null;
+  if (entry.type !== MEMBER_OF_TYPE || entry.archived) return null;
   const from = entry.directedFrom;
   if (!from) return null;
   if (from === entry.a) return entry.b;
