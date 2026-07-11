@@ -7,7 +7,6 @@
  */
 import { GraphDatabase } from "../packages/tome-db/src/graph";
 import { isTypeTableNode } from "../packages/tome-db/src/node-capabilities";
-import { ORDERED_MEMBER_OF_TYPE } from "../packages/tome-db/src/labels";
 import { maxOrderAtSet } from "../packages/tome-db/src/ordered-relationships";
 import { membershipCompositeForSet } from "../packages/tome-db/src/relationship-type-traits";
 import {
@@ -59,7 +58,7 @@ function allocateOrder(databaseId: string): number {
 
 function membershipPropsForDatabase(databaseId: string): Record<string, unknown> {
   const composite = membershipCompositeForSet(databaseId, contentDir);
-  if (composite === ORDERED_MEMBER_OF_TYPE) {
+  if (composite === "ordered_member_of") {
     return { order: String(allocateOrder(databaseId)) };
   }
   return {};

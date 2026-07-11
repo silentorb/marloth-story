@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Remove legacy via_database relationship properties; scoping uses row member_of membership.
+ * Remove legacy via_database relationship properties; scoping uses row "member_of" membership.
  *
  * Usage:
  *   bun scripts/migrate-remove-via-database.ts --audit
@@ -17,8 +17,6 @@ import {
   type RelationshipEntry,
   serializeRelationshipsFile,
 } from "../packages/tome-db/src/content/relationships-file";
-import { MEMBER_OF_TYPE } from "../packages/tome-db/src/labels";
-
 const contentRoot = resolveContentPath(resolve(import.meta.dir, ".."));
 const relPath = relationshipsFilePath(contentRoot);
 const auditOnly = process.argv.includes("--audit");
@@ -32,7 +30,7 @@ const relFile = JSON.parse(readFileSync(relPath, "utf-8")) as {
 function isATargetsByNode(): Map<string, Set<string>> {
   const byNode = new Map<string, Set<string>>();
   for (const entry of relFile.relationships) {
-    if (entry.type !== MEMBER_OF_TYPE) continue;
+    if (entry.type !== "member_of") continue;
     const source = entry.directedFrom ?? entry.a;
     const target = entry.directedFrom === entry.a ? entry.b : entry.a;
     const set = byNode.get(source) ?? new Set<string>();

@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 /**
- * Migrate set membership slug is_a → member_of, views sections.items → sections.members,
- * and ordered-associations.json membershipEdgeType is_a → member_of.
+ * Migrate set membership slug is_a → "member_of", views sections.items → sections.members,
+ * and ordered-associations.json membershipEdgeType is_a → "member_of".
  *
  * Usage: bun scripts/migrate-is-a-to-member-of.ts [--dry-run]
  */
@@ -109,7 +109,7 @@ function main(): void {
   console.log(`Relationships is_a → member_of: ${typeRenamed}`);
   console.log(`views.json sections.items → members: ${viewsSectionsRenamed} nodes`);
   console.log(`ordered-associations.json membershipEdgeType: ${orderedAssociationsRenamed} configs`);
-  console.log(`relationship-types.json: member_of registered`);
+  console.log(`relationship-types.json: "member_of" registered`);
 
   if (dryRun) {
     console.log("Dry run — no files written.");

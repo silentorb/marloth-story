@@ -1,9 +1,9 @@
 #!/usr/bin/env bun
 /**
  * One-shot migration: ordered membership refactor.
- * - Scenes, Parts, Products: member_of → ordered_member_of; strip row_index; Parts number → order
- * - Pacing types: strip row_index and order from member_of
- * - All other type tables: strip row_index from member_of
+ * - Scenes, Parts, Products: "member_of" → "ordered_member_of"; strip row_index; Parts number → order
+ * - Pacing types: strip row_index and order from "member_of"
+ * - All other type tables: strip row_index from "member_of"
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -73,4 +73,4 @@ for (const entry of raw.relationships) {
 }
 
 writeFileSync(relationshipsPath, `${JSON.stringify(raw, null, 2)}\n`);
-console.log(`Migrated ${converted} edges to ordered_member_of; stripped row_index/order from ${stripped} member_of edges.`);
+console.log(`Migrated ${converted} edges to "ordered_member_of"; stripped row_index/order from ${stripped} "member_of" edges.`);
