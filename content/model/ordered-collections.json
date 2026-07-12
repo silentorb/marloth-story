@@ -4,13 +4,18 @@
     {
       "id": "scenes-by-book",
       "typeDatabaseId": "01KWN86X6MFZQAJ1V36T9592EA",
-      "scopeCompositeType": "scenes_product",
-      "groupCompositeType": "scenes_part",
-      "partProductCompositeType": "products_parts_database",
+      "scopeCompositeType": "01KXBNPNJDENZ9BXN5BYZ7JKQD",
+      "groupCompositeType": "01KXBNPNJDENZ9BXN5BYZ7JKQB",
+      "partProductCompositeType": "01KXBNPNJDENZ9BXN5BYZ7JKQ5",
       "groupTypeDatabaseId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
       "unassignedGroupTitle": "Unassigned",
       "columnViewName": "TWOLD Active",
-      "excludedColumnKeys": ["order", "product", "part", "status"]
+      "excludedColumnKeys": [
+        "order",
+        "product",
+        "part",
+        "status"
+      ]
     }
   ]
 }

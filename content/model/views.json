@@ -11,7 +11,7 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYT",
-      "perspective": "members",
+      "perspective": "ordered_members",
       "name": "Untitled",
       "sorts": []
     },
@@ -666,7 +666,7 @@
     {
       "id": "twold",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
-      "perspective": "members",
+      "perspective": "ordered_members",
       "name": "TWOLD",
       "sorts": [
         {
@@ -678,7 +678,7 @@
     {
       "id": "marloth",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
-      "perspective": "members",
+      "perspective": "ordered_members",
       "name": "Marloth",
       "sorts": [
         {

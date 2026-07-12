@@ -1,7 +1,7 @@
 {
   "version": 1,
   "associations": {
-    "blocked_by_blocked_by": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPC": {
       "perspectives": [
         "blocked_by",
         "blocked_by"
@@ -15,7 +15,7 @@
         }
       }
     },
-    "blocking_blocked_by": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPD": {
       "perspectives": [
         "blocked_by",
         "blocking"
@@ -29,7 +29,7 @@
         }
       }
     },
-    "characters_character_attributes": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPE": {
       "perspectives": [
         "character_attributes",
         "characters"
@@ -43,7 +43,7 @@
         }
       }
     },
-    "children_children": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPF": {
       "perspectives": [
         "children",
         "children"
@@ -57,7 +57,7 @@
         }
       }
     },
-    "conflicts_children": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPG": {
       "perspectives": [
         "conflicts",
         "children"
@@ -71,7 +71,7 @@
         }
       }
     },
-    "enemies_children": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPH": {
       "perspectives": [
         "enemies",
         "children"
@@ -85,13 +85,13 @@
         }
       }
     },
-    "enemies_enemies": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPJ": {
       "perspectives": [
         "enemies",
         "enemies"
       ]
     },
-    "features_bible_passages": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPK": {
       "perspectives": [
         "bible_passages",
         "features"
@@ -105,7 +105,7 @@
         }
       }
     },
-    "features_children": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPM": {
       "perspectives": [
         "children",
         "children"
@@ -119,7 +119,7 @@
         }
       }
     },
-    "features_parents": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPN": {
       "perspectives": [
         "parents",
         "children"
@@ -133,7 +133,7 @@
         }
       }
     },
-    "groups_characters": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPP": {
       "perspectives": [
         "characters",
         "groups"
@@ -147,7 +147,7 @@
         }
       }
     },
-    "includes_includes": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPQ": {
       "perspectives": [
         "includes",
         "includes"
@@ -161,7 +161,7 @@
         }
       }
     },
-    "inspirations_features": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPR": {
       "perspectives": [
         "features",
         "inspirations"
@@ -175,7 +175,7 @@
         }
       }
     },
-    "location_children": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPS": {
       "perspectives": [
         "children",
         "parents"
@@ -189,7 +189,7 @@
         }
       }
     },
-    "member_of": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPT": {
       "perspectives": [
         "members",
         "member_of"
@@ -207,7 +207,7 @@
         "set"
       ]
     },
-    "monsters_inspirations": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPV": {
       "perspectives": [
         "inspirations",
         "monsters"
@@ -221,7 +221,7 @@
         }
       }
     },
-    "motivation_includes": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPW": {
       "perspectives": [
         "motivation",
         "includes"
@@ -235,13 +235,13 @@
         }
       }
     },
-    "neighbor": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPX": {
       "perspectives": [
         "neighbor",
         "neighbor"
       ]
     },
-    "ordered_member_of": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPY": {
       "perspectives": [
         "ordered_members",
         "ordered_member_of"
@@ -260,7 +260,7 @@
         "set"
       ]
     },
-    "pacing_inspirations": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKPZ": {
       "perspectives": [
         "inspirations",
         "pacing"
@@ -274,7 +274,7 @@
         }
       }
     },
-    "parents_children": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ0": {
       "perspectives": [
         "children",
         "parents"
@@ -288,7 +288,7 @@
         }
       }
     },
-    "parents_neighbor": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ1": {
       "perspectives": [
         "neighbor",
         "parents"
@@ -302,7 +302,7 @@
         }
       }
     },
-    "parents_parents": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ2": {
       "perspectives": [
         "parents",
         "parents"
@@ -316,7 +316,7 @@
         }
       }
     },
-    "products_characters": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ3": {
       "perspectives": [
         "characters",
         "products"
@@ -330,7 +330,7 @@
         }
       }
     },
-    "products_features": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ4": {
       "perspectives": [
         "features",
         "products"
@@ -344,7 +344,7 @@
         }
       }
     },
-    "products_parts_database": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ5": {
       "perspectives": [
         "products",
         "parts_database"
@@ -358,7 +358,7 @@
         }
       }
     },
-    "prop_type_inspirations": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ6": {
       "perspectives": [
         "prop_type",
         "inspirations"
@@ -372,13 +372,13 @@
         }
       }
     },
-    "scenes_arcs": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ7": {
       "perspectives": [
         "scenes",
         "arcs"
       ]
     },
-    "scenes_characters": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ8": {
       "perspectives": [
         "scenes",
         "characters"
@@ -392,7 +392,7 @@
         }
       }
     },
-    "scenes_features_test": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQ9": {
       "perspectives": [
         "features_test",
         "scenes"
@@ -406,7 +406,7 @@
         }
       }
     },
-    "scenes_location": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQA": {
       "perspectives": [
         "location",
         "scenes"
@@ -420,7 +420,7 @@
         }
       }
     },
-    "scenes_part": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQB": {
       "perspectives": [
         "scenes",
         "part"
@@ -434,7 +434,7 @@
         }
       }
     },
-    "scenes_parts_test": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQC": {
       "perspectives": [
         "scenes",
         "parts_test"
@@ -448,7 +448,7 @@
         }
       }
     },
-    "scenes_product": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQD": {
       "perspectives": [
         "scenes",
         "product"
@@ -462,7 +462,7 @@
         }
       }
     },
-    "solutions_bible_passages": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQE": {
       "perspectives": [
         "bible_passages",
         "solutions"
@@ -476,7 +476,7 @@
         }
       }
     },
-    "solutions_children": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQF": {
       "perspectives": [
         "children",
         "children"
@@ -490,7 +490,7 @@
         }
       }
     },
-    "solutions_features": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQG": {
       "perspectives": [
         "features",
         "solutions"
@@ -504,7 +504,7 @@
         }
       }
     },
-    "solutions_inspirations": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQH": {
       "perspectives": [
         "inspirations",
         "solutions"
@@ -518,7 +518,7 @@
         }
       }
     },
-    "solutions_parents": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQJ": {
       "perspectives": [
         "parents",
         "children"
@@ -532,7 +532,7 @@
         }
       }
     },
-    "solutions_products": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQK": {
       "perspectives": [
         "solutions",
         "products"
@@ -546,7 +546,7 @@
         }
       }
     },
-    "solutions_scenes": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQM": {
       "perspectives": [
         "scenes",
         "solutions"
@@ -560,7 +560,7 @@
         }
       }
     },
-    "story_scale_inspirations": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQN": {
       "perspectives": [
         "story_scale",
         "inspirations"
@@ -574,7 +574,7 @@
         }
       }
     },
-    "themes_includes": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQP": {
       "perspectives": [
         "themes",
         "includes"
@@ -588,7 +588,7 @@
         }
       }
     },
-    "traversal_reasons_inspirations": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQQ": {
       "perspectives": [
         "inspirations",
         "traversal_reasons"
@@ -602,7 +602,7 @@
         }
       }
     },
-    "traversal_types_inspirations": {
+    "01KXBNPNJDENZ9BXN5BYZ7JKQR": {
       "perspectives": [
         "inspirations",
         "traversal_types"
