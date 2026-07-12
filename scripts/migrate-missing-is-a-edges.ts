@@ -19,7 +19,7 @@ import {
   scalarPropertiesFromNode,
   setNodeProperties,
   nodePropertiesWithoutScalars,
-} from "../packages/tome-db/src/type-membership-audit";
+} from "./lib/type-membership-audit";
 import { coalescePriorityValue } from "../packages/tome-db/src/property-enums";
 import { resolve } from "node:path";
 

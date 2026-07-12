@@ -76,7 +76,7 @@ Current Marloth values (for seeding `workspace.json` in session 01):
 | --- | --- | --- |
 | Ordered associations (`scenes-by-book`) | `packages/tome-db/src/ordered-collections.ts` (`SCENES_BY_BOOK`, `CONFIGS`) | `content/model/ordered-collections.json` |
 | Dynamic resolver composite fallbacks | `packages/tome-db/src/dynamic-fields/resolvers/index.ts` | Params in `dynamic-fields.json` |
-| Type membership audit path rules | `packages/tome-db/src/type-membership-audit.ts` (`Marloth/` prefix) | `workspace.json` → `legacy.exportPathPrefix` |
+| Type membership audit path rules | `scripts/lib/type-membership-audit.ts` (`Marloth/` prefix) | `workspace.json` → `legacy.exportPathPrefix` |
 
 ### Tier 3 — legacy compatibility (session 05)
 

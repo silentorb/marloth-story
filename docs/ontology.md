@@ -104,7 +104,7 @@ Relationships express **meaning**, not just linkage. Imported relation propertie
 
 | Relationship | Typical meaning | Example |
 | --- | --- | --- |
-| **MEMBER_OF** | Member belongs to a set (type table, Archive hub, future collections); scalars on edge | `member_of` storage with `members` inverse perspective — see [set-membership.md](../../tome/docs/features/set-membership.md) |
+| **MEMBER_OF** | Member belongs to a set (type table, Archive hub, future collections); scalars on edge | Marloth example: `member_of` storage with `members` inverse — tooling: [sets.md](../../tome/docs/features/sets.md) |
 | **INCLUDES** | Symmetric cross-entity association (scene↔character, inspiration↔feature, etc.); which column you see depends on the current row and target database | Scene ↔ character in cast |
 | **INSPIRATIONS** | *(legacy composite on taxonomy rows)* B references external work A | Monster type ↔ inspiration |
 | **FEATURES** | *(legacy perspective; storage is often `includes`)* B engages design feature A | Scene uses *Desperation* |

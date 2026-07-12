@@ -14,7 +14,7 @@
         },
         {
           "key": "characters",
-          "name": "👥 Characters",
+          "name": "\ud83d\udc65 Characters",
           "type": "relation",
           "association": "groups_characters"
         },
@@ -62,30 +62,29 @@
         },
         {
           "key": "characters",
-          "name": "👥 Characters",
+          "name": "\ud83d\udc65 Characters",
           "type": "relation",
           "association": "products_characters"
         },
         {
           "key": "features",
-          "name": "☑️ Features",
+          "name": "\u2611\ufe0f Features",
           "type": "relation",
           "association": "products_features"
         },
         {
           "key": "solutions",
-          "name": "🦄 Solutions",
+          "name": "\ud83e\udd84 Solutions",
           "type": "relation",
           "association": "solutions_products"
         },
         {
           "key": "scenes",
-          "name": "🌌 Scenes",
+          "name": "\ud83c\udf0c Scenes",
           "type": "relation",
           "association": "scenes_product"
         }
-      ],
-      "membershipComposite": "ordered_member_of"
+      ]
     },
     "01KWN86X6NJZMP5ZESZTNDXY69": {
       "columns": [
@@ -209,7 +208,7 @@
         },
         {
           "key": "scenes",
-          "name": "🌌 Scenes",
+          "name": "\ud83c\udf0c Scenes",
           "type": "relation",
           "association": "solutions_scenes"
         },
@@ -367,7 +366,7 @@
       "columns": [
         {
           "key": "features",
-          "name": "☑️ Features",
+          "name": "\u2611\ufe0f Features",
           "type": "relation",
           "association": "features_bible_passages"
         },
@@ -468,7 +467,7 @@
         },
         {
           "key": "characters",
-          "name": "📁 Characters",
+          "name": "\ud83d\udcc1 Characters",
           "type": "relation",
           "association": "scenes_characters"
         },
@@ -480,7 +479,7 @@
         },
         {
           "key": "location",
-          "name": "📁 Location",
+          "name": "\ud83d\udcc1 Location",
           "type": "relation",
           "association": "scenes_location"
         },
@@ -495,8 +494,7 @@
           "type": "relation",
           "association": "scenes_product"
         }
-      ],
-      "membershipComposite": "ordered_member_of"
+      ]
     },
     "01KWN86X6NJZMP5ZESZTNDXY7Z": {
       "columns": [
@@ -614,7 +612,7 @@
       "columns": [
         {
           "key": "products",
-          "name": "📚 Products",
+          "name": "\ud83d\udcda Products",
           "type": "relation",
           "association": "products_parts_database"
         },
@@ -624,14 +622,13 @@
           "type": "relation",
           "association": "scenes_part"
         }
-      ],
-      "membershipComposite": "ordered_member_of"
+      ]
     },
     "01KWN86X6MFZQAJ1V36T9592CD": {
       "columns": [
         {
           "key": "characters",
-          "name": "👥 Characters",
+          "name": "\ud83d\udc65 Characters",
           "type": "relation",
           "association": "characters_character_attributes"
         }
@@ -641,7 +638,7 @@
       "columns": [
         {
           "key": "motivation",
-          "name": "☑️ Motivation",
+          "name": "\u2611\ufe0f Motivation",
           "type": "relation",
           "association": "motivation_includes"
         },

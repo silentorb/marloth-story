@@ -195,6 +195,9 @@
         "member_of"
       ],
       "perspectiveLabels": {
+        "members": {
+          "title": "Members"
+        },
         "member_of": {
           "title": "Membership",
           "linkAdd": "Link type table"
@@ -244,6 +247,9 @@
         "ordered_member_of"
       ],
       "perspectiveLabels": {
+        "ordered_members": {
+          "title": "Members"
+        },
         "ordered_member_of": {
           "title": "Ordered membership",
           "linkAdd": "Link ordered type table"

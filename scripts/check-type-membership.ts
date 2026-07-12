@@ -3,19 +3,19 @@
  *
  * Usage: bun run scripts/check-type-membership.ts
  */
-import {
-  findMissingTypeMembershipRelationships,
-  findNestedPageSpuriousTypeMembership,
-  findSpuriousTypeMembershipRelationships,
-  findNodeScalarsOnTypedNodes,
-  type GraphDatabase,
-} from "tome-db";
+import type { GraphDatabase } from "../../tome/packages/tome-db/src/index.ts";
 import {
   defaultDbPathForContent,
   openContentGraph,
   readEnv,
   resolveContentPath,
-} from "tome-db/content";
+} from "../../tome/packages/tome-db/src/content/index.ts";
+import {
+  findMissingTypeMembershipRelationships,
+  findNestedPageSpuriousTypeMembership,
+  findSpuriousTypeMembershipRelationships,
+  findNodeScalarsOnTypedNodes,
+} from "./lib/type-membership-audit";
 
 const contentDir = resolveContentPath();
 const defaultDbPath = defaultDbPathForContent(contentDir);

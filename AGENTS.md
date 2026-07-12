@@ -91,6 +91,7 @@ For **design data** (what nodes mean, how they relate conceptually), read `[docs
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Design domain model, node types, relationships, traceability           | `[docs/ontology.md](./docs/ontology.md)`                                                                                                                       |
 | SQLite property graph, `data/tome.sqlite`, `tome-db` | [`../tome/docs/features/tome-db.md`](../tome/docs/features/tome-db.md) (+ ontology when interpreting data) |
+| Sets (`set` trait, type tables, archive hub) | [`../tome/docs/features/sets.md`](../tome/docs/features/sets.md) |
 | Web markdown editor, `tome-editor` | [`../tome/docs/features/tome-editor.md`](../tome/docs/features/tome-editor.md) |
 | Graph Explorer, LOD layers, anchor-scoped graph viz | [`../tome/docs/features/graph-explorer.md`](../tome/docs/features/graph-explorer.md) |
 | Editing story/design content in the graph | [`docs/ontology.md`](./docs/ontology.md) + [`../tome/docs/features/tome-db.md`](../tome/docs/features/tome-db.md) |

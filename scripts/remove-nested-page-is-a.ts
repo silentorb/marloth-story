@@ -6,15 +6,15 @@
  *   bun run scripts/remove-nested-page-is-a.ts --apply
  */
 import {
-  findNestedPageSpuriousTypeMembership,
   syncAfterRelationshipsWrite,
   type GraphDatabase,
-} from "tome-db";
+} from "../../tome/packages/tome-db/src/index.ts";
 import {
   defaultDbPathForContent,
   openContentGraph,
   resolveContentPath,
-} from "tome-db/content";
+} from "../../tome/packages/tome-db/src/content/index.ts";
+import { findNestedPageSpuriousTypeMembership } from "./lib/type-membership-audit";
 
 const apply = process.argv.includes("--apply");
 const dryRun = !apply || process.argv.includes("--dry-run");

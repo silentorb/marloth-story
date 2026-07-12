@@ -74,7 +74,7 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
 
 ### Current state
 
-[`packages/tome-db/src/type-membership-audit.ts`](../../packages/tome-db/src/type-membership-audit.ts) assumes legacy export paths under `Marloth/`:
+[`scripts/lib/type-membership-audit.ts`](../../scripts/lib/type-membership-audit.ts) assumes legacy export paths under `Marloth/`:
 
 - `typeFolderFromPath` — `segments[0] !== "Marloth"`
 - `typeDatabaseTitleFromPath` — same
@@ -86,14 +86,14 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
 
 2. Replace literal `"Marloth"` comparisons with configurable prefix segment.
 
-3. Module docstring: **“Validation/migration tooling for legacy export layout — not used by editor runtime.”**
+3. Module docstring: **“Legacy export-path hygiene for Marloth — not tome runtime.”**
 
 4. Update [`scripts/check-type-membership.ts`](../../scripts/check-type-membership.ts):
 
    - Prefer `TOME_CONTENT_PATH` / `resolveContentPath()` over `MARLOTH_DB_PATH` only
    - Open graph via content store or `openTomeWriteContext` when possible
 
-5. Tests in [`type-membership-audit.test.ts`](../../packages/tome-db/tests/type-membership-audit.test.ts) — pass custom prefix in unit tests where paths are constructed.
+5. Tests in [`scripts/lib/type-membership-audit.test.ts`](../../scripts/lib/type-membership-audit.test.ts) — pass custom prefix in unit tests where paths are constructed.
 
 ### Done (Part B)
 
