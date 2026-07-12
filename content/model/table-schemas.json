@@ -554,15 +554,6 @@
         }
       ]
     },
-    "01KWN86X6MFZQAJ1V36T95927Z": {
-      "columns": [
-        {
-          "key": "tags",
-          "name": "Tags",
-          "type": "multi_select"
-        }
-      ]
-    },
     "01KWN86X6NJZMP5ZESZTNDXY48": {
       "columns": [
         {
