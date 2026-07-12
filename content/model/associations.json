@@ -3,8 +3,8 @@
   "associations": {
     "01KXBNPNJDENZ9BXN5BYZ7JKPC": {
       "perspectives": [
-        "blocked_by",
-        "blocked_by"
+        "Blocked By",
+        "Blocked By"
       ],
       "endpoints": {
         "0": {
@@ -17,8 +17,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPD": {
       "perspectives": [
-        "blocked_by",
-        "blocking"
+        "Blocked By",
+        "Blocking"
       ],
       "endpoints": {
         "0": {
@@ -31,8 +31,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPE": {
       "perspectives": [
-        "character_attributes",
-        "characters"
+        "Character Attributes",
+        "Characters"
       ],
       "endpoints": {
         "0": {
@@ -45,8 +45,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPF": {
       "perspectives": [
-        "children",
-        "children"
+        "Children",
+        "Children"
       ],
       "endpoints": {
         "0": {
@@ -59,8 +59,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPG": {
       "perspectives": [
-        "conflicts",
-        "children"
+        "Conflicts",
+        "Children"
       ],
       "endpoints": {
         "0": {
@@ -73,8 +73,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPH": {
       "perspectives": [
-        "enemies",
-        "children"
+        "Enemies",
+        "Children"
       ],
       "endpoints": {
         "0": {
@@ -87,14 +87,14 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPJ": {
       "perspectives": [
-        "enemies",
-        "enemies"
+        "Enemies",
+        "Enemies"
       ]
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPK": {
       "perspectives": [
-        "bible_passages",
-        "features"
+        "Bible Passages",
+        "Features"
       ],
       "endpoints": {
         "0": {
@@ -107,8 +107,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPM": {
       "perspectives": [
-        "children",
-        "children"
+        "Children",
+        "Children"
       ],
       "endpoints": {
         "0": {
@@ -121,8 +121,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPN": {
       "perspectives": [
-        "parents",
-        "children"
+        "Parents",
+        "Children"
       ],
       "endpoints": {
         "0": {
@@ -135,8 +135,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPP": {
       "perspectives": [
-        "characters",
-        "groups"
+        "Characters",
+        "Groups"
       ],
       "endpoints": {
         "0": {
@@ -149,8 +149,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPQ": {
       "perspectives": [
-        "includes",
-        "includes"
+        "Includes",
+        "Includes"
       ],
       "endpoints": {
         "0": {
@@ -163,8 +163,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPR": {
       "perspectives": [
-        "features",
-        "inspirations"
+        "Features",
+        "Inspirations"
       ],
       "endpoints": {
         "0": {
@@ -177,8 +177,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPS": {
       "perspectives": [
-        "children",
-        "parents"
+        "Children",
+        "Parents"
       ],
       "endpoints": {
         "0": {
@@ -191,26 +191,22 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPT": {
       "perspectives": [
-        "members",
-        "member_of"
-      ],
-      "perspectiveLabels": {
-        "members": {
+        {
           "title": "Members"
         },
-        "member_of": {
+        {
           "title": "Membership",
           "linkAdd": "Link type table"
         }
-      },
+      ],
       "traits": [
         "set"
       ]
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPV": {
       "perspectives": [
-        "inspirations",
-        "monsters"
+        "Inspirations",
+        "Monsters"
       ],
       "endpoints": {
         "0": {
@@ -223,8 +219,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPW": {
       "perspectives": [
-        "motivation",
-        "includes"
+        "Motivation",
+        "Includes"
       ],
       "endpoints": {
         "0": {
@@ -237,24 +233,20 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPX": {
       "perspectives": [
-        "neighbor",
-        "neighbor"
+        "Neighbor",
+        "Neighbor"
       ]
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPY": {
       "perspectives": [
-        "ordered_members",
-        "ordered_member_of"
-      ],
-      "perspectiveLabels": {
-        "ordered_members": {
+        {
           "title": "Members"
         },
-        "ordered_member_of": {
+        {
           "title": "Ordered membership",
           "linkAdd": "Link ordered type table"
         }
-      },
+      ],
       "traits": [
         "ordered",
         "set"
@@ -262,8 +254,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPZ": {
       "perspectives": [
-        "inspirations",
-        "pacing"
+        "Inspirations",
+        "Pacing"
       ],
       "endpoints": {
         "0": {
@@ -276,8 +268,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ0": {
       "perspectives": [
-        "children",
-        "parents"
+        "Children",
+        "Parents"
       ],
       "endpoints": {
         "0": {
@@ -290,8 +282,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ1": {
       "perspectives": [
-        "neighbor",
-        "parents"
+        "Neighbor",
+        "Parents"
       ],
       "endpoints": {
         "0": {
@@ -304,8 +296,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ2": {
       "perspectives": [
-        "parents",
-        "parents"
+        "Parents",
+        "Parents"
       ],
       "endpoints": {
         "0": {
@@ -318,8 +310,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ3": {
       "perspectives": [
-        "characters",
-        "products"
+        "Characters",
+        "Products"
       ],
       "endpoints": {
         "0": {
@@ -332,8 +324,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ4": {
       "perspectives": [
-        "features",
-        "products"
+        "Features",
+        "Products"
       ],
       "endpoints": {
         "0": {
@@ -346,8 +338,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ5": {
       "perspectives": [
-        "products",
-        "parts_database"
+        "Products",
+        "Parts Database"
       ],
       "endpoints": {
         "0": {
@@ -360,8 +352,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ6": {
       "perspectives": [
-        "prop_type",
-        "inspirations"
+        "Prop Type",
+        "Inspirations"
       ],
       "endpoints": {
         "0": {
@@ -374,14 +366,14 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ7": {
       "perspectives": [
-        "scenes",
-        "arcs"
+        "Scenes",
+        "Arcs"
       ]
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ8": {
       "perspectives": [
-        "scenes",
-        "characters"
+        "Scenes",
+        "Characters"
       ],
       "endpoints": {
         "0": {
@@ -394,8 +386,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQ9": {
       "perspectives": [
-        "features_test",
-        "scenes"
+        "Features Test",
+        "Scenes"
       ],
       "endpoints": {
         "0": {
@@ -408,8 +400,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQA": {
       "perspectives": [
-        "location",
-        "scenes"
+        "Location",
+        "Scenes"
       ],
       "endpoints": {
         "0": {
@@ -422,8 +414,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQB": {
       "perspectives": [
-        "scenes",
-        "part"
+        "Scenes",
+        "Part"
       ],
       "endpoints": {
         "0": {
@@ -436,8 +428,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQC": {
       "perspectives": [
-        "scenes",
-        "parts_test"
+        "Scenes",
+        "Parts Test"
       ],
       "endpoints": {
         "0": {
@@ -450,8 +442,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQD": {
       "perspectives": [
-        "scenes",
-        "product"
+        "Scenes",
+        "Product"
       ],
       "endpoints": {
         "0": {
@@ -464,8 +456,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQE": {
       "perspectives": [
-        "bible_passages",
-        "solutions"
+        "Bible Passages",
+        "Solutions"
       ],
       "endpoints": {
         "0": {
@@ -478,8 +470,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQF": {
       "perspectives": [
-        "children",
-        "children"
+        "Children",
+        "Children"
       ],
       "endpoints": {
         "0": {
@@ -492,8 +484,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQG": {
       "perspectives": [
-        "features",
-        "solutions"
+        "Features",
+        "Solutions"
       ],
       "endpoints": {
         "0": {
@@ -506,8 +498,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQH": {
       "perspectives": [
-        "inspirations",
-        "solutions"
+        "Inspirations",
+        "Solutions"
       ],
       "endpoints": {
         "0": {
@@ -520,8 +512,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQJ": {
       "perspectives": [
-        "parents",
-        "children"
+        "Parents",
+        "Children"
       ],
       "endpoints": {
         "0": {
@@ -534,8 +526,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQK": {
       "perspectives": [
-        "solutions",
-        "products"
+        "Solutions",
+        "Products"
       ],
       "endpoints": {
         "0": {
@@ -548,8 +540,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQM": {
       "perspectives": [
-        "scenes",
-        "solutions"
+        "Scenes",
+        "Solutions"
       ],
       "endpoints": {
         "0": {
@@ -562,8 +554,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQN": {
       "perspectives": [
-        "story_scale",
-        "inspirations"
+        "Story Scale",
+        "Inspirations"
       ],
       "endpoints": {
         "0": {
@@ -576,8 +568,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQP": {
       "perspectives": [
-        "themes",
-        "includes"
+        "Themes",
+        "Includes"
       ],
       "endpoints": {
         "0": {
@@ -590,8 +582,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQQ": {
       "perspectives": [
-        "inspirations",
-        "traversal_reasons"
+        "Inspirations",
+        "Traversal Reasons"
       ],
       "endpoints": {
         "0": {
@@ -604,8 +596,8 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKQR": {
       "perspectives": [
-        "inspirations",
-        "traversal_types"
+        "Inspirations",
+        "Traversal Types"
       ],
       "endpoints": {
         "0": {

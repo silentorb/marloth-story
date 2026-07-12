@@ -4,28 +4,27 @@
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY3J",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYT",
-      "perspective": "ordered_members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPY"
     },
     {
       "id": "board-view",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY69",
-      "perspective": "members",
       "name": "Board view",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "weighted",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "perspective": "members",
       "name": "Weighted",
       "sorts": [
         {
@@ -58,12 +57,12 @@
         "story_scale",
         "plot_is_driven_by_mc_desire",
         "traversal_reasons"
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "name",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "perspective": "members",
       "name": "Name",
       "sorts": [
         {
@@ -85,12 +84,12 @@
           "plot_is_driven_by_mc_desire",
           "traversal_reasons"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "traversal",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "perspective": "members",
       "name": "Traversal",
       "sorts": [
         {
@@ -112,12 +111,12 @@
           "plot_is_driven_by_mc_desire",
           "traversal_reasons"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "mobile",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "perspective": "members",
       "name": "Mobile",
       "sorts": [
         {
@@ -139,12 +138,12 @@
           "plot_is_driven_by_mc_desire",
           "traversal_reasons"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "images",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "perspective": "members",
       "name": "Images",
       "sorts": [],
       "properties": {
@@ -161,12 +160,12 @@
           "plot_is_driven_by_mc_desire",
           "traversal_reasons"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "extended",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "perspective": "members",
       "name": "Extended",
       "sorts": [
         {
@@ -188,12 +187,12 @@
           "plot_is_driven_by_mc_desire",
           "traversal_reasons"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "pacing",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "perspective": "members",
       "name": "Pacing",
       "sorts": [],
       "properties": {
@@ -210,12 +209,12 @@
           "plot_is_driven_by_mc_desire",
           "traversal_reasons"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "desire",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "perspective": "members",
       "name": "Desire",
       "sorts": [],
       "properties": {
@@ -232,12 +231,12 @@
           "plot_is_driven_by_mc_desire",
           "traversal_reasons"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "wonder",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "perspective": "members",
       "name": "Wonder",
       "sorts": [
         {
@@ -263,12 +262,12 @@
           "plot_is_driven_by_mc_desire",
           "traversal_reasons"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
-      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -279,12 +278,12 @@
           "column": "name",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "primary-timeline",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
-      "perspective": "members",
       "name": "Primary timeline",
       "sorts": [
         {
@@ -295,74 +294,74 @@
           "column": "name",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "name",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-      "perspective": "members",
       "name": "Name",
       "sorts": [
         {
           "column": "name",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "priority",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-      "perspective": "members",
       "name": "Priority",
       "sorts": [
         {
           "column": "priority",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6PZXQP43T36924KCSH",
-      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
           "column": "inspiration_count",
           "direction": "desc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY3T",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYK",
-      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
           "column": "order",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY1K",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "name",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "perspective": "members",
       "name": "Name",
       "sorts": [
         {
@@ -382,12 +381,12 @@
           "parents",
           "conflicts"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "prioritized",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "perspective": "members",
       "name": "Prioritized",
       "sorts": [
         {
@@ -411,12 +410,12 @@
           "parents",
           "conflicts"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "inspirations",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "perspective": "members",
       "name": "Inspirations",
       "sorts": [
         {
@@ -440,12 +439,12 @@
           "parents",
           "conflicts"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "harmony",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "perspective": "members",
       "name": "Harmony",
       "sorts": [
         {
@@ -469,52 +468,52 @@
           "parents",
           "conflicts"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592DE",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY49",
-      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
           "column": "name",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592H3",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592HE",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXWN",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "all",
       "nodeId": "01KWN86X6PZXQP43T36924KCTB",
-      "perspective": "members",
       "name": "All",
       "sorts": [
         {
@@ -530,12 +529,12 @@
           "all_scene_count",
           "scene_count__01KWN86X6NJZMP5ZESZTNDXY6D"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "drama",
       "nodeId": "01KWN86X6PZXQP43T36924KCTB",
-      "perspective": "members",
       "name": "Drama",
       "sorts": [
         {
@@ -551,12 +550,12 @@
           "all_scene_count",
           "scene_count__01KWN86X6NJZMP5ZESZTNDXY6D"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "frequency",
       "nodeId": "01KWN86X6PZXQP43T36924KCTB",
-      "perspective": "members",
       "name": "Frequency",
       "sorts": [
         {
@@ -578,41 +577,41 @@
         "personality",
         "character_attributes",
         "variants"
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "applicable",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY3V",
-      "perspective": "members",
       "name": "Applicable",
       "sorts": [
         {
           "column": "inspiration_count",
           "direction": "desc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "unapplicable",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY3V",
-      "perspective": "members",
       "name": "Unapplicable",
       "sorts": [
         {
           "column": "inspiration_count",
           "direction": "desc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "nodeId": "01KWN86X6MFZQAJ1V36T9592EA",
-      "perspective": "ordered_members",
-      "generator": "scenes-by-book"
+      "generator": "scenes-by-book",
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPY"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7Z",
-      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -628,76 +627,76 @@
           "scenes",
           "themes"
         ]
-      }
+      },
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "board-view",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY48",
-      "perspective": "members",
       "name": "Board View",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY4Q",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY1W",
-      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
           "column": "formula",
           "direction": "desc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592HY",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "twold",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
-      "perspective": "ordered_members",
       "name": "TWOLD",
       "sorts": [
         {
           "column": "name",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPY"
     },
     {
       "id": "marloth",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
-      "perspective": "ordered_members",
       "name": "Marloth",
       "sorts": [
         {
           "column": "name",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPY"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592CD",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A8",
-      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
@@ -708,40 +707,41 @@
           "column": "name",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592DV",
-      "perspective": "members",
       "name": "Untitled",
       "sorts": [
         {
           "column": "priority",
           "direction": "asc"
         }
-      ]
+      ],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY8C",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "untitled",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY6M",
-      "perspective": "members",
       "name": "Untitled",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
       "id": "all",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY0N",
-      "perspective": "members",
       "name": "All",
-      "sorts": []
+      "sorts": [],
+      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     }
   ]
 }

@@ -12,7 +12,7 @@
       "enabled": true,
       "params": {
         "inspiration_feature_composite": "01KXBNPNJDENZ9BXN5BYZ7JKPR",
-        "features_edge_label": "FEATURES",
+        "features_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKPR:0",
         "features_database_id": "01KWN86X6NJZMP5ZESZTNDXY7W"
       },
       "viewNames": []
@@ -28,8 +28,8 @@
       "enabled": true,
       "params": {
         "inspiration_feature_composite": "01KXBNPNJDENZ9BXN5BYZ7JKPR",
-        "features_edge_label": "FEATURES",
-        "theme_edge_label": "THEME",
+        "features_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKPR:0",
+        "theme_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKQP:0",
         "theme_target_id": "01KWN86X6NJZMP5ZESZTNDXXXN"
       },
       "viewNames": []
@@ -45,7 +45,7 @@
       "enabled": true,
       "params": {
         "characters_scene_composite": "01KXBNPNJDENZ9BXN5BYZ7JKQ8",
-        "scenes_edge_label": "SCENES",
+        "scenes_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKQ8:0",
         "scenes_database_id": "01KWN86X6MFZQAJ1V36T9592EA"
       },
       "viewNames": []
@@ -64,8 +64,8 @@
       "params": {
         "characters_scene_composite": "01KXBNPNJDENZ9BXN5BYZ7JKQ8",
         "scene_product_composite": "01KXBNPNJDENZ9BXN5BYZ7JKQD",
-        "scenes_edge_label": "SCENES",
-        "product_edge_label": "PRODUCT",
+        "scenes_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKQ8:0",
+        "product_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKQD:1",
         "scenes_database_id": "01KWN86X6MFZQAJ1V36T9592EA",
         "products_database_id": "01KWN86X6NJZMP5ZESZTNDXXYT",
         "hide_legacy_keys": [
