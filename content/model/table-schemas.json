@@ -144,6 +144,12 @@
           "name": "Features",
           "type": "relation",
           "association": "inspirations_features"
+        },
+        {
+          "key": "solutions",
+          "name": "Solutions",
+          "type": "relation",
+          "association": "solutions_inspirations"
         }
       ]
     },
@@ -205,6 +211,18 @@
           "name": "Features",
           "type": "relation",
           "association": "solutions_features"
+        },
+        {
+          "key": "inspirations",
+          "name": "Inspirations",
+          "type": "relation",
+          "association": "solutions_inspirations"
+        },
+        {
+          "key": "bible_passages",
+          "name": "Bible passages",
+          "type": "relation",
+          "association": "solutions_bible_passages"
         },
         {
           "key": "scenes",
@@ -369,6 +387,12 @@
           "name": "\u2611\ufe0f Features",
           "type": "relation",
           "association": "features_bible_passages"
+        },
+        {
+          "key": "solutions",
+          "name": "Solutions",
+          "type": "relation",
+          "association": "solutions_bible_passages"
         },
         {
           "key": "verses",

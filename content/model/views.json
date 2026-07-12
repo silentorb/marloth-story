@@ -41,6 +41,7 @@
         "columnOrder": [
           "type",
           "features",
+          "solutions",
           "weighted_use",
           "wonder",
           "monsters",
@@ -74,6 +75,7 @@
         "columnOrder": [
           "type",
           "features",
+          "solutions",
           "weighted_use",
           "wonder",
           "monsters",
@@ -100,6 +102,7 @@
         "columnOrder": [
           "type",
           "features",
+          "solutions",
           "weighted_use",
           "wonder",
           "monsters",
@@ -126,6 +129,7 @@
         "columnOrder": [
           "type",
           "features",
+          "solutions",
           "weighted_use",
           "wonder",
           "monsters",
@@ -147,6 +151,7 @@
         "columnOrder": [
           "type",
           "features",
+          "solutions",
           "weighted_use",
           "wonder",
           "monsters",
@@ -173,6 +178,7 @@
         "columnOrder": [
           "type",
           "features",
+          "solutions",
           "weighted_use",
           "wonder",
           "monsters",
@@ -194,6 +200,7 @@
         "columnOrder": [
           "type",
           "features",
+          "solutions",
           "weighted_use",
           "wonder",
           "monsters",
@@ -215,6 +222,7 @@
         "columnOrder": [
           "type",
           "features",
+          "solutions",
           "weighted_use",
           "wonder",
           "monsters",
@@ -245,6 +253,7 @@
         "columnOrder": [
           "type",
           "features",
+          "solutions",
           "weighted_use",
           "wonder",
           "monsters",

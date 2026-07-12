@@ -462,6 +462,20 @@
         }
       }
     },
+    "solutions_bible_passages": {
+      "perspectives": [
+        "bible_passages",
+        "solutions"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
+        },
+        "1": {
+          "typeId": "01KWN86X6MFZQAJ1V36T9592H3"
+        }
+      }
+    },
     "solutions_children": {
       "perspectives": [
         "children",
@@ -487,6 +501,20 @@
         },
         "1": {
           "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        }
+      }
+    },
+    "solutions_inspirations": {
+      "perspectives": [
+        "inspirations",
+        "solutions"
+      ],
+      "endpoints": {
+        "0": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
+        },
+        "1": {
+          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
         }
       }
     },
