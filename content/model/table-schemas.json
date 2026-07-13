@@ -10,7 +10,7 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPF"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ0"
         },
         {
           "key": "characters",
@@ -204,7 +204,7 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQJ"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQF"
         },
         {
           "key": "features",
@@ -322,7 +322,7 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPN"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPM"
         },
         {
           "key": "conflicts",
@@ -526,7 +526,7 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ2"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPS"
         },
         {
           "key": "children",
@@ -544,7 +544,7 @@
           "key": "neighbor",
           "name": "Neighbor",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ1"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPX"
         },
         {
           "key": "themes",

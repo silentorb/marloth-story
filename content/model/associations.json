@@ -43,20 +43,6 @@
         }
       }
     },
-    "01KXBNPNJDENZ9BXN5BYZ7JKPF": {
-      "perspectives": [
-        "Children",
-        "Children"
-      ],
-      "endpoints": {
-        "0": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
-        },
-        "1": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
-        }
-      }
-    },
     "01KXBNPNJDENZ9BXN5BYZ7JKPG": {
       "perspectives": [
         "Conflicts",
@@ -108,21 +94,7 @@
     "01KXBNPNJDENZ9BXN5BYZ7JKPM": {
       "perspectives": [
         "Children",
-        "Children"
-      ],
-      "endpoints": {
-        "0": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
-        },
-        "1": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
-        }
-      }
-    },
-    "01KXBNPNJDENZ9BXN5BYZ7JKPN": {
-      "perspectives": [
-        "Parents",
-        "Children"
+        "Parents"
       ],
       "endpoints": {
         "0": {
@@ -277,34 +249,6 @@
         },
         "1": {
           "typeId": "01KWN86X6NJZMP5ZESZTNDXY3J"
-        }
-      }
-    },
-    "01KXBNPNJDENZ9BXN5BYZ7JKQ1": {
-      "perspectives": [
-        "Neighbor",
-        "Parents"
-      ],
-      "endpoints": {
-        "0": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
-        },
-        "1": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
-        }
-      }
-    },
-    "01KXBNPNJDENZ9BXN5BYZ7JKQ2": {
-      "perspectives": [
-        "Parents",
-        "Parents"
-      ],
-      "endpoints": {
-        "0": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
-        },
-        "1": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7Z"
         }
       }
     },
@@ -471,7 +415,7 @@
     "01KXBNPNJDENZ9BXN5BYZ7JKQF": {
       "perspectives": [
         "Children",
-        "Children"
+        "Parents"
       ],
       "endpoints": {
         "0": {
@@ -507,20 +451,6 @@
         },
         "1": {
           "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
-        }
-      }
-    },
-    "01KXBNPNJDENZ9BXN5BYZ7JKQJ": {
-      "perspectives": [
-        "Parents",
-        "Children"
-      ],
-      "endpoints": {
-        "0": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
-        },
-        "1": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXXYZ"
         }
       }
     },
