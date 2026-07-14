@@ -3,18 +3,18 @@ import { resolve } from "node:path";
 import {
   GraphDatabase,
   loadDynamicColumnSets,
-  loadDynamicFields,
+  loadDynamicProperties,
 } from "tome-db";
 import {
   ContentStore,
   RELATIONSHIPS_FILE_VERSION,
-  DYNAMIC_FIELDS_FILE_VERSION,
+  DYNAMIC_PROPERTIES_FILE_VERSION,
   entryFromSeedColumnSet,
-  entryFromSeedField,
+  entryFromSeedProperty,
   fileFromSeedInputs,
   bodyFromNode,
 } from "tome-db/content";
-import { starterDynamicFieldSeeds } from "./seed-dynamic-fields.ts";
+import { starterDynamicPropertySeeds } from "./seed-dynamic-properties.ts";
 
 const REPO_ROOT = resolve(import.meta.dir, "..");
 const DEFAULT_DB = resolve(REPO_ROOT, "data/marloth.sqlite");
@@ -28,51 +28,49 @@ function contentPath(): string {
   return process.env.MARLOTH_CONTENT_PATH ?? DEFAULT_CONTENT;
 }
 
-function exportDynamicFields(db: GraphDatabase, store: ContentStore): void {
-  const databaseIds = new Set<string>();
-  const fieldRows = db.queryAll<{ database_id: string }>(
+function exportDynamicProperties(db: GraphDatabase, store: ContentStore): void {
+  const owners = new Set<string>();
+  const propertyRows = db.queryAll<{ database_id: string }>(
     "SELECT DISTINCT database_id FROM dynamic_fields",
   );
   const setRows = db.queryAll<{ database_id: string }>(
     "SELECT DISTINCT database_id FROM dynamic_column_sets",
   );
-  for (const row of fieldRows) databaseIds.add(row.database_id);
-  for (const row of setRows) databaseIds.add(row.database_id);
+  for (const row of propertyRows) owners.add(row.database_id);
+  for (const row of setRows) owners.add(row.database_id);
 
-  const fields = [];
+  const properties = [];
   const columnSets = [];
 
-  if (databaseIds.size === 0) {
-    const starter = starterDynamicFieldSeeds();
-    store.writeDynamicFieldsFile(fileFromSeedInputs(starter.fields, starter.columnSets));
+  if (owners.size === 0) {
+    const starter = starterDynamicPropertySeeds();
+    store.writeDynamicPropertiesFile(fileFromSeedInputs(starter.properties, starter.columnSets));
     return;
   }
-  for (const databaseId of databaseIds) {
-    for (const field of loadDynamicFields(db, databaseId)) {
-      fields.push(
-        entryFromSeedField({
-          id: field.id,
-          databaseId: field.databaseId,
-          columnKey: field.columnKey,
-          columnName: field.columnName,
-          columnType: field.columnType,
-          resolverId: field.resolverId,
-          docsPath: field.docsPath,
-          params: field.params,
-          viewNames: field.viewNames,
+  for (const owner of owners) {
+    for (const property of loadDynamicProperties(db, owner)) {
+      properties.push(
+        entryFromSeedProperty({
+          id: property.id,
+          owner: property.owner,
+          columnKey: property.columnKey,
+          columnName: property.columnName,
+          columnType: property.columnType,
+          resolverId: property.resolverId,
+          params: property.params,
+          viewNames: property.viewNames,
         }),
       );
     }
-    for (const set of loadDynamicColumnSets(db, databaseId)) {
+    for (const set of loadDynamicColumnSets(db, owner)) {
       columnSets.push(
         entryFromSeedColumnSet({
           id: set.id,
-          databaseId: set.databaseId,
+          owner: set.owner,
           columnKeyPattern: set.columnKeyPattern,
           columnNamePattern: set.columnNamePattern,
           columnType: set.columnType,
           resolverId: set.resolverId,
-          docsPath: set.docsPath,
           params: set.params,
           viewNames: set.viewNames,
         }),
@@ -80,9 +78,9 @@ function exportDynamicFields(db: GraphDatabase, store: ContentStore): void {
     }
   }
 
-  store.writeDynamicFieldsFile({
-    version: DYNAMIC_FIELDS_FILE_VERSION,
-    fields,
+  store.writeDynamicPropertiesFile({
+    version: DYNAMIC_PROPERTIES_FILE_VERSION,
+    properties,
     columnSets,
   });
 }
@@ -132,7 +130,7 @@ export function exportGraphToContent(
     relationships,
   });
 
-  exportDynamicFields(db, store);
+  exportDynamicProperties(db, store);
   db.close();
 
   return { nodes: nodeRows.length, relationships: relationships.length };

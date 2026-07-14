@@ -1,31 +1,27 @@
 {
   "version": 1,
-  "fields": [
+  "properties": [
     {
-      "id": "inspirations-weighted-use",
-      "databaseId": "01KWN86X6NJZMP5ZESZTNDXXW0",
+      "id": "01KXF8TE6YH12XF803JS5W4677",
+      "owner": "01KWN86X6NJZMP5ZESZTNDXXW0",
       "columnKey": "weighted_use",
       "columnName": "Weighted Use",
       "columnType": "number",
       "resolverId": "inspirations.weightedUse",
-      "docsPath": "docs/dynamic-fields/inspirations.weighted-use.md",
-      "enabled": true,
       "params": {
         "inspiration_feature_composite": "01KXBNPNJDENZ9BXN5BYZ7JKPR",
         "features_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKPR:0",
-        "features_database_id": "01KWN86X6NJZMP5ZESZTNDXY7W"
+        "features_table_id": "01KWN86X6NJZMP5ZESZTNDXY7W"
       },
       "viewNames": []
     },
     {
-      "id": "inspirations-wonder",
-      "databaseId": "01KWN86X6NJZMP5ZESZTNDXXW0",
+      "id": "01KXF8TE7E7S1CSX1CMJPZ8S8Z",
+      "owner": "01KWN86X6NJZMP5ZESZTNDXXW0",
       "columnKey": "wonder",
       "columnName": "Wonder",
       "columnType": "number",
       "resolverId": "inspirations.wonder",
-      "docsPath": "docs/dynamic-fields/inspirations.wonder.md",
-      "enabled": true,
       "params": {
         "inspiration_feature_composite": "01KXBNPNJDENZ9BXN5BYZ7JKPR",
         "features_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKPR:0",
@@ -35,39 +31,35 @@
       "viewNames": []
     },
     {
-      "id": "characters-all-scene-count",
-      "databaseId": "01KWN86X6PZXQP43T36924KCTB",
+      "id": "01KXF8TE7E9698GQ0VQCSTFJFV",
+      "owner": "01KWN86X6PZXQP43T36924KCTB",
       "columnKey": "all_scene_count",
       "columnName": "All Scene count",
       "columnType": "number",
       "resolverId": "characters.allSceneCount",
-      "docsPath": "docs/dynamic-fields/characters.all-scene-count.md",
-      "enabled": true,
       "params": {
         "characters_scene_composite": "01KXBNPNJDENZ9BXN5BYZ7JKQ8",
         "scenes_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKQ8:0",
-        "scenes_database_id": "01KWN86X6MFZQAJ1V36T9592EA"
+        "scenes_table_id": "01KWN86X6MFZQAJ1V36T9592EA"
       },
       "viewNames": []
     }
   ],
   "columnSets": [
     {
-      "id": "characters-scene-count-by-product",
-      "databaseId": "01KWN86X6PZXQP43T36924KCTB",
+      "id": "01KXF8TE7F0AXD7EHRVYTEBP5T",
+      "owner": "01KWN86X6PZXQP43T36924KCTB",
       "columnKeyPattern": "scene_count__{productId}",
       "columnNamePattern": "{productTitle} Scene count",
       "columnType": "number",
       "resolverId": "characters.sceneCountByProduct",
-      "docsPath": "docs/dynamic-fields/characters.scene-count-by-product.md",
-      "enabled": true,
       "params": {
         "characters_scene_composite": "01KXBNPNJDENZ9BXN5BYZ7JKQ8",
         "scene_product_composite": "01KXBNPNJDENZ9BXN5BYZ7JKQD",
         "scenes_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKQ8:0",
         "product_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKQD:1",
-        "scenes_database_id": "01KWN86X6MFZQAJ1V36T9592EA",
-        "products_database_id": "01KWN86X6NJZMP5ZESZTNDXXYT",
+        "scenes_table_id": "01KWN86X6MFZQAJ1V36T9592EA",
+        "products_table_id": "01KWN86X6NJZMP5ZESZTNDXXYT",
         "hide_legacy_keys": [
           "twold_scene_count"
         ]

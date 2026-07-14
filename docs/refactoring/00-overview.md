@@ -43,7 +43,7 @@ Domain-specific **data** already lives in the workspace model. Do not re-embed t
 | [`content/model/schema.json`](../content/model/schema.json) | Relationship rules (`relationshipRules`), property enums (`priority`, `layer`, …) |
 | [`content/model/table-schemas.json`](../content/model/table-schemas.json) | Per–type-table column definitions |
 | [`content/model/views.json`](../content/model/views.json) | Table tab configs; Scenes DB references ordered-association provider `scenes-by-book` only |
-| [`content/model/dynamic-fields.json`](../content/model/dynamic-fields.json) | Computed column bindings and resolver params |
+| [`content/model/dynamic-properties.json`](../content/model/dynamic-properties.json) | Computed column bindings and resolver params |
 | [`content/model/associations.json`](../content/model/associations.json) | Composite relationship type registry |
 
 ## Still hardcoded in packages (inventory)
@@ -75,7 +75,7 @@ Current Marloth values (for seeding `workspace.json` in session 01):
 | Concern | Current location | Target |
 | --- | --- | --- |
 | Ordered associations (`scenes-by-book`) | `packages/tome-db/src/ordered-collections.ts` (`SCENES_BY_BOOK`, `CONFIGS`) | `content/model/ordered-collections.json` |
-| Dynamic resolver composite fallbacks | `packages/tome-db/src/dynamic-fields/resolvers/index.ts` | Params in `dynamic-fields.json` |
+| Dynamic resolver composite fallbacks | `packages/tome-db/src/dynamic-properties/resolvers/index.ts` | Params in `dynamic-properties.json` |
 | Type membership audit path rules | `scripts/lib/type-membership-audit.ts` (`Marloth/` prefix) | `workspace.json` → `legacy.exportPathPrefix` |
 
 ### Tier 3 — legacy compatibility (session 05)

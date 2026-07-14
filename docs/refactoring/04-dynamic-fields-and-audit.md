@@ -2,7 +2,7 @@
 
 ## Purpose
 
-1. Remove **unparameterized** Marloth composite type strings from dynamic field resolvers — behavior driven by [`content/model/dynamic-fields.json`](../../content/model/dynamic-fields.json) params.
+1. Remove **unparameterized** Marloth composite type strings from dynamic field resolvers — behavior driven by [`content/model/dynamic-properties.json`](../../content/model/dynamic-properties.json) params.
 2. Make type-membership audit path rules use **workspace legacy prefix** instead of hardcoded `Marloth/`.
 3. Remove or archive dead legacy schema parsing code.
 
@@ -14,9 +14,9 @@
 
 ### Current state
 
-- Bindings: [`content/model/dynamic-fields.json`](../../content/model/dynamic-fields.json)
-- Registry: [`packages/tome-db/src/dynamic-fields/index.ts`](../../packages/tome-db/src/dynamic-fields/index.ts) — registers four resolver ids
-- Algorithms: [`packages/tome-db/src/dynamic-fields/resolvers/index.ts`](../../packages/tome-db/src/dynamic-fields/resolvers/index.ts)
+- Bindings: [`content/model/dynamic-properties.json`](../../content/model/dynamic-properties.json)
+- Registry: [`packages/tome-db/src/dynamic-properties/index.ts`](../../packages/tome-db/src/dynamic-properties/index.ts) — registers four resolver ids
+- Algorithms: [`packages/tome-db/src/dynamic-properties/resolvers/index.ts`](../../packages/tome-db/src/dynamic-properties/resolvers/index.ts)
 
 Hardcoded composite fallbacks in resolver code (must become params):
 
@@ -31,7 +31,7 @@ Hardcoded composite fallbacks in resolver code (must become params):
 
 1. **Audit** each function in `resolvers/index.ts` for string literals that name composite types or legacy edge labels.
 
-2. **Params contract** — document required keys in [`docs/dynamic-fields/`](../dynamic-fields/) per-field specs and in [`docs/features/dynamic-table-fields.md`](../features/dynamic-table-fields.md).
+2. **Params contract** — document required keys in [`docs/dynamic-properties/`](../../../tome/docs/dynamic-properties/) per-field specs and in [`docs/features/dynamic-properties.md`](../features/dynamic-properties.md).
 
 3. **Resolver changes** — read params only; if composite param is empty, skip composite path (do not fall back to Marloth-specific default):
 
@@ -44,7 +44,7 @@ if (composite) {
 
 Keep legacy unidirectional edge fallback **only** when explicitly configured via params (e.g. `scenes_edge_label`).
 
-4. **Update Marloth `dynamic-fields.json`** — add full params to every field and columnSet:
+4. **Update Marloth `dynamic-properties.json`** — add full params to every field and columnSet:
 
 ```json
 {
@@ -60,12 +60,12 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
 
 5. **Registry unchanged** — resolver **ids** (`characters.allSceneCount`, etc.) remain stable plugin names; only JSON bindings change.
 
-6. **Tests** — [`dynamic-fields.test.ts`](../../packages/tome-db/tests/dynamic-fields/dynamic-fields.test.ts): fixtures must include params; add regression test that fails if resolver uses default composite when param omitted.
+6. **Tests** — [`dynamic-properties.test.ts`](../../packages/tome-db/tests/dynamic-properties/dynamic-properties.test.ts): fixtures must include params; add regression test that fails if resolver uses default composite when param omitted.
 
 ### Done (Part A)
 
 - [ ] No Marloth-specific composite string literals as default values in `resolvers/index.ts`
-- [ ] Marloth `dynamic-fields.json` has complete params
+- [ ] Marloth `dynamic-properties.json` has complete params
 - [ ] `bun run --filter tome-db test` passes for dynamic-fields tests
 
 ---
@@ -106,4 +106,4 @@ Similar for inspirations fields (`inspiration_feature_composite`, existing `feat
 
 - [ ] Parts A and B checklists complete
 - [ ] `bun test` passes
-- [ ] Field spec docs updated under `docs/dynamic-fields/` where params changed
+- [ ] Field spec docs updated under `docs/dynamic-properties/` where params changed

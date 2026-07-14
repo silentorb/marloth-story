@@ -1,0 +1,19 @@
+---
+description: Dynamic properties (computed type-table columns)
+globs:
+  - content/model/dynamic-properties.json
+  - packages/tome-db/src/dynamic-properties/**
+  - docs/dynamic-properties/**
+  - scripts/seed-dynamic-properties.ts
+alwaysApply: false
+---
+
+# Dynamic properties
+
+Read the authoritative feature spec before making changes:
+
+[`../tome/docs/features/dynamic-properties.md`](../../../tome/docs/features/dynamic-properties.md)
+
+Per-property logic specs: [`../tome/docs/dynamic-properties/`](../../../tome/docs/dynamic-properties/)
+
+For graph node semantics: [`docs/ontology.md`](../../docs/ontology.md).
