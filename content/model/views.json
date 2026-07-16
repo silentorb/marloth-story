@@ -36,27 +36,13 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "type",
-          "features",
-          "solutions",
-          "weighted_use",
-          "wonder",
-          "monsters",
-          "story_scale",
-          "pacing",
-          "traversal_types",
-          "plot_is_driven_by_mc_desire",
-          "traversal_reasons"
-        ]
-      },
-      "hiddenColumns": [
-        "wonder",
-        "monsters",
-        "story_scale",
-        "plot_is_driven_by_mc_desire",
-        "traversal_reasons"
+      "properties": [
+        "type",
+        "features",
+        "solutions",
+        "weighted_use",
+        "pacing",
+        "traversal_types"
       ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
@@ -70,21 +56,19 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "type",
-          "features",
-          "solutions",
-          "weighted_use",
-          "wonder",
-          "monsters",
-          "story_scale",
-          "pacing",
-          "traversal_types",
-          "plot_is_driven_by_mc_desire",
-          "traversal_reasons"
-        ]
-      },
+      "properties": [
+        "type",
+        "features",
+        "solutions",
+        "weighted_use",
+        "wonder",
+        "monsters",
+        "story_scale",
+        "pacing",
+        "traversal_types",
+        "plot_is_driven_by_mc_desire",
+        "traversal_reasons"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -97,21 +81,19 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "type",
-          "features",
-          "solutions",
-          "weighted_use",
-          "wonder",
-          "monsters",
-          "story_scale",
-          "pacing",
-          "traversal_types",
-          "plot_is_driven_by_mc_desire",
-          "traversal_reasons"
-        ]
-      },
+      "properties": [
+        "type",
+        "features",
+        "solutions",
+        "weighted_use",
+        "wonder",
+        "monsters",
+        "story_scale",
+        "pacing",
+        "traversal_types",
+        "plot_is_driven_by_mc_desire",
+        "traversal_reasons"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -124,21 +106,19 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "type",
-          "features",
-          "solutions",
-          "weighted_use",
-          "wonder",
-          "monsters",
-          "story_scale",
-          "pacing",
-          "traversal_types",
-          "plot_is_driven_by_mc_desire",
-          "traversal_reasons"
-        ]
-      },
+      "properties": [
+        "type",
+        "features",
+        "solutions",
+        "weighted_use",
+        "wonder",
+        "monsters",
+        "story_scale",
+        "pacing",
+        "traversal_types",
+        "plot_is_driven_by_mc_desire",
+        "traversal_reasons"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -146,21 +126,19 @@
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
       "name": "Images",
       "sorts": [],
-      "properties": {
-        "columnOrder": [
-          "type",
-          "features",
-          "solutions",
-          "weighted_use",
-          "wonder",
-          "monsters",
-          "story_scale",
-          "pacing",
-          "traversal_types",
-          "plot_is_driven_by_mc_desire",
-          "traversal_reasons"
-        ]
-      },
+      "properties": [
+        "type",
+        "features",
+        "solutions",
+        "weighted_use",
+        "wonder",
+        "monsters",
+        "story_scale",
+        "pacing",
+        "traversal_types",
+        "plot_is_driven_by_mc_desire",
+        "traversal_reasons"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -173,21 +151,19 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "type",
-          "features",
-          "solutions",
-          "weighted_use",
-          "wonder",
-          "monsters",
-          "story_scale",
-          "pacing",
-          "traversal_types",
-          "plot_is_driven_by_mc_desire",
-          "traversal_reasons"
-        ]
-      },
+      "properties": [
+        "type",
+        "features",
+        "solutions",
+        "weighted_use",
+        "wonder",
+        "monsters",
+        "story_scale",
+        "pacing",
+        "traversal_types",
+        "plot_is_driven_by_mc_desire",
+        "traversal_reasons"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -195,21 +171,19 @@
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
       "name": "Pacing",
       "sorts": [],
-      "properties": {
-        "columnOrder": [
-          "type",
-          "features",
-          "solutions",
-          "weighted_use",
-          "wonder",
-          "monsters",
-          "story_scale",
-          "pacing",
-          "traversal_types",
-          "plot_is_driven_by_mc_desire",
-          "traversal_reasons"
-        ]
-      },
+      "properties": [
+        "type",
+        "features",
+        "solutions",
+        "weighted_use",
+        "wonder",
+        "monsters",
+        "story_scale",
+        "pacing",
+        "traversal_types",
+        "plot_is_driven_by_mc_desire",
+        "traversal_reasons"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -217,21 +191,19 @@
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
       "name": "Desire",
       "sorts": [],
-      "properties": {
-        "columnOrder": [
-          "type",
-          "features",
-          "solutions",
-          "weighted_use",
-          "wonder",
-          "monsters",
-          "story_scale",
-          "pacing",
-          "traversal_types",
-          "plot_is_driven_by_mc_desire",
-          "traversal_reasons"
-        ]
-      },
+      "properties": [
+        "type",
+        "features",
+        "solutions",
+        "weighted_use",
+        "wonder",
+        "monsters",
+        "story_scale",
+        "pacing",
+        "traversal_types",
+        "plot_is_driven_by_mc_desire",
+        "traversal_reasons"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -248,21 +220,19 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "type",
-          "features",
-          "solutions",
-          "weighted_use",
-          "wonder",
-          "monsters",
-          "story_scale",
-          "pacing",
-          "traversal_types",
-          "plot_is_driven_by_mc_desire",
-          "traversal_reasons"
-        ]
-      },
+      "properties": [
+        "type",
+        "features",
+        "solutions",
+        "weighted_use",
+        "wonder",
+        "monsters",
+        "story_scale",
+        "pacing",
+        "traversal_types",
+        "plot_is_driven_by_mc_desire",
+        "traversal_reasons"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -369,19 +339,17 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "priority",
-          "inspirations",
-          "solutions",
-          "bible_passages",
-          "tags",
-          "children",
-          "products",
-          "parents",
-          "conflicts"
-        ]
-      },
+      "properties": [
+        "priority",
+        "inspirations",
+        "solutions",
+        "bible_passages",
+        "tags",
+        "children",
+        "products",
+        "parents",
+        "conflicts"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -398,19 +366,17 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "priority",
-          "inspirations",
-          "solutions",
-          "bible_passages",
-          "tags",
-          "children",
-          "products",
-          "parents",
-          "conflicts"
-        ]
-      },
+      "properties": [
+        "priority",
+        "inspirations",
+        "solutions",
+        "bible_passages",
+        "tags",
+        "children",
+        "products",
+        "parents",
+        "conflicts"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -427,19 +393,17 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "priority",
-          "inspirations",
-          "solutions",
-          "bible_passages",
-          "tags",
-          "children",
-          "products",
-          "parents",
-          "conflicts"
-        ]
-      },
+      "properties": [
+        "priority",
+        "inspirations",
+        "solutions",
+        "bible_passages",
+        "tags",
+        "children",
+        "products",
+        "parents",
+        "conflicts"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -456,19 +420,17 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "priority",
-          "inspirations",
-          "solutions",
-          "bible_passages",
-          "tags",
-          "children",
-          "products",
-          "parents",
-          "conflicts"
-        ]
-      },
+      "properties": [
+        "priority",
+        "inspirations",
+        "solutions",
+        "bible_passages",
+        "tags",
+        "children",
+        "products",
+        "parents",
+        "conflicts"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -521,15 +483,13 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "products",
-          "scenes",
-          "scene_count__01KWN86X6NJZMP5ZESZTNDXY83",
-          "all_scene_count",
-          "scene_count__01KWN86X6NJZMP5ZESZTNDXY6D"
-        ]
-      },
+      "properties": [
+        "products",
+        "scenes",
+        "scene_count__01KWN86X6NJZMP5ZESZTNDXY83",
+        "all_scene_count",
+        "scene_count__01KWN86X6NJZMP5ZESZTNDXY6D"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -542,15 +502,13 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "products",
-          "scenes",
-          "scene_count__01KWN86X6NJZMP5ZESZTNDXY83",
-          "all_scene_count",
-          "scene_count__01KWN86X6NJZMP5ZESZTNDXY6D"
-        ]
-      },
+      "properties": [
+        "products",
+        "scenes",
+        "scene_count__01KWN86X6NJZMP5ZESZTNDXY83",
+        "all_scene_count",
+        "scene_count__01KWN86X6NJZMP5ZESZTNDXY6D"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
@@ -563,20 +521,12 @@
           "direction": "desc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "products",
-          "scenes",
-          "scene_count__01KWN86X6NJZMP5ZESZTNDXY83",
-          "all_scene_count",
-          "scene_count__01KWN86X6NJZMP5ZESZTNDXY6D"
-        ]
-      },
-      "hiddenColumns": [
-        "groups",
-        "personality",
-        "character_attributes",
-        "variants"
+      "properties": [
+        "products",
+        "scenes",
+        "scene_count__01KWN86X6NJZMP5ZESZTNDXY83",
+        "all_scene_count",
+        "scene_count__01KWN86X6NJZMP5ZESZTNDXY6D"
       ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
@@ -619,15 +569,13 @@
           "direction": "asc"
         }
       ],
-      "properties": {
-        "columnOrder": [
-          "parents",
-          "children",
-          "neighbor",
-          "scenes",
-          "themes"
-        ]
-      },
+      "properties": [
+        "parents",
+        "children",
+        "neighbor",
+        "scenes",
+        "themes"
+      ],
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {

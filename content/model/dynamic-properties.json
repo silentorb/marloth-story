@@ -12,8 +12,7 @@
         "inspiration_feature_composite": "01KXBNPNJDENZ9BXN5BYZ7JKPR",
         "features_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKPR:0",
         "features_table_id": "01KWN86X6NJZMP5ZESZTNDXY7W"
-      },
-      "viewNames": []
+      }
     },
     {
       "id": "01KXF8TE7E7S1CSX1CMJPZ8S8Z",
@@ -27,8 +26,7 @@
         "features_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKPR:0",
         "theme_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKQP:0",
         "theme_target_id": "01KWN86X6NJZMP5ZESZTNDXXXN"
-      },
-      "viewNames": []
+      }
     },
     {
       "id": "01KXF8TE7E9698GQ0VQCSTFJFV",
@@ -41,8 +39,7 @@
         "characters_scene_composite": "01KXBNPNJDENZ9BXN5BYZ7JKQ8",
         "scenes_edge_label": "01KXBNPNJDENZ9BXN5BYZ7JKQ8:0",
         "scenes_table_id": "01KWN86X6MFZQAJ1V36T9592EA"
-      },
-      "viewNames": []
+      }
     }
   ],
   "columnSets": [
@@ -63,8 +60,7 @@
         "hide_legacy_keys": [
           "twold_scene_count"
         ]
-      },
-      "viewNames": []
+      }
     }
   ]
 }

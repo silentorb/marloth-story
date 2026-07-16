@@ -58,7 +58,6 @@ function exportDynamicProperties(db: GraphDatabase, store: ContentStore): void {
           columnType: property.columnType,
           resolverId: property.resolverId,
           params: property.params,
-          viewNames: property.viewNames,
         }),
       );
     }
@@ -72,7 +71,6 @@ function exportDynamicProperties(db: GraphDatabase, store: ContentStore): void {
           columnType: set.columnType,
           resolverId: set.resolverId,
           params: set.params,
-          viewNames: set.viewNames,
         }),
       );
     }
