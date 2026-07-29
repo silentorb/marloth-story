@@ -1,75 +1,148 @@
 ---
 title: Articles
 alias: Articles
+modified_at: 2026-07-29T00:48:45.491Z
+created_at: 2026-07-18T05:48:56.497Z
 ---
-# Articles
+```tome-block
+{
+  "componentId": "tome-query.block",
+  "data": {
+    "version": 1,
+    "reactFlow": {
+      "nodes": [
+        {
+          "id": "in",
+          "type": "input",
+          "position": {
+            "x": -160.24405230310788,
+            "y": 97.14438565905365
+          },
+          "data": {
+            "inputValues": {}
+          }
+        },
+        {
+          "id": "out",
+          "type": "output",
+          "position": {
+            "x": 325.8619372474833,
+            "y": 90.95717049412761
+          },
+          "data": {
+            "inputValues": {}
+          }
+        },
+        {
+          "id": "filter_itm62n",
+          "type": "filter",
+          "position": {
+            "x": 126.92962231040306,
+            "y": 74.54298223657754
+          },
+          "data": {
+            "inputValues": {}
+          }
+        },
+        {
+          "id": "literal_mlv0wg",
+          "type": "literal",
+          "position": {
+            "x": -324.550149568043,
+            "y": 111.67202485010172
+          },
+          "data": {
+            "inputValues": {}
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e_in_filter_itm62n_value_collection",
+          "source": "in",
+          "target": "filter_itm62n",
+          "sourceHandle": "value",
+          "targetHandle": "collection"
+        },
+        {
+          "id": "e_filter_itm62n_out_collection_value",
+          "source": "filter_itm62n",
+          "target": "out",
+          "sourceHandle": "collection",
+          "targetHandle": "value"
+        }
+      ]
+    }
+  }
+}
+```
 
 [[01KWN86X6NJZMP5ZESZTNDXY3K]]
 
-[[01KWN86X6NJZMP5ZESZTNDXY1A]]
+[Femininity and Epic Wonderland](./01KWN86X6NJZMP5ZESZTNDXY1A.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXY63]]
+[Epic Wonderland](./01KWN86X6NJZMP5ZESZTNDXY63.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXXXN]]
+[Wonderland](./01KWN86X6NJZMP5ZESZTNDXXXN.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXY05]]
+[Framework](./01KWN86X6NJZMP5ZESZTNDXY05.md)
 
-[[01KWN86X6MFZQAJ1V36T95928T]]
+[Social relationships](./01KWN86X6MFZQAJ1V36T95928T.md)
 
-[[01KWN86X6MFZQAJ1V36T9592FY]]
+[The four categories of fantasy](./01KWN86X6MFZQAJ1V36T9592FY.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXY41]]
+[Long-running series](./01KWN86X6NJZMP5ZESZTNDXY41.md)
 
-[[01KWN86X6PZXQP43T36924KCSS]]
+[Old fantasy](./01KWN86X6PZXQP43T36924KCSS.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXY09]]
+[Contented impetus](./01KWN86X6NJZMP5ZESZTNDXY09.md)
 
-[[01KWN86X6MFZQAJ1V36T95928X]]
+[Analysis of hospitality games](./01KWN86X6MFZQAJ1V36T95928X.md)
 
-[[01KWN86X6MFZQAJ1V36T959294]]
+[Making paths straight](./01KWN86X6MFZQAJ1V36T959294.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXXXV]]
+[Femininity](./01KWN86X6NJZMP5ZESZTNDXXXV.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXXXA]]
+[Ideas](./01KWN86X6NJZMP5ZESZTNDXXXA.md)
 
-[[01KWN86X6MFZQAJ1V36T9592C4]]
+[Christianity](./01KWN86X6MFZQAJ1V36T9592C4.md)
 
-[[01KWN86X6MFZQAJ1V36T9592CR]]
+[Handling new story features](./01KWN86X6MFZQAJ1V36T9592CR.md)
 
-[[01KWN86X6MFZQAJ1V36T9592CT]]
+[The Marloth technical system](./01KWN86X6MFZQAJ1V36T9592CT.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXY6K]]
+[Immersive survival dark fantasy](./01KWN86X6NJZMP5ZESZTNDXY6K.md)
 
-[[01KWN86X6PZXQP43T36924KCSW]]
+[Family - Paradigm shift](./01KWN86X6PZXQP43T36924KCSW.md)
 
-[[01KWN86X6MFZQAJ1V36T9592EM]]
+[The homes of James and Adelle](./01KWN86X6MFZQAJ1V36T9592EM.md)
 
-[[01KWN86X6MFZQAJ1V36T9592EQ]]
+[Suffering and Trials](./01KWN86X6MFZQAJ1V36T9592EQ.md)
 
-[[01KWN86X6MFZQAJ1V36T9592FB]]
+[Articulate domains by professions](./01KWN86X6MFZQAJ1V36T9592FB.md)
 
-[[01KWN86X6MFZQAJ1V36T9592FK]]
+[Design process - Good to bad](./01KWN86X6MFZQAJ1V36T9592FK.md)
 
-[[01KWN86X6MFZQAJ1V36T9592FN]]
+[Responsibility](./01KWN86X6MFZQAJ1V36T9592FN.md)
 
-[[01KWN86X6MFZQAJ1V36T9592G3]]
+[Article archive](./01KWN86X6MFZQAJ1V36T9592G3.md)
 
-[[01KWN86X6MFZQAJ1V36T9592GD]]
+[Excessive Quest](./01KWN86X6MFZQAJ1V36T9592GD.md)
 
-[[01KWN86X6MFZQAJ1V36T9592GF]]
+[Millennial narcissism](./01KWN86X6MFZQAJ1V36T9592GF.md)
 
-[[01KWN86X6MFZQAJ1V36T9592GC]]
+[Grimdark](./01KWN86X6MFZQAJ1V36T9592GC.md)
 
-[[01KWN86X6MFZQAJ1V36T9592GV]]
+[Fantasy economy](./01KWN86X6MFZQAJ1V36T9592GV.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXXVE]]
+[Guilt, doubt, and wicked law](./01KWN86X6NJZMP5ZESZTNDXXVE.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXXVY]]
+[Marloth book style overview](./01KWN86X6NJZMP5ZESZTNDXXVY.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXXX1]]
+[Other narratives](./01KWN86X6NJZMP5ZESZTNDXXX1.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXXX2]]
+[Spatial location rules](./01KWN86X6NJZMP5ZESZTNDXXX2.md)
 
-[[01KWN86X6MFZQAJ1V36T9592EF]]
+[Premise decomposition](./01KWN86X6MFZQAJ1V36T9592EF.md)
 
-[[01KWN86X6NJZMP5ZESZTNDXXX6]]
+[Design conflict resolution](./01KWN86X6NJZMP5ZESZTNDXXX6.md)
