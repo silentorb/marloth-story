@@ -31,7 +31,8 @@ created_at: 2026-07-18T05:48:56.497Z
           },
           "data": {
             "inputValues": {
-              "edgeType": "01KXBNPNJDENZ9BXN5BYZ7JKPT:0"
+              "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
+              "direction": 0
             }
           }
         },
@@ -44,7 +45,8 @@ created_at: 2026-07-18T05:48:56.497Z
           },
           "data": {
             "inputValues": {
-              "edgeType": "01KXBNPNJDENZ9BXN5BYZ7JKPT:1"
+              "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
+              "direction": 1
             }
           }
         },
