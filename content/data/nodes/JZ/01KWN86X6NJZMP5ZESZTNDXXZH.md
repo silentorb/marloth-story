@@ -1,7 +1,7 @@
 ---
 title: Articles
 alias: Articles
-modified_at: 2026-07-29T00:48:45.491Z
+modified_at: 2026-07-30T04:57:41.779Z
 created_at: 2026-07-18T05:48:56.497Z
 ---
 ```tome-block
@@ -14,61 +14,170 @@ created_at: 2026-07-18T05:48:56.497Z
         {
           "id": "in",
           "type": "input",
-          "position": {
-            "x": -160.24405230310788,
-            "y": 97.14438565905365
-          },
+          "position": { "x": 0, "y": 200 },
+          "data": { "inputValues": {} }
+        },
+        {
+          "id": "hopMembersPlain",
+          "type": "traverse",
+          "position": { "x": 220, "y": 0 },
           "data": {
-            "inputValues": {}
+            "inputValues": {
+              "edgeType": "01KXBNPNJDENZ9BXN5BYZ7JKPT:0"
+            }
           }
+        },
+        {
+          "id": "hopMembersOrdered",
+          "type": "traverse",
+          "position": { "x": 220, "y": 100 },
+          "data": {
+            "inputValues": {
+              "edgeType": "01KXBNPNJDENZ9BXN5BYZ7JKPY:0"
+            }
+          }
+        },
+        {
+          "id": "hopHubsPlain",
+          "type": "traverse",
+          "position": { "x": 220, "y": 300 },
+          "data": {
+            "inputValues": {
+              "edgeType": "01KXBNPNJDENZ9BXN5BYZ7JKPT:1"
+            }
+          }
+        },
+        {
+          "id": "hopHubsOrdered",
+          "type": "traverse",
+          "position": { "x": 220, "y": 400 },
+          "data": {
+            "inputValues": {
+              "edgeType": "01KXBNPNJDENZ9BXN5BYZ7JKPY:1"
+            }
+          }
+        },
+        {
+          "id": "exceptMembersPlain",
+          "type": "except",
+          "position": { "x": 480, "y": 160 },
+          "data": { "inputValues": {} }
+        },
+        {
+          "id": "exceptMembersOrdered",
+          "type": "except",
+          "position": { "x": 700, "y": 160 },
+          "data": { "inputValues": {} }
+        },
+        {
+          "id": "exceptHubsPlain",
+          "type": "except",
+          "position": { "x": 920, "y": 160 },
+          "data": { "inputValues": {} }
+        },
+        {
+          "id": "exceptHubsOrdered",
+          "type": "except",
+          "position": { "x": 1140, "y": 160 },
+          "data": { "inputValues": {} }
         },
         {
           "id": "out",
           "type": "output",
-          "position": {
-            "x": 325.8619372474833,
-            "y": 90.95717049412761
-          },
-          "data": {
-            "inputValues": {}
-          }
-        },
-        {
-          "id": "filter_itm62n",
-          "type": "filter",
-          "position": {
-            "x": 126.92962231040306,
-            "y": 74.54298223657754
-          },
-          "data": {
-            "inputValues": {}
-          }
-        },
-        {
-          "id": "literal_mlv0wg",
-          "type": "literal",
-          "position": {
-            "x": -324.550149568043,
-            "y": 111.67202485010172
-          },
-          "data": {
-            "inputValues": {}
-          }
+          "position": { "x": 1360, "y": 160 },
+          "data": { "inputValues": {} }
         }
       ],
       "edges": [
         {
-          "id": "e_in_filter_itm62n_value_collection",
+          "id": "e_in_hopMembersPlain",
           "source": "in",
-          "target": "filter_itm62n",
           "sourceHandle": "value",
+          "target": "hopMembersPlain",
           "targetHandle": "collection"
         },
         {
-          "id": "e_filter_itm62n_out_collection_value",
-          "source": "filter_itm62n",
-          "target": "out",
+          "id": "e_in_hopMembersOrdered",
+          "source": "in",
+          "sourceHandle": "value",
+          "target": "hopMembersOrdered",
+          "targetHandle": "collection"
+        },
+        {
+          "id": "e_in_hopHubsPlain",
+          "source": "in",
+          "sourceHandle": "value",
+          "target": "hopHubsPlain",
+          "targetHandle": "collection"
+        },
+        {
+          "id": "e_in_hopHubsOrdered",
+          "source": "in",
+          "sourceHandle": "value",
+          "target": "hopHubsOrdered",
+          "targetHandle": "collection"
+        },
+        {
+          "id": "e_in_exceptMembersPlain",
+          "source": "in",
+          "sourceHandle": "value",
+          "target": "exceptMembersPlain",
+          "targetHandle": "collection"
+        },
+        {
+          "id": "e_excl_membersPlain",
+          "source": "hopMembersPlain",
           "sourceHandle": "collection",
+          "target": "exceptMembersPlain",
+          "targetHandle": "exclude"
+        },
+        {
+          "id": "e_keep_exceptMembersOrdered",
+          "source": "exceptMembersPlain",
+          "sourceHandle": "collection",
+          "target": "exceptMembersOrdered",
+          "targetHandle": "collection"
+        },
+        {
+          "id": "e_excl_membersOrdered",
+          "source": "hopMembersOrdered",
+          "sourceHandle": "collection",
+          "target": "exceptMembersOrdered",
+          "targetHandle": "exclude"
+        },
+        {
+          "id": "e_keep_exceptHubsPlain",
+          "source": "exceptMembersOrdered",
+          "sourceHandle": "collection",
+          "target": "exceptHubsPlain",
+          "targetHandle": "collection"
+        },
+        {
+          "id": "e_excl_hubsPlain",
+          "source": "hopHubsPlain",
+          "sourceHandle": "collection",
+          "target": "exceptHubsPlain",
+          "targetHandle": "exclude"
+        },
+        {
+          "id": "e_keep_exceptHubsOrdered",
+          "source": "exceptHubsPlain",
+          "sourceHandle": "collection",
+          "target": "exceptHubsOrdered",
+          "targetHandle": "collection"
+        },
+        {
+          "id": "e_excl_hubsOrdered",
+          "source": "hopHubsOrdered",
+          "sourceHandle": "collection",
+          "target": "exceptHubsOrdered",
+          "targetHandle": "exclude"
+        },
+        {
+          "id": "e_out",
+          "source": "exceptHubsOrdered",
+          "sourceHandle": "collection",
+          "target": "out",
           "targetHandle": "value"
         }
       ]
