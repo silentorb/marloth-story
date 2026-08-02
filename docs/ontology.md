@@ -160,6 +160,8 @@ Agents helping with design or writing should preserve and strengthen these links
 
 **Articles** often capture general craft insights that may benefit readers beyond Marloth. They may reference features and inspirations but are not always tied to a single product. Treat them as a bridge between the private design graph and potentially publishable writing-about-writing.
 
+The Articles hub’s Imp query lists **orphans**: live nodes that are neither set hubs nor set members (plain and ordered set-trait associations). Inspiration taxonomy relation columns on the Inspirations type table (story scale, pacing, type, traversal types/reasons, monsters, etc.) target ordinary type tables; those option nodes are set members of those hubs, so the same membership filter excludes them—no inspiration-specific hops. Taxonomy nodes linked to inspirations without type-table membership will incorrectly appear as orphans until they are attached to the correct type table.
+
 ## Current storage mapping (brief)
 
 This section is a **hint**, not the authoritative schema spec.
