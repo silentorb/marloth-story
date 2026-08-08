@@ -1,5 +1,7 @@
 # Session 03 — Ordered associations JSON config
 
+> **Completed and superseded.** `ordered-collections.json` has since been replaced by `content/model/table-presentation.json`. This doc is kept as a record of the original session; for current behavior read [`../../../tome/docs/features/table-presentation.md`](../../../tome/docs/features/table-presentation.md).
+
 ## Purpose
 
 Move the `scenes-by-book` ordered-association configuration from TypeScript into [`content/model/ordered-collections.json`](../../content/model/ordered-collections.json). Keep the **engine** generic; Marloth domain values live in config only.

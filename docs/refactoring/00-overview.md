@@ -12,7 +12,7 @@ This directory holds **session guides** for that migration. Each numbered doc is
 | --- | --- | --- | --- |
 | 1 | [01-workspace-json.md](./01-workspace-json.md) | — | `tome-db`, `tome-static-site` |
 | 2 | [02-editor-workspace-integration.md](./02-editor-workspace-integration.md) | 01 | `tome-editor` |
-| 3 | [03-ordered-collections-json.md](./03-ordered-collections-json.md) | 01 | `tome-db`, `tome-editor` |
+| 3 | [03-ordered-associations-json.md](./03-ordered-associations-json.md) | 01 | `tome-db`, `tome-editor` |
 | 4 | [04-dynamic-fields-and-audit.md](./04-dynamic-fields-and-audit.md) | 01 | `tome-db`, `scripts/` |
 | 5 | [05-legacy-compat-and-cleanup.md](./05-legacy-compat-and-cleanup.md) | 02–04 (incremental OK) | all packages, docs |
 
@@ -42,7 +42,7 @@ Domain-specific **data** already lives in the workspace model. Do not re-embed t
 | --- | --- |
 | [`content/model/schema.json`](../content/model/schema.json) | Relationship rules (`relationshipRules`), property enums (`priority`, `layer`, …) |
 | [`content/model/table-schemas.json`](../content/model/table-schemas.json) | Per–type-table column definitions |
-| [`content/model/views.json`](../content/model/views.json) | Table tab configs; Scenes DB references ordered-association provider `scenes-by-book` only |
+| [`content/model/views.json`](../content/model/views.json) | Table tab configs; Scenes DB references table-presentation composition `scenes-by-book` only |
 | [`content/model/dynamic-properties.json`](../content/model/dynamic-properties.json) | Computed column bindings and resolver params |
 | [`content/model/associations.json`](../content/model/associations.json) | Composite relationship type registry |
 
@@ -110,7 +110,7 @@ Use this when the full refactor series is done:
 - [x] `content/model/workspace.json` exists and is loaded by `tome-db`
 - [x] No duplicate home/archive/anchor IDs in `tome-editor` source (only via workspace/API)
 - [x] Sidebar links come from workspace config, not hardcoded `sidebar-nav.ts` array
-- [x] `content/model/ordered-collections.json` drives ordered-association configs
+- [x] `content/model/table-presentation.json` drives composed table views (formerly `ordered-collections.json`)
 - [x] Static site home reads from workspace config
 - [x] Dynamic resolvers use params only (no unparameterized composite type strings)
 - [x] Type membership audit uses configurable export path prefix

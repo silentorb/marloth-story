@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "compositions": [
+    {
+      "id": "scenes-by-book",
+      "typeDatabaseId": "01KWN86X6MFZQAJ1V36T9592EA",
+      "scope": {
+        "memberToScopeComposite": "01KXBNPNJDENZ9BXN5BYZ7JKQD",
+        "excludeColumnKeys": ["product"]
+      },
+      "groups": {
+        "memberToGroupComposite": "01KXBNPNJDENZ9BXN5BYZ7JKQB",
+        "groupTypeDatabaseId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
+        "groupToScopeComposite": "01KXBNPNJDENZ9BXN5BYZ7JKQ5",
+        "unassignedGroupTitle": "Unassigned",
+        "canonicalGroupByTitle": true,
+        "excludeColumnKeys": ["part"]
+      },
+      "reorder": {
+        "excludeColumnKeys": ["order"]
+      },
+      "columnViewName": "TWOLD Active",
+      "excludeColumnKeys": ["status"]
+    }
+  ]
+}
