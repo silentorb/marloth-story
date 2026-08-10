@@ -168,19 +168,14 @@
           "enumId": "layer"
         },
         {
-          "key": "date",
-          "name": "Date",
-          "type": "date"
-        },
-        {
-          "key": "blocked_by",
-          "name": "Blocked by",
+          "key": "depends_on",
+          "name": "Depends on",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPC"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPD"
         },
         {
-          "key": "blocking",
-          "name": "Blocking",
+          "key": "depends",
+          "name": "Depends",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKPD"
         }

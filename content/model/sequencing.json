@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "tables": {
+    "01KWN86X6MFZQAJ1V36T9592A9": {
+      "dependsAssociation": "01KXBNPNJDENZ9BXN5BYZ7JKPD",
+      "dependsPerspective": "depends",
+      "dependsOnPerspective": "depends_on",
+      "defaultDuration": 1,
+      "trackProperty": "layer",
+      "membershipAssociation": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
+      "containmentAssociation": null,
+      "durationQuery": null,
+      "parallelQuery": null
+    }
+  }
+}

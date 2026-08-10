@@ -21,6 +21,13 @@
       "editorModule": "tome-query/editor",
       "htmlModule": "tome-query/html",
       "serverModule": "tome-query/server"
+    },
+    {
+      "id": "tome-sequencing",
+      "enabled": true,
+      "editorModule": "tome-sequencing/editor",
+      "htmlModule": "tome-sequencing/html",
+      "serverModule": "tome-sequencing/server"
     }
   ],
   "components": [
@@ -50,6 +57,15 @@
       "label": "Query table",
       "enabled": true,
       "slashMenu": { "group": "custom", "order": 40 }
+    },
+    {
+      "id": "tome-sequencing.block",
+      "extensionId": "tome-sequencing",
+      "kind": "page-block",
+      "implementationId": "tome-sequencing",
+      "label": "Timeline",
+      "enabled": true,
+      "slashMenu": { "group": "custom", "order": 50 }
     }
   ]
 }

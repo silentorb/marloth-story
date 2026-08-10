@@ -1,24 +1,10 @@
 {
   "version": 1,
   "associations": {
-    "01KXBNPNJDENZ9BXN5BYZ7JKPC": {
-      "perspectives": [
-        "Blocked By",
-        "Blocked By"
-      ],
-      "endpoints": {
-        "0": {
-          "typeId": "01KWN86X6MFZQAJ1V36T9592A9"
-        },
-        "1": {
-          "typeId": "01KWN86X6MFZQAJ1V36T9592A9"
-        }
-      }
-    },
     "01KXBNPNJDENZ9BXN5BYZ7JKPD": {
       "perspectives": [
-        "Blocked By",
-        "Blocking"
+        "Depends",
+        "Depends on"
       ],
       "endpoints": {
         "0": {

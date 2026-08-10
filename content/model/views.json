@@ -252,9 +252,9 @@
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT"
     },
     {
-      "id": "primary-timeline",
+      "id": "by-layer",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
-      "name": "Primary timeline",
+      "name": "By layer",
       "sorts": [
         {
           "column": "layer",
