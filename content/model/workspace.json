@@ -57,10 +57,15 @@
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXZH",
       "label": "Articles",
       "icon": "§"
+    },
+    {
+      "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
+      "label": "Arcs",
+      "icon": "▦"
     }
   ],
   "branding": {
-    "appTitle": "Tome",
+    "appTitle": "Marloth",
     "defaultDocumentIcon": "M",
     "staticSiteHeader": "Marloth design corpus",
     "staticSiteFooterOrganization": "Silent Orb"

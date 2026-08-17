@@ -52,7 +52,7 @@ Types below are **semantic**. In the graph, type is inferred from title, `IS_A` 
 | --- | --- | --- |
 | **Product** | Top-level deliverable: a book in the trilogy, a game, or adjacent work. Primary **scope** dimension. | `Marloth/Data/Products/` |
 | **Part** | Major division within a book's structure (e.g. *The Orphanage*, *The Castle*). | `Marloth/TWOLD Plot/.../Parts database/` |
-| **Arc** | Plot or thematic thread spanning scenes (e.g. forest arc, sorceress arc). Sequenced via relative **depends** constraints (not calendar dates); see Tome [tome-sequencing](../../tome/docs/features/tome-sequencing.md). | `Marloth/TWOLD Plot/Arcs/` |
+| **Arc** | Plot or thematic thread spanning scenes (e.g. forest arc, sorceress arc). Sequenced via relative **dependency** constraints (not calendar dates); see Tome [tome-sequencing](../../tome/docs/features/tome-sequencing.md). | `Marloth/TWOLD Plot/Arcs/` |
 | **Scene** | Concrete story beat or sequence; primary unit linking plot structure to future prose. | `Marloth/Scenes/`, `Marloth/TWOLD Plot/.../Scene Archive/` |
 
 ### Design vocabulary

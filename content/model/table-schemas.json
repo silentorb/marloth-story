@@ -168,14 +168,14 @@
           "enumId": "layer"
         },
         {
-          "key": "depends_on",
-          "name": "Depends on",
+          "key": "dependencies",
+          "name": "Dependencies",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKPD"
         },
         {
-          "key": "depends",
-          "name": "Depends",
+          "key": "dependents",
+          "name": "Dependents",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKPD"
         }

@@ -3,8 +3,8 @@
   "associations": {
     "01KXBNPNJDENZ9BXN5BYZ7JKPD": {
       "perspectives": [
-        "Depends",
-        "Depends on"
+        "Dependents",
+        "Dependencies"
       ],
       "endpoints": {
         "0": {
