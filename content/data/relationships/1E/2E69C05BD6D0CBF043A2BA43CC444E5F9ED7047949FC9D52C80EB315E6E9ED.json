@@ -3,6 +3,12 @@
   "b": "01KWN86X6NJZMP5ZESZTNDXY67",
   "type": "01KXBNPNJDENZ9BXN5BYZ7JKPD",
   "properties": {
-    "ordinal": 0
+    "ordinal": 0,
+    "endpoints": [
+      {
+        "from": "end",
+        "to": "start"
+      }
+    ]
   }
 }
