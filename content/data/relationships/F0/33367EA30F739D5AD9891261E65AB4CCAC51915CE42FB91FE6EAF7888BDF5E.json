@@ -1,0 +1,17 @@
+{
+  "a": "01KWN86X6MFZQAJ1V36T9592DX",
+  "b": "01KWN86X6MFZQAJ1V36T9592EJ",
+  "type": "01KXBNPNJDENZ9BXN5BYZ7JKPD",
+  "properties": {
+    "endpoints": [
+      {
+        "from": "start",
+        "to": "start"
+      },
+      {
+        "from": "end",
+        "to": "end"
+      }
+    ]
+  }
+}

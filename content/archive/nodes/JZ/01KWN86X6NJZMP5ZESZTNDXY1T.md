@@ -1,7 +1,15 @@
 ---
 title: Desa arc
 alias: Desa arc
+modified_at: 2026-08-18T21:01:37.632Z
+created_at: 2026-08-18T20:59:35.408Z
 ---
+> 💡At this point I don't feel like Desa fits the story at all.
+>
+> In a story in need of so many more characters for so many dimensions, Desa isn't adding anything the story doesn't already have.
+>
+> Also, he's solid medieval fantasy and doesn't fit the Victorian setting.
+
 # Desa arc
 
 A series of interesting events that happen with [[01KWN86X6MFZQAJ1V36T9592EP]].
@@ -24,3 +32,4 @@ Desa is a wizard, but he isn’t a member of the wizards’ council, which makes
 
 > 💡 Oh, that’s right, Desa starts off in prison.  All these years (all the way back to my teens) and I never really came up with a backstory as to who imprisoned him and why.
 > Now I have a good context.  Desa is imprisoned by the wizards’ council for leaving, or some other action the see as betrayal.
+
