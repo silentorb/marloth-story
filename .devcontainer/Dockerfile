@@ -24,7 +24,6 @@ USER root
 WORKDIR /opt/marloth-story
 COPY package.json bunfig.toml ./
 COPY scripts scripts
-COPY packages/_archive packages/_archive
 RUN chown -R vscode:vscode /opt/marloth-story
 USER vscode
 
