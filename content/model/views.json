@@ -9,13 +9,6 @@
       "sorts": []
     },
     {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYT",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPY",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
       "id": "board-view",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY69",
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
@@ -236,22 +229,6 @@
       ]
     },
     {
-      "id": "untitled",
-      "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Priority",
-      "sorts": [
-        {
-          "column": "priority",
-          "direction": "desc"
-        },
-        {
-          "column": "name",
-          "direction": "asc"
-        }
-      ]
-    },
-    {
       "id": "by-layer",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
@@ -268,18 +245,6 @@
       ]
     },
     {
-      "id": "name",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Name",
-      "sorts": [
-        {
-          "column": "name",
-          "direction": "asc"
-        }
-      ]
-    },
-    {
       "id": "priority",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
@@ -287,69 +252,8 @@
       "sorts": [
         {
           "column": "priority",
-          "direction": "asc"
-        }
-      ]
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6PZXQP43T36924KCSH",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": [
-        {
-          "column": "inspiration_count",
           "direction": "desc"
         }
-      ]
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY3T",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYK",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": [
-        {
-          "column": "order",
-          "direction": "asc"
-        }
-      ]
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY1K",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
-      "id": "name",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Name",
-      "sorts": [
-        {
-          "column": "name",
-          "direction": "asc"
-        }
-      ],
-      "properties": [
-        "priority",
-        "inspirations",
-        "solutions",
-        "bible_passages",
-        "tags",
-        "children",
-        "products",
-        "parents",
-        "conflicts"
       ]
     },
     {
@@ -432,46 +336,6 @@
         "parents",
         "conflicts"
       ]
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6MFZQAJ1V36T9592DE",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY49",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": [
-        {
-          "column": "name",
-          "direction": "asc"
-        }
-      ]
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6MFZQAJ1V36T9592H3",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6MFZQAJ1V36T9592HE",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXXWN",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
     },
     {
       "id": "all",
@@ -560,58 +424,6 @@
       "generator": "scenes-by-book"
     },
     {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7Z",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": [
-        {
-          "column": "name",
-          "direction": "asc"
-        }
-      ],
-      "properties": [
-        "parents",
-        "children",
-        "neighbor",
-        "scenes",
-        "themes"
-      ]
-    },
-    {
-      "id": "board-view",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY48",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Board View",
-      "sorts": []
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY4Q",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY1W",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": [
-        {
-          "column": "formula",
-          "direction": "desc"
-        }
-      ]
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6MFZQAJ1V36T9592HY",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
       "id": "twold",
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPY",
@@ -634,62 +446,6 @@
           "direction": "asc"
         }
       ]
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6MFZQAJ1V36T9592CD",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6MFZQAJ1V36T9592A8",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": [
-        {
-          "column": "priority",
-          "direction": "asc"
-        },
-        {
-          "column": "name",
-          "direction": "asc"
-        }
-      ]
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6MFZQAJ1V36T9592DV",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": [
-        {
-          "column": "priority",
-          "direction": "asc"
-        }
-      ]
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY8C",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
-      "id": "untitled",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY6M",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "Untitled",
-      "sorts": []
-    },
-    {
-      "id": "all",
-      "nodeId": "01KWN86X6NJZMP5ZESZTNDXY0N",
-      "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "All",
-      "sorts": []
     }
   ]
 }
