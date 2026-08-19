@@ -27,15 +27,6 @@
       "default": "False",
       "defaultOrder": "asc"
     },
-    "layer": {
-      "options": [
-        "Epic",
-        "Primary",
-        "Secondary"
-      ],
-      "default": "Epic",
-      "defaultOrder": "asc"
-    },
     "status": {
       "options": [
         "Partial",

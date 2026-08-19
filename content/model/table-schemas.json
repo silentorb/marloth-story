@@ -162,12 +162,6 @@
           "enumId": "priority"
         },
         {
-          "key": "layer",
-          "name": "Layer",
-          "type": "select",
-          "enumId": "layer"
-        },
-        {
           "key": "dependencies",
           "name": "Dependencies",
           "type": "relation",

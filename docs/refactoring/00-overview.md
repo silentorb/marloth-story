@@ -40,7 +40,7 @@ Domain-specific **data** already lives in the workspace model. Do not re-embed t
 
 | File | Role |
 | --- | --- |
-| [`content/model/schema.json`](../content/model/schema.json) | Relationship rules (`relationshipRules`), property enums (`priority`, `layer`, …) |
+| [`content/model/schema.json`](../content/model/schema.json) | Relationship rules (`relationshipRules`), property enums (`priority`, …) |
 | [`content/model/table-schemas.json`](../content/model/table-schemas.json) | Per–type-table column definitions |
 | [`content/model/views.json`](../content/model/views.json) | Table tab configs; Scenes DB references table-presentation composition `scenes-by-book` only |
 | [`content/model/dynamic-properties.json`](../content/model/dynamic-properties.json) | Computed column bindings and resolver params |

@@ -229,14 +229,14 @@
       ]
     },
     {
-      "id": "by-layer",
+      "id": "by-priority",
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
-      "name": "By layer",
+      "name": "Priority",
       "sorts": [
         {
-          "column": "layer",
-          "direction": "asc"
+          "column": "priority",
+          "direction": "desc"
         },
         {
           "column": "name",

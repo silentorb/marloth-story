@@ -6,8 +6,6 @@
       "dependentsPerspective": "dependents",
       "dependenciesPerspective": "dependencies",
       "defaultDuration": 1,
-      "trackProperty": "layer",
-      "membershipAssociation": "01KXBNPNJDENZ9BXN5BYZ7JKPT",
       "containmentAssociation": null,
       "durationQuery": null,
       "parallelQuery": null
