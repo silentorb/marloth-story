@@ -1,7 +1,7 @@
 name: Deploy static site
 
-# Tome package changes (silentorb/tome) do not auto-trigger this workflow.
-# Redeploy after tome updates via workflow_dispatch or by bumping vars.TOME_REF.
+# Tome or Imp package changes do not auto-trigger this workflow.
+# Redeploy after those updates via workflow_dispatch or by bumping vars.TOME_REF / vars.IMP_REF.
 on:
   push:
     branches:
@@ -37,6 +37,13 @@ jobs:
           path: tome
           ref: ${{ vars.TOME_REF || 'main' }}
 
+      - name: Checkout imp
+        uses: actions/checkout@v4
+        with:
+          repository: silentorb/imp-ts
+          path: imp
+          ref: ${{ vars.IMP_REF || 'main' }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -53,6 +60,7 @@ jobs:
       - name: Build static site
         env:
           TOME_ROOT: ${{ github.workspace }}/tome
+          IMP_ROOT: ${{ github.workspace }}/imp
         run: bash scripts/ci-build-static-site.sh --run-only
 
       - name: Configure AWS credentials
