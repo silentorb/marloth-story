@@ -1,10 +1,10 @@
 ---
-title: Dysfunctional Medieval marriage
+title: Dysfunctional Mediev marriage
 alias: Dysfunctional Medieval marriage
+modified_at: 2026-08-19T22:29:02.279Z
+created_at: 2026-08-19T22:26:44.615Z
 ---
-# Dysfunctional Medieval marriage
-
-> 💡 I don’t like this idea.  If the Mediev’s have problems those problems need to stem from intrinsic Medieval design goals, not to service other story elements.  I don’t want excessive dysfunction.
+> 💡I don’t like this idea.  If the Mediev’s have problems, those problems need to stem from intrinsic Mediev design goals, not to service other story elements.  I don’t want excessive dysfunction.
 
 If I made the Mediev marriage more dysfunctional, would there a way to make that more of a contrast for the James and Adelle marriage?
 
