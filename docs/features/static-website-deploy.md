@@ -35,7 +35,7 @@ Building inside the devcontainer image keeps CI aligned with local dev (same Bun
 1. **Trigger:** push to `main` matching path filters, or `workflow_dispatch`.
 2. **Checkout** marloth-story, `silentorb/tome` (into `./tome`; ref from `vars.TOME_REF` or `main`), and `silentorb/imp-ts` (into `./imp`; ref from `vars.IMP_REF` or `main`).
 3. **Build devcontainer image** from `.devcontainer/Dockerfile` (Docker layer cache via GHA).
-4. **Build in container:** bind-mount marloth, tome (`/workspaces/tome`), and Imp (`/workspaces/imp`), `bun install --frozen-lockfile` in tome workspace, run static-site tests, `bun run web:build` with `--content-dir` pointing at marloth `content/`.
+4. **Build in container:** bind-mount marloth, tome (`/workspaces/tome`), and Imp (`/workspaces/imp`), `bun install --frozen-lockfile` in Imp then tome workspace, run static-site tests, `bun run web:build` with `--content-dir` pointing at marloth `content/`.
 5. **Assume IAM role** via GitHub OIDC (`aws-actions/configure-aws-credentials`).
 6. **Sync to S3:** `aws s3 sync dist/web/ s3://$S3_BUCKET/ --delete`.
 7. **Invalidate CloudFront:** `aws cloudfront create-invalidation --paths "/*"`.
