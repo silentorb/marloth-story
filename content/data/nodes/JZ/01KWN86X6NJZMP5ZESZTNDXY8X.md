@@ -1,9 +1,9 @@
 ---
 title: Campaign against magic
 alias: Campaign against magic
+modified_at: 2026-08-23T05:26:19.138Z
+created_at: 2026-08-23T04:46:43.991Z
 ---
-# Campaign against magic
-
 A political movement against magic.
 
 [[01KWN86X6NJZMP5ZESZTNDXXZX]] are used as a straw man argument and a case that all magic is bad.
@@ -14,7 +14,7 @@ In earlier versions of this idea, I had[[01KWN86X6NJZMP5ZESZTNDXY3Z]] as the mos
 
 The focus on Nivana was partially why I first cancelled this arc.
 
-The idea in its original form felt to pretentious.  It was unrealistic in bad ways.
+The idea in its original form felt pretentious.  It was unrealistic in bad ways.
 
 I may still be able to achieve everything I wanted out of this arc without Nivana being the figurehead.
 
@@ -24,13 +24,15 @@ Maybe Nivana can still be a part of the movement without being unrealistically l
 
 # Minimal political intrigue
 
-[[01KWN86X6MFZQAJ1V36T9592K9]] 
+[[01KWN86X6MFZQAJ1V36T9592K9]]
 
 # Vilifying magic
 
 The way these designs are going, it looks like a charismatic spin doctor is needed to assist Nivana in her campaign.
 
-Without creating a new character for the role, Miles is the best off-the-shelf option.  Miles fits the role well because:
+## Miles
+
+Without creating a new character for the role, [[01KWN86X6NJZMP5ZESZTNDXXZ7]] is the best off-the-shelf option.  Miles fits the role well because:
 
 1. I’ve been looking for some reason for him and Nivana to interact with each other early in the story.
 2. Not simply have I wanted Nivana and Miles to interact, but for him to also hurt her.  In this case, she won’t realize at the time that he has hurt her, though there may be a sense of abandonment as her world falls apart.
@@ -42,6 +44,38 @@ Without creating a new character for the role, Miles is the best off-the-shelf o
 
 > 💡 When everything hits the fan and Nivana finds herself accused, there is no scene between her and Miles where Miles refuses to help her.  There is no scene period—Miles is simply gone.
 
+## The problem with Miles
+
+However, the problem with Miles is while he is charismatic and in one sense a leader, he is a shadow leader.
+
+Miles is not one to stick his neck out, especially when the plan is to have things implode.
+
+There may still be room for Miles to be involved, but similar to [[01KWN86X6NJZMP5ZESZTNDXY3Z]], he also should not be the figurehead.
+
 # Archive
 
 > 💡 ~~This is an interesting idea, but it never completely fit my requirements, and I’m cutting it for now.  This idea is too grand in the wrong ways.  It draws attention to things I want to be more subtle about.~~
+
+## Moving away from this again
+
+As other aspects of the story have progressed, this plot idea is now antiquated.
+
+Part of the problem is this story arc was framed around [[01KWN86X6NJZMP5ZESZTNDXXZX]], and now that faction might not even appear in [[01KWN86X6NJZMP5ZESZTNDXY83]] anymore.
+
+With the direction the [[01KWN86X6NJZMP5ZESZTNDXXYM]] arc is heading, the issue is less magic vs. science and more our city vs. their city.
+
+The fear of [[01KWN86X6MFZQAJ1V36T9592G6]] denizens should be less "evil influences are seeping into our city" and more "evil influences are coming from [[01KWN86X6NJZMP5ZESZTNDXY1E]]".
+
+The focus should be stomping out the other city (ultimately leading to [[01KWN86X6MFZQAJ1V36T9592B6]]), not trying to build stronger walls.
+
+Stronger walls and protection can still be a part of the story, but it shouldn't be a driving factor.
+
+## Second thoughts
+
+However, the story is more than [[01KWN86X6NJZMP5ZESZTNDXXYM]], and magic is a central theme of the story.
+
+I may have thrown the baby out with the bath water.
+
+[[01KWN86X6NJZMP5ZESZTNDXXZX]] needs to go.  That can't be the focus of an anti-magic campaign.
+
+But that doesn't mean there aren't still magic users for such a campaign to target.

@@ -1,8 +1,10 @@
 ---
 title: Helping Nivana arc
 alias: Helping Nivana arc
+modified_at: 2026-08-20T01:26:39.361Z
+created_at: 2026-08-20T01:26:07.846Z
 ---
-# Helping Nivana arc
+[[01KWN86X6MFZQAJ1V36T9592A4]] and [[01KWN86X6NJZMP5ZESZTNDXXW5]] help [[01KWN86X6NJZMP5ZESZTNDXY3Z]] while she is effectively enslaved to magic dealers.
 
 # Plot summary
 
