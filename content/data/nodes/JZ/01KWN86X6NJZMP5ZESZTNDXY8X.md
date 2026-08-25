@@ -1,12 +1,36 @@
 ---
 title: Campaign against magic
 alias: Campaign against magic
-modified_at: 2026-08-23T05:26:19.138Z
+modified_at: 2026-08-23T07:14:13.750Z
 created_at: 2026-08-23T04:46:43.991Z
 ---
 A political movement against magic.
 
-[[01KWN86X6NJZMP5ZESZTNDXXZX]] are used as a straw man argument and a case that all magic is bad.
+# Plot motivation
+
+The origin is a little fuzzy now, but if I remember right, the original motivation for this idea was ironically to better define the cultural stance on magic in [[01KWN86X6MFZQAJ1V36T9592G6]].
+
+Previously, I had envisioned the entire city being anti-magic.
+
+Then I softened it and made the issue more controversial, where some were more open to magic while others were opposed.
+
+An anti-magic campaign was introduced to crystalize the controversy.
+
+## Nivana
+
+Oh yeah, the even more core reason was [[01KWN86X6NJZMP5ZESZTNDXY3Z]] is supposed to start out opposed to magic, and she can't simply be passively opposed to anything, she has to be socially fighting against it.
+
+The whole idea of a campaign is very much a Nivana paradigm.
+
+But it doesn't make sense for [[01KWN86X6NJZMP5ZESZTNDXY3Z]] to be campaigning for what is already the status quo.
+
+I didn't want to make the status quo full blown pro magic, so I settled for having it divided.
+
+# Character motivation
+
+What is the primary motivation of these characters in opposing magic?
+
+<br />
 
 # De-emphasis on Nivana
 

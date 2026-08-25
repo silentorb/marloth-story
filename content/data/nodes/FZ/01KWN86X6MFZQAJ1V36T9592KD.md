@@ -1,13 +1,12 @@
 ---
 title: Sorceress arc scoping
 alias: Sorceress arc scoping
+modified_at: 2026-08-23T19:20:15.687Z
+created_at: 2026-08-23T19:20:15.687Z
 ---
-# Sorceress arc scoping
-
 This page contains the rough ideation for [[01KWN86X6NJZMP5ZESZTNDXY5K]].
 
 # Alice - Madness Returns
-
 
 Maybe Nivana meets the Raven in the forest?
 
@@ -55,7 +54,7 @@ What if I shifted the initial political tone of the Nameless City, where magic w
 
 She and her allies succeed in vilifying magic.
 
-Then the future still comes true, her family is damaged, and she unwittingly becomes associated with magic.  The negative press turns on her. 
+Then the future still comes true, her family is damaged, and she unwittingly becomes associated with magic.  The negative press turns on her.
 
 > 💡 When Nivana appeals, pointing to how she was the primary opponent of magic, people will say they don’t know or care about that, all they know are the prominent men who championed her cause and became the faces of the movement.
 
@@ -123,8 +122,19 @@ What is that strategic value?
 
 What is her end game?
 
+# Sister support arc
+
+The original motivation for Nivana turning to magic was to support her bed-ridden sister.
+
+At one point I discarded that idea but now it is viable again and is more attractive than before.
+
+[[01KWN86X6MFZQAJ1V36T9592K5]]
+
 # Foils
 
-- [[01KWN86X6NJZMP5ZESZTNDXY4Z]]
-- [[01KWN86X6NJZMP5ZESZTNDXXXM]]
-- [[01KWN86X6MFZQAJ1V36T959288]]
+* [[01KWN86X6NJZMP5ZESZTNDXY4Z]]
+
+* [[01KWN86X6NJZMP5ZESZTNDXXXM]]
+
+* [[01KWN86X6MFZQAJ1V36T959288]]
+

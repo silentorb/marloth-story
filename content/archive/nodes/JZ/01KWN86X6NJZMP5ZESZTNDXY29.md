@@ -1,14 +1,14 @@
 ---
 title: No oppression
 alias: No oppression
+modified_at: 2026-08-23T19:08:42.897Z
+created_at: 2026-08-23T19:05:28.372Z
 ---
-# No oppression
-
 # No rebel sympathy
 
 Within TWOLD, avoid riling up the audience with rebellious feelings.
 
-Characters can have rebellious feelings, but decouple the audience  from those feelings.
+Characters can have rebellious feelings, but decouple the audience from those feelings.
 
 # Despot sympathy
 
@@ -30,7 +30,7 @@ I live in a rebellious culture that defaults to authority figures being evil.
 
 # Rebellion
 
-[[01KWN86X6MFZQAJ1V36T959288]] 
+[[01KWN86X6MFZQAJ1V36T959288]]
 
 Any rebels in TWOLD will be in the wrong, rebelling where they have no proper justification to do so.
 
@@ -40,10 +40,13 @@ This will help clear the air and strengthen the other issues being addressed.
 
 Previously, my stance on this issue was more extreme, stating that there should be no oppression whatsoever.
 
-But while working on the [[01KWN86X6NJZMP5ZESZTNDXY5K]], I realized I need to be careful to not suggest that all of the oppression she sees is her imagination.  There really are oppressors in the world, and I don’t want to excuse them.
+But while working on the [[01KWN86X6NJZMP5ZESZTNDXY5K]], I realized I need to be careful to not suggest that all of the oppression she sees is her imagination.
+
+There really are oppressors in the world, and I don’t want to excuse them.
 
 I don’t want to suggest that anyone feeling oppressed is simply discontent.
 
 # Repercussions
 
 > 💡 This affects the old Nirvana storyline.  At first glance it demolishes it, but the storyline may still be salvageable, and this requirement actually tempers and solves some of the problems that have blocked it.
+
