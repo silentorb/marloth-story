@@ -2,7 +2,7 @@
  * Legacy export-path hygiene for Marloth — not tome runtime.
  * Used by scripts/check-type-membership.ts and related one-off migrations.
  */
-import type { GraphDatabase, Relationship, Properties } from "../../../tome/packages/tome-db/src/index.ts";
+import type { GraphDatabase, Relationship, Properties } from "../../../tome/packages/tome-db/src/index";
 import {
   findSetEdge,
   findTypeNodeByTitle,
@@ -10,8 +10,8 @@ import {
   loadAssociationsFromContent,
   loadWorkspaceFromContent,
   setTraitPerspectives,
-} from "../../../tome/packages/tome-db/src/index.ts";
-import { resolveContentPath } from "../../../tome/packages/tome-db/src/content/index.ts";
+} from "../../../tome/packages/tome-db/src/index";
+import { resolveContentPath } from "../../../tome/packages/tome-db/src/content/index";
 
 /** Matches tome-flatfile NODE_ID_RE_SRC (ULID entropy). */
 const NODE_ID_RE_SRC = "[0-9A-HJKMNP-TV-Z]{26}";

@@ -14,7 +14,7 @@ import {
   fileFromSeedInputs,
   bodyFromNode,
 } from "tome-db/content";
-import { starterDynamicPropertySeeds } from "./seed-dynamic-properties.ts";
+import { starterDynamicPropertySeeds } from "./seed-dynamic-properties";
 
 const REPO_ROOT = resolve(import.meta.dir, "..");
 const DEFAULT_DB = resolve(REPO_ROOT, "data/marloth.sqlite");

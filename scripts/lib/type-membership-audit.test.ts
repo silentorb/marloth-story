@@ -3,13 +3,13 @@ import { resolve } from "node:path";
 import {
   GraphDatabase,
   typeTableMarkerProperties,
-} from "../../../tome/packages/tome-db/src/index.ts";
-import { openContentGraph } from "../../../tome/packages/tome-db/src/content/index.ts";
+} from "../../../tome/packages/tome-db/src/index";
+import { openContentGraph } from "../../../tome/packages/tome-db/src/content/index";
 import {
   createTestContentFixture,
   destroyTestContentFixture,
   seedTestTableSchema,
-} from "../../../tome/packages/tome-db/src/content/test-helpers.ts";
+} from "../../../tome/packages/tome-db/src/content/test-helpers";
 import {
   expectedTypeDatabaseForPage,
   findMissingTypeMembershipRelationships,

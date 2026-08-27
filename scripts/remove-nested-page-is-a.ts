@@ -8,12 +8,12 @@
 import {
   syncAfterRelationshipsWrite,
   type GraphDatabase,
-} from "../../tome/packages/tome-db/src/index.ts";
+} from "../../tome/packages/tome-db/src/index";
 import {
   defaultDbPathForContent,
   openContentGraph,
   resolveContentPath,
-} from "../../tome/packages/tome-db/src/content/index.ts";
+} from "../../tome/packages/tome-db/src/content/index";
 import { findNestedPageSpuriousTypeMembership } from "./lib/type-membership-audit";
 
 const apply = process.argv.includes("--apply");

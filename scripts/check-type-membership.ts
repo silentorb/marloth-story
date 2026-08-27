@@ -3,13 +3,13 @@
  *
  * Usage: bun run scripts/check-type-membership.ts
  */
-import type { GraphDatabase } from "../../tome/packages/tome-db/src/index.ts";
+import type { GraphDatabase } from "../../tome/packages/tome-db/src/index";
 import {
   defaultDbPathForContent,
   openContentGraph,
   readEnv,
   resolveContentPath,
-} from "../../tome/packages/tome-db/src/content/index.ts";
+} from "../../tome/packages/tome-db/src/content/index";
 import {
   findMissingTypeMembershipRelationships,
   findNestedPageSpuriousTypeMembership,

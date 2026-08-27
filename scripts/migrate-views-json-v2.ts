@@ -6,7 +6,7 @@
  */
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { serializeViewsFile, type ViewRecord, type ViewsFile } from "../../tome/packages/tome-db/src/content/views-file.ts";
+import { serializeViewsFile, type ViewRecord, type ViewsFile } from "../../tome/packages/tome-db/src/content/views-file";
 
 const defaultPath = resolve(import.meta.dir, "../content/model/views.json");
 
