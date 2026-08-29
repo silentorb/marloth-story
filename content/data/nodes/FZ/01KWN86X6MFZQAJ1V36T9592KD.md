@@ -1,10 +1,14 @@
 ---
 title: Sorceress arc scoping
 alias: Sorceress arc scoping
-modified_at: 2026-08-23T19:20:15.687Z
+modified_at: 2026-08-26T00:27:28.417Z
 created_at: 2026-08-23T19:20:15.687Z
 ---
 This page contains the rough ideation for [[01KWN86X6NJZMP5ZESZTNDXY5K]].
+
+# Simplified
+
+[[01M0XQD49G7TDBE58771V0P6T9]]
 
 # Alice - Madness Returns
 

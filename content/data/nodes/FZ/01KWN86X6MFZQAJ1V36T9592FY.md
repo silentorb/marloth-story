@@ -1,20 +1,20 @@
 ---
 title: The four categories of fantasy
 alias: The four categories of fantasy
+modified_at: 2026-08-29T01:16:31.764Z
+created_at: 2026-08-29T01:00:50.367Z
 ---
-# The four categories of fantasy
-
 # Overview
 
 [Rhetorics of Fantasy](https://en.wikipedia.org/wiki/Rhetorics_of_Fantasy)
 
 The four categories of fantasy are:
 
-| Portal | Protagonist enters a fantasy world from the ordinary world |
-| --- | --- |
-| Immersive | Protagonist lives in a fantasy world |
-| Intrusive | Fantasy elements enter the ordinary world |
-| Liminal | Least well defined.  I like to think of it as “tease fantasy” where it is uncertain whether the story actually has fantastic elements. |
+| Portal    | Protagonist enters a fantasy world from the ordinary world                                                                             |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Immersive | Protagonist lives in a fantasy world                                                                                                   |
+| Intrusive | Fantasy elements enter the ordinary world                                                                                              |
+| Liminal   | Least well defined.  I like to think of it as “tease fantasy” where it is uncertain whether the story actually has fantastic elements. |
 
 # The categories used by Marloth
 
@@ -59,3 +59,8 @@ Usually I like the initial pull of liminal fantasy before it ultimately leaves m
 [[01KWN86X6NJZMP5ZESZTNDXY6D]] starts off as liminal fantasy and gradually subverts it.  Within that context, Christianity is the fantasy, and the fantasy is proven to be real.
 
 One of my primary inspirations for that design was the Matrix, where the protagonist awakens to discover that the ordinary world was a dream within a larger and more fantastic reality.
+
+Liminal leaves ambiguity as to what is real and what is fantasy.
+
+> 💡Liminal is the staple fantasy category for Mind Screw stories.
+

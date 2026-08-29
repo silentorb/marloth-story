@@ -1,7 +1,7 @@
 ---
 title: Nivana sorceress arc
 alias: Nivana sorceress arc
-modified_at: 2026-08-23T19:20:36.860Z
+modified_at: 2026-08-27T04:25:02.098Z
 created_at: 2026-08-23T19:19:22.049Z
 ---
 # Overview
@@ -9,7 +9,9 @@ created_at: 2026-08-23T19:19:22.049Z
 The main purpose of this arc is to depict a woman:
 
 * Wrestling with her station as a woman
+
 * Chafing at the leadership of men
+
 * Ultimately finding peace and fulfillment through embracing her natural role as a woman
 
 # Scoping
@@ -34,3 +36,5 @@ This arc has the following stages:
 # Problems
 
 [[01KWN86X6MFZQAJ1V36T95928Z]]
+
+[[01KWN86X6NJZMP5ZESZTNDXXW1]]

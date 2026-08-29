@@ -1,16 +1,20 @@
 ---
 title: Adventure - Restraint and relationship
 alias: Adventure - Restraint and relationship
+modified_at: 2026-08-29T06:44:25.904Z
+created_at: 2026-08-29T06:20:18.424Z
 ---
-# Adventure - Restraint and relationship
+> 💡Related to [[01KWN86X6MFZQAJ1V36T9592ES]].
 
 In a social setting, when a hero and villain meet in the street, they exchange witty banter, then continue on their way.
 
-In an adventure setting, when a hero and villain meet, they fight to the death.
+In an adventure setting, when a hero and villain meet in the street, they fight to the death.
 
-This creates a dilemma for adventure settings.
+This creates a dilemma for [[01KWN86X6MFZQAJ1V36T9592D3]] settings.
 
-Stories are about character and relationships, and simply fighting does not involve much relating to one another.
+Stories are about character and relationships
+
+Simply fighting does not involve much relating to one another.
 
 # Villain monologue
 
@@ -20,19 +24,21 @@ Villain monologues are often mocked, but rarely understood.
 
 The execution may be poor, but the motivation is valid.
 
-Writer’s want the villain to explain things to the hero, and the premise that “the hero is at gunpoint and about to die” is a lazy means of accomplishing that.
+Writer’s want the villains to talk to the hero.
+
+The premise that “the hero is at gunpoint and about to die” is a lazy means of giving the villain and hero a chance to talk.
 
 # Capture
 
-This is the primary cause of capture in stories.
+This is also a common motivation for capture in stories.
 
-Enemies are free to talk if one of them are subdued.
+Enemies are free to talk if one of them is subdued.
 
 # Specific solution examples
 
 ## Batman Returns
 
-One of my favorite scenes in a movie is in Batman Returns.
+One of my favorite scenes in a movie is in [[01KWN86X6NJZMP5ZESZTNDXY5N]].
 
 Batman is in the midst of his second battle with the circus of crime when he comes across Penguin.
 
@@ -58,11 +64,23 @@ Many action genres—especially Manga—involve talking during combat, but no st
 
 Naruto battles are long, complex, and involve a lot of dialogue.
 
-This is part of what led to the popular joke/meme, “Talk no Jutsu”.  Naruto’s most powerful combat move is talking.
+This is part of what led to the popular joke/meme, “Talk no Jutsu”.
+
+Naruto’s most powerful combat move is talking.
 
 > 💡 While this works for Naruto, it’s not really my style.
+>
 > In particular, I don’t want extended combat sequences during which characters could have Naruto-style dialogues.
+>
 > Once combat starts, the calm of society I’m looking for is broken.
+
+## The Good, the Bad, and the Ugly
+
+Many stories could be used as examples for this, but The Good, The Bad, and the Ugly is one of the classic examples of enemies working together for their own personal gain.
+
+This works because the three main characters are both threats to each other, but also essentially utilities.
+
+That creates a tension of risk and reward.
 
 # Specific vs. general solutions
 
@@ -77,3 +95,20 @@ I would like to rely on more general solutions that can provide more mileage.
 # Debate
 
 My main interest in all of this is [[01KWN86X6NJZMP5ZESZTNDXXW7]].
+
+# General solution examples
+
+## Sapphire and Steel
+
+[[01KWN86X6PZXQP43T36924KCSY]] is one of the best shows to counteract this problem.
+
+Sapphire and Steel features surreal, cerebral conflicts where characters can converse not because people are captured, but because most of the methods of combat are so non-violent and slow paced that characters have often have time to converse.
+
+Not to say that every danger in Sapphire and Steel allows relationship.  It has a good mix of slower and more immediate threats.
+
+# Relationship among allies
+
+It's important to note that the problem this page explores only has to do with enemies.
+
+Allies can still relate in adventure settings.
+
