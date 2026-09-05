@@ -1,7 +1,7 @@
 ---
 title: Isolation and society
 alias: Maximize isolation and society
-modified_at: 2026-08-22T03:31:03.378Z
+modified_at: 2026-09-05T19:19:14.149Z
 created_at: 2026-08-21T05:39:26.068Z
 ---
 As much as possible, each scene should either contain [[01KWN86X6NJZMP5ZESZTNDXXWG]] or warm social tones such as [[01KWN86X6NJZMP5ZESZTNDXY1Y]].

@@ -1,7 +1,7 @@
 ---
-title: Society vs Adventure
+title: Society and Adventure
 alias: Society vs Adventure
-modified_at: 2026-08-29T06:47:42.253Z
+modified_at: 2026-09-05T03:49:03.576Z
 created_at: 2026-08-29T06:40:50.755Z
 ---
 [[01M1642X5VN6V9915Y3EH3W1FF]] and [[01KWN86X6MFZQAJ1V36T9592D3]] are two of the core ingredients of Marloth narratives.
@@ -10,9 +10,9 @@ Unfortunately, those two features are natural enemies.
 
 This is the root page for the exploration of how to harmonize those night and day elements.
 
-> 💡 I invested a lot mastering this topic while writing [[01KWN86X6NJZMP5ZESZTNDXY6D]], but that "mastery" barely scratched the surface.
+> 💡 I invested a lot in mastery of this topic while writing [[01KWN86X6NJZMP5ZESZTNDXY6D]], but that "mastery" barely scratched the surface.
 
-> 💡 This issue is a sub-issue of [[01KWN86X6MFZQAJ1V36T95928Q]].
+> 💡 This issue is related to [[01KWN86X6MFZQAJ1V36T95928Q]].
 
 # Conflict matrix
 

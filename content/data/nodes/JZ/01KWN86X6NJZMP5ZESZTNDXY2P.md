@@ -1,7 +1,21 @@
 ---
 title: Action
+modified_at: 2026-09-05T03:47:43.802Z
+created_at: 2026-09-05T03:43:17.727Z
 ---
 One of the [[01KWN86X6MFZQAJ1V36T9592CQ]].
+
+# Awe
+
+The primary purpose of action in Marloth narratives is to assist with generation of [[01M1QTAR0WC9H72CA8GCWK75Q7]].
+
+Action by itself is not a great source of awe, but when combined with the right ingredients, it is a powerful catalyst for awe.
+
+This is essential to keep in mind, because rare are narratives that exclusively use action for such a recipe
+
+When looking at other narratives for inspiration, it is easy to lose sight of this singular goal.
+
+This focus is also especially important when resolving [[01KWN86X6MFZQAJ1V36T9592ES]], because focusing on action purely for the sake of awe helps filter out some of the normal action substance that is incompatible with [[01M1642X5VN6V9915Y3EH3W1FF]].
 
 # Spectacles
 
