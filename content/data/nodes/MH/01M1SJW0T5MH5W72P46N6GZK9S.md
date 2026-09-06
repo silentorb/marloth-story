@@ -1,7 +1,7 @@
 ---
 title: Hollow epic
 created_at: 2026-09-05T20:06:30.469Z
-modified_at: 2026-09-05T20:18:10.440Z
+modified_at: 2026-09-06T00:06:17.301Z
 ---
 Hollow epic is [[01M1SJQDYQRJN8DDM8GZQF3HMF]] without [[01M1QTAR0WC9H72CA8GCWK75Q7]].
 
@@ -26,10 +26,3 @@ Hollywood (Hollow-wood?) was quick to turn that box office success into a mindle
 Some time later, Joss Whedon's execution of *The Avengers* became the template for superhero mashup franchises.
 
 The MCU refined the formula to such a point that it could be applied while sleeping.
-
-# Course correction
-
-I don't want any of that.
-
-For me, epic isn't about making a buck (or in the above cases, many, many bucks).
-

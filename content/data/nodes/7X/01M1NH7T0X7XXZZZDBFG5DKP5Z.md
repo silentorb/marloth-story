@@ -1,7 +1,7 @@
 ---
 title: Notable qualities of Pride and Prejudice
 created_at: 2026-09-04T06:21:01.854Z
-modified_at: 2026-09-05T19:31:37.451Z
+modified_at: 2026-09-06T00:22:26.785Z
 ---
 # Overview
 
@@ -31,7 +31,13 @@ For more information, see [[01M1SF8M0DYSTQZ70B52T3S74V]].
 
 # Close proximity to adversaries
 
-<br />
+Not only is there a high quantity of adversaries, but Elizabeth is regularly in their company and sometimes even dwelling with them.
+
+On of her greatest adversaries is her mother.
+
+Multiple times in the story, her father jokes about how diametrically opposed he and his wife are.
+
+This relates to [[01KWN86X6NJZMP5ZESZTNDXXW3]].
 
 # Background
 

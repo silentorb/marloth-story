@@ -1,7 +1,7 @@
 ---
 title: Analysis of Dark Souls series
 created_at: 2026-06-17T01:50:07.429Z
-modified_at: 2026-06-17T20:44:56.080Z
+modified_at: 2026-09-06T00:13:16.178Z
 ---
 # Overview
 
@@ -57,6 +57,8 @@ I am sensitive to continuity in general so I think this kind of layout resonates
 The Souls games will occasionally feature locations where a monster that is trying to kill you is right next to a character you can talk to.
 
 It's very [[01KWN86X6NJZMP5ZESZTNDXY71]] to be fighting for your life and hear a merchant or blacksmith muttering to themselves as they work nearby.
+
+This is an aspect of [[01M1T0ZBN914Q52QVY7P522JD2]].
 
 ## Odd location
 
