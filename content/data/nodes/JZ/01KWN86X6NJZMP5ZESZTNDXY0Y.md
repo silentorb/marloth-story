@@ -1,12 +1,20 @@
 ---
 title: A wholesome marriage is beautiful
 alias: A wholesome marriage is beautiful
-modified_at: 2026-06-28T17:30:01.391Z
+modified_at: 2026-09-07T02:59:28.344Z
 created_at: 2026-06-28T04:31:36.575Z
 ---
 # Overview
 
 I want to encourage the audience to value [[01KWN86X6MFZQAJ1V36T959283]], but not just any kind of marriage, marriage built on [[01KWN86X6NJZMP5ZESZTNDXY5W]] commitment.
+
+# Motivation
+
+Marriage has rarely been in the forefront of narratives throughout history, especially in fantasy.
+
+The majority of romance stories are premarital.  The story ends when the couple is married, if not before that.
+
+Some of the reasons for this are noted in [[01KWN86X6MFZQAJ1V36T9592F6]].
 
 # Primary depiction
 
@@ -19,7 +27,7 @@ Living life together as a team.
 1. A husband [[01KWN86X6MFZQAJ1V36T9592A4]]
 2. A wife [[01KWN86X6NJZMP5ZESZTNDXXW5]]
 3. A home [[01KWN86X6MFZQAJ1V36T9592EM]]
-4. The truth 
+4. The truth
 
 <br />
 
@@ -50,3 +58,4 @@ Living life together as a team.
 > That is still a goal for these narratives, but it is a little shallow and incomplete.
 > I could depict a reckless couple running around having fun.
 > I don’t simply want people to value any marriage, I want people to value a healthy marriage.
+

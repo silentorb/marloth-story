@@ -1,9 +1,11 @@
 ---
 title: Minimize exceptional circumstances
 alias: Minimize exceptional circumstances
-modified_at: 2026-07-01T14:38:56.045Z
+modified_at: 2026-09-07T02:02:20.391Z
 created_at: 2026-07-01T14:36:54.475Z
 ---
+> 💡This relates to [[01KWN86X6NJZMP5ZESZTNDXXTX]].
+
 I want to explore timeless, common situations.
 
 > What has been is what will be,

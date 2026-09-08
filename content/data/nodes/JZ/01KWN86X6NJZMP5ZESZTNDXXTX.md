@@ -1,8 +1,10 @@
 ---
 title: Special vs. Common
 alias: Special vs. Common
+modified_at: 2026-09-07T02:04:17.377Z
+created_at: 2026-09-07T02:03:12.653Z
 ---
-# Special vs. Common
+# Overview
 
 Modern media—especially modern fantasy media—has increasingly relied on the message of, “You are special.”
 
@@ -64,32 +66,9 @@ Those distinctions and what led to them are not random or mysterious, they are s
 
 But when a story claims that the most brilliant computer hacker in the entire world is a punk teenager, that should raise serious doubts and questions as to whether such a claim is valid.
 
-# Batman and the battle for Gotham City
+# Examples
 
-[Batman (1989)](../../Inspirations/Inspirations/Batman%20(1989)%20136bf2ccc849460a914cad03bb8dc541.md) has a fable quality to it.  (Tim Burton has said he wanted the Batman movies to be fables to some degree.)
-
-The movie feels like Batman is the only hero in the world, and the Joker is the only villain.
-
-This isn’t uncommon with superhero stories, but Batman+Gotham seems to generally handle that better than most other superheroes and their cities, and [Batman (1989)](../../Inspirations/Inspirations/Batman%20(1989)%20136bf2ccc849460a914cad03bb8dc541.md) is one of the best examples of that.
-
-Within the context of that movie, the exaggerated specialness doesn’t feel arrogant because the context is so surreal.
-
-For one, there is never any mention of a world outside Gotham City.
-
-Gotham City feels like its own pocket universe.
-
-Contrast that with the Dark Knight trilogy.
-
-In the Dark Knight trilogy, Christopher Nolan tried to make the Batman mythology more grounded.
-
-But in doing so, it becomes a harder sell to to say Batman is Gotham’s only hope.
-
-In the trilogy’s defense, much of the plot is spent making a case for how Batman can be so amazing and the villains so unstoppable by any forces other than Batman.
-
-> 💡 As a quick aside, here’s my ranking of the Dark Knight trilogy:
-> 1. First movie - Solid
-> 2. Second movie - Amazing
-> 3. Third movie - Forgettable
+[[01M1WSP8VNBKYSBFJHSJ56NZ70]].
 
 # I’m not special, but he whom I serve is
 
@@ -98,14 +77,6 @@ In the trilogy’s defense, much of the plot is spent making a case for how Batm
 # Effective unique roles
 
 However, there are cases where unique roles don’t feel narcissistic.
-
-## Keymaker
-
-One of my favorite cases of a healthy and well implemented unique role is the Keymaker in the *Matrix Reloaded*.
-
-As far as the narrative goes, the Keymaker is the only character in the universe who can perform his particular roles, yet he is such a humble servant.
-
-His role is low key and doesn’t involve much screen time, yet he is one of the most memorable aspects of that movie (at least for me).
 
 # Conclusion: Special responsibly
 
