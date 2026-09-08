@@ -75,11 +75,9 @@ Replace hardcoded array in [`quick-links-nav.ts`](../../packages/tome-editor/src
 
 **After:**
 
-- Keep `HOME_ICON`, `VIEW_ICONS`, and `SidebarNodeLink` type
-- Export helpers:
-  - `buildQuickLinkIconMaps(links: WorkspaceQuickLink[]): { byNodeId, byLabel }`
-  - Default empty maps when links missing
-- [`SidePanel.tsx`](../../packages/tome-editor/src/webview/components/SidePanel.tsx) maps `workspace.quickLinks` → `QuickLinksPanel` (field rename: `nodeId` → component `id` prop)
+- Keep `HOME_ICON`, `VIEW_ICONS`
+- [`SidePanel.tsx`](../../packages/tome-editor/src/webview/components/SidePanel.tsx) composes the **Primary panel** (`PrimarySidePanel`: Home / Search / Graph Explorer / New page) and maps `workspace.quickLinks` → `QuickLinksPanel` (`nodeId` + `label` only)
+- Collapsed sidebar shows only the Primary panel; Quick Links / Recent are expanded-only
 
 Remove `SIDEBAR_NODE_LINKS` export once all callers use workspace data.
 
@@ -87,8 +85,8 @@ Remove `SIDEBAR_NODE_LINKS` export once all callers use workspace data.
 
 [`document-icon.ts`](../../packages/tome-editor/src/webview/document-icon.ts):
 
-- Accept `defaultDocumentIcon` from workspace branding (fallback `"M"`)
-- Build `SIDEBAR_ICON_BY_*` from workspace links passed in `DocumentIconContext` instead of module-level constants
+- Accept `defaultDocumentIcon` from workspace branding (package fallback `"T"`)
+- Resolve from Graph Explorer / home / leading page emoji / branding — not quick-link icons
 
 ### 7. Archive UX copy
 
@@ -105,7 +103,7 @@ Example message: `Archive "${displayTitle}"? It will be moved under ${archiveHub
 | --- | --- |
 | New `workspace-api.test.ts` | `GET /api/workspace` returns seeded fixture |
 | [`SidePanel.test.tsx`](../../packages/tome-editor/tests/webview/components/SidePanel.test.tsx) | Pass mock workspace links |
-| [`document-icon.test.ts`](../../packages/tome-editor/tests/webview/document-icon.test.ts) | Use workspace branding + links |
+| [`document-icon.test.ts`](../../packages/tome-editor/tests/webview/document-icon.test.ts) | Use workspace branding |
 | [`node-lifecycle-api.test.ts`](../../packages/tome-editor/tests/api/node-lifecycle-api.test.ts) | Seed `workspace.json` in fixture |
 | [`shared/types.test.ts`](../../packages/tome-editor/tests/shared/types.test.ts) | Remove reliance on `HOME_NODE_ID` if deleted |
 

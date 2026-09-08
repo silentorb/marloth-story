@@ -15,53 +15,43 @@
   "quickLinks": [
     {
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7W",
-      "label": "Features",
-      "icon": "★"
+      "label": "Features"
     },
     {
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXYZ",
-      "label": "Solutions",
-      "icon": "✓"
+      "label": "Solutions"
     },
     {
       "nodeId": "01KWN86X6MFZQAJ1V36T9592EA",
-      "label": "Scenes",
-      "icon": "▶"
+      "label": "Scenes"
     },
     {
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXW0",
-      "label": "Inspirations",
-      "icon": "✦"
+      "label": "Inspirations"
     },
     {
       "nodeId": "01KWN86X6PZXQP43T36924KCTB",
-      "label": "Characters",
-      "icon": "◎"
+      "label": "Characters"
     },
     {
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY7Z",
-      "label": "Locations",
-      "icon": "⌖"
+      "label": "Locations"
     },
     {
       "nodeId": "01KWN86X6MFZQAJ1V36T9592DE",
-      "label": "Tensions",
-      "icon": "▦"
+      "label": "Tensions"
     },
     {
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXY0N",
-      "label": "Themes",
-      "icon": "▦"
+      "label": "Themes"
     },
     {
       "nodeId": "01KWN86X6NJZMP5ZESZTNDXXZH",
-      "label": "Articles",
-      "icon": "§"
+      "label": "Articles"
     },
     {
       "nodeId": "01KWN86X6MFZQAJ1V36T9592A9",
-      "label": "Arcs",
-      "icon": "▦"
+      "label": "Arcs"
     }
   ],
   "branding": {

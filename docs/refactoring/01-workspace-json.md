@@ -27,17 +27,15 @@ Create `content/model/workspace.json` with Marloth corpus values:
   "staticSite": {
     "homeNodeId": "5bfc10918fa24207879d68a030927dd3"
   },
-  "sidebar": {
-    "links": [
-      { "nodeId": "dd0de9867cc345b898929306bdf9fc83", "label": "Features", "icon": "★" },
-      { "nodeId": "528384943746443a9c89699b57e3bbec", "label": "Solutions", "icon": "✓" },
-      { "nodeId": "204dba198db74611b0b49a98dd53e8f5", "label": "Scenes", "icon": "▶" },
-      { "nodeId": "2eea538996934ce8abafc27132e576c1", "label": "Inspirations", "icon": "✦" },
-      { "nodeId": "5a585a2a311c4768be4a81f27bdcdfb4", "label": "Articles", "icon": "§" },
-      { "nodeId": "f984a934ad644f8480b0f8f51449569f", "label": "Characters", "icon": "◎" },
-      { "nodeId": "df096ab26e8347e6992e95698345aad0", "label": "Locations", "icon": "⌖" }
-    ]
-  },
+  "quickLinks": [
+      { "nodeId": "dd0de9867cc345b898929306bdf9fc83", "label": "Features" },
+      { "nodeId": "528384943746443a9c89699b57e3bbec", "label": "Solutions" },
+      { "nodeId": "204dba198db74611b0b49a98dd53e8f5", "label": "Scenes" },
+      { "nodeId": "2eea538996934ce8abafc27132e576c1", "label": "Inspirations" },
+      { "nodeId": "5a585a2a311c4768be4a81f27bdcdfb4", "label": "Articles" },
+      { "nodeId": "f984a934ad644f8480b0f8f51449569f", "label": "Characters" },
+      { "nodeId": "df096ab26e8347e6992e95698345aad0", "label": "Locations" }
+  ],
   "branding": {
     "appTitle": "Tome",
     "defaultDocumentIcon": "M",
@@ -59,7 +57,7 @@ Create `content/model/workspace.json` with Marloth corpus values:
 | `protectedNodeIds` | yes | Delete/archive protection (`node-lifecycle.ts`) |
 | `graphExplorer.defaultAnchorNodeId` | yes | Graph Explorer LOD anchor default |
 | `staticSite.homeNodeId` | yes | Astro landing page (`generate-data.ts`) |
-| `quickLinks` | yes (may be `[]`) | Session 02 editor sidebar |
+| `quickLinks` | yes (may be `[]`) | Session 02 editor sidebar (`nodeId` + `label`) |
 | `branding` | no | Session 02/05 UI strings and favicon |
 | `legacy.exportPathPrefix` | no | Session 04 type-membership audit |
 | `legacy.archivePathPrefix` | no | Legacy migration scripts, `isLegacyArchivedPath` |
