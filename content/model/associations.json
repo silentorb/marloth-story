@@ -61,6 +61,9 @@
       "perspectives": [
         "Enemies",
         "Enemies"
+      ],
+      "traits": [
+        "symmetric"
       ]
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPK": {
@@ -117,7 +120,10 @@
         "1": {
           "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
         }
-      }
+      },
+      "traits": [
+        "symmetric"
+      ]
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPR": {
       "perspectives": [
@@ -193,6 +199,9 @@
       "perspectives": [
         "Neighbor",
         "Neighbor"
+      ],
+      "traits": [
+        "symmetric"
       ]
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPY": {

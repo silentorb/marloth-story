@@ -10,25 +10,29 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ0"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ0",
+          "endpoint": 0
         },
         {
           "key": "characters",
           "name": "👥 Characters",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPP"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPP",
+          "endpoint": 0
         },
         {
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ0"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ0",
+          "endpoint": 1
         },
         {
           "key": "enemies",
           "name": "Enemies",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPH"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPH",
+          "endpoint": 0
         },
         {
           "key": "type",
@@ -48,7 +52,8 @@
           "key": "parts_database",
           "name": "Parts database",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ5"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ5",
+          "endpoint": 0
         },
         {
           "key": "order",
@@ -64,25 +69,29 @@
           "key": "characters",
           "name": "👥 Characters",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ3"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ3",
+          "endpoint": 0
         },
         {
           "key": "features",
           "name": "☑️ Features",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ4"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ4",
+          "endpoint": 0
         },
         {
           "key": "solutions",
           "name": "🦄 Solutions",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQK"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQK",
+          "endpoint": 0
         },
         {
           "key": "scenes",
           "name": "🌌 Scenes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQD"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQD",
+          "endpoint": 0
         }
       ]
     },
@@ -101,7 +110,8 @@
           "key": "monsters",
           "name": "Monsters",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPV"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPV",
+          "endpoint": 0
         },
         {
           "key": "plot_is_driven_by_mc_desire",
@@ -113,43 +123,50 @@
           "key": "pacing",
           "name": "Pacing",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPZ"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPZ",
+          "endpoint": 0
         },
         {
           "key": "traversal_reasons",
           "name": "Traversal reasons",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQQ"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQQ",
+          "endpoint": 0
         },
         {
           "key": "story_scale",
           "name": "Story scale",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQN"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQN",
+          "endpoint": 0
         },
         {
           "key": "type",
           "name": "Type",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ6"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ6",
+          "endpoint": 0
         },
         {
           "key": "traversal_types",
           "name": "Traversal types",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQR"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQR",
+          "endpoint": 0
         },
         {
           "key": "features",
           "name": "Features",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPR"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPR",
+          "endpoint": 0
         },
         {
           "key": "solutions",
           "name": "Solutions",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQH"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQH",
+          "endpoint": 1
         }
       ]
     },
@@ -165,13 +182,15 @@
           "key": "dependencies",
           "name": "Dependencies",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPD"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPD",
+          "endpoint": 1
         },
         {
           "key": "dependents",
           "name": "Dependents",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPD"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPD",
+          "endpoint": 0
         }
       ]
     },
@@ -181,7 +200,8 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQF"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQF",
+          "endpoint": 0
         },
         {
           "key": "priority",
@@ -193,43 +213,50 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQF"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQF",
+          "endpoint": 1
         },
         {
           "key": "features",
           "name": "Features",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQG"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQG",
+          "endpoint": 0
         },
         {
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQH"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQH",
+          "endpoint": 0
         },
         {
           "key": "bible_passages",
           "name": "Bible passages",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQE"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQE",
+          "endpoint": 0
         },
         {
           "key": "scenes",
           "name": "🌌 Scenes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQM"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQM",
+          "endpoint": 0
         },
         {
           "key": "products",
           "name": "Products",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQK"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQK",
+          "endpoint": 1
         },
         {
           "key": "scenes_2",
           "name": "Scenes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQM"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQM",
+          "endpoint": 0
         }
       ]
     },
@@ -239,7 +266,8 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQQ"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQQ",
+          "endpoint": 1
         },
         {
           "key": "notes",
@@ -254,7 +282,8 @@
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQC"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQC",
+          "endpoint": 0
         },
         {
           "key": "tags",
@@ -279,7 +308,8 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPZ"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPZ",
+          "endpoint": 1
         }
       ]
     },
@@ -289,7 +319,8 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQR"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQR",
+          "endpoint": 1
         }
       ]
     },
@@ -299,31 +330,36 @@
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPM"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPM",
+          "endpoint": 0
         },
         {
           "key": "products",
           "name": "Products",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ4"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ4",
+          "endpoint": 1
         },
         {
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPM"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPM",
+          "endpoint": 1
         },
         {
           "key": "conflicts",
           "name": "Conflicts",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPG"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPG",
+          "endpoint": 0
         },
         {
           "key": "bible_passages",
           "name": "Bible passages",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPK"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPK",
+          "endpoint": 0
         },
         {
           "key": "priority",
@@ -335,13 +371,15 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPR"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPR",
+          "endpoint": 1
         },
         {
           "key": "solutions",
           "name": "Solutions",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQG"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQG",
+          "endpoint": 1
         },
         {
           "key": "tags",
@@ -375,13 +413,15 @@
           "key": "features",
           "name": "☑️ Features",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPK"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPK",
+          "endpoint": 1
         },
         {
           "key": "solutions",
           "name": "Solutions",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQE"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQE",
+          "endpoint": 1
         },
         {
           "key": "verses",
@@ -412,7 +452,8 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQN"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQN",
+          "endpoint": 1
         }
       ]
     },
@@ -422,7 +463,8 @@
           "key": "products",
           "name": "Products",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ3"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ3",
+          "endpoint": 1
         },
         {
           "key": "variants",
@@ -433,13 +475,15 @@
           "key": "character_attributes",
           "name": "Character Attributes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPE"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPE",
+          "endpoint": 0
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ8"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ8",
+          "endpoint": 0
         },
         {
           "key": "personality",
@@ -450,7 +494,8 @@
           "key": "groups",
           "name": "Groups",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPP"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPP",
+          "endpoint": 1
         }
       ]
     },
@@ -460,7 +505,8 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPV"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPV",
+          "endpoint": 1
         },
         {
           "key": "status",
@@ -476,25 +522,29 @@
           "key": "part",
           "name": "Part",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQB"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQB",
+          "endpoint": 0
         },
         {
           "key": "characters",
           "name": "📁 Characters",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ8"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ8",
+          "endpoint": 1
         },
         {
           "key": "solutions",
           "name": "Solutions",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQM"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQM",
+          "endpoint": 1
         },
         {
           "key": "location",
           "name": "📁 Location",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQA"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQA",
+          "endpoint": 0
         },
         {
           "key": "order",
@@ -505,7 +555,8 @@
           "key": "product",
           "name": "Product",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQD"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQD",
+          "endpoint": 1
         }
       ]
     },
@@ -515,31 +566,36 @@
           "key": "parents",
           "name": "Parents",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPS"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPS",
+          "endpoint": 1
         },
         {
           "key": "children",
           "name": "Children",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPS"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPS",
+          "endpoint": 0
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQA"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQA",
+          "endpoint": 1
         },
         {
           "key": "neighbor",
           "name": "Neighbor",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPX"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPX",
+          "endpoint": 0
         },
         {
           "key": "themes",
           "name": "Themes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQP"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQP",
+          "endpoint": 0
         }
       ]
     },
@@ -559,13 +615,15 @@
           "key": "features_test",
           "name": "Features test",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ9"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ9",
+          "endpoint": 0
         },
         {
           "key": "parts_test",
           "name": "Parts test",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQC"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQC",
+          "endpoint": 1
         },
         {
           "key": "tags",
@@ -580,7 +638,8 @@
           "key": "inspirations",
           "name": "Inspirations",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ6"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ6",
+          "endpoint": 1
         }
       ]
     },
@@ -618,13 +677,15 @@
           "key": "products",
           "name": "📚 Products",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ5"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ5",
+          "endpoint": 1
         },
         {
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQB"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQB",
+          "endpoint": 1
         }
       ]
     },
@@ -634,7 +695,8 @@
           "key": "characters",
           "name": "👥 Characters",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPE"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPE",
+          "endpoint": 1
         }
       ]
     },
@@ -644,7 +706,8 @@
           "key": "motivation",
           "name": "☑️ Motivation",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPW"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKPW",
+          "endpoint": 0
         },
         {
           "key": "priority",
@@ -680,7 +743,8 @@
           "key": "scenes",
           "name": "Scenes",
           "type": "relation",
-          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ9"
+          "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ9",
+          "endpoint": 1
         },
         {
           "key": "tags",
