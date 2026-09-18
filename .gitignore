@@ -30,6 +30,7 @@ content/.obsidian/
 
 # SQLite cache (source of truth is content/)
 data/tome.sqlite
+data/tome-profiling.sqlite
 data/*.sqlite-wal
 data/*.sqlite-shm
 packages/**/data/*.sqlite
