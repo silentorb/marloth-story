@@ -421,7 +421,24 @@
     {
       "nodeId": "01KWN86X6MFZQAJ1V36T9592EA",
       "association": "01KXBNPNJDENZ9BXN5BYZ7JKPY",
-      "generator": "scenes-by-book"
+      "presentation": {
+        "scope": {
+          "memberToScopeComposite": "01KXBNPNJDENZ9BXN5BYZ7JKQD",
+          "excludeColumnKeys": ["product"]
+        },
+        "groups": {
+          "memberToGroupComposite": "01KXBNPNJDENZ9BXN5BYZ7JKQB",
+          "groupTypeDatabaseId": "01KWN86X6NJZMP5ZESZTNDXXZQ",
+          "groupToScopeComposite": "01KXBNPNJDENZ9BXN5BYZ7JKQ5",
+          "unassignedGroupTitle": "Unassigned",
+          "canonicalGroupByTitle": true,
+          "excludeColumnKeys": ["part"]
+        },
+        "sequence": {
+          "excludeColumnKeys": ["order"]
+        },
+        "excludeColumnKeys": ["status"]
+      }
     },
     {
       "id": "twold",
