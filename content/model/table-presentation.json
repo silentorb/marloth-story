@@ -16,7 +16,7 @@
         "canonicalGroupByTitle": true,
         "excludeColumnKeys": ["part"]
       },
-      "reorder": {
+      "sequence": {
         "excludeColumnKeys": ["order"]
       },
       "columnViewName": "TWOLD Active",
