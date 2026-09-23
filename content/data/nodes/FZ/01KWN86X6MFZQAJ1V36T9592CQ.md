@@ -1,7 +1,7 @@
 ---
-title: |-
-  Triad of narrative modes
-  Triad of narrative modes
+title: Triad of narrative modes
+modified_at: 2026-09-22T23:48:54.204Z
+created_at: 2026-09-22T23:48:54.204Z
 ---
 > 💡I'm certain I've written this down before but I can't find it anywhere.
 

@@ -1,6 +1,8 @@
 ---
 title: Peace in the eye of the storm
 alias: Peace in the eye of the storm
+created_at: 2026-09-21T03:27:09.460Z
+modified_at: 2026-09-21T03:27:15.230Z
 ---
 The main characters should have a balance of troubles and contentment.
 

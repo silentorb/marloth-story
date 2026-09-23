@@ -1,7 +1,7 @@
 ---
 title: Batman Returns character analysis
 created_at: 2026-08-20T03:49:48.720Z
-modified_at: 2026-08-21T05:33:18.599Z
+modified_at: 2026-09-21T03:05:04.107Z
 ---
 > 💡I'm sure I documented at least some of this in the past but can't find it anywhere so am documenting it again (though in more detail than I remember).
 
@@ -20,15 +20,6 @@ However, it is derailed half-way through by Tim Burton's need to always have a m
 As it is, [[01KWN86X6NJZMP5ZESZTNDXY5N]] is a flawed masterpiece.
 
 In particular, its organization of characters presents a valuable example of how precise organization can allow juggling of story elements normally seen as impractical to combine.
-
-# Enter the matrix
-
-<br />
-
-| B      | <br /> | <br /> |
-| :----- | :----- | :----- |
-| <br /> | <br /> | <br /> |
-| <br /> | <br /> | <br /> |
 
 # The relationships
 
@@ -55,4 +46,3 @@ Catwoman is a criminal, but Penguin is pure evil, and ends up trumping her in wi
 ## Batman and Penguin
 
 Batman and Penguin are the one straightforward hero vs. villain relationship.
-

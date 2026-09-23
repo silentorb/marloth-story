@@ -28,6 +28,16 @@
       "editorModule": "tome-sequencing/editor",
       "htmlModule": "tome-sequencing/html",
       "serverModule": "tome-sequencing/server"
+    },
+    {
+      "id": "tome-search-like",
+      "enabled": true,
+      "searcherModule": "tome-search-like/search"
+    },
+    {
+      "id": "tome-search-sqlite",
+      "enabled": true,
+      "searcherModule": "tome-search-sqlite/search"
     }
   ],
   "components": [
@@ -66,6 +76,23 @@
       "label": "Timeline",
       "enabled": true,
       "slashMenu": { "group": "custom", "order": 50 }
+    },
+    {
+      "id": "tome-search-sqlite.searcher",
+      "extensionId": "tome-search-sqlite",
+      "kind": "searcher",
+      "implementationId": "tome-search-sqlite",
+      "label": "SQLite FTS5 search",
+      "enabled": true,
+      "params": { "dataStoreId": "fts" }
+    },
+    {
+      "id": "tome-search-like.searcher",
+      "extensionId": "tome-search-like",
+      "kind": "searcher",
+      "implementationId": "tome-search-like",
+      "label": "SQL LIKE search",
+      "enabled": false
     }
   ]
 }
