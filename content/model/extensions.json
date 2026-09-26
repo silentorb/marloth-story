@@ -1,5 +1,9 @@
 {
   "version": 1,
+  "search": {
+    "title": "tome-search-like.searcher",
+    "content": "tome-search-sqlite.searcher"
+  },
   "extensions": [
     {
       "id": "spatial-graph",
@@ -92,7 +96,7 @@
       "kind": "searcher",
       "implementationId": "tome-search-like",
       "label": "SQL LIKE search",
-      "enabled": false
+      "enabled": true
     }
   ]
 }
