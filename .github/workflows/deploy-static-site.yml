@@ -37,11 +37,11 @@ jobs:
           path: tome
           ref: ${{ vars.TOME_REF || 'main' }}
 
-      - name: Checkout imp
+      - name: Checkout imp-ts
         uses: actions/checkout@v4
         with:
           repository: silentorb/imp-ts
-          path: imp
+          path: imp-ts
           ref: ${{ vars.IMP_REF || 'main' }}
 
       - name: Set up Docker Buildx
@@ -60,7 +60,7 @@ jobs:
       - name: Build static site
         env:
           TOME_ROOT: ${{ github.workspace }}/tome
-          IMP_ROOT: ${{ github.workspace }}/imp
+          IMP_ROOT: ${{ github.workspace }}/imp-ts
         run: bash scripts/ci-build-static-site.sh --run-only
 
       - name: Configure AWS credentials

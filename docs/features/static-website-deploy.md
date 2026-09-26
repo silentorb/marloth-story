@@ -15,7 +15,7 @@ On pushes to `main` (and manual dispatch), a GitHub Actions workflow checks out 
 ## Requirements
 
 - **Must** build with the same devcontainer image used for local development (Bun + pinned lockfile from `silentorb/tome`).
-- **Must** checkout `silentorb/tome` and `silentorb/imp-ts` alongside marloth-story in CI (build tooling lives in the tome repo; tome workspaces resolve Imp from `../imp/packages/*`).
+- **Must** checkout `silentorb/tome` and `silentorb/imp-ts` alongside marloth-story in CI (build tooling lives in the tome repo; tome workspaces resolve Imp from `../imp-ts/packages/*`).
 - **Must** run `tome-static-site` tests and `web:build` to produce `dist/web/` (see [`static-website.md`](../tome/docs/features/static-website.md) in the tome repo).
 - **Must** deploy on relevant changes to `main` via path filters (content, marloth CI scripts, devcontainer, workflow).
 - **Must** replace bucket contents on each deploy (`aws s3 sync --delete`).
@@ -33,9 +33,9 @@ Building inside the devcontainer image keeps CI aligned with local dev (same Bun
 ## Behavior / pipeline
 
 1. **Trigger:** push to `main` matching path filters, or `workflow_dispatch`.
-2. **Checkout** marloth-story, `silentorb/tome` (into `./tome`; ref from `vars.TOME_REF` or `main`), and `silentorb/imp-ts` (into `./imp`; ref from `vars.IMP_REF` or `main`).
+2. **Checkout** marloth-story, `silentorb/tome` (into `./tome`; ref from `vars.TOME_REF` or `main`), and `silentorb/imp-ts` (into `./imp-ts`; ref from `vars.IMP_REF` or `main`).
 3. **Build devcontainer image** from `.devcontainer/Dockerfile` (Docker layer cache via GHA).
-4. **Build in container:** bind-mount marloth, tome (`/workspaces/tome`), and Imp (`/workspaces/imp`), `bun install --frozen-lockfile` in Imp then tome workspace, run static-site tests, `bun run web:build` with `--content-dir` pointing at marloth `content/`.
+4. **Build in container:** bind-mount marloth, tome (`/workspaces/tome`), and Imp (`/workspaces/imp-ts`), `bun install --frozen-lockfile` in Imp then tome workspace, run static-site tests, `bun run web:build` with `--content-dir` pointing at marloth `content/`.
 5. **Assume IAM role** via GitHub OIDC (`aws-actions/configure-aws-credentials`).
 6. **Sync to S3:** `aws s3 sync dist/web/ s3://$S3_BUCKET/ --delete`.
 7. **Invalidate CloudFront:** `aws cloudfront create-invalidation --paths "/*"`.
@@ -48,7 +48,7 @@ Concurrency group `deploy-static-site` with `cancel-in-progress: true` so overla
 | --- | --- |
 | Design corpus | `content/` (git-tracked, marloth-story) |
 | Build tooling | `silentorb/tome` (`packages/tome-static-site/`, `packages/tome-db/`, `bun.lock`) |
-| Imp workspace packages | `silentorb/imp-ts` (`../imp/packages/*` from the tome checkout) |
+| Imp workspace packages | `silentorb/imp-ts` (`../imp-ts/packages/*` from the tome checkout) |
 | Devcontainer image | `.devcontainer/Dockerfile` |
 
 | Output | Destination |

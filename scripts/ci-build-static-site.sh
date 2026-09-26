@@ -6,9 +6,9 @@ MARLOTH_CI_IMAGE="${MARLOTH_CI_IMAGE:-marloth-ci:local}"
 MARLOTH_CI_WORKSPACE="${MARLOTH_CI_WORKSPACE:-/workspaces/marloth-story}"
 TOME_ROOT="${TOME_ROOT:-${ROOT}/tome}"
 TOME_CI_WORKSPACE="${TOME_CI_WORKSPACE:-/workspaces/tome}"
-# Tome workspaces include ../imp/packages/*; Imp must sit next to tome inside the container.
-IMP_ROOT="${IMP_ROOT:-$(dirname "${TOME_ROOT}")/imp}"
-IMP_CI_WORKSPACE="${IMP_CI_WORKSPACE:-/workspaces/imp}"
+# Tome workspaces include ../imp-ts/packages/*; Imp must sit next to tome inside the container.
+IMP_ROOT="${IMP_ROOT:-$(dirname "${TOME_ROOT}")/imp-ts}"
+IMP_CI_WORKSPACE="${IMP_CI_WORKSPACE:-/workspaces/imp-ts}"
 
 usage() {
   cat <<EOF
@@ -17,7 +17,7 @@ Usage: ci-build-static-site.sh [--run-only | -h | --help]
 Build the static site the same way GitHub Actions does.
 
 Requires tome at TOME_ROOT (default: ./tome) and imp-ts at IMP_ROOT
-(default: sibling of TOME_ROOT, ./imp).
+(default: sibling of TOME_ROOT, ./imp-ts).
 
   (default)   docker build + docker run
   --run-only  docker run only (CI after build-push-action)
@@ -48,9 +48,9 @@ require_tome() {
 }
 
 require_imp() {
-  if [[ ! -d "${IMP_ROOT}/packages/imp-spec" ]]; then
-    echo "imp repo not found at ${IMP_ROOT}" >&2
-    echo "Checkout silentorb/imp-ts into ./imp or set IMP_ROOT (tome workspaces resolve ../imp/packages/*)." >&2
+  if [[ ! -d "${IMP_ROOT}/packages/imp-core-types" ]]; then
+    echo "imp-ts repo not found at ${IMP_ROOT}" >&2
+    echo "Checkout silentorb/imp-ts into ./imp-ts or set IMP_ROOT (tome workspaces resolve ../imp-ts/packages/*)." >&2
     exit 1
   fi
 }
@@ -73,7 +73,7 @@ run_build() {
   echo "Building static site in ${MARLOTH_CI_IMAGE}"
   echo "  marloth: ${ROOT} → ${MARLOTH_CI_WORKSPACE}"
   echo "  tome:    ${TOME_ROOT} → ${TOME_CI_WORKSPACE}"
-  echo "  imp:     ${IMP_ROOT} → ${IMP_CI_WORKSPACE}"
+  echo "  imp-ts:  ${IMP_ROOT} → ${IMP_CI_WORKSPACE}"
 
   docker run --rm \
     --user "$(id -u):$(id -g)" \
