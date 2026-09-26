@@ -1,9 +1,9 @@
 ---
 title: Marloth book style overview
 alias: Marloth book style overview
+created_at: 2026-09-26T18:37:19.939Z
+modified_at: 2026-09-26T19:31:05.561Z
 ---
-# Marloth book style overview
-
 While there are common themes across the Marloth setting, each Marloth book has a distinctive sub-style.
 
 This article provides a high-level summary of the distinguishing style of each book.
@@ -27,6 +27,7 @@ I always pictured the second to be the grungiest and gritty of the series.
 Prominent themes and elements:
 
 - Wilderness
+- Grungy
 - Working class
 - Superstition
 - Survival
@@ -41,13 +42,14 @@ Prominent themes and elements:
 
 - Noir
 - Pulp
-- Neo Tokyo
-- Neon
+- Neo Tokyo / Neon
 - Nightlife
 - High society
-- Secret identity
+- Secret identities / super heroes
 - Cityscapes
 - Skyscrapers
 - More modern / anachronistic
 - Gothic
 - Parenthood
+- [[01KWN86X6MFZQAJ1V36T9592A7]] offices
+

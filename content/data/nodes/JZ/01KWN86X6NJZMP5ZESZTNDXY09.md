@@ -1,9 +1,9 @@
 ---
 title: Contented impetus
 alias: Contented impetus
+created_at: 2026-09-26T03:12:18.057Z
+modified_at: 2026-09-26T03:12:29.428Z
 ---
-# Contented impetus
-
 # Background
 
 The first version of the first book revolved around discontent.  It was about trying to escape a world that had little good in it.  It built up to a beautiful ending, but that was the last 1% of the story.
@@ -30,7 +30,9 @@ Thus are born narratives where the main characters go from one rotten situation 
 
 I want TWOLD to have a more upbeat foundation.
 
-For the second book, I want minimal scenes and story arcs that are based primarily on discontent.  The main characters can have thorns and thistles they are dealing with, but I also want them to be largely happy.
+For the second book, I want minimal scenes and story arcs that are based primarily on discontent.
+
+The main characters should have thorns and thistles they are dealing with, but I also want them to be largely happy.
 
 The setting will still be grim, but the main characters will be generally optimistic and blessed.
 

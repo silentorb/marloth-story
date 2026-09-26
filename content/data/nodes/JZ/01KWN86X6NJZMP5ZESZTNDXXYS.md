@@ -2,8 +2,10 @@
 title: Peace in the eye of the storm
 alias: Peace in the eye of the storm
 created_at: 2026-09-21T03:27:09.460Z
-modified_at: 2026-09-21T03:27:15.230Z
+modified_at: 2026-09-26T03:15:01.362Z
 ---
+# Overview
+
 The main characters should have a balance of troubles and contentment.
 
 The real-world means of achieving this peace is by [[01KWN86X6NJZMP5ZESZTNDXY4M]].
@@ -16,6 +18,10 @@ The main motivation for this story is to have my cake and eat it too, to both:
 2. Have the audience happy and enjoying the current status
 
 > 💡 This is closely tied to [[01KWN86X6NJZMP5ZESZTNDXY8M]], but requires more than just that.
+
+# Contented impetus
+
+[[01KWN86X6NJZMP5ZESZTNDXY09]].
 
 # Characters
 
