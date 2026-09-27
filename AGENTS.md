@@ -32,9 +32,11 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 | **Project feature**       | A workspace capability documented in the sibling **`tome`** repo under `docs/features/` (e.g. tome-db, tome-editor). Use this phrase when discussing tooling or agent specs—not graph nodes. |
 | **Node**                  | Any entity in the design graph (SQLite `nodes` table). Replaces legacy *record* / *vertex* in docs and API.                                                       |
 | **Relationship**          | A link between two nodes with a **relationship type** and properties. One JSON file per edge under `content/data/relationships/` (archive under `content/archive/relationships/`); SQLite cache expands to directed projections. |
+| **Relationship type**     | Registry definition for a kind of relationship (ULID + perspectives + traits + optional endpoints). Canonical term in agent prose. On disk the legacy filename/key is still `associations.json` / `associations` — see tome `docs/features/tome-db.md`. |
+| **Association**           | On-disk legacy naming only (`associations.json`, JSON key `associations`, content-model fields named `"association"`). Do not use for the concept in new prose. Also reserved for a possible future node-type pairing concept (not implemented). |
 | **Page**                  | UI representation of a node in the editor (`NodePageView`, page title, sections, `getNodePageDetail`). Not the same as a raw export file.                      |
 | **Feature** (unqualified) | A **design node** (story/game feature idea), usually under `Marloth/Features/`, unless context clearly means a project feature.                                   |
-| **Schema**                | Git-tracked relationship rules in `content/model/schema.json` (allowed target types per relationship type). Not SQLite DDL.                                       |
+| **Schema**                | Git-tracked relationship rules in `content/model/schema.json` (allowed target types per relationship type). Not SQLite DDL. Endpoint pairing for relationship types lives on `associations.json` `endpoints`. |
 | **Type table**            | Any node used as an `IS_A` target and/or declared in `content/model/table-schemas.json`—not a permanent import label.                                          |
 
 
@@ -42,7 +44,7 @@ The git-tracked design corpus in `./content/` is a property graph: node markdown
 
 The design corpus already separates nodes somewhat by **product** (books, game design, and related work share inspirations and structure). Expect the graph to be sliced along **multiple dimensions** over time—not only product.
 
-**Future (not yet implemented):** some relationships should be **weighted**, not boolean. Example: a feature–inspiration link might be strong for one inspiration and weak for another. Current relationships are all-or-nothing; weighted associations will likely live as numeric properties on relationships (e.g. `weight`) when implemented.
+**Future (not yet implemented):** some relationships should be **weighted**, not boolean. Example: a feature–inspiration link might be strong for one inspiration and weak for another. Current relationships are all-or-nothing; weights will likely live as numeric properties on relationships (e.g. `weight`) when implemented.
 
 ## Graph data workflow
 
@@ -68,7 +70,7 @@ See the sibling **tome** repo [`docs/features/tome-db.md`](../tome/docs/features
 - Make focused changes that address the requested task only.
 - Avoid unrelated refactors unless they are required to complete the task safely.
 - Prefer small, incremental edits that are easy to review.
-- **Regression tests:** When fixing a bug in table views (database tables, relation tables, Properties section, composed/grouped table presentations, dynamic fields, or related API endpoints), add a regression test in the same change that would have failed before the fix. Seed test relationships using **composite types** from `content/model/associations.json` (via `ContentStore` / `seedTestCompositeRelationships`) when the bug involves graph traversals — do not rely only on direct `db.upsertRelationship` with legacy unidirectional types. Do not close a bug fix without a test unless the user explicitly waives it.
+- **Regression tests:** When fixing a bug in table views (database tables, relation tables, Properties section, composed/grouped table presentations, dynamic fields, or related API endpoints), add a regression test in the same change that would have failed before the fix. Seed test relationships using **relationship types** from `content/model/associations.json` (via `ContentStore` / `seedTestCompositeRelationships`) when the bug involves graph traversals — do not rely only on direct `db.upsertRelationship` with legacy unidirectional types. Do not close a bug fix without a test unless the user explicitly waives it.
 - **Script language:** agentic scripts created for this project should use **TypeScript** (Bun) by default — place durable tooling under `packages/` with tests and a shell wrapper in `scripts/` when appropriate. **One-off temporary scripts** (exploratory, throwaway, not intended to be maintained) may still be written in Python.
 
 ## Implementation Expectations
