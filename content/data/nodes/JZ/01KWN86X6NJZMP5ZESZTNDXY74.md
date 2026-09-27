@@ -1,19 +1,14 @@
 ---
 title: Stability vs. Journey
 alias: Stability vs. Journey
+created_at: 2026-09-27T22:43:11.743Z
+modified_at: 2026-09-27T22:43:29.423Z
 ---
-# Stability vs. Journey
-
-> 💡 I’ve realized now that stability vs. journey really isn’t the best way of defining what I am searching for.
-> [[01KWN86X6MFZQAJ1V36T95928Q]] better encapsulates the issues I’m wrestling with on this page because:
-> 1. Family/communal responsibility is the main reason I am interested in depicting stability.
-> 2. Wonderland is a really what I am interested in, with journey being an aspect of Wonderland.
-
 # Overview
 
 There are two things I want:
 
-1. A stable story about community.
+1. A stable story about community/[[01M1642X5VN6V9915Y3EH3W1FF]].
 2. A dynamic story about following the current.
 
 Can those two things be reconciled?
@@ -34,7 +29,7 @@ That leaves a dichotomy with a stable fantasy and a dynamic fantasy.
 
 # Injected stability
 
-[[01KWN86X6NJZMP5ZESZTNDXXZ2]] 
+[[01KWN86X6NJZMP5ZESZTNDXXZ2]]
 
 # Fantasy depictions
 

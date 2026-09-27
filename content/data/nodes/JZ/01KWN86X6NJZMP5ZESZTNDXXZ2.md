@@ -1,12 +1,12 @@
 ---
 title: Injected stability
 alias: Injected stability
-modified_at: 2026-07-01T14:33:32.458Z
 created_at: 2026-07-01T14:30:25.600Z
+modified_at: 2026-09-27T22:09:50.231Z
 ---
 # The idea
 
-Normally, stability is the foundation and dynamics are built on top of that foundation.
+Normally, [[01M1WRM9Q5VMHGJ43242E1S48Y]] is the foundation and dynamics are built on top of that foundation.
 
 But what if I turned that relationship on its head?
 

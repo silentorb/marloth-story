@@ -1,7 +1,7 @@
 ---
 title: James and Adelle representing two worlds
 created_at: 2026-06-13T19:50:33.165Z
-modified_at: 2026-06-14T01:26:52.784Z
+modified_at: 2026-09-27T22:53:28.840Z
 ---
 # Background
 
@@ -65,14 +65,11 @@ So far, I've gone out of my way to minimize any conflict between the couple.
 
 There are many reasons for that, but I've been figuring it would still be good to have *some* conflict.
 
-> 💡The one outstanding planned marital conflict arc has been [[01KWN86X6NJZMP5ZESZTNDXXWF]].
+> 💡 The one outstanding planned marital conflict arc has been [[01KWN86X6NJZMP5ZESZTNDXXWF]].
 
 # Parents
 
 One exception to all of these patterns lining up is I have been picturing both sets of parents as more grounded toward Adelle's world.
 
-<br />
+# Conflict with Adelle starting point
 
-# Closing thoughts
-
-This direction has the potential to take a high-concept story, and make it *staggeringly* high-concept.
