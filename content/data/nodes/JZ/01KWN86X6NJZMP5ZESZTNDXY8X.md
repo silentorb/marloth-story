@@ -1,8 +1,8 @@
 ---
 title: Campaign against magic
 alias: Campaign against magic
-modified_at: 2026-08-23T07:14:13.750Z
 created_at: 2026-08-23T04:46:43.991Z
+modified_at: 2026-09-28T06:24:40.415Z
 ---
 A political movement against magic.
 
@@ -29,8 +29,6 @@ I didn't want to make the status quo full blown pro magic, so I settled for havi
 # Character motivation
 
 What is the primary motivation of these characters in opposing magic?
-
-<br />
 
 # De-emphasis on Nivana
 
@@ -78,7 +76,7 @@ There may still be room for Miles to be involved, but similar to [[01KWN86X6NJZM
 
 # Archive
 
-> 💡 ~~This is an interesting idea, but it never completely fit my requirements, and I’m cutting it for now.  This idea is too grand in the wrong ways.  It draws attention to things I want to be more subtle about.~~
+> ~~💡 This is an interesting idea, but it never completely fit my requirements, and I’m cutting it for now.  This idea is too grand in the wrong ways.  It draws attention to things I want to be more subtle about.~~
 
 ## Moving away from this again
 

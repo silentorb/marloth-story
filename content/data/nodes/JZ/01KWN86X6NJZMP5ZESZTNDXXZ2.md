@@ -2,7 +2,7 @@
 title: Injected stability
 alias: Injected stability
 created_at: 2026-07-01T14:30:25.600Z
-modified_at: 2026-09-27T22:09:50.231Z
+modified_at: 2026-09-28T06:11:24.605Z
 ---
 # The idea
 
@@ -37,6 +37,10 @@ Part of this idea would be to employ [[01KWN86X6MFZQAJ1V36T9592JN]].
 James and Adelle would move from location to location, but there would be a sense that all of those locations are the same "home".
 
 Part of this could be accomplished by improvements Adelle provides to one home automatically carry over to the next home.
+
+# Adelle
+
+The primary case of this idea is [[01M3K9V8T3M5V8XEEVXMCT4SWX]].
 
 # Chaotic contrast
 

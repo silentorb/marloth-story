@@ -1,10 +1,10 @@
 ---
 title: Adventure - Restraint and relationship
 alias: Adventure - Restraint and relationship
-modified_at: 2026-08-29T06:44:25.904Z
 created_at: 2026-08-29T06:20:18.424Z
+modified_at: 2026-09-28T06:17:46.196Z
 ---
-> 💡Related to [[01KWN86X6MFZQAJ1V36T9592ES]].
+> 💡 Related to [[01KWN86X6MFZQAJ1V36T9592ES]].
 
 In a social setting, when a hero and villain meet in the street, they exchange witty banter, then continue on their way.
 
@@ -96,6 +96,10 @@ I would like to rely on more general solutions that can provide more mileage.
 
 My main interest in all of this is [[01KWN86X6NJZMP5ZESZTNDXXW7]].
 
+# Crime drama
+
+[[01M3K9JH0FY794E76N0R94NZ5W]] is especially effective at restrained adventure.
+
 # General solution examples
 
 ## Sapphire and Steel
@@ -111,4 +115,3 @@ Not to say that every danger in Sapphire and Steel allows relationship.  It has 
 It's important to note that the problem this page explores only has to do with enemies.
 
 Allies can still relate in adventure settings.
-
