@@ -1,12 +1,12 @@
 ---
 title: Magic vs. Engineering
 alias: Magic vs. Engineering
+modified_at: 2026-09-29T05:25:34.270Z
+created_at: 2026-09-29T05:25:34.270Z
 ---
-# Magic vs. Engineering
-
 # Problem
 
-I want to apply cool technical innovations to magic.
+I want to apply cool technical innovations to [[01M21ZAXTB3VQGW4ARNMNR4Q7V]].
 
 However, the more I apply engineering principles to magic, the magic system quickly stops being an analogy for real world technology and practically becomes the same thing as the real world equivalent.
 
@@ -43,10 +43,10 @@ In real life, technology is normally extrinsic.
 Technology requires a degree of understanding to use, but it requires far less knowledge to use than it does to create.
 
 | Activity | Required knowledge |
-| --- | --- |
-| Use | 1 |
-| Maintain | 3 |
-| Create | 5 |
+| -------- | ------------------ |
+| Use      | 1                  |
+| Maintain | 3                  |
+| Create   | 5                  |
 
 # Magic knowledge
 

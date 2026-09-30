@@ -1,8 +1,8 @@
 ---
 title: Feminine duties
 alias: Feminine duties
-modified_at: 2026-06-13T18:52:24.620Z
 created_at: 2026-06-13T18:49:17.096Z
+modified_at: 2026-09-30T00:29:02.668Z
 ---
 > 💡 My own wife saw me working on this page when it was titled "Wifely duties" and she raised an eyebrow.
 >
@@ -10,11 +10,13 @@ created_at: 2026-06-13T18:49:17.096Z
 >
 > For a while I prefixed the title with “Practical”, yet ironically that was still impractical, so I removed it.
 
+# Overview
+
+This page explores common [Responsibilities](./01KWN86X6MFZQAJ1V36T9592FN.md) of women, particularly [Married](./01KWN86X6MFZQAJ1V36T959283.md) women.
+
 The article [[01KWN86X6NJZMP5ZESZTNDXY3K]] explores the problems caused by devaluing woman’s duties.
 
-> 💡This is currently a feature, even though it is just about covered by other features, particularly [[01KWN86X6MFZQAJ1V36T9592FN]] and [[01KWN86X6NJZMP5ZESZTNDXY0Y]].
->
-> However, I'd like to leave it at least for now because it is so easily overlooked and I want this to have high visibility.
+This article provides solutions.
 
 # Survival
 
@@ -34,34 +36,18 @@ Food, shelter, clothing, the daily chores of a woman become more evidently criti
 
 Below is a list of feminine duties, geared specifically to the fantastic setting of Marloth.
 
-* Food preparation and serving
+- Food preparation and serving
+- Hosting
+- Shopping and related errands
+- Laundry
+- Gardening
+- Home medicine
+- Child care and education
+- Community coordination
+- Managing Community events
+- Sewing - mending garments
+- House cleaning
+- Home furnishing and decor
+- Home [lighting](./01KWN86X6MFZQAJ1V36T9592DS.md)
+- Pest extermination
 
-* Hosting
-
-* Shopping and related errands
-
-* Laundry
-
-* Gardening
-
-* Home medicine
-
-* Child care and education
-
-* Community coordination
-
-* Managing Community events
-
-* Sewing - mending garments
-
-* House cleaning
-
-* Home furnishing and decor
-
-* Home [lighting](./01KWN86X6MFZQAJ1V36T9592DS.md)
-
-* Pest extermination
-
-For someone who deals in dreams, you aren’t on good terms with sleep.
-
-I can control my dreams when I am awake. When I am asleep I am at their mercy.

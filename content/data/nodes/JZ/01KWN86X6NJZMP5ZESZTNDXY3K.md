@@ -1,20 +1,22 @@
 ---
 title: Feminine Epic
 alias: Feminine Epic
+modified_at: 2026-09-30T00:02:28.248Z
+created_at: 2026-09-30T00:02:28.248Z
 ---
-# Feminine Epic
-
 # A world of war
 
 There’s a classic saying:
 
 > When all you have is a hammer, everything looks like a nail.
 
-The modern template for epic fantasy is the reverse of that.  The world of Epic fantasy is a world of nails, where all that matters is whether you are a hammer.
+The modern template for epic fantasy is the reverse of that.
+
+The world of Epic fantasy is a world of nails, where all that matters is whether you are a hammer.
 
 The nail is war, and the hammers are warriors.
 
-[[01KWN86X6MFZQAJ1V36T9592GC]] 
+[[01KWN86X6MFZQAJ1V36T9592GC]]
 
 War is a duty of men.
 
@@ -44,7 +46,7 @@ Excluding women from man’s duties does not devalue women.
 
 The problem is women’s duties have been devalued.
 
-> 💡 [[01KWN86X6NJZMP5ZESZTNDXY7X]] 
+> 💡 [[01KWN86X6NJZMP5ZESZTNDXY7X]]
 
 That devaluation is within a larger context of devaluing God-given duty in general, both for men and women.
 
