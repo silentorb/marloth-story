@@ -1,8 +1,8 @@
 {
   "version": 1,
   "search": {
-    "title": "tome-search-like.searcher",
-    "content": "tome-search-sqlite.searcher"
+    "title": "tome-search-like",
+    "content": "tome-search-sqlite"
   },
   "extensions": [
     {
@@ -46,43 +46,47 @@
   ],
   "components": [
     {
-      "id": "spatial-graph.block",
+      "id": "spatial-graph",
       "extensionId": "spatial-graph",
       "kind": "page-block",
       "implementationId": "spatial-graph",
       "label": "Spatial graph",
       "enabled": true,
+      "roles": ["spatial-graph"],
       "slashMenu": { "group": "custom", "order": 20 }
     },
     {
-      "id": "schema-diagram.block",
+      "id": "schema-diagram",
       "extensionId": "schema-diagram",
       "kind": "page-block",
       "implementationId": "schema-diagram",
       "label": "Schema diagram",
       "enabled": true,
+      "roles": ["schema-diagram"],
       "slashMenu": { "group": "custom", "order": 30 }
     },
     {
-      "id": "tome-query.block",
+      "id": "tome-query",
       "extensionId": "tome-query",
       "kind": "page-block",
       "implementationId": "tome-query",
       "label": "Query table",
       "enabled": true,
+      "roles": ["query"],
       "slashMenu": { "group": "custom", "order": 40 }
     },
     {
-      "id": "tome-sequencing.block",
+      "id": "tome-sequencing",
       "extensionId": "tome-sequencing",
       "kind": "page-block",
       "implementationId": "tome-sequencing",
       "label": "Timeline",
       "enabled": true,
+      "roles": ["tome-sequencing"],
       "slashMenu": { "group": "custom", "order": 50 }
     },
     {
-      "id": "tome-search-sqlite.searcher",
+      "id": "tome-search-sqlite",
       "extensionId": "tome-search-sqlite",
       "kind": "searcher",
       "implementationId": "tome-search-sqlite",
@@ -91,7 +95,7 @@
       "params": { "dataStoreId": "fts" }
     },
     {
-      "id": "tome-search-like.searcher",
+      "id": "tome-search-like",
       "extensionId": "tome-search-like",
       "kind": "searcher",
       "implementationId": "tome-search-like",
