@@ -1,7 +1,7 @@
 ---
 title: Adelle and the denizens
 created_at: 2026-09-30T03:48:05.362Z
-modified_at: 2026-09-30T08:23:59.780Z
+modified_at: 2026-09-30T23:22:10.462Z
 ---
 This is a sub-idea of [[01M3R3M8EVKRQ9A99B42S4E5GH]].
 
@@ -40,3 +40,7 @@ Within the context of this being a sort of partial redemption, what mistakes did
 This idea has some parallels to motherhood.
 
 I was saving full motherhood for [[01KWN86X6NJZMP5ZESZTNDXXYR]], but maybe this idea can introduce some [domestic function without form](./01M35WTG0WB94ZR8TQ5TWF6J18.md).
+
+# Stability and society
+
+I keep forgetting that the driving motivation for this direction was marrying [[01KWN86X6MFZQAJ1V36T9592ES]] through [[01KWN86X6NJZMP5ZESZTNDXY8E]].

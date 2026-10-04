@@ -2,7 +2,7 @@
 title: Feminine duties
 alias: Feminine duties
 created_at: 2026-06-13T18:49:17.096Z
-modified_at: 2026-09-30T00:29:02.668Z
+modified_at: 2026-10-01T03:52:13.198Z
 ---
 > 💡 My own wife saw me working on this page when it was titled "Wifely duties" and she raised an eyebrow.
 >
@@ -51,3 +51,8 @@ Below is a list of feminine duties, geared specifically to the fantastic setting
 - Home [lighting](./01KWN86X6MFZQAJ1V36T9592DS.md)
 - Pest extermination
 
+# Delicious in Dungeon
+
+Delicious in Dungeon presents a world where the most important character class an adventuring party can have is a cook.
+
+A party full or wizards and warriors will become weak and die without nutritious food.

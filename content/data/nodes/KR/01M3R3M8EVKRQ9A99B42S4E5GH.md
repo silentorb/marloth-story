@@ -1,7 +1,7 @@
 ---
 title: A woman in Wonderland
 created_at: 2026-09-30T02:52:16.732Z
-modified_at: 2026-09-30T03:48:44.582Z
+modified_at: 2026-09-30T23:22:04.363Z
 ---
 This idea is a sub-idea of [[01M3R34AD6AN7JZAS7HYSYYWBD]].
 
@@ -62,3 +62,10 @@ There too, mature Alice is much more capable of holding her own, and there is an
 > Enough pushing me around, now it's *my* turn to do the pushing.
 
 However, the direction in [[01KWN86X6NJZMP5ZESZTNDXY83]] is more complex and nuanced.
+
+# Contrast
+
+In order for this idea to have weight, it needs contrast of characters in similar situations making foolish choices.
+
+This ties in with one of the points in [[01KWN86X6NJZMP5ZESZTNDXY7P]], where survival horror calamity should not be random, but should be a result of character's choices.
+

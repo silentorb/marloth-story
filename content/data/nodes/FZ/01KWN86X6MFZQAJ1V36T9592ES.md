@@ -2,7 +2,7 @@
 title: Society and Adventure
 alias: Society vs Adventure
 created_at: 2026-08-29T06:40:50.755Z
-modified_at: 2026-09-28T06:17:51.716Z
+modified_at: 2026-10-01T00:46:02.351Z
 ---
 [[01M1642X5VN6V9915Y3EH3W1FF]] and [[01KWN86X6MFZQAJ1V36T9592D3]] are two of the core ingredients of Marloth narratives.
 
@@ -16,20 +16,14 @@ This is the root page for the exploration of how to harmonize those night and da
 
 # Conflict matrix
 
-| Society    | Adventure            | Notes                          |
+| Society    | Adventure            | Page                           |
 | ---------- | -------------------- | ------------------------------ |
 | Stability  | Adaptability         | [[01KWN86X6NJZMP5ZESZTNDXXZ2]] |
-| Community  | Serendipitous allies | <br />                         |
-| Debate     | Combat               | <br />                         |
-| Stationary | Roaming              | <br />                         |
-| Order      | Chaos                | [[01KWN86X6MFZQAJ1V36T9592AF]] |
-| Peace      | Tension              | [[01KWN86X6MFZQAJ1V36T9592DD]] |
-| Contented  | Discontent           | [[01KWN86X6NJZMP5ZESZTNDXY09]] |
-| Amiable    | Desperate            | [[01KWN86X6NJZMP5ZESZTNDXXXM]] |
-| Law        | Lawless              | <br />                         |
-| Gentleman  | Rogue                | Mr. Darcy vs. Indiana Jones    |
-
-Adventure is about adaptability.  Pure adventure teams are circumstantial and can involve reluctant cooperation.
+| Community  | Serendipitous allies | [[01KWN86X6MFZQAJ1V36T9592EY]] |
+| Debate     | Combat               | [[01KWN86X6NJZMP5ZESZTNDXY0M]] |
+| Stationary | Roaming              | [[01KWN86X6NJZMP5ZESZTNDXY74]] |
+| Order      | Chaos                | [[01KWN86X6MFZQAJ1V36T9592EY]] |
+| Law        | Lawless              | [[01M3K9JH0FY794E76N0R94NZ5W]] |
 
 # Restraint and relationship
 
