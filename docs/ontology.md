@@ -60,7 +60,7 @@ Types below are **semantic**. In the graph, type is inferred from title, `IS_A` 
 | Type | Description | Typical location |
 | --- | --- | --- |
 | **Feature** | Named design idea, mechanism, tone, or technique to employ or avoid. | `Marloth/Features/` |
-| **Inspiration** | Reference work or cultural source driving tone, structure, or motif. | `Marloth/Inspirations/` |
+| **Inspiration** | Reference work or cultural source. A node is an Inspiration when it **inspires ≥1 other node** via the **Inspires / Inspired by** relationship (ontology predicate + member-scope on the Inspirations hub)—not merely set membership in that hub. Set-membership edges may still carry row scalars. | `Marloth/Inspirations/` |
 | **Tension** | Paired or opposing forces in the design space (e.g. wonderland vs responsibility). | `Marloth/Data/Tensions/` |
 | **Problem** | Open design question or gap. | `Marloth/Data/Problems/` |
 | **Solution** | Proposed answer to a problem or way to resolve a tension. | `Marloth/Solutions/` |
@@ -105,7 +105,8 @@ Relationships express **meaning**, not just linkage. Imported relation propertie
 | Relationship | Typical meaning | Example |
 | --- | --- | --- |
 | **MEMBER_OF** | Member belongs to a set (type table, Archive hub, future collections); scalars on edge | Marloth example: `member_of` storage with `members` inverse — tooling: [sets.md](../../tome/docs/features/sets.md) |
-| **INCLUDES** | Symmetric cross-entity association (scene↔character, inspiration↔feature, etc.); which column you see depends on the current row and target database | Scene ↔ character in cast |
+| **INCLUDES** | Symmetric cross-entity association (scene↔character, etc.); which column you see depends on the current row and target database | Scene ↔ character in cast |
+| **INSPIRES / INSPIRED BY** | Inspiration informs a design node (open inspired side; Features still use hub columns/pickers). Solutions↔Inspirations remains a separate relationship type for now. | Inspiration → Feature |
 | **INSPIRATIONS** | *(legacy composite on taxonomy rows)* B references external work A | Monster type ↔ inspiration |
 | **FEATURES** | *(legacy perspective; storage is often `includes`)* B engages design feature A | Scene uses *Desperation* |
 | **MOTIVATIONS** | A explains why B exists | Motivation node → scene |

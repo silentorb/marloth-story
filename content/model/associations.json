@@ -127,16 +127,14 @@
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPR": {
       "perspectives": [
-        "Features",
-        "Inspirations"
+        "Inspires",
+        "Inspired by"
       ],
       "endpoints": {
         "0": {
           "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
         },
-        "1": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXY7W"
-        }
+        "1": {}
       }
     },
     "01KXBNPNJDENZ9BXN5BYZ7JKPS": {
