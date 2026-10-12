@@ -1,9 +1,9 @@
 ---
 title: Applied surrealism
 alias: Applied surrealism
+modified_at: 2026-10-11T03:26:02.948Z
+created_at: 2026-10-11T03:26:02.948Z
 ---
-# Applied surrealism
-
 # Overview
 
 This document describes how to apply [[01KWN86X6NJZMP5ZESZTNDXY71]]ism within Marloth narratives.
@@ -14,7 +14,7 @@ For the Marloth recipe, surrealism is essential but not fundamental.
 
 Surrealism is a surface layer.
 
-# Surreal hacking
+# Surreal foundation
 
 I have often tried to create a surreal foundation and that has never worked.
 
@@ -89,7 +89,8 @@ flowchart TD
 A good surreal narrative should seamlessly decompose into a non-surreal narrative.
 
 > 💡 This relates to “The Ordinary and the Extraordinary”
-> - [ ]  Create page for The Ordinary and the Extraordinary (I’m surprised I haven’t done this yet, I feel like I captured that information before—maybe in some other document store.)
+>
+> - [ ] &#x20;Create page for The Ordinary and the Extraordinary (I’m surprised I haven’t done this yet, I feel like I captured that information before—maybe in some other document store.)
 
 It’s easy to get distracted by the fantastic, but fantasy really is just a supporting feature.
 
