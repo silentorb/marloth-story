@@ -761,6 +761,15 @@
           "type": "multi_select"
         }
       ]
+    },
+    "01M56B00000000000000000010": {
+      "columns": [
+        {
+          "key": "appliesTo",
+          "name": "Applies to",
+          "type": "text"
+        }
+      ]
     }
   }
 }

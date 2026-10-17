@@ -4,6 +4,7 @@
     "ontology": "01M452X8DSBEFAFYY123R4CV8X",
     "predicate": "01M452X8E6HDB44ZRRT33HKWJ4",
     "memberScope": "01M452X8E68V8X3V0EAQ3BCTQ7",
-    "authorizationModel": "01M55P880YPSCT71RH50KD7AZD"
+    "authorizationModel": "01M55P880YPSCT71RH50KD7AZD",
+    "authorizationPolicy": "01M56B00000000000000000010"
   }
 }
