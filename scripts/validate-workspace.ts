@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * CI guard: validate content/model/workspace.json structure and node references.
+ * CI guard: validate content/model/corpus.json structure and node references.
  *
  * Usage: bun run validate:workspace
  */
@@ -10,7 +10,7 @@ import { nodeFilePath, resolveContentPath } from "tome-db/content";
 import { parseWorkspaceFile } from "tome-db";
 
 const contentRoot = resolveContentPath();
-const workspacePath = resolve(contentRoot, "model", "workspace.json");
+const workspacePath = resolve(contentRoot, "model", "corpus.json");
 const raw = readFileSync(workspacePath, "utf-8");
 const workspace = parseWorkspaceFile(raw);
 
@@ -32,7 +32,7 @@ for (const id of nodeIds) {
 }
 
 if (missing.length > 0) {
-  console.error(`workspace.json references ${missing.length} node(s) missing from content/data/:`);
+  console.error(`corpus.json references ${missing.length} node(s) missing from content/data/:`);
   for (const id of missing.slice(0, 30)) {
     console.error(`  ${id}.md`);
   }

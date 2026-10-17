@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Introduce [`content/model/workspace.json`](../../content/model/workspace.json) and wire **all backend consumers** off hardcoded Marloth node IDs. Do **not** change editor UI or add API routes in this session (that is [session 02](./02-editor-workspace-integration.md)).
+Introduce [`content/model/corpus.json`](../../content/model/corpus.json) and wire **all backend consumers** off hardcoded Marloth node IDs. Do **not** change editor UI or add API routes in this session (that is [session 02](./02-editor-workspace-integration.md)).
 
 ## Depends on
 
@@ -10,7 +10,7 @@ None — start here after reading [00-overview.md](./00-overview.md).
 
 ## Target schema (v1)
 
-Create `content/model/workspace.json` with Marloth corpus values:
+Create `content/model/corpus.json` with Marloth corpus values:
 
 ```json
 {
@@ -162,7 +162,7 @@ Export from [`packages/tome-db/src/index.ts`](../../packages/tome-db/src/index.t
 
 ## Done when
 
-- [ ] `content/model/workspace.json` committed with Marloth values
+- [ ] `content/model/corpus.json` committed with Marloth values
 - [ ] `grep` for hardcoded home/archive/anchor ids in `packages/tome-db/src` (excluding tests and deprecated shims) returns nothing
 - [ ] `bun run --filter tome-db test` passes
 - [ ] `bun run --filter tome-static-site test` passes (if static site touched)
@@ -171,4 +171,4 @@ Export from [`packages/tome-db/src/index.ts`](../../packages/tome-db/src/index.t
 
 Add a row to the model files table in [`docs/features/tome-db.md`](../features/tome-db.md):
 
-| `content/model/workspace.json` | Home, archive, protected nodes, sidebar, branding, legacy path prefixes |
+| `content/model/corpus.json` | Home, archive, protected nodes, sidebar, branding, legacy path prefixes |

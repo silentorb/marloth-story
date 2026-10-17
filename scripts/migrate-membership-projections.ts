@@ -11,7 +11,7 @@ import { join } from "node:path";
 const CONTENT_ROOT = join(import.meta.dir, "../content");
 const RELATIONSHIPS_PATH = join(CONTENT_ROOT, "data/relationships.json");
 const ASSOCIATIONS_PATH = join(CONTENT_ROOT, "model/associations.json");
-const WORKSPACE_PATH = join(CONTENT_ROOT, "model/workspace.json");
+const WORKSPACE_PATH = join(CONTENT_ROOT, "model/corpus.json");
 const TABLE_SCHEMAS_PATH = join(CONTENT_ROOT, "model/table-schemas.json");
 const VIEWS_PATH = join(CONTENT_ROOT, "model/views.json");
 
