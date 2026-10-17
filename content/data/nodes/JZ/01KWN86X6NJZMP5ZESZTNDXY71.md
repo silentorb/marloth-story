@@ -1,6 +1,8 @@
 ---
 title: Surreal
 alias: Surreal
+created_at: 2026-10-13T02:04:15.448Z
+modified_at: 2026-10-13T02:23:51.384Z
 ---
 # Relation to Dreamlike
 
@@ -47,3 +49,62 @@ At this point it is better to keep this as a higher-level grouping feature and l
 # Grounded
 
 Surrealism needs to be grounded.  [[01KWN86X6NJZMP5ZESZTNDXXZ8]].
+
+# Types
+
+Most surrealism in narratives fall into one of four types:
+
+1. Extreme
+2. Gems
+3. Allegorical
+4. Technical
+
+## Extreme
+
+Extreme surrealism prioritizes surrealism above all else.
+
+It is the purest form of surrealism.
+
+However, it is also not [[01KWN86X6NJZMP5ZESZTNDXXZ8]], and tends to be style over substance.
+
+The surrealism is too random.
+
+> 💡 Example: [[01KWN86X6NJZMP5ZESZTNDXY6T]].
+
+## Gems
+
+Surreal gems are bursts of surrealism in an otherwise un-surreal narrative.
+
+The narrative can still be fantastic in nature, but generally a stable fantastic.
+
+> 💡 Many of my primary inspirations for surrealism are surreal gems.
+>
+> What I am trying to do is create entire stories of such gems.
+
+> 💡 Example: The Simpsons
+
+## Allegorical
+
+Allegory becomes surreal when it focuses so much on its abstract meaning, it ceases to be a meaningful story.
+
+I'm personally not a fan of this style of writing, and I think it is mostly a niche.
+
+> 💡 Example: The Man Who Was Thursday - G.K. Chesterton
+
+## Technical
+
+Technical surrealism is sort of the science fiction of surrealism; it's applying mind-bending features to a narrative which introduce surrealism in a controlled, reasonable manner.
+
+> 💡 Christopher Nolan is the king of this kind of surrealism.
+
+## Marloth
+
+For Marloth narratives, I want to create a fifth kind of surrealism, a surrealism that in a way is a mix of all of the above.
+
+A surrealism that:
+
+1. Has nearly the concentration of Extreme Surrealism
+2. Has the quality of a string of Surreal Gems
+3. Has much of the meaning of Allegorical Surrealism without sacrificing a concrete storyline
+4. Employs a set of mechanics which introduce Technical Surrealism
+
