@@ -3,7 +3,7 @@ title: Inspiration
 created_at: 2026-10-10T16:02:44.583Z
 modified_at: 2026-10-10T18:19:25.532Z
 ---
-```json {type="node-filter"}
+```json {#predicate type="node-filter"}
 {
   "nodes": {
     "association": {
