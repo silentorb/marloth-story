@@ -1,8 +1,8 @@
 ---
 title: Post-apocalyptic narratives
 alias: Post-apocalyptic narratives
-modified_at: 2026-06-12T02:46:09.528Z
 created_at: 2026-06-11T20:04:26.901Z
+modified_at: 2026-10-19T06:55:50.116Z
 ---
 In a way, I don’t like post-apocalyptic stories, yet they contain elements that make [[01KWN86X6NJZMP5ZESZTNDXY7P]] work well.
 
@@ -46,7 +46,7 @@ I prefer to live in the future more than the past.
 
 Post-apocalyptic narratives tend to lean toward [[01KWN86X6MFZQAJ1V36T9592GC]] and the same mistake of oversimplifying society and what makes the world turn.
 
-## Punk
+# Punk
 
 Post-apocalyptic is often Punk, and I don’t like Punk.
 
@@ -73,4 +73,3 @@ Post-apocalyptic isn't always haunting, but it can be.
 Haunting is actually a natural feature of post-apocalyptic.
 
 Post-apocalyptic is about echoes of a former civilization.
-

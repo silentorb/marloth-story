@@ -1,8 +1,8 @@
 ---
 title: The four categories of fantasy
 alias: The four categories of fantasy
-modified_at: 2026-08-29T01:16:31.764Z
 created_at: 2026-08-29T01:00:50.367Z
+modified_at: 2026-10-19T06:53:35.891Z
 ---
 # Overview
 
@@ -62,5 +62,16 @@ One of my primary inspirations for that design was the Matrix, where the protago
 
 Liminal leaves ambiguity as to what is real and what is fantasy.
 
-> 💡Liminal is the staple fantasy category for Mind Screw stories.
+> 💡 Liminal is the staple fantasy category for Mind Screw stories.
 
+# Effective Immersive
+
+Sometimes Portal and Intrusive fantasy can effectively become Immersive fantasy.
+
+Both hinge on degrees and the passage of time.
+
+In the case of Portal fantasy, if a character travels from the ordinary world to a fantasy world, and the ordinary world is never brought up again, the character's origin can become incidental.
+
+In such a case, the more time passes, the more distant and faint the ordinary origin will become, until it is practically forgotten and the setting becomes effectively immersive.
+
+Similarly, if the ordinary world is completely saturated by intrusion, so that the entire ordinary world becomes fantastic, then once enough time has passed for the ordinary to become a distant memory, the setting effectively becomes immersive.
