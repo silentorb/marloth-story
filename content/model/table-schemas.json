@@ -15,7 +15,7 @@
         },
         {
           "key": "characters",
-          "name": "👥 Characters",
+          "name": "\ud83d\udc65 Characters",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKPP",
           "endpoint": 0
@@ -67,28 +67,28 @@
         },
         {
           "key": "characters",
-          "name": "👥 Characters",
+          "name": "\ud83d\udc65 Characters",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ3",
           "endpoint": 0
         },
         {
           "key": "features",
-          "name": "☑️ Features",
+          "name": "\u2611\ufe0f Features",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ4",
           "endpoint": 0
         },
         {
           "key": "solutions",
-          "name": "🦄 Solutions",
+          "name": "\ud83e\udd84 Solutions",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKQK",
           "endpoint": 0
         },
         {
           "key": "scenes",
-          "name": "🌌 Scenes",
+          "name": "\ud83c\udf0c Scenes",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKQD",
           "endpoint": 0
@@ -239,7 +239,7 @@
         },
         {
           "key": "scenes",
-          "name": "🌌 Scenes",
+          "name": "\ud83c\udf0c Scenes",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKQM",
           "endpoint": 0
@@ -411,7 +411,7 @@
       "columns": [
         {
           "key": "features",
-          "name": "☑️ Features",
+          "name": "\u2611\ufe0f Features",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKPK",
           "endpoint": 1
@@ -527,7 +527,7 @@
         },
         {
           "key": "characters",
-          "name": "📁 Characters",
+          "name": "\ud83d\udcc1 Characters",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ8",
           "endpoint": 1
@@ -541,7 +541,7 @@
         },
         {
           "key": "location",
-          "name": "📁 Location",
+          "name": "\ud83d\udcc1 Location",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKQA",
           "endpoint": 0
@@ -675,7 +675,7 @@
       "columns": [
         {
           "key": "products",
-          "name": "📚 Products",
+          "name": "\ud83d\udcda Products",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKQ5",
           "endpoint": 1
@@ -693,7 +693,7 @@
       "columns": [
         {
           "key": "characters",
-          "name": "👥 Characters",
+          "name": "\ud83d\udc65 Characters",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKPE",
           "endpoint": 1
@@ -704,7 +704,7 @@
       "columns": [
         {
           "key": "motivation",
-          "name": "☑️ Motivation",
+          "name": "\u2611\ufe0f Motivation",
           "type": "relation",
           "association": "01KXBNPNJDENZ9BXN5BYZ7JKPW",
           "endpoint": 0
@@ -759,6 +759,26 @@
           "key": "tags",
           "name": "Tags",
           "type": "multi_select"
+        }
+      ]
+    },
+    "01M452X8E6HDB44ZRRT33HKWJ4": {
+      "columns": [
+        {
+          "key": "predicate",
+          "name": "Selection filter",
+          "type": "imp_graph",
+          "storage": "node"
+        }
+      ]
+    },
+    "01M452X8E68V8X3V0EAQ3BCTQ7": {
+      "columns": [
+        {
+          "key": "memberScope",
+          "name": "Member scope",
+          "type": "json",
+          "storage": "node"
         }
       ]
     }
