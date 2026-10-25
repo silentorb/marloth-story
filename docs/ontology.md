@@ -106,7 +106,7 @@ Relationships express **meaning**, not just linkage. Imported relation propertie
 | --- | --- | --- |
 | **MEMBER_OF** | Member belongs to a set (type table, Archive hub, future collections); scalars on edge | Marloth example: `member_of` storage with `members` inverse — tooling: [sets.md](../../tome/docs/features/sets.md) |
 | **INCLUDES** | Symmetric cross-entity association (scene↔character, etc.); which column you see depends on the current row and target database | Scene ↔ character in cast |
-| **INSPIRES / INSPIRED BY** | Inspiration informs a design node (open inspired side; Features still use hub columns/pickers). Solutions↔Inspirations remains a separate relationship type for now. | Inspiration → Feature |
+| **INSPIRES / INSPIRED BY** | Inspiration informs a design node (open inspired side; Features still use hub columns/pickers). Authored as a **relationship-type node** (`01KXBNPNJDENZ9BXN5BYZ7JKPR`) in the ontology, not in `associations.json`. Solutions↔Inspirations remains a separate relationship type for now. | Inspiration → Feature |
 | **INSPIRATIONS** | *(legacy composite on taxonomy rows)* B references external work A | Monster type ↔ inspiration |
 | **FEATURES** | *(legacy perspective; storage is often `includes`)* B engages design feature A | Scene uses *Desperation* |
 | **MOTIVATIONS** | A explains why B exists | Motivation node → scene |

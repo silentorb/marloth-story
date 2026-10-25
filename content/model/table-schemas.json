@@ -781,6 +781,16 @@
           "storage": "node"
         }
       ]
+    },
+    "01M5RDJQZYKHKXQ3CZX5FJQXE9": {
+      "columns": [
+        {
+          "key": "relationshipType",
+          "name": "Relationship type",
+          "type": "json",
+          "storage": "node"
+        }
+      ]
     }
   }
 }

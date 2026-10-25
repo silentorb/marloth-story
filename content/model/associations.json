@@ -161,22 +161,6 @@
         }
       }
     },
-    "01KXBNPNJDENZ9BXN5BYZ7JKPR": {
-      "roles": [
-        "Inspires",
-        "Inspired by"
-      ],
-      "roleIds": [
-        "01M4PPCCVG03JT6SJE2B82V1HG",
-        "01M4PPCCVGMBQW1AX1YCCRZR6P"
-      ],
-      "endpoints": {
-        "0": {
-          "typeId": "01KWN86X6NJZMP5ZESZTNDXXW0"
-        },
-        "1": {}
-      }
-    },
     "01KXBNPNJDENZ9BXN5BYZ7JKPS": {
       "roles": [
         "Children",
