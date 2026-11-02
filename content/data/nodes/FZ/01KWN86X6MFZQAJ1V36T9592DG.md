@@ -1,9 +1,9 @@
 ---
 title: Journey - frequent new locations
 alias: Journey - frequent new locations
+created_at: 2026-10-30T05:25:10.245Z
+modified_at: 2026-10-30T07:44:25.264Z
 ---
-# Journey - frequent new locations
-
 # Definition
 
 Frequent new locations (only occasionally revisiting previous locations).
@@ -36,28 +36,28 @@ I realize now that part of the appeal of that idea was the open-endedness of whe
 
 I never ran to a particular location.  It was like I was subconsciously knew that I was re-rolling the scenario, with a practically certain probability that the result would be positive.
 
+# Exploration
+
+The motivation for this is related to the appeal of exploration.
+
+My personality is Prospecting.
+
+I don't want to go to a particular location, I want to discover what location is around the corner.
+
+## Anticipation
+
+Anticipation is a critical feature of good narrative, and at first glance not knowing where you're going might sound antithetical to anticipation.
+
+However, exploration can have anticipation.
+
+It is like a wrapped Christmas present.  Part of the thrill is the mystery of unwrapping the gift and seeing what is inside.
+
+Exploration is not about anticipating reaching a particular location, it is about anticipating going through a particular door.
+
+What is behind that door?
+
+When will the protagonist be able to open that door and step through it?
+
 # Foreshadowing and reflection - Dark Souls
 
-Sometimes it is helpful to do the [[01KWN86X6NJZMP5ZESZTNDXXXZ]] effect of both foreshadowing in the distance where the protagonist will end up, and then when the protagonist arrives there, showing the previous location in the distance.
-
-It’s important to emphasize here that especially for new players to the Souls games, it usually isn’t obvious that players can travel to those locations.
-
-Part of the wonder of Dark Souls is it allows you to travel to the background.
-
-Often games have fascinating backgrounds that are only for looks.
-
-Dark Souls games generally allow you to travel to any distinct background.
-
-## Caveat
-
-Once a player is used to how the genre works, the player might expect to travel to the background and in that sense there is a known destination.
-
-However, the pathways to arrive at those destinations are rarely straightforward in Dark Souls, and players can rarely reach them by trying.
-
-Instead, the players just need to keep playing the game and progressing whichever way they can, and eventually they will arrive at that background location.
-
-# Example: Angel
-
-In one of the later seasons of [[01KWN86X6NJZMP5ZESZTNDXY8W]], the characters magically revert back to their previous selves.
-
-The motivation for that storyline was to remind the audience what the characters used to be like many seasons ago, and to show how far the characters have come.
+[[01M65W7WC9WY328KZ7091YXR4Y]]
