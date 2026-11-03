@@ -1,7 +1,7 @@
 ---
 title: Village restoration
 created_at: 2026-10-31T03:05:54.492Z
-modified_at: 2026-11-02T06:32:05.164Z
+modified_at: 2026-11-03T03:26:16.978Z
 ---
 The idea of having a village which is an island in [[01KWN86X6NJZMP5ZESZTNDXY8J]] and is consumed by the Wilderness.
 
@@ -49,58 +49,4 @@ When Adelle has a good home, she is always thinking how to improve and maintain 
 
 After the first night or so, Adelle should set out to find a better house.
 
-For safety, she shouldn't go alone.
-
-James could go with her, but I like the idea of house hunting being more of an Adelle effort.
-
-She can show James her top finds when they are ready to make a decision.
-
-Instead, I like the idea of Adelle going house hunting with someone who is not a literal realtor but is effectively a realtor.
-
-Originally, when I was first thinking of them going house hunting years ago, I pictured a character like Deadwick (though not actually Deadwick) talking to them about a haunted house, warning them about it.
-
-Now I would like a more unusual character.
-
-I like the idea of a child showing Adelle around, and am leaning toward a little girl.
-
-As always, the child would be precocious.
-
-Given the circumstances of the lost Village, it seems like it might be good for the girl to eventually be some kind of ghost or other form of spirit.
-
-A random inspiration also struck me that it might be a distinctive touch to give her a head band with cat or bunny ears, not being an actual furry but just splashing that direction.
-
-## Haunted home
-
-I still can't shake the idea of a [[01KWN86X6NJZMP5ZESZTNDXXY1]].
-
-My interest in the idea is still independent of most of the reasons one would normally have a haunted house.
-
-I think part of the appeal of the idea is it is a supernatural fixer-upper.
-
-But not just a fixer-upper, the idea that something that wouldn't work for most people, can somehow work for James and Adelle.
-
-And not just because they can coexist in the haunting, I want the house to be redeemed—to be cleansed.
-
-I think that's part of the appeal of the idea for me, I like the idea of a redemption arc for a house.
-
-Most haunted house stories I've seen rarely involve freeing the house, and when they do, it's not really about the house, or at least not about the house as a home.
-
-Part of the difference is most of the stories I can think of that do involve cleansing of a house usually have the cleansing at the end of the story.
-
-In this case, the cleansing is just the beginning—the bulk of the story will be James and Adelle living in the cleansed house.
-
-> 💡 One similar case of this is in episode [Are You Now or Have You Ever Been](https://buffy.fandom.com/wiki/Are_You_Now_or_Have_You_Ever_Been) of [[01KWN86X6NJZMP5ZESZTNDXY8W]], where the heroes rid an abandoned hotel of a demon and then move into the hotel, which becomes their home and headquarters for the next three seasons of the show.
-
-## Tension between haunted home and haunted village
-
-What I want to do with the haunted home bit is a little awkward in light of the larger issue of its nearby village.
-
-If the whole area is cursed and unstable, having a haunted home in the midst of that is just more of the same.
-
-I could play the card of "well, the haunting of the home is a silver lining in that it can repulse the larger curse affecting the neighborhood".
-
-While I can play that card, it doesn't fully solve the problem.
-
-The haunted home idea is most striking and effective when surrounded by normal housing options.
-
-The haunted home kind of needs to be an outlier.
+[[01M6FPZ6X1JX7G44YBXD592NKM]].
