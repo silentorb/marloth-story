@@ -1,7 +1,7 @@
 ---
 title: Haunted home hunting
 created_at: 2026-11-03T03:24:14.114Z
-modified_at: 2026-11-03T03:52:14.756Z
+modified_at: 2026-11-03T06:13:45.963Z
 ---
 As part of [[01M67YQG1W8Z3DKVCYQ1PA1FR1]], having [[01KWN86X6NJZMP5ZESZTNDXXW5]] explore the accursed neighborhood for a home to live in.
 
@@ -43,7 +43,9 @@ It's like a different story is leaking into this story.
 
 That's the sort of blurring Marloth is all about.
 
-> 💡 I also considered [[01KWN86X6NJZMP5ZESZTNDXY5X]], but I want them to be more around her height, and I think he would distract from some of the dynamics of this storyline.
+> 💡 I also considered [[01KWN86X6NJZMP5ZESZTNDXY5X]], but I want the escorts to be around her height, and I think he would distract from some of the dynamics of this storyline.
+>
+> I think I will have Fugue tagging along with James in whatever excursion James sets out on in the neighborhood.
 
 ## Haunted home
 
@@ -71,18 +73,4 @@ In this case, the cleansing is just the beginning—the bulk of the story will b
 
 ## Tension between haunted home and haunted village
 
-What I want to do with the haunted home bit is a little awkward in light of the larger issue of its nearby village.
-
-If the whole area is cursed and unstable, having a haunted home in the midst of that is just more of the same.
-
-I could play the card of "well, the haunting of the home is a silver lining in that it can repulse the larger curse affecting the neighborhood".
-
-While I can play that card, it doesn't fully solve the problem.
-
-The haunted home idea is most striking and effective when surrounded by normal housing options.
-
-The haunted home kind of needs to be an outlier.
-
-However, I don't know that the distinction is worth the context.
-
-I'm more interested in the couple finding a home in the wilderness than in a safe neighborhood.
+[[01M6G0FC3QQRFDJQPJTJ5FEZ48]]

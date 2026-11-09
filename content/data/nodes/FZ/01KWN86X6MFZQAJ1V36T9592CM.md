@@ -1,9 +1,9 @@
 ---
 title: Haunted home - Scoping
 alias: Haunted home - Scoping
+modified_at: 2026-11-05T03:35:42.897Z
+created_at: 2026-11-05T03:35:42.897Z
 ---
-# Haunted home - Scoping
-
 # Overview
 
 The purpose of this page is to capture the essence of what a haunted home story is and isolate both the aspects of that template I like and the aspects I don’t like.
@@ -39,13 +39,13 @@ In particular, and similar to the home intrusion sub-genre, it's about being vul
 
 ## Imprisonment and siege
 
-[[01KWN86X6MFZQAJ1V36T9592CH]] 
+[[01KWN86X6MFZQAJ1V36T9592CH]]
 
 # Subversion
 
 Here are the tropes I want to subvert:
 
-## No Jesus
+## Missing Jesus
 
 Protagonists in haunted home stories have no real hope.  They either:
 
