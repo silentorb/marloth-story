@@ -1,7 +1,7 @@
 ---
 title: Haunted home hunting
 created_at: 2026-11-03T03:24:14.114Z
-modified_at: 2026-11-03T06:13:45.963Z
+modified_at: 2026-11-13T15:19:14.088Z
 ---
 As part of [[01M67YQG1W8Z3DKVCYQ1PA1FR1]], having [[01KWN86X6NJZMP5ZESZTNDXXW5]] explore the accursed neighborhood for a home to live in.
 
@@ -31,7 +31,7 @@ I picture most of them being significantly shorter than Adelle, like she is the 
 
 ## Soldiers
 
-I like the idea of Adelle being accompanied by one or two soldiers.
+I like the idea of Adelle being accompanied by two or more soldiers.
 
 First, it adds a little more plausibility, where while the environment is dangerous, Adelle has at least some defense.
 
@@ -67,10 +67,11 @@ Part of the difference is most of the stories I can think of that do involve cle
 
 In this case, the cleansing is just the beginning—the bulk of the story will be James and Adelle living in the cleansed house.
 
-> 💡&#x20;
->
-> One similar case of this is in episode [Are You Now or Have You Ever Been](https://buffy.fandom.com/wiki/Are_You_Now_or_Have_You_Ever_Been) of [[01KWN86X6NJZMP5ZESZTNDXY8W]], where the heroes rid an abandoned hotel of a demon and then move into the hotel, which becomes their home and headquarters for the next three seasons of the show.
+> 💡 One similar case of this is in episode [Are You Now or Have You Ever Been](https://buffy.fandom.com/wiki/Are_You_Now_or_Have_You_Ever_Been) of [[01KWN86X6NJZMP5ZESZTNDXY8W]], where the heroes rid an abandoned hotel of a demon and then move into the hotel, which becomes their home and headquarters for the next three seasons of the show.
 
 ## Tension between haunted home and haunted village
 
 [[01M6G0FC3QQRFDJQPJTJ5FEZ48]]
+
+# Lack of danger
+

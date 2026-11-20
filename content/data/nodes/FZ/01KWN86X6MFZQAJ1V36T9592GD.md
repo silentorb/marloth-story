@@ -1,9 +1,9 @@
 ---
 title: Excessive Quest
 alias: Excessive Quest
+created_at: 2026-11-20T04:43:19.638Z
+modified_at: 2026-11-20T04:47:50.588Z
 ---
-# Excessive Quest
-
 # Background
 
 Quests have existed throughout mythology, though they were most popularized by *The Lord of the Rings*.
@@ -35,15 +35,13 @@ The main purpose of this article is to counter-balance a cultural bias.
 
 Any author growing up in this culture and attempting to write fantasy stories will have a knee-jerk inclination toward quests.
 
-# Narcissism
+# Courage vs. Narcissism
 
 There has been a subtle shift in the notion of quests from The Lord of the Rings to more recent narratives.
 
 The Lord of the Rings romanticized questing, but it did so in a heavily WWII framed paradigm of “Men doing hard things in difficult times.”
 
-Tolkien romanticized [duty](./01KWN86X6MFZQAJ1V36T9592FN.md).
-
-> “A man’s gotta do what a man’s gotta do.” - John Wayne
+Tolkien romanticized [duty](./01KWN86X6MFZQAJ1V36T9592FN.md), [[01M7VMESF3P5F7H4T2JMTSYGR4]].
 
 Nowadays, questing is more often related to [[01KWN86X6MFZQAJ1V36T9592GF]].  “This task of mine is of epic import because it is what *I* am doing.”
 

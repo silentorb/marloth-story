@@ -1,7 +1,7 @@
 ---
-title: Adventure home
+title: Adventure homes
 created_at: 2026-10-19T06:56:30.860Z
-modified_at: 2026-10-19T07:10:25.448Z
+modified_at: 2026-11-19T23:03:39.453Z
 ---
 It's easy to have a home in a story.
 
