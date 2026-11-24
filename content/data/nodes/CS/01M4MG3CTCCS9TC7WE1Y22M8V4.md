@@ -1,16 +1,16 @@
 ---
 title: Additive and subtractive surrealism
 created_at: 2026-10-11T03:28:59.725Z
-modified_at: 2026-10-11T03:48:43.334Z
+modified_at: 2026-11-21T08:58:07.415Z
 ---
 There are two ways to mix realism and surrealism.
 
 1. Start with a realistic base and introduce surrealism
 2. Start with an abstract base and make it more realistic
 
-By default, I have usually tended to the former process.
+By default, I have usually tended toward the additive process.
 
-However, there have been seasons, particularly when I was into [[01M4MG6W11X311E4WZZ2A83WS4]], where I leaned in this direction.
+However, there have been seasons, particularly when I was into [[01M4MG6W11X311E4WZZ2A83WS4]], where I leaned toward subtractive.
 
 However, even with [[01M4MG6W11X311E4WZZ2A83WS4]], I don't think I had a clear sense of the surreal -> real process I'm now conceiving.
 

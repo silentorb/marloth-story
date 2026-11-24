@@ -1,7 +1,7 @@
 ---
 title: TWOLD recipe
 created_at: 2026-11-19T22:59:01.817Z
-modified_at: 2026-11-20T04:01:59.961Z
+modified_at: 2026-11-21T09:11:00.080Z
 ---
 > 💡 This page may end up just being a brainstorming page.
 
@@ -26,6 +26,7 @@ What I keep finding is while the tensions have so many conflicts with each other
 - Surreal use and composition of domestic environment pieces to form adventure dungeons
 - Domestic with a splash of nature—avoid nature as a foundation
 - [[01M2BJCMBVA2C7R1BDWC3AT1TA]]
+  - [[01M35WTG0WB94ZR8TQ5TWF6J18]]
 - [[01KWN86X6NJZMP5ZESZTNDXXZ2]]
   - [[01M59F544C8S5GY6D9NQ2ANHRH]]
 - [[01KWN86X6MFZQAJ1V36T9592FN]]
