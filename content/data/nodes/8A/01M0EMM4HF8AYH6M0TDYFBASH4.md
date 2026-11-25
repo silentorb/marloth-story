@@ -1,15 +1,15 @@
 ---
 title: Batman Returns character analysis
 created_at: 2026-08-20T03:49:48.720Z
-modified_at: 2026-09-21T03:05:04.107Z
+modified_at: 2026-11-25T19:37:50.486Z
 ---
-> 💡I'm sure I documented at least some of this in the past but can't find it anywhere so am documenting it again (though in more detail than I remember).
+> 💡 I'm sure I documented at least some of this in the past but can't find it anywhere so am documenting it again (though in more detail than I remember).
 
 It is a common belief that superhero movies should only have one villain.
 
 I find that boring.  ([[01KWN86X6NJZMP5ZESZTNDXY6C]]).
 
-Spider-Man 3 is sometimes used as a cautionary tale as to why superhero movies should never juggle multiple villains, particularly three villains.
+*Spider-Man 3* is sometimes used as a cautionary tale as to why superhero movies should never juggle multiple villains, particularly three villains.
 
 Yet [[01KWN86X6NJZMP5ZESZTNDXY5N]] elegantly weaves a narrative involving three villains.
 

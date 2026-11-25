@@ -8,13 +8,13 @@ created_at: 2026-07-18T05:48:56.497Z
 {
   "version": 1,
   "graph": {
-    "nodes": {
-      "in": {
+    "nodes": [
+      {
         "id": "in",
         "type": "input",
         "inputs": {}
       },
-      "hopMembers": {
+      {
         "id": "hopMembers",
         "type": "traverse",
         "inputs": {
@@ -22,7 +22,7 @@ created_at: 2026-07-18T05:48:56.497Z
           "direction": 0
         }
       },
-      "hopHubs": {
+      {
         "id": "hopHubs",
         "type": "traverse",
         "inputs": {
@@ -30,7 +30,7 @@ created_at: 2026-07-18T05:48:56.497Z
           "direction": 1
         }
       },
-      "hopOrderedMembers": {
+      {
         "id": "hopOrderedMembers",
         "type": "traverse",
         "inputs": {
@@ -38,7 +38,7 @@ created_at: 2026-07-18T05:48:56.497Z
           "direction": 0
         }
       },
-      "hopOrderedHubs": {
+      {
         "id": "hopOrderedHubs",
         "type": "traverse",
         "inputs": {
@@ -46,27 +46,27 @@ created_at: 2026-07-18T05:48:56.497Z
           "direction": 1
         }
       },
-      "exceptMembers": {
+      {
         "id": "exceptMembers",
         "type": "except",
         "inputs": {}
       },
-      "exceptHubs": {
+      {
         "id": "exceptHubs",
         "type": "except",
         "inputs": {}
       },
-      "exceptOrderedMembers": {
+      {
         "id": "exceptOrderedMembers",
         "type": "except",
         "inputs": {}
       },
-      "exceptOrderedHubs": {
+      {
         "id": "exceptOrderedHubs",
         "type": "except",
         "inputs": {}
       },
-      "sort": {
+      {
         "id": "sort",
         "type": "sort",
         "inputs": {
@@ -74,21 +74,22 @@ created_at: 2026-07-18T05:48:56.497Z
           "direction": "asc"
         }
       },
-      "project": {
+      {
         "id": "project",
         "type": "project",
         "inputs": {
           "columns": "id"
         }
       },
-      "out": {
+      {
         "id": "out",
         "type": "output",
         "inputs": {}
       }
-    },
-    "edges": {
-      "e_in_hopMembers": {
+    ],
+    "edges": [
+      {
+        "id": "e_in_hopMembers",
         "from": {
           "node": "in",
           "port": "value"
@@ -98,7 +99,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_in_hopHubs": {
+      {
+        "id": "e_in_hopHubs",
         "from": {
           "node": "in",
           "port": "value"
@@ -108,7 +110,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_in_hopOrderedMembers": {
+      {
+        "id": "e_in_hopOrderedMembers",
         "from": {
           "node": "in",
           "port": "value"
@@ -118,7 +121,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_in_hopOrderedHubs": {
+      {
+        "id": "e_in_hopOrderedHubs",
         "from": {
           "node": "in",
           "port": "value"
@@ -128,7 +132,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_in_exceptMembers": {
+      {
+        "id": "e_in_exceptMembers",
         "from": {
           "node": "in",
           "port": "value"
@@ -138,7 +143,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_excl_members": {
+      {
+        "id": "e_excl_members",
         "from": {
           "node": "hopMembers",
           "port": "collection"
@@ -148,7 +154,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "exclude"
         }
       },
-      "e_keep_exceptHubs": {
+      {
+        "id": "e_keep_exceptHubs",
         "from": {
           "node": "exceptMembers",
           "port": "collection"
@@ -158,7 +165,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_excl_hubs": {
+      {
+        "id": "e_excl_hubs",
         "from": {
           "node": "hopHubs",
           "port": "collection"
@@ -168,7 +176,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "exclude"
         }
       },
-      "e_keep_exceptOrderedMembers": {
+      {
+        "id": "e_keep_exceptOrderedMembers",
         "from": {
           "node": "exceptHubs",
           "port": "collection"
@@ -178,7 +187,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_excl_ordered_members": {
+      {
+        "id": "e_excl_ordered_members",
         "from": {
           "node": "hopOrderedMembers",
           "port": "collection"
@@ -188,7 +198,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "exclude"
         }
       },
-      "e_keep_exceptOrderedHubs": {
+      {
+        "id": "e_keep_exceptOrderedHubs",
         "from": {
           "node": "exceptOrderedMembers",
           "port": "collection"
@@ -198,7 +209,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_excl_ordered_hubs": {
+      {
+        "id": "e_excl_ordered_hubs",
         "from": {
           "node": "hopOrderedHubs",
           "port": "collection"
@@ -208,7 +220,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "exclude"
         }
       },
-      "e_sort": {
+      {
+        "id": "e_sort",
         "from": {
           "node": "exceptOrderedHubs",
           "port": "collection"
@@ -218,7 +231,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_project": {
+      {
+        "id": "e_project",
         "from": {
           "node": "sort",
           "port": "collection"
@@ -228,7 +242,8 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "collection"
         }
       },
-      "e_out": {
+      {
+        "id": "e_out",
         "from": {
           "node": "project",
           "port": "collection"
@@ -238,7 +253,7 @@ created_at: 2026-07-18T05:48:56.497Z
           "port": "value"
         }
       }
-    }
+    ]
   },
   "layout": {
     "in": {

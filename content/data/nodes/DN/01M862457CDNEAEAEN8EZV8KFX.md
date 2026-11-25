@@ -1,7 +1,7 @@
 ---
 title: Adelle home making arc
 created_at: 2026-11-24T05:58:09.901Z
-modified_at: 2026-11-24T07:34:54.890Z
+modified_at: 2026-11-25T18:39:54.895Z
 ---
 # Continuum
 
@@ -33,4 +33,8 @@ The main purpose of this page is to organize the various homes [[01KWN86X6NJZMP5
 6. ??? - Zero or more intermediate homes
 7. ??? - Ocean liner getaway room?
 8. Nameless city home
+
+# Gradual progression
+
+
 
