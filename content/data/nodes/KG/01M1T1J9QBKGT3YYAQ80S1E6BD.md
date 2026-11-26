@@ -1,7 +1,7 @@
 ---
 title: Antagonist sympathy and aggravation
 created_at: 2026-09-06T00:23:20.555Z
-modified_at: 2026-09-06T02:58:44.164Z
+modified_at: 2026-11-26T04:41:34.228Z
 ---
 # Sympathy
 
@@ -27,7 +27,7 @@ Antagonists who build up negative energy in the audiences which needs an outlet.
 
 They create tension that needs resolution.
 
-> 💡A classic example is Mrs. Bennett from [[01KWN86X6MFZQAJ1V36T95929Z]].
+> 💡 A classic example is Mrs. Bennett from [[01KWN86X6MFZQAJ1V36T95929Z]].
 >
 > She is a continuously insufferable woman, but she is also an exotic hot sauce that burns the mouth yet accentuates the flavor of each scene she is in.
 
@@ -36,8 +36,6 @@ They create tension that needs resolution.
 [[01KWN86X6NJZMP5ZESZTNDXY6D]] is largely devoid of annoying characters.
 
 [[01M1TA405D589YZ1QYMVDVKDPH]] is the closest to an openly foolish character, but he is more of a novelty than an irritant.
-
-<br />
 
 It worked for the first book, and I can possibly continue doing that, but I feel like I am missing something if I do so.
 

@@ -1,7 +1,7 @@
 ---
 title: Notable qualities of Pride and Prejudice
 created_at: 2026-09-04T06:21:01.854Z
-modified_at: 2026-09-06T00:22:26.785Z
+modified_at: 2026-11-26T04:51:58.379Z
 ---
 # Overview
 
@@ -60,3 +60,22 @@ I want to deconstruct [[01KWN86X6MFZQAJ1V36T95929Z]] into its base elements, as 
 This deconstruction is a part of my larger deconstruction of [[01M1642X5VN6V9915Y3EH3W1FF]] in general, so that I can then reconstruct a specialized version of it more compatible with [[01KWN86X6MFZQAJ1V36T9592D3]].
 
 All of that in turn is part of my effort to reconcile [[01KWN86X6MFZQAJ1V36T9592ES]].
+
+# Restraint and Assertion
+
+One of the things that struck me this latest time around is how Elizabeth Bennett is almost always either asserting herself or biting her tongue.
+
+The two forces are both at odds, yet they compliment and accentuate each other.
+
+Her boldness makes the times where she checks herself more striking, and when she holds herself back, the pressure builds and builds until she finally unleashes the tidal wave of wit and fury.
+
+> 💡 This is similar to the counterplay of cynicism and idealism in the Simpsons.
+>
+> While the Simpsons is more cynical than ideal, it still splashes more idealism than most of its imitators.
+>
+> And when it does mix them it often has excellent pacing and tempo, overwhelming the audience with a sense of cynicism, then suddenly hitting them with heartfelt depth, then lulling them with the heart and hitting them with more cynicism.
+>
+> However, also unlike its imitators, a surprising number of Simpsons episodes end with idealism, or at least idealism with a quirky side of cynicism that doesn't undermine the happy ending.
+>
+> That is in contrast to so many similar shows which feel compelled to end every episode with a splat.
+

@@ -1,7 +1,7 @@
 ---
-title: Complex character composition
+title: Complex character composition - Scoping
 created_at: 2026-11-25T19:36:30.139Z
-modified_at: 2026-11-25T20:13:59.256Z
+modified_at: 2026-11-26T02:12:44.919Z
 ---
 As mentioned in [[01M0EMM4HF8AYH6M0TDYFBASH4]]:
 
@@ -15,6 +15,8 @@ This applies to both macro and micro levels:
 
 1. At the macro level, how many characters a story is juggling, either quantity, focal characters, or parallel plot threads, or wildly unrelated characters
 2. At the micro level, how many (participating) characters are in a scene
+
+
 
 # Inspirations
 
@@ -55,4 +57,3 @@ His background is comic book writing, particular for superhero agencies, lends i
 He also excels at macro character composition, though the inspirations I listed of his don't put much weight on that.
 
 The first Avengers movie was a great demonstration of is skill at macro character composition, but corporate meddling ruined that composition in later MCU mashup movies.
-

@@ -1,11 +1,11 @@
 ---
 title: B-movies
 created_at: 2026-11-25T20:46:02.989Z
-modified_at: 2026-11-25T21:24:36.325Z
+modified_at: 2026-11-26T02:09:30.174Z
 ---
 Over the past several years I've become fascinated by B-movies, particularly through the eyes of key YouTube channel content creators.
 
-They are becoming one of my biggest sources of inspiration (next to WEBTOON).
+They are becoming one of my biggest sources of inspiration (next to [WEBTOON](https://www.webtoons.com/en/)).
 
 # Era
 
@@ -83,7 +83,7 @@ Godfrey Ho is another of my favorite examples.
 
 Roger Corman turned reuse into an art form.
 
-Godfrey Ho took reuse and remixing to the next level of art form.
+Godfrey Ho took that art form to the next level.
 
 # Humility
 

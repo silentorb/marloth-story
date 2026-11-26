@@ -44,6 +44,13 @@ jobs:
           path: imp-ts
           ref: ${{ vars.IMP_REF || 'main' }}
 
+      - name: Checkout imp-graph-view
+        uses: actions/checkout@v4
+        with:
+          repository: silentorb/imp-graph-view
+          path: imp-graph-view
+          ref: ${{ vars.IMP_GRAPH_VIEW_REF || 'main' }}
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -61,6 +68,7 @@ jobs:
         env:
           TOME_ROOT: ${{ github.workspace }}/tome
           IMP_ROOT: ${{ github.workspace }}/imp-ts
+          IMP_GRAPH_VIEW_ROOT: ${{ github.workspace }}/imp-graph-view
         run: bash scripts/ci-build-static-site.sh --run-only
 
       - name: Configure AWS credentials

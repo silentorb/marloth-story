@@ -6,9 +6,11 @@ MARLOTH_CI_IMAGE="${MARLOTH_CI_IMAGE:-marloth-ci:local}"
 MARLOTH_CI_WORKSPACE="${MARLOTH_CI_WORKSPACE:-/workspaces/marloth-story}"
 TOME_ROOT="${TOME_ROOT:-${ROOT}/tome}"
 TOME_CI_WORKSPACE="${TOME_CI_WORKSPACE:-/workspaces/tome}"
-# Tome workspaces include ../imp-ts/packages/*; Imp must sit next to tome inside the container.
+# Tome workspaces include ../imp-ts/packages/* and ../imp-graph-view; both must sit next to tome inside the container.
 IMP_ROOT="${IMP_ROOT:-$(dirname "${TOME_ROOT}")/imp-ts}"
 IMP_CI_WORKSPACE="${IMP_CI_WORKSPACE:-/workspaces/imp-ts}"
+IMP_GRAPH_VIEW_ROOT="${IMP_GRAPH_VIEW_ROOT:-$(dirname "${TOME_ROOT}")/imp-graph-view}"
+IMP_GRAPH_VIEW_CI_WORKSPACE="${IMP_GRAPH_VIEW_CI_WORKSPACE:-/workspaces/imp-graph-view}"
 
 usage() {
   cat <<EOF
@@ -16,8 +18,8 @@ Usage: ci-build-static-site.sh [--run-only | -h | --help]
 
 Build the static site the same way GitHub Actions does.
 
-Requires tome at TOME_ROOT (default: ./tome) and imp-ts at IMP_ROOT
-(default: sibling of TOME_ROOT, ./imp-ts).
+Requires tome at TOME_ROOT (default: ./tome), imp-ts at IMP_ROOT, and
+imp-graph-view at IMP_GRAPH_VIEW_ROOT (default: siblings of TOME_ROOT).
 
   (default)   docker build + docker run
   --run-only  docker run only (CI after build-push-action)
@@ -25,6 +27,7 @@ Requires tome at TOME_ROOT (default: ./tome) and imp-ts at IMP_ROOT
 Environment:
   TOME_ROOT              Path to silentorb/tome checkout (default: \${ROOT}/tome)
   IMP_ROOT               Path to silentorb/imp-ts checkout (default: sibling of TOME_ROOT)
+  IMP_GRAPH_VIEW_ROOT    Path to silentorb/imp-graph-view checkout (default: sibling of TOME_ROOT)
   MARLOTH_CI_IMAGE       Docker image tag (default: marloth-ci:local)
   MARLOTH_CI_WORKSPACE   Mount path for marloth inside container
   TOME_WEB_BASE          Site base path for embedding (optional)
@@ -55,6 +58,14 @@ require_imp() {
   fi
 }
 
+require_imp_graph_view() {
+  if [[ ! -f "${IMP_GRAPH_VIEW_ROOT}/package.json" ]]; then
+    echo "imp-graph-view repo not found at ${IMP_GRAPH_VIEW_ROOT}" >&2
+    echo "Checkout silentorb/imp-graph-view into ./imp-graph-view or set IMP_GRAPH_VIEW_ROOT (tome workspaces resolve ../imp-graph-view)." >&2
+    exit 1
+  fi
+}
+
 build_image() {
   echo "Building devcontainer image → ${MARLOTH_CI_IMAGE}"
   docker build -f "${ROOT}/.devcontainer/Dockerfile" -t "${MARLOTH_CI_IMAGE}" "${ROOT}"
@@ -63,6 +74,7 @@ build_image() {
 run_build() {
   require_tome
   require_imp
+  require_imp_graph_view
 
   local web_base_args=()
   local web_base="${TOME_WEB_BASE:-${MARLOTH_WEB_BASE:-}}"
@@ -71,15 +83,17 @@ run_build() {
   fi
 
   echo "Building static site in ${MARLOTH_CI_IMAGE}"
-  echo "  marloth: ${ROOT} → ${MARLOTH_CI_WORKSPACE}"
-  echo "  tome:    ${TOME_ROOT} → ${TOME_CI_WORKSPACE}"
-  echo "  imp-ts:  ${IMP_ROOT} → ${IMP_CI_WORKSPACE}"
+  echo "  marloth:        ${ROOT} → ${MARLOTH_CI_WORKSPACE}"
+  echo "  tome:           ${TOME_ROOT} → ${TOME_CI_WORKSPACE}"
+  echo "  imp-ts:         ${IMP_ROOT} → ${IMP_CI_WORKSPACE}"
+  echo "  imp-graph-view: ${IMP_GRAPH_VIEW_ROOT} → ${IMP_GRAPH_VIEW_CI_WORKSPACE}"
 
   docker run --rm \
     --user "$(id -u):$(id -g)" \
     -v "${ROOT}:${MARLOTH_CI_WORKSPACE}:rw" \
     -v "${TOME_ROOT}:${TOME_CI_WORKSPACE}:rw" \
     -v "${IMP_ROOT}:${IMP_CI_WORKSPACE}:rw" \
+    -v "${IMP_GRAPH_VIEW_ROOT}:${IMP_GRAPH_VIEW_CI_WORKSPACE}:rw" \
     -e "HOME=/tmp" \
     -e "BUN_INSTALL=/usr/local/bun" \
     -e "PATH=/usr/local/bun/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
